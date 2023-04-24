@@ -1,5 +1,6 @@
 package game.level;
 
+import game.entity.Block;
 import game.entity.Coordinates;
 import game.entity.Grass;
 import game.entity.StoneBlock;
@@ -9,7 +10,8 @@ import javax.swing.*;
 
 import java.awt.*;
 
-import static game.ui.UIHandler.BLOCK_SIZE;
+import static game.ui.UIHandler.GRID_SIZE;
+
 
 public class Level1 extends Level{
     @Override
@@ -38,9 +40,9 @@ public class Level1 extends Level{
     }
 
     public void generateStone(JComponent[][] positions){
-        for(int i = 0; i < positions.length/BLOCK_SIZE/2; i++){
-            for(int j = 0; j < positions[i].length/BLOCK_SIZE/2; j++){
-                new StoneBlock(new Coordinates(i*BLOCK_SIZE*2+BLOCK_SIZE, j*BLOCK_SIZE*2+BLOCK_SIZE)).spawn();
+        for(int i = 0; i < positions.length/GRID_SIZE/2; i++){
+            for(int j = 0; j < positions[i].length/GRID_SIZE/2; j++){
+                new StoneBlock(new Coordinates(i* GRID_SIZE *2+GRID_SIZE, j*GRID_SIZE*2+GRID_SIZE)).spawn();
 
             }
         }

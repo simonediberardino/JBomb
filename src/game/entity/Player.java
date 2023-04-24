@@ -8,13 +8,56 @@ import game.ui.UIHandler;
 
 import javax.swing.*;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import static game.models.Direction.*;
-import static game.ui.UIHandler.BLOCK_SIZE;
+
+
 
 public class Player extends Character implements Observer {
+
+    @Override
+    public String[] getFrontIcons() {
+        return new String[]{
+                "assets/player/player_front_0.png",
+                "assets/player/player_front_1.png",
+                "assets/player/player_front_0.png",
+                "assets/player/player_front_2.png"
+        };
+    }
+
+    @Override
+    public String[] getLeftIcons() {
+        //TODO
+        return new String[]{
+                "assets/player/player_right_0.png"
+        };    }
+
+    @Override
+    public String[] getBackIcons() {
+        //TODO
+        return new String[]{
+                "assets/player/player_front_1.png",
+                "assets/player/player_front_0.png",
+                "assets/player/player_front_1.png",
+                "assets/player/player_front_2.png"
+        };
+    }
+
+    @Override
+    public String[] getRightIcons() {
+        //TODO
+        return new String[]{
+                "assets/player/player_right_0.png",
+                "assets/player/player_right_1.png",
+                "assets/player/player_right_2.png",
+                "assets/player/player_right_1.png"
+
+        };
+    }
+
     public Player(Coordinates coordinates) {
         super(coordinates);
     }
@@ -23,10 +66,8 @@ public class Player extends Character implements Observer {
         super(new Coordinates(0,0));
     }
 
-    @Override
-    public Icon[] getIcon() {
-        return new GridImage("assets/main_character.png", BLOCK_SIZE).generate();
-    }
+
+
 
     @Override
     public void setAliveState(boolean x) {
@@ -45,7 +86,25 @@ public class Player extends Character implements Observer {
         setAliveState(true);
     }
 
-    private void placeBomb(){}
+    public void interact(Entity e){
+        if (e instanceof Enemy || e instanceof Explosion){
+            despawn();
+        }
+
+
+    }
+
+    public void placeBomb(){
+        /*
+        List<Coordinates> coords = getCoordsOnBorder(getLastDirection(), getSize());
+        if (!coords.isEmpty()){
+            Bomb bomb = new Bomb(coords.get(0));
+            bomb.spawn();
+            bomb.explode();
+        }
+         */
+
+    }
 
     private void handleAction(Command command){
         switch(command){
@@ -59,7 +118,7 @@ public class Player extends Character implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("Command: " + arg);
         handleAction((Command) arg);
     }
+
 }

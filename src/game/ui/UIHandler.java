@@ -11,9 +11,9 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 public class UIHandler implements KeyListener {
-    private static final int[] GAME_PANEL_SIZE = {33, 33};
+    public static final int GRID_SIZE = 5;
+    private static final int[] GAME_PANEL_SIZE = {GRID_SIZE*9, GRID_SIZE*9};
     public static JButton[][] positions = new JButton[GAME_PANEL_SIZE[0]][GAME_PANEL_SIZE[1]];
-    public static final int BLOCK_SIZE = 3;
     private JFrame jFrame;
     private JPanel gridJPanel;
     private JPanel mainJPanel;
@@ -56,12 +56,14 @@ public class UIHandler implements KeyListener {
         jFrame.add(mainJPanel);
         jFrame.setVisible(true);
 
+
         BomberMan.getInstance().getCurrentLevel().generatePitch(positions);
-        BomberMan.getInstance().setPlayer(new Player());
+                /*
+        BomberMan.getInstance().setPlayer(new Player(new Coordinates(20,10)));
         BomberMan.getInstance().getPlayer().spawn();
 
-        (new Enemy(new Coordinates(0,9))).spawn();
-
+        (new Enemy(new Coordinates(10,13))).spawn();
+        BomberMan.getInstance().getPlayer().placeBomb();*/
 
         jFrame.repaint();
     }

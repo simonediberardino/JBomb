@@ -6,15 +6,42 @@ import game.ui.UIHandler;
 
 import javax.swing.*;
 
-import static game.ui.UIHandler.BLOCK_SIZE;
 
 public class Enemy extends Character {
-    public Enemy(Coordinates coordinates) {
-        super(coordinates);
+    @Override
+    public String[] getFrontIcons() {
+        return new String[]{
+                "assets/enemy.png",
+        };
     }
 
     @Override
-    Icon[] getIcon() {
-        return new GridImage("assets/enemy.png", BLOCK_SIZE).generate();
+    public String[] getLeftIcons() {
+        return new String[0];
     }
+
+    @Override
+    public String[] getBackIcons() {
+        return new String[0];
+    }
+
+    @Override
+    public String[] getRightIcons() {
+        return new String[0];
+    }
+
+    public Enemy(Coordinates coordinates) {
+        super(coordinates);
+
+    }
+
+    @Override
+    public void interact(Entity e) {
+        if (e instanceof Player){
+            ((Player) e).setAliveState(false);
+            e.despawn();
+        }
+        //if (e instanceof block) -> changeDirection()
+    }
+
 }

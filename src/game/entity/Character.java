@@ -2,92 +2,83 @@ package game.entity;
 
 import game.BomberMan;
 import game.models.Direction;
+import game.ui.GridImage;
 
+import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static game.ui.UIHandler.BLOCK_SIZE;
 
-
-public abstract class Character extends Entity{
+public abstract class Character extends InteractiveEntities {
+    public static final int SIZE = 3;
+    private int currentPositionIconIndex = 0;
     private boolean isAlive = true;
+    private Direction lastDirection = Direction.DOWN;
+
+    public abstract String[] getFrontIcons();
+    public abstract String[] getLeftIcons();
+    public abstract String[] getBackIcons();
+    public abstract String[] getRightIcons();
 
     public Character(Coordinates coordinates) {
         super(coordinates);
     }
-
+    
     public void setAliveState(boolean x){
         isAlive = x;
     }
-
+    
     public boolean getAliveState(){
         return isAlive;
     }
 
-    private Entity getCollidedEntity(Direction d) {
-        ArrayList<Coordinates> newBlocksAfterMove = new ArrayList<>();
+    @Override
+    public int getSize() {
+        return 3;
+    }
 
-        switch(d){
-            case RIGHT:
-                for (int i = 0; i < BLOCK_SIZE; i++)
-                    newBlocksAfterMove.add(new Coordinates(getCoords().getX()+BLOCK_SIZE,getCoords().getY()+i));
-                break;
-            case LEFT:
-                for (int i = 0; i < BLOCK_SIZE; i++)
-                    newBlocksAfterMove.add(new Coordinates(getCoords().getX() - 1, getCoords().getY() + i));
-                break;
-            case UP:
-                for (int i = 0; i < BLOCK_SIZE; i++)
-                    newBlocksAfterMove.add(new Coordinates(getCoords().getX()+i, getCoords().getY() - 1));
-                break;
-            case DOWN:
-                for (int i = 0; i < BLOCK_SIZE; i++)
-                    newBlocksAfterMove.add(new Coordinates(getCoords().getX() + i, getCoords().getY() + BLOCK_SIZE));
-                break;
+    @Override
+    public Icon[] getIcon(){
+        String[] frontIcons = getFrontIcons();
+        String[] leftIcons = getLeftIcons();
+        String[] backIcons = getBackIcons();
+        String[] rightIcons = getRightIcons();
+
+        if(lastDirection == null)
+            return new GridImage(frontIcons[0], getSize()).generate();
+
+        String[] icons;
+        switch (lastDirection) {
+            case LEFT: icons = leftIcons; break;
+            case RIGHT: icons = rightIcons; break;
+            case UP: icons = backIcons; break;
+            default: icons = frontIcons; break;
         }
 
+        if(currentPositionIconIndex < 0 || currentPositionIconIndex >= icons.length)
+            currentPositionIconIndex = 0;
 
-        Entity collided = null;
+        String icon = icons[currentPositionIconIndex];
+        return new GridImage(icon, getSize()).generate();
+    }
 
-        for(Entity entity : BomberMan.getInstance().getEntities()){
-            if(entity.equals(this)) continue;
 
-            boolean isAtleastAPixelCollided = false;
-
-            for (Coordinates element : newBlocksAfterMove) {
-                if (entity.getPositions().contains(element)) {
-                    isAtleastAPixelCollided = true;
-                    break;
-                }
-            }
-
-            if(isAtleastAPixelCollided) collided = entity;
+    private void updateLastDirection(Direction d){
+        if(lastDirection != d){
+            currentPositionIconIndex = 0;
+        }else {
+            currentPositionIconIndex++;
         }
-
-        return collided;
+        lastDirection = d;
     }
 
     public void move(Direction d) {
-        int x = 0, y = 0;
-        switch(d) {
-            case LEFT: x = -1; y = 0; break;
-            case RIGHT: x = 1; y = 0; break;
-            case UP: x = 0; y = -1; break;
-            case DOWN: x = 0; y = 1; break;
-        }
-
-        Entity entity = getCollidedEntity(d);
-
-        if(entity == null){
-            setPosition(x + getCoords().getX(), y + getCoords().getY());
-        }else if(entity instanceof Block){
-            /// interact(borders.get(1).get(i)
-            ///blocco presente
-            return;
-        }
-        else if (entity instanceof Character){
-            //interact(borders.get(1).get(i)
-        }
+        updateLastDirection(d);
+        moveOrInteract(d);
     }
+    public Direction getLastDirection(){
+        return lastDirection;
+    }
+
+
 }

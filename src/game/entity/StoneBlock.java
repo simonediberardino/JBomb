@@ -6,11 +6,15 @@ import game.ui.UIHandler;
 
 import javax.swing.*;
 
-import static game.ui.UIHandler.BLOCK_SIZE;
 
 public class StoneBlock extends Block {
     public StoneBlock(Coordinates coordinates) {
         super(coordinates);
+    }
+
+    @Override
+    public void interact(Entity e) {
+
     }
 
     @Override

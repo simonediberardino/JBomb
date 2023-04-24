@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import static game.ui.UIHandler.GRID_SIZE;
+
 public class GridImage {
     private BufferedImage inputImage;
     private BufferedImage outputImage;
@@ -15,6 +17,10 @@ public class GridImage {
     private int outputY;
     private int size;
     private Icon[] outputArray;
+
+    public GridImage(String path){
+        this(path, GRID_SIZE);
+    }
 
     public GridImage(String path, int size) {
         this.file = new File(path);

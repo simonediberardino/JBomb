@@ -17,8 +17,13 @@ public class Grass extends Block{
     @Override
     public void spawn(){
         if(!isSpawned()) {
-            setPosition(false, getCoords().getX(), getCoords().getY());
+            move(false, getCoords().getX(), getCoords().getY());
             setSpawned(true);
         }
+    }
+
+    @Override
+    public void interact(Entity e) {
+
     }
 }
