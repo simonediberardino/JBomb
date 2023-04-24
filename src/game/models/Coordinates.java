@@ -1,10 +1,10 @@
-package game.entity;
+package game.models;
 
 import java.util.Objects;
 
 public class Coordinates {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public Coordinates(int x, int y) {
         this.x = x;
@@ -17,15 +17,6 @@ public class Coordinates {
 
     public int getY() {
         return y;
-    }
-
-    public void setCoords(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int[] getCoords() {
-        return new int[]{x, y};
     }
 
     @Override

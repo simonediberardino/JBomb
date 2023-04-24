@@ -1,11 +1,7 @@
 package game.entity;
 
-import game.BomberMan;
-import game.ui.GridImage;
-import game.ui.UIHandler;
 
-import javax.swing.*;
-
+import game.models.Coordinates;
 
 public class Enemy extends Character {
     @Override
@@ -32,16 +28,13 @@ public class Enemy extends Character {
 
     public Enemy(Coordinates coordinates) {
         super(coordinates);
-
     }
 
     @Override
     public void interact(Entity e) {
         if (e instanceof Player){
-            ((Player) e).setAliveState(false);
             e.despawn();
         }
-        //if (e instanceof block) -> changeDirection()
     }
 
 }

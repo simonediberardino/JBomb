@@ -1,12 +1,14 @@
 package game.entity;
 
 import game.BomberMan;
+import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.GridImage;
+import game.ui.Utility;
 
-import javax.swing.*;
-
-import static game.ui.UIHandler.GRID_SIZE;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class Explosion extends InteractiveEntities{
     private final Bomb bomb;
@@ -15,17 +17,15 @@ public class Explosion extends InteractiveEntities{
     public final Direction direction;
 
 
-    public Explosion(Coordinates coordinates,Direction direction, Bomb bomb, int distanceFromBomb, int maxDistance) {
+    public Explosion(Coordinates coordinates, Direction direction, Bomb bomb, int distanceFromBomb, int maxDistance) {
         super(coordinates);
         this.direction = direction;
         this.bomb = bomb;
         this.distanceFromBomb = distanceFromBomb;
         this.maxDistance = maxDistance;
-        int[] nextCoords = getDirectionCoords(direction,getCoords().getX(),getCoords().getY());
         BomberMan.getInstance().addEntity(this);
-        moveOrInteract(direction,false);
+        moveOrInteract(direction);
     }
-
 
     @Override
     public void interact(Entity e) {
@@ -36,39 +36,25 @@ public class Explosion extends InteractiveEntities{
 
     @Override
     public int getSize() {
-        return 1;
-    }
-
-    public Bomb getBomb(){
-        return bomb;
-    }
-
-    public int getDistanceFromBomb() {
-        return distanceFromBomb;
-    }
-    public int getMaxDistance() {
-        return maxDistance;
+        return Utility.px(10);
     }
 
     @Override
-    public void move(int x,int y){
-        move(true,x,y);
-    }
-    @Override
-    public void move(boolean delete, int x, int y){
-        if (distanceFromBomb<=maxDistance){
-            super.move(false, x,y);
-            Explosion newExplosion = new Explosion(new Coordinates(x,y),direction,bomb,distanceFromBomb+1,maxDistance);
-
+    public void move(int x, int y){
+        if (distanceFromBomb <= maxDistance){
+            super.move( x,y);
+            new Explosion(new Coordinates(x,y), direction, bomb,distanceFromBomb + 1,maxDistance);
         }
-
-    }
-
-    public Icon[] getIcon(){
-        return new GridImage("assets/Bomb/flame_up_left.png", getSize()).generate();
     }
 
 
-
-
+    @Override
+    public Image getImage(){
+        try {
+            return ImageIO.read(new File("assets/Bomb/flame_up_left.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -1,19 +1,21 @@
 package game;
 
 import game.controller.KeyEventObservable;
+import game.engine.GameTickerObservable;
 import game.entity.*;
 import game.level.Level;
-import game.ui.UIHandler;
+import game.ui.GameFrame;
 
 import java.util.*;
 
 public class BomberMan {
     private static BomberMan instance;
+    private GameTickerObservable gameTickerObservable;
     private Set<Entity> entities;
     private KeyEventObservable keyEventObservable;
     private Level currentLevel;
     private Player player;
-    private UIHandler uiHandler = null;
+    private GameFrame gameFrame = null;
 
     public static BomberMan getInstance() {
         return instance;
@@ -26,11 +28,13 @@ public class BomberMan {
         this.currentLevel = currentLevel;
         this.entities = new HashSet<>();
         this.keyEventObservable = new KeyEventObservable();
+        this.gameTickerObservable = new GameTickerObservable();
+
         this.start();
     }
 
     public void start() {
-        uiHandler = new UIHandler();
+        gameFrame = new GameFrame();
     }
 
     public Level getCurrentLevel() {
@@ -45,12 +49,16 @@ public class BomberMan {
         return player;
     }
 
-    public UIHandler getUiHandler() {
-        return uiHandler;
+    public GameFrame getUiHandler() {
+        return gameFrame;
     }
 
     public Set<Entity> getEntities() {
+
         return entities;
+    }
+    public void removeEntity(Entity e){
+        entities.remove(e);
     }
 
     public void addEntity(Entity entity) {
@@ -59,5 +67,9 @@ public class BomberMan {
 
     public KeyEventObservable getKeyEventObservable() {
         return keyEventObservable;
+    }
+
+    public GameTickerObservable getGameTickerObservable() {
+        return gameTickerObservable;
     }
 }

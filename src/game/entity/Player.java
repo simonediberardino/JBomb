@@ -2,11 +2,7 @@ package game.entity;
 
 import game.BomberMan;
 import game.controller.Command;
-import game.models.Direction;
-import game.ui.GridImage;
-import game.ui.UIHandler;
-
-import javax.swing.*;
+import game.models.Coordinates;
 
 import java.util.List;
 import java.util.Observable;
@@ -33,7 +29,8 @@ public class Player extends Character implements Observer {
         //TODO
         return new String[]{
                 "assets/player/player_right_0.png"
-        };    }
+        };
+    }
 
     @Override
     public String[] getBackIcons() {
@@ -67,8 +64,6 @@ public class Player extends Character implements Observer {
     }
 
 
-
-
     @Override
     public void setAliveState(boolean x) {
         super.setAliveState(x);
@@ -76,6 +71,7 @@ public class Player extends Character implements Observer {
         if(!x){
             BomberMan.getInstance().getKeyEventObservable().deleteObserver(this);
         }else{
+            BomberMan.getInstance().getKeyEventObservable().deleteObservers();
             BomberMan.getInstance().getKeyEventObservable().addObserver(this);
         }
     }
@@ -90,23 +86,25 @@ public class Player extends Character implements Observer {
         if (e instanceof Enemy || e instanceof Explosion){
             despawn();
         }
-
-
     }
 
     public void placeBomb(){
-        /*
-        List<Coordinates> coords = getCoordsOnBorder(getLastDirection(), getSize());
-        if (!coords.isEmpty()){
-            Bomb bomb = new Bomb(coords.get(0));
-            bomb.spawn();
-            bomb.explode();
-        }
-         */
+        List<Coordinates> coords = getNewCoordinatesOnDirection(
+                getLastDirection(),
+                getSize(),
+                getSize(),
+                getSize(),
+                true
+        );
 
+        Bomb bomb = new Bomb(coords.get(0));
+        if (getEntitiesOnBorder(getLastDirection(), bomb.getSize(), STEP_SIZE).isEmpty()){
+            bomb.spawn();
+        }
     }
 
     private void handleAction(Command command){
+        System.out.println(command);
         switch(command){
             case MOVE_UP: move(UP); break;
             case MOVE_DOWN: move(DOWN); break;

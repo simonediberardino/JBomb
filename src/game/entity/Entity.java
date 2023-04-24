@@ -1,13 +1,12 @@
 package game.entity;
 
 import game.BomberMan;
+import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.UIHandler;
 
-import javax.swing.*;
+import java.awt.*;
 import java.util.*;
-
-import static game.ui.UIHandler.GRID_SIZE;
+import java.util.List;
 
 
 public abstract class Entity {
@@ -15,7 +14,6 @@ public abstract class Entity {
     private boolean isSpawned = false;
     private long id;
 
-    abstract Icon[] getIcon();
 
     private Entity(){}
 
@@ -24,7 +22,9 @@ public abstract class Entity {
         setCoords(coordinates);
     }
 
+    public abstract void interact(Entity e);
     public abstract int getSize();
+    public abstract Image getImage();
 
     public void setCoords(Coordinates coordinates){
         this.coords = coordinates;
@@ -57,108 +57,95 @@ public abstract class Entity {
 
         return result;
     }
-    public void despawn(){
+
+    public void despawn() {
         setSpawned(false);
-        delete();
-        BomberMan.getInstance().getEntities().remove(this);
+        BomberMan.getInstance().removeEntity(this);
     }
 
     public void spawn(){
-        /*
         if (isSpawned()) {
             return;
         }
+
         List<Coordinates> desiredPosition = getPositions();
         boolean check = desiredPosition.stream().anyMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates));
 
         if (!check) {
-            move(false, getCoords().getX(), getCoords().getY());
-            BomberMan.getInstance().addEntity(this);
+            setCoords(coords);
             setSpawned(true);
-        }*/
+            BomberMan.getInstance().addEntity(this);
+        }
     }
 
-    public void move(int x, int y){
-        move(true, x, y);
+    public void move(int x, int y) {
+        setCoords(new Coordinates(x,y));
     }
 
-    public void move(boolean delete, int x, int y){
-        Icon[] generateImageArray = getIcon();
-        if(delete) delete();
-        setCoords(new Coordinates(x, y));
-
-        int z = 0;
-
-        for(int y1 = 0; y1 < getSize(); y1++)
-            for (int x1 = 0; x1 < getSize(); x1++) {
-                JButton b = UIHandler.positions[y1 + y][x1 + x];
-                UIHandler.setIcon(b, generateImageArray[z]);
-                z++;
-            }
+    public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int entitySize){
+        return getNewCoordinatesOnDirection(d, entitySize, 1,1,false);
     }
 
-
-    public abstract void interact(Entity e);
-
-
-    public List<Coordinates> getCoordsOnBorder(Direction d, int size){
-        return getCoordsOnBorder(d, size, 1);
-    }
-    public List<Coordinates> getCoordsOnBorder(Direction d, int size, int steps){
+    public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int size, int steps, int offset, boolean topLeftCoords){
         List<Coordinates> desiredCoords = new ArrayList<>();
+
         int x = 0;
         int y = 0;
-        switch (d) {
-            case RIGHT:
-                x = 1;
-                for (int step = 0; step < steps; step++) {
-                    for (int i = 0; i < getSize(); i++) {
-                        desiredCoords.add(new Coordinates(getCoords().getX() + size + step, getCoords().getY() + i));
-                    }
-                }
-                break;
-            case LEFT:
-                x = -1;
-                for (int step = 0; step < steps; step++) {
-                    for (int i = 0; i < getSize(); i++) {
-                        desiredCoords.add(new Coordinates(getCoords().getX() - 1 - step, getCoords().getY() + i));
-                    }
-                }
-                break;
-            case UP:
-                y = -1;
-                for (int step = 0; step < steps; step++) {
-                    for (int i = 0; i < getSize(); i++) {
-                        desiredCoords.add(new Coordinates(getCoords().getX() + i, getCoords().getY() - 1 - step));
-                    }
-                }
-                break;
-            case DOWN:
-                y = 1;
-                for (int step = 0; step < steps; step++) {
-                    for (int i = 0; i < getSize(); i++) {
-                        desiredCoords.add(new Coordinates(getCoords().getX() + i, getCoords().getY() + size + step));
-                    }
-                }
-                break;
+
+        if(topLeftCoords) {
+            x = - size;
+            y = - size;
         }
+
+        switch (d) {
+            case RIGHT: return getNewCoordinatesOnRight(steps, offset, size);
+            case LEFT: return getNewCoordinatesOnLeft(steps, offset, x);
+            case UP: return getNewCoordinatesOnUp(steps, offset, y);
+            case DOWN: return getNewCoordinatesOnDown(steps, offset, size);
+        }
+
 
         return desiredCoords;
-
     }
 
+    private List<Coordinates> getNewCoordinatesOnRight(int steps, int offset, int size) {
+        List<Coordinates> coordinates = new ArrayList<>();
 
-    public void delete(){
-        List<Coordinates> coordinates = getPositions();
-        Icon[] grassBlocks = BomberMan.getInstance().getCurrentLevel().getGrassBlock();
+        for (int step = 0; step < steps / offset; step++)
+            for (int i = 0; i < getSize() / offset; i++)
+                coordinates.add(new Coordinates(getCoords().getX() + size + step * offset, getCoords().getY() + i * offset));
 
-        for (Coordinates c : coordinates) {
-            int x = c.getX() % GRID_SIZE;
-            int y = c.getY() % GRID_SIZE;
+        return coordinates;
+    }
 
-            JButton b = UIHandler.positions[c.getY()][c.getX()];
-            UIHandler.setIcon(b, grassBlocks[(y) * GRID_SIZE + x]);
-        }
+    private List<Coordinates> getNewCoordinatesOnLeft(int steps, int offset, int x) {
+        List<Coordinates> coordinates = new ArrayList<>();
+
+        for (int step = 0; step < steps/offset; step++)
+            for (int i = 0; i < getSize()/offset; i++)
+                coordinates.add(new Coordinates(getCoords().getX() - 1 - step*offset + x, getCoords().getY() + i*offset));
+
+        return coordinates;
+    }
+
+    private List<Coordinates> getNewCoordinatesOnUp(int steps, int offset, int y) {
+        List<Coordinates> coordinates = new ArrayList<>();
+
+        for (int step = 0; step < steps/offset; step++)
+            for (int i = 0; i < getSize()/offset; i++)
+                coordinates.add(new Coordinates(getCoords().getX() + i * offset, getCoords().getY() + y - 1 - step * offset));
+
+        return coordinates;
+    }
+
+    private List<Coordinates> getNewCoordinatesOnDown(int steps, int offset, int size) {
+        List<Coordinates> coordinates = new ArrayList<>();
+
+        for (int step = 0; step < steps / offset; step++)
+            for (int i = 0; i < getSize() / offset; i++)
+                coordinates.add(new Coordinates(getCoords().getX() + i*offset, getCoords().getY() + size + step * offset));
+
+        return coordinates;
     }
 
     @Override
@@ -171,17 +158,15 @@ public abstract class Entity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isSpawned, getCoords());}
+        return Objects.hash(id, isSpawned, getCoords());
+    }
 
-
-
-    public static int[] getDirectionCoords(Direction d, int x, int y){
-        switch (d){
-            case DOWN: y +=1;break;
-            case UP: y-=1;break;
-            case LEFT: x-=1; break;
-            case RIGHT: x+=1;break;
-        }
-        return new int[]{x,y};
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "coords=" + coords +
+                ", isSpawned=" + isSpawned +
+                ", id=" + id +
+                '}';
     }
 }

@@ -1,10 +1,13 @@
 package game.entity;
 
 import game.BomberMan;
-import game.ui.GridImage;
-import game.ui.UIHandler;
+import game.models.Coordinates;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 
 public class StoneBlock extends Block {
@@ -18,9 +21,8 @@ public class StoneBlock extends Block {
     }
 
     @Override
-    Icon[] getIcon() {
+    public Image getImage(){
         return BomberMan.getInstance().getCurrentLevel().getStoneBlock();
     }
-
 
 }

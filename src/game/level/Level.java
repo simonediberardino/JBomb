@@ -2,14 +2,16 @@ package game.level;
 
 import game.BomberMan;
 import game.entity.*;
-import game.models.Direction;
-import game.ui.GridImage;
+import game.models.Coordinates;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
-import static game.ui.UIHandler.GRID_SIZE;
+import static game.ui.GameFrame.GRID_SIZE;
 
 
 public abstract class Level {
@@ -17,33 +19,47 @@ public abstract class Level {
     public abstract String getGrass();
     public abstract String getDestroyable();
 
-    public Icon[] getStoneBlock(){
-        return new GridImage(getStone(), GRID_SIZE).generate();
+    public Image getStoneBlock(){
+        try {
+            return ImageIO.read(new File(getStone()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public Icon[] getDestroyableBlock(){
-        return new GridImage(getDestroyable(), GRID_SIZE).generate();
+    public Image getDestroyableBlock(){
+        try {
+            return ImageIO.read(new File(getDestroyable()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public Icon[] getGrassBlock(){
-        return new GridImage(getGrass(), GRID_SIZE).generate();
+    public Image getGrassBlock(){
+        try {
+            return ImageIO.read(new File(getGrass()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public abstract Icon getPitch();
-    public abstract Color getBackgroundColor();
 
-    public void generateGrass(JComponent[][] positions) {
+    public void generateGrass(JPanel jPanel) {/*
         for (int i = 0; i < positions.length / GRID_SIZE; i++)
             for (int j = 0; j < positions[i].length / GRID_SIZE; j++)
-                new Grass(new Coordinates(i * GRID_SIZE, j * GRID_SIZE)).spawn();
+                new Grass(new Coordinates(i * GRID_SIZE, j * GRID_SIZE)).spawn();*/
     }
 
-    public abstract void generateStone(JComponent[][] positions);
+    public abstract void generateStone(JPanel jPanel);
 
 
-    public void generatePitch(JComponent[][] positions){
-        generateGrass(positions);
-        generateStone(positions);
-
+    public void start(JPanel jPanel){
+        generateGrass(jPanel);
+        generateStone(jPanel);
+        new Player().spawn();
     }
 }

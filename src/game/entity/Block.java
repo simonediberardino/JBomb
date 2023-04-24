@@ -1,9 +1,9 @@
 package game.entity;
 
-import game.ui.UIHandler;
 
-import javax.swing.*;
-
+import game.models.Coordinates;
+import game.ui.GameFrame;
+import game.ui.Utility;
 
 public abstract class Block extends Entity{
     public Block(Coordinates coordinates) {
@@ -12,6 +12,6 @@ public abstract class Block extends Entity{
 
     @Override
     public int getSize() {
-        return 5;
+        return GameFrame.GRID_SIZE;
     }
 }
