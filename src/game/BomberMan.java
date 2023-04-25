@@ -54,9 +54,9 @@ public class BomberMan {
     }
 
     public Set<Entity> getEntities() {
-
-        return entities;
+        return new HashSet<>(entities);
     }
+
     public void removeEntity(Entity e){
         entities.remove(e);
     }

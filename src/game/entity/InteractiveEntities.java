@@ -6,60 +6,118 @@ import game.models.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
-import static game.entity.Character.STEP_SIZE;
+import static game.entity.Character.PIXEL_UNIT;
 
-public abstract class InteractiveEntities extends Entity{
+/**
+ * An abstract class representing interactive entities, which can move or interact with other entities in the game.
+ */
+public abstract class InteractiveEntities extends Entity {
+
+    /**
+     * Gets the size of the entity in pixels.
+     * @return the size of the entity
+     */
+    public abstract int getSize();
+
+    /**
+     * Constructs an interactive entity with the given coordinates.
+     * @param coordinates the coordinates of the entity
+     */
     public InteractiveEntities(Coordinates coordinates) {
         super(coordinates);
     }
 
+    /**
+     * Interacts with the given entity.
+     * @param e the entity to interact with
+     */
     @Override
     public void interact(Entity e) {
-
     }
 
+    /**
+     * Gets a list of entities that are on the border of the current entity in the given direction, with the default step size and offset.
+     * @param d the direction to get the entities on the border of
+     * @return the list of entities on the border in the given direction
+     */
     public List<Entity> getEntitiesOnBorder(Direction d){
-        return getEntitiesOnBorder(d,1,1);
+        return getEntitiesOnBorder(d, PIXEL_UNIT, PIXEL_UNIT);
     }
 
+    /**
+     * Gets a list of entities that are on the border of the current entity in the given direction, with the given step size and offset.
+     * @param d the direction to get the entities on the border of
+     * @param steps the step size to use
+     * @param offset the offset to use
+     * @return the list of entities on the border in the given direction
+     */
     public List<Entity> getEntitiesOnBorder(Direction d, int steps, int offset){
-        List<Coordinates> desiredCoords = getNewCoordinatesOnDirection(d,getSize(),steps,offset,false);
+        List<Coordinates> desiredCoords = getNewCoordinatesOnDirection(d, steps, offset);
         List<Entity> outputEntities = new ArrayList<>();
 
         for (Entity entity : BomberMan.getInstance().getEntities()) {
             for (Coordinates element : desiredCoords) {
                 if (entity.getPositions().contains(element)) {
                     outputEntities.add(entity);
-
                 }
             }
         }
+
         return outputEntities;
     }
 
-
-
-    public void moveOrInteract(Direction d) {
+    /**
+     * Gets the next coordinates in the given direction and with the given step size.
+     * @param d the direction to get the next coordinates in
+     * @param stepSize the step size to use
+     * @return the next coordinates in the given direction and with the given step size
+     */
+    public Coordinates nextCoords(Direction d, int stepSize){
         int x = 0;
         int y = 0;
 
         switch (d) {
-            case RIGHT: x = STEP_SIZE; break;
-            case LEFT: x = - STEP_SIZE; break;
-            case UP: y = - STEP_SIZE; break;
-            case DOWN: y = STEP_SIZE; break;
+            case RIGHT: x = stepSize; break;
+            case LEFT: x = - stepSize; break;
+            case UP: y = - stepSize; break;
+            case DOWN: y = stepSize; break;
         }
 
-        List<Entity> outputEntities = getEntitiesOnBorder(d);
-        if (outputEntities.isEmpty()) {
-            move(x + getCoords().getX(), y + getCoords().getY());
-        }
-
-        if (Stream.of(outputEntities).noneMatch(e -> e instanceof Block))
-            for (Entity e : outputEntities) interact(e);
+        return new Coordinates(x + getCoords().getX(), y + getCoords().getY());
     }
-    public abstract int getSize();
 
+    /**
+     * Moves or interacts with other entities in the given direction and with the default step size and offset.
+     * @param d the direction to move or interact in
+     */
+    public void moveOrInteract(Direction d) {
+        moveOrInteract(d, PIXEL_UNIT);
+    }
+
+    /**
+     * Moves or interacts with other entities in the given direction and with the given step size and default offset.
+     * @param d the direction to move or interact in
+     * @param stepSize the step size to use
+     */
+    public void moveOrInteract(Direction d, int stepSize){
+        moveOrInteract(d,stepSize,PIXEL_UNIT);
+    }
+
+    public void moveOrInteract(Direction d, int stepSize,int offset) {
+        Coordinates nextCoordinates = nextCoords(d, stepSize);
+
+        List<Entity> outputEntities = getEntitiesOnBorder(d, stepSize, offset);
+        List<Entity> blockEntities;
+
+        if (!(blockEntities = outputEntities.stream().filter(e -> e instanceof Block).collect(Collectors.toList())).isEmpty()) {
+            blockEntities.forEach(this::interact);
+        } else {
+            setCoords(nextCoordinates);
+
+            outputEntities.stream().filter(e -> e instanceof InteractiveEntities).forEach(this::interact);
+        }
+
+    }
 }

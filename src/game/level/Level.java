@@ -14,49 +14,76 @@ import java.io.IOException;
 import static game.ui.GameFrame.GRID_SIZE;
 
 
+/**
+ * The abstract Level class represents the general structure and properties of a game level.
+ * It includes methods that allow concrete implementations to define the type of blocks and
+ * terrain that the level is composed of, as well as the length of the explosion that occurs
+ * when bombs are detonated, and the background image of the level.
+ */
 public abstract class Level {
-    public abstract String getStone();
-    public abstract String getGrass();
-    public abstract String getDestroyable();
 
-    public Image getStoneBlock(){
-        try {
-            return ImageIO.read(new File(getStone()));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    /**
+     * Returns the image file name for the stone block.
+     *
+     * @return the image file name for the stone block
+     */
+    public abstract String getStoneBlock();
 
-    public Image getDestroyableBlock(){
-        try {
-            return ImageIO.read(new File(getDestroyable()));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    /**
+     * Returns the image file name for the grass block.
+     *
+     * @return the image file name for the grass block
+     */
+    public abstract String getGrassBlock();
 
-    public Image getGrassBlock(){
-        try {
-            return ImageIO.read(new File(getGrass()));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    /**
+     * Returns the image file name for the destroyable block.
+     *
+     * @return the image file name for the destroyable block
+     */
+    public abstract String getDestroyableBlock();
 
+    /**
+     * Returns the explosion length for bombs in the level.
+     *
+     * @return the explosion length for bombs in the level
+     */
+    public abstract int getExplosionLength();
+
+    /**
+     * Returns the icon for the level pitch.
+     *
+     * @return the icon for the level pitch
+     */
     public abstract Icon getPitch();
 
-    public void generateGrass(JPanel jPanel) {/*
-        for (int i = 0; i < positions.length / GRID_SIZE; i++)
-            for (int j = 0; j < positions[i].length / GRID_SIZE; j++)
-                new Grass(new Coordinates(i * GRID_SIZE, j * GRID_SIZE)).spawn();*/
+    /**
+     * Generates grass blocks on the game panel.
+     *
+     * @param jPanel the panel on which to generate the grass blocks
+     */
+    public void generateGrass(JPanel jPanel) {
+        /*
+         * TODO: This method is currently commented out. Uncomment and update this method
+         * implementation as necessary for the specific game level implementation.
+         */
+        // for (int i = 0; i < positions.length / GRID_SIZE; i++)
+        //     for (int j = 0; j < positions[i].length / GRID_SIZE; j++)
+        //         new Grass(new Coordinates(i * GRID_SIZE, j * GRID_SIZE)).spawn();
     }
 
+    /**
+     * Generates stone blocks on the game panel.
+     *
+     * @param jPanel the panel on which to generate the stone blocks
+     */
     public abstract void generateStone(JPanel jPanel);
 
-
+    /**
+     * Starts the game level by generating the terrain and adding the player character to the game panel.
+     *
+     * @param jPanel the panel on which to start the game level
+     */
     public void start(JPanel jPanel){
         generateGrass(jPanel);
         generateStone(jPanel);

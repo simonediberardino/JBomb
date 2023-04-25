@@ -8,40 +8,102 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import static game.ui.Utility.loadImage;
 
+
+/**
+ * Represents an entity in the game world, such as a player, enemy, or obstacle.
+ */
 public abstract class Entity {
+
+    protected Image image;
     private Coordinates coords;
     private boolean isSpawned = false;
     private long id;
 
-
-    private Entity(){}
-
+    /**
+     * Constructs an entity with the given coordinates.
+     *
+     * @param coordinates the coordinates of the entity
+     */
     public Entity(Coordinates coordinates){
-        id = UUID.randomUUID().getMostSignificantBits();
-        setCoords(coordinates);
+        this.id = UUID.randomUUID().getMostSignificantBits();
+        this.coords = coordinates;
     }
 
+    /**
+     * Performs an interaction between this entity and another entity.
+     *
+     * @param e the other entity to interact with
+     */
     public abstract void interact(Entity e);
+
+    /**
+     * Returns the size of the entity in pixels.
+     *
+     * @return the size of the entity
+     */
     public abstract int getSize();
+
+    /**
+     * Returns the image of the entity.
+     *
+     * @return the image of the entity
+     */
     public abstract Image getImage();
 
+    /**
+     * Loads the image at the given file path and sets it as the image of this entity.
+     *
+     * @param imagePath the file path of the image to load
+     * @return the loaded image
+     */
+    protected Image loadAndSetImage(String imagePath) {
+        this.image = loadImage(imagePath);
+        return this.image;
+    }
+
+    /**
+     * Sets the coordinates of the entity to the given coordinates.
+     *
+     * @param coordinates the new coordinates of the entity
+     */
     public void setCoords(Coordinates coordinates){
         this.coords = coordinates;
     }
 
+    /**
+     * Returns the coordinates of the entity.
+     *
+     * @return the coordinates of the entity
+     */
     public Coordinates getCoords() {
         return coords;
     }
 
-    public boolean isSpawned(){
+    /**
+     * Returns true if the entity has been spawned in the game world, false otherwise.
+     *
+     * @return true if the entity has been spawned, false otherwise
+     */
+    public boolean isSpawned() {
         return isSpawned;
     }
 
-    protected void setSpawned(boolean s){
+    /**
+     * Sets whether the entity has been spawned in the game world.
+     *
+     * @param s true if the entity has been spawned, false otherwise
+     */
+    protected void setSpawned(boolean s) {
         isSpawned = s;
     }
 
+    /**
+     * Returns a list of coordinates that the entity occupies in the game world.
+     *
+     * @return a list of coordinates that the entity occupies
+     */
     public List<Coordinates> getPositions(){
         List<Coordinates> result = new ArrayList<>();
 
@@ -58,52 +120,60 @@ public abstract class Entity {
         return result;
     }
 
+    /**
+     * Despawns the entity from the game world.
+     */
     public void despawn() {
         setSpawned(false);
         BomberMan.getInstance().removeEntity(this);
     }
 
+    /**
+     * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
+     */
     public void spawn(){
         if (isSpawned()) {
             return;
         }
 
+        // EDIT
         List<Coordinates> desiredPosition = getPositions();
-        boolean check = desiredPosition.stream().anyMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates));
+        boolean canSpawn = desiredPosition.stream().noneMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates));
 
-        if (!check) {
+        if (canSpawn) {
             setCoords(coords);
             setSpawned(true);
             BomberMan.getInstance().addEntity(this);
         }
     }
 
-    public void move(int x, int y) {
-        setCoords(new Coordinates(x,y));
-    }
-
+    /**
+     * Returns a list of coordinates in the direction specified by the input parameters.
+     *
+     * @param d the direction to get new coordinates in
+     * @param entitySize the size of the entity
+     * @return a list of new coordinates in the specified direction
+     */
     public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int entitySize){
-        return getNewCoordinatesOnDirection(d, entitySize, 1,1,false);
+        return getNewCoordinatesOnDirection(d, 1,1);
     }
 
-    public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int size, int steps, int offset, boolean topLeftCoords){
+    /**
+     * Returns a list of coordinates in the direction specified by the input parameters.
+     *
+     * @param d the direction to get new coordinates in
+     * @param offset the distance between each step
+     * @return a list of new coordinates in the specified direction
+     */
+    public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int steps, int offset){
         List<Coordinates> desiredCoords = new ArrayList<>();
 
-        int x = 0;
-        int y = 0;
-
-        if(topLeftCoords) {
-            x = - size;
-            y = - size;
-        }
-
         switch (d) {
-            case RIGHT: return getNewCoordinatesOnRight(steps, offset, size);
-            case LEFT: return getNewCoordinatesOnLeft(steps, offset, x);
-            case UP: return getNewCoordinatesOnUp(steps, offset, y);
-            case DOWN: return getNewCoordinatesOnDown(steps, offset, size);
+            case RIGHT: return getNewCoordinatesOnRight(steps, offset, getSize());
+            case LEFT: return getNewCoordinatesOnLeft(steps, offset);
+            case UP: return getNewCoordinatesOnUp(steps, offset);
+            case DOWN: return getNewCoordinatesOnDown(steps, offset, getSize());
         }
-
 
         return desiredCoords;
     }
@@ -118,22 +188,22 @@ public abstract class Entity {
         return coordinates;
     }
 
-    private List<Coordinates> getNewCoordinatesOnLeft(int steps, int offset, int x) {
+    private List<Coordinates> getNewCoordinatesOnLeft(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
 
         for (int step = 0; step < steps/offset; step++)
             for (int i = 0; i < getSize()/offset; i++)
-                coordinates.add(new Coordinates(getCoords().getX() - 1 - step*offset + x, getCoords().getY() + i*offset));
+                coordinates.add(new Coordinates(getCoords().getX() - 1 - step * offset, getCoords().getY() + i*offset));
 
         return coordinates;
     }
 
-    private List<Coordinates> getNewCoordinatesOnUp(int steps, int offset, int y) {
+    private List<Coordinates> getNewCoordinatesOnUp(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
 
         for (int step = 0; step < steps/offset; step++)
             for (int i = 0; i < getSize()/offset; i++)
-                coordinates.add(new Coordinates(getCoords().getX() + i * offset, getCoords().getY() + y - 1 - step * offset));
+                coordinates.add(new Coordinates(getCoords().getX() + i * offset, getCoords().getY() - 1 - step * offset));
 
         return coordinates;
     }
@@ -153,20 +223,11 @@ public abstract class Entity {
         if (this == o) return true;
         if (!(o instanceof Entity)) return false;
         Entity entity = (Entity) o;
-        return id == entity.id && isSpawned == entity.isSpawned && getCoords().equals(entity.getCoords());
+        return id == entity.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isSpawned, getCoords());
-    }
-
-    @Override
-    public String toString() {
-        return "Entity{" +
-                "coords=" + coords +
-                ", isSpawned=" + isSpawned +
-                ", id=" + id +
-                '}';
+        return Objects.hash(id);
     }
 }

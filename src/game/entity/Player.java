@@ -3,13 +3,13 @@ package game.entity;
 import game.BomberMan;
 import game.controller.Command;
 import game.models.Coordinates;
+import game.ui.GameFrame;
 
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import static game.models.Direction.*;
-
 
 
 public class Player extends Character implements Observer {
@@ -60,57 +60,67 @@ public class Player extends Character implements Observer {
     }
 
     public Player() {
-        super(new Coordinates(0,0));
+        super(new Coordinates(0, 0));
     }
 
-
     @Override
-    public void setAliveState(boolean x) {
-        super.setAliveState(x);
-
-        if(!x){
-            BomberMan.getInstance().getKeyEventObservable().deleteObserver(this);
-        }else{
-            BomberMan.getInstance().getKeyEventObservable().deleteObservers();
-            BomberMan.getInstance().getKeyEventObservable().addObserver(this);
-        }
+    public void despawn() {
+        super.despawn();
+        isAlive = false;
+        BomberMan.getInstance().getKeyEventObservable().deleteObserver(this);
     }
 
     @Override
     public void spawn() {
         super.spawn();
-        setAliveState(true);
+        isAlive = true;
+        BomberMan.getInstance().getKeyEventObservable().deleteObservers();
+        BomberMan.getInstance().getKeyEventObservable().addObserver(this);
     }
 
-    public void interact(Entity e){
-        if (e instanceof Enemy || e instanceof Explosion){
+    /**
+     * Performs an interaction between this entity and another entity.
+     *
+     * @param e the other entity to interact with
+     */
+    @Override
+    public void interact(Entity e) {
+        if (e instanceof Enemy || e instanceof Explosion) {
             despawn();
         }
     }
 
-    public void placeBomb(){
-        List<Coordinates> coords = getNewCoordinatesOnDirection(
-                getLastDirection(),
-                getSize(),
-                getSize(),
-                getSize(),
-                true
+    public void placeBomb() {
+        Bomb bomb = new Bomb(
+                new Coordinates(
+                        getCoords().getX() / GameFrame.GRID_SIZE * GameFrame.GRID_SIZE + PIXEL_UNIT,
+                        getCoords().getY() / GameFrame.GRID_SIZE * GameFrame.GRID_SIZE + PIXEL_UNIT
+                )
         );
 
-        Bomb bomb = new Bomb(coords.get(0));
-        if (getEntitiesOnBorder(getLastDirection(), bomb.getSize(), STEP_SIZE).isEmpty()){
+        if (getEntitiesOnBorder(getLastDirection(), bomb.getSize(), PIXEL_UNIT).isEmpty()) {
             bomb.spawn();
+            bomb.trigger();
         }
     }
 
-    private void handleAction(Command command){
-        System.out.println(command);
-        switch(command){
-            case MOVE_UP: move(UP); break;
-            case MOVE_DOWN: move(DOWN); break;
-            case MOVE_LEFT: move(LEFT); break;
-            case MOVE_RIGHT: move(RIGHT); break;
-            case PLACE_BOMB: placeBomb(); break;
+    private void handleAction(Command command) {
+        switch (command) {
+            case MOVE_UP:
+                move(UP);
+                break;
+            case MOVE_DOWN:
+                move(DOWN);
+                break;
+            case MOVE_LEFT:
+                move(LEFT);
+                break;
+            case MOVE_RIGHT:
+                move(RIGHT);
+                break;
+            case PLACE_BOMB:
+                placeBomb();
+                break;
         }
     }
 

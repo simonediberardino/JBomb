@@ -3,11 +3,7 @@ package game.entity;
 import game.BomberMan;
 import game.models.Coordinates;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class Grass extends Block{
     public Grass(Coordinates coordinates) {
@@ -16,18 +12,14 @@ public class Grass extends Block{
 
     @Override
     public Image getImage(){
-        return BomberMan.getInstance().getCurrentLevel().getGrassBlock();
+        return loadAndSetImage(BomberMan.getInstance().getCurrentLevel().getGrassBlock());
     }
 
-
-    @Override
-    public void spawn(){
-        if(!isSpawned()) {
-            move(getCoords().getX(), getCoords().getY());
-            setSpawned(true);
-        }
-    }
-
+    /**
+     * Performs an interaction between this entity and another entity.
+     *
+     * @param e the other entity to interact with
+     */
     @Override
     public void interact(Entity e) {
 
