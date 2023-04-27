@@ -6,9 +6,10 @@ import game.models.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-import static game.entity.Character.PIXEL_UNIT;
+import static game.ui.GamePanel.PIXEL_UNIT;
+
 
 /**
  * An abstract class representing interactive entities, which can move or interact with other entities in the game.
@@ -42,8 +43,8 @@ public abstract class InteractiveEntities extends Entity {
      * @param d the direction to get the entities on the border of
      * @return the list of entities on the border in the given direction
      */
-    public List<Entity> getEntitiesOnBorder(Direction d){
-        return getEntitiesOnBorder(d, PIXEL_UNIT, PIXEL_UNIT);
+    public List<Entity> getInteractiveEntitiesOnBorder(Direction d){
+        return getInteractiveEntitiesOnBorder(d, PIXEL_UNIT, PIXEL_UNIT);
     }
 
     /**
@@ -53,11 +54,21 @@ public abstract class InteractiveEntities extends Entity {
      * @param offset the offset to use
      * @return the list of entities on the border in the given direction
      */
-    public List<Entity> getEntitiesOnBorder(Direction d, int steps, int offset){
+
+
+    public List<Entity> getInteractiveEntitiesOnBorder(Direction d, int steps, int offset){
+        return getEntitiesOnBorder(d,steps,offset, BomberMan.getInstance().getEntities());
+    }
+
+    public List<Entity> getBlocksOnBorder(Direction d, int steps, int offset){
+        return getEntitiesOnBorder(d,steps,offset, BomberMan.getInstance().getBlocks());
+    }
+
+    private List<Entity> getEntitiesOnBorder(Direction d, int steps, int offset, Set<? extends Entity> set ){
         List<Coordinates> desiredCoords = getNewCoordinatesOnDirection(d, steps, offset);
         List<Entity> outputEntities = new ArrayList<>();
 
-        for (Entity entity : BomberMan.getInstance().getEntities()) {
+        for (Entity entity : set) {
             for (Coordinates element : desiredCoords) {
                 if (entity.getPositions().contains(element)) {
                     outputEntities.add(entity);
@@ -102,21 +113,21 @@ public abstract class InteractiveEntities extends Entity {
      * @param stepSize the step size to use
      */
     public void moveOrInteract(Direction d, int stepSize){
-        moveOrInteract(d,stepSize,PIXEL_UNIT);
+        moveOrInteract(d,stepSize,getSize()/2);
     }
 
     public void moveOrInteract(Direction d, int stepSize,int offset) {
+
         Coordinates nextCoordinates = nextCoords(d, stepSize);
 
-        List<Entity> outputEntities = getEntitiesOnBorder(d, stepSize, offset);
-        List<Entity> blockEntities;
+        List<Entity> outputEntities = getInteractiveEntitiesOnBorder(d, stepSize, offset);
+        List<Entity> blockEntities = getBlocksOnBorder(d,stepSize,offset);
 
-        if (!(blockEntities = outputEntities.stream().filter(e -> e instanceof Block).collect(Collectors.toList())).isEmpty()) {
+        if (!(blockEntities.isEmpty())) {
             blockEntities.forEach(this::interact);
         } else {
             setCoords(nextCoordinates);
-
-            outputEntities.stream().filter(e -> e instanceof InteractiveEntities).forEach(this::interact);
+            outputEntities.forEach(this::interact);
         }
 
     }

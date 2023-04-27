@@ -3,6 +3,7 @@ package game.entity;
 import game.BomberMan;
 import game.models.Coordinates;
 import game.models.Direction;
+import game.ui.GamePanel;
 
 import java.awt.*;
 import java.util.*;
@@ -15,11 +16,13 @@ import static game.ui.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity {
-
     protected Image image;
+    protected final int imageRefreshRate = 200;
+    protected int lastImageIndex;
+    protected long lastImageUpdate;
     private Coordinates coords;
     private boolean isSpawned = false;
-    private long id;
+    private final long id;
 
     /**
      * Constructs an entity with the given coordinates.
@@ -58,7 +61,8 @@ public abstract class Entity {
      * @param imagePath the file path of the image to load
      * @return the loaded image
      */
-    protected Image loadAndSetImage(String imagePath) {
+    public Image loadAndSetImage(String imagePath) {
+        this.lastImageUpdate = System.currentTimeMillis();
         this.image = loadImage(imagePath);
         return this.image;
     }
@@ -131,20 +135,27 @@ public abstract class Entity {
     /**
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
-    public void spawn(){
+    public void spawn() {
         if (isSpawned()) {
             return;
         }
 
         // EDIT
         List<Coordinates> desiredPosition = getPositions();
-        boolean canSpawn = desiredPosition.stream().noneMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates));
-
-        if (canSpawn) {
-            setCoords(coords);
-            setSpawned(true);
-            BomberMan.getInstance().addEntity(this);
+        boolean canSpawn =
+                desiredPosition.stream().noneMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates))
+                && desiredPosition.stream().noneMatch(coordinates -> BomberMan.getInstance().getBlocks().contains(coordinates));
+            if (canSpawn) {
+                setCoords(coords);
+                setSpawned(true);
+                if (this instanceof InteractiveEntities) {
+                    BomberMan.getInstance().addEntity((InteractiveEntities) this);
+                }
+                else if (this instanceof Block) {
+                    BomberMan.getInstance().addBlock((Block) this);
+                }
         }
+
     }
 
     /**
@@ -180,41 +191,56 @@ public abstract class Entity {
 
     private List<Coordinates> getNewCoordinatesOnRight(int steps, int offset, int size) {
         List<Coordinates> coordinates = new ArrayList<>();
+        int first = steps;
+        int last = 0;
+        for (int step = 0; step <= steps / offset; step++) {
+            for (int i = 0; i <= getSize() / offset; i++) {
+                if (i== getSize()/offset) last = GamePanel.PIXEL_UNIT;
 
-        for (int step = 0; step < steps / offset; step++)
-            for (int i = 0; i < getSize() / offset; i++)
-                coordinates.add(new Coordinates(getCoords().getX() + size + step * offset, getCoords().getY() + i * offset));
-
+                coordinates.add(new Coordinates(getCoords().getX() + size - 1 + first + step * offset, getCoords().getY() + i * offset - last));
+            }
+            first = 0;
+        }
         return coordinates;
     }
 
     private List<Coordinates> getNewCoordinatesOnLeft(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
-
-        for (int step = 0; step < steps/offset; step++)
-            for (int i = 0; i < getSize()/offset; i++)
-                coordinates.add(new Coordinates(getCoords().getX() - 1 - step * offset, getCoords().getY() + i*offset));
-
+        int first = steps;
+        int last = 0;
+        for (int step = 0; step <= steps/offset; step++) {
+            for (int i = 0; i <= getSize() / offset; i++) {
+                if (i== getSize()/offset) last = GamePanel.PIXEL_UNIT;
+                coordinates.add(new Coordinates(getCoords().getX() - first - step * offset, getCoords().getY() + i * offset - last));
+            }first =0;
+        }
         return coordinates;
     }
 
     private List<Coordinates> getNewCoordinatesOnUp(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
-
-        for (int step = 0; step < steps/offset; step++)
-            for (int i = 0; i < getSize()/offset; i++)
-                coordinates.add(new Coordinates(getCoords().getX() + i * offset, getCoords().getY() - 1 - step * offset));
-
+        int first = steps;
+        int last = 0;
+        for (int step = 0; step <= steps/offset; step++) {
+            for (int i = 0; i <= getSize() / offset; i++) {
+                if (i== getSize()/offset) last = GamePanel.PIXEL_UNIT;
+                coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() - first - step * offset));
+            }first = 0;
+        }
         return coordinates;
     }
 
     private List<Coordinates> getNewCoordinatesOnDown(int steps, int offset, int size) {
         List<Coordinates> coordinates = new ArrayList<>();
+        int first = steps;
+        int last = 0;
+        for (int step = 0; step <= steps / offset; step++) {
+            for (int i = 0; i <= getSize() / offset; i++) {
+                if (i== getSize()/offset) last = GamePanel.PIXEL_UNIT;
 
-        for (int step = 0; step < steps / offset; step++)
-            for (int i = 0; i < getSize() / offset; i++)
-                coordinates.add(new Coordinates(getCoords().getX() + i*offset, getCoords().getY() + size + step * offset));
-
+                coordinates.add(new Coordinates(getCoords().getX() + i * offset -last, getCoords().getY() + size - 1 + first + step * offset));
+            }first =0;
+        }
         return coordinates;
     }
 

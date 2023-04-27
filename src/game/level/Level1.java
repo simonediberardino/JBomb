@@ -9,7 +9,7 @@ import javax.swing.*;
 
 import java.awt.*;
 
-import static game.ui.GameFrame.GRID_SIZE;
+import static game.ui.GamePanel.GRID_SIZE;
 
 /**
 
@@ -55,7 +55,7 @@ public class Level1 extends Level {
      */
     @Override
     public int getExplosionLength() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -74,6 +74,7 @@ public class Level1 extends Level {
         int currY = GRID_SIZE;
 
         while (currY < jPanel.getHeight() - GRID_SIZE) {
+            System.out.println(GRID_SIZE);
             while (currX < jPanel.getWidth() - GRID_SIZE && currX + GRID_SIZE * 2 <= jPanel.getWidth()) {
                 currX += GRID_SIZE;
                 new StoneBlock(new Coordinates(currX, currY)).spawn();

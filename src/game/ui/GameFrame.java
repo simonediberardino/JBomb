@@ -1,6 +1,7 @@
 package game.ui;
 
 import game.BomberMan;
+import game.entity.Character;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.awt.*;
  * The main game frame that holds the game panel and UI.
  */
 public class GameFrame extends JFrame {
-    public static final int GRID_SIZE = Utility.px(60);
+
     private JPanel mainJPanel;
 
     /**
@@ -45,6 +46,7 @@ public class GameFrame extends JFrame {
 
         // Set background color and add main game panel
         mainJPanel.setBackground(Color.GREEN);
+
         add(mainJPanel, BorderLayout.CENTER);
         pack();
     }

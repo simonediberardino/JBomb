@@ -11,7 +11,9 @@ import java.util.*;
 public class BomberMan {
     private static BomberMan instance;
     private GameTickerObservable gameTickerObservable;
-    private Set<Entity> entities;
+    private Set<Entity> grass;
+    private Set<InteractiveEntities> interactiveEntities;
+    private Set<Block> blocks;
     private KeyEventObservable keyEventObservable;
     private Level currentLevel;
     private Player player;
@@ -25,8 +27,11 @@ public class BomberMan {
 
     public BomberMan(Level currentLevel) {
         BomberMan.instance = this;
+
         this.currentLevel = currentLevel;
-        this.entities = new HashSet<>();
+        this.interactiveEntities = new HashSet<>();
+        this.blocks = new HashSet<>();
+        this.grass = new HashSet<>();
         this.keyEventObservable = new KeyEventObservable();
         this.gameTickerObservable = new GameTickerObservable();
 
@@ -53,16 +58,36 @@ public class BomberMan {
         return gameFrame;
     }
 
-    public Set<Entity> getEntities() {
-        return new HashSet<>(entities);
+    public Set<? extends InteractiveEntities> getEntities() {
+        return interactiveEntities;
+    }
+
+    public Set<? extends Block> getBlocks() {
+        return blocks;
+    }
+
+    public void removeInteractiveEntity(Entity e){
+        interactiveEntities.remove(e);
+    }
+
+    public void removeBlock(Entity e){
+        blocks.remove(e);
+    }
+
+    public void addEntity(InteractiveEntities entity) {
+        interactiveEntities.add(entity);
+    }
+
+    public void addBlock(Block entity) {
+        blocks.add(entity);
     }
 
     public void removeEntity(Entity e){
-        entities.remove(e);
-    }
-
-    public void addEntity(Entity entity) {
-        entities.add(entity);
+        if(e instanceof Block){
+            removeBlock(e);
+        }else if (e instanceof InteractiveEntities){
+            removeInteractiveEntity(e);
+        }
     }
 
     public KeyEventObservable getKeyEventObservable() {

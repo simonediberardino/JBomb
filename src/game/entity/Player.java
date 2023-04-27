@@ -4,12 +4,15 @@ import game.BomberMan;
 import game.controller.Command;
 import game.models.Coordinates;
 import game.ui.GameFrame;
+import game.ui.GamePanel;
 
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import static game.models.Direction.*;
+import static game.ui.GamePanel.GRID_SIZE;
+import static game.ui.GamePanel.PIXEL_UNIT;
 
 
 public class Player extends Character implements Observer {
@@ -93,34 +96,22 @@ public class Player extends Character implements Observer {
     public void placeBomb() {
         Bomb bomb = new Bomb(
                 new Coordinates(
-                        getCoords().getX() / GameFrame.GRID_SIZE * GameFrame.GRID_SIZE + PIXEL_UNIT,
-                        getCoords().getY() / GameFrame.GRID_SIZE * GameFrame.GRID_SIZE + PIXEL_UNIT
+                        getCoords().getX() / GRID_SIZE * GRID_SIZE + ((GRID_SIZE- Bomb.size)/2)
+                        ,getCoords().getY() / GRID_SIZE * GRID_SIZE + ((GRID_SIZE-Bomb.size)/2)
                 )
         );
 
-        if (getEntitiesOnBorder(getLastDirection(), bomb.getSize(), PIXEL_UNIT).isEmpty()) {
-            bomb.spawn();
-            bomb.trigger();
-        }
+        bomb.spawn();
+        bomb.trigger();
     }
 
     private void handleAction(Command command) {
         switch (command) {
-            case MOVE_UP:
-                move(UP);
-                break;
-            case MOVE_DOWN:
-                move(DOWN);
-                break;
-            case MOVE_LEFT:
-                move(LEFT);
-                break;
-            case MOVE_RIGHT:
-                move(RIGHT);
-                break;
-            case PLACE_BOMB:
-                placeBomb();
-                break;
+            case MOVE_UP: move(UP); break;
+            case MOVE_DOWN: move(DOWN); break;
+            case MOVE_LEFT: move(LEFT); break;
+            case MOVE_RIGHT: move(RIGHT); break;
+            case PLACE_BOMB: placeBomb(); break;
         }
     }
 

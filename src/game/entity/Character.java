@@ -2,29 +2,18 @@ package game.entity;
 
 import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.Utility;
+import game.ui.GamePanel;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-
-import static game.ui.Utility.loadImage;
-
 
 
 /**
  * Represents a character in the game, which can move and interact with the environment.
  */
 public abstract class Character extends InteractiveEntities {
-    /** The number of pixels per unit for this character. */
-    public final static int PIXEL_UNIT = Utility.px(10);
-
-    /** The index of the current position icon. */
-    private int currentPositionIconIndex = 0;
-
+    private Direction currDirection = null;
     /** The last direction this character was moving in. */
-    private Direction lastDirection = Direction.DOWN;
+    private Direction previousDirection = null;
 
     /** Whether this character is alive or not. */
     protected boolean isAlive = true;
@@ -82,7 +71,7 @@ public abstract class Character extends InteractiveEntities {
      */
     @Override
     public int getSize() {
-        return Utility.px(50);
+        return GamePanel.PIXEL_UNIT*5*2;
     }
 
     /**
@@ -92,54 +81,49 @@ public abstract class Character extends InteractiveEntities {
      */
     @Override
     public Image getImage() {
+        if(this.image == null){
+            currDirection = Direction.DOWN;
+            return loadAndSetImage(getFrontIcons()[0]);
+        }else return this.image;
+    }
+
+    private void updateLastDirection(Direction d) {
         String[] frontIcons = getFrontIcons();
         String[] leftIcons = getLeftIcons();
         String[] backIcons = getBackIcons();
         String[] rightIcons = getRightIcons();
 
-        // If last direction is null, use the first front-facing icon
-        if (lastDirection == null) {
-            try {
-                return ImageIO.read(new File(frontIcons[0]));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+        if(previousDirection == null && currDirection == null){
+            currDirection = d;
+            loadAndSetImage(frontIcons[0]);
+            return;
+        }
+
+        previousDirection = currDirection;
+        currDirection = d;
+
+        if (previousDirection != d) {
+            lastImageIndex = 0;
+        } else if(System.currentTimeMillis() - lastImageUpdate > imageRefreshRate){
+            lastImageIndex++;
+        }else {
+            return;
         }
 
         String[] icons;
-        switch (lastDirection) {
-            case LEFT:
-                icons = leftIcons;
-                break;
-            case RIGHT:
-                icons = rightIcons;
-                break;
-            case UP:
-                icons = backIcons;
-                break;
-            default:
-                icons = frontIcons;
-                break;
+        switch (currDirection) {
+            case LEFT: icons = leftIcons; break;
+            case RIGHT: icons = rightIcons; break;
+            case UP: icons = backIcons; break;
+            default: icons = frontIcons; break;
         }
+
 
         // Ensure the icon index is within bounds
-        if (currentPositionIconIndex < 0 || currentPositionIconIndex >= icons.length)
-            currentPositionIconIndex = 0;
+        if (lastImageIndex < 0 || lastImageIndex >= icons.length)
+            lastImageIndex = 0;
 
-        String icon = icons[currentPositionIconIndex];
-        return loadAndSetImage(icon);
-    }
-
-
-    private void updateLastDirection(Direction d) {
-        if (lastDirection != d) {
-            currentPositionIconIndex = 0;
-        } else {
-            currentPositionIconIndex++;
-        }
-
-        lastDirection = d;
+        loadAndSetImage(icons[lastImageIndex]);
     }
 
     public void move(Direction d) {
@@ -147,9 +131,5 @@ public abstract class Character extends InteractiveEntities {
         
         updateLastDirection(d);
         moveOrInteract(d);
-    }
-
-    public Direction getLastDirection() {
-        return lastDirection;
     }
 }

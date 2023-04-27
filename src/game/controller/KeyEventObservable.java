@@ -3,12 +3,11 @@ package game.controller;
 import game.BomberMan;
 import game.models.Direction;
 
+import javax.swing.Timer;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Map.entry;
 
@@ -22,7 +21,9 @@ public class KeyEventObservable extends Observable implements KeyListener {
     private static final int KEY_S = KeyEvent.VK_S;
     private static final int KEY_D = KeyEvent.VK_D;
     private static final int KEY_SPACE = KeyEvent.VK_SPACE;
-    private static final int KEY_DELAY_MS = 100;
+    private static final int KEY_DELAY_MS = 30;
+    private Set<Command> commandQueue = new HashSet<>();
+    private Timer timer;
 
     // Key-Command mapping
     private static final Map<Integer, Command> keyAssignment = Map.ofEntries(
@@ -48,12 +49,36 @@ public class KeyEventObservable extends Observable implements KeyListener {
         if(System.currentTimeMillis() - commandEventsTime.getOrDefault(action, 0L) < KEY_DELAY_MS) return;
 
         if(action != null) {
-            commandEventsTime.put(action, System.currentTimeMillis());
-            setChanged();
-            notifyObservers(action);
+            commandQueue.add(action);
+            if(timer == null || !timer.isRunning()){
+                executeKeys();
+            }
         }
     }
 
-    @Override public void keyReleased(KeyEvent e) { }
+    @Override public void keyReleased(KeyEvent e) {
+        System.out.println("RELEASED!");
+        Command action = keyAssignment.get(e.getKeyCode());
+        commandQueue.remove(action);
+        if(commandQueue.isEmpty()) stopExecuting();
+    }
+
+
+    private void executeKeys(){
+        ActionListener taskPerformer = evt -> {
+            for (Iterator<Command> iterator = commandQueue.iterator(); iterator.hasNext(); ) {
+                Command c = iterator.next();
+                setChanged();
+                notifyObservers(c);
+            }
+        };
+
+        timer = new Timer(KEY_DELAY_MS, taskPerformer);
+        timer.start();
+    }
+
+    private void stopExecuting(){
+        if(timer != null) timer.stop();
+    }
     @Override public void keyTyped(KeyEvent e) {}
 }

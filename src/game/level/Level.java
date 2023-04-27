@@ -11,7 +11,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-import static game.ui.GameFrame.GRID_SIZE;
+
 
 
 /**
@@ -63,13 +63,11 @@ public abstract class Level {
      * @param jPanel the panel on which to generate the grass blocks
      */
     public void generateGrass(JPanel jPanel) {
-        /*
-         * TODO: This method is currently commented out. Uncomment and update this method
-         * implementation as necessary for the specific game level implementation.
-         */
-        // for (int i = 0; i < positions.length / GRID_SIZE; i++)
-        //     for (int j = 0; j < positions[i].length / GRID_SIZE; j++)
-        //         new Grass(new Coordinates(i * GRID_SIZE, j * GRID_SIZE)).spawn();
+
+
+        //for (int i = 0; i < jPanel.getHeight() / GRID_SIZE; i++)
+          //  for (int j = 0; j < jPanel.getWidth() / GRID_SIZE; j++)
+           //     new Grass(new Coordinates(i * GRID_SIZE, j * GRID_SIZE)).spawn();
     }
 
     /**

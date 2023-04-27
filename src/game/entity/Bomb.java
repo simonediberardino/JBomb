@@ -2,25 +2,44 @@ package game.entity;
 
 import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.GameFrame;
-import game.ui.Utility;
+import game.ui.GamePanel;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Stream;
 
-import static game.ui.Utility.loadImage;
-
-public class Bomb extends Block{
+public class Bomb extends Block {
     private final int explodeTimer = 5000;
+    private final List<Explosion> arrayExplosions = new ArrayList<>();
+    static final int size = GamePanel.COMMON_DIVISOR*4;
 
     @Override
     public Image getImage() {
-        return loadAndSetImage("assets/Bomb/bomb.png");
+        final String path = "assets/Bomb/";
+        final int refreshRate = 400;
+        final int imagesCount = 3;
+
+        String[] images = new String[imagesCount];
+
+        for (int i = 0; i < images.length; i++) {
+            images[i] = path + "bomb_" + i + ".png";
+        }
+
+        if(System.currentTimeMillis() - lastImageUpdate < refreshRate) {
+            return this.image;
+        }
+
+        Image img = loadAndSetImage(images[lastImageIndex]);
+
+        lastImageIndex++;
+        if(lastImageIndex >= images.length) {
+            lastImageIndex = 0;
+        }
+
+        return img;
     }
 
 
@@ -39,17 +58,20 @@ public class Bomb extends Block{
     }
 
     public void explode(){
-        new Explosion(getCoords(), Direction.UP);
-        new Explosion(getCoords(), Direction.RIGHT);
-        new Explosion(getCoords(), Direction.DOWN);
-        new Explosion(getCoords(), Direction.LEFT);
+        if (isSpawned()) {
+            despawn();
+            new Explosion(getCoords(), Direction.UP,this);
+            new Explosion(getCoords(), Direction.RIGHT,this);
+            new Explosion(getCoords(), Direction.DOWN,this);
+            new Explosion(getCoords(), Direction.LEFT,this);
+            Stream.of(arrayExplosions).forEach(e-> super.setCoords(getCoords()));
+        }
     }
 
     public void trigger() {
         TimerTask explodeTask = new TimerTask() {
             public void run() {
                 explode();
-                despawn();
             }
         };
 
@@ -57,9 +79,19 @@ public class Bomb extends Block{
         timer.schedule(explodeTask, explodeTimer);
     }
 
+    @Override
     public int getSize(){
-        return Utility.px(40);
+        return size;
     }
+
+    public void addExplosion(Explosion e){
+        arrayExplosions.add(e);
+    }
+
+    public List<Explosion> getArrayExplosions(){
+        return arrayExplosions;
+    }
+
 
 
 }

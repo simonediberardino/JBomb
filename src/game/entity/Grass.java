@@ -24,4 +24,6 @@ public class Grass extends Block{
     public void interact(Entity e) {
 
     }
+    @Override
+    public void spawn(){}
 }
