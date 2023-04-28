@@ -1,6 +1,11 @@
 package game.models;
 
-import java.util.Objects;
+import game.BomberMan;
+import game.ui.GameFrame;
+
+import java.awt.*;
+import java.time.temporal.ValueRange;
+import java.util.*;
 
 public class Coordinates {
     private final int x;
@@ -27,6 +32,7 @@ public class Coordinates {
                 '}';
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,5 +44,25 @@ public class Coordinates {
     @Override
     public int hashCode() {
         return Objects.hash(getX(), getY());
+    }
+
+    public boolean validate() {
+        GameFrame gameFrame = BomberMan
+                .getInstance()
+                .getGameFrame();
+
+        if(gameFrame == null) return false;
+
+        Dimension gamePanelDimensions = BomberMan
+                .getInstance()
+                .getGameFrame()
+                .getGamePanel()
+                .getPanelDimensions();
+
+        ValueRange rangeY = ValueRange.of(0, gamePanelDimensions.height - 1);
+        ValueRange rangeX = ValueRange.of(0, gamePanelDimensions.height - 1);
+
+        return (rangeY.isValidValue(getY()) && rangeX.isValidValue(getX()));
+
     }
 }

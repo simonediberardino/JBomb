@@ -1,4 +1,4 @@
-package game.entity;
+package game.entity.models;
 
 import game.BomberMan;
 import game.models.Coordinates;
@@ -6,6 +6,8 @@ import game.models.Direction;
 import game.ui.GamePanel;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.time.temporal.ValueRange;
 import java.util.*;
 import java.util.List;
 
@@ -16,7 +18,7 @@ import static game.ui.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity {
-    protected Image image;
+    protected BufferedImage image;
     protected final int imageRefreshRate = 200;
     protected int lastImageIndex;
     protected long lastImageUpdate;
@@ -34,6 +36,9 @@ public abstract class Entity {
         this.coords = coordinates;
     }
 
+    abstract protected void onSpawn();
+    abstract protected void onDespawn();
+
     /**
      * Performs an interaction between this entity and another entity.
      *
@@ -46,6 +51,10 @@ public abstract class Entity {
      *
      * @return the size of the entity
      */
+    public float getImageRatio(){
+        return 1;
+    }
+
     public abstract int getSize();
 
     /**
@@ -53,7 +62,7 @@ public abstract class Entity {
      *
      * @return the image of the entity
      */
-    public abstract Image getImage();
+    public abstract BufferedImage getImage();
 
     /**
      * Loads the image at the given file path and sets it as the image of this entity.
@@ -61,7 +70,7 @@ public abstract class Entity {
      * @param imagePath the file path of the image to load
      * @return the loaded image
      */
-    public Image loadAndSetImage(String imagePath) {
+    public BufferedImage loadAndSetImage(String imagePath) {
         this.lastImageUpdate = System.currentTimeMillis();
         this.image = loadImage(imagePath);
         return this.image;
@@ -72,7 +81,7 @@ public abstract class Entity {
      *
      * @param coordinates the new coordinates of the entity
      */
-    public void setCoords(Coordinates coordinates){
+    public void setCoords(Coordinates coordinates) {
         this.coords = coordinates;
     }
 
@@ -130,6 +139,7 @@ public abstract class Entity {
     public void despawn() {
         setSpawned(false);
         BomberMan.getInstance().removeEntity(this);
+        this.onDespawn();
     }
 
     /**
@@ -143,9 +153,9 @@ public abstract class Entity {
         // EDIT
         List<Coordinates> desiredPosition = getPositions();
         boolean canSpawn =
-                desiredPosition.stream().noneMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates))
-                && desiredPosition.stream().noneMatch(coordinates -> BomberMan.getInstance().getBlocks().contains(coordinates));
-            if (canSpawn) {
+                desiredPosition.parallelStream().noneMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates))
+                && desiredPosition.parallelStream().noneMatch(coordinates -> BomberMan.getInstance().getBlocks().contains(coordinates));
+        if (canSpawn) {
                 setCoords(coords);
                 setSpawned(true);
                 if (this instanceof InteractiveEntities) {
@@ -156,17 +166,7 @@ public abstract class Entity {
                 }
         }
 
-    }
-
-    /**
-     * Returns a list of coordinates in the direction specified by the input parameters.
-     *
-     * @param d the direction to get new coordinates in
-     * @param entitySize the size of the entity
-     * @return a list of new coordinates in the specified direction
-     */
-    public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int entitySize){
-        return getNewCoordinatesOnDirection(d, 1,1);
+        this.onSpawn();
     }
 
     /**
@@ -242,6 +242,16 @@ public abstract class Entity {
             }first =0;
         }
         return coordinates;
+    }
+
+    protected boolean isInside(Entity e) {
+        int centerX = this.getCoords().getX() + getSize()/2;
+        int centerY = this.getCoords().getY() + getSize()/2;
+
+        boolean isValidX = centerX >= e.getCoords().getX() && centerX <= e.getCoords().getX() + e.getSize();
+        boolean isValidY = centerY >= e.getCoords().getY() && centerY <= e.getCoords().getY() + e.getSize();
+
+        return isValidX && isValidY;
     }
 
     @Override

@@ -21,7 +21,11 @@ import java.io.IOException;
  * when bombs are detonated, and the background image of the level.
  */
 public abstract class Level {
+    public abstract void spawnEnemies();
 
+    public abstract int startEnemiesCount();
+
+    public abstract int getMaxBombs();
     /**
      * Returns the image file name for the stone block.
      *
@@ -85,6 +89,7 @@ public abstract class Level {
     public void start(JPanel jPanel){
         generateGrass(jPanel);
         generateStone(jPanel);
+        spawnEnemies();
         new Player().spawn();
     }
 }

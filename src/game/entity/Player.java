@@ -2,20 +2,21 @@ package game.entity;
 
 import game.BomberMan;
 import game.controller.Command;
+import game.controller.ControllerManager;
+import game.entity.models.Character;
+import game.entity.models.Entity;
 import game.models.Coordinates;
-import game.ui.GameFrame;
-import game.ui.GamePanel;
+import game.models.Direction;
 
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
+import java.util.*;
 
 import static game.models.Direction.*;
 import static game.ui.GamePanel.GRID_SIZE;
-import static game.ui.GamePanel.PIXEL_UNIT;
 
 
 public class Player extends Character implements Observer {
+    private int placedBombs = 0;
+    private long lastPlacedBombTime = 0;
 
     @Override
     public String[] getFrontIcons() {
@@ -31,7 +32,10 @@ public class Player extends Character implements Observer {
     public String[] getLeftIcons() {
         //TODO
         return new String[]{
-                "assets/player/player_right_0.png"
+                "assets/player/player_left_0.png",
+                "assets/player/player_left_1.png",
+                "assets/player/player_left_2.png",
+                "assets/player/player_left_1.png"
         };
     }
 
@@ -70,15 +74,15 @@ public class Player extends Character implements Observer {
     public void despawn() {
         super.despawn();
         isAlive = false;
-        BomberMan.getInstance().getKeyEventObservable().deleteObserver(this);
+        BomberMan.getInstance().getControllerManager().deleteObserver(this);
     }
 
     @Override
     public void spawn() {
         super.spawn();
         isAlive = true;
-        BomberMan.getInstance().getKeyEventObservable().deleteObservers();
-        BomberMan.getInstance().getKeyEventObservable().addObserver(this);
+        BomberMan.getInstance().getControllerManager().deleteObservers();
+        BomberMan.getInstance().getControllerManager().addObserver(this);
     }
 
     /**
@@ -93,27 +97,49 @@ public class Player extends Character implements Observer {
         }
     }
 
+    @Override
+    protected void onSpawn() {
+
+    }
+
+    @Override
+    protected void onDespawn() {
+
+    }
+
     public void placeBomb() {
+        if(placedBombs >= BomberMan.getInstance().getCurrentLevel().getMaxBombs()){
+            return;
+        }
+
+        if(System.currentTimeMillis() - lastPlacedBombTime < Bomb.PLACE_INTERVAL){
+            return;
+        }
+
+        placedBombs++;
+
         Bomb bomb = new Bomb(
                 new Coordinates(
-                        getCoords().getX() / GRID_SIZE * GRID_SIZE + ((GRID_SIZE- Bomb.size)/2)
-                        ,getCoords().getY() / GRID_SIZE * GRID_SIZE + ((GRID_SIZE-Bomb.size)/2)
+                        (getCoords().getX() + getSize()/2) / GRID_SIZE * GRID_SIZE + ((GRID_SIZE - Bomb.size) / 2)
+                        ,(getCoords().getY() + getSize()/2) / GRID_SIZE * GRID_SIZE + ((GRID_SIZE - Bomb.size) / 2)
                 )
         );
 
+        bomb.setOnExplodeListener(() -> placedBombs--);
         bomb.spawn();
         bomb.trigger();
     }
 
-    private void handleAction(Command command) {
+    @Override
+    public void handleAction(Command command) {
+        super.handleAction(command);
+
         switch (command) {
-            case MOVE_UP: move(UP); break;
-            case MOVE_DOWN: move(DOWN); break;
-            case MOVE_LEFT: move(LEFT); break;
-            case MOVE_RIGHT: move(RIGHT); break;
             case PLACE_BOMB: placeBomb(); break;
         }
     }
+
+
 
     @Override
     public void update(Observable o, Object arg) {

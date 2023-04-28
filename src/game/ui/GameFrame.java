@@ -1,7 +1,6 @@
 package game.ui;
 
 import game.BomberMan;
-import game.entity.Character;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +9,7 @@ import java.awt.*;
  * The main game frame that holds the game panel and UI.
  */
 public class GameFrame extends JFrame {
-
-    private JPanel mainJPanel;
+    private GamePanel gamePanel;
 
     /**
      * Initializes the game frame.
@@ -31,23 +29,23 @@ public class GameFrame extends JFrame {
      * Initializes the main game panel.
      */
     private void initGamePanel(){
-        mainJPanel = new GamePanel();
+        gamePanel = new GamePanel();
         setLayout(new BorderLayout());
 
         // Calculate the width and height of the border rigid areas
-        int widthSides = (int) ((getWidth() - (mainJPanel.getMaximumSize().getWidth())) / 2);
-        int heightNorthSouth = (int) ((getHeight() - (mainJPanel.getMaximumSize().getHeight())) / 2);
+        int widthSides = (int) ((getWidth() - (gamePanel.getMaximumSize().getWidth())) / 2);
+        int heightNorthSouth = (int) ((getHeight() - (gamePanel.getMaximumSize().getHeight())) / 2);
 
         // Add border rigid areas
-        add((Box.createRigidArea(new Dimension(widthSides, (int) mainJPanel.getMaximumSize().getHeight()))), BorderLayout.EAST);
-        add((Box.createRigidArea(new Dimension(widthSides, (int) mainJPanel.getMaximumSize().getHeight()))), BorderLayout.WEST);
-        add((Box.createRigidArea(new Dimension((int) mainJPanel.getMaximumSize().getWidth(), heightNorthSouth))), BorderLayout.NORTH);
-        add((Box.createRigidArea(new Dimension((int) mainJPanel.getMaximumSize().getWidth(), heightNorthSouth))), BorderLayout.SOUTH);
+        add((Box.createRigidArea(new Dimension(widthSides, (int) gamePanel.getMaximumSize().getHeight()))), BorderLayout.EAST);
+        add((Box.createRigidArea(new Dimension(widthSides, (int) gamePanel.getMaximumSize().getHeight()))), BorderLayout.WEST);
+        add((Box.createRigidArea(new Dimension((int) gamePanel.getMaximumSize().getWidth(), heightNorthSouth))), BorderLayout.NORTH);
+        add((Box.createRigidArea(new Dimension((int) gamePanel.getMaximumSize().getWidth(), heightNorthSouth))), BorderLayout.SOUTH);
 
         // Set background color and add main game panel
-        mainJPanel.setBackground(Color.GREEN);
+        gamePanel.setBackground(Color.GREEN);
 
-        add(mainJPanel, BorderLayout.CENTER);
+        add(gamePanel, BorderLayout.CENTER);
         pack();
     }
 
@@ -56,7 +54,7 @@ public class GameFrame extends JFrame {
      */
     public void createUI(){
         // Set key listener and focusable
-        this.addKeyListener(BomberMan.getInstance().getKeyEventObservable());
+        this.addKeyListener(BomberMan.getInstance().getControllerManager());
         this.setFocusable(true);
         this.requestFocus();
 
@@ -65,9 +63,14 @@ public class GameFrame extends JFrame {
         this.revalidate();
         this.repaint();
 
-        // Start the current level
-        BomberMan.getInstance().getCurrentLevel().start(mainJPanel);
         revalidate();
         repaint();
+
+        // Start the current level
+        BomberMan.getInstance().getCurrentLevel().start(gamePanel);
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 }

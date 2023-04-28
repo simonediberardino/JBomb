@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static java.util.Map.entry;
 
@@ -15,7 +16,7 @@ import static java.util.Map.entry;
  This class represents an Observable object that observes key events and notifies its observers of the
  corresponding command that should be executed based on the key that was pressed.
  */
-public class KeyEventObservable extends Observable implements KeyListener {
+public class ControllerManager extends Observable implements KeyListener {
     private static final int KEY_W = KeyEvent.VK_W;
     private static final int KEY_A = KeyEvent.VK_A;
     private static final int KEY_S = KeyEvent.VK_S;
@@ -57,17 +58,14 @@ public class KeyEventObservable extends Observable implements KeyListener {
     }
 
     @Override public void keyReleased(KeyEvent e) {
-        System.out.println("RELEASED!");
         Command action = keyAssignment.get(e.getKeyCode());
         commandQueue.remove(action);
         if(commandQueue.isEmpty()) stopExecuting();
     }
 
-
-    private void executeKeys(){
+    private void executeKeys() {
         ActionListener taskPerformer = evt -> {
-            for (Iterator<Command> iterator = commandQueue.iterator(); iterator.hasNext(); ) {
-                Command c = iterator.next();
+            for (Command c : commandQueue) {
                 setChanged();
                 notifyObservers(c);
             }
@@ -77,8 +75,13 @@ public class KeyEventObservable extends Observable implements KeyListener {
         timer.start();
     }
 
-    private void stopExecuting(){
+    private void stopExecuting() {
         if(timer != null) timer.stop();
     }
+
+    public boolean isCommandPressed(Command c) {
+        return commandQueue.contains(c);
+    }
+
     @Override public void keyTyped(KeyEvent e) {}
 }

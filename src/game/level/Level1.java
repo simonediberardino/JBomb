@@ -1,6 +1,7 @@
 package game.level;
 
 import game.BomberMan;
+import game.entity.Enemy;
 import game.models.Coordinates;
 import game.entity.StoneBlock;
 import game.ui.GameFrame;
@@ -20,6 +21,22 @@ import static game.ui.GamePanel.GRID_SIZE;
  explosion length, and a method to generate the stone blocks in the game board.
  */
 public class Level1 extends Level {
+
+    @Override
+    public void spawnEnemies() {
+        new Enemy(new Coordinates(120, 300)).spawn();
+
+    }
+
+    @Override
+    public int startEnemiesCount() {
+        return 8;
+    }
+
+    @Override
+    public int getMaxBombs() {
+        return 1;
+    }
 
     /**
 
@@ -74,7 +91,6 @@ public class Level1 extends Level {
         int currY = GRID_SIZE;
 
         while (currY < jPanel.getHeight() - GRID_SIZE) {
-            System.out.println(GRID_SIZE);
             while (currX < jPanel.getWidth() - GRID_SIZE && currX + GRID_SIZE * 2 <= jPanel.getWidth()) {
                 currX += GRID_SIZE;
                 new StoneBlock(new Coordinates(currX, currY)).spawn();

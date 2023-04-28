@@ -1,15 +1,20 @@
 package game.models;
 
+import game.controller.Command;
+
 public enum Direction {
-    LEFT("left"),
-    RIGHT("right"),
-    UP("up"),
-    DOWN("down");
-    private String string;
-    Direction(String string){
-        this.string = string;
-    }
-    public String toString(){
-        return string;
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN;
+
+    public Command toCommand(){
+        switch (this) {
+            case UP: return Command.MOVE_UP;
+            case DOWN: return Command.MOVE_DOWN;
+            case LEFT: return Command.MOVE_LEFT;
+            case RIGHT: return Command.MOVE_RIGHT;
+        }
+        return Command.MOVE_UP;
     }
 }

@@ -1,38 +1,38 @@
 package game.entity;
 
+import game.entity.models.Block;
+import game.entity.models.Entity;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.GamePanel;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.stream.Stream;
 
 public class Bomb extends Block {
+    public static final long PLACE_INTERVAL = 1000;
+    public static final int size = GamePanel.COMMON_DIVISOR * 4;
     private final int explodeTimer = 5000;
-    private final List<Explosion> arrayExplosions = new ArrayList<>();
-    static final int size = GamePanel.COMMON_DIVISOR*4;
+    private Runnable onExplodeCallback;
+    private static final int imageRefreshRate = 250;
 
     @Override
-    public Image getImage() {
+    public BufferedImage getImage() {
         final String path = "assets/Bomb/";
-        final int refreshRate = 400;
         final int imagesCount = 3;
 
         String[] images = new String[imagesCount];
 
         for (int i = 0; i < images.length; i++) {
-            images[i] = path + "bomb_" + i + ".png";
+            images[i] = String.format("%sbomb_%d.png", path, i);
         }
 
-        if(System.currentTimeMillis() - lastImageUpdate < refreshRate) {
+        if(System.currentTimeMillis() - lastImageUpdate < imageRefreshRate) {
             return this.image;
         }
 
-        Image img = loadAndSetImage(images[lastImageIndex]);
+        BufferedImage img = loadAndSetImage(images[lastImageIndex]);
 
         lastImageIndex++;
         if(lastImageIndex >= images.length) {
@@ -47,6 +47,20 @@ public class Bomb extends Block {
         super(coords);
     }
 
+    @Override
+    protected void onSpawn() {
+
+    }
+
+    @Override
+    protected void onDespawn() {
+
+    }
+
+    public void setOnExplodeListener(Runnable runnable){
+        onExplodeCallback = runnable;
+    }
+
     /**
      * Performs an interaction between this entity and another entity.
      *
@@ -58,14 +72,17 @@ public class Bomb extends Block {
     }
 
     public void explode(){
-        if (isSpawned()) {
-            despawn();
-            new Explosion(getCoords(), Direction.UP,this);
-            new Explosion(getCoords(), Direction.RIGHT,this);
-            new Explosion(getCoords(), Direction.DOWN,this);
-            new Explosion(getCoords(), Direction.LEFT,this);
-            Stream.of(arrayExplosions).forEach(e-> super.setCoords(getCoords()));
+        if (!isSpawned()) {
+            return;
         }
+
+        despawn();
+        new Explosion(getCoords(), Direction.UP,this);
+        new Explosion(getCoords(), Direction.RIGHT,this);
+        new Explosion(getCoords(), Direction.DOWN,this);
+        new Explosion(getCoords(), Direction.LEFT,this);
+
+        if(onExplodeCallback != null) onExplodeCallback.run();
     }
 
     public void trigger() {
@@ -83,16 +100,5 @@ public class Bomb extends Block {
     public int getSize(){
         return size;
     }
-
-    public void addExplosion(Explosion e){
-        arrayExplosions.add(e);
-    }
-
-    public List<Explosion> getArrayExplosions(){
-        return arrayExplosions;
-    }
-
-
-
 }
 

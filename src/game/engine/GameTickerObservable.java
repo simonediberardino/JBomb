@@ -16,7 +16,7 @@ public class GameTickerObservable extends Observable {
     /**
      The delay between each notification in milliseconds.
      */
-    private final static int DELAY_MS = 1;
+    private final static int DELAY_MS = 40;
 
     /**
      Constructs a GameTickerObservable instance that notifies its observers periodically

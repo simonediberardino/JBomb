@@ -1,8 +1,11 @@
 package game;
 
-import game.controller.KeyEventObservable;
+import game.controller.ControllerManager;
 import game.engine.GameTickerObservable;
 import game.entity.*;
+import game.entity.models.Block;
+import game.entity.models.Entity;
+import game.entity.models.InteractiveEntities;
 import game.level.Level;
 import game.ui.GameFrame;
 
@@ -11,10 +14,9 @@ import java.util.*;
 public class BomberMan {
     private static BomberMan instance;
     private GameTickerObservable gameTickerObservable;
-    private Set<Entity> grass;
     private Set<InteractiveEntities> interactiveEntities;
     private Set<Block> blocks;
-    private KeyEventObservable keyEventObservable;
+    private ControllerManager controllerManager;
     private Level currentLevel;
     private Player player;
     private GameFrame gameFrame = null;
@@ -31,8 +33,7 @@ public class BomberMan {
         this.currentLevel = currentLevel;
         this.interactiveEntities = new HashSet<>();
         this.blocks = new HashSet<>();
-        this.grass = new HashSet<>();
-        this.keyEventObservable = new KeyEventObservable();
+        this.controllerManager = new ControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
 
         this.start();
@@ -54,16 +55,16 @@ public class BomberMan {
         return player;
     }
 
-    public GameFrame getUiHandler() {
+    public GameFrame getGameFrame() {
         return gameFrame;
     }
 
     public Set<? extends InteractiveEntities> getEntities() {
-        return interactiveEntities;
+        return new HashSet<>(interactiveEntities);
     }
 
     public Set<? extends Block> getBlocks() {
-        return blocks;
+        return new HashSet<>(blocks);
     }
 
     public void removeInteractiveEntity(Entity e){
@@ -90,8 +91,8 @@ public class BomberMan {
         }
     }
 
-    public KeyEventObservable getKeyEventObservable() {
-        return keyEventObservable;
+    public ControllerManager getControllerManager() {
+        return controllerManager;
     }
 
     public GameTickerObservable getGameTickerObservable() {
