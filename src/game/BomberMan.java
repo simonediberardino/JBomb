@@ -8,18 +8,22 @@ import game.entity.models.Entity;
 import game.entity.models.InteractiveEntities;
 import game.level.Level;
 import game.ui.GameFrame;
+import game.ui.GamePanel;
 
+import javax.swing.Timer;
 import java.util.*;
 
 public class BomberMan {
     private static BomberMan instance;
     private GameTickerObservable gameTickerObservable;
     private Set<InteractiveEntities> interactiveEntities;
+    private long lastGamePauseStateTime = System.currentTimeMillis();
     private Set<Block> blocks;
     private ControllerManager controllerManager;
     private Level currentLevel;
     private Player player;
-    private GameFrame gameFrame = null;
+    public GameFrame gameFrame = null;
+    public boolean gameState = true;
 
     public static BomberMan getInstance() {
         return instance;
@@ -35,8 +39,10 @@ public class BomberMan {
         this.blocks = new HashSet<>();
         this.controllerManager = new ControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
+        controllerManager.addObserver(new GamePausedObserver());
 
         this.start();
+
     }
 
     public void start() {
@@ -97,5 +103,26 @@ public class BomberMan {
 
     public GameTickerObservable getGameTickerObservable() {
         return gameTickerObservable;
+    }
+
+
+    public void toggleGameState(){
+        if(System.currentTimeMillis() - lastGamePauseStateTime < 500) return;
+        lastGamePauseStateTime = System.currentTimeMillis();
+        if(gameState){
+            pauseGame();
+        }else{
+            resumeGame();
+        }
+    }
+
+    private void pauseGame() {
+        gameTickerObservable.stop();
+        gameState = false;
+    }
+
+    private void resumeGame(){
+        gameTickerObservable.start();
+        gameState = true;
     }
 }

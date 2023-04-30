@@ -40,6 +40,7 @@ public class Utility {
         try {
             return ImageIO.read(new File(fileName));
         } catch (IOException e) {
+            System.out.println("Can't read " + fileName + "!");
             e.printStackTrace();
             return null;
         }

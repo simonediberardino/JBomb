@@ -1,12 +1,14 @@
-package game.entity;
+package game.entity.bomb;
 
 import game.BomberMan;
+import game.entity.blocks.DestroyableBlock;
 import game.entity.models.Character;
 import game.entity.models.Entity;
 import game.entity.models.InteractiveEntities;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.GamePanel;
+import game.ui.Paths;
 
 import java.awt.image.BufferedImage;
 
@@ -65,7 +67,12 @@ public class Explosion extends InteractiveEntities {
 
         // Move or interact with other entities in the game based on the explosion's direction.
         if(getCanExpand())
-            moveOrInteract(direction, getSize());
+            moveOrInteract(direction, getSize(), true);
+    }
+
+    @Override
+    protected String getBasePath() {
+        return Paths.getAssetsFolder() + "/bomb/";
     }
 
     @Override
@@ -85,12 +92,14 @@ public class Explosion extends InteractiveEntities {
      */
     @Override
     public void interact(Entity e) {
+        if(e == null) return;
+
         if (e instanceof Character) {
             e.despawn();
-        }
-
-        if (e instanceof Bomb){
+        }else if (e instanceof Bomb){
             ((Bomb) e).explode();
+        }else if(e instanceof DestroyableBlock){
+            e.despawn();
         }
     }
 
@@ -125,10 +134,8 @@ public class Explosion extends InteractiveEntities {
      */
     @Override
     public BufferedImage getImage() {
-        String path = "assets/Bomb/";
-
         if(distanceFromBomb == 0){
-            return loadImage(String.format("%sflame_central" + getState() + ".png", path));
+            return loadImage(String.format("%sflame_central" + getState() + ".png", getBasePath()));
         }
 
         String imageFileName;
@@ -139,7 +146,7 @@ public class Explosion extends InteractiveEntities {
         imageFileName = "flame_" + direction.toString().toLowerCase();
 
         // Load and set the image of the flame.
-        String imagePath = String.format("%s%s%s%s.png", path, imageFileName,isLast, getState());
+        String imagePath = String.format("%s%s%s%s.png", getBasePath(), imageFileName,isLast, getState());
         return loadAndSetImage(imagePath);
     }
 

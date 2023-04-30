@@ -1,8 +1,9 @@
-package game.entity;
+package game.entity.models;
 
 
 import game.BomberMan;
 import game.controller.Command;
+import game.entity.Player;
 import game.entity.models.Block;
 import game.entity.models.Character;
 import game.entity.models.Entity;
@@ -10,40 +11,15 @@ import game.entity.models.ICPU;
 import game.models.Coordinates;
 import game.models.Direction;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Enemy extends Character implements ICPU, Observer {
+import static java.text.MessageFormat.*;
+
+public abstract class Enemy extends Character implements ICPU, Observer {
     protected final int changeDirectionChangeRate = 15; // percentage
-    protected int directionRefreshRate = 1000;
-
-    @Override
-    public String[] getFrontIcons() {
-        return new String[]{
-                "assets/enemy.png",
-        };
-    }
-
-    @Override
-    public String[] getLeftIcons() {
-        return new String[]{
-                "assets/enemy.png",
-        };
-    }
-
-    @Override
-    public String[] getBackIcons() {
-        return new String[]{
-                "assets/enemy.png",
-        };
-    }
-
-    @Override
-    public String[] getRightIcons() {
-        return new String[]{
-                "assets/enemy.png",
-        };
-    }
+    protected int directionRefreshRate = 500;
 
     public Enemy(Coordinates coordinates) {
         super(coordinates);
@@ -51,10 +27,12 @@ public class Enemy extends Character implements ICPU, Observer {
 
     @Override
     public void interact(Entity e) {
-        if (e instanceof Player){
-            e.despawn();
-        }else if(e instanceof Block || e == null){
+        super.interact(e);
+
+        if(e == null || e instanceof Block) {
             changeDirection();
+        }else if (e instanceof Player){
+            e.despawn();
         }
     }
 
@@ -68,6 +46,11 @@ public class Enemy extends Character implements ICPU, Observer {
         BomberMan.getInstance().getGameTickerObservable().deleteObserver(this);
     }
 
+    @Override
+    public float getImageRatio(){
+        return 0.73f;
+    }
+
     /**
      * Chooses a new direction for the agent to move in, and sends the corresponding command to the game engine.
      *
@@ -79,8 +62,8 @@ public class Enemy extends Character implements ICPU, Observer {
         // Get the current time in milliseconds
         long currentTime = System.currentTimeMillis();
 
-        // If it hasn't been long enough since the last direction update, keep moving in the same direction
-        if(currentTime - lastDirectionUpdate < directionRefreshRate) {
+        // If it hasn't been long enough since the last direction update, keep moving in the same direction, unless last move was blocked
+        if(currentTime - lastDirectionUpdate < directionRefreshRate && !forceChange) {
             handleAction(currDirection.toCommand());
             return;
         }
@@ -119,7 +102,7 @@ public class Enemy extends Character implements ICPU, Observer {
         }
 
         // Send the command corresponding to the new direction to the game engine
-        handleAction(newDirection.toCommand());
+        move(newDirection);
     }
 
     @Override

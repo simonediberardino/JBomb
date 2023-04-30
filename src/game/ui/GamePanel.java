@@ -17,8 +17,7 @@ import static game.ui.Utility.px;
  * The GamePanel class represents the main game panel that displays the game world and entities
  */
 public class GamePanel extends JPanel implements Observer {
-    public static int x = 0;
-    public static final Dimension DEFAULT_DIMENSION = new Dimension(750, 630);
+    public static final Dimension DEFAULT_DIMENSION = new Dimension(780, 660);
     public static final int DEFAULT_PIXEL_UNIT = 5;
     public static final int PIXEL_UNIT = Utility.px(DEFAULT_PIXEL_UNIT);
     public static final int COMMON_DIVISOR = PIXEL_UNIT*2;
@@ -84,7 +83,7 @@ public class GamePanel extends JPanel implements Observer {
         // Draw entity's image at entity's coordinates and size
         int y = 0;
         if (e instanceof Character)
-            y = Character.transparentPixelOfHead;
+            y = Character.PADDING_HEAD;
 
         g2d.drawImage(e.getImage(), e.getCoords().getX(), e.getCoords().getY() - y, e.getSize(), (int) Math.ceil (e.getSize()/e.getImageRatio()), this);
     }

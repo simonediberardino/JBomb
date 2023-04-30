@@ -11,12 +11,23 @@ import java.util.Observable;
  periodically with a fixed delay of 10 milliseconds.
  It extends the Observable class.
  */
-public class GameTickerObservable extends Observable {
+public class GameTickerObservable extends Observable{
 
     /**
      The delay between each notification in milliseconds.
      */
-    private final static int DELAY_MS = 40;
+    public final static int DELAY_MS = 40;
+    public ActionListener taskPerformer =evt -> {
+        try{
+            setChanged();
+            notifyObservers();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    };
+
+    private Timer timer = new Timer(DELAY_MS, taskPerformer);
 
     /**
      Constructs a GameTickerObservable instance that notifies its observers periodically
@@ -25,11 +36,15 @@ public class GameTickerObservable extends Observable {
      setChanged() and notifyObservers() to notify its observers.
      */
     public GameTickerObservable() {
-        ActionListener taskPerformer = evt -> {
-            setChanged();
-            notifyObservers();
-        };
-
-        new Timer(DELAY_MS, taskPerformer).start();
+        timer.start();
     }
+
+    public void start(){
+        timer.start();
+    }
+
+    public void stop(){
+        timer.stop();
+    }
+
 }

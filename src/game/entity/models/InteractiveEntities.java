@@ -1,10 +1,8 @@
 package game.entity.models;
 
 import game.BomberMan;
-import game.entity.Bomb;
-import game.entity.Explosion;
-import game.entity.models.Block;
-import game.entity.models.Entity;
+import game.entity.bomb.Bomb;
+import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
 
@@ -41,6 +39,7 @@ public abstract class InteractiveEntities extends Entity {
      */
     @Override
     public void interact(Entity e) {
+        if(e == null) return;
         // This method can be overridden by subclasses to implement specific interaction logic.
     }
 
@@ -60,7 +59,7 @@ public abstract class InteractiveEntities extends Entity {
             // Check if any entities on the next coordinates are blocks or have invalid coordinates
             boolean areCoordinatesValid = getEntitiesOnCoordinates(
                     newCoordinates
-            ).parallelStream().noneMatch(e -> e instanceof Block);
+            ).stream().noneMatch(e -> e instanceof Block);
 
             areCoordinatesValid = areCoordinatesValid && newCoordinates.stream().allMatch(Coordinates::validate);
             // If all the next coordinates are valid, add this direction to the list of available directions
@@ -77,6 +76,9 @@ public abstract class InteractiveEntities extends Entity {
      * @param desiredCoords the coordinates to check for occupied entities
      * @return a list of entities that occupy the specified coordinates
      */
+
+
+
     public List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords){
         List<Entity> entityLinkedList = new LinkedList<>();
 
@@ -130,7 +132,7 @@ public abstract class InteractiveEntities extends Entity {
      * @param e     the entity to check for collision with
      * @return true if the given coordinates collide with the given entity, false otherwise
      */
-    public boolean doesCollideWith(Coordinates coord, Entity e) {
+    public static boolean doesCollideWith(Coordinates coord, Entity e) {
         // Get the coordinates of the bottom-right corner of the entity
         int entityBottomRightX = e.getCoords().getX() + e.getSize() - 1;
         int entityBottomRightY = e.getCoords().getY() + e.getSize() - 1;
@@ -176,12 +178,18 @@ public abstract class InteractiveEntities extends Entity {
     }
 
 
+    public boolean moveOrInteract(Direction d, int stepSize){
+        return moveOrInteract(d, stepSize, false);
+    }
+
     /**
      * Moves or interacts with other entities in the given direction and with the given step size and default offset.
      * @param d the direction to move or interact in
      * @param stepSize the step size to use
      */
-    public boolean moveOrInteract(Direction d, int stepSize) {
+    protected boolean moveOrInteract(Direction d, int stepSize, boolean ignoreMapBorders) {
+        if(d == null) return false;
+
         // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
         // with a given step size
         List<Coordinates> nextOccupiedCoords = getNewCoordinatesOnDirection(d, stepSize, getSize() / 2);
@@ -190,7 +198,7 @@ public abstract class InteractiveEntities extends Entity {
         // Get a list of entities that are present in the next occupied coordinates
         List<Entity> interactedEntities = getEntitiesOnCoordinates(nextOccupiedCoords);
 
-        if(!nextTopLeftCoords.validate()){
+        if(!ignoreMapBorders && !nextTopLeftCoords.validate()){
             this.interact(null);
             return false;
         }
@@ -209,8 +217,11 @@ public abstract class InteractiveEntities extends Entity {
 
         // Loop through the list of entities present in the next occupied coordinates
         for (Entity e : interactedEntities) {
+            this.interact(e);
             // If the entity interacts with a bomb, it cannot move further
             if (e instanceof Bomb) {
+                // Call the 'interact' method of the entity the entity is interacting with
+
                 canMove = false;
                 didInteractWithBomb.set(true);
 
@@ -220,14 +231,14 @@ public abstract class InteractiveEntities extends Entity {
                     bombImmune = true;
                 }
             }
+
             // If the entity interacts with a block, it cannot move further
             else if (e instanceof Block) {
                 canMove = false;
                 break;
             }
 
-            // Call the 'interact' method of the entity the entity is interacting with
-            this.interact(e);
+
         }
 
         // If the entity can move or it is immune to bombs, update the entity's position

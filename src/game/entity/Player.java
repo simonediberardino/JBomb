@@ -2,65 +2,22 @@ package game.entity;
 
 import game.BomberMan;
 import game.controller.Command;
-import game.controller.ControllerManager;
+import game.entity.bomb.Bomb;
 import game.entity.models.Character;
+import game.entity.models.Enemy;
 import game.entity.models.Entity;
 import game.models.Coordinates;
-import game.models.Direction;
+import game.ui.Paths;
 
 import java.util.*;
 
-import static game.models.Direction.*;
 import static game.ui.GamePanel.GRID_SIZE;
 
 
 public class Player extends Character implements Observer {
     private int placedBombs = 0;
     private long lastPlacedBombTime = 0;
-
-    @Override
-    public String[] getFrontIcons() {
-        return new String[]{
-                "assets/player/player_front_0.png",
-                "assets/player/player_front_1.png",
-                "assets/player/player_front_0.png",
-                "assets/player/player_front_2.png"
-        };
-    }
-
-    @Override
-    public String[] getLeftIcons() {
-        //TODO
-        return new String[]{
-                "assets/player/player_left_0.png",
-                "assets/player/player_left_1.png",
-                "assets/player/player_left_2.png",
-                "assets/player/player_left_1.png"
-        };
-    }
-
-    @Override
-    public String[] getBackIcons() {
-        //TODO
-        return new String[]{
-                "assets/player/player_front_1.png",
-                "assets/player/player_front_0.png",
-                "assets/player/player_front_1.png",
-                "assets/player/player_front_2.png"
-        };
-    }
-
-    @Override
-    public String[] getRightIcons() {
-        //TODO
-        return new String[]{
-                "assets/player/player_right_0.png",
-                "assets/player/player_right_1.png",
-                "assets/player/player_right_2.png",
-                "assets/player/player_right_1.png"
-
-        };
-    }
+    public static final Coordinates spawnOffset = new Coordinates((GRID_SIZE-SIZE)/2 ,PADDING_HEAD);
 
     public Player(Coordinates coordinates) {
         super(coordinates);
@@ -68,6 +25,54 @@ public class Player extends Character implements Observer {
 
     public Player() {
         super(new Coordinates(0, 0));
+    }
+
+
+    @Override
+    protected String getBasePath() {
+        return Paths.getEntitiesFolder() + "/player";
+    }
+
+    @Override
+    public String[] getFrontIcons() {
+        return new String[]{
+                getBasePath() + "/player_front_0.png",
+                getBasePath() + "/player_front_1.png",
+                getBasePath() + "/player_front_0.png",
+                getBasePath() + "/player_front_2.png"
+        };
+    }
+
+    @Override
+    public String[] getLeftIcons() {
+        return new String[]{
+                getBasePath() + "/player_left_0.png",
+                getBasePath() + "/player_left_1.png",
+                getBasePath() + "/player_left_2.png",
+                getBasePath() + "/player_left_1.png"
+        };
+    }
+
+    @Override
+    public String[] getBackIcons() {
+        //TODO
+        return new String[]{
+                getBasePath() + "/player_front_1.png",
+                getBasePath() + "/player_front_0.png",
+                getBasePath() + "/player_front_1.png",
+                getBasePath() + "/player_front_2.png"
+        };
+    }
+
+    @Override
+    public String[] getRightIcons() {
+        return new String[]{
+                getBasePath() + "/player_right_0.png",
+                getBasePath() + "/player_right_1.png",
+                getBasePath() + "/player_right_2.png",
+                getBasePath() + "/player_right_1.png"
+
+        };
     }
 
     @Override
@@ -81,7 +86,6 @@ public class Player extends Character implements Observer {
     public void spawn() {
         super.spawn();
         isAlive = true;
-        BomberMan.getInstance().getControllerManager().deleteObservers();
         BomberMan.getInstance().getControllerManager().addObserver(this);
     }
 
@@ -92,9 +96,18 @@ public class Player extends Character implements Observer {
      */
     @Override
     public void interact(Entity e) {
-        if (e instanceof Enemy || e instanceof Explosion) {
+        super.interact(e);
+
+        if(e == null) return;
+
+        if (e instanceof Enemy) {
             despawn();
         }
+    }
+
+    @Override
+    public float getImageRatio(){
+        return 0.73f;
     }
 
     @Override
@@ -116,12 +129,13 @@ public class Player extends Character implements Observer {
             return;
         }
 
+        lastPlacedBombTime = System.currentTimeMillis();
         placedBombs++;
 
         Bomb bomb = new Bomb(
                 new Coordinates(
-                        (getCoords().getX() + getSize()/2) / GRID_SIZE * GRID_SIZE + ((GRID_SIZE - Bomb.size) / 2)
-                        ,(getCoords().getY() + getSize()/2) / GRID_SIZE * GRID_SIZE + ((GRID_SIZE - Bomb.size) / 2)
+                        ((getCoords().getX() + getSize()/2) / GRID_SIZE * GRID_SIZE + Bomb.spawnOffset.getX())
+                        ,(getCoords().getY() + getSize()/2) / GRID_SIZE * GRID_SIZE + (Bomb.spawnOffset.getY())
                 )
         );
 
@@ -132,18 +146,29 @@ public class Player extends Character implements Observer {
 
     @Override
     public void handleAction(Command command) {
-        super.handleAction(command);
+        if (BomberMan.getInstance().gameState) {
+            super.handleAction(command);
 
-        switch (command) {
-            case PLACE_BOMB: placeBomb(); break;
+            switch (command) {
+                case PLACE_BOMB:
+                    placeBomb();
+                    ;
+                    break;
+            }
         }
+    }
+    @Override
+    public Coordinates getSpawnOffset(){
+        return spawnOffset;
     }
 
 
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println(arg);
         handleAction((Command) arg);
+
     }
 
 }

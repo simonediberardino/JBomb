@@ -7,6 +7,7 @@ import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -22,6 +23,7 @@ public class ControllerManager extends Observable implements KeyListener {
     private static final int KEY_S = KeyEvent.VK_S;
     private static final int KEY_D = KeyEvent.VK_D;
     private static final int KEY_SPACE = KeyEvent.VK_SPACE;
+    private static final int KEY_ESC = KeyEvent.VK_ESCAPE;
     private static final int KEY_DELAY_MS = 30;
     private Set<Command> commandQueue = new HashSet<>();
     private Timer timer;
@@ -32,7 +34,8 @@ public class ControllerManager extends Observable implements KeyListener {
             entry(KEY_A, Command.MOVE_LEFT),
             entry(KEY_S, Command.MOVE_DOWN),
             entry(KEY_D, Command.MOVE_RIGHT),
-            entry(KEY_SPACE, Command.PLACE_BOMB)
+            entry(KEY_SPACE, Command.PLACE_BOMB),
+            entry(KEY_ESC, Command.PAUSE)
     );
 
     // Stores the time of the last key event for each command

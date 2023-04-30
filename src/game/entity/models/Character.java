@@ -3,7 +3,7 @@ package game.entity.models;
 import game.BomberMan;
 import game.controller.Command;
 import game.controller.ControllerManager;
-import game.entity.Player;
+import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.GamePanel;
@@ -26,7 +26,8 @@ public abstract class Character extends InteractiveEntities {
 
     /** Whether this character is alive or not. */
     protected boolean isAlive = true;
-    public static int transparentPixelOfHead = GamePanel.PIXEL_UNIT*4;
+    public static final int PADDING_HEAD = GamePanel.PIXEL_UNIT*4;
+    public static final int SIZE = GamePanel.PIXEL_UNIT * 4 * 2;
 
     /**
      * Returns an array of file names for the front-facing icons for this character.
@@ -81,18 +82,13 @@ public abstract class Character extends InteractiveEntities {
      */
     @Override
     public int getSize() {
-        return GamePanel.PIXEL_UNIT * 4 * 2;
+        return SIZE;
     }
     /**
      * Returns the image for this character based on its current state.
      *
      * @return the image for this character
      */
-
-    @Override
-    public float getImageRatio(){
-       return 0.73f;
-    }
 
     @Override
     public BufferedImage getImage() {
@@ -153,13 +149,21 @@ public abstract class Character extends InteractiveEntities {
         return false;
     }
 
+    @Override
+    public void interact(Entity e) {
+        super.interact(e);
+
+        if(e instanceof Explosion){
+            despawn();
+        }
+    }
+
     public void handleMoveCommand(Command command, Direction oppositeDirection1, Direction oppositeDirection2) {
         boolean moveSuccessful = move(command.commandToDirection());
 
         if (moveSuccessful) {
             return;
         }
-
         List<Coordinates> oppositeBlocksCoordinates = getNewCoordinatesOnDirection(command.commandToDirection(), getSize(), getSize());
         List<Entity> entitiesOpposite1 = getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(0));
         List<Entity> entitiesOpposite2 = getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(1));

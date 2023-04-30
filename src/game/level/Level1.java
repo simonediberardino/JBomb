@@ -1,14 +1,13 @@
 package game.level;
 
 import game.BomberMan;
-import game.entity.Enemy;
+import game.entity.blocks.DestroyableBlock;
+import game.entity.enemies.YellowBall;
+import game.entity.models.Enemy;
 import game.models.Coordinates;
-import game.entity.StoneBlock;
-import game.ui.GameFrame;
+import game.entity.blocks.StoneBlock;
 
 import javax.swing.*;
-
-import java.awt.*;
 
 import static game.ui.GamePanel.GRID_SIZE;
 
@@ -21,11 +20,14 @@ import static game.ui.GamePanel.GRID_SIZE;
  explosion length, and a method to generate the stone blocks in the game board.
  */
 public class Level1 extends Level {
+    public Level1() {
+        super(1);
+    }
 
     @Override
     public void spawnEnemies() {
-        new Enemy(new Coordinates(120, 300)).spawn();
-
+        for(int i = 0; i < startEnemiesCount(); i++)
+            new YellowBall(Coordinates.generateRandomCoordinates()).spawn();
     }
 
     @Override
@@ -37,34 +39,10 @@ public class Level1 extends Level {
     public int getMaxBombs() {
         return 1;
     }
-
-    /**
-
-     Returns the path to the image file for the stone block in level 1.
-     @return a string representing the path to the image file.
-     */
-    @Override
-    public String getStoneBlock() {
-        return "assets/level_1_stone.png";
+    public int getMaxDestroyableBlocks(){
+        return 10;
     }
-    /**
 
-     Returns the path to the image file for the grass block in level 1.
-     @return a string representing the path to the image file.
-     */
-    @Override
-    public String getGrassBlock() {
-        return "assets/level_1_grass.png";
-    }
-    /**
-
-     Returns null because level 1 does not have any destroyable blocks.
-     @return null
-     */
-    @Override
-    public String getDestroyableBlock() {
-        return null;
-    }
     /**
 
      Returns the explosion length for level 1.
@@ -72,13 +50,9 @@ public class Level1 extends Level {
      */
     @Override
     public int getExplosionLength() {
-        return 1;
+        return 3;
     }
 
-    @Override
-    public Icon getPitch() {
-        return null;
-    }
     /**
 
      Generates the stone blocks in the game board for level 1.
@@ -98,6 +72,21 @@ public class Level1 extends Level {
             }
             currX = 0;
             currY += GRID_SIZE * 2;
+        }
+    }
+    @Override
+    public void generateDestroyableBlock(){
+        DestroyableBlock block = new DestroyableBlock(new Coordinates(0,0));
+        int i = 0;
+        while (i <getMaxDestroyableBlocks()){
+            if (!block.isSpawned()){
+                block.setCoords(Coordinates.generateRandomCoordinates());
+                block.spawn();
+            }
+            else {
+                block = new DestroyableBlock(new Coordinates(0,0));
+                i++;
+            }
         }
     }
 }

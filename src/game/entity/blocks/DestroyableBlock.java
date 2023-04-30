@@ -1,4 +1,4 @@
-package game.entity;
+package game.entity.blocks;
 
 import game.BomberMan;
 import game.entity.models.Block;
@@ -11,6 +11,11 @@ import java.awt.image.BufferedImage;
 public class DestroyableBlock extends Block {
     public DestroyableBlock(Coordinates coordinates) {
         super(coordinates);
+    }
+
+    @Override
+    protected String getBasePath() {
+        return null;
     }
 
     @Override
@@ -30,7 +35,7 @@ public class DestroyableBlock extends Block {
      */
     @Override
     public void interact(Entity e) {
-
+        if(e == null) return;
     }
 
     @Override

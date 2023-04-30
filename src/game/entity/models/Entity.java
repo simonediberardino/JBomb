@@ -1,6 +1,7 @@
 package game.entity.models;
 
 import game.BomberMan;
+import game.entity.Player;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.GamePanel;
@@ -36,6 +37,7 @@ public abstract class Entity {
         this.coords = coordinates;
     }
 
+    abstract protected String getBasePath();
     abstract protected void onSpawn();
     abstract protected void onDespawn();
 
@@ -132,6 +134,9 @@ public abstract class Entity {
 
         return result;
     }
+    public Coordinates getSpawnOffset(){
+        return new Coordinates(0,0);
+    }
 
     /**
      * Despawns the entity from the game world.
@@ -155,6 +160,7 @@ public abstract class Entity {
         boolean canSpawn =
                 desiredPosition.parallelStream().noneMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates))
                 && desiredPosition.parallelStream().noneMatch(coordinates -> BomberMan.getInstance().getBlocks().contains(coordinates));
+        if(canSpawn)
         if (canSpawn) {
                 setCoords(coords);
                 setSpawned(true);
@@ -253,6 +259,7 @@ public abstract class Entity {
 
         return isValidX && isValidY;
     }
+
 
     @Override
     public boolean equals(Object o) {
