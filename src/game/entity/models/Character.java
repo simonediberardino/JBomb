@@ -158,6 +158,7 @@ public abstract class Character extends InteractiveEntities {
         }
     }
 
+
     public void handleMoveCommand(Command command, Direction oppositeDirection1, Direction oppositeDirection2) {
         boolean moveSuccessful = move(command.commandToDirection());
 

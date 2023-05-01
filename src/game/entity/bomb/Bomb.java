@@ -2,6 +2,7 @@ package game.entity.bomb;
 
 import game.entity.models.Block;
 import game.entity.models.Entity;
+import game.entity.models.Explosive;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.GamePanel;
@@ -13,7 +14,7 @@ import java.util.TimerTask;
 
 import static game.ui.GamePanel.GRID_SIZE;
 
-public class Bomb extends Block {
+public class Bomb extends Block implements Explosive{
     private static final int imageRefreshRate = 250;
     public static final long PLACE_INTERVAL = 1000;
     public static final int size = GamePanel.COMMON_DIVISOR * 4;
@@ -90,10 +91,10 @@ public class Bomb extends Block {
         }
 
         despawn();
-        new Explosion(getCoords(), Direction.UP,this);
-        new Explosion(getCoords(), Direction.RIGHT,this);
-        new Explosion(getCoords(), Direction.DOWN,this);
-        new Explosion(getCoords(), Direction.LEFT,this);
+        new Explosion(getCoords(), Direction.UP,(Explosive) this);
+        new Explosion(getCoords(), Direction.RIGHT,(Explosive) this);
+        new Explosion(getCoords(), Direction.DOWN,(Explosive) this);
+        new Explosion(getCoords(), Direction.LEFT,(Explosive) this);
 
         if(onExplodeCallback != null) onExplodeCallback.run();
     }

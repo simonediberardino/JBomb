@@ -3,6 +3,8 @@ package game.entity;
 import game.BomberMan;
 import game.controller.Command;
 import game.entity.bomb.Bomb;
+import game.entity.bomb.Explosion;
+import game.entity.models.Block;
 import game.entity.models.Character;
 import game.entity.models.Enemy;
 import game.entity.models.Entity;
@@ -96,12 +98,14 @@ public class Player extends Character implements Observer {
      */
     @Override
     public void interact(Entity e) {
-        super.interact(e);
+        if (canInteractWith(e)) {
+            super.interact(e);
 
-        if(e == null) return;
+            if (e == null) return;
 
-        if (e instanceof Enemy) {
-            despawn();
+            if (e instanceof Enemy) {
+                despawn();
+            }
         }
     }
 
@@ -163,7 +167,11 @@ public class Player extends Character implements Observer {
     }
 
 
-
+    @Override
+    public boolean canInteractWith(Entity e){
+        if (e instanceof Enemy ||e instanceof Block||e instanceof Explosion) return true;
+        return false;
+    }
     @Override
     public void update(Observable o, Object arg) {
         System.out.println(arg);

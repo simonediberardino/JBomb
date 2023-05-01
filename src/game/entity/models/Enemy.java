@@ -2,24 +2,18 @@ package game.entity.models;
 
 
 import game.BomberMan;
-import game.controller.Command;
 import game.entity.Player;
-import game.entity.models.Block;
-import game.entity.models.Character;
-import game.entity.models.Entity;
-import game.entity.models.ICPU;
+import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
 
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.text.MessageFormat.*;
 
 public abstract class Enemy extends Character implements ICPU, Observer {
     protected final int changeDirectionChangeRate = 15; // percentage
     protected int directionRefreshRate = 500;
+    protected boolean canMove = true;
 
     public Enemy(Coordinates coordinates) {
         super(coordinates);
@@ -27,13 +21,25 @@ public abstract class Enemy extends Character implements ICPU, Observer {
 
     @Override
     public void interact(Entity e) {
-        super.interact(e);
-
-        if(e == null || e instanceof Block) {
-            changeDirection();
-        }else if (e instanceof Player){
-            e.despawn();
+        if (canInteractWith(e)) {
+            if(e instanceof Explosion){
+                despawn();
+            }
+            if (isObstacle(e)) {
+                changeDirection();
+            } else if (e instanceof Player) {
+                e.despawn();
+            }
         }
+    }
+
+    public boolean isObstacle(Entity e){
+        return e instanceof Block || e == null || e instanceof Enemy;
+    }
+
+    @Override
+    public boolean canInteractWith(Entity e){
+        return e instanceof Player || e instanceof Block|| e == null || e instanceof Explosion||e instanceof Enemy;
     }
 
     @Override
@@ -110,8 +116,17 @@ public abstract class Enemy extends Character implements ICPU, Observer {
         chooseDirection(true);
     }
 
+
+
     @Override
     public void update(Observable o, Object arg) {
+        if(canMove)
         chooseDirection(false);
+    }
+    public void stopMove(){
+        canMove = false;
+    }
+    public void freeMove(){
+        canMove = true;
     }
 }

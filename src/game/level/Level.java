@@ -94,11 +94,12 @@ public abstract class Level {
     public void start(JPanel jPanel){
         generateStone(jPanel);
 
+        BomberMan.getInstance().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.spawnOffset)));
+        BomberMan.getInstance().getPlayer().spawn();
         generateDestroyableBlock();
+
+
         spawnEnemies();
-        new Player(Coordinates.generateRandomCoordinates(Player.spawnOffset)).spawn();
-
-
     }
 
     public int getId() {

@@ -157,7 +157,6 @@ public class GameFrame extends JFrame {
         revalidate();
         repaint();
 
-        // Start the current level
 
     }
 

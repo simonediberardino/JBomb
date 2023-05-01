@@ -1,10 +1,10 @@
 package game.entity.bomb;
 
 import game.BomberMan;
+import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
-import game.entity.models.Character;
-import game.entity.models.Entity;
-import game.entity.models.InteractiveEntities;
+import game.entity.enemies.TankEnemy;
+import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.GamePanel;
@@ -19,7 +19,7 @@ import static game.ui.Utility.loadImage;
  */
 public class Explosion extends InteractiveEntities {
     // The distance from the bomb where the explosion was created.
-    public final int distanceFromBomb;
+    public final int distanceFromExplosive;
 
     // The maximum distance from the bomb that the explosion can travel.
     private final int maxDistance;
@@ -32,7 +32,8 @@ public class Explosion extends InteractiveEntities {
     private int explosionState = 1;
     private long lastRefresh = 0;
     private final int refreshRate = 100;
-    private final Bomb bomb;
+    private final Explosive explosive;
+    public static final int SIZE = GamePanel.COMMON_DIVISOR*4;
 
     /**
      * Constructs a new explosion.
@@ -40,11 +41,11 @@ public class Explosion extends InteractiveEntities {
      * @param coordinates The starting coordinates of the explosion.
      * @param direction The direction of the explosion.
      */
-    public Explosion(Coordinates coordinates, Direction direction,Bomb bomb) {
-        this(coordinates, direction, 0, bomb);
+    public Explosion(Coordinates coordinates, Direction direction,Explosive explosive) {
+        this(coordinates, direction, 0, explosive);
     }
-    public Explosion(Coordinates coordinates, Direction direction, int distanceFromBomb,Bomb bomb){
-        this(coordinates,direction,distanceFromBomb,bomb,true);
+    public Explosion(Coordinates coordinates, Direction direction, int distanceFromExplosive, Explosive explosive){
+        this(coordinates,direction, distanceFromExplosive,explosive,true);
 
     }
     /**
@@ -52,15 +53,15 @@ public class Explosion extends InteractiveEntities {
      *
      * @param coordinates The starting coordinates of the explosion.
      * @param direction The direction of the explosion.
-     * @param distanceFromBomb The distance from the bomb where the explosion was created.
+     * @param distanceFromExplosive The distance from the bomb where the explosion was created.
      */
-    public Explosion(Coordinates coordinates, Direction direction, int distanceFromBomb,Bomb bomb,boolean canExpand) {
+    public Explosion(Coordinates coordinates, Direction direction, int distanceFromExplosive, Explosive explosive, boolean canExpand) {
         super(coordinates);
 
         this.direction = direction;
-        this.distanceFromBomb = distanceFromBomb;
+        this.distanceFromExplosive = distanceFromExplosive;
         this.maxDistance = BomberMan.getInstance().getCurrentLevel().getExplosionLength();
-        this.bomb = bomb;
+        this.explosive = explosive;
         this.canExpand = canExpand;
         // Add the explosion entity to the game.
         BomberMan.getInstance().addEntity(this);
@@ -92,14 +93,18 @@ public class Explosion extends InteractiveEntities {
      */
     @Override
     public void interact(Entity e) {
-        if(e == null) return;
+        if (canInteractWith(e)) {
+            if (e == null) return;
 
-        if (e instanceof Character) {
-            e.despawn();
-        }else if (e instanceof Bomb){
-            ((Bomb) e).explode();
-        }else if(e instanceof DestroyableBlock){
-            e.despawn();
+            if (e instanceof Player) {
+                e.despawn();
+            } else if (e instanceof Enemy) {
+                e.despawn();
+            } else if (e instanceof Bomb) {
+                ((Bomb) e).explode();
+            } else if (e instanceof DestroyableBlock) {
+                e.despawn();
+            }
         }
     }
 
@@ -110,7 +115,7 @@ public class Explosion extends InteractiveEntities {
      */
     @Override
     public int getSize() {
-        return GamePanel.COMMON_DIVISOR*4;
+        return SIZE;
     }
 
     /**
@@ -123,7 +128,7 @@ public class Explosion extends InteractiveEntities {
         if (canExpand) {
             super.setCoords(getCoords());
 
-            new Explosion(coordinates, direction, distanceFromBomb + 1,bomb);
+            new Explosion(coordinates, direction, distanceFromExplosive + 1, explosive);
         }
     }
 
@@ -134,7 +139,7 @@ public class Explosion extends InteractiveEntities {
      */
     @Override
     public BufferedImage getImage() {
-        if(distanceFromBomb == 0){
+        if(distanceFromExplosive == 0){
             return loadImage(String.format("%sflame_central" + getState() + ".png", getBasePath()));
         }
 
@@ -172,18 +177,37 @@ public class Explosion extends InteractiveEntities {
         return prevState;
     }
 
+    @Override
+    public boolean isObstacle(Entity e) {
+        if (explosive instanceof Bomb) {
+            return e instanceof Block;
+        }
+
+        return false;
+    }
+
+    public boolean canInteractWith(Entity e){
+        if (explosive instanceof Bomb){
+            return e instanceof Player || e instanceof Enemy || e instanceof Block;
+        }else if(explosive instanceof TankEnemy){
+            return e instanceof Player;
+        }
+
+        return false;
+    }
+
     public boolean getCanExpand() {
-        if (distanceFromBomb >= maxDistance) canExpand = false;
+        if (distanceFromExplosive >= maxDistance) canExpand = false;
         return canExpand;
     }
 
     public void cantExpandAnymore(){
         Coordinates nextTopLeftCoords = nextCoords(direction,getSize());
-        new Explosion(nextTopLeftCoords,direction,distanceFromBomb+1, getBomb(),false);
+        new Explosion(nextTopLeftCoords,direction, distanceFromExplosive +1, getExplosive(),false);
     }
 
-    public Bomb getBomb(){
-        return bomb;
+    public Explosive getExplosive(){
+        return explosive;
     }
 
 

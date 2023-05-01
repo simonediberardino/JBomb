@@ -160,8 +160,7 @@ public abstract class Entity {
         boolean canSpawn =
                 desiredPosition.parallelStream().noneMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates))
                 && desiredPosition.parallelStream().noneMatch(coordinates -> BomberMan.getInstance().getBlocks().contains(coordinates));
-        if(canSpawn)
-        if (canSpawn) {
+        if(canSpawn) {
                 setCoords(coords);
                 setSpawned(true);
                 if (this instanceof InteractiveEntities) {
@@ -175,13 +174,22 @@ public abstract class Entity {
         this.onSpawn();
     }
 
-    /**
-     * Returns a list of coordinates in the direction specified by the input parameters.
-     *
-     * @param d the direction to get new coordinates in
-     * @param offset the distance between each step
-     * @return a list of new coordinates in the specified direction
-     */
+
+    public Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance){
+        int sign = 0;
+        switch (d){
+            case UP:case LEFT: sign = -1; break;
+            case DOWN:case RIGHT: sign = 1; break;
+        }
+        switch (d){
+            case LEFT:case RIGHT:  return new Coordinates(getCoords().getX() + distance*sign, getCoords().getY());
+            case DOWN:case UP: return new Coordinates(getCoords().getX() , getCoords().getY()+ distance*sign);
+
+        }
+        return null;
+    }
+
+
     public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int steps, int offset){
         List<Coordinates> desiredCoords = new ArrayList<>();
 
@@ -260,6 +268,9 @@ public abstract class Entity {
         return isValidX && isValidY;
     }
 
+    public boolean isObstacle(Entity e){
+        return (e instanceof Block || e == null || e instanceof Enemy|| e instanceof  Player);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import static game.ui.GamePanel.GRID_SIZE;
 import static game.ui.GamePanel.PIXEL_UNIT;
 
 
@@ -110,10 +111,10 @@ public abstract class InteractiveEntities extends Entity {
 
     /**
      * Gets a list of entities that occupy the specified coordinate.
-     * @param coord the coordinate to check for occupied entities
+     * @param nextOccupiedCoords the coordinate to check for occupied entities
      * @return a list of entities that occupy the specified coordinate
      */
-    public List<Entity> getEntitiesOnCoordinates(Coordinates coord) {
+    public List<Entity> getEntitiesOnCoordinates(Coordinates nextOccupiedCoords) {
         // Get all the blocks and entities in the game
         var blocks = BomberMan.getInstance().getBlocks();
         var entities = BomberMan.getInstance().getEntities();
@@ -122,26 +123,45 @@ public abstract class InteractiveEntities extends Entity {
         all.addAll(entities);
 
         // Use Java stream to filter entities that collide with the specified coordinate
-        return all.parallelStream().filter(e -> doesCollideWith(coord, e)).collect(Collectors.toCollection(LinkedList::new));
+        return all.parallelStream().filter(e -> doesCollideWith(nextOccupiedCoords, e)).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
      * Checks if the given coordinates collide with the given entity.
      *
-     * @param coord the coordinates to check for collision
+     * @param nextOccupiedCoords the coordinates to check for collision
      * @param e     the entity to check for collision with
      * @return true if the given coordinates collide with the given entity, false otherwise
      */
-    public static boolean doesCollideWith(Coordinates coord, Entity e) {
+    public static boolean doesCollideWith(Coordinates nextOccupiedCoords, Entity e) {
+        return doesCollideWith(nextOccupiedCoords,e.getCoords(), e.getSize());
+    }
+    public static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords) {
+
+        return doesCollideWith(nextOccupiedCoords, entityCoords, GRID_SIZE);
+    }
+    private static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords,int size) {
         // Get the coordinates of the bottom-right corner of the entity
-        int entityBottomRightX = e.getCoords().getX() + e.getSize() - 1;
-        int entityBottomRightY = e.getCoords().getY() + e.getSize() - 1;
+        int entityBottomRightX = entityCoords.getX() + size - 1;
+        int entityBottomRightY = entityCoords.getY() + size - 1;
 
         // Check if the given coordinates collide with the entity
-        return (coord.getX() >= e.getCoords().getX()
-                && coord.getX() <= entityBottomRightX
-                && coord.getY() >= e.getCoords().getY()
-                && coord.getY() <= entityBottomRightY);
+        return (nextOccupiedCoords.getX() >= entityCoords.getX()
+                && nextOccupiedCoords.getX() <= entityBottomRightX
+                && nextOccupiedCoords.getY() >= entityCoords.getY()
+                && nextOccupiedCoords.getY() <= entityBottomRightY);
+    }
+
+    public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
+        // Get all the blocks and entities in the game
+        var blocks = BomberMan.getInstance().getBlocks();
+        var entities = BomberMan.getInstance().getEntities();
+        var all = new HashSet<Entity>();
+        all.addAll(blocks);
+        all.addAll(entities);
+
+        // Use Java stream to filter entities that collide with the specified coordinate
+        return all.parallelStream().anyMatch(e -> doesCollideWith(Coordinates.roundCoordinates(nextOccupiedCoords), Coordinates.roundCoordinates(e.getCoords())));
     }
 
     /**
@@ -233,7 +253,7 @@ public abstract class InteractiveEntities extends Entity {
             }
 
             // If the entity interacts with a block, it cannot move further
-            else if (e instanceof Block) {
+            else if (isObstacle(e)) {
                 canMove = false;
                 break;
             }
@@ -258,4 +278,5 @@ public abstract class InteractiveEntities extends Entity {
         // Return whether the entity can move or not
         return canMove;
     }
+    public abstract boolean canInteractWith(Entity e);
 }
