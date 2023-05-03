@@ -1,11 +1,12 @@
 package game.entity.enemies;
 
-import game.BomberMan;
+import game.entity.models.Block;
 import game.entity.models.Enemy;
+import game.entity.models.InteractiveEntities;
 import game.models.Coordinates;
 import game.ui.Paths;
 
-import static java.text.MessageFormat.format;
+import java.util.List;
 
 public class YellowBall extends Enemy {
     public YellowBall(Coordinates coordinates) {

@@ -1,23 +1,21 @@
 package game.entity.enemies;
 
 import game.entity.blocks.DestroyableBlock;
-import game.entity.models.Block;
-import game.entity.models.Enemy;
-import game.entity.models.Entity;
+import game.entity.models.*;
 import game.models.Coordinates;
 import game.ui.Paths;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlyingEnemy extends Enemy {
     public FlyingEnemy(Coordinates coordinates) {
         super(coordinates);
     }
-    protected String getBasePath() {
-        return "";
-    }
 
     public String[] getFrontIcons() {
-        return new String[] {
-                "assets/entities/player/player_front_0.png"
+        return new String[]{
+                Paths.getEnemiesFolder() + "/flying_enemy/aquila.png"
         };
     }
 
@@ -37,10 +35,11 @@ public class FlyingEnemy extends Enemy {
     }
 
     @Override
-    public boolean isObstacle(Entity e) {
-        if (e instanceof Block && !(e instanceof DestroyableBlock)) {
-            return true;
-        }
-        return false;
+    public List<Class<? extends Entity>> getObstacles() {
+        List<Class<? extends Entity>> baseObstacles = new ArrayList<>(super.getObstacles());
+        baseObstacles.remove(DestroyableBlock.class);
+        return baseObstacles;
     }
+
+
 }

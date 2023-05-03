@@ -2,6 +2,7 @@ package game.entity.models;
 
 import game.BomberMan;
 import game.entity.Player;
+import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.GamePanel;
@@ -19,8 +20,8 @@ import static game.ui.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity {
+    protected static final int IMAGE_REFRESH_RATE = 200;
     protected BufferedImage image;
-    protected final int imageRefreshRate = 200;
     protected int lastImageIndex;
     protected long lastImageUpdate;
     private Coordinates coords;
@@ -37,16 +38,25 @@ public abstract class Entity {
         this.coords = coordinates;
     }
 
-    abstract protected String getBasePath();
-    abstract protected void onSpawn();
-    abstract protected void onDespawn();
+    protected String getBasePath(){ return ""; }
+    protected void onSpawn(){}
+    protected void onDespawn(){}
 
     /**
      * Performs an interaction between this entity and another entity.
      *
      * @param e the other entity to interact with
      */
-    public abstract void interact(Entity e);
+    protected abstract void doInteract(Entity e);
+
+    public abstract int getSize();
+
+    /**
+     * Returns the image of the entity.
+     *
+     * @return the image of the entity
+     */
+    public abstract BufferedImage getImage();
 
     /**
      * Returns the size of the entity in pixels.
@@ -57,14 +67,9 @@ public abstract class Entity {
         return 1;
     }
 
-    public abstract int getSize();
-
-    /**
-     * Returns the image of the entity.
-     *
-     * @return the image of the entity
-     */
-    public abstract BufferedImage getImage();
+    public long getId() {
+        return id;
+    }
 
     /**
      * Loads the image at the given file path and sets it as the image of this entity.
@@ -134,6 +139,7 @@ public abstract class Entity {
 
         return result;
     }
+
     public Coordinates getSpawnOffset(){
         return new Coordinates(0,0);
     }
@@ -177,15 +183,17 @@ public abstract class Entity {
 
     public Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance){
         int sign = 0;
+
         switch (d){
             case UP:case LEFT: sign = -1; break;
             case DOWN:case RIGHT: sign = 1; break;
         }
+
         switch (d){
             case LEFT:case RIGHT:  return new Coordinates(getCoords().getX() + distance*sign, getCoords().getY());
             case DOWN:case UP: return new Coordinates(getCoords().getX() , getCoords().getY()+ distance*sign);
-
         }
+
         return null;
     }
 
@@ -268,9 +276,11 @@ public abstract class Entity {
         return isValidX && isValidY;
     }
 
-    public boolean isObstacle(Entity e){
-        return (e instanceof Block || e == null || e instanceof Enemy|| e instanceof  Player);
-    }
+
+
+
+
+
 
     @Override
     public boolean equals(Object o) {

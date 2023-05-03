@@ -1,29 +1,28 @@
 package game.entity.enemies;
 
+import game.entity.Player;
+import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
-import game.entity.models.Enemy;
-import game.entity.models.Explosive;
+import game.entity.models.*;
 import game.models.Coordinates;
+import game.ui.Paths;
 
-import java.util.Observable;
+import java.util.*;
 
 public class TankEnemy extends Enemy implements Explosive {
+    private static final int STANDING_STILL_PERIOD = 1000;
+    private static final int PROBABILITY_OF_SHOOTING = 30;
+    private static final int SHOOTING_REFRESH_RATE = 2000;
     private boolean canShoot = false;
     private long lastUpdate = 0;
-    private final int probabilityOfShooting =30;
-    private final int shootingRefreshRate = 10000;
-    private final int standingStillPeriod = 1000;
 
     public TankEnemy(Coordinates coordinates) {
         super(coordinates);
     }
-    protected String getBasePath() {
-        return "";
-    }
 
     public String[] getFrontIcons() {
-        return new String[] {
-                "assets/entities/enemies/Tank/tank.png"
+        return new String[]{
+                Paths.getEnemiesFolder() + "/Tank/tank.png"
         };
     }
 
@@ -44,18 +43,46 @@ public class TankEnemy extends Enemy implements Explosive {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(System.currentTimeMillis() - lastUpdate > shootingRefreshRate){
+        if (System.currentTimeMillis() - lastUpdate > SHOOTING_REFRESH_RATE) {
             lastUpdate = System.currentTimeMillis();
-            if(canShoot && Math.random()*100<probabilityOfShooting) {
+
+            if (canShoot && Math.random() * 100 < PROBABILITY_OF_SHOOTING) {
                 new Explosion(getNewTopLeftCoordinatesOnDirection(currDirection, Explosion.SIZE), currDirection, this);
                 canMove = false;
             }
-            canShoot= true;
+            canShoot = true;
         }
-        if (System.currentTimeMillis()-lastUpdate> 1000) {
-            canMove = true;
 
-        }super.update(o, arg);
+        if (System.currentTimeMillis() - lastUpdate > STANDING_STILL_PERIOD) {
+            canMove = true;
+        }
+
+        super.update(o, arg);
+    }
+
+    @Override
+    public List<Class<? extends Entity>> getExplosionObstacles() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public boolean isObstacleOfExplosion(Entity e) {
+        return (e == null) || (getExplosionObstacles().stream().anyMatch(c -> c.isInstance(e)));
+    }
+
+    @Override
+    public List<Class<? extends Entity>> getExplosionInteractionEntities() {
+        return Arrays.asList(Player.class, Bomb.class);
+    }
+
+    @Override
+    public boolean canExplosionInteractWith(Entity e) {
+        return e == null || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e)));
+    }
+
+    @Override
+    public int getMaxExplosionDistance() {
+        return 4;
     }
 
 }

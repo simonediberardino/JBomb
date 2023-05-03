@@ -3,8 +3,11 @@ package game.level;
 import game.BomberMan;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
+import game.entity.enemies.FlyingEnemy;
 import game.entity.enemies.TankEnemy;
+import game.entity.enemies.YellowBall;
 import game.models.Coordinates;
+import game.powerups.MaxBombsPowerUp;
 
 import javax.swing.*;
 
@@ -19,6 +22,9 @@ import static game.ui.GamePanel.GRID_SIZE;
  explosion length, and a method to generate the stone blocks in the game board.
  */
 public class Level2 extends Level {
+    private int maxBombs = 2;
+    private int explosionLength = 1;
+
     public Level2() {
         super(2);
     }
@@ -26,24 +32,33 @@ public class Level2 extends Level {
     @Override
     public void spawnEnemies() {
         for(int i = 0; i < startEnemiesCount(); i++) {
-            //new YellowBall(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
-            //new FlyingEnemy(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
+            new YellowBall(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
+            new FlyingEnemy(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
             new TankEnemy(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
 
+            new MaxBombsPowerUp(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
         }
     }
 
     @Override
     public int startEnemiesCount() {
-        return 10;
+        return 3;
     }
 
     @Override
-    public int getMaxBombs() {
-        return 1;
-    }
+
     public int getMaxDestroyableBlocks(){
         return 10;
+    }
+
+    public int getMaxBombs() {
+        return maxBombs;
+    }
+
+
+    public void increaseMaxBombs(){
+        if(explosionLength<=10) maxBombs++;
+
     }
 
     /**
@@ -53,7 +68,11 @@ public class Level2 extends Level {
      */
     @Override
     public int getExplosionLength() {
-        return 4;
+        return explosionLength;
+    }
+
+    public void increaseExplosionLength(){
+        if(explosionLength<=10) explosionLength++;
     }
 
     /**

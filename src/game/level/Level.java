@@ -24,6 +24,8 @@ import static game.entity.models.Character.PADDING_HEAD;
  */
 public abstract class Level {
     private int id;
+    private int explosionLength;
+    private int maxBombs;
 
     private Level(){}
 
@@ -33,10 +35,8 @@ public abstract class Level {
 
     public abstract void spawnEnemies();
     public abstract int startEnemiesCount();
-    public abstract int getMaxBombs();
     public abstract int getMaxDestroyableBlocks();
 
-    public abstract int getExplosionLength();
 
     /**
      * Generates stone blocks on the game panel.
@@ -105,4 +105,32 @@ public abstract class Level {
     public int getId() {
         return id;
     }
+
+    public int getMaxBombs() {
+        return maxBombs;
+    }
+
+
+    public void increaseMaxBombs(){
+        if(explosionLength<=10) maxBombs++;
+
+    }
+
+    /**
+
+     Returns the explosion length for level 1.
+     @return an integer representing the explosion length.
+     */
+    public int getExplosionLength() {
+        return explosionLength;
+    }
+    public void increaseExplosionLength(){
+        if(explosionLength<=10) explosionLength++;
+
+    }
+
+
+
+
+
 }

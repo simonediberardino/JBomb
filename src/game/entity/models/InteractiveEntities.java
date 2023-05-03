@@ -1,13 +1,11 @@
 package game.entity.models;
 
 import game.BomberMan;
-import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static game.ui.GamePanel.GRID_SIZE;
@@ -18,8 +16,6 @@ import static game.ui.GamePanel.PIXEL_UNIT;
  * An abstract class representing interactive entities, which can move or interact with other entities in the game.
  */
 public abstract class InteractiveEntities extends Entity {
-    private boolean bombImmune = false;
-
     /**
      * Gets the size of the entity in pixels.
      * @return the size of the entity
@@ -34,15 +30,22 @@ public abstract class InteractiveEntities extends Entity {
         super(coordinates);
     }
 
+    public final void interact(Entity e) {
+        if(canInteractWith(e)) {
+            this.doInteract(e);
+        }
+
+        else if(e instanceof InteractiveEntities && ((InteractiveEntities) e).canInteractWith(this)){
+            e.doInteract(this);
+        }
+    }
+
     /**
      * Interacts with the given entity.
      * @param e the entity to interact with
      */
     @Override
-    public void interact(Entity e) {
-        if(e == null) return;
-        // This method can be overridden by subclasses to implement specific interaction logic.
-    }
+    protected abstract void doInteract(Entity e);
 
     /**
      * Gets a list of available directions for the entity to move, based on the current game state.
@@ -56,11 +59,11 @@ public abstract class InteractiveEntities extends Entity {
 
         // Iterate over each direction
         for (Direction d : Direction.values()) {
-            List<Coordinates> newCoordinates = getNewCoordinatesOnDirection(d, getSize(), getSize() / 2);
+            List<Coordinates> newCoordinates = getNewCoordinatesOnDirection(d, PIXEL_UNIT, getSize() / 2);
             // Check if any entities on the next coordinates are blocks or have invalid coordinates
             boolean areCoordinatesValid = getEntitiesOnCoordinates(
                     newCoordinates
-            ).stream().noneMatch(e -> e instanceof Block);
+            ).stream().noneMatch(this::isObstacle);
 
             areCoordinatesValid = areCoordinatesValid && newCoordinates.stream().allMatch(Coordinates::validate);
             // If all the next coordinates are valid, add this direction to the list of available directions
@@ -77,9 +80,6 @@ public abstract class InteractiveEntities extends Entity {
      * @param desiredCoords the coordinates to check for occupied entities
      * @return a list of entities that occupy the specified coordinates
      */
-
-
-
     public List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords){
         List<Entity> entityLinkedList = new LinkedList<>();
 
@@ -136,10 +136,11 @@ public abstract class InteractiveEntities extends Entity {
     public static boolean doesCollideWith(Coordinates nextOccupiedCoords, Entity e) {
         return doesCollideWith(nextOccupiedCoords,e.getCoords(), e.getSize());
     }
-    public static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords) {
 
+    public static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords) {
         return doesCollideWith(nextOccupiedCoords, entityCoords, GRID_SIZE);
     }
+
     private static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords,int size) {
         // Get the coordinates of the bottom-right corner of the entity
         int entityBottomRightX = entityCoords.getX() + size - 1;
@@ -161,7 +162,8 @@ public abstract class InteractiveEntities extends Entity {
         all.addAll(entities);
 
         // Use Java stream to filter entities that collide with the specified coordinate
-        return all.parallelStream().anyMatch(e -> doesCollideWith(Coordinates.roundCoordinates(nextOccupiedCoords), Coordinates.roundCoordinates(e.getCoords())));
+        return all.parallelStream()
+                .anyMatch(e -> doesCollideWith(Coordinates.roundCoordinates(nextOccupiedCoords), Coordinates.roundCoordinates(e.getCoords())));
     }
 
     /**
@@ -229,40 +231,25 @@ public abstract class InteractiveEntities extends Entity {
             return true;
         }
 
-        // Initialize a flag to indicate whether the entity has interacted with a bomb
-        AtomicBoolean didInteractWithBomb = new AtomicBoolean(false);
-
         // Initialize a flag to indicate whether the entity can move
         boolean canMove = true;
 
         // Loop through the list of entities present in the next occupied coordinates
-        for (Entity e : interactedEntities) {
-            this.interact(e);
-            // If the entity interacts with a bomb, it cannot move further
-            if (e instanceof Bomb) {
-                // Call the 'interact' method of the entity the entity is interacting with
-
-                canMove = false;
-                didInteractWithBomb.set(true);
-
-                // If the entity is inside the bomb, it can move through the bomb block: this is to prevent the bomb from
-                // blocking the entity that spawned it;
-                if (this.isInside(e)) {
-                    bombImmune = true;
-                }
-            }
-
-            // If the entity interacts with a block, it cannot move further
-            else if (isObstacle(e)) {
-                canMove = false;
+        if (interactedEntities.stream().anyMatch(this::isObstacle)){
+            List<Entity> temp = interactedEntities.stream().filter(this::isObstacle).collect(Collectors.toList());
+            for (Entity e: temp) {
+                interact(e);
                 break;
             }
+            canMove = false;
+        }
 
-
+        if (canMove) {
+            interactedEntities.forEach(this::interact);
         }
 
         // If the entity can move or it is immune to bombs, update the entity's position
-        if (canMove || bombImmune) {
+        if (canMove) {
             setCoords(nextTopLeftCoords);
         }
         // If the entity is an instance of 'Explosion' and it cannot move further, stop expanding the explosion
@@ -270,13 +257,19 @@ public abstract class InteractiveEntities extends Entity {
             ((Explosion) this).cantExpandAnymore();
         }
 
-        // If the entity did not interact with any bomb, it is not immune to bombs
-        if (!didInteractWithBomb.get()) {
-            bombImmune = false;
-        }
 
         // Return whether the entity can move or not
         return canMove;
     }
-    public abstract boolean canInteractWith(Entity e);
+
+    public abstract List<Class<? extends Entity>> getObstacles();
+    public abstract List<Class<? extends Entity>> getInteractionsEntities();
+
+    public boolean isObstacle(Entity e){
+        return (e == null) || (getObstacles().stream().anyMatch(c-> c.isInstance(e) ) );
+    }
+
+    public boolean canInteractWith(Entity e){
+        return (e == null) || (getInteractionsEntities().stream().anyMatch(c-> c.isInstance(e)));
+    }
 }

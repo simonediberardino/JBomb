@@ -3,16 +3,18 @@ package game.entity.models;
 
 import game.BomberMan;
 import game.entity.Player;
+import game.entity.blocks.DestroyableBlock;
+import game.entity.blocks.StoneBlock;
+import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class Enemy extends Character implements ICPU, Observer {
-    protected final int changeDirectionChangeRate = 15; // percentage
-    protected int directionRefreshRate = 500;
+    private static final int CHANGE_DIRECTION_RATE = 10; // percentage
+    private static final int DIRECTION_REFRESH_RATE = 500;
     protected boolean canMove = true;
 
     public Enemy(Coordinates coordinates) {
@@ -20,27 +22,31 @@ public abstract class Enemy extends Character implements ICPU, Observer {
     }
 
     @Override
-    public void interact(Entity e) {
-        if (canInteractWith(e)) {
-            if(e instanceof Explosion){
+    protected void doInteract(Entity e) {
+        if (e instanceof Explosion) {
+            if ((((Explosion) e).canInteractWith(this)))
                 despawn();
-            }
-            if (isObstacle(e)) {
-                changeDirection();
-            } else if (e instanceof Player) {
-                e.despawn();
-            }
+            return;
+        }
+
+        if (e instanceof BomberEntity) {
+            e.despawn();
+        }
+
+        if (isObstacle(e)) {
+            changeDirection();
+            return;
         }
     }
 
-    public boolean isObstacle(Entity e){
-        return e instanceof Block || e == null || e instanceof Enemy;
-    }
 
     @Override
-    public boolean canInteractWith(Entity e){
-        return e instanceof Player || e instanceof Block|| e == null || e instanceof Explosion||e instanceof Enemy;
+    public List<Class<? extends Entity>> getInteractionsEntities(){
+        List<Class<? extends Entity>> entities = new ArrayList<>(super.getInteractionsEntities());
+        entities.add(BomberEntity.class);
+        return entities;
     }
+
 
     @Override
     protected void onSpawn() {
@@ -69,8 +75,8 @@ public abstract class Enemy extends Character implements ICPU, Observer {
         long currentTime = System.currentTimeMillis();
 
         // If it hasn't been long enough since the last direction update, keep moving in the same direction, unless last move was blocked
-        if(currentTime - lastDirectionUpdate < directionRefreshRate && !forceChange) {
-            handleAction(currDirection.toCommand());
+        if (currentTime - lastDirectionUpdate < DIRECTION_REFRESH_RATE && !forceChange) {
+            move(currDirection);
             return;
         }
 
@@ -78,33 +84,22 @@ public abstract class Enemy extends Character implements ICPU, Observer {
         List<Direction> availableDirections = getAvailableDirections();
 
         // If forceChange is true, remove the current direction from the list of available directions
-        if(forceChange) {
-            availableDirections.remove(currDirection);
-        }
 
         // If there are no available directions, choose a new one randomly
-        if(availableDirections.isEmpty()) {
-            if(forceChange){
-                // If forceChange is true, consider all possible directions except the current one
-                availableDirections.addAll(Arrays.asList(Direction.values())
-                        .parallelStream()
-                        .filter(e -> e != currDirection)
-                        .collect(Collectors.toList()));
-            }else{
-                // If forceChange is false, keep moving in the same direction
-                availableDirections.add(currDirection);
-            }
+        if (availableDirections.isEmpty()) {
+            // If forceChange is true, consider all possible directions except the current one
+            availableDirections.addAll(Arrays.asList(Direction.values()));
         }
 
         // Choose a new direction randomly, or keep the current direction with a certain probability
         Direction newDirection = null;
-        if(!forceChange && Math.random() * 100 > changeDirectionChangeRate) {
+        if (Math.random() * 100 > CHANGE_DIRECTION_RATE) {
             newDirection = currDirection;
         }
 
         // If a new direction hasn't been chosen, choose one randomly from the available options
-        if(newDirection == null) {
-            newDirection = availableDirections.get((int)(Math.random() * availableDirections.size()));
+        if (newDirection == null) {
+            newDirection = availableDirections.get((int) (Math.random() * availableDirections.size()));
         }
 
         // Send the command corresponding to the new direction to the game engine
@@ -116,17 +111,9 @@ public abstract class Enemy extends Character implements ICPU, Observer {
         chooseDirection(true);
     }
 
-
-
     @Override
     public void update(Observable o, Object arg) {
         if(canMove)
         chooseDirection(false);
-    }
-    public void stopMove(){
-        canMove = false;
-    }
-    public void freeMove(){
-        canMove = true;
     }
 }
