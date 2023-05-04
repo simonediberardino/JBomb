@@ -4,6 +4,7 @@ import game.BomberMan;
 import game.entity.models.Block;
 import game.entity.models.Entity;
 import game.models.Coordinates;
+import game.powerups.PowerUp;
 
 import java.awt.image.BufferedImage;
 
@@ -20,7 +21,6 @@ public class DestroyableBlock extends Block {
      */
     @Override
     protected void doInteract(Entity e) {
-        if(e == null) return;
     }
 
     @Override
@@ -28,4 +28,9 @@ public class DestroyableBlock extends Block {
         return loadAndSetImage(BomberMan.getInstance().getCurrentLevel().getDestroyableBlock());
     }
 
+    @Override
+    protected void onDespawn() {
+        super.onDespawn();
+        if(Math.random() > 1/4f) PowerUp.spawnRandomPowerUp(this.getCoords());
+    }
 }

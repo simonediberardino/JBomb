@@ -40,13 +40,6 @@ public abstract class Enemy extends Character implements ICPU, Observer {
     }
 
 
-    @Override
-    public List<Class<? extends Entity>> getInteractionsEntities(){
-        List<Class<? extends Entity>> entities = new ArrayList<>(super.getInteractionsEntities());
-        entities.add(BomberEntity.class);
-        return entities;
-    }
-
 
     @Override
     protected void onSpawn() {
@@ -112,8 +105,12 @@ public abstract class Enemy extends Character implements ICPU, Observer {
     }
 
     @Override
+    public Set<Class<? extends Entity>> getInteractionsEntities(){
+        return new HashSet<>(Arrays.asList(Player.class, Enemy.class, DestroyableBlock.class, Bomb.class, Explosion.class, Block.class));
+    }
+
+    @Override
     public void update(Observable o, Object arg) {
-        if(canMove)
-        chooseDirection(false);
+        if(canMove) chooseDirection(false);
     }
 }

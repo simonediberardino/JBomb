@@ -2,7 +2,7 @@ package game.models;
 
 import game.BomberMan;
 import game.entity.models.Entity;
-import game.entity.models.InteractiveEntities;
+import game.entity.models.EntityInteractable;
 import game.ui.GameFrame;
 
 import java.awt.*;
@@ -78,7 +78,7 @@ public class Coordinates {
     }
 
     public static Coordinates generateRandomCoordinates(Coordinates spawnOffset){
-        var blocks = BomberMan.getInstance().getBlocks();
+        var blocks = BomberMan.getInstance().getStaticEntities();
         var entities = BomberMan.getInstance().getEntities();
 
         var all = new HashSet<Entity>();
@@ -88,7 +88,7 @@ public class Coordinates {
         while (true) {
             Coordinates coords = RoundedRandomCoords(spawnOffset);
 
-            if (!InteractiveEntities.isBlockOccupied(coords)){
+            if (!EntityInteractable.isBlockOccupied(coords)){
                 return coords;
             }
         }

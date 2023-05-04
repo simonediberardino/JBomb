@@ -2,10 +2,6 @@ package game.entity;
 
 import game.BomberMan;
 import game.controller.Command;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.StoneBlock;
-import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.ui.Paths;
@@ -16,7 +12,8 @@ import static game.ui.GamePanel.GRID_SIZE;
 
 
 public class Player extends BomberEntity implements Observer {
-    public static final Coordinates spawnOffset = new Coordinates((GRID_SIZE-SIZE)/2 ,PADDING_HEAD);
+    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE-SIZE)/2 ,PADDING_HEAD);
+    public Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
 
     public Player(Coordinates coordinates) {
         super(coordinates);
@@ -25,8 +22,13 @@ public class Player extends BomberEntity implements Observer {
     @Override
     protected void doInteract(Entity e) {}
 
-    public Player() {
-        super(new Coordinates(0, 0));
+    @Override
+    public Set<Class<? extends Entity>> getInteractionsEntities() {
+        return this.interactionEntities;
+    }
+
+    private Player() {
+        super(null);
     }
 
     @Override
@@ -77,17 +79,17 @@ public class Player extends BomberEntity implements Observer {
     }
 
     @Override
-    public void despawn() {
-        super.despawn();
-        isAlive = false;
-        BomberMan.getInstance().getControllerManager().deleteObserver(this);
+    protected void onSpawn() {
+        super.onSpawn();
+        isAlive = true;
+        BomberMan.getInstance().getControllerManager().addObserver(this);
     }
 
     @Override
-    public void spawn() {
-        super.spawn();
-        isAlive = true;
-        BomberMan.getInstance().getControllerManager().addObserver(this);
+    protected void onDespawn() {
+        super.onDespawn();
+        isAlive = false;
+        BomberMan.getInstance().getControllerManager().deleteObserver(this);
     }
 
     @Override
@@ -108,7 +110,7 @@ public class Player extends BomberEntity implements Observer {
 
     @Override
     public Coordinates getSpawnOffset(){
-        return spawnOffset;
+        return SPAWN_OFFSET;
     }
 
     @Override

@@ -1,24 +1,19 @@
 package game.powerups;
 
-import game.BomberMan;
-import game.entity.models.Block;
-import game.entity.models.BomberEntity;
-import game.entity.models.Character;
-import game.entity.models.Entity;
+import game.entity.models.*;
 import game.models.Coordinates;
 import game.ui.Paths;
 
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.List;
 
-public class MaxBombsPowerUp extends PowerUp {
+public class FirePowerUp extends PowerUp {
     /**
      * Constructs an entity with the given coordinates.
      *
      * @param coordinates the coordinates of the entity
      */
-    public MaxBombsPowerUp(Coordinates coordinates) {
+
+    public FirePowerUp(Coordinates coordinates) {
         super(coordinates);
     }
 
@@ -33,13 +28,12 @@ public class MaxBombsPowerUp extends PowerUp {
     }
 
     @Override
-    public void apply(BomberEntity entity) {
-        super.apply(entity);
-        entity.increaseMaxBombs();
+    protected void doApply(BomberEntity entity) {
+        entity.increaseExplosionLength();
     }
 
     @Override
-    void cancel(Character character) {
+    protected void cancel(BomberEntity entity) {
 
     }
 }

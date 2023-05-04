@@ -1,19 +1,14 @@
 package game.entity.models;
 
 import game.BomberMan;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.StoneBlock;
 import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static game.ui.GamePanel.GRID_SIZE;
-
 public abstract class BomberEntity extends Character {
-    private int maxBombs = BomberMan.getInstance().getCurrentLevel().getMaxBombs();
+    private static final int MAX_BOMB_CAN_HOLD = 10;
+    private int currBombLimit = BomberMan.getInstance().getCurrentLevel().getMaxBombs();
+    private int currExplosionLength = BomberMan.getInstance().getCurrentLevel().getExplosionLength();
+
     private int placedBombs = 0;
     private long lastPlacedBombTime = 0;
     /**
@@ -25,16 +20,24 @@ public abstract class BomberEntity extends Character {
         super(coordinates);
     }
 
-    public int getMaxBombs() {
-        return maxBombs;
+    public int getCurrExplosionLength(){
+        return currExplosionLength;
+    }
+
+    public void increaseExplosionLength() {
+        currExplosionLength++;
+    }
+
+    public int getCurrBombLimit() {
+        return currBombLimit;
     }
 
     public void increaseMaxBombs() {
-        maxBombs++;
+        if(currBombLimit < MAX_BOMB_CAN_HOLD) currBombLimit++;
     }
 
     protected void placeBomb() {
-        if(placedBombs >= maxBombs) {
+        if(placedBombs >= currBombLimit) {
             return;
         }
 
@@ -45,20 +48,11 @@ public abstract class BomberEntity extends Character {
         lastPlacedBombTime = System.currentTimeMillis();
         placedBombs++;
 
-        Coordinates coordinates = new Coordinates(
-                ((getCoords().getX() + getSize()/2) / GRID_SIZE * GRID_SIZE + Bomb.spawnOffset.getX())
-                ,(getCoords().getY() + getSize()/2) / GRID_SIZE * GRID_SIZE + (Bomb.spawnOffset.getY())
-        );
-
-        Bomb bomb = new Bomb(coordinates);
+        Bomb bomb = new Bomb(this);
 
         bomb.setOnExplodeListener(() -> placedBombs--);
         bomb.spawn();
         bomb.trigger();
     }
 
-    @Override
-    public List<Class<? extends Entity>> getInteractionsEntities() {
-        return Arrays.asList(StoneBlock.class, DestroyableBlock.class, Explosion.class);
-    }
 }

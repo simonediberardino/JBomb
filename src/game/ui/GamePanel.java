@@ -4,7 +4,7 @@ import game.BomberMan;
 import game.entity.models.Character;
 import game.entity.models.Block;
 import game.entity.models.Entity;
-import game.entity.models.InteractiveEntities;
+import game.entity.models.EntityInteractable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +17,8 @@ import static game.ui.Utility.px;
  * The GamePanel class represents the main game panel that displays the game world and entities
  */
 public class GamePanel extends JPanel implements Observer {
-    public static final Dimension DEFAULT_DIMENSION = new Dimension(780, 660);
-    public static final int DEFAULT_PIXEL_UNIT = 5;
+    public static final Dimension DEFAULT_DIMENSION = new Dimension(945, 800);
+    public static final int DEFAULT_PIXEL_UNIT = 6;
     public static final int PIXEL_UNIT = Utility.px(DEFAULT_PIXEL_UNIT);
     public static final int COMMON_DIVISOR = PIXEL_UNIT*2;
     public static final int GRID_SIZE = GamePanel.COMMON_DIVISOR * 6;
@@ -60,8 +60,8 @@ public class GamePanel extends JPanel implements Observer {
 
         Graphics2D g2d = (Graphics2D) g;
         paintComponent(g2d);
-        Set<? extends InteractiveEntities> setEntities = BomberMan.getInstance().getEntities();
-        Set<? extends Block> setBlocks = BomberMan.getInstance().getBlocks();
+        Set<? extends EntityInteractable> setEntities = BomberMan.getInstance().getEntities();
+        Set<? extends Entity> setBlocks = BomberMan.getInstance().getStaticEntities();
         // Draw each entity in the new set
 
         for (Entity block : setBlocks){

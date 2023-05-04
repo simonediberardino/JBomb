@@ -1,15 +1,11 @@
 
 package game.controller;
-import game.BomberMan;
-import game.models.Direction;
 
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
 import java.util.*;
-import java.util.function.Predicate;
 
 import static java.util.Map.entry;
 
@@ -24,7 +20,7 @@ public class ControllerManager extends Observable implements KeyListener {
     private static final int KEY_D = KeyEvent.VK_D;
     private static final int KEY_SPACE = KeyEvent.VK_SPACE;
     private static final int KEY_ESC = KeyEvent.VK_ESCAPE;
-    private static final int KEY_DELAY_MS = 30;
+    private static int KEY_DELAY_MS = setDefaultCommandDelay();
     private Set<Command> commandQueue = new HashSet<>();
     private Timer timer;
 
@@ -84,6 +80,16 @@ public class ControllerManager extends Observable implements KeyListener {
 
     public boolean isCommandPressed(Command c) {
         return commandQueue.contains(c);
+    }
+
+    public static int decreaseCommandDelay() {
+        KEY_DELAY_MS = 15;
+        return KEY_DELAY_MS;
+    }
+
+    public static int setDefaultCommandDelay(){
+        KEY_DELAY_MS = 30;
+        return KEY_DELAY_MS;
     }
 
     @Override public void keyTyped(KeyEvent e) {}

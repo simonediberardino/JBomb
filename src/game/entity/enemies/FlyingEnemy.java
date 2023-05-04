@@ -6,7 +6,9 @@ import game.models.Coordinates;
 import game.ui.Paths;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FlyingEnemy extends Enemy {
     public FlyingEnemy(Coordinates coordinates) {
@@ -35,8 +37,8 @@ public class FlyingEnemy extends Enemy {
     }
 
     @Override
-    public List<Class<? extends Entity>> getObstacles() {
-        List<Class<? extends Entity>> baseObstacles = new ArrayList<>(super.getObstacles());
+    public Set<Class<? extends Entity>> getObstacles() {
+        Set<Class<? extends Entity>> baseObstacles = new HashSet<>(super.getObstacles());
         baseObstacles.remove(DestroyableBlock.class);
         return baseObstacles;
     }

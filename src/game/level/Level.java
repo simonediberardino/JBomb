@@ -2,18 +2,17 @@ package game.level;
 
 import game.BomberMan;
 import game.entity.*;
+import game.entity.blocks.DestroyableBlock;
+import game.entity.blocks.StoneBlock;
 import game.models.Coordinates;
 import game.ui.Paths;
 import game.ui.Utility;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
-import static game.entity.models.Character.PADDING_HEAD;
+import static game.ui.GamePanel.GRID_SIZE;
 
 
 /**
@@ -24,8 +23,8 @@ import static game.entity.models.Character.PADDING_HEAD;
  */
 public abstract class Level {
     private int id;
-    private int explosionLength;
-    private int maxBombs;
+    protected int maxBombs = 1;
+    protected int explosionLength = 1;
 
     private Level(){}
 
@@ -36,15 +35,6 @@ public abstract class Level {
     public abstract void spawnEnemies();
     public abstract int startEnemiesCount();
     public abstract int getMaxDestroyableBlocks();
-
-
-    /**
-     * Generates stone blocks on the game panel.
-     *
-     * @param jPanel the panel on which to generate the stone blocks
-     */
-    public abstract void generateStone(JPanel jPanel);
-    public abstract void generateDestroyableBlock();
 
     /**
      *
@@ -72,6 +62,8 @@ public abstract class Level {
         return Paths.getCurrentLevelFolder() + "/destroyable_block.png";
     }
 
+    public abstract int getExplosionLength();
+
     /**
      * Returns the Images for the level pitch.
      *
@@ -94,7 +86,7 @@ public abstract class Level {
     public void start(JPanel jPanel){
         generateStone(jPanel);
 
-        BomberMan.getInstance().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.spawnOffset)));
+        BomberMan.getInstance().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
         BomberMan.getInstance().getPlayer().spawn();
         generateDestroyableBlock();
 
@@ -110,25 +102,41 @@ public abstract class Level {
         return maxBombs;
     }
 
-
-    public void increaseMaxBombs(){
-        if(explosionLength<=10) maxBombs++;
-
-    }
-
     /**
 
-     Returns the explosion length for level 1.
-     @return an integer representing the explosion length.
+     Generates the stone blocks in the game board for level 1.
+
+     @param jPanel the JPanel where the stone blocks are to be placed.
      */
-    public int getExplosionLength() {
-        return explosionLength;
-    }
-    public void increaseExplosionLength(){
-        if(explosionLength<=10) explosionLength++;
+    public void generateStone(JPanel jPanel) {
+        int currX = 0;
+        int currY = GRID_SIZE;
 
+        while (currY < jPanel.getHeight() - GRID_SIZE) {
+            while (currX < jPanel.getWidth() - GRID_SIZE && currX + GRID_SIZE * 2 <= jPanel.getWidth()) {
+                currX += GRID_SIZE;
+                new StoneBlock(new Coordinates(currX, currY)).spawn();
+                currX += GRID_SIZE;
+            }
+            currX = 0;
+            currY += GRID_SIZE * 2;
+        }
     }
 
+    public void generateDestroyableBlock(){
+        DestroyableBlock block = new DestroyableBlock(new Coordinates(0,0));
+        int i = 0;
+        while (i <getMaxDestroyableBlocks()){
+            if (!block.isSpawned()){
+                block.setCoords(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE*2));
+                block.spawn();
+            }
+            else {
+                block = new DestroyableBlock(new Coordinates(0,0));
+                i++;
+            }
+        }
+    }
 
 
 

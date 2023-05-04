@@ -54,41 +54,4 @@ public class Level1 extends Level {
     public int getExplosionLength() {
         return 3;
     }
-
-    /**
-
-     Generates the stone blocks in the game board for level 1.
-
-     @param jPanel the JPanel where the stone blocks are to be placed.
-     */
-    @Override
-    public void generateStone(JPanel jPanel) {
-        int currX = 0;
-        int currY = GRID_SIZE;
-
-        while (currY < jPanel.getHeight() - GRID_SIZE) {
-            while (currX < jPanel.getWidth() - GRID_SIZE && currX + GRID_SIZE * 2 <= jPanel.getWidth()) {
-                currX += GRID_SIZE;
-                new StoneBlock(new Coordinates(currX, currY)).spawn();
-                currX += GRID_SIZE;
-            }
-            currX = 0;
-            currY += GRID_SIZE * 2;
-        }
-    }
-    @Override
-    public void generateDestroyableBlock(){
-        DestroyableBlock block = new DestroyableBlock(new Coordinates(0,0));
-        int i = 0;
-        while (i <getMaxDestroyableBlocks()){
-            if (!block.isSpawned()){
-                block.setCoords(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE*2));
-                block.spawn();
-            }
-            else {
-                block = new DestroyableBlock(new Coordinates(0,0));
-                i++;
-            }
-        }
-    }
 }

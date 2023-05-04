@@ -22,7 +22,7 @@ public class TankEnemy extends Enemy implements Explosive {
 
     public String[] getFrontIcons() {
         return new String[]{
-                Paths.getEnemiesFolder() + "/Tank/tank.png"
+                Paths.getEnemiesFolder() + "/tank/tank.png"
         };
     }
 

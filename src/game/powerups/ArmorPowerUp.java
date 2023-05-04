@@ -1,44 +1,38 @@
 package game.powerups;
 
-import game.controller.ControllerManager;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;
 import game.ui.Paths;
 
 import java.awt.image.BufferedImage;
 
-public class SpeedPowerUp extends PowerUp {
+public class ArmorPowerUp extends PowerUp {
     /**
      * Constructs an entity with the given coordinates.
      *
      * @param coordinates the coordinates of the entity
      */
-    public SpeedPowerUp(Coordinates coordinates) {
+    public ArmorPowerUp(Coordinates coordinates) {
         super(coordinates);
     }
 
     @Override
-    protected String getBasePath() {
-        return null;
-    }
-
-    @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/speed_up.png");
+        return loadAndSetImage(Paths.getPowerUpsFolder() + "/armor_up.png");
     }
 
     @Override
     public int getDuration() {
-        return DEFAULT_DURATION_SEC;
+        return 0;
     }
 
     @Override
     protected void doApply(BomberEntity entity) {
-        ControllerManager.decreaseCommandDelay();
+        entity.setImmune(true);
     }
 
     @Override
     protected void cancel(BomberEntity entity) {
-        ControllerManager.setDefaultCommandDelay();
+        entity.setImmune(false);
     }
 }

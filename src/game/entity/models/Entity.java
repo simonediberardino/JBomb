@@ -1,15 +1,12 @@
 package game.entity.models;
 
 import game.BomberMan;
-import game.entity.Player;
-import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
+import game.powerups.PowerUp;
 import game.ui.GamePanel;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.time.temporal.ValueRange;
 import java.util.*;
 import java.util.List;
 
@@ -20,7 +17,6 @@ import static game.ui.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity {
-    protected static final int IMAGE_REFRESH_RATE = 200;
     protected BufferedImage image;
     protected int lastImageIndex;
     protected long lastImageUpdate;
@@ -65,6 +61,10 @@ public abstract class Entity {
      */
     public float getImageRatio(){
         return 1;
+    }
+
+    public int getImageRefreshRate(){
+        return 200;
     }
 
     public long getId() {
@@ -141,13 +141,13 @@ public abstract class Entity {
     }
 
     public Coordinates getSpawnOffset(){
-        return new Coordinates(0,0);
+        return new Coordinates((GamePanel.GRID_SIZE-getSize())/2,(GamePanel.GRID_SIZE-getSize())/2);
     }
 
     /**
      * Despawns the entity from the game world.
      */
-    public void despawn() {
+    public final void despawn() {
         setSpawned(false);
         BomberMan.getInstance().removeEntity(this);
         this.onDespawn();
@@ -156,28 +156,39 @@ public abstract class Entity {
     /**
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
-    public void spawn() {
+    public final void spawn() {
         if (isSpawned()) {
             return;
         }
 
-        // EDIT
-        List<Coordinates> desiredPosition = getPositions();
-        boolean canSpawn =
-                desiredPosition.parallelStream().noneMatch(coordinates -> BomberMan.getInstance().getEntities().contains(coordinates))
-                && desiredPosition.parallelStream().noneMatch(coordinates -> BomberMan.getInstance().getBlocks().contains(coordinates));
-        if(canSpawn) {
-                setCoords(coords);
-                setSpawned(true);
-                if (this instanceof InteractiveEntities) {
-                    BomberMan.getInstance().addEntity((InteractiveEntities) this);
-                }
-                else if (this instanceof Block) {
-                    BomberMan.getInstance().addBlock((Block) this);
-                }
-        }
+        setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
 
-        this.onSpawn();
+        List<Coordinates> desiredPositions = getPositions();
+        if (canSpawnAtPositions(desiredPositions)) {
+            setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
+            setCoords(desiredPositions.get(0));
+            setSpawned(true);
+            addEntityIfInteractiveOrBlock();
+            onSpawn();
+        }
+    }
+
+    private boolean canSpawnAtPositions(List<Coordinates> desiredPositions) {
+        for (Coordinates coordinates : desiredPositions) {
+            if (BomberMan.getInstance().getEntities().contains(coordinates) ||
+                    BomberMan.getInstance().getStaticEntities().contains(coordinates)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void addEntityIfInteractiveOrBlock() {
+        if (this instanceof Block || this instanceof PowerUp) {
+            BomberMan.getInstance().addStaticEntity(this);
+        }else if (this instanceof EntityInteractable) {
+            BomberMan.getInstance().addEntity((EntityInteractable) this);
+        }
     }
 
 

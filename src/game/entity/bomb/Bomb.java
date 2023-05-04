@@ -1,5 +1,6 @@
 package game.entity.bomb;
 
+import game.BomberMan;
 import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
@@ -14,17 +15,20 @@ import java.util.*;
 
 import static game.ui.GamePanel.GRID_SIZE;
 
-public class Bomb extends Block implements Explosive{
-    private static final int imageRefreshRate = 250;
+public class Bomb extends Block implements Explosive {
+    public static final int BOMB_SIZE = GamePanel.COMMON_DIVISOR * 4;
     public static final long PLACE_INTERVAL = 1000;
-    public static final int size = GamePanel.COMMON_DIVISOR * 4;
-    private final int explodeTimer = 5000;
+    private static final int EXPLODE_TIMER = 5000;
     private Runnable onExplodeCallback;
-    public static final Coordinates spawnOffset  = new Coordinates( (GRID_SIZE - Bomb.size) / 2,(GRID_SIZE - Bomb.size) / 2);
-    public static final int MAX_EXPLOSION_DISTANCE = 1;
+    private BomberEntity caller;
 
-    public Bomb(Coordinates coords){
+    public Bomb(Coordinates coords) {
         super(coords);
+    }
+
+    public Bomb(BomberEntity entity) {
+        super(entity.getCoords());
+        this.caller = entity;
     }
 
     @Override
@@ -42,26 +46,21 @@ public class Bomb extends Block implements Explosive{
             images[i] = String.format("%sbomb_%d.png", getBasePath(), i);
         }
 
-        if(System.currentTimeMillis() - lastImageUpdate < imageRefreshRate) {
+        if (System.currentTimeMillis() - lastImageUpdate < getImageRefreshRate()) {
             return this.image;
         }
 
         BufferedImage img = loadAndSetImage(images[lastImageIndex]);
 
         lastImageIndex++;
-        if(lastImageIndex >= images.length) {
+        if (lastImageIndex >= images.length) {
             lastImageIndex = 0;
         }
 
         return img;
     }
 
-    @Override
-    public Coordinates getSpawnOffset(){
-        return spawnOffset;
-    }
-
-    public void setOnExplodeListener(Runnable runnable){
+    public void setOnExplodeListener(Runnable runnable) {
         onExplodeCallback = runnable;
     }
 
@@ -72,7 +71,6 @@ public class Bomb extends Block implements Explosive{
      */
     @Override
     protected void doInteract(Entity e) {
-        if(e == null) return;
     }
 
     public void explode() {
@@ -87,7 +85,7 @@ public class Bomb extends Block implements Explosive{
         new Explosion(getCoords(), Direction.DOWN, this);
         new Explosion(getCoords(), Direction.LEFT, this);
 
-        if(onExplodeCallback != null) onExplodeCallback.run();
+        if (onExplodeCallback != null) onExplodeCallback.run();
     }
 
     public void trigger() {
@@ -98,40 +96,38 @@ public class Bomb extends Block implements Explosive{
         };
 
         Timer timer = new Timer();
-        timer.schedule(explodeTask, explodeTimer);
+        timer.schedule(explodeTask, EXPLODE_TIMER);
     }
 
 
     @Override
-    public int getSize(){
-        return size;
+    public int getSize() {
+        return BOMB_SIZE;
     }
 
-    public List<Class<? extends Entity>> getExplosionObstacles(){
+    @Override
+    public List<Class<? extends Entity>> getExplosionObstacles() {
         return Arrays.asList(StoneBlock.class, DestroyableBlock.class);
     }
 
-
-    public boolean isObstacleOfExplosion(Entity e){
-        if (e == null) return true;
-
-        return (getExplosionObstacles().stream().anyMatch(c-> c.isInstance(e) ) );
-
+    @Override
+    public boolean isObstacleOfExplosion(Entity e) {
+        return (e == null) || (getExplosionObstacles().stream().anyMatch(c -> c.isInstance(e)));
     }
 
-    public List<Class<? extends Entity>> getExplosionInteractionEntities(){
+    @Override
+    public List<Class<? extends Entity>> getExplosionInteractionEntities() {
         return Arrays.asList(DestroyableBlock.class, Enemy.class, Player.class, Bomb.class);
     }
 
-    public boolean canExplosionInteractWith(Entity e){
-        if (e == null)return true;
-
-        return (getExplosionInteractionEntities().stream().anyMatch(c-> c.isInstance(e) ) );
-
+    @Override
+    public boolean canExplosionInteractWith(Entity e) {
+        return (e == null) || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e)));
     }
 
-    public int getMaxExplosionDistance(){
-        return MAX_EXPLOSION_DISTANCE;
+    @Override
+    public int getMaxExplosionDistance() {
+        return caller != null ? caller.getCurrExplosionLength() : BomberMan.getInstance().getCurrentLevel().getExplosionLength();
     }
 }
 

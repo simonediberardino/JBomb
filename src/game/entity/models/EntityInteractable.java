@@ -1,6 +1,10 @@
 package game.entity.models;
 
 import game.BomberMan;
+import game.entity.Player;
+import game.entity.blocks.DestroyableBlock;
+import game.entity.blocks.StoneBlock;
+import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
@@ -15,7 +19,9 @@ import static game.ui.GamePanel.PIXEL_UNIT;
 /**
  * An abstract class representing interactive entities, which can move or interact with other entities in the game.
  */
-public abstract class InteractiveEntities extends Entity {
+public abstract class EntityInteractable extends Entity {
+    private final Set<Class<? extends Entity>> whitelistObstacles = new HashSet<>();
+
     /**
      * Gets the size of the entity in pixels.
      * @return the size of the entity
@@ -26,7 +32,7 @@ public abstract class InteractiveEntities extends Entity {
      * Constructs an interactive entity with the given coordinates.
      * @param coordinates the coordinates of the entity
      */
-    public InteractiveEntities(Coordinates coordinates) {
+    public EntityInteractable(Coordinates coordinates) {
         super(coordinates);
     }
 
@@ -35,7 +41,7 @@ public abstract class InteractiveEntities extends Entity {
             this.doInteract(e);
         }
 
-        else if(e instanceof InteractiveEntities && ((InteractiveEntities) e).canInteractWith(this)){
+        else if(e instanceof EntityInteractable && ((EntityInteractable) e).canInteractWith(this)){
             e.doInteract(this);
         }
     }
@@ -84,7 +90,7 @@ public abstract class InteractiveEntities extends Entity {
         List<Entity> entityLinkedList = new LinkedList<>();
 
         // Get all the blocks and entities in the game
-        var blocks = BomberMan.getInstance().getBlocks();
+        var blocks = BomberMan.getInstance().getStaticEntities();
         var entities = BomberMan.getInstance().getEntities();
         var all = new HashSet<Entity>();
         all.addAll(blocks);
@@ -116,7 +122,7 @@ public abstract class InteractiveEntities extends Entity {
      */
     public List<Entity> getEntitiesOnCoordinates(Coordinates nextOccupiedCoords) {
         // Get all the blocks and entities in the game
-        var blocks = BomberMan.getInstance().getBlocks();
+        var blocks = BomberMan.getInstance().getStaticEntities();
         var entities = BomberMan.getInstance().getEntities();
         var all = new HashSet<Entity>();
         all.addAll(blocks);
@@ -155,7 +161,7 @@ public abstract class InteractiveEntities extends Entity {
 
     public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
         // Get all the blocks and entities in the game
-        var blocks = BomberMan.getInstance().getBlocks();
+        var blocks = BomberMan.getInstance().getStaticEntities();
         var entities = BomberMan.getInstance().getEntities();
         var all = new HashSet<Entity>();
         all.addAll(blocks);
@@ -262,14 +268,30 @@ public abstract class InteractiveEntities extends Entity {
         return canMove;
     }
 
-    public abstract List<Class<? extends Entity>> getObstacles();
-    public abstract List<Class<? extends Entity>> getInteractionsEntities();
+    public Set<Class<? extends Entity>> getWhiteListObstacles() {
+        return whitelistObstacles;
+    }
+
+    public Set<Class<? extends Entity>> getObstacles() {
+        return new HashSet<>(Arrays.asList(StoneBlock.class, Bomb.class, Enemy.class, DestroyableBlock.class, Player.class));
+    }
+
+    public abstract Set<Class<? extends Entity>> getInteractionsEntities();
 
     public boolean isObstacle(Entity e){
-        return (e == null) || (getObstacles().stream().anyMatch(c-> c.isInstance(e) ) );
+        if(e == null)
+            return true;
+
+        return getObstacles().stream().anyMatch(c -> c.isInstance(e)) && whitelistObstacles.stream().noneMatch(c -> c.isInstance(e));
     }
 
     public boolean canInteractWith(Entity e){
-        return (e == null) || (getInteractionsEntities().stream().anyMatch(c-> c.isInstance(e)));
+        if(e == null)
+            return true;
+
+        if((e instanceof Character) && ((Character) e).isImmune() && this instanceof EntityDamage)
+            return false;
+
+        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e));
     }
 }

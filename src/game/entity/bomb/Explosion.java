@@ -9,20 +9,24 @@ import game.ui.GamePanel;
 import game.ui.Paths;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static game.ui.Utility.loadImage;
 
 /**
  * Represents an explosion that can interact with other entities in the game.
  */
-public class Explosion extends InteractiveEntities {
+public class Explosion extends EntityDamage {
+    public static final int SIZE = GamePanel.COMMON_DIVISOR * 4;
     // The distance from the bomb where the explosion was created.
     public final int distanceFromExplosive;
 
     // The maximum distance from the bomb that the explosion can travel.
     private final int maxDistance;
-    private final int BOMB_STATES = 3;
+    private static final int BOMB_STATES = 3;
     private boolean canExpand;
 
     // The direction of the explosion.
@@ -30,9 +34,7 @@ public class Explosion extends InteractiveEntities {
     private boolean appearing = true;
     private int explosionState = 1;
     private long lastRefresh = 0;
-    private final int refreshRate = 100;
     private final Explosive explosive;
-    public static final int SIZE = GamePanel.COMMON_DIVISOR * 4;
 
 
     public Explosion(Coordinates coordinates, Direction direction, Explosive explosive) {
@@ -64,13 +66,12 @@ public class Explosion extends InteractiveEntities {
         BomberMan.getInstance().addEntity(this);
 
         // Move or interact with other entities in the game based on the explosion's direction.
-        if (distanceFromExplosive ==0){
+        if (distanceFromExplosive == 0){
             List<Coordinates> desiredCoords = getPositions();
             for (Entity e : BomberMan.getInstance().getEntities()) {
-                if (desiredCoords.stream().anyMatch(coord -> InteractiveEntities.doesCollideWith(coord, e))){
+                if (desiredCoords.stream().anyMatch(coord -> EntityInteractable.doesCollideWith(coord, e))){
                     interact(e);
                 }
-
             }
 
         }
@@ -105,8 +106,9 @@ public class Explosion extends InteractiveEntities {
 
 
     @Override
-    public List<Class<? extends Entity>> getInteractionsEntities() {
-        return explosive.getExplosionInteractionEntities();
+    public Set<Class<? extends Entity>> getInteractionsEntities() {
+        Set<Class< ? extends Entity>> hashSet = new HashSet(Arrays.asList(explosive.getExplosionInteractionEntities()));
+        return  hashSet;
     }
 
     /**
@@ -170,7 +172,7 @@ public class Explosion extends InteractiveEntities {
         int prevState = explosionState;
         long currentTime = System.currentTimeMillis();
 
-        if (currentTime - lastRefresh >= refreshRate) {
+        if (currentTime - lastRefresh >= getImageRefreshRate()) {
             explosionState += appearingConstant;
             lastRefresh = currentTime;
         }
@@ -178,16 +180,19 @@ public class Explosion extends InteractiveEntities {
         return prevState;
     }
 
-
     @Override
-    public boolean isObstacle(Entity e) {
-        if (e == null) return true;
-        return getExplosive().isObstacleOfExplosion(e);
+    public int getImageRefreshRate() {
+        return 100;
     }
 
     @Override
-    public List<Class<? extends Entity>> getObstacles() {
-        return getExplosive().getExplosionObstacles();
+    public boolean isObstacle(Entity e) {
+        return (e == null) || getExplosive().isObstacleOfExplosion(e);
+    }
+
+    @Override
+    public Set<Class<? extends Entity>> getObstacles() {
+        return new HashSet<>(getExplosive().getExplosionObstacles());
     }
 
     @Override

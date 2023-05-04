@@ -5,20 +5,19 @@ import game.engine.GameTickerObservable;
 import game.entity.*;
 import game.entity.models.Block;
 import game.entity.models.Entity;
-import game.entity.models.InteractiveEntities;
+import game.entity.models.EntityInteractable;
 import game.level.Level;
+import game.powerups.PowerUp;
 import game.ui.GameFrame;
-import game.ui.GamePanel;
 
-import javax.swing.Timer;
 import java.util.*;
 
 public class BomberMan {
     private static BomberMan instance;
     private GameTickerObservable gameTickerObservable;
-    private Set<InteractiveEntities> interactiveEntities;
+    private Set<EntityInteractable> interactiveEntities;
     private long lastGamePauseStateTime = System.currentTimeMillis();
-    private Set<Block> blocks;
+    private Set<Entity> staticEntities;
     private ControllerManager controllerManager;
     private Level currentLevel;
     private Player player;
@@ -36,7 +35,7 @@ public class BomberMan {
 
         this.currentLevel = currentLevel;
         this.interactiveEntities = new HashSet<>();
-        this.blocks = new HashSet<>();
+        this.staticEntities = new HashSet<>();
         this.controllerManager = new ControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
         controllerManager.addObserver(new GamePausedObserver());
@@ -65,34 +64,34 @@ public class BomberMan {
         return gameFrame;
     }
 
-    public Set<? extends InteractiveEntities> getEntities() {
+    public Set<? extends EntityInteractable> getEntities() {
         return new HashSet<>(interactiveEntities);
     }
 
-    public Set<? extends Block> getBlocks() {
-        return new HashSet<>(blocks);
+    public Set<? extends Entity> getStaticEntities() {
+        return new HashSet<>(staticEntities);
     }
 
     public void removeInteractiveEntity(Entity e){
         interactiveEntities.remove(e);
     }
 
-    public void removeBlock(Entity e){
-        blocks.remove(e);
+    public void removeStaticEntities(Entity e){
+        staticEntities.remove(e);
     }
 
-    public void addEntity(InteractiveEntities entity) {
+    public void addEntity(EntityInteractable entity) {
         interactiveEntities.add(entity);
     }
 
-    public void addBlock(Block entity) {
-        blocks.add(entity);
+    public void addStaticEntity(Entity entity) {
+        staticEntities.add(entity);
     }
 
     public void removeEntity(Entity e){
-        if(e instanceof Block){
-            removeBlock(e);
-        }else if (e instanceof InteractiveEntities){
+        if(e instanceof Block || e instanceof PowerUp){
+            removeStaticEntities(e);
+        }else if (e instanceof EntityInteractable){
             removeInteractiveEntity(e);
         }
     }

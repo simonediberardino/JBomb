@@ -3,17 +3,13 @@ package game.entity.models;
 import game.BomberMan;
 import game.controller.Command;
 import game.controller.ControllerManager;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.StoneBlock;
-import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.GamePanel;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static game.models.Direction.*;
 import static game.models.Direction.DOWN;
@@ -22,7 +18,9 @@ import static game.models.Direction.DOWN;
 /**
  * Represents a character in the game, which can move and interact with the environment.
  */
-public abstract class Character extends InteractiveEntities {
+public abstract class Character extends EntityDamage {
+    public static final int PADDING_HEAD = GamePanel.PIXEL_UNIT*4;
+    public static final int SIZE = GamePanel.PIXEL_UNIT * 4 * 2;
     protected long lastDirectionUpdate = 0;
     protected Direction currDirection = null;
     /** The last direction this character was moving in. */
@@ -30,8 +28,7 @@ public abstract class Character extends InteractiveEntities {
 
     /** Whether this character is alive or not. */
     protected boolean isAlive = true;
-    public static final int PADDING_HEAD = GamePanel.PIXEL_UNIT*4;
-    public static final int SIZE = GamePanel.PIXEL_UNIT * 4 * 2;
+    protected boolean isImmune = false;
 
     /**
      * Returns an array of file names for the front-facing icons for this character.
@@ -96,10 +93,20 @@ public abstract class Character extends InteractiveEntities {
 
     @Override
     public BufferedImage getImage() {
-        if(this.image == null){
+        if (this.image != null) {
+            return this.image;
+        } else {
             currDirection = Direction.DOWN;
             return loadAndSetImage(getFrontIcons()[0]);
-        }else return this.image;
+        }
+    }
+
+    public boolean isImmune() {
+        return isImmune;
+    }
+
+    public void setImmune(boolean immune) {
+        isImmune = immune;
     }
 
     /**
@@ -127,7 +134,7 @@ public abstract class Character extends InteractiveEntities {
         if (previousDirection != d) {
             lastImageIndex = 0;
             lastDirectionUpdate = System.currentTimeMillis();
-        } else if(System.currentTimeMillis() - lastImageUpdate > IMAGE_REFRESH_RATE){
+        } else if(System.currentTimeMillis() - lastImageUpdate > getImageRefreshRate()){
             // If it's time to refresh the image, increment the image index.
             lastImageIndex++;
         } else {
@@ -241,12 +248,9 @@ public abstract class Character extends InteractiveEntities {
     }
 
     @Override
-    public List<Class<? extends Entity>> getObstacles() {
-        return Arrays.asList(StoneBlock.class, Bomb.class, Enemy.class, DestroyableBlock.class);
+    public Set<Class<? extends Entity>> getObstacles() {
+        return super.getObstacles();
     }
 
-    @Override
-    public List<Class<? extends Entity>> getInteractionsEntities() {
-        return Arrays.asList(StoneBlock.class, DestroyableBlock.class, Enemy.class, Explosion.class);
-    }
+
 }
