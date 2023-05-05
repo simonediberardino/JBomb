@@ -5,7 +5,7 @@ import game.controller.Command;
 import game.controller.ControllerManager;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.GamePanel;
+import game.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -19,8 +19,8 @@ import static game.models.Direction.DOWN;
  * Represents a character in the game, which can move and interact with the environment.
  */
 public abstract class Character extends EntityDamage {
-    public static final int PADDING_HEAD = GamePanel.PIXEL_UNIT*4;
-    public static final int SIZE = GamePanel.PIXEL_UNIT * 4 * 2;
+    public static final int PADDING_HEAD = PitchPanel.PIXEL_UNIT*4;
+    public static final int SIZE = PitchPanel.PIXEL_UNIT * 4 * 2;
     protected long lastDirectionUpdate = 0;
     protected Direction currDirection = null;
     /** The last direction this character was moving in. */
@@ -239,6 +239,10 @@ public abstract class Character extends EntityDamage {
      @param command The command specifying the action.
      */
     public void handleAction(Command command) {
+        if (!BomberMan.getInstance().getGameState()) {
+            return;
+        }
+
         switch (command) {
             // For move up and move down, use left and right as opposite directions respectively.
             case MOVE_UP: case MOVE_DOWN: handleMoveCommand(command, LEFT, RIGHT); break;
@@ -250,6 +254,15 @@ public abstract class Character extends EntityDamage {
     @Override
     public Set<Class<? extends Entity>> getObstacles() {
         return super.getObstacles();
+    }
+
+    public float getSpeed() {
+        return 1f;
+    }
+
+    @Override
+    protected float getDelayObserverUpdate() {
+        return super.getDelayObserverUpdate() / getSpeed();
     }
 
 

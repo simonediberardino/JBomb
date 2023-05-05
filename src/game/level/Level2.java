@@ -1,14 +1,11 @@
 package game.level;
 
 import game.BomberMan;
-import game.entity.enemies.FlyingEnemy;
-import game.entity.enemies.TankEnemy;
+import game.entity.enemies.*;
+import game.entity.models.Enemy;
 import game.models.Coordinates;
-import game.powerups.ArmorPowerUp;
-import game.powerups.SpeedPowerUp;
-import game.powerups.TransparentDestroyableBlocksPowerUp;
 
-import static game.ui.GamePanel.GRID_SIZE;
+import static game.panels.PitchPanel.GRID_SIZE;
 
 /**
 
@@ -24,16 +21,8 @@ public class Level2 extends Level {
     }
 
     @Override
-    public void spawnEnemies() {
-        for(int i = 0; i < startEnemiesCount(); i++) {
-            new FlyingEnemy(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
-            new TankEnemy(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
-        }
-    }
-
-    @Override
     public int startEnemiesCount() {
-        return 3;
+        return 8;
     }
 
     @Override
@@ -43,6 +32,14 @@ public class Level2 extends Level {
 
     @Override
     public int getExplosionLength() {
-        return 1;
+        return explosionLength;
+    }
+
+    @Override
+    public Class<? extends Enemy>[] availableEnemies() {
+        return new Class[]{
+                YellowBall.class,
+                FlyingEnemy.class
+        };
     }
 }

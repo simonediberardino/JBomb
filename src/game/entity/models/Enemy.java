@@ -12,10 +12,14 @@ import game.models.Direction;
 
 import java.util.*;
 
-public abstract class Enemy extends Character implements ICPU, Observer {
-    private static final int CHANGE_DIRECTION_RATE = 10; // percentage
+public abstract class Enemy extends Character implements ICPU {
+    public int CHANGE_DIRECTION_RATE = 10; // percentage
     private static final int DIRECTION_REFRESH_RATE = 500;
     protected boolean canMove = true;
+
+    public Enemy(){
+        super(null);
+    }
 
     public Enemy(Coordinates coordinates) {
         super(coordinates);
@@ -106,11 +110,18 @@ public abstract class Enemy extends Character implements ICPU, Observer {
 
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities(){
-        return new HashSet<>(Arrays.asList(Player.class, Enemy.class, DestroyableBlock.class, Bomb.class, Explosion.class, Block.class));
+        return new HashSet<>(Arrays.asList(Player.class, Enemy.class, DestroyableBlock.class, Bomb.class, Block.class));
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public final void update(Observable o, Object gameState) {
+        super.update(o, gameState);
+
+        if((boolean) gameState)
+            update((Boolean) gameState);
+    }
+
+    protected void update(boolean gameState) {
         if(canMove) chooseDirection(false);
     }
 }

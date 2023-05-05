@@ -1,28 +1,35 @@
 package game.entity.models;
 
 import game.BomberMan;
+import game.engine.GameTickerObserver;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.powerups.PowerUp;
-import game.ui.GamePanel;
+import game.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
-import static game.ui.Utility.loadImage;
+import static game.panels.PitchPanel.GRID_SIZE;
+import static game.utils.Utility.loadImage;
 
 
 /**
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
-public abstract class Entity {
+public abstract class Entity extends GameTickerObserver {
     protected BufferedImage image;
     protected int lastImageIndex;
     protected long lastImageUpdate;
     private Coordinates coords;
     private boolean isSpawned = false;
     private final long id;
+    private boolean isImmune = false;
+
+    public Entity(){
+        this(new Coordinates(-1, -1));
+    }
 
     /**
      * Constructs an entity with the given coordinates.
@@ -69,6 +76,14 @@ public abstract class Entity {
 
     public long getId() {
         return id;
+    }
+
+    public boolean isImmune() {
+        return isImmune;
+    }
+
+    public void setImmune(boolean isImmune) {
+        this.isImmune = isImmune;
     }
 
     /**
@@ -141,7 +156,7 @@ public abstract class Entity {
     }
 
     public Coordinates getSpawnOffset(){
-        return new Coordinates((GamePanel.GRID_SIZE-getSize())/2,(GamePanel.GRID_SIZE-getSize())/2);
+        return new Coordinates((PitchPanel.GRID_SIZE-getSize())/2,(PitchPanel.GRID_SIZE-getSize())/2);
     }
 
     /**
@@ -151,6 +166,11 @@ public abstract class Entity {
         setSpawned(false);
         BomberMan.getInstance().removeEntity(this);
         this.onDespawn();
+    }
+
+    public final void spawnAtRandomCoordinates() {
+        setCoords(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3));
+        spawn();
     }
 
     /**
@@ -228,7 +248,7 @@ public abstract class Entity {
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset) last = GamePanel.PIXEL_UNIT;
+                if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
 
                 coordinates.add(new Coordinates(getCoords().getX() + size - 1 + first + step * offset, getCoords().getY() + i * offset - last));
             }
@@ -243,7 +263,7 @@ public abstract class Entity {
         int last = 0;
         for (int step = 0; step <= steps/offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset) last = GamePanel.PIXEL_UNIT;
+                if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
                 coordinates.add(new Coordinates(getCoords().getX() - first - step * offset, getCoords().getY() + i * offset - last));
             }first =0;
         }
@@ -256,7 +276,7 @@ public abstract class Entity {
         int last = 0;
         for (int step = 0; step <= steps/offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset) last = GamePanel.PIXEL_UNIT;
+                if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
                 coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() - first - step * offset));
             }first = 0;
         }
@@ -269,7 +289,7 @@ public abstract class Entity {
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset) last = GamePanel.PIXEL_UNIT;
+                if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
 
                 coordinates.add(new Coordinates(getCoords().getX() + i * offset -last, getCoords().getY() + size - 1 + first + step * offset));
             }first =0;

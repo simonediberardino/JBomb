@@ -1,15 +1,12 @@
 package game.level;
 
 import game.BomberMan;
-import game.entity.blocks.DestroyableBlock;
 import game.entity.enemies.YellowBall;
 import game.entity.enemies.FlyingEnemy;
+import game.entity.models.Enemy;
 import game.models.Coordinates;
-import game.entity.blocks.StoneBlock;
 
-import javax.swing.*;
-
-import static game.ui.GamePanel.GRID_SIZE;
+import static game.panels.PitchPanel.GRID_SIZE;
 
 /**
 
@@ -25,22 +22,15 @@ public class Level1 extends Level {
     }
 
     @Override
-    public void spawnEnemies() {
-        for(int i = 0; i < startEnemiesCount(); i++) {
-            new YellowBall(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
-            new FlyingEnemy(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3)).spawn();
-        }
-    }
-
-    @Override
     public int startEnemiesCount() {
-        return 8;
+        return 4;
     }
 
     @Override
     public int getMaxBombs() {
         return 1;
     }
+
     public int getMaxDestroyableBlocks(){
         return 10;
     }
@@ -53,5 +43,12 @@ public class Level1 extends Level {
     @Override
     public int getExplosionLength() {
         return 3;
+    }
+
+    @Override
+    public Class<? extends Enemy>[] availableEnemies() {
+        return new Class[]{
+                YellowBall.class
+        };
     }
 }

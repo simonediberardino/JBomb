@@ -1,43 +1,30 @@
-package game.ui;
+package game.panels;
 
 import game.BomberMan;
+import game.models.PagePanel;
+import game.utils.Paths;
+import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The main game frame that holds the game panel and UI.
- */
-public class GameFrame extends JFrame {
-    private GamePanel gamePanel; // The main panel that contains the game
-    private JPanel parentPanel; // JPanel that fits the JFrame;
-    private JPanel gamePanelWithBorders; // JPanel that includes the Game Panel and its borders;
+public class MatchPanel extends PagePanel {
+    private PitchPanel pitchPanel; // The main panel that contains the game
     private JPanel leftPanel; // Borders of the Game Panel;
     private JPanel topPanel;
     private JPanel bottomPanel;
     private JPanel rightPanel;
 
-    /**
-     * Initializes the game frame.
-     */
-    public GameFrame() {
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
-        setVisible(true);
-        BomberMan.getInstance().gameFrame = this; // Set the game frame instance
-        initGamePanel(); // Initialize the game panel and components
-        finalizeFrame();
+    public MatchPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+        super(cardLayout, parent, frame);
     }
 
     /**
      * Initializes the game panel which includes the game board with borders and background image.
      * It also sets the layout and adds components to the parent panel.
      */
-    private void initGamePanel() {
+    public void initGamePanel() {
         createParentPanel(); // Create the parent panel for the game frame
-        createGamePanelWithBorders(); // Create the game panel that includes its borders
         createGamePanel(); // Create the main game panel that contains the game
         createBorderPanels(); // Create the border panels for the game panel
         addPanelsToGamePanelWithBorders(); // Add the border panels and game panel to the game panel with borders
@@ -47,46 +34,31 @@ public class GameFrame extends JFrame {
         startGame(); // Start the game
     }
 
-    /**
-     * Create the parent panel for the game frame.
-     * It sets the background image of the panel and its layout.
-     */
-    private void createParentPanel() {
-        parentPanel = new JPanel() {
-            @Override
-            public void paint(Graphics g) {
-                Image backgroundImage = Utility.loadImage(Paths.getBackgroundImage());
+    @Override
+    public void paint(Graphics g) {
+        Image backgroundImage = Utility.loadImage(Paths.getBackgroundImage());
 
-                int width = (int) getPreferredSize().getWidth();
-                int height = (int) getPreferredSize().getHeight();
+        int width = (int) frame.getPreferredSize().getWidth();
+        int height = (int) frame.getPreferredSize().getHeight();
 
-                // Scale the background image to fit the size of the panel and draw it
-                if (width != 0 && height != 0) {
-                    g.drawImage(backgroundImage.getScaledInstance(width, height, 1), 0, 0, null);
-                }
+        // Scale the background image to fit the size of the panel and draw it
+        if (width != 0 && height != 0) {
+            g.drawImage(backgroundImage.getScaledInstance(width, height, 1), 0, 0, null);
+        }
 
-                super.paint(g);
-            }
-        };
-
-        parentPanel.setLayout(new BorderLayout()); // Set the layout of the parent panel
-        parentPanel.setOpaque(false); // Set the panel to be transparent
+        super.paint(g);
     }
 
-    /**
-     * Create the game panel that includes its borders.
-     */
-    private void createGamePanelWithBorders() {
-        gamePanelWithBorders = new JPanel(); // Create a new JPanel for the game panel with borders
-        gamePanelWithBorders.setLayout(new BorderLayout()); // Set the layout of the panel to BorderLayout
-        gamePanelWithBorders.setOpaque(false); // Set the panel to be transparent
+    private void createParentPanel(){
+        setLayout(new BorderLayout()); // Set the layout of the parent panel
+        setOpaque(false); // Set the panel to be transparent
     }
 
     /**
      * Create the main game panel that contains the game.
      */
     private void createGamePanel() {
-        gamePanel = new GamePanel(); // Create a new GamePanel instance
+        pitchPanel = new PitchPanel(); // Create a new GamePanel instance
     }
 
     /**
@@ -102,10 +74,10 @@ public class GameFrame extends JFrame {
      */
     private void createBorderPanels() {
         // calculate width of left and right border panels
-        int widthSides = (int) ((getWidth() - (gamePanel.getMaximumSize().getWidth())) / 2);
+        int widthSides = (int) ((frame.getWidth() - (pitchPanel.getMaximumSize().getWidth())) / 2);
 
         // calculate height of top and bottom border panels
-        int heightNorthSouth = (int) ((getHeight() - (gamePanel.getMaximumSize().getHeight())) / 2);
+        int heightNorthSouth = (int) ((frame.getHeight() - (pitchPanel.getMaximumSize().getHeight())) / 2);
 
         // set the size of the borders
         int borderSize = Utility.px(90);
@@ -116,14 +88,14 @@ public class GameFrame extends JFrame {
         // create left panel and set the dimensions and the image
         leftPanel = createLeftPanel(
                 widthSides,
-                (int) gamePanel.getMaximumSize().getHeight(),
+                (int) pitchPanel.getMaximumSize().getHeight(),
                 borderImages[0],
                 borderSize
         );
 
         // create top panel and set the dimensions, the image, and the width of the left panel
         topPanel = createTopPanel(
-                (int) gamePanel.getMaximumSize().getWidth(),
+                (int) pitchPanel.getMaximumSize().getWidth(),
                 heightNorthSouth,
                 borderImages[3],
                 borderSize,
@@ -132,7 +104,7 @@ public class GameFrame extends JFrame {
 
         // create bottom panel and set the dimensions, the image, and the width of the left panel
         bottomPanel = createBottomPanel(
-                (int) gamePanel.getMaximumSize().getWidth(),
+                (int) pitchPanel.getMaximumSize().getWidth(),
                 heightNorthSouth,
                 borderImages[1],
                 borderSize,
@@ -142,7 +114,7 @@ public class GameFrame extends JFrame {
         // create right panel and set the dimensions and the image
         rightPanel = createRightPanel(
                 widthSides,
-                (int) gamePanel.getMaximumSize().getHeight(),
+                (int) pitchPanel.getMaximumSize().getHeight(),
                 borderImages[2],
                 borderSize
         );
@@ -159,40 +131,38 @@ public class GameFrame extends JFrame {
      Adds the border panels and the game panel to gamePanelWithBorders using BorderLayout.
      */
     private void addPanelsToGamePanelWithBorders() {
-        gamePanelWithBorders.add(leftPanel, BorderLayout.WEST);
-        gamePanelWithBorders.add(topPanel, BorderLayout.NORTH);
-        gamePanelWithBorders.add(bottomPanel, BorderLayout.SOUTH);
-        gamePanelWithBorders.add(rightPanel, BorderLayout.EAST);
-        gamePanelWithBorders.add(gamePanel, BorderLayout.CENTER);
+        add(leftPanel, BorderLayout.WEST);
+        add(topPanel, BorderLayout.NORTH);
+        add(bottomPanel, BorderLayout.SOUTH);
+        add(rightPanel, BorderLayout.EAST);
+        add(pitchPanel, BorderLayout.CENTER);
     }
     /**
 
      Adds gamePanelWithBorders to the parent panel using BorderLayout.
      */
     private void addGamePanelWithBordersToParentPanel() {
-        parentPanel.add(gamePanelWithBorders, BorderLayout.CENTER);
     }
     /**
 
      Sets the layout of the main panel to BorderLayout and adds parentPanel to it.
      */
     private void setLayoutAndAddParentPanel() {
-        setLayout(new BorderLayout());
-        add(parentPanel, BorderLayout.CENTER);
+        add(pitchPanel, BorderLayout.CENTER);
     }
 
     /**
      Resizes the window to fit the components.
      */
     private void resizeWindowToFitComponents() {
-        pack();
+        frame.pack();
     }
 
     /**
      Starts the game by calling the start() method of the current level with gamePanel as the argument.
      */
     private void startGame() {
-        BomberMan.getInstance().getCurrentLevel().start(gamePanel);
+        BomberMan.getInstance().getCurrentLevel().start(pitchPanel);
     }
 
     /**
@@ -211,7 +181,8 @@ public class GameFrame extends JFrame {
             public void paint(Graphics g) {
                 super.paint(g);
                 // Draw the image scaled to the specified border size on the left side of the panel
-                g.drawImage(image.getScaledInstance(borderSize, getHeight(), 1), (int) (getPreferredSize().getWidth() - borderSize), 0, null);
+                System.out.println((int) frame.getPreferredSize().getHeight());
+                g.drawImage(image.getScaledInstance(borderSize, (int) frame.getPreferredSize().getHeight(), 1), pitchPanel.getX() - borderSize, 0, null);
             }
         };
         // Set the preferred size of the panel to the specified width and height
@@ -237,7 +208,7 @@ public class GameFrame extends JFrame {
             public void paint(Graphics g) {
                 super.paint(g);
                 // Draw the image scaled to the specified border size on the top of the panel
-                g.drawImage(image.getScaledInstance(gamePanel.getWidth() + borderSize * 2, borderSize / 2, 1), leftPanelWidth - borderSize, getHeight() - borderSize / 2, null);
+                g.drawImage(image.getScaledInstance(pitchPanel.getWidth() + borderSize * 2, borderSize / 2, 1), leftPanelWidth - borderSize, pitchPanel.getY() - borderSize/2, null);
             }
         };
         // Set the preferred size of the panel to the specified width and height
@@ -261,7 +232,7 @@ public class GameFrame extends JFrame {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
-                g.drawImage(image.getScaledInstance(gamePanel.getWidth() + borderSize * 2, borderSize / 2, 1), leftPanelWidth - borderSize, 0, null);
+                g.drawImage(image.getScaledInstance(pitchPanel.getWidth() + borderSize * 2, borderSize / 2, 1), leftPanelWidth - borderSize, 0, null);
             }
         };
         bottomPanel.setPreferredSize(new Dimension(width, height));
@@ -269,13 +240,14 @@ public class GameFrame extends JFrame {
     }
 
     private JPanel createRightPanel(int width, int height, Image image, int borderSize) {
+        System.out.println((int) frame.getPreferredSize().getHeight());
         // Create a new JPanel for the right side of the game window
         JPanel rightPanel = new JPanel() {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
                 // Draw the image scaled to the specified border size on the right side of the panel
-                g.drawImage(image.getScaledInstance(borderSize, getHeight(), 1), 0, 0, null);
+                g.drawImage(image.getScaledInstance(borderSize, (int) frame.getPreferredSize().getHeight(), 1), 0, 0, null);
             }
         };
         // Set the preferred size of the panel to the specified width and height
@@ -284,22 +256,7 @@ public class GameFrame extends JFrame {
         return rightPanel;
     }
 
-    public void finalizeFrame(){
-        // Set key listener and focusable
-        this.addKeyListener(BomberMan.getInstance().getControllerManager());
-        this.setFocusable(true);
-        this.requestFocus();
-
-        // Make the frame visible
-        this.setVisible(true);
-        this.revalidate();
-        this.repaint();
-
-        revalidate();
-        repaint();
-    }
-
-    public GamePanel getGamePanel() {
-        return gamePanel;
+    public PitchPanel getPitchPanel() {
+        return pitchPanel;
     }
 }

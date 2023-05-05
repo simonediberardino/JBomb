@@ -4,7 +4,7 @@ import game.entity.Player;
 import game.entity.models.*;
 import game.entity.models.Character;
 import game.models.Coordinates;
-import game.ui.GamePanel;
+import game.panels.PitchPanel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -60,7 +60,7 @@ public abstract class PowerUp extends EntityInteractable {
 
     @Override
     public int getSize() {
-        return GamePanel.COMMON_DIVISOR * 4;
+        return PitchPanel.COMMON_DIVISOR * 4;
     }
 
     public final void apply(BomberEntity entity) {

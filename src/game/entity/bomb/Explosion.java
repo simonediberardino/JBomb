@@ -5,8 +5,8 @@ import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.GamePanel;
-import game.ui.Paths;
+import game.utils.Paths;
+import game.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -14,13 +14,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static game.ui.Utility.loadImage;
+import static game.utils.Utility.loadImage;
 
 /**
  * Represents an explosion that can interact with other entities in the game.
  */
 public class Explosion extends EntityDamage {
-    public static final int SIZE = GamePanel.COMMON_DIVISOR * 4;
+    public static final int SIZE = PitchPanel.COMMON_DIVISOR * 4;
     // The distance from the bomb where the explosion was created.
     public final int distanceFromExplosive;
 
@@ -92,14 +92,16 @@ public class Explosion extends EntityDamage {
      */
     @Override
     protected void doInteract(Entity e) {
-        if (e instanceof BomberEntity) {
-            e.despawn();
-        } else if (e instanceof Enemy && !(getExplosive() instanceof Enemy)) {
-            e.despawn();
-        } else if (e instanceof Bomb) {
-            ((Bomb) e).explode();
-        } else if (e instanceof DestroyableBlock) {
-            e.despawn();
+        if (canInteractWith(e)) {
+            if (e instanceof BomberEntity) {
+                e.despawn();
+            } else if (e instanceof Enemy) {
+                e.despawn();
+            } else if (e instanceof Bomb) {
+                ((Bomb) e).explode();
+            } else if (e instanceof DestroyableBlock) {
+                e.despawn();
+            }
         }
     }
 

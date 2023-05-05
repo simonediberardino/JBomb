@@ -1,33 +1,33 @@
-package game.ui;
+package game.panels;
 
 import game.BomberMan;
 import game.entity.models.Character;
-import game.entity.models.Block;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
+import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-import static game.ui.Utility.loadImage;
-import static game.ui.Utility.px;
+import static game.utils.Utility.loadImage;
+import static game.utils.Utility.px;
 
 /**
  * The GamePanel class represents the main game panel that displays the game world and entities
  */
-public class GamePanel extends JPanel implements Observer {
+public class PitchPanel extends JPanel implements Observer {
     public static final Dimension DEFAULT_DIMENSION = new Dimension(945, 800);
     public static final int DEFAULT_PIXEL_UNIT = 6;
     public static final int PIXEL_UNIT = Utility.px(DEFAULT_PIXEL_UNIT);
     public static final int COMMON_DIVISOR = PIXEL_UNIT*2;
-    public static final int GRID_SIZE = GamePanel.COMMON_DIVISOR * 6;
+    public static final int GRID_SIZE = PitchPanel.COMMON_DIVISOR * 6;
     private Dimension panelDimensions;
 
     /**
      * Constructs a new GamePanel with the default dimensions and sets it as the observer for the game ticker observable
      */
-    public GamePanel() {
+    public PitchPanel() {
         // Convert default dimensions to screen size
         int convertedHeight = Utility.px((int) DEFAULT_DIMENSION.getHeight());
         convertedHeight = convertedHeight/(GRID_SIZE *2)*(GRID_SIZE*2)+GRID_SIZE;

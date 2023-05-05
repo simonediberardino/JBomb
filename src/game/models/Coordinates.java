@@ -3,13 +3,13 @@ package game.models;
 import game.BomberMan;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
-import game.ui.GameFrame;
+import game.panels.BombermanFrame;
 
 import java.awt.*;
 import java.time.temporal.ValueRange;
 import java.util.*;
 
-import static game.ui.GamePanel.GRID_SIZE;
+import static game.panels.PitchPanel.GRID_SIZE;
 
 public class Coordinates {
     private final int x;
@@ -29,16 +29,16 @@ public class Coordinates {
     }
 
     public boolean validate() {
-        GameFrame gameFrame = BomberMan
+        BombermanFrame bombermanFrame = BomberMan
                 .getInstance()
                 .getGameFrame();
 
-        if(gameFrame == null) return false;
+        if(bombermanFrame == null) return false;
 
         Dimension gamePanelDimensions = BomberMan
                 .getInstance()
                 .getGameFrame()
-                .getGamePanel()
+                .getPitchPanel()
                 .getPanelDimensions();
 
         ValueRange rangeY = ValueRange.of(0, gamePanelDimensions.height - GRID_SIZE/2);
@@ -50,21 +50,17 @@ public class Coordinates {
     public static Coordinates RoundedRandomCoords(Coordinates offset){
         Dimension dimensions = BomberMan.getInstance()
                 .getGameFrame()
-                .getGamePanel()
+                .getPitchPanel()
                 .getPanelDimensions();
 
-        Coordinates output = roundCoordinates(new Coordinates( (    (int) (Math.random() * dimensions.getWidth())  ),
+        return roundCoordinates(new Coordinates( (    (int) (Math.random() * dimensions.getWidth())  ),
                 (  (int) (Math.random() *  dimensions.getHeight() ) )), offset);
-        return output;
     }
     public static Coordinates roundCoordinates(Coordinates coords){
         return roundCoordinates(coords,new Coordinates(0,0));
     }
     public static Coordinates roundCoordinates(Coordinates coords, Coordinates offset){
-        return new Coordinates(   ((coords.getX() / GRID_SIZE) * GRID_SIZE + offset.getX()),
-
-
-                (    (coords.getY()/ GRID_SIZE) * GRID_SIZE + offset.getY()));
+        return new Coordinates(((coords.getX() / GRID_SIZE) * GRID_SIZE + offset.getX()), ((coords.getY()/ GRID_SIZE) * GRID_SIZE + offset.getY()));
     }
 
     public static Coordinates generateRandomCoordinates(){
@@ -75,6 +71,10 @@ public class Coordinates {
         Coordinates coord;
         while ((coord = Coordinates.generateRandomCoordinates()).distanceTo(other) < offset);
         return coord;
+    }
+
+    public static Coordinates randomCoordinatesFromPlayer() {
+        return Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3);
     }
 
     public static Coordinates generateRandomCoordinates(Coordinates spawnOffset){

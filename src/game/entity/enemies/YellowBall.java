@@ -2,7 +2,7 @@ package game.entity.enemies;
 
 import game.entity.models.Enemy;
 import game.models.Coordinates;
-import game.ui.Paths;
+import game.utils.Paths;
 
 public class YellowBall extends Enemy {
     public YellowBall(Coordinates coordinates) {

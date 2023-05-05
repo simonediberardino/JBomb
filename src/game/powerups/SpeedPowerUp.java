@@ -3,7 +3,7 @@ package game.powerups;
 import game.controller.ControllerManager;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;
-import game.ui.Paths;
+import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
 

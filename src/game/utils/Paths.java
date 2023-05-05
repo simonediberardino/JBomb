@@ -1,4 +1,4 @@
-package game.ui;
+package game.utils;
 
 import game.BomberMan;
 

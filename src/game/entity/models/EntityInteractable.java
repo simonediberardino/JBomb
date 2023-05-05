@@ -12,8 +12,8 @@ import game.models.Direction;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static game.ui.GamePanel.GRID_SIZE;
-import static game.ui.GamePanel.PIXEL_UNIT;
+import static game.panels.PitchPanel.GRID_SIZE;
+import static game.panels.PitchPanel.PIXEL_UNIT;
 
 
 /**
@@ -289,9 +289,6 @@ public abstract class EntityInteractable extends Entity {
         if(e == null)
             return true;
 
-        if((e instanceof Character) && ((Character) e).isImmune() && this instanceof EntityDamage)
-            return false;
-
-        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e));
+        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e)) && !e.isImmune() || (this instanceof Enemy&& isObstacle(e));
     }
 }

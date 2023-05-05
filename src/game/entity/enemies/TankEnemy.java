@@ -5,7 +5,7 @@ import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.models.Coordinates;
-import game.ui.Paths;
+import game.utils.Paths;
 
 import java.util.*;
 
@@ -22,13 +22,16 @@ public class TankEnemy extends Enemy implements Explosive {
 
     public String[] getFrontIcons() {
         return new String[]{
-                Paths.getEnemiesFolder() + "/tank/tank.png"
+                Paths.getEnemiesFolder() + "/tank/tank_back_front.png"
         };
     }
 
+
     @Override
     public String[] getLeftIcons() {
-        return getFrontIcons();
+        return new String[]{
+                Paths.getEnemiesFolder() + "/tank/tank_side.png"
+        };
     }
 
     @Override
@@ -38,11 +41,11 @@ public class TankEnemy extends Enemy implements Explosive {
 
     @Override
     public String[] getRightIcons() {
-        return getFrontIcons();
+        return getLeftIcons();
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(boolean arg) {
         if (System.currentTimeMillis() - lastUpdate > SHOOTING_REFRESH_RATE) {
             lastUpdate = System.currentTimeMillis();
 
@@ -57,7 +60,7 @@ public class TankEnemy extends Enemy implements Explosive {
             canMove = true;
         }
 
-        super.update(o, arg);
+        super.update(arg);
     }
 
     @Override

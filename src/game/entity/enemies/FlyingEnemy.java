@@ -3,11 +3,9 @@ package game.entity.enemies;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
 import game.models.Coordinates;
-import game.ui.Paths;
+import game.utils.Paths;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class FlyingEnemy extends Enemy {
@@ -15,25 +13,44 @@ public class FlyingEnemy extends Enemy {
         super(coordinates);
     }
 
+    @Override
+    protected String getBasePath() {
+        return Paths.getEnemiesFolder() + "/flying_enemy";
+    }
+
     public String[] getFrontIcons() {
         return new String[]{
-                Paths.getEnemiesFolder() + "/flying_enemy/aquila.png"
+                getBasePath() + "/eagle_front_0.png",
+                getBasePath() + "/eagle_front_1.png",
+                getBasePath() + "/eagle_front_2.png",
         };
     }
 
     @Override
     public String[] getLeftIcons() {
-        return getFrontIcons();
+        return new String[]{
+                getBasePath() + "/eagle_left_0.png",
+                getBasePath() + "/eagle_left_1.png",
+                getBasePath() + "/eagle_left_2.png",
+        };
     }
 
     @Override
     public String[] getBackIcons() {
-        return getFrontIcons();
+        return new String[]{
+                getBasePath() + "/eagle_back_0.png",
+                getBasePath() + "/eagle_back_1.png",
+                getBasePath() + "/eagle_back_2.png",
+        };
     }
 
     @Override
     public String[] getRightIcons() {
-        return getFrontIcons();
+        return new String[]{
+                getBasePath() + "/eagle_right_0.png",
+                getBasePath() + "/eagle_right_1.png",
+                getBasePath() + "/eagle_right_2.png",
+        };
     }
 
     @Override

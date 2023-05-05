@@ -7,16 +7,14 @@ import game.entity.blocks.StoneBlock;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.GamePanel;
-import game.ui.Paths;
+import game.utils.Paths;
+import game.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-import static game.ui.GamePanel.GRID_SIZE;
-
 public class Bomb extends Block implements Explosive {
-    public static final int BOMB_SIZE = GamePanel.COMMON_DIVISOR * 4;
+    public static final int BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 4;
     public static final long PLACE_INTERVAL = 1000;
     private static final int EXPLODE_TIMER = 5000;
     private Runnable onExplodeCallback;
@@ -122,7 +120,7 @@ public class Bomb extends Block implements Explosive {
 
     @Override
     public boolean canExplosionInteractWith(Entity e) {
-        return (e == null) || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e)));
+        return ((e == null) || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e))) && !e.isImmune());
     }
 
     @Override

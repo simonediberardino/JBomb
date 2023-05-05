@@ -8,7 +8,7 @@ import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
 import game.level.Level;
 import game.powerups.PowerUp;
-import game.ui.GameFrame;
+import game.panels.BombermanFrame;
 
 import java.util.*;
 
@@ -21,8 +21,8 @@ public class BomberMan {
     private ControllerManager controllerManager;
     private Level currentLevel;
     private Player player;
-    public GameFrame gameFrame = null;
-    public boolean gameState = true;
+    private BombermanFrame bombermanFrame = null;
+    private boolean gameState = false;
 
     public static BomberMan getInstance() {
         return instance;
@@ -41,11 +41,12 @@ public class BomberMan {
         controllerManager.addObserver(new GamePausedObserver());
 
         this.start();
-
     }
 
     public void start() {
-        gameFrame = new GameFrame();
+        bombermanFrame = new BombermanFrame();
+        bombermanFrame.create();
+        setGameState(true);
     }
 
     public Level getCurrentLevel() {
@@ -60,8 +61,8 @@ public class BomberMan {
         return player;
     }
 
-    public GameFrame getGameFrame() {
-        return gameFrame;
+    public BombermanFrame getGameFrame() {
+        return bombermanFrame;
     }
 
     public Set<? extends EntityInteractable> getEntities() {
@@ -123,5 +124,13 @@ public class BomberMan {
     private void resumeGame(){
         gameTickerObservable.start();
         gameState = true;
+    }
+
+    public boolean getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(boolean gameState) {
+        this.gameState = gameState;
     }
 }

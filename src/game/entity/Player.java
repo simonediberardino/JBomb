@@ -4,14 +4,14 @@ import game.BomberMan;
 import game.controller.Command;
 import game.entity.models.*;
 import game.models.Coordinates;
-import game.ui.Paths;
+import game.utils.Paths;
 
 import java.util.*;
 
-import static game.ui.GamePanel.GRID_SIZE;
+import static game.panels.PitchPanel.GRID_SIZE;
 
 
-public class Player extends BomberEntity implements Observer {
+public class Player extends BomberEntity {
     public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE-SIZE)/2 ,PADDING_HEAD);
     public Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
 
@@ -99,12 +99,13 @@ public class Player extends BomberEntity implements Observer {
 
     @Override
     public void handleAction(Command command) {
-        if (BomberMan.getInstance().gameState) {
-            super.handleAction(command);
+        if (!BomberMan.getInstance().getGameState()) {
+            return;
+        }
+        super.handleAction(command);
 
-            switch (command) {
-                case PLACE_BOMB: placeBomb(); break;
-            }
+        switch (command) {
+            case PLACE_BOMB: placeBomb(); break;
         }
     }
 
