@@ -8,7 +8,7 @@ import game.utils.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FlyingEnemy extends Enemy {
+public class FlyingEnemy extends IntelligentEnemy {
     public FlyingEnemy(Coordinates coordinates) {
         super(coordinates);
     }

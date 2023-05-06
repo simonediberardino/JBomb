@@ -22,7 +22,7 @@ public class Level2 extends Level {
 
     @Override
     public int startEnemiesCount() {
-        return 8;
+        return 10;
     }
 
     @Override
@@ -39,7 +39,8 @@ public class Level2 extends Level {
     public Class<? extends Enemy>[] availableEnemies() {
         return new Class[]{
                 YellowBall.class,
-                FlyingEnemy.class
+                FlyingEnemy.class,
+                TankEnemy.class
         };
     }
 }

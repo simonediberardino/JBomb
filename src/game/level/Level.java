@@ -5,9 +5,11 @@ import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
 import game.entity.enemies.FlyingEnemy;
+import game.entity.enemies.Orb;
 import game.entity.enemies.YellowBall;
 import game.entity.models.Enemy;
 import game.models.Coordinates;
+import game.models.EnhancedDirection;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -106,6 +108,10 @@ public abstract class Level {
 
         // Spawn a number of enemies at the start of the game.
         for (int i = 0; i < startEnemiesCount(); i++) {
+            Orb orb = new Orb(new Coordinates(0,0),EnhancedDirection.RIGHTDOWN);
+            orb.spawn();
+
+
             // Select a random enemy class from the availableEnemies array.
             Class<? extends Enemy> enemyClass = availableEnemies[new Random().nextInt(availableEnemies.length)];
 

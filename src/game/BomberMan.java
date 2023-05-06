@@ -16,6 +16,7 @@ public class BomberMan {
     private static BomberMan instance;
     private GameTickerObservable gameTickerObservable;
     private Set<EntityInteractable> interactiveEntities;
+    private Set<Entity> particles;
     private long lastGamePauseStateTime = System.currentTimeMillis();
     private Set<Entity> staticEntities;
     private ControllerManager controllerManager;
@@ -36,6 +37,8 @@ public class BomberMan {
         this.currentLevel = currentLevel;
         this.interactiveEntities = new HashSet<>();
         this.staticEntities = new HashSet<>();
+        this.particles = new HashSet<>();
+
         this.controllerManager = new ControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
         controllerManager.addObserver(new GamePausedObserver());
@@ -65,6 +68,10 @@ public class BomberMan {
         return bombermanFrame;
     }
 
+    public Set<? extends Entity> getParticles() {
+        return new HashSet<>(particles);
+    }
+
     public Set<? extends EntityInteractable> getEntities() {
         return new HashSet<>(interactiveEntities);
     }
@@ -81,16 +88,34 @@ public class BomberMan {
         staticEntities.remove(e);
     }
 
-    public void addEntity(EntityInteractable entity) {
+    private void addInteractableEntity(EntityInteractable entity) {
         interactiveEntities.add(entity);
     }
 
-    public void addStaticEntity(Entity entity) {
+    private void addParticle(Entity entity) {
+        particles.add(entity);
+    }
+
+    private void addStaticEntity(Entity entity) {
         staticEntities.add(entity);
     }
 
+    public void addEntity(Entity entity) {
+        if(entity instanceof Particle){
+            addParticle(entity);
+        }else if (entity instanceof Block || entity instanceof PowerUp) {
+            addStaticEntity(entity);
+        }else if (entity instanceof EntityInteractable) {
+            addInteractableEntity((EntityInteractable) entity);
+        }
+    }
+
     public void removeEntity(Entity e){
-        if(e instanceof Block || e instanceof PowerUp){
+        getGameTickerObservable().deleteObserver(e);
+
+        if(e instanceof Particle)
+            particles.remove(e);
+        else if(e instanceof Block || e instanceof PowerUp){
             removeStaticEntities(e);
         }else if (e instanceof EntityInteractable){
             removeInteractiveEntity(e);

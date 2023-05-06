@@ -22,9 +22,10 @@ public abstract class Character extends EntityDamage {
     public static final int PADDING_HEAD = PitchPanel.PIXEL_UNIT*4;
     public static final int SIZE = PitchPanel.PIXEL_UNIT * 4 * 2;
     protected long lastDirectionUpdate = 0;
-    protected Direction currDirection = null;
+    protected Direction currDirection = Direction.values()[(int) (Math.random()* values().length)];
     /** The last direction this character was moving in. */
     protected Direction previousDirection = null;
+    private int healthPoints = 100;
 
     /** Whether this character is alive or not. */
     protected boolean isAlive = true;
@@ -264,6 +265,18 @@ public abstract class Character extends EntityDamage {
     protected float getDelayObserverUpdate() {
         return super.getDelayObserverUpdate() / getSpeed();
     }
-
+    public int getHp(){
+        return healthPoints;
+    }
+    public void setHp(int newHp){
+        healthPoints = newHp;
+    }
+    public void removeHp(int damage){
+        healthPoints -=damage;
+        if (healthPoints<=0){
+            healthPoints = 0;
+            despawn();
+        }
+    }
 
 }

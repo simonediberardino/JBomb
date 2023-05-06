@@ -1,7 +1,6 @@
 package game.panels;
 
 import game.BomberMan;
-import game.models.PagePanel;
 
 import javax.swing.*;
 import java.awt.*;

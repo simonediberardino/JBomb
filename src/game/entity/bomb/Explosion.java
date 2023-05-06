@@ -1,6 +1,7 @@
 package game.entity.bomb;
 
 import game.BomberMan;
+import game.entity.Particle;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
 import game.models.Coordinates;
@@ -19,7 +20,7 @@ import static game.utils.Utility.loadImage;
 /**
  * Represents an explosion that can interact with other entities in the game.
  */
-public class Explosion extends EntityDamage {
+public class Explosion extends EntityDamage implements Particle {
     public static final int SIZE = PitchPanel.COMMON_DIVISOR * 4;
     // The distance from the bomb where the explosion was created.
     public final int distanceFromExplosive;
@@ -35,6 +36,7 @@ public class Explosion extends EntityDamage {
     private int explosionState = 1;
     private long lastRefresh = 0;
     private final Explosive explosive;
+    public static final int spawnOffset = (PitchPanel.GRID_SIZE-SIZE)/2;
 
 
     public Explosion(Coordinates coordinates, Direction direction, Explosive explosive) {
@@ -62,12 +64,13 @@ public class Explosion extends EntityDamage {
         this.explosive = explosive;
         this.maxDistance = explosive.getMaxExplosionDistance();
         this.canExpand = canExpand;
+
         // Add the explosion entity to the game.
         BomberMan.getInstance().addEntity(this);
 
         // Move or interact with other entities in the game based on the explosion's direction.
         if (distanceFromExplosive == 0){
-            List<Coordinates> desiredCoords = getPositions();
+            List<Coordinates> desiredCoords = getAllCoordinates();
             for (Entity e : BomberMan.getInstance().getEntities()) {
                 if (desiredCoords.stream().anyMatch(coord -> EntityInteractable.doesCollideWith(coord, e))){
                     interact(e);
@@ -92,25 +95,20 @@ public class Explosion extends EntityDamage {
      */
     @Override
     protected void doInteract(Entity e) {
-        if (canInteractWith(e)) {
-            if (e instanceof BomberEntity) {
-                e.despawn();
-            } else if (e instanceof Enemy) {
-                e.despawn();
-            } else if (e instanceof Bomb) {
-                ((Bomb) e).explode();
-            } else if (e instanceof DestroyableBlock) {
-                e.despawn();
-            }
+        if (e instanceof BomberEntity) {
+            attack(e);
+        } else if (e instanceof Enemy) {
+            attack(e);
+        } else if (e instanceof Bomb) {
+            ((Bomb) e).explode();
+        } else if (e instanceof DestroyableBlock) {
+            attack(e);
         }
     }
 
-
-
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities() {
-        Set<Class< ? extends Entity>> hashSet = new HashSet(Arrays.asList(explosive.getExplosionInteractionEntities()));
-        return  hashSet;
+        return (Set<Class< ? extends Entity>>) new HashSet(Arrays.asList(explosive.getExplosionInteractionEntities()));
     }
 
     /**

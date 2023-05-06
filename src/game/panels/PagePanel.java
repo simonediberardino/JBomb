@@ -1,4 +1,4 @@
-package game.models;
+package game.panels;
 
 import game.panels.BombermanFrame;
 

@@ -3,10 +3,10 @@ package game.entity.enemies;
 import game.entity.models.Enemy;
 import game.models.Coordinates;
 
-public class Zombie extends Enemy {
+public class Zombie extends IntelligentEnemy {
     public Zombie(Coordinates coordinates) {
         super(coordinates);
-        setImmune(true);
+        setHp(300);
     }
 
     @Override

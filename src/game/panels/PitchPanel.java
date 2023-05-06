@@ -1,6 +1,7 @@
 package game.panels;
 
 import game.BomberMan;
+import game.entity.Particle;
 import game.entity.models.Character;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
@@ -22,6 +23,7 @@ public class PitchPanel extends JPanel implements Observer {
     public static final int PIXEL_UNIT = Utility.px(DEFAULT_PIXEL_UNIT);
     public static final int COMMON_DIVISOR = PIXEL_UNIT*2;
     public static final int GRID_SIZE = PitchPanel.COMMON_DIVISOR * 6;
+    public static final int OFFSET_ON_CHECK = GRID_SIZE/2;
     private Dimension panelDimensions;
 
     /**
@@ -60,18 +62,14 @@ public class PitchPanel extends JPanel implements Observer {
 
         Graphics2D g2d = (Graphics2D) g;
         paintComponent(g2d);
+        Set<? extends Entity> setParticles = BomberMan.getInstance().getParticles();
         Set<? extends EntityInteractable> setEntities = BomberMan.getInstance().getEntities();
         Set<? extends Entity> setBlocks = BomberMan.getInstance().getStaticEntities();
         // Draw each entity in the new set
 
-        for (Entity block : setBlocks){
-            drawEntity(g2d, block);
-        }
-
-        for (Entity entity : setEntities) {
-            drawEntity(g2d, entity);
-        }
-
+        setBlocks.parallelStream().forEach((it) -> drawEntity(g2d, it));
+        setEntities.parallelStream().forEach((it) -> drawEntity(g2d, it));
+        setParticles.parallelStream().forEach((it) -> drawEntity(g2d, it));
     }
 
     /**

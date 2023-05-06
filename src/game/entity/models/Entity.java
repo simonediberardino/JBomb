@@ -2,6 +2,7 @@ package game.entity.models;
 
 import game.BomberMan;
 import game.engine.GameTickerObserver;
+import game.entity.enemies.Orb;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.powerups.PowerUp;
@@ -19,6 +20,7 @@ import static game.utils.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity extends GameTickerObserver {
+    public static final int ATTACK_RECEIVE_COOLDOWN = 300;
     protected BufferedImage image;
     protected int lastImageIndex;
     protected long lastImageUpdate;
@@ -26,6 +28,9 @@ public abstract class Entity extends GameTickerObserver {
     private boolean isSpawned = false;
     private final long id;
     private boolean isImmune = false;
+    private long lastAttackReceived = 0;
+
+
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -176,41 +181,24 @@ public abstract class Entity extends GameTickerObserver {
     /**
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
-    public final void spawn() {
+    public final void spawn(){
+        spawn(false);
+    }
+
+    public final void spawn(boolean forceSpawn) {
         if (isSpawned()) {
             return;
         }
 
         setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
 
-        List<Coordinates> desiredPositions = getPositions();
-        if (canSpawnAtPositions(desiredPositions)) {
+        if (forceSpawn || !EntityInteractable.isBlockOccupied(coords)) {
             setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
-            setCoords(desiredPositions.get(0));
             setSpawned(true);
-            addEntityIfInteractiveOrBlock();
+            BomberMan.getInstance().addEntity(this);
             onSpawn();
         }
     }
-
-    private boolean canSpawnAtPositions(List<Coordinates> desiredPositions) {
-        for (Coordinates coordinates : desiredPositions) {
-            if (BomberMan.getInstance().getEntities().contains(coordinates) ||
-                    BomberMan.getInstance().getStaticEntities().contains(coordinates)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void addEntityIfInteractiveOrBlock() {
-        if (this instanceof Block || this instanceof PowerUp) {
-            BomberMan.getInstance().addStaticEntity(this);
-        }else if (this instanceof EntityInteractable) {
-            BomberMan.getInstance().addEntity((EntityInteractable) this);
-        }
-    }
-
 
     public Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance){
         int sign = 0;
@@ -226,6 +214,18 @@ public abstract class Entity extends GameTickerObserver {
         }
 
         return null;
+    }
+    public List<Coordinates> getAllCoordinates(){
+        List<Coordinates> coordinates = new ArrayList<>();
+        int last = 0;
+        for (int step = 0; step <= getSize() / PitchPanel.OFFSET_ON_CHECK; step++) {
+            for (int i = 0; i <= getSize() / PitchPanel.OFFSET_ON_CHECK; i++) {
+                if (i== getSize()/PitchPanel.OFFSET_ON_CHECK) last = PitchPanel.PIXEL_UNIT;
+
+                coordinates.add(new Coordinates(getCoords().getX() + step * PitchPanel.OFFSET_ON_CHECK, getCoords().getY() + i * PitchPanel.OFFSET_ON_CHECK - last));
+            }
+        }
+        return coordinates;
     }
 
 
@@ -244,15 +244,13 @@ public abstract class Entity extends GameTickerObserver {
 
     private List<Coordinates> getNewCoordinatesOnRight(int steps, int offset, int size) {
         List<Coordinates> coordinates = new ArrayList<>();
-        int first = steps;
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
                 if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
 
-                coordinates.add(new Coordinates(getCoords().getX() + size - 1 + first + step * offset, getCoords().getY() + i * offset - last));
+                coordinates.add(new Coordinates(getCoords().getX() + getSize()+step * offset, getCoords().getY() + i * offset - last));
             }
-            first = 0;
         }
         return coordinates;
     }
@@ -297,21 +295,14 @@ public abstract class Entity extends GameTickerObserver {
         return coordinates;
     }
 
-    protected boolean isInside(Entity e) {
-        int centerX = this.getCoords().getX() + getSize()/2;
-        int centerY = this.getCoords().getY() + getSize()/2;
 
-        boolean isValidX = centerX >= e.getCoords().getX() && centerX <= e.getCoords().getX() + e.getSize();
-        boolean isValidY = centerY >= e.getCoords().getY() && centerY <= e.getCoords().getY() + e.getSize();
-
-        return isValidX && isValidY;
+    public long getLastAttackReceived(){
+        return lastAttackReceived;
     }
 
-
-
-
-
-
+    public void updateLastInteraction(){
+        lastAttackReceived = System.currentTimeMillis();
+    }
 
     @Override
     public boolean equals(Object o) {

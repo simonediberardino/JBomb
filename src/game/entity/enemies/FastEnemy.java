@@ -6,7 +6,7 @@ import game.models.Coordinates;
 import java.util.Observable;
 
 // TODO
-public class FastEnemy extends Enemy {
+public class FastEnemy extends IntelligentEnemy {
     public FastEnemy(Coordinates coordinates) {
         super(coordinates);
     }

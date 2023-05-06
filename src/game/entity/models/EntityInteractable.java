@@ -21,6 +21,7 @@ import static game.panels.PitchPanel.PIXEL_UNIT;
  */
 public abstract class EntityInteractable extends Entity {
     private final Set<Class<? extends Entity>> whitelistObstacles = new HashSet<>();
+    private final int attackDamage = 100;
 
     /**
      * Gets the size of the entity in pixels.
@@ -37,11 +38,13 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public final void interact(Entity e) {
-        if(canInteractWith(e)) {
+        if(canInteractWith(e)||isObstacle(e)) {
+            this.updateLastInteraction();
             this.doInteract(e);
         }
 
         else if(e instanceof EntityInteractable && ((EntityInteractable) e).canInteractWith(this)){
+            e.updateLastInteraction();
             e.doInteract(this);
         }
     }
@@ -71,7 +74,8 @@ public abstract class EntityInteractable extends Entity {
                     newCoordinates
             ).stream().noneMatch(this::isObstacle);
 
-            areCoordinatesValid = areCoordinatesValid && newCoordinates.stream().allMatch(Coordinates::validate);
+            areCoordinatesValid = areCoordinatesValid && newCoordinates.get(0).validate(this); // since the pitch is squared, if a coordinate is valid, then all the other new ones are as well;
+
             // If all the next coordinates are valid, add this direction to the list of available directions
             if (areCoordinatesValid) {
                 result.add(d);
@@ -221,12 +225,13 @@ public abstract class EntityInteractable extends Entity {
         // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
         // with a given step size
         List<Coordinates> nextOccupiedCoords = getNewCoordinatesOnDirection(d, stepSize, getSize() / 2);
+
         // Calculate the coordinates of the top-left corner of the next position
         Coordinates nextTopLeftCoords = nextCoords(d, stepSize);
         // Get a list of entities that are present in the next occupied coordinates
         List<Entity> interactedEntities = getEntitiesOnCoordinates(nextOccupiedCoords);
 
-        if(!ignoreMapBorders && !nextTopLeftCoords.validate()){
+        if(!ignoreMapBorders && !nextTopLeftCoords.validate(this)){
             this.interact(null);
             return false;
         }
@@ -289,6 +294,20 @@ public abstract class EntityInteractable extends Entity {
         if(e == null)
             return true;
 
+        if(System.currentTimeMillis() - e.getLastAttackReceived() < Entity.ATTACK_RECEIVE_COOLDOWN) return false;
+
         return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e)) && !e.isImmune() || (this instanceof Enemy&& isObstacle(e));
+    }
+
+    public int getAttackDamage(){
+        return attackDamage;
+    }
+
+    public synchronized void attack(Entity e){
+        if (e instanceof Character){
+            ((Character) e).removeHp(getAttackDamage());
+            System.out.println("AAAAAAAAAAAAA");
+        }
+        if (e instanceof Block) ((Block) e).destroy();
     }
 }

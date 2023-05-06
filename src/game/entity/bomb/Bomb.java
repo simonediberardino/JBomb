@@ -20,10 +20,6 @@ public class Bomb extends Block implements Explosive {
     private Runnable onExplodeCallback;
     private BomberEntity caller;
 
-    public Bomb(Coordinates coords) {
-        super(coords);
-    }
-
     public Bomb(BomberEntity entity) {
         super(entity.getCoords());
         this.caller = entity;
@@ -126,6 +122,10 @@ public class Bomb extends Block implements Explosive {
     @Override
     public int getMaxExplosionDistance() {
         return caller != null ? caller.getCurrExplosionLength() : BomberMan.getInstance().getCurrentLevel().getExplosionLength();
+    }
+    @Override
+    public void destroy(){
+        explode();
     }
 }
 

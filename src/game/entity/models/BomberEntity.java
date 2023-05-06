@@ -51,7 +51,7 @@ public abstract class BomberEntity extends Character {
         Bomb bomb = new Bomb(this);
 
         bomb.setOnExplodeListener(() -> placedBombs--);
-        bomb.spawn();
+        bomb.spawn(true);
         bomb.trigger();
     }
 

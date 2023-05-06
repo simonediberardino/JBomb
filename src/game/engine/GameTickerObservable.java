@@ -1,9 +1,11 @@
 package game.engine;
 
 import game.BomberMan;
+import game.entity.models.Entity;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
@@ -23,7 +25,9 @@ public class GameTickerObservable extends Observable {
      */
     private final ActionListener taskPerformer = evt -> {
         setChanged(); // mark the Observable as having changed
-        for (Observer observer : observerSet) { // loop through each observer in the observerSet
+        for (Observer observer : observerSet.toArray(new Observer[0])) { // loop through each observer in the observerSet
+            if(observer instanceof Entity)
+            if(!((Entity) observer).isSpawned()) deleteObserver(observer);
             boolean delayPassed = true;
             if (observer instanceof GameTickerObserver) { // check if the observer is of type GameTickerObserver
                 GameTickerObserver gameTickerObserver = (GameTickerObserver) observer; // cast the observer to GameTickerObserver

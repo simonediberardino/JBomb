@@ -5,11 +5,12 @@ import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.models.Coordinates;
+import game.models.Direction;
 import game.utils.Paths;
 
 import java.util.*;
 
-public class TankEnemy extends Enemy implements Explosive {
+public class TankEnemy extends IntelligentEnemy implements Explosive {
     private static final int STANDING_STILL_PERIOD = 1000;
     private static final int PROBABILITY_OF_SHOOTING = 30;
     private static final int SHOOTING_REFRESH_RATE = 2000;
@@ -22,7 +23,7 @@ public class TankEnemy extends Enemy implements Explosive {
 
     public String[] getFrontIcons() {
         return new String[]{
-                Paths.getEnemiesFolder() + "/tank/tank_back_front.png"
+                Paths.getEnemiesFolder() + "/tank/tank_front.png"
         };
     }
 
@@ -30,18 +31,22 @@ public class TankEnemy extends Enemy implements Explosive {
     @Override
     public String[] getLeftIcons() {
         return new String[]{
-                Paths.getEnemiesFolder() + "/tank/tank_side.png"
+                Paths.getEnemiesFolder() + "/tank/tank_left.png"
         };
     }
 
     @Override
     public String[] getBackIcons() {
-        return getFrontIcons();
+        return new String[]{
+                Paths.getEnemiesFolder() + "/tank/tank_back.png"
+        };
     }
 
     @Override
     public String[] getRightIcons() {
-        return getLeftIcons();
+        return new String[]{
+                Paths.getEnemiesFolder() + "/tank/tank_right.png"
+        };
     }
 
     @Override
@@ -50,7 +55,13 @@ public class TankEnemy extends Enemy implements Explosive {
             lastUpdate = System.currentTimeMillis();
 
             if (canShoot && Math.random() * 100 < PROBABILITY_OF_SHOOTING) {
-                new Explosion(getNewTopLeftCoordinatesOnDirection(currDirection, Explosion.SIZE), currDirection, this);
+                // explosion offset only used on vertical directions
+                Coordinates newCoords = getNewTopLeftCoordinatesOnDirection(currDirection, Explosion.SIZE);
+                if(currDirection == Direction.UP || currDirection == Direction.DOWN){
+                    int x = newCoords.getX() + Explosion.spawnOffset;
+                    newCoords = new Coordinates(x,newCoords.getY());
+                }
+                new Explosion(newCoords, currDirection, this);
                 canMove = false;
             }
             canShoot = true;

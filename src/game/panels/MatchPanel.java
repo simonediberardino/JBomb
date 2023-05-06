@@ -1,7 +1,6 @@
 package game.panels;
 
 import game.BomberMan;
-import game.models.PagePanel;
 import game.utils.Paths;
 import game.utils.Utility;
 

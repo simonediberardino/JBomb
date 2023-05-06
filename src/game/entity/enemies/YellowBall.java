@@ -2,9 +2,10 @@ package game.entity.enemies;
 
 import game.entity.models.Enemy;
 import game.models.Coordinates;
+import game.panels.PitchPanel;
 import game.utils.Paths;
 
-public class YellowBall extends Enemy {
+public class YellowBall extends IntelligentEnemy {
     public YellowBall(Coordinates coordinates) {
         super(coordinates);
     }
@@ -22,6 +23,11 @@ public class YellowBall extends Enemy {
                 String.format("%s_%s.png", getBasePath(), 2),
                 String.format("%s_%s.png", getBasePath(), 3),
         };
+    }
+
+    @Override
+    public int getSize() {
+        return PitchPanel.COMMON_DIVISOR * 4;
     }
 
     @Override

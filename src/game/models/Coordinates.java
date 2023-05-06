@@ -28,21 +28,19 @@ public class Coordinates {
         return y;
     }
 
-    public boolean validate() {
-        BombermanFrame bombermanFrame = BomberMan
-                .getInstance()
-                .getGameFrame();
-
-        if(bombermanFrame == null) return false;
-
+    /**
+     Check whether a coordinate of an Entity is inside the pitch or not;
+     @return true if valid, false otherwise;
+     */
+    public boolean validate(Entity e) {
         Dimension gamePanelDimensions = BomberMan
                 .getInstance()
                 .getGameFrame()
                 .getPitchPanel()
                 .getPanelDimensions();
 
-        ValueRange rangeY = ValueRange.of(0, gamePanelDimensions.height - GRID_SIZE/2);
-        ValueRange rangeX = ValueRange.of(0, gamePanelDimensions.width - GRID_SIZE/2);
+        ValueRange rangeY = ValueRange.of(0, gamePanelDimensions.height - e.getSize());
+        ValueRange rangeX = ValueRange.of(0, gamePanelDimensions.width - e.getSize());
 
         return (rangeY.isValidValue(getY()) && rangeX.isValidValue(getX()));
     }
