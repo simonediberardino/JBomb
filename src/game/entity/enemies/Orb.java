@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Orb extends Enemy implements Transparent, Particle{
-    public static final int SIZE = PitchPanel.COMMON_DIVISOR * 4;
+    public static final int SIZE = PitchPanel.COMMON_DIVISOR * 2;
     //only one field between can be instantiated at a time
     EnhancedDirection enhancedDirection = null;
     Direction direction = null;

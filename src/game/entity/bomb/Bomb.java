@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class Bomb extends Block implements Explosive {
-    public static final int BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 4;
+    public static final int BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 2;
     public static final long PLACE_INTERVAL = 1000;
     private static final int EXPLODE_TIMER = 5000;
     private Runnable onExplodeCallback;

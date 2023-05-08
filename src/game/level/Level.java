@@ -106,7 +106,8 @@ public abstract class Level {
     public void spawnEnemies() {
         // Get an array of available enemy classes.
         Class<? extends Enemy>[] availableEnemies = availableEnemies();
-
+        //new Boss(new Coordinates(120,120)).spawn();
+        new Boss(new Coordinates(480,500)).spawn();
         // Spawn a number of enemies at the start of the game.
         //new Boss(Coordinates.randomCoordinatesFromPlayer()).spawn();
         for (int i = 0; i < startEnemiesCount(); i++) {

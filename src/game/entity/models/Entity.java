@@ -2,10 +2,8 @@ package game.entity.models;
 
 import game.BomberMan;
 import game.engine.GameTickerObserver;
-import game.entity.enemies.Orb;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.powerups.PowerUp;
 import game.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
@@ -20,6 +18,8 @@ import static game.utils.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity extends GameTickerObserver {
+    public int paddingTop;
+    public int paddingWidth;
     private final long id;
 
     protected BufferedImage image;
@@ -28,6 +28,8 @@ public abstract class Entity extends GameTickerObserver {
     private Coordinates coords;
     private boolean isSpawned = false;
     private boolean isImmune = false;
+    public float widthToHitboxSizeRatio = 1;
+    public float heightToHitboxSizeRatio = 1;
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -68,9 +70,13 @@ public abstract class Entity extends GameTickerObserver {
      *
      * @return the size of the entity
      */
-    public float getImageRatio(){
-        return 1;
+    public final float getHeightToHitboxSizeRatio(){
+        return heightToHitboxSizeRatio;
     }
+    public final float getWidthToHitboxSizeRatio(){
+        return widthToHitboxSizeRatio;
+    }
+
 
     public int getImageRefreshRate(){
         return 200;
@@ -157,19 +163,23 @@ public abstract class Entity extends GameTickerObserver {
     /**
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
+
+
     public final void spawn(){
-        spawn(false);
+        spawn(false,true);
+    }
+    public final void spawn(boolean forceSpawn){
+        spawn(forceSpawn,true);
     }
 
-    public final void spawn(boolean forceSpawn) {
+    public final void spawn(boolean forceSpawn, boolean forceCentering) {
         if (isSpawned()) {
             return;
         }
 
-        setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
+        if (forceCentering)setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
 
         if (forceSpawn || !EntityInteractable.isBlockOccupied(coords)) {
-            setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
             setSpawned(true);
             BomberMan.getInstance().addEntity(this);
             onSpawn();
@@ -195,11 +205,11 @@ public abstract class Entity extends GameTickerObserver {
     public List<Coordinates> getAllCoordinates(){
         List<Coordinates> coordinates = new ArrayList<>();
         int last = 0;
-        for (int step = 0; step <= getSize() / PitchPanel.OFFSET_ON_CHECK; step++) {
-            for (int i = 0; i <= getSize() / PitchPanel.OFFSET_ON_CHECK; i++) {
-                if (i== getSize()/PitchPanel.OFFSET_ON_CHECK) last = PitchPanel.PIXEL_UNIT;
+        for (int step = 0; step <= getSize() / PitchPanel.COMMON_DIVISOR; step++) {
+            for (int i = 0; i <= getSize() / PitchPanel.COMMON_DIVISOR; i++) {
+                if (i== getSize()/PitchPanel.COMMON_DIVISOR) last = PitchPanel.PIXEL_UNIT;
 
-                coordinates.add(new Coordinates(getCoords().getX() + step * PitchPanel.OFFSET_ON_CHECK, getCoords().getY() + i * PitchPanel.OFFSET_ON_CHECK - last));
+                coordinates.add(new Coordinates(getCoords().getX() + step * PitchPanel.COMMON_DIVISOR, getCoords().getY() + i * PitchPanel.COMMON_DIVISOR - last));
             }
         }
         return coordinates;
@@ -271,6 +281,15 @@ public abstract class Entity extends GameTickerObserver {
             first = 0;
         }
         return coordinates;
+    }
+
+    public final int getPaddingTop(){
+        paddingTop = (int) ((double)getSize() / (double) getHeightToHitboxSizeRatio()-getSize());
+        return paddingTop;
+    }
+    public final int getPaddingWidth(){
+        paddingWidth = (int) (((double)getSize() / (double) getWidthToHitboxSizeRatio()-getSize())/2);
+        return paddingWidth;
     }
 
     @Override

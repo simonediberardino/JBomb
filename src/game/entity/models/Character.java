@@ -19,8 +19,7 @@ import static game.models.Direction.DOWN;
  * Represents a character in the game, which can move and interact with the environment.
  */
 public abstract class Character extends EntityDamage {
-    public static final int PADDING_HEAD = PitchPanel.PIXEL_UNIT*4;
-    public static final int SIZE = PitchPanel.PIXEL_UNIT * 4 * 2;
+    public static final int SIZE = PitchPanel.PIXEL_UNIT * 4* 2;
     protected long lastDirectionUpdate = 0;
     protected Direction currDirection = Direction.values()[(int) (Math.random()* values().length)];
     /** The last direction this character was moving in. */
@@ -277,10 +276,6 @@ public abstract class Character extends EntityDamage {
             healthPoints = 0;
             despawn();
         }
-    }
-
-    public int getPaddingHead(){
-        return PADDING_HEAD;
     }
 
 }

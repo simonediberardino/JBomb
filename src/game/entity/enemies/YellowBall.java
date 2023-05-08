@@ -27,7 +27,7 @@ public class YellowBall extends IntelligentEnemy {
 
     @Override
     public int getSize() {
-        return PitchPanel.COMMON_DIVISOR * 4;
+        return PitchPanel.COMMON_DIVISOR * 2;
     }
 
     @Override

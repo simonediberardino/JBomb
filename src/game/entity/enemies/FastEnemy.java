@@ -13,7 +13,9 @@ public class FastEnemy extends IntelligentEnemy {
 
     @Override
     public String[] getFrontIcons() {
-        return new String[]{"assets/entities/enemies/yellow_ball/yellow_ball_0.png"};
+        return new String[]{
+                "assets/entities/enemies/yellow_ball/yellow_ball_0.png"
+        };
     }
 
     @Override

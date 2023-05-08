@@ -19,6 +19,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
 
     public IntelligentEnemy(Coordinates coordinates) {
         super(coordinates);
+        heightToHitboxSizeRatio = 0.733f;
     }
 
     @Override
@@ -41,10 +42,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
        //BomberMan.getInstance().getGameTickerObservable().deleteObserver(this);
     }
 
-    @Override
-    public float getImageRatio(){
-        return 0.73f;
-    }
+
 
     /**
      * Chooses a new direction for the agent to move in, and sends the corresponding command to the game engine.

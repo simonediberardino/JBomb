@@ -20,7 +20,7 @@ import static game.utils.Utility.loadImage;
  * Represents an explosion that can interact with other entities in the game.
  */
 public class Explosion extends MovingEntity implements Particle {
-    public static final int SIZE = PitchPanel.COMMON_DIVISOR * 4;
+    public static final int SIZE = PitchPanel.COMMON_DIVISOR * 2;
     // The distance from the bomb where the explosion was created.
     public final int distanceFromExplosive;
 

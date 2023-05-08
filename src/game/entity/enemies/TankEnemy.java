@@ -6,6 +6,7 @@ import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
+import game.panels.PitchPanel;
 import game.utils.Paths;
 
 import java.util.*;
@@ -98,5 +99,6 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     public int getMaxExplosionDistance() {
         return 4;
     }
+
 
 }

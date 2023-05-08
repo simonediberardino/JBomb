@@ -43,10 +43,6 @@ public abstract class Enemy extends Character{
 
 
 
-    @Override
-    public float getImageRatio(){
-        return 1f;
-    }
 
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities(){

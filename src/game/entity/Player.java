@@ -12,11 +12,12 @@ import static game.panels.PitchPanel.GRID_SIZE;
 
 
 public class Player extends BomberEntity {
-    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE-SIZE)/2 ,PADDING_HEAD);
+    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE-SIZE)/2 ,0);
     public Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
 
     public Player(Coordinates coordinates) {
         super(coordinates);
+        heightToHitboxSizeRatio = 0.733f;
     }
 
     @Override
@@ -92,10 +93,7 @@ public class Player extends BomberEntity {
         BomberMan.getInstance().getControllerManager().deleteObserver(this);
     }
 
-    @Override
-    public float getImageRatio(){
-        return 0.73f;
-    }
+
 
     @Override
     public void handleAction(Command command) {

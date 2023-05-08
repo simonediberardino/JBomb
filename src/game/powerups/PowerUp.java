@@ -60,7 +60,7 @@ public abstract class PowerUp extends EntityInteractable {
 
     @Override
     public int getSize() {
-        return PitchPanel.COMMON_DIVISOR * 4;
+        return PitchPanel.COMMON_DIVISOR * 2;
     }
 
     public final void apply(BomberEntity entity) {

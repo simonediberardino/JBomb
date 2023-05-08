@@ -8,6 +8,7 @@ import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
+import game.powerups.PowerUp;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,6 +41,8 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public final void interact(Entity e) {
+        if(e instanceof PowerUp) System.out.println("POWERUP");
+
         if(canInteractWith(e)) {
             this.doInteract(e);
             this.updateLastInteract(e);
@@ -236,7 +239,7 @@ public abstract class EntityInteractable extends Entity {
 
         // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
         // with a given step size
-        List<Coordinates> nextOccupiedCoords = getNewCoordinatesOnDirection(d, stepSize, GRID_SIZE/2 / 2);
+        List<Coordinates> nextOccupiedCoords = getNewCoordinatesOnDirection(d, stepSize, GRID_SIZE/3 / 2);
 
         // Calculate the coordinates of the top-left corner of the next position
         Coordinates nextTopLeftCoords = nextCoords(d, stepSize);
@@ -266,11 +269,13 @@ public abstract class EntityInteractable extends Entity {
                 interact(e);
             }
             canMove = false;
+        }else{
+            for (Entity e: interactedEntities) {
+                interact(e);
+            }
         }
 
-        if (canMove) {
-            interactedEntities.stream().filter(this::canInteractWith).forEach(this::interact);
-        }
+
 
         // If the entity can move or it is immune to bombs, update the entity's position
         if (canMove) {

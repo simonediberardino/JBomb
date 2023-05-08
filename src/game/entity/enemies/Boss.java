@@ -17,16 +17,15 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class Boss extends IntelligentEnemy implements Explosive {
+    public boolean hasHat;
     public Boss(Coordinates coordinates){
         super(coordinates);
         super.setHp(1000);
         setAttackDamage(1000);
+        widthToHitboxSizeRatio = 0.88f;
+        if(Math.random()*10>5) hasHat = true;
     }
 
-    @Override
-    public float getImageRatio(){
-        return 1;
-    }
 
     @Override
     public int getSize() {
@@ -40,9 +39,13 @@ public class Boss extends IntelligentEnemy implements Explosive {
 
     @Override
     public String[] getFrontIcons() {
-        return new String[]{
-                Paths.getEnemiesFolder() + "/clown/clown_with_hat.png"
-        };
+        if (hasHat) {
+            heightToHitboxSizeRatio = 0.71f;
+            return new String[]{Paths.getEnemiesFolder() + "/clown/clown_with_hat.png"};
+
+        }
+        heightToHitboxSizeRatio = 1f;
+        return new String[]{Paths.getEnemiesFolder() + "/clown/clown.png"};
     }
 
     @Override
@@ -89,12 +92,12 @@ public class Boss extends IntelligentEnemy implements Explosive {
     @Override
     public void update(boolean gamestate){
         if(Math.random()*100>99){
-/*            for (Direction d: Direction.values()) {
+            for (Direction d: Direction.values()) {
                 new Orb(Coordinates.fromDirectionToCoordinateOnEntity(this,d, Orb.SIZE,Orb.SIZE),d).spawn(true,false);
             }
             for (EnhancedDirection d: EnhancedDirection.values()) {
                 new Orb(Coordinates.fromDirectionToCoordinateOnEntity(this,d,Orb.SIZE),d).spawn(true, false);
-            }*/
+            }
         }
         if(Math.random()*100>99){
             Direction[] dir = Direction.values();
