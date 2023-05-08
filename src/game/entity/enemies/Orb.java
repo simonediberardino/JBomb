@@ -2,89 +2,103 @@ package game.entity.enemies;
 
 import game.entity.Particle;
 import game.entity.Player;
+import game.entity.Transparent;
+import game.entity.bomb.Bomb;
 import game.entity.models.Enemy;
 import game.entity.models.Entity;
-import game.entity.models.EntityDamage;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.models.EnhancedDirection;
+import game.panels.PitchPanel;
+import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Observable;
 import java.util.Set;
 
-public class Orb extends Enemy implements Particle {
-    EnhancedDirection direction;
-    public Orb(Coordinates coordinates, EnhancedDirection direction) {
+public class Orb extends Enemy implements Transparent, Particle{
+    public static final int SIZE = PitchPanel.COMMON_DIVISOR * 4;
+    //only one field between can be instantiated at a time
+    EnhancedDirection enhancedDirection = null;
+    Direction direction = null;
+
+    public Orb(Coordinates coordinates, EnhancedDirection enhancedDirection) {
+        super(coordinates);
+        this.enhancedDirection = enhancedDirection;
+    }
+
+    public Orb(Coordinates coordinates, Direction direction) {
         super(coordinates);
         this.direction = direction;
     }
 
     @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage("assets/bomb/flame_central0.png");
-    }
-
-    @Override
     public String[] getFrontIcons() {
-        return new String[0];
+        return new String[]{
+                Paths.getAssetsFolder() + "/bomb/flame_central0.png"
+        };
     }
 
     @Override
     public String[] getLeftIcons() {
-        return new String[0];
+        return getFrontIcons();
     }
 
     @Override
     public String[] getBackIcons() {
-        return new String[0];
+        return getFrontIcons();
     }
 
     @Override
     public String[] getRightIcons() {
-        return new String[0];
+        return getFrontIcons();
+    }
+
+    @Override
+    public int getSize() {
+        return SIZE;
     }
 
     @Override
     protected void doInteract(Entity e) {
-
-        if (canInteractWith(e)&&e!=null) {
+        if (canInteractWith(e)) {
             attack(e);
         }
+
         if (isObstacle(e)) {
             despawn();
-
         }
-
-
-
-
     }
 
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities() {
-        return new HashSet<Class<?extends Entity>>(Arrays.asList(Player.class));
+        return new HashSet<>(Arrays.asList(Player.class, Bomb.class));
     }
+
     @Override
     public boolean isObstacle(Entity e){
-        return e instanceof Player ||e==null;
+        return e==null;
     }
 
 
 
     public void update(boolean gameState) {
-        if (canMove && gameState&& isSpawned()){
-            for (Direction d:
-                 direction.toDirection()
-                 ) {moveOrInteract(d);
+        if (enhancedDirection != null) {
+            if (canMove && gameState && isSpawned()) {
+                for (Direction d :
+                        enhancedDirection.toDirection()
+                ) {
+                   moveOrInteract(d);
+
+                }
+
 
             }
 
-
+        }else if (canMove&&gameState&&isSpawned()){
+            moveOrInteract(direction);
         }
-
     }
 
 }

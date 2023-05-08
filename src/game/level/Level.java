@@ -4,6 +4,7 @@ import game.BomberMan;
 import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
+import game.entity.enemies.Boss;
 import game.entity.enemies.FlyingEnemy;
 import game.entity.enemies.Orb;
 import game.entity.enemies.YellowBall;
@@ -107,6 +108,7 @@ public abstract class Level {
         Class<? extends Enemy>[] availableEnemies = availableEnemies();
 
         // Spawn a number of enemies at the start of the game.
+        //new Boss(Coordinates.randomCoordinatesFromPlayer()).spawn();
         for (int i = 0; i < startEnemiesCount(); i++) {
             Orb orb = new Orb(new Coordinates(0,0),EnhancedDirection.RIGHTDOWN);
             orb.spawn();

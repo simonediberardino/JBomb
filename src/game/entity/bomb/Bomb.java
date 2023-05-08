@@ -5,7 +5,6 @@ import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
 import game.entity.models.*;
-import game.models.Coordinates;
 import game.models.Direction;
 import game.utils.Paths;
 import game.panels.PitchPanel;
@@ -123,6 +122,7 @@ public class Bomb extends Block implements Explosive {
     public int getMaxExplosionDistance() {
         return caller != null ? caller.getCurrExplosionLength() : BomberMan.getInstance().getCurrentLevel().getExplosionLength();
     }
+
     @Override
     public void destroy(){
         explode();

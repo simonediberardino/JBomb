@@ -2,10 +2,7 @@ package game.entity.enemies;
 
 import game.BomberMan;
 import game.entity.Player;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.bomb.Bomb;
 import game.entity.models.*;
-import game.entity.models.Character;
 import game.models.Coordinates;
 import game.models.Direction;
 
@@ -26,17 +23,13 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
 
     @Override
     protected final void doInteract(Entity e) {
-
         if (e instanceof BomberEntity) {
             super.doInteract(e);
         }
-
         else if (isObstacle(e)) {
             changeDirection();
         }
     }
-
-
 
     @Override
     protected void onSpawn() {
@@ -45,7 +38,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
 
     @Override
     protected void onDespawn(){
-       // BomberMan.getInstance().getGameTickerObservable().deleteObserver(this);
+       //BomberMan.getInstance().getGameTickerObservable().deleteObserver(this);
     }
 
     @Override
@@ -58,9 +51,10 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
      *
      * @param forceChange If true, the agent will be forced to change direction even if it just changed directions.
      *                    If false, there is a chance the agent will keep its current direction.
+     * @return new direction
      */
     @Override
-    public void chooseDirection(boolean forceChange) {
+    public Direction chooseDirection(boolean forceChange) {
         // Get the current time in milliseconds
         long currentTime = System.currentTimeMillis();
 
@@ -71,15 +65,12 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
 
         // If it hasn't been long enough since the last direction update, keep moving in the same direction, unless last move was blocked
         if (currentTime - lastDirectionUpdate < DIRECTION_REFRESH_RATE && !forceChange) {
-            move(currDirection);
-            return;
+            return currDirection;
         }
 
         if (availableDirections.isEmpty()) {
-            return;
+            return currDirection;
         }
-
-
 
         // Choose a new direction randomly, or keep the current direction with a certain probability
         Direction newDirection = null;
@@ -93,21 +84,23 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
         }
 
         // Send the command corresponding to the new direction to the game engine
-        move(newDirection);
+        return newDirection;
     }
 
     @Override
     public void changeDirection() {
-        chooseDirection(true);
+        updateLastDirection(chooseDirection(true));
     }
 
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities(){
-        return new HashSet<>(Arrays.asList(Player.class, game.entity.models.Enemy.class, DestroyableBlock.class, Bomb.class, Block.class));
+        return new HashSet<>(Collections.singletonList(Player.class));
     }
 
-
     public void update(boolean gameState) {
-        if(canMove&&gameState) chooseDirection(false);
+        if (!canMove || !gameState) {
+            return;
+        }
+        move(chooseDirection(false));
     }
 }

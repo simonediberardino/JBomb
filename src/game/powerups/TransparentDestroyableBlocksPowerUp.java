@@ -1,5 +1,6 @@
 package game.powerups;
 
+import game.entity.Transparent;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;
@@ -7,7 +8,7 @@ import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
 
-public class TransparentDestroyableBlocksPowerUp extends PowerUp {
+public class TransparentDestroyableBlocksPowerUp extends PowerUp implements Transparent {
     public TransparentDestroyableBlocksPowerUp(Coordinates coords){
         super(coords);
     }

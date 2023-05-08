@@ -23,7 +23,7 @@ public class Level1 extends Level {
 
     @Override
     public int startEnemiesCount() {
-        return 4;
+        return 0;
     }
 
     @Override

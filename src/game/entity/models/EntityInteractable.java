@@ -20,8 +20,10 @@ import static game.panels.PitchPanel.PIXEL_UNIT;
  * An abstract class representing interactive entities, which can move or interact with other entities in the game.
  */
 public abstract class EntityInteractable extends Entity {
+    private final static long INTERACTION_DELAY_MS = 100;
     private final Set<Class<? extends Entity>> whitelistObstacles = new HashSet<>();
-    private final int attackDamage = 100;
+    private final HashMap<Entity, Long> interactionMap = new HashMap<>();
+    private int attackDamage = 100;
 
     /**
      * Gets the size of the entity in pixels.
@@ -38,15 +40,25 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public final void interact(Entity e) {
-        if(canInteractWith(e)||isObstacle(e)) {
-            this.updateLastInteraction();
+        if(canInteractWith(e)) {
             this.doInteract(e);
+            this.updateLastInteract(e);
+
         }
 
         else if(e instanceof EntityInteractable && ((EntityInteractable) e).canInteractWith(this)){
-            e.updateLastInteraction();
             e.doInteract(this);
+            ((EntityInteractable )e).updateLastInteract(e);
+
         }
+    }
+
+    public void updateLastInteract(Entity e) {
+        interactionMap.put(e, System.currentTimeMillis());
+    }
+
+    public long getLastInteraction(Entity e){
+        return interactionMap.getOrDefault(e, 0L);
     }
 
     /**
@@ -224,7 +236,7 @@ public abstract class EntityInteractable extends Entity {
 
         // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
         // with a given step size
-        List<Coordinates> nextOccupiedCoords = getNewCoordinatesOnDirection(d, stepSize, getSize() / 2);
+        List<Coordinates> nextOccupiedCoords = getNewCoordinatesOnDirection(d, stepSize, GRID_SIZE/2 / 2);
 
         // Calculate the coordinates of the top-left corner of the next position
         Coordinates nextTopLeftCoords = nextCoords(d, stepSize);
@@ -235,6 +247,8 @@ public abstract class EntityInteractable extends Entity {
             this.interact(null);
             return false;
         }
+
+        //interactedEntities = interactedEntities.stream().filter(e-> canInteractWith(e) || isObstacle(e)).collect(Collectors.toList());
 
         // If there are no entities present in the next occupied coordinates, update the entity's position
         if (interactedEntities.isEmpty()) {
@@ -250,13 +264,12 @@ public abstract class EntityInteractable extends Entity {
             List<Entity> temp = interactedEntities.stream().filter(this::isObstacle).collect(Collectors.toList());
             for (Entity e: temp) {
                 interact(e);
-                break;
             }
             canMove = false;
         }
 
         if (canMove) {
-            interactedEntities.forEach(this::interact);
+            interactedEntities.stream().filter(this::canInteractWith).forEach(this::interact);
         }
 
         // If the entity can move or it is immune to bombs, update the entity's position
@@ -278,36 +291,35 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public Set<Class<? extends Entity>> getObstacles() {
-        return new HashSet<>(Arrays.asList(StoneBlock.class, Bomb.class, Enemy.class, DestroyableBlock.class, Player.class));
+        return new HashSet<>(Arrays.asList(StoneBlock.class, Bomb.class, Enemy.class, DestroyableBlock.class, BomberEntity.class));
     }
 
     public abstract Set<Class<? extends Entity>> getInteractionsEntities();
 
     public boolean isObstacle(Entity e){
-        if(e == null)
-            return true;
-
-        return getObstacles().stream().anyMatch(c -> c.isInstance(e)) && whitelistObstacles.stream().noneMatch(c -> c.isInstance(e));
+        return e == null || getObstacles().stream().anyMatch(c -> c.isInstance(e)) && whitelistObstacles.stream().noneMatch(c -> c.isInstance(e));
     }
 
     public boolean canInteractWith(Entity e){
-        if(e == null)
-            return true;
+        if(e == null) return true;
+        if(System.currentTimeMillis() - getLastInteraction(e) < INTERACTION_DELAY_MS)
+            return false;
 
-        if(System.currentTimeMillis() - e.getLastAttackReceived() < Entity.ATTACK_RECEIVE_COOLDOWN) return false;
-
-        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e)) && !e.isImmune() || (this instanceof Enemy&& isObstacle(e));
+        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e)) && !e.isImmune() || this instanceof Enemy && isObstacle(e);
     }
 
     public int getAttackDamage(){
         return attackDamage;
     }
 
+    public void setAttackDamage(int damage){
+        attackDamage = damage;
+    }
+
     public synchronized void attack(Entity e){
         if (e instanceof Character){
             ((Character) e).removeHp(getAttackDamage());
-            System.out.println("AAAAAAAAAAAAA");
         }
-        if (e instanceof Block) ((Block) e).destroy();
+        else if (e instanceof Block) ((Block) e).destroy();
     }
 }

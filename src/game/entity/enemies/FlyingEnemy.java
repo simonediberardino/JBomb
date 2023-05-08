@@ -59,6 +59,4 @@ public class FlyingEnemy extends IntelligentEnemy {
         baseObstacles.remove(DestroyableBlock.class);
         return baseObstacles;
     }
-
-
 }

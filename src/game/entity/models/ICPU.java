@@ -1,6 +1,8 @@
 package game.entity.models;
 
+import game.models.Direction;
+
 public interface ICPU {
-    void chooseDirection(boolean forceChange);
+    Direction chooseDirection(boolean forceChange);
     void changeDirection();
 }

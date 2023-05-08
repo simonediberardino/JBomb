@@ -114,7 +114,7 @@ public abstract class Character extends EntityDamage {
      * Updates the last direction the entity moved in and sets the appropriate image based on the direction.
      * @param d The new direction the entity is moving in.
      */
-    private void updateLastDirection(Direction d) {
+    protected void updateLastDirection(Direction d) {
         String[] frontIcons = getFrontIcons();
         String[] leftIcons = getLeftIcons();
         String[] backIcons = getBackIcons();
@@ -277,6 +277,10 @@ public abstract class Character extends EntityDamage {
             healthPoints = 0;
             despawn();
         }
+    }
+
+    public int getPaddingHead(){
+        return PADDING_HEAD;
     }
 
 }

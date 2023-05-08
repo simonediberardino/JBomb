@@ -10,7 +10,6 @@ import game.utils.Paths;
 import game.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +19,7 @@ import static game.utils.Utility.loadImage;
 /**
  * Represents an explosion that can interact with other entities in the game.
  */
-public class Explosion extends EntityDamage implements Particle {
+public class Explosion extends MovingEntity implements Particle {
     public static final int SIZE = PitchPanel.COMMON_DIVISOR * 4;
     // The distance from the bomb where the explosion was created.
     public final int distanceFromExplosive;
@@ -106,10 +105,6 @@ public class Explosion extends EntityDamage implements Particle {
         }
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getInteractionsEntities() {
-        return (Set<Class< ? extends Entity>>) new HashSet(Arrays.asList(explosive.getExplosionInteractionEntities()));
-    }
 
     /**
      * Returns the size of the explosion.
@@ -194,11 +189,10 @@ public class Explosion extends EntityDamage implements Particle {
     public Set<Class<? extends Entity>> getObstacles() {
         return new HashSet<>(getExplosive().getExplosionObstacles());
     }
-
     @Override
-    public boolean canInteractWith(Entity e){
-        return getExplosive().canExplosionInteractWith(e);
-    }
+    public Set<Class<? extends Entity>> getInteractionsEntities(){
+         return new HashSet<>(getExplosive().getExplosionInteractionEntities());
+    };
 
     public boolean getCanExpand() {
         if (distanceFromExplosive >= maxDistance) canExpand = false;

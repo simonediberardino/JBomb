@@ -20,17 +20,14 @@ import static game.utils.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity extends GameTickerObserver {
-    public static final int ATTACK_RECEIVE_COOLDOWN = 300;
+    private final long id;
+
     protected BufferedImage image;
     protected int lastImageIndex;
     protected long lastImageUpdate;
     private Coordinates coords;
     private boolean isSpawned = false;
-    private final long id;
     private boolean isImmune = false;
-    private long lastAttackReceived = 0;
-
-
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -139,27 +136,6 @@ public abstract class Entity extends GameTickerObserver {
         isSpawned = s;
     }
 
-    /**
-     * Returns a list of coordinates that the entity occupies in the game world.
-     *
-     * @return a list of coordinates that the entity occupies
-     */
-    public List<Coordinates> getPositions(){
-        List<Coordinates> result = new ArrayList<>();
-
-        int startX = getCoords().getX();
-        int endX = getCoords().getX() + getSize() - 1;
-
-        int startY = getCoords().getY();
-        int endY = getCoords().getY() + getSize() - 1;
-
-        for (int x = startX; x <= endX; x++)
-            for (int y = startY; y <= endY; y++)
-                result.add(new Coordinates(x, y));
-
-        return result;
-    }
-
     public Coordinates getSpawnOffset(){
         return new Coordinates((PitchPanel.GRID_SIZE-getSize())/2,(PitchPanel.GRID_SIZE-getSize())/2);
     }
@@ -215,6 +191,7 @@ public abstract class Entity extends GameTickerObserver {
 
         return null;
     }
+
     public List<Coordinates> getAllCoordinates(){
         List<Coordinates> coordinates = new ArrayList<>();
         int last = 0;
@@ -287,21 +264,13 @@ public abstract class Entity extends GameTickerObserver {
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
-
-                coordinates.add(new Coordinates(getCoords().getX() + i * offset -last, getCoords().getY() + size - 1 + first + step * offset));
-            }first =0;
+                if (i== getSize()/offset)
+                    last = PitchPanel.PIXEL_UNIT;
+                coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() + size - 1 + first + step * offset));
+            }
+            first = 0;
         }
         return coordinates;
-    }
-
-
-    public long getLastAttackReceived(){
-        return lastAttackReceived;
-    }
-
-    public void updateLastInteraction(){
-        lastAttackReceived = System.currentTimeMillis();
     }
 
     @Override
