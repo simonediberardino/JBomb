@@ -1,6 +1,6 @@
 package game.entity.enemies.npcs;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.entity.Player;
 import game.entity.models.*;
 import game.models.Coordinates;
@@ -10,7 +10,7 @@ import java.util.*;
 
 public abstract class IntelligentEnemy extends Enemy implements ICPU {
     public int CHANGE_DIRECTION_RATE = 10; // percentage
-    private static final int DIRECTION_REFRESH_RATE = 500;
+    public static final int DIRECTION_REFRESH_RATE = 500;
 
     public IntelligentEnemy(){
         super(null);
@@ -33,7 +33,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
 
     @Override
     protected void onSpawn() {
-        BomberMan.getInstance().getGameTickerObservable().addObserver(this);
+        BomberManMatch.getInstance().getGameTickerObservable().addObserver(this);
     }
 
     @Override

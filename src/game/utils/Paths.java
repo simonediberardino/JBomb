@@ -1,6 +1,6 @@
 package game.utils;
 
-import game.BomberMan;
+import game.BomberManMatch;
 
 public class Paths {
     public static String getAssetsFolder(){
@@ -20,7 +20,7 @@ public class Paths {
     }
 
     public static String getCurrentLevelFolder(){
-        return getLevelsFolder() + "/" + BomberMan.getInstance().getCurrentLevel().getId();
+        return getLevelsFolder() + "/" + BomberManMatch.getInstance().getCurrentLevel().getId();
     }
 
     public static String getPowerUpsFolder(){
@@ -29,5 +29,9 @@ public class Paths {
 
     public static String getBackgroundImage(){
         return getAssetsFolder() + "/menu/background.jpg";
+    }
+
+    public static String getMainMenuWallpaper() {
+        return Paths.getAssetsFolder() + "/menu/welcome.png";
     }
 }

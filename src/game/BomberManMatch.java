@@ -8,12 +8,12 @@ import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
 import game.level.Level;
 import game.powerups.PowerUp;
-import game.panels.BombermanFrame;
+import game.ui.panels.BombermanFrame;
 
 import java.util.*;
 
-public class BomberMan {
-    private static BomberMan instance;
+public class BomberManMatch {
+    private static BomberManMatch instance;
     private GameTickerObservable gameTickerObservable;
     private Set<EntityInteractable> interactiveEntities;
     private Set<Entity> particles;
@@ -25,14 +25,14 @@ public class BomberMan {
     private BombermanFrame bombermanFrame = null;
     private boolean gameState = false;
 
-    public static BomberMan getInstance() {
+    public static BomberManMatch getInstance() {
         return instance;
     }
 
-    private BomberMan(){}
+    private BomberManMatch(){}
 
-    public BomberMan(Level currentLevel) {
-        BomberMan.instance = this;
+    public BomberManMatch(Level currentLevel) {
+        BomberManMatch.instance = this;
 
         this.currentLevel = currentLevel;
         this.interactiveEntities = new HashSet<>();

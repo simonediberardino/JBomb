@@ -1,11 +1,7 @@
 package game.engine;
 
-import game.BomberMan;
-import game.entity.models.Entity;
-
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.util.Observer;
 
 public class GarbageCollectorTask {
     private static final int DELAY_MS = 60 * 1000;

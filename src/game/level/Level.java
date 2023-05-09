@@ -1,14 +1,12 @@
 package game.level;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
 import game.entity.enemies.boss.clown.Clown;
-import game.entity.enemies.npcs.Orb;
 import game.entity.models.Enemy;
 import game.models.Coordinates;
-import game.models.EnhancedDirection;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -18,7 +16,7 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-import static game.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.PitchPanel.GRID_SIZE;
 
 
 /**
@@ -69,6 +67,10 @@ public abstract class Level {
         return Paths.getCurrentLevelFolder() + "/destroyable_block.png";
     }
 
+    public String getWaterBlock() {
+        return Paths.getLevelsFolder() + "/0/water.png";
+    }
+
     /**
      * Returns the Images for the level pitch.
      *
@@ -89,11 +91,11 @@ public abstract class Level {
      * @param jPanel the panel on which to start the game level
      */
     public void start(JPanel jPanel){
-        BomberMan.getInstance().setGameState(true);
+        BomberManMatch.getInstance().setGameState(true);
         generateStone(jPanel);
 
-        BomberMan.getInstance().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
-        BomberMan.getInstance().getPlayer().spawn();
+        BomberManMatch.getInstance().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
+        BomberManMatch.getInstance().getPlayer().spawn();
         generateDestroyableBlock();
 
 
@@ -107,12 +109,8 @@ public abstract class Level {
         //new Boss(new Coordinates(120,120)).spawn();
         new Clown(new Coordinates(480,500)).spawn();
         // Spawn a number of enemies at the start of the game.
-        //new Boss(Coordinates.randomCoordinatesFromPlayer()).spawn();
+
         for (int i = 0; i < startEnemiesCount(); i++) {
-            Orb orb = new Orb(new Coordinates(0,0),EnhancedDirection.RIGHTDOWN);
-            orb.spawn();
-
-
             // Select a random enemy class from the availableEnemies array.
             Class<? extends Enemy> enemyClass = availableEnemies[new Random().nextInt(availableEnemies.length)];
 
@@ -180,7 +178,7 @@ public abstract class Level {
         while (i < getMaxDestroyableBlocks()){
             // If the current destroyable block has not been spawned, generate new coordinates for it and spawn it on the game board.
             if (!block.isSpawned()){
-                block.setCoords(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE*2));
+                block.setCoords(Coordinates.generateCoordinatesAwayFrom(BomberManMatch.getInstance().getPlayer().getCoords(), GRID_SIZE*2));
                 block.spawn();
             }
             // If the current destroyable block has been spawned, create a new one and increment the spawn counter.

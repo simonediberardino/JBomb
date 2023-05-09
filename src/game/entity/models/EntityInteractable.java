@@ -1,20 +1,18 @@
 package game.entity.models;
 
-import game.BomberMan;
-import game.entity.Player;
+import game.BomberManMatch;
 import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.StoneBlock;
+import game.entity.blocks.HardBlock;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.powerups.PowerUp;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static game.panels.PitchPanel.GRID_SIZE;
-import static game.panels.PitchPanel.PIXEL_UNIT;
+import static game.ui.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.PitchPanel.PIXEL_UNIT;
 
 
 /**
@@ -106,8 +104,8 @@ public abstract class EntityInteractable extends Entity {
         List<Entity> entityLinkedList = new LinkedList<>();
 
         // Get all the blocks and entities in the game
-        var blocks = BomberMan.getInstance().getStaticEntities();
-        var entities = BomberMan.getInstance().getEntities();
+        var blocks = BomberManMatch.getInstance().getStaticEntities();
+        var entities = BomberManMatch.getInstance().getEntities();
         var all = new HashSet<Entity>();
         all.addAll(blocks);
         all.addAll(entities);
@@ -138,8 +136,8 @@ public abstract class EntityInteractable extends Entity {
      */
     public List<Entity> getEntitiesOnCoordinates(Coordinates nextOccupiedCoords) {
         // Get all the blocks and entities in the game
-        var blocks = BomberMan.getInstance().getStaticEntities();
-        var entities = BomberMan.getInstance().getEntities();
+        var blocks = BomberManMatch.getInstance().getStaticEntities();
+        var entities = BomberManMatch.getInstance().getEntities();
         var all = new HashSet<Entity>();
         all.addAll(blocks);
         all.addAll(entities);
@@ -177,8 +175,8 @@ public abstract class EntityInteractable extends Entity {
 
     public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
         // Get all the blocks and entities in the game
-        var blocks = BomberMan.getInstance().getStaticEntities();
-        var entities = BomberMan.getInstance().getEntities();
+        var blocks = BomberManMatch.getInstance().getStaticEntities();
+        var entities = BomberManMatch.getInstance().getEntities();
         var all = new HashSet<Entity>();
         all.addAll(blocks);
         all.addAll(entities);
@@ -291,7 +289,7 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public Set<Class<? extends Entity>> getObstacles() {
-        return new HashSet<>(Arrays.asList(StoneBlock.class, Bomb.class, Enemy.class, DestroyableBlock.class, BomberEntity.class));
+        return new HashSet<>(Arrays.asList(HardBlock.class, Bomb.class, Enemy.class, DestroyableBlock.class, BomberEntity.class));
     }
 
     public abstract Set<Class<? extends Entity>> getInteractionsEntities();

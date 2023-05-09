@@ -1,7 +1,6 @@
-package game.panels;
+package game.ui.panels;
 
-import game.BomberMan;
-import game.entity.models.Character;
+import game.BomberManMatch;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
 import game.utils.Utility;
@@ -42,8 +41,8 @@ public class PitchPanel extends JPanel implements Observer {
         setMinimumSize(panelDimensions);
 
         // Set this GamePanel as observer for the game ticker observable
-        BomberMan.getInstance().getGameTickerObservable().deleteObservers();
-        BomberMan.getInstance().getGameTickerObservable().addObserver(this);
+        BomberManMatch.getInstance().getGameTickerObservable().deleteObservers();
+        BomberManMatch.getInstance().getGameTickerObservable().addObserver(this);
 
         repaint();
     }
@@ -61,9 +60,9 @@ public class PitchPanel extends JPanel implements Observer {
 
         Graphics2D g2d = (Graphics2D) g;
         paintComponent(g2d);
-        Set<? extends Entity> setParticles = BomberMan.getInstance().getParticles();
-        Set<? extends EntityInteractable> setEntities = BomberMan.getInstance().getEntities();
-        Set<? extends Entity> setBlocks = BomberMan.getInstance().getStaticEntities();
+        Set<? extends Entity> setParticles = BomberManMatch.getInstance().getParticles();
+        Set<? extends EntityInteractable> setEntities = BomberManMatch.getInstance().getEntities();
+        Set<? extends Entity> setBlocks = BomberManMatch.getInstance().getStaticEntities();
         // Draw each entity in the new set
 
         setBlocks.parallelStream().forEach((it) -> drawEntity(g2d, it));
@@ -95,7 +94,7 @@ public class PitchPanel extends JPanel implements Observer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Image img = loadImage(BomberMan.getInstance().getCurrentLevel().getGrassBlock());
+        Image img = loadImage(BomberManMatch.getInstance().getCurrentLevel().getGrassBlock());
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(),1), 0, 0, null);
     }
 }

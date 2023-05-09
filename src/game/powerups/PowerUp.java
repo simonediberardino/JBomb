@@ -4,7 +4,7 @@ import game.entity.Player;
 import game.entity.models.*;
 import game.entity.models.Character;
 import game.models.Coordinates;
-import game.panels.PitchPanel;
+import game.ui.panels.PitchPanel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;

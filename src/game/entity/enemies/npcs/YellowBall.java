@@ -1,8 +1,7 @@
 package game.entity.enemies.npcs;
 
-import game.entity.enemies.npcs.IntelligentEnemy;
 import game.models.Coordinates;
-import game.panels.PitchPanel;
+import game.ui.panels.PitchPanel;
 import game.utils.Paths;
 
 public class YellowBall extends IntelligentEnemy {

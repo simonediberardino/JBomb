@@ -1,14 +1,13 @@
 package game.entity.blocks;
 
-import game.BomberMan;
-import game.entity.models.Block;
+import game.BomberManMatch;
 import game.entity.models.Entity;
 import game.models.Coordinates;
 
 import java.awt.image.BufferedImage;
 
 
-public class StoneBlock extends Block {
+public class StoneBlock extends HardBlock {
     public StoneBlock(Coordinates coordinates) {
         super(coordinates);
     }
@@ -30,7 +29,7 @@ public class StoneBlock extends Block {
 
     @Override
     public BufferedImage getImage(){
-        return loadAndSetImage(BomberMan.getInstance().getCurrentLevel().getStoneBlock());
+        return loadAndSetImage(BomberManMatch.getInstance().getCurrentLevel().getStoneBlock());
     }
 
 }

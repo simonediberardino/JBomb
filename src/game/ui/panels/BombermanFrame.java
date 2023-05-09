@@ -1,6 +1,6 @@
-package game.panels;
+package game.ui.panels;
 
-import game.BomberMan;
+import game.BomberManMatch;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,7 +66,7 @@ public class BombermanFrame extends JFrame {
      */
     public void finalizeFrame() {
         // Set key listener and focusable
-        this.addKeyListener(BomberMan.getInstance().getControllerManager());
+        this.addKeyListener(BomberManMatch.getInstance().getControllerManager());
         this.setFocusable(true);
         this.requestFocus();
 
@@ -92,4 +92,6 @@ public class BombermanFrame extends JFrame {
         // Show the menu panel
         cardLayout.show(parent, page.getSimpleName());
     }
+
+
 }

@@ -1,11 +1,11 @@
 package game.entity.models;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.controller.Command;
 import game.controller.ControllerManager;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.panels.PitchPanel;
+import game.ui.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -245,8 +245,8 @@ public abstract class Character extends EntityDamage {
         boolean doubleClick2 = false;
 
         // Check if this is the player instance and check for input
-        if (this == BomberMan.getInstance().getPlayer()) {
-            ControllerManager controllerManager = BomberMan.getInstance().getControllerManager();
+        if (this == BomberManMatch.getInstance().getPlayer()) {
+            ControllerManager controllerManager = BomberManMatch.getInstance().getControllerManager();
             doubleClick1 = controllerManager.isCommandPressed(oppositeCommand1);
             doubleClick2 = controllerManager.isCommandPressed(oppositeCommand2);
         }
@@ -267,7 +267,7 @@ public abstract class Character extends EntityDamage {
      @param command The command specifying the action.
      */
     public void handleAction(Command command) {
-        if (!BomberMan.getInstance().getGameState()) {
+        if (!BomberManMatch.getInstance().getGameState()) {
             return;
         }
 

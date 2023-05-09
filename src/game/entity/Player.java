@@ -1,6 +1,6 @@
 package game.entity;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.controller.Command;
 import game.entity.models.*;
 import game.models.Coordinates;
@@ -8,7 +8,7 @@ import game.utils.Paths;
 
 import java.util.*;
 
-import static game.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.PitchPanel.GRID_SIZE;
 
 
 public class Player extends BomberEntity {
@@ -83,19 +83,19 @@ public class Player extends BomberEntity {
     protected void onSpawn() {
         super.onSpawn();
         isAlive = true;
-        BomberMan.getInstance().getControllerManager().addObserver(this);
+        BomberManMatch.getInstance().getControllerManager().addObserver(this);
     }
 
     @Override
     protected void onDespawn() {
         super.onDespawn();
         isAlive = false;
-        BomberMan.getInstance().getControllerManager().deleteObserver(this);
+        BomberManMatch.getInstance().getControllerManager().deleteObserver(this);
     }
 
     @Override
     public void handleAction(Command command) {
-        if (!BomberMan.getInstance().getGameState()) {
+        if (!BomberManMatch.getInstance().getGameState()) {
             return;
         }
         super.handleAction(command);

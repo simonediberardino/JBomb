@@ -9,10 +9,9 @@ import game.entity.models.Entity;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.models.EnhancedDirection;
-import game.panels.PitchPanel;
+import game.ui.panels.PitchPanel;
 import game.utils.Paths;
 
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

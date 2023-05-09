@@ -3,7 +3,7 @@ package game.entity.enemies.boss;
 import game.entity.enemies.npcs.IntelligentEnemy;
 import game.entity.models.Entity;
 import game.models.Coordinates;
-import game.panels.PitchPanel;
+import game.ui.panels.PitchPanel;
 
 import java.util.HashSet;
 import java.util.Set;

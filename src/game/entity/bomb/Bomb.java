@@ -1,13 +1,13 @@
 package game.entity.bomb;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.StoneBlock;
+import game.entity.blocks.HardBlock;
 import game.entity.models.*;
 import game.models.Direction;
 import game.utils.Paths;
-import game.panels.PitchPanel;
+import game.ui.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -100,7 +100,7 @@ public class Bomb extends Block implements Explosive {
 
     @Override
     public List<Class<? extends Entity>> getExplosionObstacles() {
-        return Arrays.asList(StoneBlock.class, DestroyableBlock.class);
+        return Arrays.asList(HardBlock.class, DestroyableBlock.class);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class Bomb extends Block implements Explosive {
 
     @Override
     public int getMaxExplosionDistance() {
-        return caller != null ? caller.getCurrExplosionLength() : BomberMan.getInstance().getCurrentLevel().getExplosionLength();
+        return caller != null ? caller.getCurrExplosionLength() : BomberManMatch.getInstance().getCurrentLevel().getExplosionLength();
     }
 
     @Override

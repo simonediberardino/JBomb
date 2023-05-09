@@ -1,13 +1,13 @@
 package game.entity.models;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.entity.bomb.Bomb;
 import game.models.Coordinates;
 
 public abstract class BomberEntity extends Character {
     private static final int MAX_BOMB_CAN_HOLD = 10;
-    private int currBombLimit = BomberMan.getInstance().getCurrentLevel().getMaxBombs();
-    private int currExplosionLength = BomberMan.getInstance().getCurrentLevel().getExplosionLength();
+    private int currBombLimit = BomberManMatch.getInstance().getCurrentLevel().getMaxBombs();
+    private int currExplosionLength = BomberManMatch.getInstance().getCurrentLevel().getExplosionLength();
 
     private int placedBombs = 0;
     private long lastPlacedBombTime = 0;

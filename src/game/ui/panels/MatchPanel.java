@@ -1,6 +1,6 @@
-package game.panels;
+package game.ui.panels;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -15,7 +15,7 @@ public class MatchPanel extends PagePanel {
     private JPanel rightPanel;
 
     public MatchPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
-        super(cardLayout, parent, frame);
+        super(cardLayout, parent, frame, Paths.getBackgroundImage());
     }
 
     /**
@@ -31,21 +31,6 @@ public class MatchPanel extends PagePanel {
         setLayoutAndAddParentPanel(); // Set the layout and add the parent panel to the game frame
         resizeWindowToFitComponents(); // Resize the game frame to fit the components
         startGame(); // Start the game
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        Image backgroundImage = Utility.loadImage(Paths.getBackgroundImage());
-
-        int width = (int) frame.getPreferredSize().getWidth();
-        int height = (int) frame.getPreferredSize().getHeight();
-
-        // Scale the background image to fit the size of the panel and draw it
-        if (width != 0 && height != 0) {
-            g.drawImage(backgroundImage.getScaledInstance(width, height, 1), 0, 0, null);
-        }
-
-        super.paint(g);
     }
 
     private void createParentPanel(){
@@ -82,7 +67,7 @@ public class MatchPanel extends PagePanel {
         int borderSize = Utility.px(90);
 
         // get the images of the border panels from the current level of the game
-        Image[] borderImages = BomberMan.getInstance().getCurrentLevel().getPitch();
+        Image[] borderImages = BomberManMatch.getInstance().getCurrentLevel().getPitch();
 
         // create left panel and set the dimensions and the image
         leftPanel = createLeftPanel(
@@ -161,7 +146,7 @@ public class MatchPanel extends PagePanel {
      Starts the game by calling the start() method of the current level with gamePanel as the argument.
      */
     private void startGame() {
-        BomberMan.getInstance().getCurrentLevel().start(pitchPanel);
+        BomberManMatch.getInstance().getCurrentLevel().start(pitchPanel);
     }
 
     /**

@@ -1,15 +1,14 @@
 package game.models;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
-import game.panels.BombermanFrame;
 
 import java.awt.*;
 import java.time.temporal.ValueRange;
 import java.util.*;
 
-import static game.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.PitchPanel.GRID_SIZE;
 
 public class Coordinates {
     private final int x;
@@ -33,7 +32,7 @@ public class Coordinates {
      @return true if valid, false otherwise;
      */
     public boolean validate(Entity e) {
-        Dimension gamePanelDimensions = BomberMan
+        Dimension gamePanelDimensions = BomberManMatch
                 .getInstance()
                 .getGameFrame()
                 .getPitchPanel()
@@ -46,7 +45,7 @@ public class Coordinates {
     }
 
     public static Coordinates RoundedRandomCoords(Coordinates offset){
-        Dimension dimensions = BomberMan.getInstance()
+        Dimension dimensions = BomberManMatch.getInstance()
                 .getGameFrame()
                 .getPitchPanel()
                 .getPanelDimensions();
@@ -72,12 +71,12 @@ public class Coordinates {
     }
 
     public static Coordinates randomCoordinatesFromPlayer() {
-        return Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3);
+        return Coordinates.generateCoordinatesAwayFrom(BomberManMatch.getInstance().getPlayer().getCoords(), GRID_SIZE * 3);
     }
 
     public static Coordinates generateRandomCoordinates(Coordinates spawnOffset){
-        var blocks = BomberMan.getInstance().getStaticEntities();
-        var entities = BomberMan.getInstance().getEntities();
+        var blocks = BomberManMatch.getInstance().getStaticEntities();
+        var entities = BomberManMatch.getInstance().getEntities();
 
         var all = new HashSet<Entity>();
         all.addAll(blocks);

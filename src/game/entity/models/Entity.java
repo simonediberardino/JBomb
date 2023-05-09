@@ -1,16 +1,16 @@
 package game.entity.models;
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.engine.GameTickerObserver;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.panels.PitchPanel;
+import game.ui.panels.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
-import static game.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.PitchPanel.GRID_SIZE;
 import static game.utils.Utility.loadImage;
 
 
@@ -153,12 +153,12 @@ public abstract class Entity extends GameTickerObserver {
      */
     public final void despawn() {
         setSpawned(false);
-        BomberMan.getInstance().removeEntity(this);
+        BomberManMatch.getInstance().removeEntity(this);
         this.onDespawn();
     }
 
     public final void spawnAtRandomCoordinates() {
-        setCoords(Coordinates.generateCoordinatesAwayFrom(BomberMan.getInstance().getPlayer().getCoords(), GRID_SIZE * 3));
+        setCoords(Coordinates.generateCoordinatesAwayFrom(BomberManMatch.getInstance().getPlayer().getCoords(), GRID_SIZE * 3));
         spawn();
     }
 
@@ -195,7 +195,7 @@ public abstract class Entity extends GameTickerObserver {
         // spawns entity if the spawn point is free, otherwise do nothing
         if (forceSpawn || !EntityInteractable.isBlockOccupied(coords)) {
             setSpawned(true); // mark entity as spawned
-            BomberMan.getInstance().addEntity(this); // add entity to the game state
+            BomberManMatch.getInstance().addEntity(this); // add entity to the game state
             onSpawn(); // run entity-specific spawn logic
         }
     }

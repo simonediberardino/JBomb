@@ -1,15 +1,10 @@
 package game.entity.models;
 
 
-import game.BomberMan;
+import game.BomberManMatch;
 import game.entity.Player;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.StoneBlock;
-import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
 import game.models.Coordinates;
-import game.models.Direction;
-import game.panels.PitchPanel;
+import game.ui.panels.PitchPanel;
 
 import java.util.*;
 
@@ -35,7 +30,7 @@ public abstract class Enemy extends Character{
 
     @Override
     protected void onSpawn() {
-        BomberMan.getInstance().getGameTickerObservable().addObserver(this);
+        BomberManMatch.getInstance().getGameTickerObservable().addObserver(this);
     }
 
     @Override
