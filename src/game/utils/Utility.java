@@ -44,4 +44,16 @@ public class Utility {
             return null;
         }
     }
+
+    public static boolean chooseRandom(int chance){
+        chance = Math.max(0, chance);
+        chance = Math.min(100, chance);
+
+        return Math.random() * 100 <= chance;
+    }
+
+    public static void runPercentage(int chance, Runnable runnable){
+        if(chooseRandom(chance))
+            runnable.run();
+    }
 }

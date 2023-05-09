@@ -38,7 +38,7 @@ public class Player extends BomberEntity {
     }
 
     @Override
-    public String[] getFrontIcons() {
+    public String[] getBaseSkins() {
         return new String[]{
                 getBasePath() + "/player_front_0.png",
                 getBasePath() + "/player_front_1.png",
@@ -93,8 +93,6 @@ public class Player extends BomberEntity {
         BomberMan.getInstance().getControllerManager().deleteObserver(this);
     }
 
-
-
     @Override
     public void handleAction(Command command) {
         if (!BomberMan.getInstance().getGameState()) {
@@ -112,6 +110,7 @@ public class Player extends BomberEntity {
         return SPAWN_OFFSET;
     }
 
+    // Handle the command entered by the player;
     @Override
     public void update(Observable o, Object arg) {
         handleAction((Command) arg);

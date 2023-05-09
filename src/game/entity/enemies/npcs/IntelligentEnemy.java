@@ -1,4 +1,4 @@
-package game.entity.enemies;
+package game.entity.enemies.npcs;
 
 import game.BomberMan;
 import game.entity.Player;
@@ -11,7 +11,6 @@ import java.util.*;
 public abstract class IntelligentEnemy extends Enemy implements ICPU {
     public int CHANGE_DIRECTION_RATE = 10; // percentage
     private static final int DIRECTION_REFRESH_RATE = 500;
-
 
     public IntelligentEnemy(){
         super(null);

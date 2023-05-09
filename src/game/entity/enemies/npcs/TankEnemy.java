@@ -1,12 +1,12 @@
-package game.entity.enemies;
+package game.entity.enemies.npcs;
 
 import game.entity.Player;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
+import game.entity.enemies.npcs.IntelligentEnemy;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.panels.PitchPanel;
 import game.utils.Paths;
 
 import java.util.*;
@@ -22,7 +22,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
         super(coordinates);
     }
 
-    public String[] getFrontIcons() {
+    public String[] getBaseSkins() {
         return new String[]{
                 Paths.getEnemiesFolder() + "/tank/tank_front.png"
         };

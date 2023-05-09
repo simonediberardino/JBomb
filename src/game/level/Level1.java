@@ -1,12 +1,7 @@
 package game.level;
 
-import game.BomberMan;
-import game.entity.enemies.YellowBall;
-import game.entity.enemies.FlyingEnemy;
+import game.entity.enemies.npcs.YellowBall;
 import game.entity.models.Enemy;
-import game.models.Coordinates;
-
-import static game.panels.PitchPanel.GRID_SIZE;
 
 /**
 

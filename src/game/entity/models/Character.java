@@ -10,6 +10,8 @@ import game.panels.PitchPanel;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static game.models.Direction.*;
 import static game.models.Direction.DOWN;
@@ -21,42 +23,47 @@ import static game.models.Direction.DOWN;
 public abstract class Character extends EntityDamage {
     public static final int SIZE = PitchPanel.PIXEL_UNIT * 4* 2;
     protected long lastDirectionUpdate = 0;
-    protected Direction currDirection = Direction.values()[(int) (Math.random()* values().length)];
+    protected Direction currDirection = Direction.values()[(int) (Math.random() * values().length)];
     /** The last direction this character was moving in. */
     protected Direction previousDirection = null;
-    private int healthPoints = 100;
-
     /** Whether this character is alive or not. */
     protected boolean isAlive = true;
     protected boolean isImmune = false;
+    private int healthPoints = 100;
 
     /**
      * Returns an array of file names for the front-facing icons for this character.
      *
      * @return an array of file names for the front-facing icons
      */
-    public abstract String[] getFrontIcons();
+    public abstract String[] getBaseSkins();
 
     /**
      * Returns an array of file names for the left-facing icons for this character.
      *
      * @return an array of file names for the left-facing icons
      */
-    public abstract String[] getLeftIcons();
+    public String[] getLeftIcons() {
+        return getBaseSkins();
+    }
 
     /**
      * Returns an array of file names for the back-facing icons for this character.
      *
      * @return an array of file names for the back-facing icons
      */
-    public abstract String[] getBackIcons();
+    public String[] getBackIcons() {
+        return getBaseSkins();
+    }
 
     /**
      * Returns an array of file names for the right-facing icons for this character.
      *
      * @return an array of file names for the right-facing icons
      */
-    public abstract String[] getRightIcons();
+    public String[] getRightIcons() {
+        return getBaseSkins();
+    }
 
     /**
      * Constructs a new Character with the specified Coordinates.
@@ -97,7 +104,7 @@ public abstract class Character extends EntityDamage {
             return this.image;
         } else {
             currDirection = Direction.DOWN;
-            return loadAndSetImage(getFrontIcons()[0]);
+            return loadAndSetImage(getBaseSkins()[0]);
         }
     }
 
@@ -109,12 +116,33 @@ public abstract class Character extends EntityDamage {
         isImmune = immune;
     }
 
+    protected boolean useOnlyBaseIcons() {
+        return false;
+    }
+
     /**
      * Updates the last direction the entity moved in and sets the appropriate image based on the direction.
      * @param d The new direction the entity is moving in.
      */
     protected void updateLastDirection(Direction d) {
-        String[] frontIcons = getFrontIcons();
+        String[] baseIcons = getBaseSkins();
+
+        // If the character doesn't have custom images for each direction, do not check if the direction has changed;
+        if(useOnlyBaseIcons()){
+            if(System.currentTimeMillis() - lastImageUpdate > getImageRefreshRate()){
+                // If it's time to refresh the image, increment the image index.
+                lastImageIndex++;
+            }else return;
+
+            // Ensure the icon index is within bounds.
+            if (lastImageIndex < 0 || lastImageIndex >= baseIcons.length)
+                lastImageIndex = 0;
+
+            loadAndSetImage(baseIcons[lastImageIndex]);
+
+            return;
+        }
+
         String[] leftIcons = getLeftIcons();
         String[] backIcons = getBackIcons();
         String[] rightIcons = getRightIcons();
@@ -122,7 +150,7 @@ public abstract class Character extends EntityDamage {
         // If both previousDirection and currDirection are null, initialize currDirection to d and load the front-facing image.
         if(previousDirection == null && currDirection == null){
             currDirection = d;
-            loadAndSetImage(frontIcons[0]);
+            loadAndSetImage(baseIcons[0]);
             return;
         }
 
@@ -147,7 +175,7 @@ public abstract class Character extends EntityDamage {
             case LEFT: icons = leftIcons; break;
             case RIGHT: icons = rightIcons; break;
             case UP: icons = backIcons; break;
-            default: icons = frontIcons; break;
+            default: icons = baseIcons; break;
         }
 
         // Ensure the icon index is within bounds.
@@ -261,20 +289,83 @@ public abstract class Character extends EntityDamage {
     }
 
     @Override
-    protected float getDelayObserverUpdate() {
+    protected float getDelayObserverUpdate(){
         return super.getDelayObserverUpdate() / getSpeed();
     }
-    public int getHp(){
+
+    /**
+     * Starts a damage animation that makes the entity invisible and visible
+     * repeatedly for a certain number of iterations with a delay between each iteration.
+     * The animation lasts for a duration of {@code EntityInteractable.INTERACTION_DELAY_MS} milliseconds.
+     */
+    protected void startDamageAnimation() {
+        // Duration of each iteration of the animation
+        int durationMs = 100;
+        // Calculate the number of iterations required to reach the total duration
+        int iterations = (int) (EntityInteractable.INTERACTION_DELAY_MS / durationMs);
+
+        // Create a Timer object to schedule the animation iterations
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            // Counter to keep track of the number of iterations
+            int count = 0;
+
+            @Override
+            public void run() {
+                // If the number of iterations has been reached, cancel the timer and return
+                if (count >= iterations || !isAlive) {
+                    timer.cancel();
+                    return;
+                }
+
+                try {
+                    // Make the entity invisible and wait for the specified duration
+                    setInvisible(true);
+                    Thread.sleep(durationMs);
+                    // Make the entity visible again and wait for the specified duration
+                    setInvisible(false);
+                    Thread.sleep(durationMs);
+                } catch (InterruptedException ignored) { }
+
+                // Increment the counter to keep track of the number of iterations
+                count++;
+            }
+        }, 0, durationMs * 2); // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
+    }
+
+    /**
+     * Returns the current health points of the entity.
+     * @return The current health points of the entity.
+     */
+    protected int getHp(){
         return healthPoints;
     }
-    public void setHp(int newHp){
+
+    /**
+     * Sets the health points of the entity to the specified value.
+     * @param newHp The new health points to set for the entity.
+     */
+    protected void setHp(int newHp){
         healthPoints = newHp;
     }
-    public void removeHp(int damage){
-        healthPoints -=damage;
-        if (healthPoints<=0){
+
+    /**
+     * Removes the specified amount of damage from the entity's health points.
+     * If the health points reach 0 or below, the entity is despawned.
+     * Otherwise, a damage animation is started.
+     * @param damage The amount of damage to remove from the entity's health points.
+     */
+    protected void removeHp(int damage){
+        // Reduce the health points by the specified amount
+        healthPoints -= damage;
+
+        // If the health points reach 0 or below, despawn the entity
+        if (healthPoints <= 0){
             healthPoints = 0;
             despawn();
+        } else {
+            // Otherwise, start a damage animation
+            startDamageAnimation();
         }
     }
 

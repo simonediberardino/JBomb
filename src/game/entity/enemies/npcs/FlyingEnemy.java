@@ -1,4 +1,4 @@
-package game.entity.enemies;
+package game.entity.enemies.npcs;
 
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
@@ -18,7 +18,7 @@ public class FlyingEnemy extends IntelligentEnemy {
         return Paths.getEnemiesFolder() + "/flying_enemy";
     }
 
-    public String[] getFrontIcons() {
+    public String[] getBaseSkins() {
         return new String[]{
                 getBasePath() + "/eagle_front_0.png",
                 getBasePath() + "/eagle_front_1.png",

@@ -28,8 +28,9 @@ public abstract class Entity extends GameTickerObserver {
     private Coordinates coords;
     private boolean isSpawned = false;
     private boolean isImmune = false;
-    public float widthToHitboxSizeRatio = 1;
-    public float heightToHitboxSizeRatio = 1;
+    private boolean isInvisible = false;
+    protected float widthToHitboxSizeRatio = 1;
+    protected float heightToHitboxSizeRatio = 1;
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -73,6 +74,7 @@ public abstract class Entity extends GameTickerObserver {
     public final float getHeightToHitboxSizeRatio(){
         return heightToHitboxSizeRatio;
     }
+
     public final float getWidthToHitboxSizeRatio(){
         return widthToHitboxSizeRatio;
     }
@@ -160,76 +162,96 @@ public abstract class Entity extends GameTickerObserver {
         spawn();
     }
 
+    public boolean isInvisible() {
+        return isInvisible;
+    }
+
+    public void setInvisible(boolean invisible) {
+        isInvisible = invisible;
+    }
+
     /**
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
-
-
     public final void spawn(){
         spawn(false,true);
     }
+
     public final void spawn(boolean forceSpawn){
         spawn(forceSpawn,true);
     }
 
+    // checks if entity has already been spawned
+    // if not, force spawn it and add it to the game state
     public final void spawn(boolean forceSpawn, boolean forceCentering) {
-        if (isSpawned()) {
+        if (isSpawned()) { // if entity is already spawned, return
             return;
         }
 
-        if (forceCentering)setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
+        // centers entity on tile
+        if (forceCentering)
+            setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
 
+        // spawns entity if the spawn point is free, otherwise do nothing
         if (forceSpawn || !EntityInteractable.isBlockOccupied(coords)) {
-            setSpawned(true);
-            BomberMan.getInstance().addEntity(this);
-            onSpawn();
+            setSpawned(true); // mark entity as spawned
+            BomberMan.getInstance().addEntity(this); // add entity to the game state
+            onSpawn(); // run entity-specific spawn logic
         }
     }
 
+    // calculates the coordinates of a point a certain distance away from the entity's top-left corner in a given direction
     public Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance){
         int sign = 0;
 
         switch (d){
-            case UP:case LEFT: sign = -1; break;
-            case DOWN:case RIGHT: sign = 1; break;
+            case UP:case LEFT: sign = -1; break; // if direction is up or left, sign is negative
+            case DOWN:case RIGHT: sign = 1; break; // if direction is down or right, sign is positive
         }
 
         switch (d){
-            case LEFT:case RIGHT:  return new Coordinates(getCoords().getX() + distance*sign, getCoords().getY());
-            case DOWN:case UP: return new Coordinates(getCoords().getX() , getCoords().getY()+ distance*sign);
+            case LEFT:
+            case RIGHT:
+                return new Coordinates(getCoords().getX() + distance*sign, getCoords().getY()); // calculate new x-coordinate based on direction and distance
+
+            case DOWN:
+            case UP:
+                return new Coordinates(getCoords().getX() , getCoords().getY() + distance * sign); // calculate new y-coordinate based on direction and distance
         }
 
-        return null;
+        return null; // shouldn't happen
     }
 
+    // returns a list of all the coordinates that make up the entity, including all tiles it occupies
     public List<Coordinates> getAllCoordinates(){
         List<Coordinates> coordinates = new ArrayList<>();
         int last = 0;
-        for (int step = 0; step <= getSize() / PitchPanel.COMMON_DIVISOR; step++) {
-            for (int i = 0; i <= getSize() / PitchPanel.COMMON_DIVISOR; i++) {
-                if (i== getSize()/PitchPanel.COMMON_DIVISOR) last = PitchPanel.PIXEL_UNIT;
+        for (int step = 0; step <= getSize() / PitchPanel.COMMON_DIVISOR; step++) { // iterate over each step in entity's size
+            for (int i = 0; i <= getSize() / PitchPanel.COMMON_DIVISOR; i++) { // iterate over each tile in entity
+                if (i== getSize()/PitchPanel.COMMON_DIVISOR) last = PitchPanel.PIXEL_UNIT; // if last tile, use pixel unit instead of common divisor
 
+                // add the new coordinate to the list of coordinates
                 coordinates.add(new Coordinates(getCoords().getX() + step * PitchPanel.COMMON_DIVISOR, getCoords().getY() + i * PitchPanel.COMMON_DIVISOR - last));
             }
         }
-        return coordinates;
+        return coordinates; // return list of all coordinates that make up the entity
     }
 
-
+    // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
     public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int steps, int offset){
         List<Coordinates> desiredCoords = new ArrayList<>();
 
         switch (d) {
-            case RIGHT: return getNewCoordinatesOnRight(steps, offset, getSize());
-            case LEFT: return getNewCoordinatesOnLeft(steps, offset);
-            case UP: return getNewCoordinatesOnUp(steps, offset);
-            case DOWN: return getNewCoordinatesOnDown(steps, offset, getSize());
+            case RIGHT: return getNewCoordinatesOnRight(steps, offset); // get coordinates to the right of entity
+            case LEFT: return getNewCoordinatesOnLeft(steps, offset); // get coordinates to the left of entity
+            case UP: return getNewCoordinatesOnUp(steps, offset); // get coordinates above entity
+            case DOWN: return getNewCoordinatesOnDown(steps, offset, getSize()); // get coordinates below entity
         }
 
-        return desiredCoords;
+        return desiredCoords; // shouldn't happen
     }
 
-    private List<Coordinates> getNewCoordinatesOnRight(int steps, int offset, int size) {
+    private List<Coordinates> getNewCoordinatesOnRight(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
@@ -287,6 +309,7 @@ public abstract class Entity extends GameTickerObserver {
         paddingTop = (int) ((double)getSize() / (double) getHeightToHitboxSizeRatio()-getSize());
         return paddingTop;
     }
+
     public final int getPaddingWidth(){
         paddingWidth = (int) (((double)getSize() / (double) getWidthToHitboxSizeRatio()-getSize())/2);
         return paddingWidth;

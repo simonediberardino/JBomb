@@ -20,7 +20,7 @@ public class PitchPanel extends JPanel implements Observer {
     public static final Dimension DEFAULT_DIMENSION = new Dimension(945, 800);
     public static final int DEFAULT_PIXEL_UNIT = 6;
     public static final int PIXEL_UNIT = Utility.px(DEFAULT_PIXEL_UNIT);
-    public static final int COMMON_DIVISOR = PIXEL_UNIT*4;
+    public static final int COMMON_DIVISOR = PIXEL_UNIT * 4;
     public static final int GRID_SIZE = PitchPanel.COMMON_DIVISOR * 3;
 
     private Dimension panelDimensions;
@@ -78,7 +78,7 @@ public class PitchPanel extends JPanel implements Observer {
      */
     private void drawEntity(Graphics2D g2d, Entity e){
         // Draw entity's image at entity's coordinates and size
-
+        if(e.isInvisible()) return;
         g2d.drawImage(e.getImage(), e.getCoords().getX()-e.getPaddingWidth(), e.getCoords().getY() - e.getPaddingTop(),(int) Math.ceil (e.getSize()/e.getWidthToHitboxSizeRatio()), (int) Math.ceil (e.getSize()/e.getHeightToHitboxSizeRatio()), this);
     }
 

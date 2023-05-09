@@ -4,10 +4,8 @@ import game.BomberMan;
 import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
-import game.entity.enemies.Boss;
-import game.entity.enemies.FlyingEnemy;
-import game.entity.enemies.Orb;
-import game.entity.enemies.YellowBall;
+import game.entity.enemies.boss.clown.Clown;
+import game.entity.enemies.npcs.Orb;
 import game.entity.models.Enemy;
 import game.models.Coordinates;
 import game.models.EnhancedDirection;
@@ -107,7 +105,7 @@ public abstract class Level {
         // Get an array of available enemy classes.
         Class<? extends Enemy>[] availableEnemies = availableEnemies();
         //new Boss(new Coordinates(120,120)).spawn();
-        new Boss(new Coordinates(480,500)).spawn();
+        new Clown(new Coordinates(480,500)).spawn();
         // Spawn a number of enemies at the start of the game.
         //new Boss(Coordinates.randomCoordinatesFromPlayer()).spawn();
         for (int i = 0; i < startEnemiesCount(); i++) {

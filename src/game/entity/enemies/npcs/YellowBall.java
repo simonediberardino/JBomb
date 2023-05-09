@@ -1,6 +1,6 @@
-package game.entity.enemies;
+package game.entity.enemies.npcs;
 
-import game.entity.models.Enemy;
+import game.entity.enemies.npcs.IntelligentEnemy;
 import game.models.Coordinates;
 import game.panels.PitchPanel;
 import game.utils.Paths;
@@ -16,7 +16,7 @@ public class YellowBall extends IntelligentEnemy {
     }
 
     @Override
-    public String[] getFrontIcons() {
+    public String[] getBaseSkins() {
         return new String[] {
                 String.format("%s_%s.png", getBasePath(), 0),
                 String.format("%s_%s.png", getBasePath(), 1),
@@ -28,20 +28,5 @@ public class YellowBall extends IntelligentEnemy {
     @Override
     public int getSize() {
         return PitchPanel.COMMON_DIVISOR * 2;
-    }
-
-    @Override
-    public String[] getLeftIcons() {
-        return getFrontIcons();
-    }
-
-    @Override
-    public String[] getBackIcons() {
-        return getFrontIcons();
-    }
-
-    @Override
-    public String[] getRightIcons() {
-        return getFrontIcons();
     }
 }

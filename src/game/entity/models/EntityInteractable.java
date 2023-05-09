@@ -21,7 +21,7 @@ import static game.panels.PitchPanel.PIXEL_UNIT;
  * An abstract class representing interactive entities, which can move or interact with other entities in the game.
  */
 public abstract class EntityInteractable extends Entity {
-    private final static long INTERACTION_DELAY_MS = 100;
+    public final static long INTERACTION_DELAY_MS = 500;
     private final Set<Class<? extends Entity>> whitelistObstacles = new HashSet<>();
     private final HashMap<Entity, Long> interactionMap = new HashMap<>();
     private int attackDamage = 100;
@@ -41,12 +41,9 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public final void interact(Entity e) {
-        if(e instanceof PowerUp) System.out.println("POWERUP");
-
         if(canInteractWith(e)) {
             this.doInteract(e);
             this.updateLastInteract(e);
-
         }
 
         else if(e instanceof EntityInteractable && ((EntityInteractable) e).canInteractWith(this)){
@@ -274,8 +271,6 @@ public abstract class EntityInteractable extends Entity {
                 interact(e);
             }
         }
-
-
 
         // If the entity can move or it is immune to bombs, update the entity's position
         if (canMove) {

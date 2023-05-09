@@ -1,6 +1,6 @@
-package game.entity.enemies;
+package game.entity.enemies.npcs;
 
-import game.entity.models.Enemy;
+import game.entity.enemies.npcs.IntelligentEnemy;
 import game.models.Coordinates;
 
 public class Zombie extends IntelligentEnemy {
@@ -10,7 +10,7 @@ public class Zombie extends IntelligentEnemy {
     }
 
     @Override
-    public String[] getFrontIcons() {
+    public String[] getBaseSkins() {
         return new String[]{"assets/entities/enemies/zombie/fast_enemy.png"};
     }
 

@@ -28,21 +28,15 @@ public abstract class Enemy extends Character{
 
     @Override
     protected void doInteract(Entity e) {
-
         if (e instanceof BomberEntity) {
             attack(e);
         }
     }
 
-
-
     @Override
     protected void onSpawn() {
         BomberMan.getInstance().getGameTickerObservable().addObserver(this);
     }
-
-
-
 
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities(){
