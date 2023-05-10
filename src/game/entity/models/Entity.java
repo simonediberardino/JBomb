@@ -18,10 +18,7 @@ import static game.utils.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity extends GameTickerObserver {
-    public int paddingTop;
-    public int paddingWidth;
     private final long id;
-
     protected BufferedImage image;
     protected int lastImageIndex;
     protected long lastImageUpdate;
@@ -31,6 +28,9 @@ public abstract class Entity extends GameTickerObserver {
     private boolean isInvisible = false;
     protected float widthToHitboxSizeRatio = 1;
     protected float heightToHitboxSizeRatio = 1;
+    private int paddingTop;
+    private int paddingWidth;
+    private String imagePath = "";
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -71,9 +71,19 @@ public abstract class Entity extends GameTickerObserver {
      *
      * @return the size of the entity
      */
-    public final float getHeightToHitboxSizeRatio(){
+    public float getHeightToHitboxSizeRatio(){
         return heightToHitboxSizeRatio;
     }
+
+    public float getHeightToHitboxSizeRatio(String path){
+        return getHeightToHitboxSizeRatio();
+    }
+
+    public float getWidthToHitboxSizeRatio(String path){
+        return getWidthToHitboxSizeRatio();
+    }
+
+
 
     public final float getWidthToHitboxSizeRatio(){
         return widthToHitboxSizeRatio;
@@ -105,7 +115,12 @@ public abstract class Entity extends GameTickerObserver {
     public BufferedImage loadAndSetImage(String imagePath) {
         this.lastImageUpdate = System.currentTimeMillis();
         this.image = loadImage(imagePath);
+        this.imagePath = imagePath;
         return this.image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 
     /**
@@ -305,15 +320,28 @@ public abstract class Entity extends GameTickerObserver {
         return coordinates;
     }
 
-    public final int getPaddingTop(){
-        paddingTop = (int) ((double)getSize() / (double) getHeightToHitboxSizeRatio()-getSize());
+    public int getPaddingTop() {
+        paddingTop = (int) ((double) getSize() / (double) getHeightToHitboxSizeRatio() - getSize());
         return paddingTop;
     }
 
-    public final int getPaddingWidth(){
-        paddingWidth = (int) (((double)getSize() / (double) getWidthToHitboxSizeRatio()-getSize())/2);
+    public int getPaddingWidth() {
+        paddingWidth = (int) (((double) getSize() / (double) getWidthToHitboxSizeRatio() - getSize())/2);
         return paddingWidth;
     }
+
+    public int getPaddingTop(float ratio){
+        paddingTop = (int) ((double) getSize() / (double) ratio-getSize());
+        return paddingTop;
+    }
+
+    public int getPaddingWidth(float ratio){
+        paddingWidth = (int) (((double) getSize() / (double) ratio-getSize())/2);
+        return paddingWidth;
+
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

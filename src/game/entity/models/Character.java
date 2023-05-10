@@ -3,6 +3,7 @@ package game.entity.models;
 import game.BomberManMatch;
 import game.controller.Command;
 import game.controller.ControllerManager;
+import game.entity.enemies.boss.clown.Clown;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.panels.PitchPanel;
@@ -20,8 +21,8 @@ import static game.models.Direction.DOWN;
 /**
  * Represents a character in the game, which can move and interact with the environment.
  */
-public abstract class Character extends EntityDamage {
-    public static final int SIZE = PitchPanel.PIXEL_UNIT * 4* 2;
+public abstract class Character extends MovingEntity {
+    public static final int SIZE = PitchPanel.PIXEL_UNIT * 4 * 2;
     protected long lastDirectionUpdate = 0;
     protected Direction currDirection = Direction.values()[(int) (Math.random() * values().length)];
     /** The last direction this character was moving in. */
@@ -29,7 +30,8 @@ public abstract class Character extends EntityDamage {
     /** Whether this character is alive or not. */
     protected boolean isAlive = true;
     protected boolean isImmune = false;
-    private int healthPoints = 100;
+    private int maxHp = 100;
+    private int healthPoints = maxHp;
 
     /**
      * Returns an array of file names for the front-facing icons for this character.
@@ -333,6 +335,14 @@ public abstract class Character extends EntityDamage {
         }, 0, durationMs * 2); // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
     }
 
+    protected int getMaxHp() {
+        return maxHp;
+    }
+
+    protected void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
+
     /**
      * Returns the current health points of the entity.
      * @return The current health points of the entity.
@@ -349,13 +359,21 @@ public abstract class Character extends EntityDamage {
         healthPoints = newHp;
     }
 
+    protected int getHpPercentage() {
+        return (int) (((float) getHp() / (float) getMaxHp()) * 100);
+    }
+
     /**
      * Removes the specified amount of damage from the entity's health points.
      * If the health points reach 0 or below, the entity is despawned.
      * Otherwise, a damage animation is started.
      * @param damage The amount of damage to remove from the entity's health points.
      */
-    protected void removeHp(int damage){
+    protected final synchronized void hit(int damage) {
+        if(System.currentTimeMillis() - lastDamageTime < INTERACTION_DELAY_MS)
+            return;
+
+        lastDamageTime = System.currentTimeMillis();
         // Reduce the health points by the specified amount
         healthPoints -= damage;
 
@@ -366,7 +384,9 @@ public abstract class Character extends EntityDamage {
         } else {
             // Otherwise, start a damage animation
             startDamageAnimation();
+            onHit(damage);
         }
     }
 
+    protected void onHit(int damage){}
 }

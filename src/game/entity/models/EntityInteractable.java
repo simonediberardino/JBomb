@@ -5,6 +5,7 @@ import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
+import game.entity.enemies.boss.clown.Clown;
 import game.models.Coordinates;
 import game.models.Direction;
 
@@ -22,6 +23,7 @@ public abstract class EntityInteractable extends Entity {
     public final static long INTERACTION_DELAY_MS = 500;
     private final Set<Class<? extends Entity>> whitelistObstacles = new HashSet<>();
     private final HashMap<Entity, Long> interactionMap = new HashMap<>();
+    protected long lastDamageTime = 0;
     private int attackDamage = 100;
 
     /**
@@ -65,35 +67,6 @@ public abstract class EntityInteractable extends Entity {
      */
     @Override
     protected abstract void doInteract(Entity e);
-
-    /**
-     * Gets a list of available directions for the entity to move, based on the current game state.
-     * A direction is considered available if moving in that direction would not result in a collision
-     * with another entity or an invalid location.
-     *
-     * @return a list of available directions
-     */
-    public List<Direction> getAvailableDirections() {
-        List<Direction> result = new LinkedList<>();
-
-        // Iterate over each direction
-        for (Direction d : Direction.values()) {
-            List<Coordinates> newCoordinates = getNewCoordinatesOnDirection(d, PIXEL_UNIT, getSize() / 2);
-            // Check if any entities on the next coordinates are blocks or have invalid coordinates
-            boolean areCoordinatesValid = getEntitiesOnCoordinates(
-                    newCoordinates
-            ).stream().noneMatch(this::isObstacle);
-
-            areCoordinatesValid = areCoordinatesValid && newCoordinates.get(0).validate(this); // since the pitch is squared, if a coordinate is valid, then all the other new ones are as well;
-
-            // If all the next coordinates are valid, add this direction to the list of available directions
-            if (areCoordinatesValid) {
-                result.add(d);
-            }
-        }
-
-        return result;
-    }
 
     /**
      * Gets a list of entities that occupy the specified coordinates.
@@ -300,8 +273,10 @@ public abstract class EntityInteractable extends Entity {
 
     public boolean canInteractWith(Entity e){
         if(e == null) return true;
-        if(System.currentTimeMillis() - getLastInteraction(e) < INTERACTION_DELAY_MS)
+
+        if(System.currentTimeMillis() - getLastInteraction(e) < INTERACTION_DELAY_MS) {
             return false;
+        }
 
         return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e)) && !e.isImmune() || this instanceof Enemy && isObstacle(e);
     }
@@ -316,7 +291,7 @@ public abstract class EntityInteractable extends Entity {
 
     public synchronized void attack(Entity e){
         if (e instanceof Character){
-            ((Character) e).removeHp(getAttackDamage());
+            ((Character) e).hit(getAttackDamage());
         }
         else if (e instanceof Block) ((Block) e).destroy();
     }

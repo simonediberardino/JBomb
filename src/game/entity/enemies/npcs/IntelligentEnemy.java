@@ -7,6 +7,7 @@ import game.models.Coordinates;
 import game.models.Direction;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class IntelligentEnemy extends Enemy implements ICPU {
     public int CHANGE_DIRECTION_RATE = 10; // percentage
@@ -56,7 +57,10 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
         long currentTime = System.currentTimeMillis();
 
         // Get a list of all the available directions the agent can move in
-        List<Direction> availableDirections = getAvailableDirections();
+        List<Direction> availableDirections = getAvailableDirections()
+                .stream()
+                .filter(e -> getSupportedDirections().contains(e))
+                .collect(Collectors.toList());
 
         // If forceChange is true, remove the current direction from the list of available directions
 

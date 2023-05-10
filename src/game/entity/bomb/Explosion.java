@@ -94,14 +94,10 @@ public class Explosion extends MovingEntity implements Particle {
      */
     @Override
     protected void doInteract(Entity e) {
-        if (e instanceof BomberEntity) {
-            attack(e);
-        } else if (e instanceof Enemy) {
+        if (e instanceof BomberEntity || e instanceof Enemy || e instanceof DestroyableBlock) {
             attack(e);
         } else if (e instanceof Bomb) {
             ((Bomb) e).explode();
-        } else if (e instanceof DestroyableBlock) {
-            attack(e);
         }
     }
 

@@ -1,6 +1,8 @@
 package game.models;
 
 import game.entity.models.Entity;
+import game.ui.panels.PitchPanel;
+import game.utils.Utility;
 
 public enum EnhancedDirection {
     LEFTUP,
@@ -23,6 +25,10 @@ public enum EnhancedDirection {
     public static EnhancedDirection toEnhancedDirection(Direction[] directions){
         Direction vertical = null;
         Direction horizontal = null;
+        if(directions.length!=2){
+            System.out.println("ARRAY DOESN'T CONTAIN EXACTLY TWO DIRECTIONS. Number of directions = " + directions.length);
+            return null;
+        }
 
         for (Direction d: directions
              ) {
@@ -51,6 +57,19 @@ public enum EnhancedDirection {
             if (array[i]== direction) array[i] = direction.opposite();
         }
         return toEnhancedDirection(array);
+
+    }
+
+    public static EnhancedDirection randomDirectionTowardsCenter(Entity entity){
+        Coordinates centerEntityCoords = new Coordinates(entity.getCoords().getX()+entity.getSize()/2,entity.getCoords().getY()+entity.getSize()/2);
+        Direction newHorizontalDirection;
+        Direction newVerticalDirection;
+        if (centerEntityCoords.getX()> Utility.px(PitchPanel.DEFAULT_DIMENSION.getWidth()/2)) newHorizontalDirection = Direction.LEFT;
+        else newHorizontalDirection = Direction.RIGHT;
+        if (centerEntityCoords.getY()< Utility.px(PitchPanel.DEFAULT_DIMENSION.getHeight()/2)) newVerticalDirection = Direction.DOWN;
+        else newVerticalDirection = Direction.UP;
+        return toEnhancedDirection(new Direction[]{newHorizontalDirection,newVerticalDirection});
+
 
     }
 

@@ -23,6 +23,7 @@ public class Player extends BomberEntity {
     @Override
     protected void doInteract(Entity e) { }
 
+
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities() {
         return this.interactionEntities;

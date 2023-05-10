@@ -1,5 +1,6 @@
 package game.entity.enemies.boss.clown;
 
+import game.BomberManMatch;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
@@ -10,13 +11,16 @@ import game.entity.models.Explosive;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.models.EnhancedDirection;
+import game.ui.panels.BombermanFrame;
 import game.ui.panels.PitchPanel;
+import game.utils.Dimensions;
 import game.utils.Paths;
 import game.utils.Utility;
 
-import java.awt.image.BufferedImage;
+import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.IntFunction;
 
 /**
 
@@ -25,6 +29,10 @@ import java.util.List;
  The Clown entity can spawn orbs, enhanced orbs, explosions and throw its hat in random directions.
  */
 public class Clown extends Boss implements Explosive {
+    private static final float RATIO_HEIGHT_WITH_HAT = 0.7517f;
+    private static final float RATIO_HEIGHT = 0.87f;
+    private static final float RATIO_WIDTH = 0.8739f;
+    private static final String SKIN_PATH_TEMPLATE = "%s/clown/clown_%s_%s.png";
 
     /**
      The hasHat property represents whether the Clown entity is wearing a hat or not.
@@ -35,27 +43,27 @@ public class Clown extends Boss implements Explosive {
      Constructor for the Clown entity that takes in the entity's starting coordinates and sets its initial hasHat value to true.
      @param coordinates The starting coordinates of the Clown entity.
      */
-    public Clown(Coordinates coordinates){
+    private Clown(Coordinates coordinates){
         super(coordinates);
-        widthToHitboxSizeRatio = 0.8739f;
+    }
+
+    public Clown(){
+        super(null);
+
+        Dimension panelSize = BomberManMatch
+                .getInstance()
+                .getGameFrame()
+                .getPitchPanel()
+                .getPreferredSize();
+
+        int y = (int) (panelSize.getHeight() - getSize());
+        int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
+
+        setCoords(new Coordinates(x, y));
+        widthToHitboxSizeRatio = RATIO_WIDTH;
         hasHat = true;
     }
-    /**
-
-     Overrides the getImage method from the Boss superclass to change the heightToHitboxSizeRatio property based on the hasHat value.
-
-     @return A BufferedImage representing the Clown entity's current image.
-     */
-    @Override
-    public BufferedImage getImage() {
-        BufferedImage res = super.getImage();
-
-        if (hasHat) heightToHitboxSizeRatio = 0.7517f;
-        else heightToHitboxSizeRatio = 0.87f;
-
-        return res;
-    }
-
+    
     /**
 
      Overrides the getBaseSkins method from the Boss superclass to return an array of skin paths based on the hasHat value.
@@ -63,18 +71,17 @@ public class Clown extends Boss implements Explosive {
      */
     @Override
     public String[] getBaseSkins() {
-        if (hasHat) {
-            return new String[]{Paths.getEnemiesFolder() + "/clown/clown_with_hat.png"};
-        }
-        return new String[]{Paths.getEnemiesFolder() + "/clown/clown.png"};
+        return new String[] { getImageFromRageStatus() };
     }
-    /**
 
-     Getter method for the hasHat property.
+    /**
      @return A boolean value representing whether the Clown entity is wearing a hat or not.
      */
-    public boolean isHasHat() {
-        return hasHat;
+    public boolean isHatImage(String path) {
+        String[] toks = path.split("_");
+        if(toks.length <= 1) return false;
+
+        return toks[1].equals("1");
     }
     /**
 
@@ -149,7 +156,14 @@ public class Clown extends Boss implements Explosive {
      */
     private void spawnOrbs() {
         for (Direction d: Direction.values()) {
-            new Orb(Coordinates.fromDirectionToCoordinateOnEntity(this,d, Orb.SIZE,Orb.SIZE),d).spawn(true,false);
+            new Orb(
+                    Coordinates.fromDirectionToCoordinateOnEntity(
+                            this,
+                            d,
+                            Orb.SIZE,
+                            Orb.SIZE
+                    ), d
+            ).spawn(true,false);
         }
     }
 
@@ -200,8 +214,8 @@ public class Clown extends Boss implements Explosive {
     /**
      * Throws a hat in a random enhanced direction.
      */
-    private void throwHat() {
-        EnhancedDirection d = EnhancedDirection.values()[(int)(Math.random()*EnhancedDirection.values().length)];
+    public void throwHat() {
+        EnhancedDirection d = EnhancedDirection.randomDirectionTowardsCenter(this);
         new Hat(Coordinates.fromDirectionToCoordinateOnEntity(this, d, 0), d).spawn(true, false);
         hasHat = false;
     }
@@ -227,46 +241,64 @@ public class Clown extends Boss implements Explosive {
         super.update(gamestate);
     }
 
-    /**
-     * Chooses a new direction for the agent to move in, and sends the corresponding command to the game engine.
-     *
-     * @param forceChange If true, the agent will be forced to change direction even if it just changed directions.
-     *                    If false, there is a chance the agent will keep its current direction.
-     * @return new direction
-     */
+
     @Override
-    public Direction chooseDirection(boolean forceChange) {
-        // Get the current time in milliseconds
-        long currentTime = System.currentTimeMillis();
+    protected void updateRageStatus(int status) {
+        if(status == currRageStatus) return;
 
-        // Get a list of all the available directions the agent can move in
-        List<Direction> availableDirections = Arrays.asList(Direction.values().clone());
-
-        // If forceChange is true, remove the current direction from the list of available directions
-
-        // If it hasn't been long enough since the last direction update, keep moving in the same direction, unless last move was blocked
-        if (currentTime - lastDirectionUpdate < DIRECTION_REFRESH_RATE && !forceChange) {
-            return currDirection;
-        }
-
-        if (availableDirections.isEmpty()) {
-            return currDirection;
-        }
-
-        // Choose a new direction randomly, or keep the current direction with a certain probability
-        Direction newDirection = null;
-        if (Math.random() * 100 > CHANGE_DIRECTION_RATE) {
-            newDirection = currDirection;
-        }
-
-        // If a new direction hasn't been chosen, choose one randomly from the available options
-        if (newDirection == null) {
-            newDirection = availableDirections.get((int) (Math.random() * availableDirections.size()));
-        }
-
-        // Send the command corresponding to the new direction to the game engine
-        return newDirection;
+        currRageStatus = status;
+        String imagePath = getImageFromRageStatus();
+        loadAndSetImage(imagePath);
     }
+
+    @Override
+    protected String getImageFromRageStatus() {
+        return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), hasHat ? 1 : 0, currRageStatus);
+    }
+
+    @Override
+    public List<Direction> getSupportedDirections() {
+        return Arrays.asList(Direction.LEFT, Direction.RIGHT);
+    }
+
+    @Override
+    protected void onHit(int damage) {
+        int hpPercentage = getHpPercentage();
+        Map.Entry<Integer, Integer> entry = healthStatusMap.ceilingEntry(hpPercentage);
+
+        if (entry != null) {
+            updateRageStatus(entry.getValue());
+        }
+    }
+
+    @Override
+    protected Map<Integer, Integer> healthStatusMap() {
+        TreeMap<Integer, Integer> map = new TreeMap<>(Collections.reverseOrder());
+        map.put(75, 0);
+        map.put(60, 1);
+        map.put(50, 2);
+        map.put(25, 3);
+        return map;
+    }
+
+    @Override
+    public int getPaddingTop(){
+        heightToHitboxSizeRatio = hasHat ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
+        return super.getPaddingTop();
+    }
+
+    @Override
+    public float getHeightToHitboxSizeRatio() {
+        heightToHitboxSizeRatio = hasHat ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
+        return heightToHitboxSizeRatio;
+    }
+
+    @Override
+    public float getHeightToHitboxSizeRatio(String path){
+        heightToHitboxSizeRatio = isHatImage(path) ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
+        return heightToHitboxSizeRatio;
+    }
+
 
 }
 
