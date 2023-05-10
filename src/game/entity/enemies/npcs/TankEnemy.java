@@ -18,6 +18,10 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     private boolean canShoot = false;
     private long lastUpdate = 0;
 
+    public TankEnemy() {
+        super();
+    }
+
     public TankEnemy(Coordinates coordinates) {
         super(coordinates);
     }

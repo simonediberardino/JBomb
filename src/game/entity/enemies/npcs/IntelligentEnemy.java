@@ -14,7 +14,8 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
     public static final int DIRECTION_REFRESH_RATE = 500;
 
     public IntelligentEnemy(){
-        super(null);
+        super();
+        heightToHitboxSizeRatio = 0.733f;
     }
 
     public IntelligentEnemy(Coordinates coordinates) {

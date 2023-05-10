@@ -1,13 +1,13 @@
 package game.entity.bomb;
 
 import game.BomberManMatch;
-import game.entity.Particle;
+import game.entity.models.Particle;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.utils.Paths;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.HashSet;

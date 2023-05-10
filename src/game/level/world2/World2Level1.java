@@ -1,9 +1,13 @@
-package game.level;
+package game.level.world2;
 
+import game.entity.enemies.boss.Boss;
 import game.entity.enemies.npcs.FlyingEnemy;
 import game.entity.enemies.npcs.TankEnemy;
 import game.entity.enemies.npcs.YellowBall;
+import game.entity.enemies.npcs.Zombie;
 import game.entity.models.Enemy;
+import game.level.Level;
+import game.level.world1.World1Level2;
 
 /**
 
@@ -13,32 +17,25 @@ import game.entity.models.Enemy;
 
  explosion length, and a method to generate the stone blocks in the game board.
  */
-public class Level2 extends Level {
-    public Level2() {
-        super(2);
+public class World2Level1 extends World2Level {
+    public World2Level1() {
+        super(1);
     }
 
     @Override
     public int startEnemiesCount() {
-        return 0;
-    }
-
-    @Override
-    public int getMaxDestroyableBlocks(){
-        return 10;
-    }
-
-    @Override
-    public int getExplosionLength() {
-        return explosionLength;
+        return 15;
     }
 
     @Override
     public Class<? extends Enemy>[] availableEnemies() {
         return new Class[]{
-                YellowBall.class,
-                FlyingEnemy.class,
-                TankEnemy.class
+                FlyingEnemy.class
         };
+    }
+
+    @Override
+    public Class<? extends Level> getNextLevel() {
+        return World2Level2.class;
     }
 }

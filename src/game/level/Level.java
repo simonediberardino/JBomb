@@ -4,7 +4,7 @@ import game.BomberManMatch;
 import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
-import game.entity.enemies.boss.clown.Clown;
+import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
 import game.models.Coordinates;
 import game.utils.Paths;
@@ -16,7 +16,7 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-import static game.ui.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 
 /**
@@ -26,19 +26,24 @@ import static game.ui.panels.PitchPanel.GRID_SIZE;
  * when bombs are detonated, and the background image of the level.
  */
 public abstract class Level {
-    private int id;
+    private final int levelId;
+    private final int worldId;
     protected int maxBombs = 1;
-    protected int explosionLength = 6;
 
-    private Level(){}
-
-    public Level(int id){
-        this.id = id;
+    private Level(){
+        this(0,0);
     }
 
+    public Level(int levelId, int worldId){
+        this.levelId = levelId;
+        this.worldId = worldId;
+    }
+
+    public abstract Boss getBoss();
     public abstract int startEnemiesCount();
     public abstract int getMaxDestroyableBlocks();
     public abstract int getExplosionLength();
+    public abstract Class<? extends Level> getNextLevel();
     public abstract Class<? extends Enemy>[] availableEnemies();
 
     /**
@@ -47,7 +52,7 @@ public abstract class Level {
      @return a string representing the path to the image file.
      */
     public String getStoneBlock() {
-        return Paths.getCurrentLevelFolder() + "/stone.png";
+        return Paths.getCurrentWorldCommonFolder() + "/stone.png";
     }
 
     /**
@@ -56,7 +61,7 @@ public abstract class Level {
      @return a string representing the path to the image file.
      */
     public String getGrassBlock() {
-        return Paths.getCurrentLevelFolder() + "/grass.png";
+        return Paths.getCurrentWorldCommonFolder() + "/grass.png";
     }
     /**
 
@@ -64,11 +69,7 @@ public abstract class Level {
      @return the path to the image file for the destroyable block.
      */
     public String getDestroyableBlock() {
-        return Paths.getCurrentLevelFolder() + "/destroyable_block.png";
-    }
-
-    public String getWaterBlock() {
-        return Paths.getLevelsFolder() + "/0/water.png";
+        return Paths.getCurrentWorldCommonFolder() + "/destroyable_block.png";
     }
 
     /**
@@ -80,7 +81,7 @@ public abstract class Level {
         final int SIDES = 4;
         Image[] pitch = new Image[SIDES];
         for(int i = 0; i < SIDES; i++){
-            pitch[i] = Utility.loadImage(String.format("%s/border_%d.png", Paths.getCurrentLevelFolder(), i));
+            pitch[i] = Utility.loadImage(String.format("%s/border_%d.png", Paths.getCurrentWorldCommonFolder(), i));
         }
         return pitch;
     }
@@ -98,18 +99,21 @@ public abstract class Level {
         BomberManMatch.getInstance().getPlayer().spawn();
         generateDestroyableBlock();
 
-
+        spawnBoss();
         spawnEnemies();
     }
 
+    protected void spawnBoss(){
+        Boss boss = getBoss();
+        if(boss != null) boss.spawn();
+    }
+
     // This method spawns enemies in the game.
-    public void spawnEnemies() {
+    protected void spawnEnemies() {
         // Get an array of available enemy classes.
         Class<? extends Enemy>[] availableEnemies = availableEnemies();
-        //new Boss(new Coordinates(120,120)).spawn();
-        new Clown().spawn(true, false);
-        // Spawn a number of enemies at the start of the game.
 
+        // Spawn a number of enemies at the start of the game.
         for (int i = 0; i < startEnemiesCount(); i++) {
             // Select a random enemy class from the availableEnemies array.
             Class<? extends Enemy> enemyClass = availableEnemies[new Random().nextInt(availableEnemies.length)];
@@ -117,7 +121,7 @@ public abstract class Level {
             // Create an instance of the enemy class using a constructor that takes a Coordinates object as an argument.
             Enemy enemy;
             try {
-                enemy = enemyClass.getConstructor(Coordinates.class).newInstance(Coordinates.randomCoordinatesFromPlayer());
+                enemy = enemyClass.getConstructor().newInstance();
 
                 // Spawn the enemy on the game board.
                 enemy.spawn();
@@ -127,9 +131,14 @@ public abstract class Level {
         }
     }
 
-    // This method returns the ID of an object.
-    public int getId() {
-        return id;
+    // This method returns the ID of the world.
+    public int getWorldId() {
+        return worldId;
+    }
+
+    // This method returns the ID of the level.
+    public int getLevelId() {
+        return levelId;
     }
 
     // This method returns the maximum number of bombs that a player can have at one time.

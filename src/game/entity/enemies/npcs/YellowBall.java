@@ -1,10 +1,14 @@
 package game.entity.enemies.npcs;
 
 import game.models.Coordinates;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 
 public class YellowBall extends IntelligentEnemy {
+    public YellowBall() {
+        super();
+    }
+
     public YellowBall(Coordinates coordinates) {
         super(coordinates);
     }
@@ -16,7 +20,7 @@ public class YellowBall extends IntelligentEnemy {
 
     @Override
     public String[] getBaseSkins() {
-        return new String[] {
+        return new String[]{
                 String.format("%s_%s.png", getBasePath(), 0),
                 String.format("%s_%s.png", getBasePath(), 1),
                 String.format("%s_%s.png", getBasePath(), 2),

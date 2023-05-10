@@ -1,6 +1,6 @@
 package game.entity.enemies.boss.clown;
 
-import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
@@ -11,16 +11,13 @@ import game.entity.models.Explosive;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.models.EnhancedDirection;
-import game.ui.panels.BombermanFrame;
-import game.ui.panels.PitchPanel;
-import game.utils.Dimensions;
+import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 import game.utils.Utility;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.function.IntFunction;
 
 /**
 
@@ -50,9 +47,8 @@ public class Clown extends Boss implements Explosive {
     public Clown(){
         super(null);
 
-        Dimension panelSize = BomberManMatch
-                .getInstance()
-                .getGameFrame()
+        Dimension panelSize = Bomberman
+                .getBombermanFrame()
                 .getPitchPanel()
                 .getPreferredSize();
 
@@ -242,38 +238,73 @@ public class Clown extends Boss implements Explosive {
     }
 
 
+    /**
+     * Updates the rage status of the Boss, loading and setting the corresponding image.
+     *
+     * @param status the new rage status to be set.
+     */
     @Override
     protected void updateRageStatus(int status) {
+        // If the new rage status is the same as the current one, nothing to update.
         if(status == currRageStatus) return;
 
         currRageStatus = status;
+        // Get the corresponding image path from the current rage status.
         String imagePath = getImageFromRageStatus();
+        // Load and set the image.
         loadAndSetImage(imagePath);
     }
 
+    /**
+     * Returns the image path of the Boss corresponding to its current rage status.
+     *
+     * @return the image path of the Boss.
+     */
     @Override
     protected String getImageFromRageStatus() {
+        // Format the skin path template with the appropriate values.
         return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), hasHat ? 1 : 0, currRageStatus);
     }
 
+    /**
+     * Returns a list with the supported directions of the Boss.
+     *
+     * @return the list with the supported directions.
+     */
     @Override
     public List<Direction> getSupportedDirections() {
         return Arrays.asList(Direction.LEFT, Direction.RIGHT);
     }
 
+    /**
+     * Handles the Boss getting hit by the player, updating its rage status if necessary.
+     *
+     * @param damage the amount of damage the Boss received.
+     */
     @Override
     protected void onHit(int damage) {
+        // Get the current health percentage of the Boss.
         int hpPercentage = getHpPercentage();
+        // Get the entry from the health status map whose key is the lowest greater than or equal to hpPercentage.
         Map.Entry<Integer, Integer> entry = healthStatusMap.ceilingEntry(hpPercentage);
 
+        // If there is an entry, update the rage status of the Boss.
         if (entry != null) {
             updateRageStatus(entry.getValue());
         }
     }
 
+    /**
+     * Returns a map with the health percentages and their corresponding rage statuses for the Boss.
+     * Note: avoid calling this method to prevent unnecessary memory usage, use the property instead.
+     *
+     * @return the health status map.
+     */
     @Override
     protected Map<Integer, Integer> healthStatusMap() {
+        // Create a new TreeMap with reverse order.
         TreeMap<Integer, Integer> map = new TreeMap<>(Collections.reverseOrder());
+        // Add the health percentages and their corresponding rage statuses to the map.
         map.put(75, 0);
         map.put(60, 1);
         map.put(50, 2);
@@ -281,18 +312,37 @@ public class Clown extends Boss implements Explosive {
         return map;
     }
 
+    /**
+     * Returns the top padding of the Boss hitbox.
+     *
+     * @return the top padding of the hitbox.
+     */
     @Override
     public int getPaddingTop(){
+        // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
         heightToHitboxSizeRatio = hasHat ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
+        // Return the top padding of the hitbox.
         return super.getPaddingTop();
     }
 
+    /**
+     * Returns the height to hitbox size ratio of the Boss.
+     *
+     * @return the height to hitbox size ratio.
+     */
     @Override
     public float getHeightToHitboxSizeRatio() {
+        // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
         heightToHitboxSizeRatio = hasHat ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
         return heightToHitboxSizeRatio;
     }
 
+    /**
+     * Returns the height to hitbox size ratio of the Boss, taking into account the image path.
+     *
+     * @param path the path of the image.
+     * @return the height to hitbox size ratio.
+     */
     @Override
     public float getHeightToHitboxSizeRatio(String path){
         heightToHitboxSizeRatio = isHatImage(path) ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;

@@ -1,15 +1,15 @@
 package game.entity.enemies.npcs;
 
-import game.entity.Particle;
+import game.entity.models.Particle;
 import game.entity.Player;
-import game.entity.Transparent;
+import game.entity.models.Transparent;
 import game.entity.bomb.Bomb;
 import game.entity.models.Enemy;
 import game.entity.models.Entity;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.models.EnhancedDirection;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 
 import java.util.Arrays;
@@ -39,6 +39,9 @@ public class Orb extends Enemy implements Transparent, Particle{
      */
     protected Direction direction = null;
 
+    public Orb() {
+        super();
+    }
     /**
      Constructs an Orb with the given coordinates and enhanced direction.
      @param coordinates the coordinates of the Orb

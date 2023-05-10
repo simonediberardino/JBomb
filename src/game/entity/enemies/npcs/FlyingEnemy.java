@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FlyingEnemy extends IntelligentEnemy {
+    public FlyingEnemy() {
+        super();
+    }
+
     public FlyingEnemy(Coordinates coordinates) {
         super(coordinates);
     }

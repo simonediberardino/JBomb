@@ -1,7 +1,7 @@
 package game.models;
 
 import game.entity.models.Entity;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 
 public enum EnhancedDirection {

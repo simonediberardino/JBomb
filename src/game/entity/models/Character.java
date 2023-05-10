@@ -3,10 +3,9 @@ package game.entity.models;
 import game.BomberManMatch;
 import game.controller.Command;
 import game.controller.ControllerManager;
-import game.entity.enemies.boss.clown.Clown;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.List;

@@ -6,10 +6,12 @@ import game.entity.*;
 import game.entity.models.Block;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
+import game.entity.models.Particle;
 import game.level.Level;
 import game.powerups.PowerUp;
 import game.ui.panels.BombermanFrame;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class BomberManMatch {
@@ -22,7 +24,6 @@ public class BomberManMatch {
     private ControllerManager controllerManager;
     private Level currentLevel;
     private Player player;
-    private BombermanFrame bombermanFrame = null;
     private boolean gameState = false;
 
     public static BomberManMatch getInstance() {
@@ -43,13 +44,7 @@ public class BomberManMatch {
         this.gameTickerObservable = new GameTickerObservable();
         controllerManager.addObserver(new GamePausedObserver());
 
-        this.start();
-    }
-
-    public void start() {
-        bombermanFrame = new BombermanFrame();
-        bombermanFrame.create();
-        setGameState(true);
+        Bomberman.getBombermanFrame().addKeyListener(BomberManMatch.getInstance().getControllerManager());
     }
 
     public Level getCurrentLevel() {
@@ -62,10 +57,6 @@ public class BomberManMatch {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public BombermanFrame getGameFrame() {
-        return bombermanFrame;
     }
 
     public Set<? extends Entity> getParticles() {
@@ -157,5 +148,19 @@ public class BomberManMatch {
 
     public void setGameState(boolean gameState) {
         this.gameState = gameState;
+    }
+
+    public void nextLevel() {
+        try {
+            // TODO!!! Reset memory, clear panels, start loading panel and then start a new level!!
+            Level nextLevel = getCurrentLevel().getNextLevel().getConstructor().newInstance();
+            Bomberman.startLevel(nextLevel);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start() {
+
     }
 }

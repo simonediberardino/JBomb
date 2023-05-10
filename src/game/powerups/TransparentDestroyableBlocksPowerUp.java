@@ -1,6 +1,6 @@
 package game.powerups;
 
-import game.entity.Transparent;
+import game.entity.models.Transparent;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;

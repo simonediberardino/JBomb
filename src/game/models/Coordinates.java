@@ -1,6 +1,7 @@
 package game.models;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
 
@@ -8,7 +9,7 @@ import java.awt.*;
 import java.time.temporal.ValueRange;
 import java.util.*;
 
-import static game.ui.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 public class Coordinates {
     private final int x;
@@ -32,11 +33,11 @@ public class Coordinates {
      @return true if valid, false otherwise;
      */
     public boolean validate(Entity e) {
-        Dimension gamePanelDimensions = BomberManMatch
-                .getInstance()
-                .getGameFrame()
+        Dimension gamePanelDimensions = Bomberman
+                .getBombermanFrame()
                 .getPitchPanel()
                 .getPanelDimensions();
+
 
         ValueRange rangeY = ValueRange.of(0, gamePanelDimensions.height - e.getSize());
         ValueRange rangeX = ValueRange.of(0, gamePanelDimensions.width - e.getSize());
@@ -44,15 +45,14 @@ public class Coordinates {
         return (rangeY.isValidValue(getY()) && rangeX.isValidValue(getX()));
     }
 
-    public static Coordinates RoundedRandomCoords(Coordinates offset){
-        Dimension dimensions = BomberManMatch.getInstance()
-                .getGameFrame()
-                .getPitchPanel()
+    public static Coordinates roundedRandomCoords(Coordinates offset){
+        Dimension dimensions = Bomberman.getBombermanFrame().getPitchPanel()
                 .getPanelDimensions();
 
         return roundCoordinates(new Coordinates( (    (int) (Math.random() * dimensions.getWidth())  ),
                 (  (int) (Math.random() *  dimensions.getHeight() ) )), offset);
     }
+
     public static Coordinates roundCoordinates(Coordinates coords){
         return roundCoordinates(coords,new Coordinates(0,0));
     }
@@ -83,7 +83,7 @@ public class Coordinates {
         all.addAll(entities);
 
         while (true) {
-            Coordinates coords = RoundedRandomCoords(spawnOffset);
+            Coordinates coords = roundedRandomCoords(spawnOffset);
 
             if (!EntityInteractable.isBlockOccupied(coords)){
                 return coords;

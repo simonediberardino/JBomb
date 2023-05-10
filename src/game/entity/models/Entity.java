@@ -4,13 +4,13 @@ import game.BomberManMatch;
 import game.engine.GameTickerObserver;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
-import static game.ui.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 import static game.utils.Utility.loadImage;
 
 

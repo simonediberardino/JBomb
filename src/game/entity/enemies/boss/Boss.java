@@ -3,9 +3,8 @@ package game.entity.enemies.boss;
 import game.entity.enemies.npcs.IntelligentEnemy;
 import game.entity.models.Entity;
 import game.models.Coordinates;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 
-import java.awt.image.BufferedImage;
 import java.util.*;
 
 public abstract class Boss extends IntelligentEnemy {

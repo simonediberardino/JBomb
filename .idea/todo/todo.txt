@@ -1,0 +1,14 @@
+- Clown starting coordinates;
+- Draw priorities;
+- Player animations;
+- New enemies;
+- Clown with hat textures;
+- New boss;
+- Loading page;
+- Page restart;
+- Lives;
+- World flags;
+- HUD;
+- Player stats;
+- Points;
+- Data to mass memory;

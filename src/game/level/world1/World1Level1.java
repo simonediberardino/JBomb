@@ -1,7 +1,9 @@
-package game.level;
+package game.level.world1;
 
+import game.entity.enemies.boss.Boss;
 import game.entity.enemies.npcs.YellowBall;
 import game.entity.models.Enemy;
+import game.level.Level;
 
 /**
 
@@ -11,33 +13,14 @@ import game.entity.models.Enemy;
 
  explosion length, and a method to generate the stone blocks in the game board.
  */
-public class Level1 extends Level {
-    public Level1() {
+public class World1Level1 extends World1Level {
+    public World1Level1() {
         super(1);
     }
 
     @Override
     public int startEnemiesCount() {
-        return 0;
-    }
-
-    @Override
-    public int getMaxBombs() {
-        return 1;
-    }
-
-    public int getMaxDestroyableBlocks(){
-        return 10;
-    }
-
-    /**
-
-     Returns the explosion length for level 1.
-     @return an integer representing the explosion length.
-     */
-    @Override
-    public int getExplosionLength() {
-        return 3;
+        return 5;
     }
 
     @Override
@@ -45,5 +28,10 @@ public class Level1 extends Level {
         return new Class[]{
                 YellowBall.class
         };
+    }
+
+    @Override
+    public Class<? extends Level> getNextLevel() {
+        return World1Level2.class;
     }
 }

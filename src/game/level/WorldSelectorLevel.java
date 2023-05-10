@@ -1,5 +1,6 @@
 package game.level;
 
+import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
 import game.models.Coordinates;
 
@@ -7,7 +8,7 @@ import javax.swing.*;
 
 public class WorldSelectorLevel extends Level{
     public WorldSelectorLevel() {
-        super(0);
+        super(0, 0);
     }
 
     @Override
@@ -26,6 +27,11 @@ public class WorldSelectorLevel extends Level{
     }
 
     @Override
+    public Class<? extends Level> getNextLevel() {
+        return null;
+    }
+
+    @Override
     public Class<? extends Enemy>[] availableEnemies() {
         return new Class[0];
     }
@@ -37,6 +43,11 @@ public class WorldSelectorLevel extends Level{
 
     @Override
     public void generateDestroyableBlock() {
+    }
+
+    @Override
+    public Boss getBoss() {
+        return null;
     }
 
     @Override

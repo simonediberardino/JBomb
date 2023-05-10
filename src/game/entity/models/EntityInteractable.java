@@ -5,15 +5,14 @@ import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
-import game.entity.enemies.boss.clown.Clown;
 import game.models.Coordinates;
 import game.models.Direction;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static game.ui.panels.PitchPanel.GRID_SIZE;
-import static game.ui.panels.PitchPanel.PIXEL_UNIT;
+import static game.ui.panels.game.PitchPanel.GRID_SIZE;
+import static game.ui.panels.game.PitchPanel.PIXEL_UNIT;
 
 
 /**

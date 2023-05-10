@@ -1,6 +1,8 @@
-package game.ui.panels;
+package game.ui.panels.game;
 
 import game.BomberManMatch;
+import game.ui.panels.BombermanFrame;
+import game.ui.panels.PagePanel;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -30,7 +32,6 @@ public class MatchPanel extends PagePanel {
         addGamePanelWithBordersToParentPanel(); // Add the game panel with borders to the parent panel
         setLayoutAndAddParentPanel(); // Set the layout and add the parent panel to the game frame
         resizeWindowToFitComponents(); // Resize the game frame to fit the components
-        startGame(); // Start the game
     }
 
     private void createParentPanel(){
@@ -140,13 +141,6 @@ public class MatchPanel extends PagePanel {
      */
     private void resizeWindowToFitComponents() {
         frame.pack();
-    }
-
-    /**
-     Starts the game by calling the start() method of the current level with gamePanel as the argument.
-     */
-    private void startGame() {
-        BomberManMatch.getInstance().getCurrentLevel().start(pitchPanel);
     }
 
     /**

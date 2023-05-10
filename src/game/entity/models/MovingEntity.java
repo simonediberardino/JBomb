@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static game.ui.panels.PitchPanel.PIXEL_UNIT;
+import static game.ui.panels.game.PitchPanel.PIXEL_UNIT;
 
 public abstract class MovingEntity extends EntityDamage {
     public MovingEntity(Coordinates coordinates){

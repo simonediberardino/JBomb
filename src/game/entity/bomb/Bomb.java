@@ -7,7 +7,7 @@ import game.entity.blocks.HardBlock;
 import game.entity.models.*;
 import game.models.Direction;
 import game.utils.Paths;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 
 import java.awt.image.BufferedImage;
 import java.util.*;

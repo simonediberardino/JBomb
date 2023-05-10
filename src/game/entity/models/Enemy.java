@@ -4,17 +4,15 @@ package game.entity.models;
 import game.BomberManMatch;
 import game.entity.Player;
 import game.models.Coordinates;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 
 import java.util.*;
 
 public abstract class Enemy extends Character{
-
-
     protected boolean canMove = true;
 
     public Enemy(){
-        super(null);
+        super(Coordinates.randomCoordinatesFromPlayer());
     }
 
     public Enemy(Coordinates coordinates) {

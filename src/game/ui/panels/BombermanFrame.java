@@ -1,6 +1,9 @@
 package game.ui.panels;
 
-import game.BomberManMatch;
+import game.Bomberman;
+import game.ui.panels.game.MatchPanel;
+import game.ui.panels.game.PitchPanel;
+import game.ui.panels.menus.MainMenuPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +17,9 @@ import java.awt.*;
  */
 public class BombermanFrame extends JFrame {
     private final CardLayout cardLayout = new CardLayout();
-    private final JPanel parent = new JPanel();
+    private final JPanel parentPanel = new JPanel();
     private MatchPanel matchPanel;
-    private MenuPanel menuPanel;
+    private MainMenuPanel mainMenuPanel;
 
     /**
 
@@ -31,7 +34,7 @@ public class BombermanFrame extends JFrame {
 
     private void setFrameProperties() {
         setLayout(new BorderLayout());
-        parent.setLayout(cardLayout);
+        parentPanel.setLayout(cardLayout);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -39,7 +42,7 @@ public class BombermanFrame extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setVisible(true);
-        add(parent);
+        add(parentPanel);
 
     }
     /**
@@ -47,17 +50,17 @@ public class BombermanFrame extends JFrame {
      Initializes the menu panel and adds it to the parent panel.
      */
     private void initMenuPanel() {
-        menuPanel = new MenuPanel(cardLayout, parent, this);
-        parent.add(menuPanel, MenuPanel.class.getSimpleName());
+        mainMenuPanel = new MainMenuPanel(cardLayout, parentPanel, this);
+        parentPanel.add(mainMenuPanel, MainMenuPanel.class.getSimpleName());
     }
-    /**
 
+    /**
      Initializes the match panel and adds it to the parent panel.
      */
-    void initGamePanel() {
-        matchPanel = new MatchPanel(cardLayout, parent, this);
+    public void initGamePanel() {
+        matchPanel = new MatchPanel(cardLayout, parentPanel, this);
         matchPanel.initGamePanel();
-        parent.add(matchPanel, MatchPanel.class.getSimpleName());
+        parentPanel.add(matchPanel, MatchPanel.class.getSimpleName());
     }
     /**
 
@@ -66,7 +69,6 @@ public class BombermanFrame extends JFrame {
      */
     public void finalizeFrame() {
         // Set key listener and focusable
-        this.addKeyListener(BomberManMatch.getInstance().getControllerManager());
         this.setFocusable(true);
         this.requestFocus();
 
@@ -75,7 +77,7 @@ public class BombermanFrame extends JFrame {
         this.revalidate();
         this.repaint();
 
-        show(MenuPanel.class);
+        Bomberman.show(MainMenuPanel.class);
         revalidate();
         repaint();
     }
@@ -88,9 +90,12 @@ public class BombermanFrame extends JFrame {
         return matchPanel.getPitchPanel();
     }
 
-    public void show(Class<? extends PagePanel> page){
-        // Show the menu panel
-        cardLayout.show(parent, page.getSimpleName());
+    public CardLayout getCardLayout() {
+        return cardLayout;
+    }
+
+    public JPanel getParentPanel() {
+        return parentPanel;
     }
 
 

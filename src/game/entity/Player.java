@@ -8,7 +8,7 @@ import game.utils.Paths;
 
 import java.util.*;
 
-import static game.ui.panels.PitchPanel.GRID_SIZE;
+import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 
 public class Player extends BomberEntity {
@@ -22,7 +22,6 @@ public class Player extends BomberEntity {
 
     @Override
     protected void doInteract(Entity e) { }
-
 
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities() {

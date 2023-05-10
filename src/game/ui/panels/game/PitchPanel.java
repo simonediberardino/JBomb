@@ -1,4 +1,4 @@
-package game.ui.panels;
+package game.ui.panels.game;
 
 import game.BomberManMatch;
 import game.entity.models.Entity;

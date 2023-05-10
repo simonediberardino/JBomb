@@ -4,6 +4,10 @@ import game.models.Coordinates;
 
 // TODO
 public class FastEnemy extends IntelligentEnemy {
+    public FastEnemy() {
+        super();
+    }
+
     public FastEnemy(Coordinates coordinates) {
         super(coordinates);
     }

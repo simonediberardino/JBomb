@@ -4,7 +4,7 @@ import game.entity.Player;
 import game.entity.models.*;
 import game.entity.models.Character;
 import game.models.Coordinates;
-import game.ui.panels.PitchPanel;
+import game.ui.panels.game.PitchPanel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -15,11 +15,12 @@ import java.util.*;
 public abstract class PowerUp extends EntityInteractable {
     // A static array of power-up classes
     public static final Class<? extends PowerUp>[] POWER_UPS = new Class[] {
-            ArmorPowerUp.class,
+            /*ArmorPowerUp.class,
             FirePowerUp.class,
             SpeedPowerUp.class,
             TransparentBombsPowerUp.class,
-            TransparentDestroyableBlocksPowerUp.class
+            TransparentDestroyableBlocksPowerUp.class*/
+            EndgamePowerUp.class
     };
 
     // The default duration for a power-up, in seconds

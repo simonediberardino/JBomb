@@ -1,11 +1,14 @@
-package game.ui.panels;
+package game.ui.panels.menus;
 
-import game.BomberManMatch;
-import game.entity.bomb.Bomb;
-import game.localization.Language;
+import game.Bomberman;
+import game.level.WorldSelectorLevel;
+import game.level.world2.World2Level5;
 import game.localization.Localization;
 import game.ui.elements.BombermanButton;
 import game.ui.elements.Space;
+import game.ui.panels.BombermanFrame;
+import game.ui.panels.PagePanel;
+import game.ui.panels.game.MatchPanel;
 import game.utils.Paths;
 
 import javax.swing.*;
@@ -16,7 +19,7 @@ import static game.localization.Localization.*;
 /**
  * The MenuPanel class represents the main menu screen of the game.
  */
-public class MenuPanel extends PagePanel {
+public class MainMenuPanel extends PagePanel {
     private BombermanButton startLevelButton;
     private BombermanButton profileButton;
     private BombermanButton exitButton;
@@ -29,7 +32,7 @@ public class MenuPanel extends PagePanel {
      * @param parent the parent JPanel
      * @param frame the BombermanFrame
      */
-    public MenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public MainMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
         super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
         setupLayout();
     }
@@ -67,8 +70,7 @@ public class MenuPanel extends PagePanel {
         startLevelButton = new BombermanButton(Localization.get(PLAY));
         startLevelButton.addActionListener((v) -> {
             // TODO;
-            BomberManMatch.getInstance().getGameFrame().initGamePanel();
-            frame.show(MatchPanel.class);
+            Bomberman.startLevel(new World2Level5());
         });
 
         listButtonsPanel.add(startLevelButton);

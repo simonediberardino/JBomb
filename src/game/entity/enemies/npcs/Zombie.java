@@ -2,8 +2,13 @@ package game.entity.enemies.npcs;
 
 import game.entity.enemies.npcs.IntelligentEnemy;
 import game.models.Coordinates;
+import game.utils.Paths;
 
 public class Zombie extends IntelligentEnemy {
+    public Zombie() {
+        super();
+    }
+
     public Zombie(Coordinates coordinates) {
         super(coordinates);
         setHp(300);
@@ -11,20 +16,6 @@ public class Zombie extends IntelligentEnemy {
 
     @Override
     public String[] getBaseSkins() {
-        return new String[]{"assets/entities/enemies/zombie/fast_enemy.png"};
+        return new String[]{ String.format("%s/zombie/fast_enemy.png", Paths.getEnemiesFolder()) };
     }
-
-    @Override
-    public String[] getLeftIcons() {
-        return new String[]{"assets/entities/enemies/zombie/fast_enemy.png"};
-    }
-
-    @Override
-    public String[] getBackIcons() {
-        return new String[]{"assets/entities/enemies/zombie/fast_enemy.png"};
-    }
-
-    @Override
-    public String[] getRightIcons() {
-        return new String[]{"assets/entities/enemies/zombie/fast_enemy.png"};    }
 }
