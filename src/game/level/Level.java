@@ -1,11 +1,12 @@
 package game.level;
 
-import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
+import game.events.GameEvent;
 import game.models.Coordinates;
 import game.utils.Paths;
 import game.utils.Utility;
@@ -30,7 +31,7 @@ public abstract class Level {
     private final int worldId;
     protected int maxBombs = 1;
 
-    private Level(){
+    private Level() {
         this(0,0);
     }
 
@@ -92,15 +93,24 @@ public abstract class Level {
      * @param jPanel the panel on which to start the game level
      */
     public void start(JPanel jPanel){
-        BomberManMatch.getInstance().setGameState(true);
+        Bomberman.getMatch().setGameState(true);
         generateStone(jPanel);
 
-        BomberManMatch.getInstance().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
-        BomberManMatch.getInstance().getPlayer().spawn();
+        Bomberman.getMatch().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
+        Bomberman.getMatch().getPlayer().spawn();
         generateDestroyableBlock();
 
         spawnBoss();
         spawnEnemies();
+    }
+
+    public void endLevel() {
+        try {
+            Bomberman.getMatch().onGameEvent(GameEvent.ROUND_PASSED, null);
+            Bomberman.startLevel(getNextLevel().getConstructor().newInstance());
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void spawnBoss(){
@@ -187,7 +197,7 @@ public abstract class Level {
         while (i < getMaxDestroyableBlocks()){
             // If the current destroyable block has not been spawned, generate new coordinates for it and spawn it on the game board.
             if (!block.isSpawned()){
-                block.setCoords(Coordinates.generateCoordinatesAwayFrom(BomberManMatch.getInstance().getPlayer().getCoords(), GRID_SIZE*2));
+                block.setCoords(Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE*2));
                 block.spawn();
             }
             // If the current destroyable block has been spawned, create a new one and increment the spawn counter.

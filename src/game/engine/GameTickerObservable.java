@@ -1,6 +1,7 @@
 package game.engine;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.models.Entity;
 
 import javax.swing.*;
@@ -35,7 +36,7 @@ public class GameTickerObservable extends Observable {
                 delayPassed = System.currentTimeMillis() - lastUpdate >= delayObserverUpdate; // check if the delay has passed since the last update
             }
             if (delayPassed) { // if the delay has passed
-                observer.update(this, BomberManMatch.getInstance().getGameState()); // call the update method of the observer with the current GameState object
+                observer.update(this, Bomberman.getMatch().getGameState()); // call the update method of the observer with the current GameState object
             }
         }
     };

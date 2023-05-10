@@ -1,6 +1,7 @@
 package game.entity.models;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.controller.Command;
 import game.controller.ControllerManager;
 import game.models.Coordinates;
@@ -119,6 +120,18 @@ public abstract class Character extends MovingEntity {
 
     protected boolean useOnlyBaseIcons() {
         return false;
+    }
+
+    @Override
+    protected void onDespawn() {
+        super.onDespawn();
+        isAlive = false;
+    }
+
+    @Override
+    protected void onSpawn() {
+        super.onSpawn();
+        isAlive = true;
     }
 
     /**
@@ -246,8 +259,8 @@ public abstract class Character extends MovingEntity {
         boolean doubleClick2 = false;
 
         // Check if this is the player instance and check for input
-        if (this == BomberManMatch.getInstance().getPlayer()) {
-            ControllerManager controllerManager = BomberManMatch.getInstance().getControllerManager();
+        if (this == Bomberman.getMatch().getPlayer()) {
+            ControllerManager controllerManager = Bomberman.getMatch().getControllerManager();
             doubleClick1 = controllerManager.isCommandPressed(oppositeCommand1);
             doubleClick2 = controllerManager.isCommandPressed(oppositeCommand2);
         }
@@ -268,7 +281,7 @@ public abstract class Character extends MovingEntity {
      @param command The command specifying the action.
      */
     public void handleAction(Command command) {
-        if (!BomberManMatch.getInstance().getGameState()) {
+        if (!Bomberman.getMatch().getGameState()) {
             return;
         }
 
@@ -362,6 +375,11 @@ public abstract class Character extends MovingEntity {
         return (int) (((float) getHp() / (float) getMaxHp()) * 100);
     }
 
+    @Override
+    public int getDrawPriority() {
+        return 2;
+    }
+
     /**
      * Removes the specified amount of damage from the entity's health points.
      * If the health points reach 0 or below, the entity is despawned.
@@ -379,7 +397,7 @@ public abstract class Character extends MovingEntity {
         // If the health points reach 0 or below, despawn the entity
         if (healthPoints <= 0){
             healthPoints = 0;
-            despawn();
+            die();
         } else {
             // Otherwise, start a damage animation
             startDamageAnimation();

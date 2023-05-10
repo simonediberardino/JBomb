@@ -18,4 +18,9 @@ public abstract class Block extends Entity {
     public void destroy(){
         despawn();
     }
+
+    @Override
+    public int getDrawPriority() {
+        return 0;
+    }
 }

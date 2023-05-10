@@ -1,20 +1,19 @@
 package game.powerups;
 
-import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.models.BomberEntity;
-import game.entity.models.Transparent;
 import game.models.Coordinates;
 import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
 
-public class EndgamePowerUp extends PowerUp {
+public class EndLevelPowerUp extends PowerUp {
     /**
      * Constructs a PowerUp entity with the specified coordinates.
      *
      * @param coordinates the coordinates of the PowerUp entity
      */
-    public EndgamePowerUp(Coordinates coordinates) {
+    public EndLevelPowerUp(Coordinates coordinates) {
         super(coordinates);
     }
 
@@ -30,7 +29,7 @@ public class EndgamePowerUp extends PowerUp {
 
     @Override
     protected void doApply(BomberEntity entity) {
-        BomberManMatch.getInstance().nextLevel();
+        Bomberman.getMatch().getCurrentLevel().endLevel();
     }
 
     @Override

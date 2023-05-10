@@ -13,7 +13,7 @@ public class GamePausedObserver implements Observer {
         }
 
         if(arg == Command.PAUSE){
-            BomberManMatch.getInstance().toggleGameState();
+            Bomberman.getMatch().toggleGameState();
         }
     }
 }

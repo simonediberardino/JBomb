@@ -1,6 +1,7 @@
 package game.ui.panels.game;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.utils.Paths;
@@ -68,7 +69,7 @@ public class MatchPanel extends PagePanel {
         int borderSize = Utility.px(90);
 
         // get the images of the border panels from the current level of the game
-        Image[] borderImages = BomberManMatch.getInstance().getCurrentLevel().getPitch();
+        Image[] borderImages = Bomberman.getMatch().getCurrentLevel().getPitch();
 
         // create left panel and set the dimensions and the image
         leftPanel = createLeftPanel(

@@ -1,6 +1,7 @@
 package game.entity.bomb;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
@@ -120,7 +121,7 @@ public class Bomb extends Block implements Explosive {
 
     @Override
     public int getMaxExplosionDistance() {
-        return caller != null ? caller.getCurrExplosionLength() : BomberManMatch.getInstance().getCurrentLevel().getExplosionLength();
+        return caller != null ? caller.getCurrExplosionLength() : Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     }
 
     @Override

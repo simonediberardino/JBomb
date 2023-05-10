@@ -2,7 +2,9 @@ package game.entity.models;
 
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.Player;
+import game.events.GameEvent;
 import game.models.Coordinates;
 import game.ui.panels.game.PitchPanel;
 
@@ -28,7 +30,14 @@ public abstract class Enemy extends Character{
 
     @Override
     protected void onSpawn() {
-        BomberManMatch.getInstance().getGameTickerObservable().addObserver(this);
+        super.onSpawn();
+        Bomberman.getMatch().getGameTickerObservable().addObserver(this);
+    }
+
+    @Override
+    protected void onDespawn() {
+        super.onDespawn();
+        Bomberman.getMatch().onGameEvent(GameEvent.KILLED_ENEMY, this);
     }
 
     @Override

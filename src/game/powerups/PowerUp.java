@@ -20,7 +20,7 @@ public abstract class PowerUp extends EntityInteractable {
             SpeedPowerUp.class,
             TransparentBombsPowerUp.class,
             TransparentDestroyableBlocksPowerUp.class*/
-            EndgamePowerUp.class
+            EndLevelPowerUp.class
     };
 
     // The default duration for a power-up, in seconds

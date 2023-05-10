@@ -97,4 +97,9 @@ public class Hat extends Orb {
     public void update(boolean gameState) {
         if(gameState) updateDirection();
     }
+
+    @Override
+    public int getDrawPriority() {
+        return 20;
+    }
 }

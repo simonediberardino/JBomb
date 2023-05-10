@@ -1,6 +1,6 @@
 package game.ui.panels.game;
 
-import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
 import game.utils.Utility;
@@ -8,6 +8,7 @@ import game.utils.Utility;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 import static game.utils.Utility.loadImage;
 import static game.utils.Utility.px;
@@ -41,8 +42,8 @@ public class PitchPanel extends JPanel implements Observer {
         setMinimumSize(panelDimensions);
 
         // Set this GamePanel as observer for the game ticker observable
-        BomberManMatch.getInstance().getGameTickerObservable().deleteObservers();
-        BomberManMatch.getInstance().getGameTickerObservable().addObserver(this);
+        Bomberman.getMatch().getGameTickerObservable().deleteObservers();
+        Bomberman.getMatch().getGameTickerObservable().addObserver(this);
 
         repaint();
     }
@@ -60,14 +61,10 @@ public class PitchPanel extends JPanel implements Observer {
 
         Graphics2D g2d = (Graphics2D) g;
         paintComponent(g2d);
-        Set<? extends Entity> setParticles = BomberManMatch.getInstance().getParticles();
-        Set<? extends EntityInteractable> setEntities = BomberManMatch.getInstance().getEntities();
-        Set<? extends Entity> setBlocks = BomberManMatch.getInstance().getStaticEntities();
+        List<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
         // Draw each entity in the new set
 
-        setBlocks.parallelStream().forEach((it) -> drawEntity(g2d, it));
-        setEntities.parallelStream().forEach((it) -> drawEntity(g2d, it));
-        setParticles.parallelStream().forEach((it) -> drawEntity(g2d, it));
+        setEntities.forEach((it) -> drawEntity(g2d, it));
     }
 
     /**
@@ -108,7 +105,7 @@ public class PitchPanel extends JPanel implements Observer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Image img = loadImage(BomberManMatch.getInstance().getCurrentLevel().getGrassBlock());
+        Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getGrassBlock());
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(),1), 0, 0, null);
     }
 }

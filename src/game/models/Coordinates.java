@@ -1,6 +1,5 @@
 package game.models;
 
-import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
@@ -71,17 +70,10 @@ public class Coordinates {
     }
 
     public static Coordinates randomCoordinatesFromPlayer() {
-        return Coordinates.generateCoordinatesAwayFrom(BomberManMatch.getInstance().getPlayer().getCoords(), GRID_SIZE * 3);
+        return Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE * 3);
     }
 
     public static Coordinates generateRandomCoordinates(Coordinates spawnOffset){
-        var blocks = BomberManMatch.getInstance().getStaticEntities();
-        var entities = BomberManMatch.getInstance().getEntities();
-
-        var all = new HashSet<Entity>();
-        all.addAll(blocks);
-        all.addAll(entities);
-
         while (true) {
             Coordinates coords = roundedRandomCoords(spawnOffset);
 

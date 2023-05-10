@@ -1,8 +1,11 @@
 package game.entity;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.controller.Command;
+import game.data.DataInputOutput;
 import game.entity.models.*;
+import game.events.GameEvent;
 import game.models.Coordinates;
 import game.utils.Paths;
 
@@ -82,22 +85,27 @@ public class Player extends BomberEntity {
     @Override
     protected void onSpawn() {
         super.onSpawn();
-        isAlive = true;
-        BomberManMatch.getInstance().getControllerManager().addObserver(this);
+        Bomberman.getMatch().getControllerManager().addObserver(this);
     }
 
     @Override
     protected void onDespawn() {
         super.onDespawn();
-        isAlive = false;
-        BomberManMatch.getInstance().getControllerManager().deleteObserver(this);
+        Bomberman.getMatch().getControllerManager().deleteObserver(this);
+    }
+
+    @Override
+    protected void onDie() {
+        super.onDie();
+        Bomberman.getMatch().onGameEvent(GameEvent.DEATH, null);
     }
 
     @Override
     public void handleAction(Command command) {
-        if (!BomberManMatch.getInstance().getGameState()) {
+        if (!Bomberman.getMatch().getGameState()) {
             return;
         }
+
         super.handleAction(command);
 
         switch (command) {

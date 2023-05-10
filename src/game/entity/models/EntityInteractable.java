@@ -1,6 +1,6 @@
 package game.entity.models;
 
-import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.bomb.Bomb;
@@ -75,15 +75,10 @@ public abstract class EntityInteractable extends Entity {
     public List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords){
         List<Entity> entityLinkedList = new LinkedList<>();
 
-        // Get all the blocks and entities in the game
-        var blocks = BomberManMatch.getInstance().getStaticEntities();
-        var entities = BomberManMatch.getInstance().getEntities();
-        var all = new HashSet<Entity>();
-        all.addAll(blocks);
-        all.addAll(entities);
+        var entities = Bomberman.getMatch().getEntities();
 
         // Check for each entity if it occupies the specified coordinates
-        for(Entity e : all) {
+        for(Entity e : entities) {
             for (Coordinates coord : desiredCoords) {
                 int entityBottomRightX = e.getCoords().getX() + e.getSize() - 1;
                 int entityBottomRightY = e.getCoords().getY() + e.getSize() - 1;
@@ -108,14 +103,10 @@ public abstract class EntityInteractable extends Entity {
      */
     public List<Entity> getEntitiesOnCoordinates(Coordinates nextOccupiedCoords) {
         // Get all the blocks and entities in the game
-        var blocks = BomberManMatch.getInstance().getStaticEntities();
-        var entities = BomberManMatch.getInstance().getEntities();
-        var all = new HashSet<Entity>();
-        all.addAll(blocks);
-        all.addAll(entities);
+        var entities = Bomberman.getMatch().getEntities();
 
         // Use Java stream to filter entities that collide with the specified coordinate
-        return all.parallelStream().filter(e -> doesCollideWith(nextOccupiedCoords, e)).collect(Collectors.toCollection(LinkedList::new));
+        return entities.parallelStream().filter(e -> doesCollideWith(nextOccupiedCoords, e)).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -147,14 +138,10 @@ public abstract class EntityInteractable extends Entity {
 
     public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
         // Get all the blocks and entities in the game
-        var blocks = BomberManMatch.getInstance().getStaticEntities();
-        var entities = BomberManMatch.getInstance().getEntities();
-        var all = new HashSet<Entity>();
-        all.addAll(blocks);
-        all.addAll(entities);
+        var entities = Bomberman.getMatch().getEntities();
 
         // Use Java stream to filter entities that collide with the specified coordinate
-        return all.parallelStream()
+        return entities.parallelStream()
                 .anyMatch(e -> doesCollideWith(Coordinates.roundCoordinates(nextOccupiedCoords), Coordinates.roundCoordinates(e.getCoords())));
     }
 

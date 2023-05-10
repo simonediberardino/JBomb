@@ -1,6 +1,7 @@
 package game.entity.blocks;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.models.Block;
 import game.entity.models.Entity;
 import game.models.Coordinates;
@@ -25,7 +26,7 @@ public class DestroyableBlock extends Block {
 
     @Override
     public BufferedImage getImage(){
-        return loadAndSetImage(BomberManMatch.getInstance().getCurrentLevel().getDestroyableBlock());
+        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getDestroyableBlock());
     }
 
     @Override

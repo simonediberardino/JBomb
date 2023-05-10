@@ -199,7 +199,7 @@ public class Clown extends Boss implements Explosive {
     private void spawnExplosion() {
         Direction[] dirs = Direction.values();
         LinkedList<Direction> directions = new LinkedList<>(Arrays.asList(dirs));
-        directions.remove(Direction.UP);
+        directions.remove(Direction.DOWN);
         Direction d = directions.get((int) (Math.random()*directions.size()));
 
         int[] offsets = calculateExplosionOffsets(d);

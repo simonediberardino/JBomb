@@ -20,6 +20,11 @@ public abstract class Boss extends IntelligentEnemy {
     }
 
     @Override
+    public int getDrawPriority() {
+        return 20;
+    }
+
+    @Override
     public int getSize() {
         return SIZE;
     }

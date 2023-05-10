@@ -1,6 +1,7 @@
 package game.entity.bomb;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.entity.models.Particle;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
@@ -65,12 +66,12 @@ public class Explosion extends MovingEntity implements Particle {
         this.canExpand = canExpand;
 
         // Add the explosion entity to the game.
-        BomberManMatch.getInstance().addEntity(this);
+        Bomberman.getMatch().addEntity(this);
 
         // Move or interact with other entities in the game based on the explosion's direction.
         if (distanceFromExplosive == 0){
             List<Coordinates> desiredCoords = getAllCoordinates();
-            for (Entity e : BomberManMatch.getInstance().getEntities()) {
+            for (Entity e : Bomberman.getMatch().getEntities()) {
                 if (desiredCoords.stream().anyMatch(coord -> EntityInteractable.doesCollideWith(coord, e))){
                     interact(e);
                 }

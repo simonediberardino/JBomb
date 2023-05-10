@@ -1,9 +1,18 @@
 package game.utils;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.level.Level;
 
 public class Paths {
+    public static String getPlayerDataPath() {
+        return Paths.getDataFolder() + "/data";
+    }
+
+    public static String getDataFolder(){
+        return "data";
+    }
+
     public static String getAssetsFolder(){
         return "assets";
     }
@@ -21,12 +30,12 @@ public class Paths {
     }
 
     public static String getCurrentLevelFolder(){
-        Level level = BomberManMatch.getInstance().getCurrentLevel();
+        Level level = Bomberman.getMatch().getCurrentLevel();
         return String.format("%s/%d/level/%d", getWorldsFolder(), level.getWorldId(), level.getLevelId());
     }
 
     public static String getCurrentWorldCommonFolder() {
-        return String.format("%s/%d/common", getWorldsFolder(), BomberManMatch.getInstance().getCurrentLevel().getWorldId());
+        return String.format("%s/%d/common", getWorldsFolder(), Bomberman.getMatch().getCurrentLevel().getWorldId());
     }
 
     public static String getPowerUpsFolder(){

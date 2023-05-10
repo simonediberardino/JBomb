@@ -1,26 +1,22 @@
 package game;
 
 import game.controller.ControllerManager;
+import game.data.DataInputOutput;
 import game.engine.GameTickerObservable;
 import game.entity.*;
-import game.entity.models.Block;
-import game.entity.models.Entity;
-import game.entity.models.EntityInteractable;
-import game.entity.models.Particle;
+import game.entity.models.*;
+import game.events.GameEvent;
 import game.level.Level;
 import game.powerups.PowerUp;
-import game.ui.panels.BombermanFrame;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class BomberManMatch {
+public class BomberManMatch implements OnGameEvent {
     private static BomberManMatch instance;
     private GameTickerObservable gameTickerObservable;
-    private Set<EntityInteractable> interactiveEntities;
-    private Set<Entity> particles;
     private long lastGamePauseStateTime = System.currentTimeMillis();
-    private Set<Entity> staticEntities;
+    private Set<Entity> entities;
     private ControllerManager controllerManager;
     private Level currentLevel;
     private Player player;
@@ -36,15 +32,11 @@ public class BomberManMatch {
         BomberManMatch.instance = this;
 
         this.currentLevel = currentLevel;
-        this.interactiveEntities = new HashSet<>();
-        this.staticEntities = new HashSet<>();
-        this.particles = new HashSet<>();
+        this.entities = new TreeSet<>();
 
         this.controllerManager = new ControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
         controllerManager.addObserver(new GamePausedObserver());
-
-        Bomberman.getBombermanFrame().addKeyListener(BomberManMatch.getInstance().getControllerManager());
     }
 
     public Level getCurrentLevel() {
@@ -59,58 +51,19 @@ public class BomberManMatch {
         return player;
     }
 
-    public Set<? extends Entity> getParticles() {
-        return new HashSet<>(particles);
-    }
-
-    public Set<? extends EntityInteractable> getEntities() {
-        return new HashSet<>(interactiveEntities);
-    }
-
-    public Set<? extends Entity> getStaticEntities() {
-        return new HashSet<>(staticEntities);
-    }
-
-    public void removeInteractiveEntity(Entity e){
-        interactiveEntities.remove(e);
-    }
-
-    public void removeStaticEntities(Entity e){
-        staticEntities.remove(e);
-    }
-
-    private void addInteractableEntity(EntityInteractable entity) {
-        interactiveEntities.add(entity);
-    }
-
-    private void addParticle(Entity entity) {
-        particles.add(entity);
-    }
-
-    private void addStaticEntity(Entity entity) {
-        staticEntities.add(entity);
+    public List<? extends Entity> getEntities() {
+        // Creates a new list to avoid concurrent modification exception;
+        return new ArrayList<>(entities);
     }
 
     public void addEntity(Entity entity) {
-        if(entity instanceof Particle){
-            addParticle(entity);
-        }else if (entity instanceof Block || entity instanceof PowerUp) {
-            addStaticEntity(entity);
-        }else if (entity instanceof EntityInteractable) {
-            addInteractableEntity((EntityInteractable) entity);
-        }
+        entities.add(entity);
     }
 
     public void removeEntity(Entity e){
         getGameTickerObservable().deleteObserver(e);
 
-        if(e instanceof Particle)
-            particles.remove(e);
-        else if(e instanceof Block || e instanceof PowerUp){
-            removeStaticEntities(e);
-        }else if (e instanceof EntityInteractable){
-            removeInteractiveEntity(e);
-        }
+        entities.removeIf(e1 -> e.getId() == e1.getId());
     }
 
     public ControllerManager getControllerManager() {
@@ -150,17 +103,15 @@ public class BomberManMatch {
         this.gameState = gameState;
     }
 
-    public void nextLevel() {
-        try {
-            // TODO!!! Reset memory, clear panels, start loading panel and then start a new level!!
-            Level nextLevel = getCurrentLevel().getNextLevel().getConstructor().newInstance();
-            Bomberman.startLevel(nextLevel);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+    @Override
+    public void onGameEvent(GameEvent gameEvent, Object arg) {
+        switch(gameEvent) {
+            case DEATH: DataInputOutput.increaseDeaths(); break;
+            case KILLED_ENEMY: DataInputOutput.increaseKills(); break;
+            case SCORE: DataInputOutput.increaseScore((Integer) arg); break;
+            case DEFEAT: DataInputOutput.increaseLost(); break;
+            case VICTORY: DataInputOutput.increaseVictories(); break;
+            case ROUND_PASSED: DataInputOutput.increaseRounds(); break;
         }
-    }
-
-    public void start() {
-
     }
 }

@@ -1,6 +1,7 @@
 package game.entity.models;
 
 import game.BomberManMatch;
+import game.Bomberman;
 import game.engine.GameTickerObserver;
 import game.models.Coordinates;
 import game.models.Direction;
@@ -17,7 +18,7 @@ import static game.utils.Utility.loadImage;
 /**
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
-public abstract class Entity extends GameTickerObserver {
+public abstract class Entity extends GameTickerObserver implements Comparable<Entity>{
     private final long id;
     protected BufferedImage image;
     protected int lastImageIndex;
@@ -84,11 +85,9 @@ public abstract class Entity extends GameTickerObserver {
     }
 
 
-
     public final float getWidthToHitboxSizeRatio(){
         return widthToHitboxSizeRatio;
     }
-
 
     public int getImageRefreshRate(){
         return 200;
@@ -159,21 +158,28 @@ public abstract class Entity extends GameTickerObserver {
         isSpawned = s;
     }
 
-    public Coordinates getSpawnOffset(){
+    protected Coordinates getSpawnOffset(){
         return new Coordinates((PitchPanel.GRID_SIZE-getSize())/2,(PitchPanel.GRID_SIZE-getSize())/2);
     }
+
+    protected void die() {
+        despawn();
+        onDie();
+    }
+
+    protected void onDie(){}
 
     /**
      * Despawns the entity from the game world.
      */
-    public final void despawn() {
+    protected final void despawn() {
         setSpawned(false);
-        BomberManMatch.getInstance().removeEntity(this);
+        Bomberman.getMatch().removeEntity(this);
         this.onDespawn();
     }
 
-    public final void spawnAtRandomCoordinates() {
-        setCoords(Coordinates.generateCoordinatesAwayFrom(BomberManMatch.getInstance().getPlayer().getCoords(), GRID_SIZE * 3));
+    protected final void spawnAtRandomCoordinates() {
+        setCoords(Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE * 3));
         spawn();
     }
 
@@ -181,7 +187,7 @@ public abstract class Entity extends GameTickerObserver {
         return isInvisible;
     }
 
-    public void setInvisible(boolean invisible) {
+    protected void setInvisible(boolean invisible) {
         isInvisible = invisible;
     }
 
@@ -210,13 +216,13 @@ public abstract class Entity extends GameTickerObserver {
         // spawns entity if the spawn point is free, otherwise do nothing
         if (forceSpawn || !EntityInteractable.isBlockOccupied(coords)) {
             setSpawned(true); // mark entity as spawned
-            BomberManMatch.getInstance().addEntity(this); // add entity to the game state
+            Bomberman.getMatch().addEntity(this); // add entity to the game state
             onSpawn(); // run entity-specific spawn logic
         }
     }
 
     // calculates the coordinates of a point a certain distance away from the entity's top-left corner in a given direction
-    public Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance){
+    protected Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance){
         int sign = 0;
 
         switch (d){
@@ -238,7 +244,7 @@ public abstract class Entity extends GameTickerObserver {
     }
 
     // returns a list of all the coordinates that make up the entity, including all tiles it occupies
-    public List<Coordinates> getAllCoordinates(){
+    protected List<Coordinates> getAllCoordinates(){
         List<Coordinates> coordinates = new ArrayList<>();
         int last = 0;
         for (int step = 0; step <= getSize() / PitchPanel.COMMON_DIVISOR; step++) { // iterate over each step in entity's size
@@ -253,7 +259,7 @@ public abstract class Entity extends GameTickerObserver {
     }
 
     // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
-    public List<Coordinates> getNewCoordinatesOnDirection(Direction d, int steps, int offset){
+    protected List<Coordinates> getNewCoordinatesOnDirection(Direction d, int steps, int offset){
         List<Coordinates> desiredCoords = new ArrayList<>();
 
         switch (d) {
@@ -266,7 +272,7 @@ public abstract class Entity extends GameTickerObserver {
         return desiredCoords; // shouldn't happen
     }
 
-    private List<Coordinates> getNewCoordinatesOnRight(int steps, int offset) {
+    protected List<Coordinates> getNewCoordinatesOnRight(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
@@ -279,7 +285,7 @@ public abstract class Entity extends GameTickerObserver {
         return coordinates;
     }
 
-    private List<Coordinates> getNewCoordinatesOnLeft(int steps, int offset) {
+    protected List<Coordinates> getNewCoordinatesOnLeft(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
         int first = steps;
         int last = 0;
@@ -292,7 +298,7 @@ public abstract class Entity extends GameTickerObserver {
         return coordinates;
     }
 
-    private List<Coordinates> getNewCoordinatesOnUp(int steps, int offset) {
+    protected List<Coordinates> getNewCoordinatesOnUp(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
         int first = steps;
         int last = 0;
@@ -305,7 +311,7 @@ public abstract class Entity extends GameTickerObserver {
         return coordinates;
     }
 
-    private List<Coordinates> getNewCoordinatesOnDown(int steps, int offset, int size) {
+    protected List<Coordinates> getNewCoordinatesOnDown(int steps, int offset, int size) {
         List<Coordinates> coordinates = new ArrayList<>();
         int first = steps;
         int last = 0;
@@ -341,7 +347,17 @@ public abstract class Entity extends GameTickerObserver {
 
     }
 
+    public int getDrawPriority() {
+        return 1;
+    }
 
+    @Override
+    public int compareTo(Entity other) {
+        return Comparator.comparing(Entity::getDrawPriority)
+                .thenComparing(e -> e.getCoords().getY())
+                .thenComparingInt(e -> (int) e.getId())
+                .compare(this, other);
+    }
 
     @Override
     public boolean equals(Object o) {

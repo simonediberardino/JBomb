@@ -33,18 +33,6 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
         }
     }
 
-    @Override
-    protected void onSpawn() {
-        BomberManMatch.getInstance().getGameTickerObservable().addObserver(this);
-    }
-
-    @Override
-    protected void onDespawn(){
-       //BomberMan.getInstance().getGameTickerObservable().deleteObserver(this);
-    }
-
-
-
     /**
      * Chooses a new direction for the agent to move in, and sends the corresponding command to the game engine.
      *
