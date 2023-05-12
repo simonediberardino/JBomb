@@ -55,5 +55,4 @@ public abstract class BomberEntity extends Character {
         bomb.spawn(true);
         bomb.trigger();
     }
-
 }

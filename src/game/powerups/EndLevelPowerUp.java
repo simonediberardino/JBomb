@@ -6,6 +6,7 @@ import game.models.Coordinates;
 import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 
 public class EndLevelPowerUp extends PowerUp {
     /**
@@ -30,6 +31,11 @@ public class EndLevelPowerUp extends PowerUp {
     @Override
     protected void doApply(BomberEntity entity) {
         Bomberman.getMatch().getCurrentLevel().endLevel();
+        try {
+            Bomberman.startLevel(Bomberman.getMatch().getCurrentLevel().getNextLevel().getConstructor().newInstance());
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

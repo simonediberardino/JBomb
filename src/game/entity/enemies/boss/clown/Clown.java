@@ -19,6 +19,9 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import static game.ui.panels.game.PitchPanel.DEFAULT_DIMENSION;
+import static game.utils.Utility.px;
+
 /**
 
  The Clown class represents a type of Boss entity that implements the Explosive interface.
@@ -35,8 +38,8 @@ public class Clown extends Boss implements Explosive {
      The hasHat property represents whether the Clown entity is wearing a hat or not.
      */
     private boolean hasHat;
-    /**
 
+    /**
      Constructor for the Clown entity that takes in the entity's starting coordinates and sets its initial hasHat value to true.
      @param coordinates The starting coordinates of the Clown entity.
      */
@@ -52,14 +55,15 @@ public class Clown extends Boss implements Explosive {
                 .getPitchPanel()
                 .getPreferredSize();
 
-        int y = (int) (panelSize.getHeight() - getSize());
+        int y = (int) panelSize.getHeight() - getSize();
         int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
 
         setCoords(new Coordinates(x, y));
+
         widthToHitboxSizeRatio = RATIO_WIDTH;
         hasHat = true;
     }
-    
+
     /**
 
      Overrides the getBaseSkins method from the Boss superclass to return an array of skin paths based on the hasHat value.

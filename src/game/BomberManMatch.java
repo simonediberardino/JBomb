@@ -51,7 +51,7 @@ public class BomberManMatch implements OnGameEvent {
         return player;
     }
 
-    public List<? extends Entity> getEntities() {
+    public synchronized List<? extends Entity> getEntities() {
         // Creates a new list to avoid concurrent modification exception;
         return new ArrayList<>(entities);
     }
@@ -113,5 +113,24 @@ public class BomberManMatch implements OnGameEvent {
             case VICTORY: DataInputOutput.increaseVictories(); break;
             case ROUND_PASSED: DataInputOutput.increaseRounds(); break;
         }
+    }
+
+    public void destroy() {
+        pauseGame();
+
+        for(Entity e : getEntities())
+            e.despawn();
+
+        this.player = null;
+        this.currentLevel = null;
+        this.entities.clear();
+
+        this.gameTickerObservable.deleteObservers();
+        this.gameTickerObservable = null;
+        this.controllerManager.deleteObservers();
+        this.controllerManager = null;
+        instance = null;
+
+        System.gc();
     }
 }

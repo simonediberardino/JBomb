@@ -28,7 +28,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
         if (e instanceof BomberEntity) {
             super.doInteract(e);
         }
-        else if (isObstacle(e)) {
+        else if (isObstacle(e) || e == null) {
             changeDirection();
         }
     }

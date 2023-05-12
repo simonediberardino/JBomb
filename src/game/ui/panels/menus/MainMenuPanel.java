@@ -2,6 +2,10 @@ package game.ui.panels.menus;
 
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
+import game.level.world1.World1Level1;
+import game.level.world1.World1Level5;
+import game.level.world2.World2Level1;
+import game.level.world2.World2Level2;
 import game.level.world2.World2Level5;
 import game.localization.Localization;
 import game.ui.elements.BombermanButton;
@@ -42,7 +46,6 @@ public class MainMenuPanel extends PagePanel {
      */
     private void setupLayout() {
         setLayout(new GridBagLayout());
-        setOpaque(false);
 
         createListButtonsPanel();
         createStartLevelButton();
@@ -68,11 +71,7 @@ public class MainMenuPanel extends PagePanel {
      */
     private void createStartLevelButton() {
         startLevelButton = new BombermanButton(Localization.get(PLAY));
-        startLevelButton.addActionListener((v) -> {
-            // TODO;
-            Bomberman.startLevel(new World2Level5());
-        });
-
+        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new World2Level5()));
         listButtonsPanel.add(startLevelButton);
     }
 

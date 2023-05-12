@@ -172,7 +172,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     /**
      * Despawns the entity from the game world.
      */
-    protected final void despawn() {
+    public final void despawn() {
         setSpawned(false);
         Bomberman.getMatch().removeEntity(this);
         this.onDespawn();
@@ -344,7 +344,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     public int getPaddingWidth(float ratio){
         paddingWidth = (int) (((double) getSize() / (double) ratio-getSize())/2);
         return paddingWidth;
-
     }
 
     public int getDrawPriority() {

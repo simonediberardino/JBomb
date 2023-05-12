@@ -24,7 +24,7 @@ public class World2Level1 extends World2Level {
 
     @Override
     public int startEnemiesCount() {
-        return 15;
+        return 13;
     }
 
     @Override

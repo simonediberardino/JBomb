@@ -16,6 +16,7 @@ public abstract class PagePanel extends JPanel {
         this.cardLayout = cardLayout;
         this.frame = frame;
         this.imagePath = imagePath;
+        setOpaque(false);
     }
 
     @Override

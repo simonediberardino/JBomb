@@ -8,6 +8,7 @@ import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
 import game.events.GameEvent;
 import game.models.Coordinates;
+import game.ui.panels.menus.LoadingPanel;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -16,8 +17,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
+import static game.ui.panels.menus.LoadingPanel.LOADING_DEFAULT_TIMER;
 
 
 /**
@@ -105,17 +109,12 @@ public abstract class Level {
     }
 
     public void endLevel() {
-        try {
-            Bomberman.getMatch().onGameEvent(GameEvent.ROUND_PASSED, null);
-            Bomberman.startLevel(getNextLevel().getConstructor().newInstance());
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        Bomberman.getMatch().onGameEvent(GameEvent.ROUND_PASSED, null);
     }
 
     protected void spawnBoss(){
         Boss boss = getBoss();
-        if(boss != null) boss.spawn();
+        if(boss != null) boss.spawn(true, false);
     }
 
     // This method spawns enemies in the game.
@@ -208,6 +207,8 @@ public abstract class Level {
         }
     }
 
-
-
+    @Override
+    public String toString() {
+        return String.format("Level %d, World %d", getLevelId(), getWorldId());
+    }
 }

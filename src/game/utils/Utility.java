@@ -25,6 +25,10 @@ public class Utility {
         return (int)px((double)dim);
     }
 
+    public static Dimension getScreenSize() {
+        return Toolkit.getDefaultToolkit().getScreenSize();
+    }
+
     public static double px(double dim) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 

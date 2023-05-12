@@ -3,6 +3,12 @@ package game.localization;
 import java.util.HashMap;
 
 public class Localization {
+    public static HashMap<Language, String> LOADING = new HashMap<>() {{
+        put(Language.English, "LOADING");
+        put(Language.Italian, "CARICAMENTO");
+    }};
+
+
     public static HashMap<Language, String> PLAY = new HashMap<>() {{
         put(Language.English, "SELECT LEVEL");
         put(Language.Italian, "SELEZIONA LIVELLO");
