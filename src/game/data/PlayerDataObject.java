@@ -14,16 +14,17 @@ public class PlayerDataObject implements Serializable {
     private long points;
     private int lastLevelId;
     private int lastWorldId;
+    private int lives;
 
     public PlayerDataObject(){
-        this("User",0,0,0,0,0,0,0, 0);
+        this("User",0,0,0,0,0,0, -1, 0, 0);
     }
 
-    public PlayerDataObject(String name, int victories, int lostGames, int kills, int deaths, int rounds, long points, int lastLevelId, int lastWorldId) {
+    public PlayerDataObject(String name, int victories, int lostGames, int kills, int deaths, int rounds, long points, int lives, int lastLevelId, int lastWorldId) {
         this.name = name;
         this.victories = victories;
         this.lostGames = lostGames;
-
+        this.lives = lives;
         this.kills = kills;
         this.deaths = deaths;
         this.rounds = rounds;
@@ -34,6 +35,14 @@ public class PlayerDataObject implements Serializable {
 
     String getName() {
         return name;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 
     public int getVictories() {

@@ -8,11 +8,19 @@ import game.models.Coordinates;
 import game.powerups.PowerUp;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 
 
 public class DestroyableBlock extends Block {
-    public DestroyableBlock(Coordinates coordinates) {
+    private Class<? extends PowerUp> powerUpClass;
+
+    public DestroyableBlock(Coordinates coordinates, Class<PowerUp> powerUpClass){
         super(coordinates);
+        this.powerUpClass = powerUpClass;
+    }
+
+    public DestroyableBlock(Coordinates coordinates) {
+        this(coordinates, null);
     }
 
     /**
@@ -32,6 +40,24 @@ public class DestroyableBlock extends Block {
     @Override
     protected void onDespawn() {
         super.onDespawn();
-        if(Math.random() > 1/4f) PowerUp.spawnRandomPowerUp(this.getCoords());
+
+        if (powerUpClass == null) {
+            return;
+        }
+
+        try {
+            PowerUp powerUp = powerUpClass.getConstructor(Coordinates.class).newInstance(getCoords());
+            powerUp.spawn(true, true);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Class<? extends PowerUp> getPowerUpClass() {
+        return powerUpClass;
+    }
+
+    public void setPowerUpClass(Class<? extends PowerUp> powerUpClass) {
+        this.powerUpClass = powerUpClass;
     }
 }

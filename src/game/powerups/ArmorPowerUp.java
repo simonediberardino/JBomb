@@ -23,7 +23,7 @@ public class ArmorPowerUp extends PowerUp {
 
     @Override
     public int getDuration() {
-        return 0;
+        return 15;
     }
 
     @Override

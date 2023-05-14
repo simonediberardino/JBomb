@@ -4,6 +4,8 @@ import game.data.DataInputOutput;
 import game.entity.blocks.InvisibleBlock;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
+import game.level.world2.World2Level3;
+import game.localization.Localization;
 import game.models.Coordinates;
 import game.powerups.portal.Portal;
 import game.powerups.portal.World1Portal;
@@ -19,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static game.localization.Localization.ISLAND;
 
 public class WorldSelectorLevel extends Level{
     public final static HashMap<Integer, Class<? extends WorldPortal>> WORLDS_ID_TO_PORTAL = new HashMap<>() {{
@@ -148,6 +152,11 @@ public class WorldSelectorLevel extends Level{
                 instantiationException.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public String toString() {
+        return Localization.get(ISLAND);
     }
 
 }

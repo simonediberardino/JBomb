@@ -14,7 +14,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class BomberManMatch implements OnGameEvent {
-    private static BomberManMatch instance;
     private GameTickerObservable gameTickerObservable;
     private long lastGamePauseStateTime = System.currentTimeMillis();
     private Set<Entity> entities;
@@ -23,15 +22,9 @@ public class BomberManMatch implements OnGameEvent {
     private Player player;
     private boolean gameState = false;
 
-    public static BomberManMatch getInstance() {
-        return instance;
-    }
-
     private BomberManMatch(){}
 
     public BomberManMatch(Level currentLevel) {
-        BomberManMatch.instance = this;
-
         this.currentLevel = currentLevel;
         this.entities = new TreeSet<>();
 
@@ -53,10 +46,13 @@ public class BomberManMatch implements OnGameEvent {
     }
 
     public synchronized List<? extends Entity> getEntities() {
-        List<Entity> list;
+        List<Entity> list = new CopyOnWriteArrayList<>();
 
         synchronized (entities) {
-            list = new CopyOnWriteArrayList<>(entities); // Creates a copy of the list
+            for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext(); ) {
+                Entity entity = iterator.next();
+                list.add(entity);
+            }
         }
         // Creates a new list to avoid concurrent modification exception;
         return list;
@@ -138,7 +134,6 @@ public class BomberManMatch implements OnGameEvent {
         this.gameTickerObservable = null;
         this.controllerManager.unregisterAll();
         this.controllerManager = null;
-        instance = null;
 
         System.gc();
     }

@@ -1,4 +1,5 @@
 - fix portal interactions;
+- LOADING CALLBACK;
 - Player animations;
 - Player back icons;
 - New enemies;
@@ -10,3 +11,4 @@
 - HUD;
 - Player stats;
 - Points;
+- immune to power ups

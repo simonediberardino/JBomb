@@ -3,11 +3,25 @@ package game.localization;
 import java.util.HashMap;
 
 public class Localization {
+    public static HashMap<Language, String> ISLAND = new HashMap<>() {{
+        put(Language.English, "ISLAND");
+        put(Language.Italian, "ISOLA");
+    }};
+
     public static HashMap<Language, String> LOADING = new HashMap<>() {{
         put(Language.English, "LOADING");
         put(Language.Italian, "CARICAMENTO");
     }};
 
+    public static HashMap<Language, String> CONTINUE = new HashMap<>() {{
+        put(Language.English, "CONTINUE");
+        put(Language.Italian, "CONTINUA");
+    }};
+
+    public static HashMap<Language, String> MAIN_MENU = new HashMap<>() {{
+        put(Language.English, "MAIN MENU");
+        put(Language.Italian, "MENU PRINCIPALE");
+    }};
 
     public static HashMap<Language, String> PLAY = new HashMap<>() {{
         put(Language.English, "SELECT LEVEL");

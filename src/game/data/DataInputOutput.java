@@ -1,18 +1,26 @@
 package game.data;
 
 import game.level.Level;
+import game.level.world1.World1Level;
+import game.level.world1.World1Level1;
 import game.utils.Paths;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+import java.util.Optional;
+
+import static game.level.Level.ID_TO_FIRST_LEVEL_MAP;
 
 public class DataInputOutput {
     private static PlayerDataObject playerDataObject;
 
     public static void retrieveData() {
         playerDataObject = getStoredPlayerData();
+        System.out.println(playerDataObject);
     }
 
     public static void updateStoredPlayerData() {
@@ -80,6 +88,22 @@ public class DataInputOutput {
 
     public static void increaseRounds(){
         playerDataObject.setRounds(playerDataObject.getRounds() + 1);
+    }
+
+    public static Level getLastLevelInstance() {
+        int worldId = playerDataObject.getLastWorldId();
+        int levelId = playerDataObject.getLastLevelId();
+
+        Optional<Class<? extends Level>> lastLevel = Level.ID_TO_LEVEL.entrySet().stream().filter(e -> e.getKey()[0] == worldId && e.getKey()[1] == levelId).findFirst().map(Map.Entry::getValue);
+
+        Class<? extends Level> levelClass = lastLevel.isPresent() ? lastLevel.get() : ID_TO_FIRST_LEVEL_MAP.get(1);
+
+        try {
+            return levelClass.getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return new World1Level1();
     }
 
 }

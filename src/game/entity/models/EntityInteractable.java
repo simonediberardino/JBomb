@@ -268,7 +268,7 @@ public abstract class EntityInteractable extends Entity {
             return false;
         }
 
-        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e)) && !e.isImmune();
+        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e));
     }
 
     public int getAttackDamage(){
@@ -280,6 +280,8 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public synchronized void attack(Entity e){
+        if(e.isImmune()) return;
+
         if (e instanceof Character){
             ((Character) e).attackReceived(getAttackDamage());
         }

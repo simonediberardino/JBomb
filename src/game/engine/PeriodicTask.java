@@ -1,16 +1,20 @@
 package game.engine;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PeriodicTask {
     private final Runnable callback;
     private final int delay;
-    private final Thread thread;
+   // private final Thread thread;
+    private final Timer timer;
 
-    public PeriodicTask(Runnable callback, int delay){
+    public PeriodicTask(Runnable callback, int delay) {
         this.callback = callback;
         this.delay = delay;
-        this.thread = new Thread(() -> {
+        this.timer = new Timer(delay, e -> callback.run());
+  /*      this.thread = new Thread(() -> {
             while(true) {
                 try {
                     Thread.sleep(delay);
@@ -19,22 +23,22 @@ public class PeriodicTask {
                 }
                 SwingUtilities.invokeLater(callback);
             }
-        });
+        });*/
     }
 
     public void start() {
-        thread.start();
+        timer.start();
     }
 
     public void resume() {
         try{
-            if(thread != null) thread.resume();
+            if(timer != null) timer.start();
         }catch (Exception ignored){}
     }
 
     public void stop() {
         try{
-            if(thread != null) thread.suspend();
+            if(timer != null) timer.stop();
         }catch (Exception ignored){}
     }
 }

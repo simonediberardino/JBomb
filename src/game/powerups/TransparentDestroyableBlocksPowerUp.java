@@ -20,12 +20,12 @@ public class TransparentDestroyableBlocksPowerUp extends PowerUp implements Tran
 
     @Override
     public int getDuration() {
-        return DEFAULT_DURATION_SEC;
+        return 0;
     }
 
     @Override
     protected void doApply(BomberEntity entity) {
-        entity.getWhiteListObstacles().remove(DestroyableBlock.class);
+        entity.getWhiteListObstacles().add(DestroyableBlock.class);
     }
 
     @Override

@@ -1,12 +1,11 @@
 package game.entity;
 
-import game.BomberManMatch;
 import game.Bomberman;
 import game.controller.Command;
-import game.data.DataInputOutput;
 import game.entity.models.*;
 import game.events.GameEvent;
 import game.models.Coordinates;
+import game.ui.panels.menus.GameOverPanel;
 import game.utils.Paths;
 
 import java.util.*;
@@ -100,6 +99,17 @@ public class Player extends BomberEntity {
     protected void onDie() {
         super.onDie();
         Bomberman.getMatch().onGameEvent(GameEvent.DEATH, null);
+
+/*        new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Bomberman.destroyLevel();
+            Bomberman.show(GameOverPanel.class);
+        }).start();*/
+
     }
 
     @Override

@@ -5,6 +5,7 @@ import game.level.world1.World1Level1;
 import game.level.world2.World2Level5;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.game.PitchPanel;
+import game.ui.panels.menus.GameOverPanel;
 import game.ui.panels.menus.LoadingPanel;
 import game.ui.panels.menus.MainMenuPanel;
 
@@ -25,6 +26,7 @@ public class BombermanFrame extends JFrame {
     private MatchPanel matchPanel;
     private MainMenuPanel mainMenuPanel;
     private LoadingPanel loadingPanel;
+    private GameOverPanel gameOverPanel;
 
     /**
 
@@ -34,6 +36,7 @@ public class BombermanFrame extends JFrame {
         setFrameProperties();
         initMenuPanel();
         initLoadingPanel();
+        initGameOverPanel();
         finalizeFrame();
         pack();
     }
@@ -76,6 +79,15 @@ public class BombermanFrame extends JFrame {
         matchPanel = new MatchPanel(cardLayout, parentPanel, this);
         matchPanel.initGamePanel();
         parentPanel.add(matchPanel, MatchPanel.class.getSimpleName());
+    }
+
+    /**
+
+     Initializes the menu panel and adds it to the parent panel.
+     */
+    private void initGameOverPanel() {
+        gameOverPanel = new GameOverPanel(cardLayout, parentPanel, this);
+        parentPanel.add(gameOverPanel, GameOverPanel.class.getSimpleName());
     }
     /**
 

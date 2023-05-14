@@ -3,13 +3,13 @@ package game;
 import game.data.DataInputOutput;
 import game.engine.GarbageCollectorTask;
 import game.level.Level;
+import game.level.WorldSelectorLevel;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.menus.LoadingPanel;
 import game.ui.panels.menus.MainMenuPanel;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,10 +47,14 @@ public class Bomberman {
         return bomberManMatch;
     }
 
-    private static void doStartLevel(Level level) {
+    public static void destroyLevel() {
         if(bomberManMatch != null) bomberManMatch.destroy();
-        bomberManMatch = null;
+        bomberManMatch = new BomberManMatch(new WorldSelectorLevel()); // Temporary sets the current level to WorldSelectorLevel to avoid null pointer exception if some threads aren't killed yet
         System.gc();
+    }
+
+    private static void doStartLevel(Level level) {
+        destroyLevel();
         bomberManMatch = new BomberManMatch(level);
         bombermanFrame.initGamePanel();
         bomberManMatch.getCurrentLevel().start(bombermanFrame.getPitchPanel());

@@ -1,6 +1,7 @@
 package game.level;
 
 import game.Bomberman;
+import game.data.DataInputOutput;
 import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
@@ -11,6 +12,8 @@ import game.level.world1.*;
 import game.level.world2.*;
 import game.localization.Language;
 import game.models.Coordinates;
+import game.powerups.PowerUp;
+import game.powerups.portal.EndLevelPortal;
 import game.ui.panels.menus.LoadingPanel;
 import game.utils.Paths;
 import game.utils.Utility;
@@ -33,6 +36,8 @@ import static game.ui.panels.menus.LoadingPanel.LOADING_DEFAULT_TIMER;
  * when bombs are detonated, and the background image of the level.
  */
 public abstract class Level {
+    private static Level currLevel;
+
     public static final Map<Integer, Class<? extends Level>> ID_TO_FIRST_LEVEL_MAP = new HashMap<>() {{
         put(1, World1Level1.class);
         put(2, World2Level1.class);
@@ -100,16 +105,25 @@ public abstract class Level {
         return pitch;
     }
 
+    private void updateLastLevel() {
+        if(!(this instanceof WorldSelectorLevel))
+            currLevel = this;
+    }
+
+    public static Level getCurrLevel() {
+        return currLevel;
+    }
+
     /**
      * Starts the game level by generating the terrain and adding the player character to the game panel.
      *
      * @param jPanel the panel on which to start the game level
      */
     public void start(JPanel jPanel) {
+        updateLastLevel();
         Bomberman.getMatch().setGameState(true);
         generateEntities(jPanel);
     }
-
 
     public void generateEntities(JPanel jPanel) {
         generateStone(jPanel);
@@ -118,14 +132,15 @@ public abstract class Level {
         spawnBoss();
         spawnEnemies();
     }
+
     public void generatePlayer(){
         Bomberman.getMatch().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
         Bomberman.getMatch().getPlayer().spawn();
     }
 
-
-
     public void endLevel() {
+        DataInputOutput.setLastLevel(this);
+        DataInputOutput.updateStoredPlayerData();
         Bomberman.getMatch().onGameEvent(GameEvent.ROUND_PASSED, null);
     }
 
@@ -206,12 +221,20 @@ public abstract class Level {
         int i = 0;
 
         // Loop until the maximum number of destroyable blocks has been spawned.
-        while (i < getMaxDestroyableBlocks()){
+        while (i < getMaxDestroyableBlocks()) {
             // If the current destroyable block has not been spawned, generate new coordinates for it and spawn it on the game board.
             if (!block.isSpawned()){
                 block.setCoords(Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE*2));
                 block.spawn();
+
+                // Force the first spawned block to have the
+                if (i == 0 && !isLastLevelOfWorld()) {
+                    block.setPowerUpClass(EndLevelPortal.class);
+                } else {
+                    block.setPowerUpClass(PowerUp.getRandomPowerUpClass());
+                }
             }
+
             // If the current destroyable block has been spawned, create a new one and increment the spawn counter.
             else {
                 block = new DestroyableBlock(new Coordinates(0,0));

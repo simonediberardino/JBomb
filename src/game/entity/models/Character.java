@@ -282,7 +282,7 @@ public abstract class Character extends MovingEntity {
      @param command The command specifying the action.
      */
     public void handleAction(Command command) {
-        if (!Bomberman.getMatch().getGameState()||!canMove) {
+        if (!Bomberman.getMatch().getGameState() || !canMove) {
             return;
         }
 
