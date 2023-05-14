@@ -9,18 +9,17 @@ import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static game.localization.Localization.LOADING;
 
 public class LoadingPanel extends PagePanel {
     public final static int LOADING_DEFAULT_TIMER = 5000;
-    private final static int REPAINT_DELAY_MS = 75;
-    private final static int TEXT_ANIM_STEP_SIZE = Utility.px(75);
+    private final static int REPAINT_DELAY_MS = 15;
+    private final static int TEXT_ANIM_STEP_SIZE = Utility.px(50);
     private final static int FONT_SIZE = Utility.px(75);
     private final static Color FONT_COLOR = new Color(255, 145, 0);
     private final static Color CONTAINER_BACKGROUND = new Color(0, 0, 0, 160);
+    private javax.swing.Timer animationTimer;
     private int textCurrX;
     private String text;
 
@@ -47,8 +46,8 @@ public class LoadingPanel extends PagePanel {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
         // Set the background color
         setBackground(Color.WHITE);
@@ -86,15 +85,13 @@ public class LoadingPanel extends PagePanel {
 
         g.drawString(text, textX, textY);
 
-        if(!centered) {
-            TimerTask task = new TimerTask() {
-                public void run() {
-                    repaint();
-                }
-            };
-
-            java.util.Timer timer = new Timer();
-            timer.schedule(task, REPAINT_DELAY_MS);
+        if (!centered && animationTimer == null) {
+            startAnimation();
         }
+    }
+
+    private void startAnimation() {
+        animationTimer = new javax.swing.Timer(REPAINT_DELAY_MS, e -> repaint());
+        animationTimer.start();
     }
 }

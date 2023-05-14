@@ -1,3 +1,4 @@
+- fix portal interactions;
 - Player animations;
 - Player back icons;
 - New enemies;

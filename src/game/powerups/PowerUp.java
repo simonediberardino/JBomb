@@ -81,31 +81,26 @@ public abstract class PowerUp extends EntityInteractable {
      * @param entity the BomberEntity to apply the power-up to
      */
     public final void apply(BomberEntity entity) {
-        System.out.println(getCoords() +"   "   + (entity.getCoords()));
-        if (entity.getCoords().getX() == getCoords().getX()) {
+        if (applied || !isSpawned()) {
+            return;
+        }
+        this.applied = true;
+        this.despawn();
+        this.character = entity;
+        this.doApply(entity);
 
-            if (applied || !isSpawned()) {
-                return;
-            }
-            this.applied = true;
-            this.despawn();
-            this.character = entity;
-            this.doApply(entity);
+        int duration = getDuration() * 1000;
 
-            int duration = getDuration() * 1000;
+        // If the power-up has a duration, schedule a TimerTask to cancel it when the duration is up
+        if (duration > 0) {
+            TimerTask explodeTask = new TimerTask() {
+                public void run() {
+                    PowerUp.this.cancel(entity);
+                }
+            };
 
-
-            // If the power-up has a duration, schedule a TimerTask to cancel it when the duration is up
-            if (duration > 0) {
-                TimerTask explodeTask = new TimerTask() {
-                    public void run() {
-                        PowerUp.this.cancel(entity);
-                    }
-                };
-
-                Timer timer = new Timer();
-                timer.schedule(explodeTask, duration);
-            }
+            Timer timer = new Timer();
+            timer.schedule(explodeTask, duration);
         }
     }
 
