@@ -24,7 +24,6 @@ public class ControllerManager extends Observable2 implements KeyListener {
     private static final int KEY_ESC = KeyEvent.VK_ESCAPE;
     private static int KEY_DELAY_MS = setDefaultCommandDelay();
     private Set<Command> commandQueue = new HashSet<>();
-    private Timer timer;
 
     // Key-Command mapping
     private static final Map<Integer, Command> keyAssignment = Map.ofEntries(
@@ -38,6 +37,7 @@ public class ControllerManager extends Observable2 implements KeyListener {
 
     // Stores the time of the last key event for each command
     private final Map<Command, Long> commandEventsTime = new HashMap<>();
+    private Thread thread;
 
     public ControllerManager(){
         setupTask();
@@ -57,23 +57,41 @@ public class ControllerManager extends Observable2 implements KeyListener {
         if(action != null) {
             commandQueue.add(action);
         }
+
+        resume();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         Command action = keyAssignment.get(e.getKeyCode());
         commandQueue.remove(action);
+        if(commandQueue.isEmpty()) stopExecuting();
     }
 
     private void setupTask() {
-        ActionListener taskPerformer = evt -> commandQueue.parallelStream().forEach(this::notifyObservers);
+        thread = new Thread(() -> {
+            while(true) {
+                try {
+                    Thread.sleep(KEY_DELAY_MS);
+                } catch (InterruptedException e) {
+                    continue;
+                }
+                new HashSet<>(commandQueue).forEach(this::notifyObservers);
+            }
+        });
+        thread.start();
+    }
 
-        timer = new Timer(KEY_DELAY_MS, taskPerformer);
-        timer.start();
+    private void resume() {
+        try{
+            if(thread != null) thread.resume();
+        }catch (Exception ignored){}
     }
 
     private void stopExecuting() {
-        if(timer != null) timer.stop();
+        try{
+            if(thread != null) thread.suspend();
+        }catch (Exception ignored){}
     }
 
     public boolean isCommandPressed(Command c) {

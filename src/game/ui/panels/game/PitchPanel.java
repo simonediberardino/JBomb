@@ -66,7 +66,10 @@ public class PitchPanel extends JPanel implements Observer2 {
         List<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
         // Draw each entity in the new set
 
-        setEntities.forEach((it) -> drawEntity(g2d, it));
+        for (int i = 0; i < setEntities.size(); i++) {
+            Entity it = setEntities.get(i);
+            drawEntity(g2d, it);
+        }
     }
 
     /**

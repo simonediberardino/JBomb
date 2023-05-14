@@ -6,6 +6,7 @@ import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -91,6 +92,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
         if (!canMove || !gameState) {
             return;
         }
-        move(chooseDirection(false));
+
+        SwingUtilities.invokeLater(() -> move(chooseDirection(false)));
     }
 }

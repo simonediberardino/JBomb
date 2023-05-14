@@ -78,7 +78,8 @@ public abstract class EntityInteractable extends Entity {
         var entities = Bomberman.getMatch().getEntities();
 
         // Check for each entity if it occupies the specified coordinates
-        for(Entity e : entities) {
+        for (int i = 0, entitiesSize = entities.size(); i < entitiesSize; i++) {
+            Entity e = entities.get(i);
             for (Coordinates coord : desiredCoords) {
                 int entityBottomRightX = e.getCoords().getX() + e.getSize() - 1;
                 int entityBottomRightY = e.getCoords().getY() + e.getSize() - 1;
@@ -152,9 +153,7 @@ public abstract class EntityInteractable extends Entity {
         //return entities.parallelStream()
           //      .anyMatch(e -> doesCollideWith(Coordinates.roundCoordinates(nextOccupiedCoords), Coordinates.roundCoordinates(e.getCoords())));
 
-        System.out.println(fourCorners + "   " + "COORDS = "+ nextOccupiedCoords);
-
-        return entities.parallelStream().anyMatch(e->fourCorners.stream().anyMatch(coords-> doesCollideWith(coords,Coordinates.roundCoordinates(e.getCoords()))));
+        return entities.parallelStream().anyMatch(e -> fourCorners.stream().anyMatch(coords-> doesCollideWith(coords,Coordinates.roundCoordinates(e.getCoords()))));
     }
 
     /**

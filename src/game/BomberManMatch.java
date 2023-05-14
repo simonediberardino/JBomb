@@ -10,6 +10,7 @@ import game.level.Level;
 import game.powerups.PowerUp;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class BomberManMatch implements OnGameEvent {
@@ -52,8 +53,13 @@ public class BomberManMatch implements OnGameEvent {
     }
 
     public synchronized List<? extends Entity> getEntities() {
+        List<Entity> list;
+
+        synchronized (entities) {
+            list = new CopyOnWriteArrayList<>(entities); // Creates a copy of the list
+        }
         // Creates a new list to avoid concurrent modification exception;
-        return new ArrayList<>(entities);
+        return list;
     }
 
     public void addEntity(Entity entity) {
@@ -91,7 +97,7 @@ public class BomberManMatch implements OnGameEvent {
     }
 
     private void resumeGame(){
-        gameTickerObservable.start();
+        gameTickerObservable.resume();
         gameState = true;
     }
 
@@ -118,8 +124,11 @@ public class BomberManMatch implements OnGameEvent {
     public void destroy() {
         pauseGame();
 
-        for(Entity e : getEntities())
+        List<? extends Entity> list = getEntities();
+        for (int i = 0; i < list.size(); i++) {
+            Entity e = list.get(i);
             e.despawn();
+        }
 
         this.player = null;
         this.currentLevel = null;

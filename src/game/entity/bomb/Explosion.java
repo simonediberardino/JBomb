@@ -10,6 +10,7 @@ import game.models.Direction;
 import game.utils.Paths;
 import game.ui.panels.game.PitchPanel;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.List;
@@ -79,8 +80,10 @@ public class Explosion extends MovingEntity implements Particle {
 
         }
 
-        if (getCanExpand())
-            moveOrInteract(direction, getSize(), true);
+        SwingUtilities.invokeLater(() -> {
+            if (getCanExpand())
+                moveOrInteract(direction, getSize(), true);
+        });
     }
 
     @Override
