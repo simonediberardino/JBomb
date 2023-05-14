@@ -1,9 +1,11 @@
 package game.level.world1;
 
 import game.entity.enemies.boss.Boss;
+import game.entity.enemies.npcs.FlyingEnemy;
 import game.entity.enemies.npcs.YellowBall;
 import game.entity.models.Enemy;
 import game.level.Level;
+import game.level.world2.World2Level;
 
 /**
 
@@ -14,8 +16,11 @@ import game.level.Level;
  explosion length, and a method to generate the stone blocks in the game board.
  */
 public class World1Level1 extends World1Level {
-    public World1Level1() {
-        super(1);
+    public static final int LEVEL_ID = 1;
+
+    @Override
+    public int getLevelId() {
+        return LEVEL_ID;
     }
 
     @Override

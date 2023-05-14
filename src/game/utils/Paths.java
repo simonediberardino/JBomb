@@ -49,4 +49,9 @@ public class Paths {
     public static String getMainMenuWallpaper() {
         return Paths.getAssetsFolder() + "/menu/welcome.png";
     }
+
+    public static String getWorldSelectorPortalPath(int id) {
+        return String.format("%s/world_selector/world%d.png", Paths.getAssetsFolder(), id);
+    }
+
 }

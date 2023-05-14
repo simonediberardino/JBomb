@@ -3,6 +3,8 @@ package game.models;
 import game.Bomberman;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
+import game.ui.panels.game.PitchPanel;
+import game.utils.Utility;
 
 import java.awt.*;
 import java.time.temporal.ValueRange;
@@ -138,6 +140,34 @@ public class Coordinates {
         return null;
     }
 
+    public static Coordinates fromRowAndColumnsToCoordinates(Dimension d){
+        return fromRowAndColumnsToCoordinates(d,0,0);
+    }
+
+    public static Coordinates fromRowAndColumnsToCoordinates(Dimension d, int offsetX, int offsetY){
+        if(offsetX>= GRID_SIZE||offsetY>=GRID_SIZE){
+            System.out.println("OFFSET GREATER THAN GRID SIZE");
+            return null;
+        }
+
+        if ((d.getWidth()>= PitchPanel.DEFAULT_DIMENSION.getWidth()/ GRID_SIZE)){
+            System.out.println("COLUMN OUT OF BOUNDS");
+            System.out.println(d.getWidth());
+            System.out.println(offsetX);
+            return null;
+        }
+
+        if(d.getHeight()>= PitchPanel.DEFAULT_DIMENSION.getHeight()/GRID_SIZE){
+            System.out.println("ROW OUT OF BOUNDS");
+            return null;
+        }
+
+        return new Coordinates((int)d.getWidth()*GRID_SIZE+offsetX, (int)d.getHeight()*GRID_SIZE+offsetY);
+    }
+
+    public static Coordinates getCenterCoordinatesOfEntity(Entity e){
+        return new Coordinates(e.getCoords().getX()+e.getSize()/2,e.getCoords().getY()+e.getSize()/2);
+    }
 
 
 

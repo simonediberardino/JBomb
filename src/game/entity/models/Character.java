@@ -32,6 +32,7 @@ public abstract class Character extends MovingEntity {
     protected boolean isImmune = false;
     private int maxHp = 100;
     private int healthPoints = maxHp;
+    protected boolean canMove = true;
 
     /**
      * Returns an array of file names for the front-facing icons for this character.
@@ -281,7 +282,7 @@ public abstract class Character extends MovingEntity {
      @param command The command specifying the action.
      */
     public void handleAction(Command command) {
-        if (!Bomberman.getMatch().getGameState()) {
+        if (!Bomberman.getMatch().getGameState()||!canMove) {
             return;
         }
 
@@ -386,7 +387,7 @@ public abstract class Character extends MovingEntity {
      * Otherwise, a damage animation is started.
      * @param damage The amount of damage to remove from the entity's health points.
      */
-    protected final synchronized void hit(int damage) {
+    protected final synchronized void attackReceived(int damage) {
         if(System.currentTimeMillis() - lastDamageTime < INTERACTION_DELAY_MS)
             return;
 
@@ -404,6 +405,34 @@ public abstract class Character extends MovingEntity {
             onHit(damage);
         }
     }
+
+    protected void die() {
+        onDie();
+    }
+
+    protected synchronized void onDie(){
+        canMove = false;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            // Counter to keep track of the number of iterations
+            int count = 0;
+            //TODO animation count, temporarily ==2
+            int animationCount = 2;
+            @Override
+            public void run() {
+                if (count >= animationCount) {
+                    timer.cancel();
+                    despawn();
+                    return;
+                }
+                //TODO
+                loadAndSetImage("assets/entities/player/player_front_"+ count+ ".png");
+                count++;
+            }
+        }, 0, EntityInteractable.INTERACTION_DELAY_MS); // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
+    }
+
+
 
     protected void onHit(int damage){}
 }

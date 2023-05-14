@@ -1,20 +1,21 @@
-package game.powerups;
+package game.powerups.portal;
 
 import game.Bomberman;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;
+import game.powerups.portal.Portal;
 import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 
-public class EndLevelPowerUp extends PowerUp {
+public class EndLevelPortal extends Portal {
     /**
      * Constructs a PowerUp entity with the specified coordinates.
      *
      * @param coordinates the coordinates of the PowerUp entity
      */
-    public EndLevelPowerUp(Coordinates coordinates) {
+    public EndLevelPortal(Coordinates coordinates) {
         super(coordinates);
     }
 
@@ -36,6 +37,7 @@ public class EndLevelPowerUp extends PowerUp {
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override

@@ -7,10 +7,12 @@ import game.entity.enemies.npcs.YellowBall;
 import game.entity.models.Enemy;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
+import game.level.world2.World2Level;
 
 public class World1Level5 extends World1Level{
-    public World1Level5() {
-        super(5);
+    @Override
+    public int getLevelId() {
+        return 5;
     }
 
     @Override
@@ -29,6 +31,11 @@ public class World1Level5 extends World1Level{
                 YellowBall.class,
                 FlyingEnemy.class
         };
+    }
+
+    @Override
+    public boolean isLastLevelOfWorld(){
+        return true;
     }
 
     @Override

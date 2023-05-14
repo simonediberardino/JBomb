@@ -135,14 +135,26 @@ public abstract class EntityInteractable extends Entity {
                 && nextOccupiedCoords.getY() >= entityCoords.getY()
                 && nextOccupiedCoords.getY() <= entityBottomRightY);
     }
-
     public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
+        return isBlockOccupied(nextOccupiedCoords, GRID_SIZE);
+    }
+
+    public static boolean isBlockOccupied(Coordinates nextOccupiedCoords,int size){
+        HashSet<Coordinates> fourCorners = new HashSet<>(Arrays.asList
+                (Coordinates.roundCoordinates(nextOccupiedCoords),
+                        Coordinates.roundCoordinates(new Coordinates( nextOccupiedCoords.getX(), nextOccupiedCoords.getY()+size-1)),
+                        Coordinates.roundCoordinates(new Coordinates(nextOccupiedCoords.getX()+size-1, nextOccupiedCoords.getY()+size-1)),
+                        Coordinates.roundCoordinates(new Coordinates(nextOccupiedCoords.getX()+size-1, nextOccupiedCoords.getY()))));
         // Get all the blocks and entities in the game
         var entities = Bomberman.getMatch().getEntities();
 
         // Use Java stream to filter entities that collide with the specified coordinate
-        return entities.parallelStream()
-                .anyMatch(e -> doesCollideWith(Coordinates.roundCoordinates(nextOccupiedCoords), Coordinates.roundCoordinates(e.getCoords())));
+        //return entities.parallelStream()
+          //      .anyMatch(e -> doesCollideWith(Coordinates.roundCoordinates(nextOccupiedCoords), Coordinates.roundCoordinates(e.getCoords())));
+
+        System.out.println(fourCorners + "   " + "COORDS = "+ nextOccupiedCoords);
+
+        return entities.parallelStream().anyMatch(e->fourCorners.stream().anyMatch(coords-> doesCollideWith(coords,Coordinates.roundCoordinates(e.getCoords()))));
     }
 
     /**
@@ -258,13 +270,11 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public boolean canInteractWith(Entity e){
-        if(e == null) return true;
-
         if(System.currentTimeMillis() - getLastInteraction(e) < INTERACTION_DELAY_MS) {
             return false;
         }
 
-        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e)) && !e.isImmune() || this instanceof Enemy && isObstacle(e);
+        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e)) && !e.isImmune();
     }
 
     public int getAttackDamage(){
@@ -277,7 +287,7 @@ public abstract class EntityInteractable extends Entity {
 
     public synchronized void attack(Entity e){
         if (e instanceof Character){
-            ((Character) e).hit(getAttackDamage());
+            ((Character) e).attackReceived(getAttackDamage());
         }
         else if (e instanceof Block) ((Block) e).destroy();
     }

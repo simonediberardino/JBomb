@@ -6,6 +6,7 @@ import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.models.*;
+import game.models.Coordinates;
 import game.models.Direction;
 import game.utils.Paths;
 import game.ui.panels.game.PitchPanel;
@@ -21,7 +22,7 @@ public class Bomb extends Block implements Explosive {
     private BomberEntity caller;
 
     public Bomb(BomberEntity entity) {
-        super(entity.getCoords());
+        super(Coordinates.getCenterCoordinatesOfEntity(entity));
         this.caller = entity;
     }
 

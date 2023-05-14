@@ -7,10 +7,10 @@ import game.entity.models.Enemy;
 import game.level.Level;
 
 public class World1Level4 extends World1Level{
-    public World1Level4() {
-        super(4);
+    @Override
+    public int getLevelId() {
+        return 4;
     }
-
     @Override
     public int startEnemiesCount() {
         return 12;
@@ -28,4 +28,5 @@ public class World1Level4 extends World1Level{
     public Class<? extends Level> getNextLevel() {
         return World1Level5.class;
     }
+
 }

@@ -9,8 +9,9 @@ import game.level.Level;
 import game.level.world1.World1Level;
 
 public class World2Level3 extends World2Level {
-    public World2Level3() {
-        super(3);
+    @Override
+    public int getLevelId() {
+        return 3;
     }
 
     @Override

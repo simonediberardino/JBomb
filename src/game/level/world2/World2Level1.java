@@ -18,10 +18,10 @@ import game.level.world1.World1Level2;
  explosion length, and a method to generate the stone blocks in the game board.
  */
 public class World2Level1 extends World2Level {
-    public World2Level1() {
-        super(1);
+    @Override
+    public int getLevelId() {
+        return 1;
     }
-
     @Override
     public int startEnemiesCount() {
         return 13;
@@ -30,7 +30,8 @@ public class World2Level1 extends World2Level {
     @Override
     public Class<? extends Enemy>[] availableEnemies() {
         return new Class[]{
-                FlyingEnemy.class
+                FlyingEnemy.class,
+                TankEnemy.class
         };
     }
 

@@ -7,6 +7,9 @@ import game.entity.blocks.StoneBlock;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
 import game.events.GameEvent;
+import game.level.world1.*;
+import game.level.world2.*;
+import game.localization.Language;
 import game.models.Coordinates;
 import game.ui.panels.menus.LoadingPanel;
 import game.utils.Paths;
@@ -16,9 +19,8 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Random;
+import java.util.*;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 import static game.ui.panels.menus.LoadingPanel.LOADING_DEFAULT_TIMER;
@@ -31,18 +33,25 @@ import static game.ui.panels.menus.LoadingPanel.LOADING_DEFAULT_TIMER;
  * when bombs are detonated, and the background image of the level.
  */
 public abstract class Level {
-    private final int levelId;
-    private final int worldId;
+    public static final Map<Integer, Class<? extends Level>> ID_TO_FIRST_LEVEL_MAP = new HashMap<>() {{
+        put(1, World1Level1.class);
+        put(2, World2Level1.class);
+    }};
+
+    public static final Map<Integer[], Class<? extends Level>> ID_TO_LEVEL = new HashMap<>() {{
+        put(new Integer[]{1, 1}, World1Level1.class);
+        put(new Integer[]{1, 2}, World1Level2.class);
+        put(new Integer[]{1, 3}, World1Level3.class);
+        put(new Integer[]{1, 4}, World1Level4.class);
+        put(new Integer[]{1, 5}, World1Level5.class);
+        put(new Integer[]{2, 1}, World2Level1.class);
+        put(new Integer[]{2, 2}, World2Level2.class);
+        put(new Integer[]{2, 3}, World2Level3.class);
+        put(new Integer[]{2, 4}, World2Level4.class);
+        put(new Integer[]{2, 5}, World2Level5.class);
+    }};
+
     protected int maxBombs = 1;
-
-    private Level() {
-        this(0,0);
-    }
-
-    public Level(int levelId, int worldId){
-        this.levelId = levelId;
-        this.worldId = worldId;
-    }
 
     public abstract Boss getBoss();
     public abstract int startEnemiesCount();
@@ -96,17 +105,25 @@ public abstract class Level {
      *
      * @param jPanel the panel on which to start the game level
      */
-    public void start(JPanel jPanel){
+    public void start(JPanel jPanel) {
         Bomberman.getMatch().setGameState(true);
+        generateEntities(jPanel);
+    }
+
+
+    public void generateEntities(JPanel jPanel) {
         generateStone(jPanel);
-
-        Bomberman.getMatch().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
-        Bomberman.getMatch().getPlayer().spawn();
+        generatePlayer();
         generateDestroyableBlock();
-
         spawnBoss();
         spawnEnemies();
     }
+    public void generatePlayer(){
+        Bomberman.getMatch().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
+        Bomberman.getMatch().getPlayer().spawn();
+    }
+
+
 
     public void endLevel() {
         Bomberman.getMatch().onGameEvent(GameEvent.ROUND_PASSED, null);
@@ -133,7 +150,7 @@ public abstract class Level {
                 enemy = enemyClass.getConstructor().newInstance();
 
                 // Spawn the enemy on the game board.
-                enemy.spawn();
+                enemy.spawn(false, false);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
@@ -141,14 +158,10 @@ public abstract class Level {
     }
 
     // This method returns the ID of the world.
-    public int getWorldId() {
-        return worldId;
-    }
+    public abstract int getWorldId();
 
     // This method returns the ID of the level.
-    public int getLevelId() {
-        return levelId;
-    }
+    public abstract int getLevelId();
 
     // This method returns the maximum number of bombs that a player can have at one time.
     public int getMaxBombs() {
@@ -205,6 +218,10 @@ public abstract class Level {
                 i++;
             }
         }
+    }
+
+    public boolean isLastLevelOfWorld(){
+        return false;
     }
 
     @Override

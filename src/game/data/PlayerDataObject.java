@@ -1,63 +1,58 @@
 package game.data;
 
+import game.level.Level;
+
 import java.io.Serializable;
 
 public class PlayerDataObject implements Serializable {
     private String name;
     private int victories;
     private int lostGames;
-    private int lastWorldId;
-    private int lastLevelId;
     private int kills;
     private int deaths;
     private int rounds;
     private long points;
+    private int lastLevelId;
+    private int lastWorldId;
 
     public PlayerDataObject(){
-        this("User", 0,0,0,0,0,0,0, 0);
+        this("User",0,0,0,0,0,0,0, 0);
     }
 
-    public PlayerDataObject(String name, int victories, int lostGames, int lastWorldId, int lastLevelId, int kills, int deaths, int rounds, long points) {
+    public PlayerDataObject(String name, int victories, int lostGames, int kills, int deaths, int rounds, long points, int lastLevelId, int lastWorldId) {
         this.name = name;
         this.victories = victories;
         this.lostGames = lostGames;
-        this.lastWorldId = lastWorldId;
-        this.lastLevelId = lastLevelId;
+
         this.kills = kills;
         this.deaths = deaths;
         this.rounds = rounds;
         this.points = points;
+        this.lastLevelId = lastLevelId;
+        this.lastWorldId = lastWorldId;
     }
 
     String getName() {
         return name;
     }
 
-    int getVictories() {
+    public int getVictories() {
         return victories;
     }
 
-    int getLostGames() {
+    public int getLostGames() {
         return lostGames;
     }
 
-    int getLastWorldId() {
-        return lastWorldId;
-    }
-
-    int getLastLevelId() {
-        return lastLevelId;
-    }
-
-    int getKills() {
+    public int getKills() {
         return kills;
     }
 
-    int getDeaths() {
+    public int getDeaths() {
         return deaths;
     }
 
-    long getPoints() {
+    public long getPoints() {
         return points;
     }
 
@@ -73,12 +68,18 @@ public class PlayerDataObject implements Serializable {
         this.lostGames = lostGames;
     }
 
-    void setLastWorldId(int lastWorldId) {
-        this.lastWorldId = lastWorldId;
+
+    public void setLastLevel(Level lastLevel) {
+        this.lastLevelId = lastLevel.getLevelId();
+        this.lastWorldId = lastLevel.getWorldId();
     }
 
-    void setLastLevelId(int lastLevelId) {
-        this.lastLevelId = lastLevelId;
+    public int getLastLevelId() {
+        return lastLevelId;
+    }
+
+    public int getLastWorldId() {
+        return lastWorldId;
     }
 
     void setKills(int kills) {

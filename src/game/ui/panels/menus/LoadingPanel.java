@@ -74,7 +74,6 @@ public class LoadingPanel extends PagePanel {
         int textHeight = fontMetrics.getHeight();
         int textEndX = rectangleX + (rectangleWidth - textWidth) / 2;
 
-        System.out.println(textCurrX);
         if(textCurrX > textEndX + TEXT_ANIM_STEP_SIZE) {
             textCurrX = textCurrX - TEXT_ANIM_STEP_SIZE;
         }else {

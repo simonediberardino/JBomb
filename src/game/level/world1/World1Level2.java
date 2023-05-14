@@ -6,8 +6,9 @@ import game.entity.models.Enemy;
 import game.level.Level;
 
 public class World1Level2 extends World1Level{
-    public World1Level2() {
-        super(2);
+    @Override
+    public int getLevelId() {
+        return 2;
     }
 
     @Override

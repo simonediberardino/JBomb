@@ -10,8 +10,9 @@ import game.level.WorldSelectorLevel;
 import game.level.world1.World1Level;
 
 public class World2Level5 extends World2Level {
-    public World2Level5() {
-        super(5);
+    @Override
+    public int getLevelId() {
+        return 5;
     }
 
     @Override
@@ -30,6 +31,11 @@ public class World2Level5 extends World2Level {
                 YellowBall.class,
                 FlyingEnemy.class
         };
+    }
+
+    @Override
+    public boolean isLastLevelOfWorld(){
+        return true;
     }
 
     @Override

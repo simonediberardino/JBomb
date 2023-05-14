@@ -25,8 +25,8 @@ public enum EnhancedDirection {
     public static EnhancedDirection toEnhancedDirection(Direction[] directions){
         Direction vertical = null;
         Direction horizontal = null;
-        if(directions.length!=2){
-            System.out.println("ARRAY DOESN'T CONTAIN EXACTLY TWO DIRECTIONS. Number of directions = " + directions.length);
+
+        if(directions.length != 2){
             return null;
         }
 
@@ -34,8 +34,8 @@ public enum EnhancedDirection {
              ) {
 
             switch (d){
-                case DOWN:case UP:vertical=d;break;
-                case RIGHT:case LEFT:horizontal=d;break;
+                case DOWN: case UP: vertical=d; break;
+                case RIGHT: case LEFT: horizontal=d; break;
             }
 
         }

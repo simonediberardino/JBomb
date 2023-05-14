@@ -67,9 +67,7 @@ public class DataInputOutput {
     public static void setLastLevel(Level level) {
         if(playerDataObject.getLastWorldId() > level.getWorldId()) return;
         if(playerDataObject.getLastWorldId() == level.getWorldId() && playerDataObject.getLastLevelId() >= level.getLevelId()) return;
-
-        playerDataObject.setLastLevelId(level.getLevelId());
-        playerDataObject.setLastWorldId(level.getWorldId());
+        playerDataObject.setLastLevel(level);
     }
 
     public static void increaseVictories(){

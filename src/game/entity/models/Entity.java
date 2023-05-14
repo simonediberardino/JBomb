@@ -2,7 +2,9 @@ package game.entity.models;
 
 import game.BomberManMatch;
 import game.Bomberman;
+import game.data.DataInputOutput;
 import game.engine.GameTickerObserver;
+import game.level.world2.World2Level3;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
@@ -162,12 +164,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return new Coordinates((PitchPanel.GRID_SIZE-getSize())/2,(PitchPanel.GRID_SIZE-getSize())/2);
     }
 
-    protected void die() {
-        despawn();
-        onDie();
-    }
 
-    protected void onDie(){}
 
     /**
      * Despawns the entity from the game world.
@@ -195,6 +192,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
     public final void spawn(){
+        DataInputOutput.setLastLevel(new World2Level3());
         spawn(false,true);
     }
 

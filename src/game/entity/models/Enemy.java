@@ -11,7 +11,7 @@ import game.ui.panels.game.PitchPanel;
 import java.util.*;
 
 public abstract class Enemy extends Character{
-    protected boolean canMove = true;
+
 
     public Enemy(){
         super(Coordinates.randomCoordinatesFromPlayer());
