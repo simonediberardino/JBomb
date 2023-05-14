@@ -64,9 +64,9 @@ public enum EnhancedDirection {
         Coordinates centerEntityCoords = new Coordinates(entity.getCoords().getX()+entity.getSize()/2,entity.getCoords().getY()+entity.getSize()/2);
         Direction newHorizontalDirection;
         Direction newVerticalDirection;
-        if (centerEntityCoords.getX()> Utility.px(PitchPanel.DEFAULT_DIMENSION.getWidth()/2)) newHorizontalDirection = Direction.LEFT;
+        if (centerEntityCoords.getX()>PitchPanel.DIMENSION.getWidth()/2) newHorizontalDirection = Direction.LEFT;
         else newHorizontalDirection = Direction.RIGHT;
-        if (centerEntityCoords.getY()< Utility.px(PitchPanel.DEFAULT_DIMENSION.getHeight()/2)) newVerticalDirection = Direction.DOWN;
+        if (centerEntityCoords.getY()< PitchPanel.DIMENSION.getHeight()/2) newVerticalDirection = Direction.DOWN;
         else newVerticalDirection = Direction.UP;
         return toEnhancedDirection(new Direction[]{newHorizontalDirection,newVerticalDirection});
 

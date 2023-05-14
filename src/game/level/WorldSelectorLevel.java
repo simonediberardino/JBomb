@@ -4,8 +4,6 @@ import game.data.DataInputOutput;
 import game.entity.blocks.InvisibleBlock;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
-import game.level.world1.World1Level1;
-import game.level.world2.World2Level2;
 import game.models.Coordinates;
 import game.powerups.portal.Portal;
 import game.powerups.portal.World1Portal;
@@ -76,14 +74,14 @@ public class WorldSelectorLevel extends Level{
     public void generateInvisibleBlock(){
         //BORDER INVISIBLE BLOCKS
             //COLUMNS
-        for (int i = 0; i< Utility.px(PitchPanel.DEFAULT_DIMENSION.getWidth())/PitchPanel.GRID_SIZE-1;i++){
+        for (int i = 0; i< PitchPanel.DIMENSION.getWidth()/PitchPanel.GRID_SIZE-1; i++){
             new InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(new Dimension(i,0))).spawn();
-            new InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(new Dimension(i,(int)(PitchPanel.DEFAULT_DIMENSION.getHeight()/PitchPanel.GRID_SIZE-1)))).spawn();
+            new InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(new Dimension(i,(int)(PitchPanel.DIMENSION.getHeight()/PitchPanel.GRID_SIZE-1)))).spawn();
         }
         //ROWS
-        for (int i = 0; i< Utility.px(PitchPanel.DEFAULT_DIMENSION.getHeight())/PitchPanel.GRID_SIZE-1;i++){
+        for (int i = 0; i< PitchPanel.DIMENSION.getHeight()/PitchPanel.GRID_SIZE-1; i++){
             new InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(new Dimension( 0,i))).spawn();
-            new InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(new Dimension((int)(PitchPanel.DEFAULT_DIMENSION.getWidth()/PitchPanel.GRID_SIZE)-1,i))).spawn();
+            new InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(new Dimension((int)(PitchPanel.DIMENSION.getWidth()/PitchPanel.GRID_SIZE)-1,i))).spawn();
 
         }
 

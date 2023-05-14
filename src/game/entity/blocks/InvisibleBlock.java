@@ -17,6 +17,6 @@ public class InvisibleBlock extends HardBlock{
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage("assets/worlds/0/common/destroyable_block.png");
+        return null;
     }
 }

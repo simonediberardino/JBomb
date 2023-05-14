@@ -2,13 +2,11 @@ package game.ui.panels.game;
 
 import game.Bomberman;
 import game.entity.models.Entity;
-import game.entity.models.EntityInteractable;
 import game.events.Observer2;
 import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
 
 import static game.utils.Utility.loadImage;
@@ -18,30 +16,23 @@ import static game.utils.Utility.px;
  * The GamePanel class represents the main game panel that displays the game world and entities
  */
 public class PitchPanel extends JPanel implements Observer2 {
-    public static final Dimension DEFAULT_DIMENSION = new Dimension(936, 792);
+
     public static final int DEFAULT_PIXEL_UNIT = 6;
     public static final int PIXEL_UNIT = Utility.px(DEFAULT_PIXEL_UNIT);
+    //to simplify calculations
     public static final int COMMON_DIVISOR = PIXEL_UNIT * 4;
     public static final int GRID_SIZE = PitchPanel.COMMON_DIVISOR * 3;
-
-
-    private Dimension panelDimensions;
+    //GRID_SIZE must be multiplied by an odd number in order to guarantee free space around borders on the game pitch
+    public static final Dimension DIMENSION = new Dimension(GRID_SIZE*13, 11*GRID_SIZE);
 
     /**
      * Constructs a new GamePanel with the default dimensions and sets it as the observer for the game ticker observable
      */
     public PitchPanel() {
-        // Convert default dimensions to screen size
-        int convertedHeight = Utility.px((int) DEFAULT_DIMENSION.getHeight());
-        convertedHeight = convertedHeight/(GRID_SIZE *2)*(GRID_SIZE*2)+GRID_SIZE;
-        int convertedWidth = Utility.px((int) DEFAULT_DIMENSION.getWidth());
-        convertedWidth = convertedWidth/(GRID_SIZE *2)*(GRID_SIZE*2)+GRID_SIZE;
-
-        panelDimensions = new Dimension(convertedWidth, convertedHeight);
         // Set preferred, maximum, and minimum size to converted dimensions
-        setPreferredSize(panelDimensions);
-        setMaximumSize(panelDimensions);
-        setMinimumSize(panelDimensions);
+        setPreferredSize(DIMENSION);
+        setMaximumSize(DIMENSION);
+        setMinimumSize(DIMENSION);
 
         // Set this GamePanel as observer for the game ticker observable
         Bomberman.getMatch().getGameTickerObservable().unregisterAll();
@@ -51,7 +42,7 @@ public class PitchPanel extends JPanel implements Observer2 {
     }
 
     public Dimension getPanelDimensions() {
-        return panelDimensions;
+        return DIMENSION;
     }
 
     /**

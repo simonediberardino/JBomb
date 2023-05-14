@@ -148,12 +148,7 @@ public abstract class EntityInteractable extends Entity {
                         Coordinates.roundCoordinates(new Coordinates(nextOccupiedCoords.getX()+size-1, nextOccupiedCoords.getY()))));
         // Get all the blocks and entities in the game
         var entities = Bomberman.getMatch().getEntities();
-
-        // Use Java stream to filter entities that collide with the specified coordinate
-        //return entities.parallelStream()
-          //      .anyMatch(e -> doesCollideWith(Coordinates.roundCoordinates(nextOccupiedCoords), Coordinates.roundCoordinates(e.getCoords())));
-
-        return entities.parallelStream().anyMatch(e -> fourCorners.stream().anyMatch(coords-> doesCollideWith(coords,Coordinates.roundCoordinates(e.getCoords()))));
+        return entities.parallelStream().anyMatch(e -> fourCorners.stream().anyMatch(coords-> doesCollideWith(coords,e)));
     }
 
     /**

@@ -192,7 +192,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
     public final void spawn(){
-        DataInputOutput.setLastLevel(new World2Level3());
         spawn(false,true);
     }
 
