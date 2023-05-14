@@ -3,7 +3,6 @@ package game.entity.enemies.npcs;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
-import game.entity.enemies.npcs.IntelligentEnemy;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
@@ -55,7 +54,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     }
 
     @Override
-    public void update(boolean arg) {
+    public void doUpdate(boolean arg) {
         if (System.currentTimeMillis() - lastUpdate > SHOOTING_REFRESH_RATE) {
             lastUpdate = System.currentTimeMillis();
 
@@ -76,7 +75,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
             canMove = true;
         }
 
-        super.update(arg);
+        super.doUpdate(arg);
     }
 
     @Override

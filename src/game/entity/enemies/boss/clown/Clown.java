@@ -19,7 +19,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static game.ui.panels.game.PitchPanel.DEFAULT_DIMENSION;
 import static game.utils.Utility.px;
 
 /**
@@ -224,7 +223,7 @@ public class Clown extends Boss implements Explosive {
      * Updates this entity's state.
      * @param gamestate the current gamestate
      */
-    public void update(boolean gamestate) {
+    public void doUpdate(boolean gamestate) {
         // Check if the entity should shoot orbs
         Utility.runPercentage(getShootingChance(), () -> {
             spawnEnhancedOrbs();
@@ -238,7 +237,7 @@ public class Clown extends Boss implements Explosive {
             Utility.runPercentage(getShootingChance(), this::throwHat);
         }
 
-        super.update(gamestate);
+        super.doUpdate(gamestate);
     }
 
 

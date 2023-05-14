@@ -132,7 +132,7 @@ public class Orb extends Enemy implements Transparent, Particle{
         }
     }
 
-    public void update(boolean gameState) {
+    public void doUpdate(boolean gameState) {
         if(gameState) moveOrb();
     }
 

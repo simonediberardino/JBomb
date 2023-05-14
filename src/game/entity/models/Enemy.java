@@ -31,13 +31,13 @@ public abstract class Enemy extends Character{
     @Override
     protected void onSpawn() {
         super.onSpawn();
-        Bomberman.getMatch().getGameTickerObservable().addObserver(this);
+        Bomberman.getMatch().getGameTickerObservable().register(this);
     }
 
     @Override
     protected void onDespawn() {
         super.onDespawn();
-        Bomberman.getMatch().getGameTickerObservable().deleteObserver(this);
+        Bomberman.getMatch().getGameTickerObservable().unregister(this);
         Bomberman.getMatch().onGameEvent(GameEvent.KILLED_ENEMY, this);
     }
 
@@ -46,15 +46,14 @@ public abstract class Enemy extends Character{
         return new HashSet<>(Collections.singletonList(Player.class));
     }
 
-    @Override
-    public final void update(Observable o, Object gameState) {
-        super.update(o, gameState);
+    public final void update(Object gameState) {
+        super.update(gameState);
 
         if((boolean) gameState)
-            update((Boolean) gameState);
+            doUpdate((Boolean) gameState);
     }
 
-    public abstract void update(boolean gameState);
+    public abstract void doUpdate(boolean gameState);
 
     public int getSize() {
         return PitchPanel.GRID_SIZE;

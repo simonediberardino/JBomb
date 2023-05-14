@@ -1,6 +1,8 @@
 
 package game.controller;
 
+import game.events.Observable2;
+
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,7 +15,7 @@ import static java.util.Map.entry;
  This class represents an Observable object that observes key events and notifies its observers of the
  corresponding command that should be executed based on the key that was pressed.
  */
-public class ControllerManager extends Observable implements KeyListener {
+public class ControllerManager extends Observable2 implements KeyListener {
     private static final int KEY_W = KeyEvent.VK_W;
     private static final int KEY_A = KeyEvent.VK_A;
     private static final int KEY_S = KeyEvent.VK_S;
@@ -37,6 +39,10 @@ public class ControllerManager extends Observable implements KeyListener {
     // Stores the time of the last key event for each command
     private final Map<Command, Long> commandEventsTime = new HashMap<>();
 
+    public ControllerManager(){
+        setupTask();
+    }
+
     /**
      * Handles key pressed events and notifies observers with the corresponding command that should be executed.
      *
@@ -50,25 +56,17 @@ public class ControllerManager extends Observable implements KeyListener {
 
         if(action != null) {
             commandQueue.add(action);
-            if(timer == null || !timer.isRunning()){
-                executeKeys();
-            }
         }
     }
 
-    @Override public void keyReleased(KeyEvent e) {
+    @Override
+    public void keyReleased(KeyEvent e) {
         Command action = keyAssignment.get(e.getKeyCode());
         commandQueue.remove(action);
-        if(commandQueue.isEmpty()) stopExecuting();
     }
 
-    private void executeKeys() {
-        ActionListener taskPerformer = evt -> {
-            for (Command c : commandQueue) {
-                setChanged();
-                notifyObservers(c);
-            }
-        };
+    private void setupTask() {
+        ActionListener taskPerformer = evt -> commandQueue.parallelStream().forEach(this::notifyObservers);
 
         timer = new Timer(KEY_DELAY_MS, taskPerformer);
         timer.start();

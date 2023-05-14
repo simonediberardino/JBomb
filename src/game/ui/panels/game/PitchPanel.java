@@ -3,6 +3,7 @@ package game.ui.panels.game;
 import game.Bomberman;
 import game.entity.models.Entity;
 import game.entity.models.EntityInteractable;
+import game.events.Observer2;
 import game.utils.Utility;
 
 import javax.swing.*;
@@ -16,12 +17,13 @@ import static game.utils.Utility.px;
 /**
  * The GamePanel class represents the main game panel that displays the game world and entities
  */
-public class PitchPanel extends JPanel implements Observer {
-    public static final Dimension DEFAULT_DIMENSION = new Dimension(945, 800);
+public class PitchPanel extends JPanel implements Observer2 {
+    public static final Dimension DEFAULT_DIMENSION = new Dimension(936, 792);
     public static final int DEFAULT_PIXEL_UNIT = 6;
     public static final int PIXEL_UNIT = Utility.px(DEFAULT_PIXEL_UNIT);
     public static final int COMMON_DIVISOR = PIXEL_UNIT * 4;
     public static final int GRID_SIZE = PitchPanel.COMMON_DIVISOR * 3;
+
 
     private Dimension panelDimensions;
 
@@ -42,8 +44,8 @@ public class PitchPanel extends JPanel implements Observer {
         setMinimumSize(panelDimensions);
 
         // Set this GamePanel as observer for the game ticker observable
-        Bomberman.getMatch().getGameTickerObservable().deleteObservers();
-        Bomberman.getMatch().getGameTickerObservable().addObserver(this);
+        Bomberman.getMatch().getGameTickerObservable().unregisterAll();
+        Bomberman.getMatch().getGameTickerObservable().register(this);
 
         repaint();
     }
@@ -94,11 +96,10 @@ public class PitchPanel extends JPanel implements Observer {
 
     /**
      * Repaints the game panel when it is updated by the game ticker observable
-     * @param o the observable object
      * @param arg the object argument
      */
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Object arg) {
         repaint();
     }
 

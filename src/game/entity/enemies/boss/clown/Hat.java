@@ -94,7 +94,7 @@ public class Hat extends Orb {
     }
 
     @Override
-    public void update(boolean gameState) {
+    public void doUpdate(boolean gameState) {
         if(gameState) updateDirection();
     }
 

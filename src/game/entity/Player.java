@@ -87,13 +87,13 @@ public class Player extends BomberEntity {
     @Override
     protected void onSpawn() {
         super.onSpawn();
-        Bomberman.getMatch().getControllerManager().addObserver(this);
+        Bomberman.getMatch().getControllerManager().register(this);
     }
 
     @Override
     protected void onDespawn() {
         super.onDespawn();
-        Bomberman.getMatch().getControllerManager().deleteObserver(this);
+        Bomberman.getMatch().getControllerManager().unregister(this);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class Player extends BomberEntity {
 
     // Handle the command entered by the player;
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Object arg) {
         handleAction((Command) arg);
     }
 }

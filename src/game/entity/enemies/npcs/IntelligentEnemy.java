@@ -87,7 +87,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
         return new HashSet<>(Collections.singletonList(Player.class));
     }
 
-    public void update(boolean gameState) {
+    public void doUpdate(boolean gameState) {
         if (!canMove || !gameState) {
             return;
         }

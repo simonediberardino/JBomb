@@ -36,7 +36,7 @@ public class BomberManMatch implements OnGameEvent {
 
         this.controllerManager = new ControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
-        controllerManager.addObserver(new GamePausedObserver());
+        controllerManager.register(new GamePausedObserver());
     }
 
     public Level getCurrentLevel() {
@@ -61,7 +61,7 @@ public class BomberManMatch implements OnGameEvent {
     }
 
     public void removeEntity(Entity e){
-        getGameTickerObservable().deleteObserver(e);
+        getGameTickerObservable().unregister(e);
 
         entities.removeIf(e1 -> e.getId() == e1.getId());
     }
@@ -125,9 +125,9 @@ public class BomberManMatch implements OnGameEvent {
         this.currentLevel = null;
         this.entities.clear();
 
-        this.gameTickerObservable.deleteObservers();
+        this.gameTickerObservable.unregisterAll();
         this.gameTickerObservable = null;
-        this.controllerManager.deleteObservers();
+        this.controllerManager.unregisterAll();
         this.controllerManager = null;
         instance = null;
 

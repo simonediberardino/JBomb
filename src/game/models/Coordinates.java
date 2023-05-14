@@ -150,14 +150,14 @@ public class Coordinates {
             return null;
         }
 
-        if ((d.getWidth()>= PitchPanel.DEFAULT_DIMENSION.getWidth()/ GRID_SIZE)){
+        if ((d.getWidth()>= Utility.px(PitchPanel.DEFAULT_DIMENSION.getWidth())/ GRID_SIZE)){
             System.out.println("COLUMN OUT OF BOUNDS");
             System.out.println(d.getWidth());
             System.out.println(offsetX);
             return null;
         }
 
-        if(d.getHeight()>= PitchPanel.DEFAULT_DIMENSION.getHeight()/GRID_SIZE){
+        if(d.getHeight()>= Utility.px(PitchPanel.DEFAULT_DIMENSION.getHeight())/GRID_SIZE){
             System.out.println("ROW OUT OF BOUNDS");
             return null;
         }

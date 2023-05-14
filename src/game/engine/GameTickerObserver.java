@@ -1,14 +1,16 @@
 package game.engine;
 
+import game.events.Observer2;
+
 import java.util.Observable;
 import java.util.Observer;
 
-public abstract class GameTickerObserver implements Observer {
+public abstract class GameTickerObserver implements Observer2 {
     private static float DEFAULT_DELAY_OBSERVER = 40;
     protected long lastUpdate = 0L;
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Object arg) {
         lastUpdate = System.currentTimeMillis();
     }
 
