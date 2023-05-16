@@ -78,8 +78,7 @@ public abstract class EntityInteractable extends Entity {
         var entities = Bomberman.getMatch().getEntities();
 
         // Check for each entity if it occupies the specified coordinates
-        for (int i = 0, entitiesSize = entities.size(); i < entitiesSize; i++) {
-            Entity e = entities.get(i);
+        entities.forEach(e -> {
             for (Coordinates coord : desiredCoords) {
                 int entityBottomRightX = e.getCoords().getX() + e.getSize() - 1;
                 int entityBottomRightY = e.getCoords().getY() + e.getSize() - 1;
@@ -92,7 +91,7 @@ public abstract class EntityInteractable extends Entity {
                     entityLinkedList.add(e);
                 }
             }
-        }
+        });
 
         return entityLinkedList;
     }

@@ -13,21 +13,15 @@ public class PeriodicTask {
     public PeriodicTask(Runnable callback, int delay) {
         this.callback = callback;
         this.delay = delay;
-        this.timer = new Timer(delay, e -> callback.run());
-  /*      this.thread = new Thread(() -> {
-            while(true) {
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    continue;
-                }
-                SwingUtilities.invokeLater(callback);
-            }
-        });*/
+        this.timer = new Timer(delay, e -> SwingUtilities.invokeLater(callback));
     }
 
     public void start() {
         timer.start();
+    }
+
+    public void setDelay(int delay){
+        timer.setDelay(delay);
     }
 
     public void resume() {

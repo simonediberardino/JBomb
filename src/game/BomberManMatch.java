@@ -9,7 +9,10 @@ import game.events.GameEvent;
 import game.level.Level;
 import game.powerups.PowerUp;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -22,7 +25,9 @@ public class BomberManMatch implements OnGameEvent {
     private Player player;
     private boolean gameState = false;
 
-    private BomberManMatch(){}
+    private BomberManMatch(){
+        this(null);
+    }
 
     public BomberManMatch(Level currentLevel) {
         this.currentLevel = currentLevel;
@@ -45,27 +50,20 @@ public class BomberManMatch implements OnGameEvent {
         return player;
     }
 
-    public synchronized List<? extends Entity> getEntities() {
-        List<Entity> list = new CopyOnWriteArrayList<>();
+    public Set<? extends Entity> getEntities() {
+        return new TreeSet<>(entities);
 
-        synchronized (entities) {
-            for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext(); ) {
-                Entity entity = iterator.next();
-                list.add(entity);
-            }
-        }
-        // Creates a new list to avoid concurrent modification exception;
-        return list;
+        // Creates a new list to avoid concurrent modification exception;s
     }
 
     public void addEntity(Entity entity) {
         entities.add(entity);
     }
 
-    public void removeEntity(Entity e){
-        getGameTickerObservable().unregister(e);
-
-        entities.removeIf(e1 -> e.getId() == e1.getId());
+    public void removeEntity(Entity e) {
+        Set<Entity> tempList = new TreeSet<>(entities);
+        tempList.removeIf(e1 -> e.getId() == e1.getId());
+        entities = tempList;
     }
 
     public ControllerManager getControllerManager() {
@@ -75,7 +73,6 @@ public class BomberManMatch implements OnGameEvent {
     public GameTickerObservable getGameTickerObservable() {
         return gameTickerObservable;
     }
-
 
     public void toggleGameState(){
         if(System.currentTimeMillis() - lastGamePauseStateTime < 500) return;
@@ -120,11 +117,13 @@ public class BomberManMatch implements OnGameEvent {
     public void destroy() {
         pauseGame();
 
-        List<? extends Entity> list = getEntities();
-        for (int i = 0; i < list.size(); i++) {
-            Entity e = list.get(i);
+        Set<? extends Entity> list = getEntities();
+        for (Entity e: list
+             ) {
             e.despawn();
         }
+
+
 
         this.player = null;
         this.currentLevel = null;

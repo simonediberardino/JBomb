@@ -1,10 +1,9 @@
 
 package game.controller;
 
+import game.engine.PeriodicTask;
 import game.events.Observable2;
 
-import javax.swing.Timer;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.*;
@@ -16,12 +15,14 @@ import static java.util.Map.entry;
  corresponding command that should be executed based on the key that was pressed.
  */
 public class ControllerManager extends Observable2 implements KeyListener {
+    private static ControllerManager instance;
     private static final int KEY_W = KeyEvent.VK_W;
     private static final int KEY_A = KeyEvent.VK_A;
     private static final int KEY_S = KeyEvent.VK_S;
     private static final int KEY_D = KeyEvent.VK_D;
     private static final int KEY_SPACE = KeyEvent.VK_SPACE;
     private static final int KEY_ESC = KeyEvent.VK_ESCAPE;
+    private static final int MIN_KEY_DELAY_MS = 15;
     private static int KEY_DELAY_MS = setDefaultCommandDelay();
     private Set<Command> commandQueue = new HashSet<>();
 
@@ -37,9 +38,10 @@ public class ControllerManager extends Observable2 implements KeyListener {
 
     // Stores the time of the last key event for each command
     private final Map<Command, Long> commandEventsTime = new HashMap<>();
-    private Thread thread;
+    private PeriodicTask task;
 
     public ControllerManager(){
+        instance = this;
         setupTask();
     }
 
@@ -55,6 +57,7 @@ public class ControllerManager extends Observable2 implements KeyListener {
         if(System.currentTimeMillis() - commandEventsTime.getOrDefault(action, 0L) < KEY_DELAY_MS) return;
 
         if(action != null) {
+            commandEventsTime.put(action, System.currentTimeMillis());
             commandQueue.add(action);
         }
 
@@ -65,32 +68,30 @@ public class ControllerManager extends Observable2 implements KeyListener {
     public void keyReleased(KeyEvent e) {
         Command action = keyAssignment.get(e.getKeyCode());
         commandQueue.remove(action);
-        if(commandQueue.isEmpty()) stopExecuting();
+        if(commandQueue.isEmpty()) stop();
     }
 
     private void setupTask() {
-        thread = new Thread(() -> {
-            while(true) {
-                try {
-                    Thread.sleep(KEY_DELAY_MS);
-                } catch (InterruptedException e) {
-                    continue;
-                }
-                new HashSet<>(commandQueue).forEach(this::notifyObservers);
+        task = new PeriodicTask(() -> {
+            for (Command command : new HashSet<>(commandQueue)) {
+                notifyObservers(command);
             }
-        });
-        thread.start();
+        }, KEY_DELAY_MS);
+
+        task.start();
     }
 
     private void resume() {
         try{
-            if(thread != null) thread.resume();
+            if(task != null) {
+                task.resume();
+            }
         }catch (Exception ignored){}
     }
 
-    private void stopExecuting() {
+    private void stop() {
         try{
-            if(thread != null) thread.suspend();
+            if(task != null) task.stop();
         }catch (Exception ignored){}
     }
 
@@ -98,13 +99,23 @@ public class ControllerManager extends Observable2 implements KeyListener {
         return commandQueue.contains(c);
     }
 
+    private void updateDelay() {
+        instance.task.setDelay(KEY_DELAY_MS);
+    }
+
     public static int decreaseCommandDelay() {
         KEY_DELAY_MS = 15;
+        if (instance != null) {
+            instance.updateDelay();
+        }
         return KEY_DELAY_MS;
     }
 
     public static int setDefaultCommandDelay(){
         KEY_DELAY_MS = 30;
+        if (instance != null) {
+            instance.updateDelay();
+        }
         return KEY_DELAY_MS;
     }
 

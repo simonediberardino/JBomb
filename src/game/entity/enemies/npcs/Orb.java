@@ -51,8 +51,8 @@ public class Orb extends Enemy implements Transparent, Particle{
         super(coordinates);
         this.enhancedDirection = enhancedDirection;
     }
-    /**
 
+    /**
      Constructs an Orb with the given coordinates and direction.
      @param coordinates the coordinates of the Orb
      @param direction the direction of the Orb

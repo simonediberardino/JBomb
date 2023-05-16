@@ -8,6 +8,7 @@ import game.utils.Utility;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Set;
 
 import static game.utils.Utility.loadImage;
 import static game.utils.Utility.px;
@@ -54,12 +55,12 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         Graphics2D g2d = (Graphics2D) g;
         paintComponent(g2d);
-        List<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
+        Set<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
         // Draw each entity in the new set
 
-        for (int i = 0; i < setEntities.size(); i++) {
-            Entity it = setEntities.get(i);
-            drawEntity(g2d, it);
+        for (Entity e: setEntities
+             ) {
+            drawEntity(g2d, e);
         }
     }
 

@@ -8,6 +8,7 @@ import game.models.Coordinates;
 import game.ui.panels.menus.GameOverPanel;
 import game.utils.Paths;
 
+import java.awt.*;
 import java.util.*;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
@@ -92,7 +93,7 @@ public class Player extends BomberEntity {
     @Override
     protected void onDespawn() {
         super.onDespawn();
-        Bomberman.getMatch().getControllerManager().unregister(this);
+        //Bomberman.getMatch().getControllerManager().unregister(this);
     }
 
     @Override
@@ -133,6 +134,7 @@ public class Player extends BomberEntity {
     // Handle the command entered by the player;
     @Override
     public void update(Object arg) {
+        super.update(arg);
         handleAction((Command) arg);
     }
 }

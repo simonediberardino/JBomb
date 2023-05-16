@@ -42,7 +42,7 @@ public class GameTickerObservable extends Observable2 {
             }
 
             if (delayPassed) { // if the delay has passed
-                observer.update(Bomberman.getMatch().getGameState()); // call the update method of the observer with the current GameState object
+                notify(observer, Bomberman.getMatch().getGameState());
             }
         }
     };

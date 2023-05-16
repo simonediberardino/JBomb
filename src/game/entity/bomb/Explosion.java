@@ -11,6 +11,7 @@ import game.utils.Paths;
 import game.ui.panels.game.PitchPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +47,6 @@ public class Explosion extends MovingEntity implements Particle {
 
     public Explosion(Coordinates coordinates, Direction direction, int distanceFromExplosive, Explosive explosive) {
         this(coordinates, direction, distanceFromExplosive, explosive, true);
-
     }
 
     /**
@@ -69,21 +69,22 @@ public class Explosion extends MovingEntity implements Particle {
         // Add the explosion entity to the game.
         Bomberman.getMatch().addEntity(this);
 
-        // Move or interact with other entities in the game based on the explosion's direction.
-        if (distanceFromExplosive == 0){
-            List<Coordinates> desiredCoords = getAllCoordinates();
-            for (Entity e : Bomberman.getMatch().getEntities()) {
-                if (desiredCoords.stream().anyMatch(coord -> EntityInteractable.doesCollideWith(coord, e))){
-                    interact(e);
+        SwingUtilities.invokeLater(() -> {
+            // Move or interact with other entities in the game based on the explosion's direction.
+            if (distanceFromExplosive == 0) {
+                List<Coordinates> desiredCoords = getAllCoordinates();
+                Set<?extends Entity> entities = Bomberman.getMatch().getEntities();
+                for (Entity e: entities) {
+                    if (desiredCoords.stream().anyMatch(coord -> EntityInteractable.doesCollideWith(coord, e))) {
+                        interact(e);
+                    }
                 }
             }
 
-        }
-
-        SwingUtilities.invokeLater(() -> {
             if (getCanExpand())
                 moveOrInteract(direction, getSize(), true);
         });
+
     }
 
     @Override
