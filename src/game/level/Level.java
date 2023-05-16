@@ -10,11 +10,9 @@ import game.entity.models.Enemy;
 import game.events.GameEvent;
 import game.level.world1.*;
 import game.level.world2.*;
-import game.localization.Language;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
-import game.ui.panels.menus.LoadingPanel;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -23,10 +21,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.Timer;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
-import static game.ui.panels.menus.LoadingPanel.LOADING_DEFAULT_TIMER;
 
 
 /**

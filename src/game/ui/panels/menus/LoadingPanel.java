@@ -9,11 +9,13 @@ import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static game.localization.Localization.LOADING;
 
 public class LoadingPanel extends PagePanel {
-    public final static int LOADING_DEFAULT_TIMER = 5000;
+    public final static int LOADING_TIMER = 3500;
     private final static int REPAINT_DELAY_MS = 15;
     private final static int TEXT_ANIM_STEP_SIZE = Utility.px(50);
     private final static int FONT_SIZE = Utility.px(75);
@@ -22,6 +24,8 @@ public class LoadingPanel extends PagePanel {
     private javax.swing.Timer animationTimer;
     private int textCurrX;
     private String text;
+    private Runnable onLoadingCallback;
+    private boolean finished = false;
 
     public LoadingPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame, Level level) {
         this(cardLayout, parent, frame, "");
@@ -43,6 +47,12 @@ public class LoadingPanel extends PagePanel {
     public void initialize() {
         this.text = new String();
         this.textCurrX = (int) Utility.getScreenSize().getWidth();
+        this.finished = false;
+        this.onLoadingCallback = null;
+    }
+
+    public void setCallback(Runnable p) {
+        this.onLoadingCallback = p;
     }
 
     @Override
@@ -87,6 +97,16 @@ public class LoadingPanel extends PagePanel {
 
         if (!centered && animationTimer == null) {
             startAnimation();
+            return;
+        }
+
+        if(!finished) {
+            finished = true;
+            Timer t = new Timer(LOADING_TIMER, e -> {
+                if(onLoadingCallback != null) onLoadingCallback.run();
+            });
+            t.setRepeats(false);
+            t.start();
         }
     }
 

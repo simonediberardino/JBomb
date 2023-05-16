@@ -3,7 +3,6 @@ package game;
 import game.data.DataInputOutput;
 import game.engine.GarbageCollectorTask;
 import game.level.Level;
-import game.level.WorldSelectorLevel;
 import game.level.world1.World1Level5;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
@@ -14,7 +13,7 @@ import game.ui.panels.menus.MainMenuPanel;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static game.ui.panels.menus.LoadingPanel.LOADING_DEFAULT_TIMER;
+import static game.ui.panels.menus.LoadingPanel.LOADING_TIMER;
 
 public class Bomberman {
     private static BomberManMatch bomberManMatch;
@@ -67,18 +66,10 @@ public class Bomberman {
     public static void startLevel(Level level) {
         bombermanFrame.getLoadingPanel().initialize();
         bombermanFrame.getLoadingPanel().updateText(level);
+        bombermanFrame.getLoadingPanel().setCallback(() -> doStartLevel(level));
         show(LoadingPanel.class);
 
         Bomberman.show(LoadingPanel.class);
-
-        TimerTask task = new TimerTask() {
-            public void run() {
-                doStartLevel(level);
-            }
-        };
-
-        java.util.Timer timer = new Timer();
-        timer.schedule(task, LOADING_DEFAULT_TIMER);
     }
 
     public static void show(Class<? extends PagePanel> page) {
