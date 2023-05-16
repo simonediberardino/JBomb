@@ -22,7 +22,6 @@ public class ControllerManager extends Observable2 implements KeyListener {
     private static final int KEY_D = KeyEvent.VK_D;
     private static final int KEY_SPACE = KeyEvent.VK_SPACE;
     private static final int KEY_ESC = KeyEvent.VK_ESCAPE;
-    private static final int MIN_KEY_DELAY_MS = 15;
     private static int KEY_DELAY_MS = setDefaultCommandDelay();
     private Set<Command> commandQueue = new HashSet<>();
 

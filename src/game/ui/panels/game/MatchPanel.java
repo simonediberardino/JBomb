@@ -160,7 +160,6 @@ public class MatchPanel extends PagePanel {
             public void paint(Graphics g) {
                 super.paint(g);
                 // Draw the image scaled to the specified border size on the left side of the panel
-                System.out.println((int) frame.getPreferredSize().getHeight());
                 g.drawImage(image.getScaledInstance(borderSize, (int) frame.getPreferredSize().getHeight(), 1), pitchPanel.getX() - borderSize, 0, null);
             }
         };
@@ -219,7 +218,6 @@ public class MatchPanel extends PagePanel {
     }
 
     private JPanel createRightPanel(int width, int height, Image image, int borderSize) {
-        System.out.println((int) frame.getPreferredSize().getHeight());
         // Create a new JPanel for the right side of the game window
         JPanel rightPanel = new JPanel() {
             @Override

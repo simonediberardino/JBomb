@@ -1,7 +1,6 @@
 package game.data;
 
 import game.level.Level;
-import game.level.world1.World1Level;
 import game.level.world1.World1Level1;
 import game.utils.Paths;
 
@@ -58,36 +57,70 @@ public class DataInputOutput {
 
     public static void increaseKills(){
         playerDataObject.setKills(playerDataObject.getKills()+1);
+        updateStoredPlayerData();
     }
 
     public static void increaseDeaths(){
         playerDataObject.setDeaths(playerDataObject.getDeaths()+1);
+        updateStoredPlayerData();
+    }
+
+    public static int getLives(){
+        return playerDataObject.getLives();
+    }
+
+    public static void resetLives(){
+        playerDataObject.setLives(3);
+        updateStoredPlayerData();
+    }
+
+    public static void increaseLives(){
+        playerDataObject.setLives(playerDataObject.getLives()+1);
+        updateStoredPlayerData();
+    }
+
+    public static void decreaseLives() {
+        int newLives = Math.max(playerDataObject.getLives() - 1, 0);
+        if(newLives == 0) {
+            increaseLost();
+            resetLevel();
+        }
+
+        playerDataObject.setLives(newLives);
+        updateStoredPlayerData();
+    }
+
+    public static void resetLevel() {
+        playerDataObject.setLastWorldId(playerDataObject.getLastWorldId());
+        playerDataObject.setLastLevelId(1);
+        updateStoredPlayerData();
     }
 
     public static void increaseScore(int score){
         playerDataObject.setPoints(playerDataObject.getPoints() + score);
+        updateStoredPlayerData();
     }
 
     public static void setName(String name) {
         playerDataObject.setName(name);
+        updateStoredPlayerData();
     }
 
     public static void setLastLevel(Level level) {
         if(playerDataObject.getLastWorldId() > level.getWorldId()) return;
         if(playerDataObject.getLastWorldId() == level.getWorldId() && playerDataObject.getLastLevelId() >= level.getLevelId()) return;
         playerDataObject.setLastLevel(level);
-    }
-
-    public static void increaseVictories(){
-        playerDataObject.setVictories(playerDataObject.getVictories() + 1);
+        updateStoredPlayerData();
     }
 
     public static void increaseLost(){
         playerDataObject.setLostGames(playerDataObject.getLostGames() + 1);
+        updateStoredPlayerData();
     }
 
     public static void increaseRounds(){
         playerDataObject.setRounds(playerDataObject.getRounds() + 1);
+        updateStoredPlayerData();
     }
 
     public static Level getLastLevelInstance() {

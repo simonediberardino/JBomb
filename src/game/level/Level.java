@@ -10,18 +10,23 @@ import game.entity.models.Enemy;
 import game.events.GameEvent;
 import game.level.world1.*;
 import game.level.world2.*;
+import game.localization.Localization;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
+import game.ui.elements.ToastHandler;
 import game.utils.Paths;
 import game.utils.Utility;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+import static game.localization.Localization.STARTING_LEVEL;
+import static game.localization.Localization.WELCOME_TEXT;
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 
@@ -119,6 +124,7 @@ public abstract class Level {
         updateLastLevel();
         Bomberman.getMatch().setGameState(true);
         generateEntities(jPanel);
+        ToastHandler.getInstance().show(Localization.get(STARTING_LEVEL).replace("%level%", this.toString()));
     }
 
     public void generateEntities(JPanel jPanel) {
@@ -135,7 +141,13 @@ public abstract class Level {
     }
 
     public void endLevel() {
-        DataInputOutput.setLastLevel(this);
+        try {
+            DataInputOutput.setLastLevel(getNextLevel().getConstructor().newInstance());
+            DataInputOutput.increaseRounds();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
         DataInputOutput.updateStoredPlayerData();
         Bomberman.getMatch().onGameEvent(GameEvent.ROUND_PASSED, null);
     }
@@ -223,7 +235,7 @@ public abstract class Level {
                 block.setCoords(Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE*2));
                 block.spawn();
 
-                // Force the first spawned block to have the
+                // Force the first spawned block to have the End level portal
                 if (i == 0 && !isLastLevelOfWorld()) {
                     block.setPowerUpClass(EndLevelPortal.class);
                 } else {

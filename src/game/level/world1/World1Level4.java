@@ -11,6 +11,7 @@ public class World1Level4 extends World1Level{
     public int getLevelId() {
         return 4;
     }
+
     @Override
     public int startEnemiesCount() {
         return 12;

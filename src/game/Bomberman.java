@@ -3,7 +3,10 @@ package game;
 import game.data.DataInputOutput;
 import game.engine.GarbageCollectorTask;
 import game.level.Level;
+import game.level.WorldSelectorLevel;
 import game.level.world1.World1Level5;
+import game.localization.Localization;
+import game.ui.elements.ToastHandler;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.ui.panels.game.MatchPanel;
@@ -13,6 +16,7 @@ import game.ui.panels.menus.MainMenuPanel;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static game.localization.Localization.WELCOME_TEXT;
 import static game.ui.panels.menus.LoadingPanel.LOADING_TIMER;
 
 public class Bomberman {
@@ -25,10 +29,11 @@ public class Bomberman {
         start();
     }
 
-    public static void start() {
+    private static void start() {
         bombermanFrame = new BombermanFrame();
         bombermanFrame.create();
         show(MainMenuPanel.class);
+        ToastHandler.getInstance().show(Localization.get(WELCOME_TEXT));
     }
 
     public static void startGarbageCollectorTask() {
@@ -49,7 +54,7 @@ public class Bomberman {
 
     public static void destroyLevel() {
         if(bomberManMatch != null) bomberManMatch.destroy();
-        bomberManMatch = new BomberManMatch(new World1Level5()); // Temporary sets the current level to WorldSelectorLevel to avoid null pointer exception if some threads aren't killed yet
+        bomberManMatch = new BomberManMatch(new WorldSelectorLevel()); // Temporary sets the current level to WorldSelectorLevel to avoid null pointer exception if some threads aren't killed yet
         System.gc();
     }
 

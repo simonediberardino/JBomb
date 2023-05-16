@@ -88,6 +88,11 @@ public class Explosion extends MovingEntity implements Particle {
     }
 
     @Override
+    public int getDrawPriority() {
+        return 21;
+    }
+
+    @Override
     protected String getBasePath() {
         return Paths.getAssetsFolder() + "/bomb/";
     }

@@ -1,11 +1,13 @@
 package game.ui.panels;
 
+import game.ui.elements.ToastHandler;
 import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
 
 public abstract class PagePanel extends JPanel {
+    protected final ToastHandler toastHandler = ToastHandler.getInstance();
     protected final JPanel parent;
     protected final CardLayout cardLayout;
     protected final BombermanFrame frame;
@@ -20,7 +22,9 @@ public abstract class PagePanel extends JPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         Image backgroundImage = Utility.loadImage(imagePath);
 
         int width = (int) frame.getPreferredSize().getWidth();
@@ -31,6 +35,14 @@ public abstract class PagePanel extends JPanel {
             g.drawImage(backgroundImage.getScaledInstance(width, height, 1), 0, 0, null);
         }
 
-        super.paint(g);
+        if(toastHandler.getText() != null){
+            toastHandler.showToast((Graphics2D) g);
+            repaint();
+        }
     }
+
+    public ToastHandler getToastHandler(){
+        return toastHandler;
+    }
+
 }

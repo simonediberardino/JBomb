@@ -395,13 +395,14 @@ public abstract class Character extends MovingEntity {
         // Reduce the health points by the specified amount
         healthPoints -= damage;
 
+        startDamageAnimation();
+
         // If the health points reach 0 or below, despawn the entity
         if (healthPoints <= 0){
             healthPoints = 0;
             die();
         } else {
-            // Otherwise, start a damage animation
-            startDamageAnimation();
+
             onHit(damage);
         }
     }
@@ -410,26 +411,18 @@ public abstract class Character extends MovingEntity {
         onDie();
     }
 
+    protected void onEndedDeathAnimation(){}
+
     protected synchronized void onDie(){
         canMove = false;
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            // Counter to keep track of the number of iterations
-            int count = 0;
-            //TODO animation count, temporarily ==2
-            int animationCount = 2;
-            @Override
-            public void run() {
-                if (count >= animationCount) {
-                    timer.cancel();
-                    despawn();
-                    return;
-                }
-                //TODO
-                loadAndSetImage("assets/entities/player/player_front_"+ count+ ".png");
-                count++;
-            }
-        }, 0, EntityInteractable.INTERACTION_DELAY_MS); // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
+        // Create a Timer object to schedule the animation iterations
+        javax.swing.Timer timer = new javax.swing.Timer((int) INTERACTION_DELAY_MS, (e) -> {
+            onEndedDeathAnimation();
+            despawn();
+        });
+
+        timer.setRepeats(false);
+        timer.start();
     }
 
 

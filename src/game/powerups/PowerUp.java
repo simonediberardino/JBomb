@@ -16,10 +16,11 @@ import java.util.*;
 public abstract class PowerUp extends EntityInteractable {
     // A static array of power-up classes
     public static final Class<? extends PowerUp>[] POWER_UPS = new Class[] {
-            ArmorPowerUp.class,
+/*            ArmorPowerUp.class,
             FirePowerUp.class,
             SpeedPowerUp.class,
-            TransparentDestroyableBlocksPowerUp.class
+            TransparentDestroyableBlocksPowerUp.class,*/
+            LivesPowerUp.class
     };
 
     // The default duration for a power-up, in seconds
@@ -55,6 +56,11 @@ public abstract class PowerUp extends EntityInteractable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public int getDrawPriority() {
+        return 0;
     }
 
     /**

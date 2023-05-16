@@ -1,7 +1,6 @@
 package game.ui.panels.menus;
 
 import game.Bomberman;
-import game.data.DataInputOutput;
 import game.level.Level;
 import game.localization.Localization;
 import game.ui.elements.BombermanButton;

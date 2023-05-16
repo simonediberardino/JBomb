@@ -65,6 +65,7 @@ public class Hat extends Orb {
         if(!canMove || !isAlive) return;
 
         if (enhancedDirection == null) {
+            // When hitting a wall, bounce and change direction;
             if(!moveOrInteract(direction))
                 direction = direction.opposite();
 

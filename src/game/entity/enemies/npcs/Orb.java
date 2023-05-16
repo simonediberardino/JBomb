@@ -69,7 +69,7 @@ public class Orb extends Enemy implements Transparent, Particle{
     @Override
     public String[] getBaseSkins() {
         return new String[]{
-                Paths.getAssetsFolder() + "/bomb/flame_central0.png"
+                "assets/entities/enemies/clown/clown_orb.png"
         };
     }
     /**

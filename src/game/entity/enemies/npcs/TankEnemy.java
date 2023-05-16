@@ -58,6 +58,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
         if (System.currentTimeMillis() - lastUpdate > SHOOTING_REFRESH_RATE) {
             lastUpdate = System.currentTimeMillis();
 
+            // TODO
             if (canShoot && Math.random() * 100 < PROBABILITY_OF_SHOOTING) {
                 // explosion offset only used on vertical directions
                 Coordinates newCoords = getNewTopLeftCoordinatesOnDirection(currDirection, Explosion.SIZE);

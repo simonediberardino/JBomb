@@ -19,6 +19,7 @@ import static game.ui.panels.game.PitchPanel.PIXEL_UNIT;
  * An abstract class representing interactive entities, which can move or interact with other entities in the game.
  */
 public abstract class EntityInteractable extends Entity {
+    public static final long SHOW_DEATH_PAGE_DELAY_MS = 1000;
     public final static long INTERACTION_DELAY_MS = 500;
     private final Set<Class<? extends Entity>> whitelistObstacles = new HashSet<>();
     private final HashMap<Entity, Long> interactionMap = new HashMap<>();
@@ -263,6 +264,7 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public boolean canInteractWith(Entity e){
+        if(e == null)return true;
         if(System.currentTimeMillis() - getLastInteraction(e) < INTERACTION_DELAY_MS) {
             return false;
         }
@@ -279,7 +281,7 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public synchronized void attack(Entity e){
-        if(e.isImmune()) return;
+        if(e == null || e.isImmune()) return;
 
         if (e instanceof Character){
             ((Character) e).attackReceived(getAttackDamage());

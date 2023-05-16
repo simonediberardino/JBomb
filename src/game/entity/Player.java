@@ -8,6 +8,7 @@ import game.models.Coordinates;
 import game.ui.panels.menus.GameOverPanel;
 import game.utils.Paths;
 
+import javax.swing.Timer;
 import java.awt.*;
 import java.util.*;
 
@@ -25,7 +26,6 @@ public class Player extends BomberEntity {
 
     @Override
     protected void doInteract(Entity e) {
-        System.out.println(e + " with " + this);
     }
 
     @Override
@@ -64,12 +64,11 @@ public class Player extends BomberEntity {
 
     @Override
     public String[] getBackIcons() {
-        //TODO
         return new String[]{
-                getBasePath() + "/player_front_1.png",
-                getBasePath() + "/player_front_0.png",
-                getBasePath() + "/player_front_1.png",
-                getBasePath() + "/player_front_2.png"
+                getBasePath() + "/player_back_0.png",
+                getBasePath() + "/player_back_1.png",
+                getBasePath() + "/player_back_0.png",
+                getBasePath() + "/player_back_2.png"
         };
     }
 
@@ -91,26 +90,21 @@ public class Player extends BomberEntity {
     }
 
     @Override
-    protected void onDespawn() {
-        super.onDespawn();
-        //Bomberman.getMatch().getControllerManager().unregister(this);
+    protected void onEndedDeathAnimation() {
+        Timer t = new Timer((int) SHOW_DEATH_PAGE_DELAY_MS, (e) -> showDeathPage());
+        t.setRepeats(false);
+        t.start();
+    }
+
+    private void showDeathPage() {
+        Bomberman.destroyLevel();
+        Bomberman.show(GameOverPanel.class);
     }
 
     @Override
     protected void onDie() {
         super.onDie();
         Bomberman.getMatch().onGameEvent(GameEvent.DEATH, null);
-
-/*        new Thread(() -> {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Bomberman.destroyLevel();
-            Bomberman.show(GameOverPanel.class);
-        }).start();*/
-
     }
 
     @Override

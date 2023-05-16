@@ -35,7 +35,8 @@ public class BomberManMatch implements OnGameEvent {
 
         this.controllerManager = new ControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
-        controllerManager.register(new GamePausedObserver());
+        this.controllerManager.register(new GamePausedObserver());
+        ControllerManager.setDefaultCommandDelay();
     }
 
     public Level getCurrentLevel() {
@@ -109,7 +110,6 @@ public class BomberManMatch implements OnGameEvent {
             case KILLED_ENEMY: DataInputOutput.increaseKills(); break;
             case SCORE: DataInputOutput.increaseScore((Integer) arg); break;
             case DEFEAT: DataInputOutput.increaseLost(); break;
-            case VICTORY: DataInputOutput.increaseVictories(); break;
             case ROUND_PASSED: DataInputOutput.increaseRounds(); break;
         }
     }
@@ -118,12 +118,9 @@ public class BomberManMatch implements OnGameEvent {
         pauseGame();
 
         Set<? extends Entity> list = getEntities();
-        for (Entity e: list
-             ) {
+        for (Entity e: list) {
             e.despawn();
         }
-
-
 
         this.player = null;
         this.currentLevel = null;

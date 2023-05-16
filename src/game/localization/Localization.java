@@ -3,6 +3,16 @@ package game.localization;
 import java.util.HashMap;
 
 public class Localization {
+    public static HashMap<Language, String> WELCOME_TEXT = new HashMap<>() {{
+        put(Language.English, "Welcome to Bomberman!");
+        put(Language.Italian, "Benvenuto su Bomberman!");
+    }};
+
+    public static HashMap<Language, String> STARTING_LEVEL = new HashMap<>() {{
+        put(Language.English, "STARTING %level%!");
+        put(Language.Italian, "%level% INIZIATO!");
+    }};
+
     public static HashMap<Language, String> ISLAND = new HashMap<>() {{
         put(Language.English, "ISLAND");
         put(Language.Italian, "ISOLA");

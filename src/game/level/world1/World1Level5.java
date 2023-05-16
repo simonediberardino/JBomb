@@ -8,6 +8,7 @@ import game.entity.models.Enemy;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.level.world2.World2Level;
+import game.level.world2.World2Level1;
 
 public class World1Level5 extends World1Level{
     @Override
@@ -40,6 +41,6 @@ public class World1Level5 extends World1Level{
 
     @Override
     public Class<? extends Level> getNextLevel() {
-        return WorldSelectorLevel.class;
+        return World2Level1.class;
     }
 }

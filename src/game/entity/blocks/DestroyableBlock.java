@@ -6,12 +6,15 @@ import game.entity.models.Block;
 import game.entity.models.Entity;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
+import game.powerups.portal.EndLevelPortal;
+import game.utils.Utility;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 
 
 public class DestroyableBlock extends Block {
+    private static final int POWER_UP_SPAWN_CHANGE = 33;
     private Class<? extends PowerUp> powerUpClass;
 
     public DestroyableBlock(Coordinates coordinates, Class<PowerUp> powerUpClass){
@@ -45,12 +48,18 @@ public class DestroyableBlock extends Block {
             return;
         }
 
-        try {
-            PowerUp powerUp = powerUpClass.getConstructor(Coordinates.class).newInstance(getCoords());
-            powerUp.spawn(true, true);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        int spawnPercentage = powerUpClass == EndLevelPortal.class ? 100 : POWER_UP_SPAWN_CHANGE;
+
+        Utility.runPercentage(spawnPercentage, () -> {
+            PowerUp powerUp;
+            try {
+                powerUp = powerUpClass.getConstructor(Coordinates.class).newInstance(getCoords());
+                powerUp.spawn(true, true);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     public Class<? extends PowerUp> getPowerUpClass() {

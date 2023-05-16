@@ -65,6 +65,10 @@ public class Coordinates {
         return generateRandomCoordinates(new Coordinates(0,0));
     }
 
+    public static Coordinates generateCoordinatesAwayFromPlayer() {
+        return generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE * 3);
+    }
+
     public static Coordinates generateCoordinatesAwayFrom(Coordinates other, int offset) {
         Coordinates coord;
         while ((coord = Coordinates.generateRandomCoordinates()).distanceTo(other) < offset);
@@ -146,19 +150,14 @@ public class Coordinates {
 
     public static Coordinates fromRowAndColumnsToCoordinates(Dimension d, int offsetX, int offsetY){
         if(offsetX>= GRID_SIZE||offsetY>=GRID_SIZE){
-            System.out.println("OFFSET GREATER THAN GRID SIZE");
             return null;
         }
 
         if ((d.getWidth()>= PitchPanel.DIMENSION.getWidth()/ GRID_SIZE)){
-            System.out.println("COLUMN OUT OF BOUNDS");
-            System.out.println(d.getWidth());
-            System.out.println(offsetX);
             return null;
         }
 
         if(d.getHeight()>= PitchPanel.DIMENSION.getHeight()/GRID_SIZE){
-            System.out.println("ROW OUT OF BOUNDS");
             return null;
         }
 

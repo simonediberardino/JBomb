@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public class PlayerDataObject implements Serializable {
     private String name;
-    private int victories;
     private int lostGames;
     private int kills;
     private int deaths;
@@ -16,13 +15,12 @@ public class PlayerDataObject implements Serializable {
     private int lastWorldId;
     private int lives;
 
-    public PlayerDataObject(){
-        this("User",0,0,0,0,0,0, -1, 0, 0);
+    public PlayerDataObject() {
+        this("User",0,0,0,0,0, 3, 0, 0);
     }
 
-    public PlayerDataObject(String name, int victories, int lostGames, int kills, int deaths, int rounds, long points, int lives, int lastLevelId, int lastWorldId) {
+    public PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lives, int lastLevelId, int lastWorldId) {
         this.name = name;
-        this.victories = victories;
         this.lostGames = lostGames;
         this.lives = lives;
         this.kills = kills;
@@ -45,10 +43,6 @@ public class PlayerDataObject implements Serializable {
         this.lives = lives;
     }
 
-    public int getVictories() {
-        return victories;
-    }
-
     public int getLostGames() {
         return lostGames;
     }
@@ -67,10 +61,6 @@ public class PlayerDataObject implements Serializable {
 
     void setName(String name) {
         this.name = name;
-    }
-
-    void setVictories(int victories) {
-        this.victories = victories;
     }
 
     void setLostGames(int lostGames) {
@@ -115,13 +105,23 @@ public class PlayerDataObject implements Serializable {
     public String toString() {
         return "PlayerDataObject{" +
                 "name='" + name + '\'' +
-                ", victories=" + victories +
                 ", lostGames=" + lostGames +
-                ", lastWorldId=" + lastWorldId +
-                ", lastLevelId=" + lastLevelId +
                 ", kills=" + kills +
                 ", deaths=" + deaths +
+                ", rounds=" + rounds +
                 ", points=" + points +
+                ", lastLevelId=" + lastLevelId +
+                ", lastWorldId=" + lastWorldId +
+                ", lives=" + lives +
                 '}';
     }
+
+    public void setLastWorldId(int lastWorldId) {
+        this.lastWorldId = lastWorldId;
+    }
+
+    public void setLastLevelId(int i) {
+        this.lastLevelId = i;
+    }
+
 }

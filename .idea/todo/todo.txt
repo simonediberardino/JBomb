@@ -1,16 +1,9 @@
-- LOADING CALLBACK;
-- Player animations;
-- Player back icons;
 - New enemies;
-- Clown with hat textures;
 - New boss;
 - Lives;
-- Handle end level for each level class;
 - World flags;
 - HUD;
 - Player stats;
+- MOUSE;
+- SPAWN POSITION
 - Points;
-- immune to power ups
-- handle next level on final levels;
-- speed not removed after level;
-- block priorities
