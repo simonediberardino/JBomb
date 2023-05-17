@@ -124,6 +124,10 @@ public class Bomb extends Block implements Explosive {
     public int getMaxExplosionDistance() {
         return caller != null ? caller.getCurrExplosionLength() : Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     }
+    @Override
+    public void onMouseClick(){
+        explode();
+    }
 
     @Override
     public void destroy(){

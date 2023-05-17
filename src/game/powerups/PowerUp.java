@@ -4,7 +4,6 @@ import game.entity.Player;
 import game.entity.models.*;
 import game.entity.models.Character;
 import game.models.Coordinates;
-import game.powerups.portal.EndLevelPortal;
 import game.ui.panels.game.PitchPanel;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,11 +15,12 @@ import java.util.*;
 public abstract class PowerUp extends EntityInteractable {
     // A static array of power-up classes
     public static final Class<? extends PowerUp>[] POWER_UPS = new Class[] {
-/*            ArmorPowerUp.class,
+  /*          ArmorPowerUp.class,
             FirePowerUp.class,
             SpeedPowerUp.class,
-            TransparentDestroyableBlocksPowerUp.class,*/
-            LivesPowerUp.class
+            TransparentDestroyableBlocksPowerUp.class,
+            LivesPowerUp.class*/
+            RemoteControl.class
     };
 
     // The default duration for a power-up, in seconds
@@ -72,6 +72,10 @@ public abstract class PowerUp extends EntityInteractable {
         super(coordinates);
     }
 
+    public boolean canPickUp(Entity entity) {
+        return true;
+    }
+
     /**
      * Returns the duration of the power-up in milliseconds.
      *
@@ -85,27 +89,36 @@ public abstract class PowerUp extends EntityInteractable {
      * @param entity the BomberEntity to apply the power-up to
      */
     public final void apply(BomberEntity entity) {
-        if (applied || !isSpawned()) {
+        if (applied || !isSpawned()) return;
+
+        if(!canPickUp(entity))
             return;
-        }
+
+        if(entity.getActivePowerUps().contains(this.getClass()))
+            return;
+
         this.applied = true;
         this.despawn();
         this.character = entity;
         this.doApply(entity);
 
+        entity.getActivePowerUps().add(this.getClass());
+
         int duration = getDuration() * 1000;
-
         // If the power-up has a duration, schedule a TimerTask to cancel it when the duration is up
-        if (duration > 0) {
-            TimerTask explodeTask = new TimerTask() {
-                public void run() {
-                    PowerUp.this.cancel(entity);
-                }
-            };
-
-            Timer timer = new Timer();
-            timer.schedule(explodeTask, duration);
+        if (duration <= 0) {
+            entity.getActivePowerUps().remove(this.getClass());
         }
+
+        TimerTask explodeTask = new TimerTask() {
+            public void run() {
+                entity.getActivePowerUps().remove(this.getClass());
+                PowerUp.this.cancel(entity);
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(explodeTask, duration);
     }
 
     /**

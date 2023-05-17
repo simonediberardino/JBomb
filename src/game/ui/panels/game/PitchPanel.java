@@ -54,12 +54,13 @@ public class PitchPanel extends JPanel implements Observer2 {
         super.paint(g);
 
         Graphics2D g2d = (Graphics2D) g;
-        paintComponent(g2d);
+        Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getGrassBlock());
+        g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(),1), 0, 0, null);
+
         Set<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
         // Draw each entity in the new set
 
-        for (Entity e: setEntities
-             ) {
+        for (Entity e: setEntities) {
             drawEntity(g2d, e);
         }
     }
@@ -96,12 +97,5 @@ public class PitchPanel extends JPanel implements Observer2 {
     @Override
     public void update(Object arg) {
         repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getGrassBlock());
-        g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(),1), 0, 0, null);
     }
 }

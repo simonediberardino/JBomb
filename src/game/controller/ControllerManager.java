@@ -103,6 +103,8 @@ public class ControllerManager extends Observable2 implements KeyListener {
     }
 
     public static int decreaseCommandDelay() {
+        System.out.println(KEY_DELAY_MS);
+
         KEY_DELAY_MS = 15;
         if (instance != null) {
             instance.updateDelay();
@@ -111,6 +113,7 @@ public class ControllerManager extends Observable2 implements KeyListener {
     }
 
     public static int setDefaultCommandDelay(){
+        System.out.println(KEY_DELAY_MS);
         KEY_DELAY_MS = 30;
         if (instance != null) {
             instance.updateDelay();

@@ -236,4 +236,9 @@ public class MatchPanel extends PagePanel {
     public PitchPanel getPitchPanel() {
         return pitchPanel;
     }
+
+    @Override
+    public void onShowCallback() {
+
+    }
 }

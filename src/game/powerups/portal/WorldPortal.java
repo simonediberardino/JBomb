@@ -34,7 +34,7 @@ public abstract class WorldPortal extends Portal{
 
     @Override
     public int getSize() {
-        return super.getSize()*2;
+        return super.getSize()*3;
     }
 
     @Override

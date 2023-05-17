@@ -10,6 +10,7 @@ import game.level.world2.World2Level5;
 import game.localization.Localization;
 import game.ui.elements.BombermanButton;
 import game.ui.elements.Space;
+import game.ui.elements.YellowButton;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.ui.panels.game.MatchPanel;
@@ -70,7 +71,7 @@ public class MainMenuPanel extends PagePanel {
      * Creates the startLevelButton and adds it to the listButtonsPanel.
      */
     private void createStartLevelButton() {
-        startLevelButton = new BombermanButton(Localization.get(PLAY));
+        startLevelButton = new YellowButton(Localization.get(PLAY));
         startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel()));
         listButtonsPanel.add(startLevelButton);
     }
@@ -79,7 +80,7 @@ public class MainMenuPanel extends PagePanel {
      * Creates the profileButton and adds it to the listButtonsPanel.
      */
     private void createProfileButton() {
-        profileButton = new BombermanButton(Localization.get(PROFILE));
+        profileButton = new YellowButton(Localization.get(PROFILE));
         // add action listener for profile button
         listButtonsPanel.add(profileButton);
     }
@@ -88,10 +89,15 @@ public class MainMenuPanel extends PagePanel {
      * Creates the exitButton and adds it to the listButtonsPanel.
      */
     private void createQuitButton() {
-        exitButton = new BombermanButton(Localization.get(QUIT));
+        exitButton = new YellowButton(Localization.get(QUIT));
         exitButton.addActionListener(v -> {
             System.exit(0);
         });
         listButtonsPanel.add(exitButton);
+    }
+
+    @Override
+    public void onShowCallback() {
+
     }
 }

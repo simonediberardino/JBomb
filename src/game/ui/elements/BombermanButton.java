@@ -15,16 +15,17 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JButton;
 
-public class BombermanButton extends JButton {
+public abstract class BombermanButton extends JButton {
     private final int fontSize = Utility.px(60);
     private final int borderWidth = Utility.px(10);
     private final int cornerRadius = 15;
     private final Color backgroundColor = new Color(0, 0, 0, 0);
     private final Color textColor = new Color(255, 255, 255);
-    private final Color borderColor = Color.ORANGE;
     private final Color shadowColor = new Color(0, 0, 0, 150);
-    private final Color mouseHoverBackgroundColor = new Color(255, 102, 0);
     private boolean mouseEntered = false;
+
+    public abstract Color getBorderColor();
+    public abstract Color getMouseHoverBackgroundColor();
 
     public BombermanButton(String text) {
         super(text);
@@ -62,8 +63,8 @@ public class BombermanButton extends JButton {
         g2d.fillRect(0, 0, width, height);
 
         // Draw text shadow
-        if (mouseEntered) g2d.setColor(mouseHoverBackgroundColor);
-        else g2d.setColor(borderColor);
+        if (mouseEntered) g2d.setColor(getMouseHoverBackgroundColor());
+        else g2d.setColor(getBorderColor());
 
         // Draw border
         g2d.fillRoundRect(0, 0, width, height, cornerRadius, cornerRadius);

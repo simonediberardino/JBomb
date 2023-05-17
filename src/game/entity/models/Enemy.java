@@ -31,14 +31,21 @@ public abstract class Enemy extends Character{
     @Override
     protected void onSpawn() {
         super.onSpawn();
+        Bomberman.getMatch().increaseEnemiesAlive();
         Bomberman.getMatch().getGameTickerObservable().register(this);
+    }
+
+    @Override
+    protected synchronized void onDie() {
+        super.onDie();
+        Bomberman.getMatch().onGameEvent(GameEvent.KILLED_ENEMY, this);
     }
 
     @Override
     protected void onDespawn() {
         super.onDespawn();
+        Bomberman.getMatch().decreaseEnemiesAlive();
         Bomberman.getMatch().getGameTickerObservable().unregister(this);
-        Bomberman.getMatch().onGameEvent(GameEvent.KILLED_ENEMY, this);
     }
 
     @Override

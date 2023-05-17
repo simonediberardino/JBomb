@@ -1,6 +1,7 @@
 package game;
 
 import game.controller.ControllerManager;
+import game.controller.MouseControllerManager;
 import game.data.DataInputOutput;
 import game.engine.GameTickerObservable;
 import game.entity.*;
@@ -21,9 +22,11 @@ public class BomberManMatch implements OnGameEvent {
     private long lastGamePauseStateTime = System.currentTimeMillis();
     private Set<Entity> entities;
     private ControllerManager controllerManager;
+    private MouseControllerManager mouseControllerManager;
     private Level currentLevel;
     private Player player;
     private boolean gameState = false;
+    private int enemiesAlive = 0;
 
     private BomberManMatch(){
         this(null);
@@ -34,6 +37,7 @@ public class BomberManMatch implements OnGameEvent {
         this.entities = new TreeSet<>();
 
         this.controllerManager = new ControllerManager();
+        this.mouseControllerManager = new MouseControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
         this.controllerManager.register(new GamePausedObserver());
         ControllerManager.setDefaultCommandDelay();
@@ -52,9 +56,11 @@ public class BomberManMatch implements OnGameEvent {
     }
 
     public Set<? extends Entity> getEntities() {
-        return new TreeSet<>(entities);
+        synchronized (entities) {
+            return new TreeSet<>(entities);
+        }
 
-        // Creates a new list to avoid concurrent modification exception;s
+        // Creates a new list to avoid concurrent modification exception;
     }
 
     public void addEntity(Entity entity) {
@@ -69,6 +75,9 @@ public class BomberManMatch implements OnGameEvent {
 
     public ControllerManager getControllerManager() {
         return controllerManager;
+    }
+    public MouseControllerManager getMouseControllerManager(){
+        return mouseControllerManager;
     }
 
     public GameTickerObservable getGameTickerObservable() {
@@ -93,6 +102,18 @@ public class BomberManMatch implements OnGameEvent {
     private void resumeGame(){
         gameTickerObservable.resume();
         gameState = true;
+    }
+
+    public int getEnemiesAlive() {
+        return enemiesAlive;
+    }
+
+    public void decreaseEnemiesAlive(){
+        enemiesAlive--;
+    }
+
+    public void increaseEnemiesAlive(){
+        enemiesAlive++;
     }
 
     public boolean getGameState() {
@@ -125,7 +146,7 @@ public class BomberManMatch implements OnGameEvent {
         this.player = null;
         this.currentLevel = null;
         this.entities.clear();
-
+        this.enemiesAlive = 0;
         this.gameTickerObservable.unregisterAll();
         this.gameTickerObservable = null;
         this.controllerManager.unregisterAll();

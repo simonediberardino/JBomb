@@ -124,7 +124,6 @@ public abstract class Level {
         updateLastLevel();
         Bomberman.getMatch().setGameState(true);
         generateEntities(jPanel);
-        ToastHandler.getInstance().show(Localization.get(STARTING_LEVEL).replace("%level%", this.toString()));
     }
 
     public void generateEntities(JPanel jPanel) {
@@ -136,7 +135,7 @@ public abstract class Level {
     }
 
     public void generatePlayer(){
-        Bomberman.getMatch().setPlayer(new Player(Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET)));
+        Bomberman.getMatch().setPlayer(new Player(Coordinates.fromRowAndColumnsToCoordinates(new Dimension(5, 2),0,0)));
         Bomberman.getMatch().getPlayer().spawn();
     }
 

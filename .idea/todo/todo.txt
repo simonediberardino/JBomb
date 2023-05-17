@@ -1,4 +1,4 @@
-- New enemies;
+a- New enemies;
 - New boss;
 - Lives;
 - World flags;
@@ -7,3 +7,5 @@
 - MOUSE;
 - SPAWN POSITION
 - Points;
+- paint toast priorities
+- SOUND

@@ -32,7 +32,7 @@ public abstract class MovingEntity extends EntityDamage {
         for (Direction d : Direction.values()) {
             List<Coordinates> newCoordinates = getNewCoordinatesOnDirection(d, PIXEL_UNIT, getSize() / 2);
             // Check if any entities on the next coordinates are blocks or have invalid coordinates
-            boolean areCoordinatesValid = getEntitiesOnCoordinates(
+            boolean areCoordinatesValid = Coordinates.getEntitiesOnCoordinates(
                     newCoordinates
             ).stream().noneMatch(this::isObstacle);
 

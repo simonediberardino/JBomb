@@ -1,10 +1,13 @@
 package game.ui.panels.menus;
 
 import game.Bomberman;
+import game.data.DataInputOutput;
 import game.level.Level;
 import game.localization.Localization;
 import game.ui.elements.BombermanButton;
+import game.ui.elements.RedButton;
 import game.ui.elements.Space;
+import game.ui.elements.ToastHandler;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.utils.Paths;
@@ -27,7 +30,7 @@ public class GameOverPanel extends PagePanel {
      * @param frame the BombermanFrame
      */
     public GameOverPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
-        super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
+        super(cardLayout, parent, frame, Paths.getDeathWallpaper());
         setupLayout();
     }
 
@@ -50,7 +53,6 @@ public class GameOverPanel extends PagePanel {
         listButtonsPanel.setLayout(new GridLayout(0, 1));
         listButtonsPanel.setOpaque(false);
         listButtonsPanel.add(new Space());
-        listButtonsPanel.add(new Space());
 
         add(listButtonsPanel);
     }
@@ -59,8 +61,12 @@ public class GameOverPanel extends PagePanel {
      * Creates the startLevelButton and adds it to the listButtonsPanel.
      */
     private void createStartLevelButton() {
-        retryButton = new BombermanButton(Localization.get(CONTINUE));
-        retryButton.addActionListener((v) -> Bomberman.startLevel(Level.getCurrLevel()));
+        retryButton = new RedButton(Localization.get(PLAY_AGAIN));
+        retryButton.addActionListener((v) -> {
+            ToastHandler.getInstance().cancel();
+            Bomberman.startLevel(Level.getCurrLevel());
+        });
+
         listButtonsPanel.add(retryButton);
     }
 
@@ -68,8 +74,26 @@ public class GameOverPanel extends PagePanel {
      * Creates the profileButton and adds it to the listButtonsPanel.
      */
     private void createMainMenuButton() {
-        mainMenuButton = new BombermanButton(Localization.get(MAIN_MENU));
-        mainMenuButton.addActionListener((v) -> Bomberman.show(MainMenuPanel.class));
+        mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
+        mainMenuButton.addActionListener((v) -> {
+            ToastHandler.getInstance().cancel();
+            Bomberman.show(MainMenuPanel.class);
+        });
+
         listButtonsPanel.add(mainMenuButton);
+    }
+
+    private void showToastMessage() {
+        int lives = DataInputOutput.getLives();
+        String message = lives > 0
+                ? Localization.get(YOU_DIED).replace("%lives%", Integer.toString(lives))
+                : Localization.get(RESET_WORLD);
+
+        ToastHandler.getInstance().show(message, true);
+    }
+
+    @Override
+    public void onShowCallback() {
+        showToastMessage();
     }
 }

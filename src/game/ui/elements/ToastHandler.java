@@ -19,6 +19,7 @@ public class ToastHandler {
     private long animStoppedTime = 0;
     private int toastY = TOAST_START_Y;
     private String text;
+    private boolean permanent = false;
 
     public void showToast(Graphics2D g) {
         Graphics2D g2d = (Graphics2D) g.create();
@@ -63,7 +64,7 @@ public class ToastHandler {
     }
 
     private int calculateToastEndY() {
-        return (int) (Utility.getScreenSize().getHeight() - Utility.px(180));
+        return (int) (Utility.getScreenSize().getHeight() - Utility.px(200));
     }
 
     private void animateToast(int toastEndY) {
@@ -73,7 +74,7 @@ public class ToastHandler {
             animStoppedTime = System.currentTimeMillis();  // Record the stop time
         }
 
-        if (animStoppedTime == 0) {
+        if (animStoppedTime == 0 || permanent) {
             return;
         }
 
@@ -83,7 +84,7 @@ public class ToastHandler {
             toastY += TOAST_ANIM_STEP_SIZE;  // Move the toast down
 
             if (toastY >= toastEndY * 2) {
-                reset();  // Reset the toast animation
+                cancel();  // Reset the toast animation
             }
         }
     }
@@ -129,14 +130,21 @@ public class ToastHandler {
         g2d.drawString(text,  textX, textY);
     }
 
-    public void reset(){
+    public void cancel(){
         animStoppedTime = 0;
+        toastY = TOAST_START_Y;
+        permanent = false;
         text = null;
     }
 
     public void show(String text){
+        show(text, false);
+    }
+
+    public void show(String text, boolean permanent){
+        cancel();
         this.text = text;
-        animStoppedTime = 0;
+        this.permanent = permanent;
     }
 
     public static ToastHandler getInstance(){

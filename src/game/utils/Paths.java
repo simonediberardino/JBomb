@@ -50,6 +50,10 @@ public class Paths {
         return Paths.getAssetsFolder() + "/menu/welcome.png";
     }
 
+    public static String getDeathWallpaper() {
+        return Paths.getAssetsFolder() + "/menu/death.jpg";
+    }
+
     public static String getWorldSelectorPortalPath(int id) {
         return String.format("%s/world_selector/world%d.png", Paths.getAssetsFolder(), id);
     }

@@ -4,14 +4,21 @@ import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.bomb.Bomb;
 import game.models.Coordinates;
+import game.powerups.PowerUp;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public abstract class BomberEntity extends Character {
+    private ArrayList<Class<? extends Entity>> listInteractWithMouse = new ArrayList<>(Collections.emptyList());
+    private ArrayList<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
     private static final int MAX_BOMB_CAN_HOLD = 10;
     private int currBombLimit = Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getExplosionLength();
-
     private int placedBombs = 0;
     private long lastPlacedBombTime = 0;
+
     /**
      * Constructs a new Character with the specified Coordinates.
      *
@@ -54,5 +61,21 @@ public abstract class BomberEntity extends Character {
         bomb.setOnExplodeListener(() -> placedBombs--);
         bomb.spawn(true);
         bomb.trigger();
+    }
+
+    public void addClassInteractWithMouse(Class<? extends Entity> cls){
+        listInteractWithMouse.add(cls);
+    }
+
+    public void removeClassInteractWithMouse(Class<? extends Entity> cls){
+        listInteractWithMouse.remove(cls);
+    }
+
+    public ArrayList<Class<? extends PowerUp>> getActivePowerUps() {
+        return activePowerUp;
+    }
+
+    public ArrayList<Class<? extends Entity>> getListClassInteractWithMouse(){
+        return listInteractWithMouse;
     }
 }

@@ -8,7 +8,7 @@ import game.utils.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FlyingEnemy extends IntelligentEnemy {
+public abstract class FlyingEnemy extends IntelligentEnemy {
     public FlyingEnemy() {
         super();
     }
@@ -17,45 +17,6 @@ public class FlyingEnemy extends IntelligentEnemy {
         super(coordinates);
     }
 
-    @Override
-    protected String getBasePath() {
-        return Paths.getEnemiesFolder() + "/flying_enemy";
-    }
-
-    public String[] getBaseSkins() {
-        return new String[]{
-                getBasePath() + "/eagle_front_0.png",
-                getBasePath() + "/eagle_front_1.png",
-                getBasePath() + "/eagle_front_2.png",
-        };
-    }
-
-    @Override
-    public String[] getLeftIcons() {
-        return new String[]{
-                getBasePath() + "/eagle_left_0.png",
-                getBasePath() + "/eagle_left_1.png",
-                getBasePath() + "/eagle_left_2.png",
-        };
-    }
-
-    @Override
-    public String[] getBackIcons() {
-        return new String[]{
-                getBasePath() + "/eagle_back_0.png",
-                getBasePath() + "/eagle_back_1.png",
-                getBasePath() + "/eagle_back_2.png",
-        };
-    }
-
-    @Override
-    public String[] getRightIcons() {
-        return new String[]{
-                getBasePath() + "/eagle_right_0.png",
-                getBasePath() + "/eagle_right_1.png",
-                getBasePath() + "/eagle_right_2.png",
-        };
-    }
 
     @Override
     public Set<Class<? extends Entity>> getObstacles() {

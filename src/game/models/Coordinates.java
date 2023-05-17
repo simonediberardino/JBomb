@@ -9,6 +9,8 @@ import game.utils.Utility;
 import java.awt.*;
 import java.time.temporal.ValueRange;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
@@ -83,7 +85,7 @@ public class Coordinates {
         while (true) {
             Coordinates coords = roundedRandomCoords(spawnOffset);
 
-            if (!EntityInteractable.isBlockOccupied(coords)){
+            if (!Coordinates.isBlockOccupied(coords)){
                 return coords;
             }
         }
@@ -166,6 +168,89 @@ public class Coordinates {
 
     public static Coordinates getCenterCoordinatesOfEntity(Entity e){
         return new Coordinates(e.getCoords().getX()+e.getSize()/2,e.getCoords().getY()+e.getSize()/2);
+    }
+    public static Entity getEntityOnCoordinates(Coordinates desiredCoords){
+        List<Entity> entities = Coordinates.getEntitiesOnCoordinates(desiredCoords);
+        if (!entities.isEmpty()) return entities.get(0);
+        return null;
+    }
+
+    public static List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords){
+        List<Entity> entityLinkedList = new LinkedList<>();
+
+        var entities = Bomberman.getMatch().getEntities();
+
+        // Check for each entity if it occupies the specified coordinates
+        entities.forEach(e -> {
+            for (Coordinates coord : desiredCoords) {
+                int entityBottomRightX = e.getCoords().getX() + e.getSize() - 1;
+                int entityBottomRightY = e.getCoords().getY() + e.getSize() - 1;
+
+                if (coord.getX() >= e.getCoords().getX()
+                        && coord.getX() <= entityBottomRightX
+                        && coord.getY() >= e.getCoords().getY()
+                        && coord.getY() <= entityBottomRightY
+                ) {
+                    entityLinkedList.add(e);
+                }
+            }
+        });
+
+        return entityLinkedList;
+    }
+
+    /**
+     * Gets a list of entities that occupy the specified coordinate.
+     * @param nextOccupiedCoords the coordinate to check for occupied entities
+     * @return a list of entities that occupy the specified coordinate
+     */
+    public static List<Entity> getEntitiesOnCoordinates(Coordinates nextOccupiedCoords) {
+        // Get all the blocks and entities in the game
+        var entities = Bomberman.getMatch().getEntities();
+
+        // Use Java stream to filter entities that collide with the specified coordinate
+        return entities.parallelStream().filter(e -> doesCollideWith(nextOccupiedCoords, e)).collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     * Checks if the given coordinates collide with the given entity.
+     *
+     * @param nextOccupiedCoords the coordinates to check for collision
+     * @param e     the entity to check for collision with
+     * @return true if the given coordinates collide with the given entity, false otherwise
+     */
+    public static boolean doesCollideWith(Coordinates nextOccupiedCoords, Entity e) {
+        return doesCollideWith(nextOccupiedCoords,e.getCoords(), e.getSize());
+    }
+
+    public static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords) {
+        return doesCollideWith(nextOccupiedCoords, entityCoords, GRID_SIZE);
+    }
+
+    private static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords,int size) {
+        // Get the coordinates of the bottom-right corner of the entity
+        int entityBottomRightX = entityCoords.getX() + size - 1;
+        int entityBottomRightY = entityCoords.getY() + size - 1;
+
+        // Check if the given coordinates collide with the entity
+        return (nextOccupiedCoords.getX() >= entityCoords.getX()
+                && nextOccupiedCoords.getX() <= entityBottomRightX
+                && nextOccupiedCoords.getY() >= entityCoords.getY()
+                && nextOccupiedCoords.getY() <= entityBottomRightY);
+    }
+    public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
+        return isBlockOccupied(nextOccupiedCoords, GRID_SIZE);
+    }
+
+    public static boolean isBlockOccupied(Coordinates nextOccupiedCoords,int size){
+        HashSet<Coordinates> fourCorners = new HashSet<>(Arrays.asList
+                (Coordinates.roundCoordinates(nextOccupiedCoords),
+                        Coordinates.roundCoordinates(new Coordinates( nextOccupiedCoords.getX(), nextOccupiedCoords.getY()+size-1)),
+                        Coordinates.roundCoordinates(new Coordinates(nextOccupiedCoords.getX()+size-1, nextOccupiedCoords.getY()+size-1)),
+                        Coordinates.roundCoordinates(new Coordinates(nextOccupiedCoords.getX()+size-1, nextOccupiedCoords.getY()))));
+        // Get all the blocks and entities in the game
+        var entities = Bomberman.getMatch().getEntities();
+        return entities.parallelStream().anyMatch(e -> fourCorners.stream().anyMatch(coords-> doesCollideWith(coords,e)));
     }
 
 

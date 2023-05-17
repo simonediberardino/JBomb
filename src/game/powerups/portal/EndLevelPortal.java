@@ -2,6 +2,7 @@ package game.powerups.portal;
 
 import game.Bomberman;
 import game.entity.models.BomberEntity;
+import game.entity.models.Entity;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.models.Coordinates;
@@ -32,11 +33,20 @@ public class EndLevelPortal extends Portal {
     }
 
     @Override
+    public boolean canPickUp(Entity entity) {
+        return Bomberman.getMatch().getEnemiesAlive() <= 0;
+    }
+
+    @Override
     protected void doApply(BomberEntity entity) {
         Bomberman.getMatch().getCurrentLevel().endLevel();
         try {
             Level level = Bomberman.getMatch().getCurrentLevel();
-            Class<? extends Level> nextLevelClass = level.isLastLevelOfWorld() ? WorldSelectorLevel.class : level.getNextLevel();
+            Class<? extends Level> nextLevelClass =
+                    level.isLastLevelOfWorld()
+                    ? WorldSelectorLevel.class
+                    : level.getNextLevel();
+
             Bomberman.startLevel(nextLevelClass.getConstructor().newInstance());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();

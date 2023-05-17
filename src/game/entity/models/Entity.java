@@ -4,6 +4,7 @@ import game.BomberManMatch;
 import game.Bomberman;
 import game.data.DataInputOutput;
 import game.engine.GameTickerObserver;
+import game.entity.Player;
 import game.level.world2.World2Level3;
 import game.models.Coordinates;
 import game.models.Direction;
@@ -21,19 +22,19 @@ import static game.utils.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity extends GameTickerObserver implements Comparable<Entity>{
-    private final long id;
     protected BufferedImage image;
     protected int lastImageIndex;
     protected long lastImageUpdate;
+    protected float widthToHitboxSizeRatio = 1;
+    protected float heightToHitboxSizeRatio = 1;
     private Coordinates coords;
     private boolean isSpawned = false;
     private boolean isImmune = false;
     private boolean isInvisible = false;
-    protected float widthToHitboxSizeRatio = 1;
-    protected float heightToHitboxSizeRatio = 1;
     private int paddingTop;
     private int paddingWidth;
     private String imagePath = "";
+    private final long id;
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -86,7 +87,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return getWidthToHitboxSizeRatio();
     }
 
-
     public final float getWidthToHitboxSizeRatio(){
         return widthToHitboxSizeRatio;
     }
@@ -114,6 +114,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * @return the loaded image
      */
     public BufferedImage loadAndSetImage(String imagePath) {
+        if(this instanceof Player){
+        }
         this.lastImageUpdate = System.currentTimeMillis();
         this.image = loadImage(imagePath);
         this.imagePath = imagePath;
@@ -164,8 +166,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return new Coordinates((PitchPanel.GRID_SIZE-getSize())/2,(PitchPanel.GRID_SIZE-getSize())/2);
     }
 
-
-
     /**
      * Despawns the entity from the game world.
      */
@@ -211,7 +211,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
             setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
 
         // spawns entity if the spawn point is free, otherwise do nothing
-        if (forceSpawn || !EntityInteractable.isBlockOccupied(coords)) {
+        if (forceSpawn || !Coordinates.isBlockOccupied(coords)) {
             setSpawned(true); // mark entity as spawned
             Bomberman.getMatch().addEntity(this); // add entity to the game state
             onSpawn(); // run entity-specific spawn logic
@@ -361,6 +361,9 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         if (!(o instanceof Entity)) return false;
         Entity entity = (Entity) o;
         return id == entity.id;
+    }
+    public void onMouseClick(){
+
     }
 
     @Override

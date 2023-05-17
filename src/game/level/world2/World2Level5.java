@@ -2,6 +2,7 @@ package game.level.world2;
 
 import game.entity.enemies.boss.Boss;
 import game.entity.enemies.boss.clown.Clown;
+import game.entity.enemies.npcs.Eagle;
 import game.entity.enemies.npcs.FlyingEnemy;
 import game.entity.enemies.npcs.YellowBall;
 import game.entity.models.Enemy;
@@ -29,7 +30,7 @@ public class World2Level5 extends World2Level {
     public Class<? extends Enemy>[] availableEnemies() {
         return new Class[]{
                 YellowBall.class,
-                FlyingEnemy.class
+                Eagle.class,
         };
     }
 

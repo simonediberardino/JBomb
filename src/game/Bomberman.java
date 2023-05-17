@@ -5,6 +5,7 @@ import game.engine.GarbageCollectorTask;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.level.world1.World1Level5;
+import game.level.world2.World2Level1;
 import game.localization.Localization;
 import game.ui.elements.ToastHandler;
 import game.ui.panels.BombermanFrame;
@@ -13,6 +14,10 @@ import game.ui.panels.game.MatchPanel;
 import game.ui.panels.menus.LoadingPanel;
 import game.ui.panels.menus.MainMenuPanel;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -64,7 +69,7 @@ public class Bomberman {
         bombermanFrame.initGamePanel();
         bomberManMatch.getCurrentLevel().start(bombermanFrame.getPitchPanel());
         Bomberman.getBombermanFrame().addKeyListener(Bomberman.getMatch().getControllerManager());
-
+        Bomberman.getBombermanFrame().getPitchPanel().addMouseListener(Bomberman.getMatch().getMouseControllerManager());
         show(MatchPanel.class);
     }
 
@@ -79,5 +84,14 @@ public class Bomberman {
 
     public static void show(Class<? extends PagePanel> page) {
         bombermanFrame.getCardLayout().show(bombermanFrame.getParentPanel(), page.getSimpleName());
+
+        // Gets the component with the passed class and fires its onShowCallback;
+        Optional<Component> shownComponentOpt = Arrays.stream(
+                bombermanFrame.getParentPanel().getComponents()
+        ).filter(c -> c.getClass() == page).findFirst();
+
+        Component shownComponent = shownComponentOpt.orElse(null);
+        if(shownComponent instanceof PagePanel)
+            ((PagePanel)(shownComponent)).onShowCallback();
     }
 }

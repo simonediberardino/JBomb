@@ -45,4 +45,5 @@ public abstract class PagePanel extends JPanel {
         return toastHandler;
     }
 
+    public abstract void onShowCallback();
 }

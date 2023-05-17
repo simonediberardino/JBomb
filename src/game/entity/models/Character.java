@@ -1,18 +1,23 @@
 package game.entity.models;
 
-import game.BomberManMatch;
 import game.Bomberman;
 import game.controller.Command;
 import game.controller.ControllerManager;
+import game.entity.Player;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
 import static game.models.Direction.*;
 import static game.models.Direction.DOWN;
@@ -30,9 +35,10 @@ public abstract class Character extends MovingEntity {
     /** Whether this character is alive or not. */
     protected boolean isAlive = true;
     protected boolean isImmune = false;
+    protected volatile AtomicReference<State> state = new AtomicReference<>();
+    protected boolean canMove = true;
     private int maxHp = 100;
     private int healthPoints = maxHp;
-    protected boolean canMove = true;
 
     /**
      * Returns an array of file names for the front-facing icons for this character.
@@ -116,7 +122,10 @@ public abstract class Character extends MovingEntity {
     }
 
     public void setImmune(boolean immune) {
+        if(!isAlive) return;
+
         isImmune = immune;
+        state.set(immune ? State.IMMUNE : State.ALIVE);
     }
 
     protected boolean useOnlyBaseIcons() {
@@ -132,6 +141,7 @@ public abstract class Character extends MovingEntity {
     @Override
     protected void onSpawn() {
         super.onSpawn();
+        state.set(State.ALIVE);
         isAlive = true;
     }
 
@@ -200,6 +210,20 @@ public abstract class Character extends MovingEntity {
         loadAndSetImage(icons[lastImageIndex]);
     }
 
+    @Override
+    public BufferedImage loadAndSetImage(String imagePath) {
+        if(state == null) return super.loadAndSetImage(imagePath);
+
+        String[] toks = imagePath.split(Pattern.quote("."));
+        String extension = toks[1];
+        String fileName = toks[0];
+
+        String imagePathWithStatus = String.format("%s_%s.%s", fileName, state.toString().toLowerCase(), extension);
+
+        File f = new File(imagePathWithStatus);
+        return f.exists() ? super.loadAndSetImage(imagePathWithStatus) : super.loadAndSetImage(imagePath);
+    }
+
     /**
      * Attempts to move the entity in the specified direction and updates the last direction if the move was successful.
      * @param d The direction to move the entity in.
@@ -239,8 +263,8 @@ public abstract class Character extends MovingEntity {
         }
 
         List<Coordinates> oppositeBlocksCoordinates = getNewCoordinatesOnDirection(command.commandToDirection(), getSize(), getSize());
-        List<Entity> entitiesOpposite1 = getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(0));
-        List<Entity> entitiesOpposite2 = getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(1));
+        List<Entity> entitiesOpposite1 = Coordinates.getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(0));
+        List<Entity> entitiesOpposite2 = Coordinates.getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(1));
         overpassBlock(entitiesOpposite1,entitiesOpposite2,oppositeDirection1,oppositeDirection2);
     }
 
@@ -402,12 +426,12 @@ public abstract class Character extends MovingEntity {
             healthPoints = 0;
             die();
         } else {
-
             onHit(damage);
         }
     }
 
     protected void die() {
+        state.set(State.DIED);
         onDie();
     }
 
@@ -424,8 +448,6 @@ public abstract class Character extends MovingEntity {
         timer.setRepeats(false);
         timer.start();
     }
-
-
 
     protected void onHit(int damage){}
 }

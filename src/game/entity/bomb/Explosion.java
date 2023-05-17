@@ -75,7 +75,7 @@ public class Explosion extends MovingEntity implements Particle {
                 List<Coordinates> desiredCoords = getAllCoordinates();
                 Set<?extends Entity> entities = Bomberman.getMatch().getEntities();
                 for (Entity e: entities) {
-                    if (desiredCoords.stream().anyMatch(coord -> EntityInteractable.doesCollideWith(coord, e))) {
+                    if (desiredCoords.stream().anyMatch(coord -> Coordinates.doesCollideWith(coord, e))) {
                         interact(e);
                     }
                 }

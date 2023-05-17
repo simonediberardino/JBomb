@@ -18,14 +18,24 @@ public class Localization {
         put(Language.Italian, "ISOLA");
     }};
 
+    public static HashMap<Language, String> YOU_DIED = new HashMap<>() {{
+        put(Language.English, "YOU DIED! YOU HAVE %lives% LIVES LEFT.");
+        put(Language.Italian, "SEI MORTO! HAI %lives% VITE RIMANENTI.");
+    }};
+
+    public static HashMap<Language, String> RESET_WORLD = new HashMap<>() {{
+        put(Language.English, "RESET WORLD.");
+        put(Language.Italian, "RESETTA MONDO.");
+    }};
+
     public static HashMap<Language, String> LOADING = new HashMap<>() {{
         put(Language.English, "LOADING");
         put(Language.Italian, "CARICAMENTO");
     }};
 
-    public static HashMap<Language, String> CONTINUE = new HashMap<>() {{
-        put(Language.English, "CONTINUE");
-        put(Language.Italian, "CONTINUA");
+    public static HashMap<Language, String> PLAY_AGAIN = new HashMap<>() {{
+        put(Language.English, "PLAY AGAIN");
+        put(Language.Italian, "GIOCA DI NUOVO");
     }};
 
     public static HashMap<Language, String> MAIN_MENU = new HashMap<>() {{

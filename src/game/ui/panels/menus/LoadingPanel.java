@@ -110,6 +110,11 @@ public class LoadingPanel extends PagePanel {
         }
     }
 
+    @Override
+    public void onShowCallback() {
+
+    }
+
     private void startAnimation() {
         animationTimer = new javax.swing.Timer(REPAINT_DELAY_MS, e -> repaint());
         animationTimer.start();
