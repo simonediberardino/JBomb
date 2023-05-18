@@ -9,6 +9,7 @@ import game.entity.models.*;
 import game.events.GameEvent;
 import game.level.Level;
 import game.powerups.PowerUp;
+import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,13 +86,11 @@ public class BomberManMatch implements OnGameEvent {
     }
 
     public void toggleGameState(){
-        if(System.currentTimeMillis() - lastGamePauseStateTime < 500) return;
+        if(Utility.timePassed(lastGamePauseStateTime) < 500) return;
+
         lastGamePauseStateTime = System.currentTimeMillis();
-        if(gameState){
-            pauseGame();
-        }else{
-            resumeGame();
-        }
+
+        if(gameState) pauseGame(); else resumeGame();
     }
 
     private void pauseGame() {

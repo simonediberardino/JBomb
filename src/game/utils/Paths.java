@@ -42,6 +42,10 @@ public class Paths {
         return getAssetsFolder() + "/powerups";
     }
 
+    public static String getPowerUpsBorderPath(){
+        return getAssetsFolder() + "/menu/powerups_border.png";
+    }
+
     public static String getBackgroundImage(){
         return getAssetsFolder() + "/menu/background.jpg";
     }

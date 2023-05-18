@@ -4,6 +4,7 @@ package game.entity.models;
 import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.Player;
+import game.entity.bomb.Explosion;
 import game.events.GameEvent;
 import game.models.Coordinates;
 import game.ui.panels.game.PitchPanel;
@@ -64,5 +65,10 @@ public abstract class Enemy extends Character{
 
     public int getSize() {
         return PitchPanel.GRID_SIZE;
+    }
+
+    @Override
+    public void setPassiveInteractionEntities() {
+        passiveInteractionEntities = new HashSet<>(Arrays.asList(Explosion.class));
     }
 }

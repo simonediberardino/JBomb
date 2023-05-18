@@ -7,6 +7,7 @@ import game.entity.Player;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
+import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -156,7 +157,7 @@ public abstract class Character extends MovingEntity {
 
         // If the character doesn't have custom images for each direction, do not check if the direction has changed;
         if(useOnlyBaseIcons()){
-            if(System.currentTimeMillis() - lastImageUpdate > getImageRefreshRate()){
+            if(Utility.timePassed(lastImageUpdate) > getImageRefreshRate()){
                 // If it's time to refresh the image, increment the image index.
                 lastImageIndex++;
             }else return;
@@ -189,7 +190,7 @@ public abstract class Character extends MovingEntity {
         if (previousDirection != d) {
             lastImageIndex = 0;
             lastDirectionUpdate = System.currentTimeMillis();
-        } else if(System.currentTimeMillis() - lastImageUpdate > getImageRefreshRate()){
+        } else if(Utility.timePassed(lastImageUpdate) > getImageRefreshRate()){
             // If it's time to refresh the image, increment the image index.
             lastImageIndex++;
         } else {
@@ -416,7 +417,7 @@ public abstract class Character extends MovingEntity {
      * @param damage The amount of damage to remove from the entity's health points.
      */
     protected final synchronized void attackReceived(int damage) {
-        if(System.currentTimeMillis() - lastDamageTime < INTERACTION_DELAY_MS)
+        if(Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
             return;
 
         lastDamageTime = System.currentTimeMillis();

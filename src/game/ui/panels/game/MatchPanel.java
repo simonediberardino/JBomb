@@ -16,6 +16,7 @@ public class MatchPanel extends PagePanel {
     private JPanel topPanel;
     private JPanel bottomPanel;
     private JPanel rightPanel;
+    private JPanel powerUpsPanel;
 
     public MatchPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
         super(cardLayout, parent, frame, Paths.getBackgroundImage());
@@ -227,6 +228,36 @@ public class MatchPanel extends PagePanel {
                 g.drawImage(image.getScaledInstance(borderSize, (int) frame.getPreferredSize().getHeight(), 1), 0, 0, null);
             }
         };
+
+        powerUpsPanel = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                Image powerUpsBorder = Utility.loadImage(Paths.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
+                g.drawImage(powerUpsBorder, 0, 0, null);
+                super.paint(g);
+            }
+        };
+
+        // TODO
+        Image img = Utility.loadImage(Paths.getPowerUpsFolder() + "/fire_up.png");
+        img = img.getScaledInstance(75, 75, 0);
+        JLabel jLabel = new JLabel(new ImageIcon(img));
+        JLabel jLabel1 = new JLabel(new ImageIcon(img));
+        JLabel jLabel2 = new JLabel(new ImageIcon(img));
+        JLabel jLabel3 = new JLabel(new ImageIcon(img));
+        JLabel jLabel4 = new JLabel(new ImageIcon(img));
+
+        powerUpsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        powerUpsPanel.setOpaque(false);
+        powerUpsPanel.add(jLabel);
+        powerUpsPanel.add(jLabel1);
+        powerUpsPanel.add(jLabel2);
+        powerUpsPanel.add(jLabel3);
+        powerUpsPanel.add(jLabel4);
+        powerUpsPanel.setLayout(new GridLayout(0, 2));
+
+        rightPanel.setLayout(new GridBagLayout());
+        rightPanel.add(powerUpsPanel, new GridBagConstraints());
         // Set the preferred size of the panel to the specified width and height
         rightPanel.setPreferredSize(new Dimension(width, height));
         // Return the JPanel for the left side of the game window

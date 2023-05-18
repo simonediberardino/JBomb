@@ -2,6 +2,7 @@ package game.entity.enemies.npcs;
 
 import game.BomberManMatch;
 import game.entity.Player;
+import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
@@ -19,6 +20,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
     public IntelligentEnemy(){
         super();
         heightToHitboxSizeRatio = 0.733f;
+
     }
 
     public IntelligentEnemy(Coordinates coordinates) {

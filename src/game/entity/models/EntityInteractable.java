@@ -7,6 +7,7 @@ import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.models.Direction;
+import game.utils.Utility;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,15 +43,17 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public final void interact(Entity e) {
-        if(canInteractWith(e)) {
-            this.doInteract(e);
-            this.updateLastInteract(e);
+        if (e == null)
+            return; // If the entity is null, there is nothing to interact with, so return.
+
+        if (canInteractWith(e) && e.canBeInteractedBy(this)) {
+            this.doInteract(e); // Interact with the entity.
+            this.updateLastInteract(e); // Update the last interaction for this entity.
         }
 
-        else if(e instanceof EntityInteractable && ((EntityInteractable) e).canInteractWith(this)){
-            e.doInteract(this);
-            ((EntityInteractable )e).updateLastInteract(e);
-
+        else if (e instanceof EntityInteractable && ((EntityInteractable) e).canInteractWith(this) && canBeInteractedBy(e)) {
+            e.doInteract(this); // The entity is an EntityInteractable and can be interacted with this (or vice-versa), so interact with it.
+            ((EntityInteractable) e).updateLastInteract(e); // Update the last interaction for the EntityInteractable entity.
         }
     }
 
@@ -68,13 +71,6 @@ public abstract class EntityInteractable extends Entity {
      */
     @Override
     protected abstract void doInteract(Entity e);
-
-    /**
-     * Gets a list of entities that occupy the specified coordinates.
-     * @param desiredCoords the coordinates to check for occupied entities
-     * @return a list of entities that occupy the specified coordinates
-     */
-
 
     /**
      Gets the next coordinates in the given direction and with the given step size.
@@ -189,8 +185,9 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public boolean canInteractWith(Entity e){
-        if(e == null)return true;
-        if(System.currentTimeMillis() - getLastInteraction(e) < INTERACTION_DELAY_MS) {
+        if(e == null) return true;
+
+        if(Utility.timePassed(getLastInteraction(e)) < INTERACTION_DELAY_MS) {
             return false;
         }
 

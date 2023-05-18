@@ -1,4 +1,4 @@
-a- New enemies;
+- New enemies;
 - New boss;
 - Lives;
 - World flags;
@@ -9,3 +9,6 @@ a- New enemies;
 - Points;
 - paint toast priorities
 - SOUND
+- remove power ups;
+- hammer power up;
+- UNREGISTER MOUSE CONTROLLER

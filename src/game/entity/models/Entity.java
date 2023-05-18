@@ -35,6 +35,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     private int paddingWidth;
     private String imagePath = "";
     private final long id;
+    public Set<Class<? extends Entity>> passiveInteractionEntities = new HashSet();
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -48,6 +49,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     public Entity(Coordinates coordinates){
         this.id = UUID.randomUUID().getMostSignificantBits();
         this.coords = coordinates;
+        setPassiveInteractionEntities();
     }
 
     protected String getBasePath(){ return ""; }
@@ -369,5 +371,18 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+    //to be called on construction
+    public abstract void setPassiveInteractionEntities();
+
+    public final void removePassiveInteractionEntity(Class<? extends Entity> e){
+        passiveInteractionEntities.remove(e);
+    }
+    public final void addPassiveInteractionEntity(Class<? extends Entity> e){
+        passiveInteractionEntities.add(e);
+    }
+    public final boolean canBeInteractedBy(Entity e){
+        if(e==null)return true;
+        return passiveInteractionEntities.stream().anyMatch(c-> c.isInstance(e));
     }
 }

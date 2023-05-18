@@ -11,6 +11,10 @@ import java.io.IOException;
  A utility class containing helper methods for the game.
  */
 public class Utility {
+    public static long timePassed(long time) {
+        return System.currentTimeMillis() -time;
+    }
+
     public static boolean isValueInRange(int value, int min, int max) {
         return value >= min && value <= max;
     }

@@ -5,6 +5,7 @@ import game.Bomberman;
 import game.entity.models.Entity;
 import game.events.Observable2;
 import game.events.Observer2;
+import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -38,7 +39,7 @@ public class GameTickerObservable extends Observable2 {
                 GameTickerObserver gameTickerObserver = (GameTickerObserver) observer; // cast the observer to GameTickerObserver
                 long lastUpdate = gameTickerObserver.getLastUpdate(); // get the last update time of the observer
                 long delayObserverUpdate = (long) gameTickerObserver.getDelayObserverUpdate(); // get the delay time of the observer
-                delayPassed = System.currentTimeMillis() - lastUpdate >= delayObserverUpdate; // check if the delay has passed since the last update
+                delayPassed = Utility.timePassed(lastUpdate) >= delayObserverUpdate; // check if the delay has passed since the last update
             }
 
             if (delayPassed) { // if the delay has passed

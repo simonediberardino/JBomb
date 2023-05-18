@@ -10,11 +10,12 @@ import game.models.Coordinates;
 import game.models.Direction;
 import game.utils.Paths;
 import game.ui.panels.game.PitchPanel;
+import game.utils.Utility;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-public class Bomb extends Block implements Explosive {
+public class Bomb extends DestroyableBlock implements Explosive {
     public static final int BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 2;
     public static final long PLACE_INTERVAL = 1000;
     private static final int EXPLODE_TIMER = 5000;
@@ -41,7 +42,7 @@ public class Bomb extends Block implements Explosive {
             images[i] = String.format("%sbomb_%d.png", getBasePath(), i);
         }
 
-        if (System.currentTimeMillis() - lastImageUpdate < getImageRefreshRate()) {
+        if (Utility.timePassed(lastImageUpdate) < getImageRefreshRate()) {
             return this.image;
         }
 
@@ -124,6 +125,7 @@ public class Bomb extends Block implements Explosive {
     public int getMaxExplosionDistance() {
         return caller != null ? caller.getCurrExplosionLength() : Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     }
+
     @Override
     public void onMouseClick(){
         explode();

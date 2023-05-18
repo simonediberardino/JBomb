@@ -4,6 +4,7 @@ package game.controller;
 import game.Bomberman;
 import game.engine.PeriodicTask;
 import game.events.Observable2;
+import game.utils.Utility;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -44,9 +45,10 @@ public class ControllerManager extends Observable2 implements KeyListener {
         instance = this;
         setupTask();
     }
+
     public void onKeyPressed(Command action){
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
-        if(System.currentTimeMillis() - commandEventsTime.getOrDefault(action, 0L) < KEY_DELAY_MS) return;
+        if(Utility.timePassed( commandEventsTime.getOrDefault(action, 0L)) < KEY_DELAY_MS) return;
 
         if(action != null) {
             commandEventsTime.put(action, System.currentTimeMillis());

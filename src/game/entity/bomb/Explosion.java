@@ -13,6 +13,7 @@ import game.ui.panels.game.PitchPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -212,5 +213,10 @@ public class Explosion extends MovingEntity implements Particle {
 
     public Explosive getExplosive() {
         return explosive;
+    }
+
+    @Override
+    public void setPassiveInteractionEntities() {
+        passiveInteractionEntities = new HashSet<>();
     }
 }

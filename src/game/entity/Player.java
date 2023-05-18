@@ -2,9 +2,11 @@ package game.entity;
 
 import game.Bomberman;
 import game.controller.Command;
+import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.events.GameEvent;
 import game.models.Coordinates;
+import game.powerups.PowerUp;
 import game.ui.panels.menus.GameOverPanel;
 import game.utils.Paths;
 
@@ -130,5 +132,10 @@ public class Player extends BomberEntity {
     public void update(Object arg) {
         super.update(arg);
         handleAction((Command) arg);
+    }
+
+    @Override
+    public void setPassiveInteractionEntities() {
+        passiveInteractionEntities = new HashSet<>(Arrays.asList(Explosion.class, Enemy.class, PowerUp.class));
     }
 }

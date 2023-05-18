@@ -1,6 +1,7 @@
 package game.powerups;
 
 import game.entity.Player;
+import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.entity.models.Character;
 import game.models.Coordinates;
@@ -20,7 +21,8 @@ public abstract class PowerUp extends EntityInteractable {
             SpeedPowerUp.class,
             TransparentDestroyableBlocksPowerUp.class,
             LivesPowerUp.class*/
-            RemoteControl.class
+            RemoteControl.class,
+            Hammer.class
     };
 
     // The default duration for a power-up, in seconds
@@ -60,7 +62,7 @@ public abstract class PowerUp extends EntityInteractable {
 
     @Override
     public int getDrawPriority() {
-        return 0;
+        return -1;
     }
 
     /**
@@ -108,9 +110,10 @@ public abstract class PowerUp extends EntityInteractable {
         // If the power-up has a duration, schedule a TimerTask to cancel it when the duration is up
         if (duration <= 0) {
             entity.getActivePowerUps().remove(this.getClass());
+            return;
         }
 
-        TimerTask explodeTask = new TimerTask() {
+        TimerTask task = new TimerTask() {
             public void run() {
                 entity.getActivePowerUps().remove(this.getClass());
                 PowerUp.this.cancel(entity);
@@ -118,7 +121,7 @@ public abstract class PowerUp extends EntityInteractable {
         };
 
         Timer timer = new Timer();
-        timer.schedule(explodeTask, duration);
+        timer.schedule(task, duration);
     }
 
     /**
@@ -160,4 +163,8 @@ public abstract class PowerUp extends EntityInteractable {
         return Collections.emptySet();
     }
 
+    @Override
+    public void setPassiveInteractionEntities() {
+        passiveInteractionEntities = new HashSet<>(Collections.singletonList(Player.class));
+    }
 }

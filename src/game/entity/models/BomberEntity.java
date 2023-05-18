@@ -3,17 +3,20 @@ package game.entity.models;
 import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.bomb.Bomb;
+import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
+import game.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 public abstract class BomberEntity extends Character {
-    private ArrayList<Class<? extends Entity>> listInteractWithMouse = new ArrayList<>(Collections.emptyList());
-    private ArrayList<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
     private static final int MAX_BOMB_CAN_HOLD = 10;
+    private final ArrayList<Class<? extends Entity>> listInteractWithMouse = new ArrayList<>(Collections.emptyList());
+    private final ArrayList<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
     private int currBombLimit = Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     private int placedBombs = 0;
@@ -26,6 +29,7 @@ public abstract class BomberEntity extends Character {
      */
     public BomberEntity(Coordinates coordinates) {
         super(coordinates);
+
     }
 
     public int getCurrExplosionLength(){
@@ -49,7 +53,7 @@ public abstract class BomberEntity extends Character {
             return;
         }
 
-        if(System.currentTimeMillis() - lastPlacedBombTime < Bomb.PLACE_INTERVAL){
+        if(Utility.timePassed(lastPlacedBombTime) < Bomb.PLACE_INTERVAL){
             return;
         }
 
@@ -63,11 +67,11 @@ public abstract class BomberEntity extends Character {
         bomb.trigger();
     }
 
-    public void addClassInteractWithMouse(Class<? extends Entity> cls){
+    public void addClassInteractWithMouse(Class<? extends Entity> cls) {
         listInteractWithMouse.add(cls);
     }
 
-    public void removeClassInteractWithMouse(Class<? extends Entity> cls){
+    public void removeClassInteractWithMouse(Class<? extends Entity> cls) {
         listInteractWithMouse.remove(cls);
     }
 

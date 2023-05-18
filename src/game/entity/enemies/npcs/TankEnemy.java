@@ -7,6 +7,7 @@ import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.utils.Paths;
+import game.utils.Utility;
 
 import java.util.*;
 
@@ -55,7 +56,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
 
     @Override
     public void doUpdate(boolean arg) {
-        if (System.currentTimeMillis() - lastUpdate > SHOOTING_REFRESH_RATE) {
+        if (Utility.timePassed(lastUpdate) > SHOOTING_REFRESH_RATE) {
             lastUpdate = System.currentTimeMillis();
 
             // TODO
@@ -72,7 +73,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
             canShoot = true;
         }
 
-        if (System.currentTimeMillis() - lastUpdate > STANDING_STILL_PERIOD) {
+        if (Utility.timePassed(lastUpdate) > STANDING_STILL_PERIOD) {
             canMove = true;
         }
 
