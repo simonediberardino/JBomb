@@ -28,6 +28,7 @@ import static game.models.Direction.DOWN;
  */
 public abstract class Character extends MovingEntity {
     public static final int SIZE = PitchPanel.PIXEL_UNIT * 4 * 2;
+
     protected long lastDirectionUpdate = 0;
     protected Direction currDirection = Direction.values()[(int) (Math.random() * values().length)];
     /** The last direction this character was moving in. */
@@ -39,6 +40,7 @@ public abstract class Character extends MovingEntity {
     protected boolean canMove = true;
     private int maxHp = 100;
     private int healthPoints = maxHp;
+
 
     /**
      * Returns an array of file names for the front-facing icons for this character.
@@ -262,7 +264,7 @@ public abstract class Character extends MovingEntity {
             return;
         }
 
-        List<Coordinates> oppositeBlocksCoordinates = getNewCoordinatesOnDirection(command.commandToDirection(), getSize(), getSize());
+        List<Coordinates> oppositeBlocksCoordinates = getNewCoordinatesOnDirection(command.commandToDirection(), PitchPanel.PIXEL_UNIT, getSize());
         List<Entity> entitiesOpposite1 = Coordinates.getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(0));
         List<Entity> entitiesOpposite2 = Coordinates.getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(1));
         overpassBlock(entitiesOpposite1,entitiesOpposite2,oppositeDirection1,oppositeDirection2);
@@ -278,8 +280,8 @@ public abstract class Character extends MovingEntity {
      @param direction2 The second opposite direction to the player's movement.
      */
     public void overpassBlock(List<Entity> entitiesOpposite1, List<Entity> entitiesOpposite2, Direction direction1, Direction direction2) {
-        Command oppositeCommand1 = direction1.toCommand();
-        Command oppositeCommand2 = direction2.toCommand();
+        Command oppositeCommand1 = direction2.toCommand();
+        Command oppositeCommand2 = direction1.toCommand();
         boolean doubleClick1 = false;
         boolean doubleClick2 = false;
 
@@ -289,14 +291,16 @@ public abstract class Character extends MovingEntity {
             doubleClick1 = controllerManager.isCommandPressed(oppositeCommand1);
             doubleClick2 = controllerManager.isCommandPressed(oppositeCommand2);
         }
-
+        if(doubleClick2||doubleClick1)return;
         // If the first direction has no obstacles and the second does, and the second direction is not double-clicked, move in the second direction.
-        if (!entitiesOpposite1.isEmpty() && entitiesOpposite2.isEmpty() && !doubleClick2) {
+        if (!entitiesOpposite1.isEmpty() && entitiesOpposite2.isEmpty()) {
             move(direction2);
+
         }
         // If the second direction has no obstacles and the first does, and the first direction is not double-clicked, move in the first direction.
-        else if (!entitiesOpposite2.isEmpty() && entitiesOpposite1.isEmpty() && !doubleClick1) {
+        else if (!entitiesOpposite2.isEmpty() && entitiesOpposite1.isEmpty()) {
             move(direction1);
+
         }
     }
 

@@ -146,6 +146,18 @@ public class Coordinates {
         return null;
     }
 
+    public ArrayList<Direction> fromCoordinatesToDirection(Coordinates entityCoords){
+        ArrayList<Direction> output = new ArrayList<>();
+        entityCoords = roundCoordinates(entityCoords);
+        Coordinates mouseCoords = roundCoordinates(this);
+        if(mouseCoords.getX()> entityCoords.getX()) output.add(Direction.RIGHT);
+        if(mouseCoords.getX()< entityCoords.getX()) output.add(Direction.LEFT);
+        if(mouseCoords.getY()>entityCoords.getY()) output.add(Direction.DOWN);
+        if(mouseCoords.getY()<entityCoords.getY()) output.add(Direction.UP);
+        return output;
+    }
+
+
     public static Coordinates fromRowAndColumnsToCoordinates(Dimension d){
         return fromRowAndColumnsToCoordinates(d,0,0);
     }

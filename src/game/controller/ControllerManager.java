@@ -1,6 +1,7 @@
 
 package game.controller;
 
+import game.Bomberman;
 import game.engine.PeriodicTask;
 import game.events.Observable2;
 
@@ -23,7 +24,7 @@ public class ControllerManager extends Observable2 implements KeyListener {
     private static final int KEY_SPACE = KeyEvent.VK_SPACE;
     private static final int KEY_ESC = KeyEvent.VK_ESCAPE;
     private static int KEY_DELAY_MS = setDefaultCommandDelay();
-    private Set<Command> commandQueue = new HashSet<>();
+    public Set<Command> commandQueue = new HashSet<>();
 
     // Key-Command mapping
     private static final Map<Integer, Command> keyAssignment = Map.ofEntries(
@@ -43,15 +44,7 @@ public class ControllerManager extends Observable2 implements KeyListener {
         instance = this;
         setupTask();
     }
-
-    /**
-     * Handles key pressed events and notifies observers with the corresponding command that should be executed.
-     *
-     * @param e the KeyEvent object that contains the information of the key that was pressed.
-     */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        Command action = keyAssignment.get(e.getKeyCode());
+    public void onKeyPressed(Command action){
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
         if(System.currentTimeMillis() - commandEventsTime.getOrDefault(action, 0L) < KEY_DELAY_MS) return;
 
@@ -61,11 +54,29 @@ public class ControllerManager extends Observable2 implements KeyListener {
         }
 
         resume();
+
+    }
+
+    /**
+     * Handles key pressed events and notifies observers with the corresponding command that should be executed.
+     *
+     * @param e the KeyEvent object that contains the information of the key that was pressed.
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        Command action = keyAssignment.get(e.getKeyCode());
+        onKeyPressed(action);
+        // if a button is pressed, mouse movement gets interrupted
+        Bomberman.getMatch().getMouseControllerManager().stopPeriodicTask();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         Command action = keyAssignment.get(e.getKeyCode());
+        onKeyReleased(action);
+
+    }
+    public void onKeyReleased(Command action){
         commandQueue.remove(action);
         if(commandQueue.isEmpty()) stop();
     }
