@@ -1,6 +1,8 @@
 package game.level;
 
 import game.Bomberman;
+import game.controller.ControllerManager;
+import game.controller.MouseControllerManager;
 import game.data.DataInputOutput;
 import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
@@ -123,6 +125,7 @@ public abstract class Level {
     public void start(JPanel jPanel) {
         updateLastLevel();
         Bomberman.getMatch().setGameState(true);
+        DataInputOutput.resetLivesIfNecessary();
         generateEntities(jPanel);
     }
 
@@ -137,6 +140,10 @@ public abstract class Level {
     public void generatePlayer(){
         Bomberman.getMatch().setPlayer(new Player(Coordinates.fromRowAndColumnsToCoordinates(new Dimension(5, 2),0,0)));
         Bomberman.getMatch().getPlayer().spawn();
+        //TODO mousecontroller manager refresh to be refactored
+        //   |   when player is respawned mousecontrollermanager keeps last player's instance commands
+        //   V
+        Bomberman.getMatch().mouseControllerManager = new MouseControllerManager();
     }
 
     public void endLevel() {

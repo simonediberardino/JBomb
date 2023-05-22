@@ -42,6 +42,7 @@ public class Explosion extends MovingEntity implements Particle {
     public static final int spawnOffset = (PitchPanel.GRID_SIZE-SIZE)/2;
 
 
+
     public Explosion(Coordinates coordinates, Direction direction, Explosive explosive) {
         this(coordinates, direction, 0, explosive);
     }
@@ -67,15 +68,14 @@ public class Explosion extends MovingEntity implements Particle {
         this.maxDistance = explosive.getMaxExplosionDistance();
         this.canExpand = canExpand;
 
-        // Add the explosion entity to the game.
+        // on spawn
         Bomberman.getMatch().addEntity(this);
+        super.setCoords(getCoords());
 
-        SwingUtilities.invokeLater(() -> {
-            // Move or interact with other entities in the game based on the explosion's direction.
+            //on first (center) explosion
             if (distanceFromExplosive == 0) {
                 List<Coordinates> desiredCoords = getAllCoordinates();
-                Set<?extends Entity> entities = Bomberman.getMatch().getEntities();
-                for (Entity e: entities) {
+                for (Entity e: Bomberman.getMatch().getEntities()) {
                     if (desiredCoords.stream().anyMatch(coord -> Coordinates.doesCollideWith(coord, e))) {
                         interact(e);
                     }
@@ -84,7 +84,6 @@ public class Explosion extends MovingEntity implements Particle {
 
             if (getCanExpand())
                 moveOrInteract(direction, getSize(), true);
-        });
 
     }
 
@@ -130,11 +129,7 @@ public class Explosion extends MovingEntity implements Particle {
      */
     @Override
     public void setCoords(Coordinates coordinates) {
-        if (canExpand) {
-            super.setCoords(getCoords());
-
-            new Explosion(coordinates, direction, distanceFromExplosive + 1, explosive);
-        }
+        new Explosion(coordinates, direction, distanceFromExplosive + 1, explosive);
     }
 
     /**

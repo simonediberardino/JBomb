@@ -28,6 +28,7 @@ import static game.utils.Utility.px;
  The Clown entity can spawn orbs, enhanced orbs, explosions and throw its hat in random directions.
  */
 public class Clown extends Boss implements Explosive {
+    private ArrayList<Explosion> explosions = new ArrayList<>();
     private static final float RATIO_HEIGHT_WITH_HAT = 0.7517f;
     private static final float RATIO_HEIGHT = 0.87f;
     private static final float RATIO_WIDTH = 0.8739f;
@@ -108,6 +109,11 @@ public class Clown extends Boss implements Explosive {
     @Override
     public List<Class<? extends Entity>> getExplosionObstacles() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public synchronized ArrayList<Explosion> getExplosions() {
+        return explosions;
     }
 
     /**

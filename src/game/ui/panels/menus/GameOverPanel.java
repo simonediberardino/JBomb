@@ -3,6 +3,7 @@ package game.ui.panels.menus;
 import game.Bomberman;
 import game.data.DataInputOutput;
 import game.level.Level;
+import game.level.WorldSelectorLevel;
 import game.localization.Localization;
 import game.ui.elements.BombermanButton;
 import game.ui.elements.RedButton;
@@ -61,13 +62,24 @@ public class GameOverPanel extends PagePanel {
      * Creates the startLevelButton and adds it to the listButtonsPanel.
      */
     private void createStartLevelButton() {
-        retryButton = new RedButton(Localization.get(PLAY_AGAIN));
+        retryButton = new RedButton("");
         retryButton.addActionListener((v) -> {
+            boolean hasLives = DataInputOutput.getLives() > 0;
+
             ToastHandler.getInstance().cancel();
-            Bomberman.startLevel(Level.getCurrLevel());
+
+            Level level = hasLives ? Level.getCurrLevel() : new WorldSelectorLevel();
+            Bomberman.startLevel(level);
         });
 
+        updatePlayAgainButtonText();
         listButtonsPanel.add(retryButton);
+    }
+
+    private void updatePlayAgainButtonText(){
+        boolean hasLives = DataInputOutput.getLives() > 0;
+        String text = hasLives ? Localization.get(PLAY_AGAIN) : Localization.get(RESET_WORLD);
+        retryButton.setText(text);
     }
 
     /**
@@ -85,15 +97,13 @@ public class GameOverPanel extends PagePanel {
 
     private void showToastMessage() {
         int lives = DataInputOutput.getLives();
-        String message = lives > 0
-                ? Localization.get(YOU_DIED).replace("%lives%", Integer.toString(lives))
-                : Localization.get(RESET_WORLD);
-
+        String message = Localization.get(YOU_DIED).replace("%lives%", Integer.toString(lives));
         ToastHandler.getInstance().show(message, true);
     }
 
     @Override
     public void onShowCallback() {
         showToastMessage();
+        updatePlayAgainButtonText();
     }
 }

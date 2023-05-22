@@ -1,8 +1,11 @@
 package game.ui.elements;
 
+import game.sound.AudioManager;
 import game.utils.Utility;
 
 import java.awt.*;
+
+import static game.sound.SoundModel.BONUS_ALERT;
 
 public class ToastHandler {
     private static ToastHandler instance = null;
@@ -145,6 +148,7 @@ public class ToastHandler {
         cancel();
         this.text = text;
         this.permanent = permanent;
+        AudioManager.getInstance().play(BONUS_ALERT);
     }
 
     public static ToastHandler getInstance(){

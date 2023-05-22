@@ -2,6 +2,7 @@ package game.entity.models;
 
 import game.models.Coordinates;
 import game.models.Direction;
+import game.sound.SoundModel;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -47,5 +48,8 @@ public abstract class MovingEntity extends EntityDamage {
         return result;
     }
 
+    protected SoundModel getStepSound() {
+        return null;
+    }
 
 }

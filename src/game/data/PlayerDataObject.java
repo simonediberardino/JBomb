@@ -4,6 +4,8 @@ import game.level.Level;
 
 import java.io.Serializable;
 
+import static game.data.DataInputOutput.START_LIVES;
+
 public class PlayerDataObject implements Serializable {
     private String name;
     private int lostGames;
@@ -16,7 +18,7 @@ public class PlayerDataObject implements Serializable {
     private int lives;
 
     public PlayerDataObject() {
-        this("User",0,0,0,0,0, 3, 0, 0);
+        this("User",0,0,0,0,0, START_LIVES, 0, 0);
     }
 
     public PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lives, int lastLevelId, int lastWorldId) {

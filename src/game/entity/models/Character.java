@@ -3,16 +3,15 @@ package game.entity.models;
 import game.Bomberman;
 import game.controller.Command;
 import game.controller.ControllerManager;
-import game.entity.Player;
 import game.models.Coordinates;
 import game.models.Direction;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
@@ -32,9 +31,13 @@ public abstract class Character extends MovingEntity {
 
     protected long lastDirectionUpdate = 0;
     protected Direction currDirection = Direction.values()[(int) (Math.random() * values().length)];
-    /** The last direction this character was moving in. */
+    /**
+     * The last direction this character was moving in.
+     */
     protected Direction previousDirection = null;
-    /** Whether this character is alive or not. */
+    /**
+     * Whether this character is alive or not.
+     */
     protected boolean isAlive = true;
     protected boolean isImmune = false;
     protected volatile AtomicReference<State> state = new AtomicReference<>();
@@ -104,6 +107,7 @@ public abstract class Character extends MovingEntity {
     public int getSize() {
         return SIZE;
     }
+
     /**
      * Returns the image for this character based on its current state.
      *
@@ -125,7 +129,7 @@ public abstract class Character extends MovingEntity {
     }
 
     public void setImmune(boolean immune) {
-        if(!isAlive) return;
+        if (!isAlive) return;
 
         isImmune = immune;
         state.set(immune ? State.IMMUNE : State.ALIVE);
@@ -148,19 +152,26 @@ public abstract class Character extends MovingEntity {
         isAlive = true;
     }
 
+    protected void playStepSound() {
+        SoundModel stepSound = getStepSound();
+        if (stepSound != null) AudioManager.getInstance().play(stepSound);
+    }
+
     /**
      * Updates the last direction the entity moved in and sets the appropriate image based on the direction.
+     *
      * @param d The new direction the entity is moving in.
      */
     protected void updateLastDirection(Direction d) {
         String[] baseIcons = getBaseSkins();
 
         // If the character doesn't have custom images for each direction, do not check if the direction has changed;
-        if(useOnlyBaseIcons()){
-            if(Utility.timePassed(lastImageUpdate) > getImageRefreshRate()){
+        if (useOnlyBaseIcons()) {
+            if (Utility.timePassed(lastImageUpdate) > getImageRefreshRate()) {
                 // If it's time to refresh the image, increment the image index.
                 lastImageIndex++;
-            }else return;
+                playStepSound();
+            } else return;
 
             // Ensure the icon index is within bounds.
             if (lastImageIndex < 0 || lastImageIndex >= baseIcons.length)
@@ -176,7 +187,7 @@ public abstract class Character extends MovingEntity {
         String[] rightIcons = getRightIcons();
 
         // If both previousDirection and currDirection are null, initialize currDirection to d and load the front-facing image.
-        if(previousDirection == null && currDirection == null){
+        if (previousDirection == null && currDirection == null) {
             currDirection = d;
             loadAndSetImage(baseIcons[0]);
             return;
@@ -190,9 +201,10 @@ public abstract class Character extends MovingEntity {
         if (previousDirection != d) {
             lastImageIndex = 0;
             lastDirectionUpdate = System.currentTimeMillis();
-        } else if(Utility.timePassed(lastImageUpdate) > getImageRefreshRate()){
+        } else if (Utility.timePassed(lastImageUpdate) > getImageRefreshRate()) {
             // If it's time to refresh the image, increment the image index.
             lastImageIndex++;
+            playStepSound();
         } else {
             // Otherwise, don't update the image yet.
             return;
@@ -200,10 +212,18 @@ public abstract class Character extends MovingEntity {
 
         String[] icons;
         switch (currDirection) {
-            case LEFT: icons = leftIcons; break;
-            case RIGHT: icons = rightIcons; break;
-            case UP: icons = backIcons; break;
-            default: icons = baseIcons; break;
+            case LEFT:
+                icons = leftIcons;
+                break;
+            case RIGHT:
+                icons = rightIcons;
+                break;
+            case UP:
+                icons = backIcons;
+                break;
+            default:
+                icons = baseIcons;
+                break;
         }
 
         // Ensure the icon index is within bounds.
@@ -215,7 +235,7 @@ public abstract class Character extends MovingEntity {
 
     @Override
     public BufferedImage loadAndSetImage(String imagePath) {
-        if(state == null) return super.loadAndSetImage(imagePath);
+        if (state == null) return super.loadAndSetImage(imagePath);
 
         String[] toks = imagePath.split(Pattern.quote("."));
         String extension = toks[1];
@@ -229,15 +249,16 @@ public abstract class Character extends MovingEntity {
 
     /**
      * Attempts to move the entity in the specified direction and updates the last direction if the move was successful.
+     *
      * @param d The direction to move the entity in.
      * @return true if the move was successful, false otherwise.
      */
     public boolean move(Direction d) {
         // If the entity is not alive, return true.
-        if(!getAliveState()) return true;
+        if (!getAliveState()) return true;
 
         // Try to move or interact with the entity in the specified direction.
-        if (moveOrInteract(d)){
+        if (moveOrInteract(d)) {
             // If the move or interaction was successful, update the last direction and return true.
             updateLastDirection(d);
             return true;
@@ -246,17 +267,15 @@ public abstract class Character extends MovingEntity {
         // Otherwise, return false.
         return false;
     }
+
     /**
-
-     Handles the move command by first attempting to move the player in the direction specified by the command.
-
-     If the move is not successful, it attempts to overpass a block by calling the overpassBlock method.
-
-     @param command The command specifying the direction of movement.
-
-     @param oppositeDirection1 The opposite direction to the command, which is used for overpassing a block.
-
-     @param oppositeDirection2 The second opposite direction to the command, which is used for overpassing a block.
+     * Handles the move command by first attempting to move the player in the direction specified by the command.
+     * <p>
+     * If the move is not successful, it attempts to overpass a block by calling the overpassBlock method.
+     *
+     * @param command            The command specifying the direction of movement.
+     * @param oppositeDirection1 The opposite direction to the command, which is used for overpassing a block.
+     * @param oppositeDirection2 The second opposite direction to the command, which is used for overpassing a block.
      */
     public void handleMoveCommand(Command command, Direction oppositeDirection1, Direction oppositeDirection2) {
         boolean moveSuccessful = move(command.commandToDirection());
@@ -266,19 +285,19 @@ public abstract class Character extends MovingEntity {
         }
 
         List<Coordinates> oppositeBlocksCoordinates = getNewCoordinatesOnDirection(command.commandToDirection(), PitchPanel.PIXEL_UNIT, getSize());
-        List<Entity> entitiesOpposite1 = Coordinates.getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(0));
-        List<Entity> entitiesOpposite2 = Coordinates.getEntitiesOnCoordinates(oppositeBlocksCoordinates.get(1));
-        overpassBlock(entitiesOpposite1,entitiesOpposite2,oppositeDirection1,oppositeDirection2);
+        List<Entity> entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates.get(0));
+        List<Entity> entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates.get(1));
+        overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirection1, oppositeDirection2);
     }
 
     /**
-     Attempts to overpass a block in the opposite direction of the player's movement.
-     The method checks for the existence of obstacles and the player input to determine the appropriate direction to move.
-
-     @param entitiesOpposite1 A list of entities on the first opposite coordinate of the player's movement.
-     @param entitiesOpposite2 A list of entities on the second opposite coordinate of the player's movement.
-     @param direction1 The first opposite direction to the player's movement.
-     @param direction2 The second opposite direction to the player's movement.
+     * Attempts to overpass a block in the opposite direction of the player's movement.
+     * The method checks for the existence of obstacles and the player input to determine the appropriate direction to move.
+     *
+     * @param entitiesOpposite1 A list of entities on the first opposite coordinate of the player's movement.
+     * @param entitiesOpposite2 A list of entities on the second opposite coordinate of the player's movement.
+     * @param direction1        The first opposite direction to the player's movement.
+     * @param direction2        The second opposite direction to the player's movement.
      */
     public void overpassBlock(List<Entity> entitiesOpposite1, List<Entity> entitiesOpposite2, Direction direction1, Direction direction2) {
         Command oppositeCommand1 = direction2.toCommand();
@@ -292,7 +311,7 @@ public abstract class Character extends MovingEntity {
             doubleClick1 = controllerManager.isCommandPressed(oppositeCommand1);
             doubleClick2 = controllerManager.isCommandPressed(oppositeCommand2);
         }
-        if(doubleClick2||doubleClick1)return;
+        if (doubleClick2 || doubleClick1) return;
         // If the first direction has no obstacles and the second does, and the second direction is not double-clicked, move in the second direction.
         if (!entitiesOpposite1.isEmpty() && entitiesOpposite2.isEmpty()) {
             move(direction2);
@@ -306,9 +325,9 @@ public abstract class Character extends MovingEntity {
     }
 
     /**
-
-     Handles the action by calling handleMoveCommand with the appropriate opposite directions depending on the command.
-     @param command The command specifying the action.
+     * Handles the action by calling handleMoveCommand with the appropriate opposite directions depending on the command.
+     *
+     * @param command The command specifying the action.
      */
     public void handleAction(Command command) {
         if (!Bomberman.getMatch().getGameState() || !canMove) {
@@ -317,9 +336,15 @@ public abstract class Character extends MovingEntity {
 
         switch (command) {
             // For move up and move down, use left and right as opposite directions respectively.
-            case MOVE_UP: case MOVE_DOWN: handleMoveCommand(command, LEFT, RIGHT); break;
+            case MOVE_UP:
+            case MOVE_DOWN:
+                handleMoveCommand(command, LEFT, RIGHT);
+                break;
             // For move left and move right, use up and down as opposite directions respectively.
-            case MOVE_LEFT: case MOVE_RIGHT: handleMoveCommand(command, UP, DOWN); break;
+            case MOVE_LEFT:
+            case MOVE_RIGHT:
+                handleMoveCommand(command, UP, DOWN);
+                break;
         }
     }
 
@@ -333,7 +358,7 @@ public abstract class Character extends MovingEntity {
     }
 
     @Override
-    protected float getDelayObserverUpdate(){
+    protected float getDelayObserverUpdate() {
         return super.getDelayObserverUpdate() / getSpeed();
     }
 
@@ -369,7 +394,8 @@ public abstract class Character extends MovingEntity {
                     // Make the entity visible again and wait for the specified duration
                     setInvisible(false);
                     Thread.sleep(durationMs);
-                } catch (InterruptedException ignored) { }
+                } catch (InterruptedException ignored) {
+                }
 
                 // Increment the counter to keep track of the number of iterations
                 count++;
@@ -387,17 +413,19 @@ public abstract class Character extends MovingEntity {
 
     /**
      * Returns the current health points of the entity.
+     *
      * @return The current health points of the entity.
      */
-    protected int getHp(){
+    protected int getHp() {
         return healthPoints;
     }
 
     /**
      * Sets the health points of the entity to the specified value.
+     *
      * @param newHp The new health points to set for the entity.
      */
-    protected void setHp(int newHp){
+    protected void setHp(int newHp) {
         healthPoints = newHp;
     }
 
@@ -414,10 +442,11 @@ public abstract class Character extends MovingEntity {
      * Removes the specified amount of damage from the entity's health points.
      * If the health points reach 0 or below, the entity is despawned.
      * Otherwise, a damage animation is started.
+     *
      * @param damage The amount of damage to remove from the entity's health points.
      */
     protected final synchronized void attackReceived(int damage) {
-        if(Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
+        if (Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
             return;
 
         lastDamageTime = System.currentTimeMillis();
@@ -427,23 +456,27 @@ public abstract class Character extends MovingEntity {
         startDamageAnimation();
 
         // If the health points reach 0 or below, despawn the entity
-        if (healthPoints <= 0){
+        if (healthPoints <= 0) {
             healthPoints = 0;
-            die();
+            eliminated();
         } else {
             onHit(damage);
         }
     }
 
-    protected void die() {
+    public void eliminated() {
         state.set(State.DIED);
-        onDie();
+        onEliminated();
     }
 
-    protected void onEndedDeathAnimation(){}
+    protected void onEndedDeathAnimation() {
+    }
 
-    protected synchronized void onDie(){
+    protected synchronized void onEliminated() {
         canMove = false;
+
+        AudioManager.getInstance().play(getDeathSound());
+
         // Create a Timer object to schedule the animation iterations
         javax.swing.Timer timer = new javax.swing.Timer((int) INTERACTION_DELAY_MS, (e) -> {
             onEndedDeathAnimation();
@@ -454,5 +487,10 @@ public abstract class Character extends MovingEntity {
         timer.start();
     }
 
-    protected void onHit(int damage){}
+    protected SoundModel getDeathSound() {
+        return SoundModel.ENTITY_DEATH;
+    }
+
+    protected void onHit(int damage) {
+    }
 }

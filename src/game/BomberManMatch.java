@@ -8,22 +8,16 @@ import game.entity.*;
 import game.entity.models.*;
 import game.events.GameEvent;
 import game.level.Level;
-import game.powerups.PowerUp;
 import game.utils.Utility;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.*;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 public class BomberManMatch implements OnGameEvent {
     private GameTickerObservable gameTickerObservable;
     private long lastGamePauseStateTime = System.currentTimeMillis();
-    private Set<Entity> entities;
-    private ControllerManager controllerManager;
-    private MouseControllerManager mouseControllerManager;
+    private final Set<Entity> entities;
+    public ControllerManager controllerManager;
+    public MouseControllerManager mouseControllerManager;
     private Level currentLevel;
     private Player player;
     private boolean gameState = false;
@@ -56,22 +50,23 @@ public class BomberManMatch implements OnGameEvent {
         return player;
     }
 
-    public Set<? extends Entity> getEntities() {
+    public Set<?extends Entity> getEntities(){
         synchronized (entities) {
+            if(entities.isEmpty()) return new TreeSet<>();
             return new TreeSet<>(entities);
         }
-
-        // Creates a new list to avoid concurrent modification exception;
     }
 
     public void addEntity(Entity entity) {
-        entities.add(entity);
+        synchronized (entities){
+            entities.add(entity);
+        }
     }
 
     public void removeEntity(Entity e) {
-        Set<Entity> tempList = new TreeSet<>(entities);
-        tempList.removeIf(e1 -> e.getId() == e1.getId());
-        entities = tempList;
+        synchronized (entities){
+            entities.removeIf(e1 -> e.getId() == e1.getId());
+        }
     }
 
     public ControllerManager getControllerManager() {
@@ -126,7 +121,7 @@ public class BomberManMatch implements OnGameEvent {
     @Override
     public void onGameEvent(GameEvent gameEvent, Object arg) {
         switch(gameEvent) {
-            case DEATH: DataInputOutput.increaseDeaths(); break;
+            case DEATH: DataInputOutput.increaseDeaths(); DataInputOutput.decreaseLives(); break;
             case KILLED_ENEMY: DataInputOutput.increaseKills(); break;
             case SCORE: DataInputOutput.increaseScore((Integer) arg); break;
             case DEFEAT: DataInputOutput.increaseLost(); break;

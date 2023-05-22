@@ -1,8 +1,7 @@
 package game.entity.blocks;
 
-import game.BomberManMatch;
 import game.Bomberman;
-import game.entity.Player;
+import game.controller.MouseControllerManager;
 import game.entity.bomb.Explosion;
 import game.entity.models.Block;
 import game.entity.models.Entity;
@@ -14,7 +13,6 @@ import game.utils.Utility;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -77,18 +75,8 @@ public class DestroyableBlock extends Block {
         this.powerUpClass = powerUpClass;
     }
 
-    @Override
-    public void onMouseClick() {
-        Player player = Bomberman.getMatch().getPlayer();
-        Coordinates centerCoordinatesOfEntity = Coordinates.getCenterCoordinatesOfEntity(player);
 
-        // If the player is near the block -> Destroy;
-        if (!(getCoords().distanceTo(Coordinates.roundCoordinates(centerCoordinatesOfEntity)) <= PitchPanel.GRID_SIZE)) {
-            return;
-        }
 
-        despawn();
-    }
 
     @Override
     public void setPassiveInteractionEntities() {

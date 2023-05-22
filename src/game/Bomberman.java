@@ -7,6 +7,8 @@ import game.level.WorldSelectorLevel;
 import game.level.world1.World1Level5;
 import game.level.world2.World2Level1;
 import game.localization.Localization;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.ui.elements.ToastHandler;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
@@ -39,6 +41,7 @@ public class Bomberman {
         bombermanFrame.create();
         show(MainMenuPanel.class);
         ToastHandler.getInstance().show(Localization.get(WELCOME_TEXT));
+        AudioManager.getInstance().play(SoundModel.SOUNDTRACK, true);
     }
 
     public static void startGarbageCollectorTask() {
@@ -70,6 +73,7 @@ public class Bomberman {
         bomberManMatch.getCurrentLevel().start(bombermanFrame.getPitchPanel());
         Bomberman.getBombermanFrame().addKeyListener(Bomberman.getMatch().getControllerManager());
         Bomberman.getBombermanFrame().getPitchPanel().addMouseListener(Bomberman.getMatch().getMouseControllerManager());
+        Bomberman.getBombermanFrame().getPitchPanel().addMouseMotionListener(Bomberman.getMatch().getMouseControllerManager());
         show(MatchPanel.class);
     }
 

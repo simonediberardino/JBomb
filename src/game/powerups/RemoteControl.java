@@ -33,7 +33,7 @@ public class RemoteControl extends PowerUp{
 
     @Override
     protected void doApply(BomberEntity entity) {
-        entity.addClassInteractWithMouse(DestroyableBlock.class);
+        entity.addClassInteractWithMouse(Bomb.class);
     }
 
     @Override

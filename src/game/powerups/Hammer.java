@@ -1,10 +1,8 @@
 package game.powerups;
 
-import game.Bomberman;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;
-import game.ui.panels.game.PitchPanel;
 
 import java.awt.image.BufferedImage;
 
@@ -16,6 +14,7 @@ public class Hammer extends PowerUp{
      */
     public Hammer(Coordinates coordinates) {
         super(coordinates);
+        incompatiblePowerUps.add(BlockMoverPowerUp.class);
     }
 
     @Override
@@ -35,6 +34,7 @@ public class Hammer extends PowerUp{
 
     @Override
     protected void cancel(BomberEntity entity) {
+        System.out.println("REMOVED");
         entity.getListClassInteractWithMouse().remove(DestroyableBlock.class);
     }
 }

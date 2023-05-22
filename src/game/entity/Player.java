@@ -7,11 +7,11 @@ import game.entity.models.*;
 import game.events.GameEvent;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
+import game.sound.SoundModel;
 import game.ui.panels.menus.GameOverPanel;
 import game.utils.Paths;
 
 import javax.swing.Timer;
-import java.awt.*;
 import java.util.*;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
@@ -104,8 +104,8 @@ public class Player extends BomberEntity {
     }
 
     @Override
-    protected void onDie() {
-        super.onDie();
+    protected void onEliminated() {
+        super.onEliminated();
         Bomberman.getMatch().onGameEvent(GameEvent.DEATH, null);
     }
 
@@ -132,6 +132,11 @@ public class Player extends BomberEntity {
     public void update(Object arg) {
         super.update(arg);
         handleAction((Command) arg);
+    }
+
+    @Override
+    protected SoundModel getDeathSound() {
+        return SoundModel.PLAYER_DEATH;
     }
 
     @Override

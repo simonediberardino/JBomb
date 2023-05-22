@@ -15,6 +15,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     private static final int STANDING_STILL_PERIOD = 1000;
     private static final int PROBABILITY_OF_SHOOTING = 30;
     private static final int SHOOTING_REFRESH_RATE = 2000;
+    public ArrayList<Explosion> explosions = new ArrayList<>();
     private boolean canShoot = false;
     private long lastUpdate = 0;
 
@@ -83,6 +84,11 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     @Override
     public List<Class<? extends Entity>> getExplosionObstacles() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public synchronized ArrayList<Explosion> getExplosions() {
+        return explosions;
     }
 
     @Override

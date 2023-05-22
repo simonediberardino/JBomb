@@ -2,10 +2,13 @@ package game.entity.models;
 
 import game.BomberManMatch;
 import game.Bomberman;
+import game.entity.blocks.DestroyableBlock;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.utils.Utility;
 
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import java.util.HashSet;
 
 public abstract class BomberEntity extends Character {
     private static final int MAX_BOMB_CAN_HOLD = 10;
-    private final ArrayList<Class<? extends Entity>> listInteractWithMouse = new ArrayList<>(Collections.emptyList());
+    private final ArrayList<Class<? extends Entity>> listInteractWithMouse = new ArrayList<>(Arrays.asList(DestroyableBlock.class));
     private final ArrayList<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
     private int currBombLimit = Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getExplosionLength();
@@ -48,7 +51,16 @@ public abstract class BomberEntity extends Character {
         if(currBombLimit < MAX_BOMB_CAN_HOLD) currBombLimit++;
     }
 
+    @Override
+    protected SoundModel getStepSound() {
+        return null;
+    }
+
     protected void placeBomb() {
+        if(getCurrExplosionLength() == 0) {
+            return;
+        }
+
         if(placedBombs >= currBombLimit) {
             return;
         }
@@ -77,6 +89,9 @@ public abstract class BomberEntity extends Character {
 
     public ArrayList<Class<? extends PowerUp>> getActivePowerUps() {
         return activePowerUp;
+    }
+    public void removeActivePowerUp(PowerUp p){
+        getActivePowerUps().removeIf(e->e.isInstance(p));
     }
 
     public ArrayList<Class<? extends Entity>> getListClassInteractWithMouse(){

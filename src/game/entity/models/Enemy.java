@@ -1,7 +1,6 @@
 package game.entity.models;
 
 
-import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Explosion;
@@ -37,8 +36,8 @@ public abstract class Enemy extends Character{
     }
 
     @Override
-    protected synchronized void onDie() {
-        super.onDie();
+    protected synchronized void onEliminated() {
+        super.onEliminated();
         Bomberman.getMatch().onGameEvent(GameEvent.KILLED_ENEMY, this);
     }
 

@@ -15,6 +15,7 @@ import java.util.Optional;
 import static game.level.Level.ID_TO_FIRST_LEVEL_MAP;
 
 public class DataInputOutput {
+    public static int START_LIVES = 3;
     private static PlayerDataObject playerDataObject;
 
     public static void retrieveData() {
@@ -70,7 +71,7 @@ public class DataInputOutput {
     }
 
     public static void resetLives(){
-        playerDataObject.setLives(3);
+        playerDataObject.setLives(START_LIVES);
         updateStoredPlayerData();
     }
 
@@ -81,7 +82,7 @@ public class DataInputOutput {
 
     public static void decreaseLives() {
         int newLives = Math.max(playerDataObject.getLives() - 1, 0);
-        if(newLives == 0) {
+        if(newLives <= 0) {
             increaseLost();
             resetLevel();
         }
@@ -90,7 +91,13 @@ public class DataInputOutput {
         updateStoredPlayerData();
     }
 
+    public static void resetLivesIfNecessary() {
+        if(getLives() <= 0)
+            playerDataObject.setLives(START_LIVES);
+    }
+
     public static void resetLevel() {
+        System.out.println("Resetting level");
         playerDataObject.setLastWorldId(playerDataObject.getLastWorldId());
         playerDataObject.setLastLevelId(1);
         updateStoredPlayerData();
@@ -138,5 +145,4 @@ public class DataInputOutput {
         }
         return new World1Level1();
     }
-
 }

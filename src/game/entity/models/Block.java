@@ -19,6 +19,10 @@ public abstract class Block extends Entity {
     public int getSize() {
         return SIZE;
     }
+    @Override
+    public void eliminated(){
+        destroy();
+    }
     public void destroy(){
         despawn();
     }

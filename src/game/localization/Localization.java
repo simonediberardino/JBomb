@@ -24,8 +24,8 @@ public class Localization {
     }};
 
     public static HashMap<Language, String> RESET_WORLD = new HashMap<>() {{
-        put(Language.English, "RESET WORLD.");
-        put(Language.Italian, "RESETTA MONDO.");
+        put(Language.English, "RESET WORLD");
+        put(Language.Italian, "RESETTA MONDO");
     }};
 
     public static HashMap<Language, String> LOADING = new HashMap<>() {{

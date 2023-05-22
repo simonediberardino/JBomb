@@ -34,11 +34,11 @@ public class WorldSelectorLevel extends Level{
     public int getWorldId() {
         return 0;
     }
+
     @Override
     public int getLevelId() {
         return 0;
     }
-
 
     @Override
     public int startEnemiesCount() {

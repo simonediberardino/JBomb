@@ -7,7 +7,6 @@ import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.Set;
 
 import static game.utils.Utility.loadImage;

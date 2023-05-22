@@ -1,11 +1,9 @@
 package game.entity.models;
 
-import game.BomberManMatch;
 import game.Bomberman;
-import game.data.DataInputOutput;
+import game.controller.MouseControllerManager;
 import game.engine.GameTickerObserver;
 import game.entity.Player;
-import game.level.world2.World2Level3;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
@@ -35,6 +33,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     private int paddingWidth;
     private String imagePath = "";
     private final long id;
+
     public Set<Class<? extends Entity>> passiveInteractionEntities = new HashSet();
 
     public Entity(){
@@ -364,25 +363,77 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         Entity entity = (Entity) o;
         return id == entity.id;
     }
-    public void onMouseClick(){
+    public void eliminated(){
+        despawn();
+    }
 
+    public void mouseClickInteraction() {
+        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(Bomberman.getMatch().getPlayer()));
+        if ((getCoords().distanceTo(Coordinates.roundCoordinates(centerCoordinatesOfEntity)) <= PitchPanel.GRID_SIZE))
+            eliminated();
+    }
+
+
+    public synchronized void mouseDragInteraction() {
+
+        MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
+        Entity interactedEntity = mouseControllerManager.getEntity();
+        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(Bomberman.getMatch().getPlayer()));
+        Coordinates mouseCoordinates = Coordinates.roundCoordinates(Bomberman.getMatch().getMouseControllerManager().mouseCoords);
+        if(mouseControllerManager.mouseDraggedInteractionInterrupted) return;
+        if (interactedEntity.getCoords().distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE || mouseControllerManager.mouseDragInteractionEntered) {
+            List<Entity> entitiesOnOccupiedBlock = Coordinates.getEntitiesOnBlock(mouseCoordinates);
+
+            if (!entitiesOnOccupiedBlock.isEmpty()&& entitiesOnOccupiedBlock.stream().anyMatch(e->e!=this)){
+                mouseControllerManager.mouseDraggedInteractionInterrupted = true;
+                return;
+            }
+            if (!Coordinates.isBlockOccupied(mouseCoordinates) && mouseCoordinates.validate(getSize())) {
+                //move block by dragging it
+                Bomberman.getMatch().getMouseControllerManager().mouseDragInteractionEntered = true;
+                Bomberman.getMatch().getMouseControllerManager().mouseDraggedInteractionOccured = true;
+                setCoords(mouseCoordinates);
+            }
+
+
+        }
+    }
+
+
+    public void mouseInteractions() {
+
+        MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
+        Entity entity = mouseControllerManager.getEntity();
+
+        if (entity == null) return;
+
+        if(mouseControllerManager.isMouseClicked) {//TODO &&hammer is active
+            mouseClickInteraction();
+        }
+
+        if (mouseControllerManager.isMouseDragged) {
+            mouseDragInteraction();
+
+        }
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
+
     //to be called on construction
     public abstract void setPassiveInteractionEntities();
 
     public final void removePassiveInteractionEntity(Class<? extends Entity> e){
         passiveInteractionEntities.remove(e);
     }
-    public final void addPassiveInteractionEntity(Class<? extends Entity> e){
+
+    public final void addPassiveInteractionEntity(Class<? extends Entity> e) {
         passiveInteractionEntities.add(e);
     }
+
     public final boolean canBeInteractedBy(Entity e){
-        if(e==null)return true;
-        return passiveInteractionEntities.stream().anyMatch(c-> c.isInstance(e));
+        return e == null || passiveInteractionEntities.stream().anyMatch(c-> c.isInstance(e));
     }
 }

@@ -8,6 +8,8 @@ import game.entity.blocks.HardBlock;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.utils.Paths;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
@@ -18,6 +20,7 @@ import java.util.*;
 public class Bomb extends DestroyableBlock implements Explosive {
     public static final int BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 2;
     public static final long PLACE_INTERVAL = 1000;
+    private final List<Explosion> explosions = new ArrayList<>();
     private static final int EXPLODE_TIMER = 5000;
     private Runnable onExplodeCallback;
     private BomberEntity caller;
@@ -48,6 +51,8 @@ public class Bomb extends DestroyableBlock implements Explosive {
 
         BufferedImage img = loadAndSetImage(images[lastImageIndex]);
 
+        AudioManager.getInstance().play(SoundModel.BOMB_CLOCK);
+
         lastImageIndex++;
         if (lastImageIndex >= images.length) {
             lastImageIndex = 0;
@@ -75,6 +80,8 @@ public class Bomb extends DestroyableBlock implements Explosive {
         }
 
         despawn();
+
+        AudioManager.getInstance().play(SoundModel.EXPLOSION);
 
         new Explosion(getCoords(), Direction.UP, this);
         new Explosion(getCoords(), Direction.RIGHT, this);
@@ -127,13 +134,18 @@ public class Bomb extends DestroyableBlock implements Explosive {
     }
 
     @Override
-    public void onMouseClick(){
+    public void mouseInteractions(){
         explode();
     }
 
     @Override
     public void destroy(){
         explode();
+    }
+
+    @Override
+    public synchronized List<Explosion> getExplosions() {
+        return explosions;
     }
 }
 

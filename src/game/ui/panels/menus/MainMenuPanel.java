@@ -6,6 +6,7 @@ import game.level.world1.World1Level1;
 import game.level.world1.World1Level5;
 import game.level.world2.World2Level1;
 import game.level.world2.World2Level2;
+import game.level.world2.World2Level4;
 import game.level.world2.World2Level5;
 import game.localization.Localization;
 import game.ui.elements.BombermanButton;
@@ -90,9 +91,7 @@ public class MainMenuPanel extends PagePanel {
      */
     private void createQuitButton() {
         exitButton = new YellowButton(Localization.get(QUIT));
-        exitButton.addActionListener(v -> {
-            System.exit(0);
-        });
+        exitButton.addActionListener(v -> System.exit(0));
         listButtonsPanel.add(exitButton);
     }
 

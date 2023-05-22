@@ -1,10 +1,11 @@
 package game.powerups;
 
 import game.entity.Player;
-import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.entity.models.Character;
 import game.models.Coordinates;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,14 +17,15 @@ import java.util.*;
 public abstract class PowerUp extends EntityInteractable {
     // A static array of power-up classes
     public static final Class<? extends PowerUp>[] POWER_UPS = new Class[] {
-  /*          ArmorPowerUp.class,
+            //ArmorPowerUp.class,
             FirePowerUp.class,
-            SpeedPowerUp.class,
-            TransparentDestroyableBlocksPowerUp.class,
-            LivesPowerUp.class*/
-            RemoteControl.class,
-            Hammer.class
+            //SpeedPowerUp.class,
+            //TransparentDestroyableBlocksPowerUp.class,
+            //LivesPowerUp.class
+           // RemoteControl.class,
+            //Hammer.class
     };
+    public ArrayList<Class<?extends PowerUp>> incompatiblePowerUps = new ArrayList<>();
 
     // The default duration for a power-up, in seconds
     public static final int DEFAULT_DURATION_SEC = 15;
@@ -96,14 +98,16 @@ public abstract class PowerUp extends EntityInteractable {
         if(!canPickUp(entity))
             return;
 
-        if(entity.getActivePowerUps().contains(this.getClass()))
+        if(entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass()))) {
             return;
+        }
 
         this.applied = true;
         this.despawn();
         this.character = entity;
         this.doApply(entity);
 
+        AudioManager.getInstance().play(SoundModel.POWERUP);
         entity.getActivePowerUps().add(this.getClass());
 
         int duration = getDuration() * 1000;
@@ -112,10 +116,12 @@ public abstract class PowerUp extends EntityInteractable {
             entity.getActivePowerUps().remove(this.getClass());
             return;
         }
-
+        PowerUp thisPowerUp = this;
         TimerTask task = new TimerTask() {
             public void run() {
-                entity.getActivePowerUps().remove(this.getClass());
+                var x = entity.getActivePowerUps();
+                entity.removeActivePowerUp(thisPowerUp);
+                var d = entity.getActivePowerUps();
                 PowerUp.this.cancel(entity);
             }
         };
