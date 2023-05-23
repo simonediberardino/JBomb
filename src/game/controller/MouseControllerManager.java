@@ -128,6 +128,10 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
         return mouseDraggedInteractionOccured;
     }
 
+    public LinkedList<MouseEvent> getMouseClickQueue() {
+        return mouseClickQueue;
+    }
+
     public void setMouseDraggedInteractionOccured(boolean mouseDraggedInteractionOccured) {
         this.mouseDraggedInteractionOccured = mouseDraggedInteractionOccured;
     }
