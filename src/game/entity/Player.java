@@ -89,6 +89,7 @@ public class Player extends BomberEntity {
     protected void onSpawn() {
         super.onSpawn();
         Bomberman.getMatch().getControllerManager().register(this);
+        Bomberman.getBombermanFrame().getMatchPanel().refreshPowerUps(getActivePowerUps());
     }
 
     @Override

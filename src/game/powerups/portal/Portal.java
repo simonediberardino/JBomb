@@ -11,4 +11,9 @@ public abstract class Portal extends PowerUp {
     public Portal(Coordinates coordinates){
         super(coordinates);
     }
+
+    @Override
+    public boolean isDisplayable() {
+        return false;
+    }
 }

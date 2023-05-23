@@ -104,9 +104,6 @@ public class BombermanFrame extends JFrame {
         this.setVisible(true);
         this.revalidate();
         this.repaint();
-
-        revalidate();
-        repaint();
     }
 
     /**

@@ -16,6 +16,10 @@ public class Coordinates {
     private final int x;
     private final int y;
 
+    public Coordinates() {
+        this(Integer.MIN_VALUE, Integer.MIN_VALUE);
+    }
+
     public Coordinates(int x, int y) {
         this.x = x;
         this.y = y;

@@ -1,26 +1,24 @@
 package game.powerups;
 
-import game.data.DataInputOutput;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;
 import game.utils.Paths;
 
-import javax.xml.crypto.Data;
 import java.awt.image.BufferedImage;
 
-public class LivesPowerUp extends PowerUp{
+public class EmptyPowerup extends PowerUp{
     /**
      * Constructs a PowerUp entity with the specified coordinates.
      *
      * @param coordinates the coordinates of the PowerUp entity
      */
-    public LivesPowerUp(Coordinates coordinates) {
+    public EmptyPowerup(Coordinates coordinates) {
         super(coordinates);
     }
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/lives_up.png");
+        return loadAndSetImage(Paths.getPowerUpsFolder() + "/no_powerup.png");
     }
 
     @Override
@@ -29,17 +27,8 @@ public class LivesPowerUp extends PowerUp{
     }
 
     @Override
-    protected void doApply(BomberEntity entity) {
-        DataInputOutput.increaseLives();
-    }
+    protected void doApply(BomberEntity entity) {}
 
     @Override
-    protected void cancel(BomberEntity entity) {
-
-    }
-
-    @Override
-    public boolean isDisplayable() {
-        return false;
-    }
+    protected void cancel(BomberEntity entity) {}
 }

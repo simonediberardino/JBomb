@@ -11,15 +11,12 @@ import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.utils.Utility;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 public abstract class BomberEntity extends Character {
     private static final int MAX_BOMB_CAN_HOLD = 10;
-    private final ArrayList<Class<? extends Entity>> listInteractWithMouse = new ArrayList<>(Arrays.asList(DestroyableBlock.class));
-    private final ArrayList<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
+    private final List<Class<? extends Entity>> listInteractWithMouse = new ArrayList<>(Collections.singletonList(DestroyableBlock.class));
+    private final List<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
     private int currBombLimit = Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     private int placedBombs = 0;
@@ -32,7 +29,6 @@ public abstract class BomberEntity extends Character {
      */
     public BomberEntity(Coordinates coordinates) {
         super(coordinates);
-
     }
 
     public int getCurrExplosionLength(){
@@ -87,14 +83,15 @@ public abstract class BomberEntity extends Character {
         listInteractWithMouse.remove(cls);
     }
 
-    public ArrayList<Class<? extends PowerUp>> getActivePowerUps() {
+    public List<Class<? extends PowerUp>> getActivePowerUps() {
         return activePowerUp;
     }
+
     public void removeActivePowerUp(PowerUp p){
         getActivePowerUps().removeIf(e->e.isInstance(p));
     }
 
-    public ArrayList<Class<? extends Entity>> getListClassInteractWithMouse(){
+    public List<Class<? extends Entity>> getListClassInteractWithMouse(){
         return listInteractWithMouse;
     }
 }

@@ -62,6 +62,10 @@ public class Paths {
         return String.format("%s/world_selector/world%d.png", Paths.getAssetsFolder(), id);
     }
 
+    public static String getPowerupsLogoPath() {
+        return getPowerUpsFolder() + "/powerups_logo.png";
+    }
+
     public static String getSoundsPath() {
         return getAssetsFolder() + "/sounds";
     }

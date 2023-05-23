@@ -1,5 +1,6 @@
 package game.powerups;
 
+import game.Bomberman;
 import game.entity.Player;
 import game.entity.models.*;
 import game.entity.models.Character;
@@ -17,13 +18,13 @@ import java.util.*;
 public abstract class PowerUp extends EntityInteractable {
     // A static array of power-up classes
     public static final Class<? extends PowerUp>[] POWER_UPS = new Class[] {
-            //ArmorPowerUp.class,
-            //FirePowerUp.class,
+            ArmorPowerUp.class,
+            FirePowerUp.class,
             SpeedPowerUp.class,
-            //TransparentDestroyableBlocksPowerUp.class,
-            //LivesPowerUp.class
-           // RemoteControl.class,
-            //Hammer.class
+            TransparentDestroyableBlocksPowerUp.class,
+            LivesPowerUp.class,
+            RemoteControl.class,
+            Hammer.class
     };
     public ArrayList<Class<?extends PowerUp>> incompatiblePowerUps = new ArrayList<>();
 
@@ -107,21 +108,21 @@ public abstract class PowerUp extends EntityInteractable {
         this.character = entity;
         this.doApply(entity);
 
+        var matchPanel = Bomberman.getBombermanFrame().getMatchPanel();
         AudioManager.getInstance().play(SoundModel.POWERUP);
         entity.getActivePowerUps().add(this.getClass());
+        matchPanel.refreshPowerUps(entity.getActivePowerUps());
 
         int duration = getDuration() * 1000;
         // If the power-up has a duration, schedule a TimerTask to cancel it when the duration is up
         if (duration <= 0) {
-            entity.getActivePowerUps().remove(this.getClass());
             return;
         }
         PowerUp thisPowerUp = this;
         TimerTask task = new TimerTask() {
             public void run() {
-                var x = entity.getActivePowerUps();
                 entity.removeActivePowerUp(thisPowerUp);
-                var d = entity.getActivePowerUps();
+                matchPanel.refreshPowerUps(entity.getActivePowerUps());
                 PowerUp.this.cancel(entity);
             }
         };
@@ -172,5 +173,9 @@ public abstract class PowerUp extends EntityInteractable {
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
         return new HashSet<>(Collections.singletonList(Player.class));
+    }
+
+    public boolean isDisplayable() {
+        return true;
     }
 }

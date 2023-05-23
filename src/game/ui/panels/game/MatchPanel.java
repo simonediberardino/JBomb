@@ -2,6 +2,10 @@ package game.ui.panels.game;
 
 import game.BomberManMatch;
 import game.Bomberman;
+import game.models.Coordinates;
+import game.powerups.EmptyPowerup;
+import game.powerups.PowerUp;
+import game.powerups.SpeedPowerUp;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.utils.Paths;
@@ -9,6 +13,10 @@ import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MatchPanel extends PagePanel {
     private PitchPanel pitchPanel; // The main panel that contains the game
@@ -224,6 +232,13 @@ public class MatchPanel extends PagePanel {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
+                if(powerUpsPanel != null){
+                    int offset = 15;
+                    int logoWidth = Utility.px(240);
+                    int logoHeight = Utility.px(88);
+                    Image powerupsLogo = Utility.loadImage(Paths.getPowerupsLogoPath()).getScaledInstance(logoWidth, logoHeight, 0);
+                    g.drawImage(powerupsLogo, powerUpsPanel.getX() - logoWidth / 2 + powerUpsPanel.getWidth()/2, powerUpsPanel.getY() - logoHeight - offset, null);
+                }
                 // Draw the image scaled to the specified border size on the right side of the panel
                 g.drawImage(image.getScaledInstance(borderSize, (int) frame.getPreferredSize().getHeight(), 1), 0, 0, null);
             }
@@ -238,22 +253,8 @@ public class MatchPanel extends PagePanel {
             }
         };
 
-        // TODO
-        Image img = Utility.loadImage(Paths.getPowerUpsFolder() + "/fire_up.png");
-        img = img.getScaledInstance(75, 75, 0);
-        JLabel jLabel = new JLabel(new ImageIcon(img));
-        JLabel jLabel1 = new JLabel(new ImageIcon(img));
-        JLabel jLabel2 = new JLabel(new ImageIcon(img));
-        JLabel jLabel3 = new JLabel(new ImageIcon(img));
-        JLabel jLabel4 = new JLabel(new ImageIcon(img));
-
         powerUpsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         powerUpsPanel.setOpaque(false);
-        powerUpsPanel.add(jLabel);
-        powerUpsPanel.add(jLabel1);
-        powerUpsPanel.add(jLabel2);
-        powerUpsPanel.add(jLabel3);
-        powerUpsPanel.add(jLabel4);
         powerUpsPanel.setLayout(new GridLayout(0, 2));
 
         rightPanel.setLayout(new GridBagLayout());
@@ -263,6 +264,57 @@ public class MatchPanel extends PagePanel {
         // Return the JPanel for the left side of the game window
         return rightPanel;
     }
+
+    /**
+     * Refreshes the power-ups displayed in the power-up panel.
+     *
+     * @param powerUpList The list of power-up classes to be displayed.
+     */
+    public void refreshPowerUps(List<Class<? extends PowerUp>> powerUpList) {
+        // Create a copy of the power-up list
+        final List<Class<? extends PowerUp>> powerUpsToShow = new ArrayList<>(powerUpList);
+
+        // Define the dimension of each power-up image
+        final int powerUpImageDimension = Utility.px(75);
+
+        // Calculate the number of rows and columns for the power-up panel
+        int rows = 0, cols = powerUpList.size() <= 1 ? 1 : 2;
+
+        // Set the layout of the power-up panel
+        powerUpsPanel.setLayout(new GridLayout(rows, cols));
+
+        // Remove all existing components from the power-up panel
+        powerUpsPanel.removeAll();
+
+        // If there are no power-ups to show, add an EmptyPowerup class as a placeholder
+        if (powerUpsToShow.isEmpty())
+            powerUpsToShow.add(EmptyPowerup.class);
+
+        // Iterate over each power-up class
+        for (Class<? extends PowerUp> p : powerUpsToShow) {
+            PowerUp powerUp;
+
+            try {
+                // Instantiate a power-up object using its constructor with a Coordinates parameter
+                powerUp = p.getConstructor(Coordinates.class).newInstance(new Coordinates());
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                continue;
+            }
+
+            if(!powerUp.isDisplayable()) continue;
+
+            // Scale the power-up image to the desired dimensions
+            Image img = powerUp.getImage().getScaledInstance(powerUpImageDimension, powerUpImageDimension, 0);
+
+            // Create a JLabel with the scaled image and add it to the power-up panel
+            powerUpsPanel.add(new JLabel(new ImageIcon(img)));
+        }
+
+        // Update and repaint the right panel to reflect the changes
+        rightPanel.revalidate();
+        rightPanel.repaint();
+    }
+
 
     public PitchPanel getPitchPanel() {
         return pitchPanel;
