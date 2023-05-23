@@ -142,6 +142,7 @@ public class BomberManMatch implements OnGameEvent {
         this.currentLevel = null;
         this.entities.clear();
         this.enemiesAlive = 0;
+        this.mouseControllerManager.stopPeriodicTask();
         this.gameTickerObservable.unregisterAll();
         this.gameTickerObservable = null;
         this.controllerManager.unregisterAll();

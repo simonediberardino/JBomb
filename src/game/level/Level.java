@@ -143,7 +143,6 @@ public abstract class Level {
         //TODO mousecontroller manager refresh to be refactored
         //   |   when player is respawned mousecontrollermanager keeps last player's instance commands
         //   V
-        Bomberman.getMatch().mouseControllerManager = new MouseControllerManager();
     }
 
     public void endLevel() {
