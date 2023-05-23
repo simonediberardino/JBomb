@@ -28,11 +28,13 @@ public abstract class Character extends MovingEntity {
     public static final int SIZE = PitchPanel.PIXEL_UNIT * 4 * 2;
 
     protected long lastDirectionUpdate = 0;
-    protected Direction currDirection = Direction.values()[(int) (Math.random() * values().length)];
+    protected final List<Direction> imagePossibleDirections = new ArrayList<>(Arrays.asList(Direction.values()));
+    protected Direction currDirection = imagePossibleDirections.get(0);
     /**
      * The last direction this character was moving in.
      */
     protected Direction previousDirection = null;
+    protected Direction imageDirection = null;
     /**
      * Whether this character is alive or not.
      */
@@ -40,7 +42,7 @@ public abstract class Character extends MovingEntity {
     protected boolean isImmune = false;
     protected volatile AtomicReference<State> state = new AtomicReference<>();
     protected boolean canMove = true;
-    protected final List<Direction> imagePossibleDirections = new ArrayList<>(Arrays.asList(Direction.values()));
+
     private int maxHp = 100;
     private int healthPoints = maxHp;
 
@@ -51,18 +53,10 @@ public abstract class Character extends MovingEntity {
      */
     public abstract String[] getBaseSkins();
 
-    public String[] getDirectionIcon(Direction d){
-        switch (d) {
-            case LEFT: return getLeftIcons();
-            case RIGHT: return getRightIcons();
-            case UP: return getBackIcons();
-            case DOWN: return getBaseSkins();
-        }
-        return getBaseSkins();
-    }
 
-    public String[] newDirectionIcons() {
-        return imagePossibleDirections.contains(currDirection) ? getDirectionIcon(currDirection) : getDirectionIcon(previousDirection);
+    protected void setImageDirection(){
+        if (imagePossibleDirections.contains(currDirection)) imageDirection = currDirection;
+        else if(imageDirection == null) imageDirection = imagePossibleDirections.get(0);
     }
 
     /**
@@ -70,33 +64,7 @@ public abstract class Character extends MovingEntity {
      *
      * @return an array of file names for the left-facing icons
      */
-    public String[] getLeftIcons() {
-        return getBaseSkins();
-    }
 
-    /**
-     * Returns an array of file names for the back-facing icons for this character.
-     *
-     * @return an array of file names for the back-facing icons
-     */
-    public String[] getBackIcons() {
-        return getBaseSkins();
-    }
-
-    /**
-     * Returns an array of file names for the right-facing icons for this character.
-     *
-     * @return an array of file names for the right-facing icons
-     */
-    public String[] getRightIcons() {
-        return getBaseSkins();
-    }
-
-    /**
-     * Constructs a new Character with the specified Coordinates.
-     *
-     * @param coordinates the coordinates of the new Character
-     */
     public Character(Coordinates coordinates) {
         super(coordinates);
     }
@@ -128,6 +96,7 @@ public abstract class Character extends MovingEntity {
 
     @Override
     public BufferedImage getImage() {
+        setImageDirection();
         if (this.image != null) {
             return this.image;
         } else {
@@ -175,10 +144,10 @@ public abstract class Character extends MovingEntity {
      * @param d The new direction the entity is moving in.
      */
     protected void updateLastDirection(Direction d) {
-        String[] baseIcons = getBaseSkins();
-
         // If the character doesn't have custom images for each direction, do not check if the direction has changed;
         if (useOnlyBaseIcons()) {
+            String[] baseIcons = getBaseSkins();
+
             if (Utility.timePassed(lastImageUpdate) > getImageRefreshRate()) {
                 // If it's time to refresh the image, increment the image index.
                 lastImageIndex++;
@@ -195,15 +164,19 @@ public abstract class Character extends MovingEntity {
         }
 
         // If both previousDirection and currDirection are null, initialize currDirection to d and load the front-facing image.
+
         if (previousDirection == null && currDirection == null) {
             currDirection = d;
-            loadAndSetImage(baseIcons[0]);
+            loadAndSetImage(getBaseSkins()[0]);
             return;
         }
+
 
         // Update previousDirection and currDirection to reflect the new direction.
         previousDirection = currDirection;
         currDirection = d;
+
+        String[] baseIcons = getBaseSkins();
 
         // If the previousDirection and current direction are different, reset the image index and last direction update time.
         if (previousDirection != d) {
@@ -218,13 +191,12 @@ public abstract class Character extends MovingEntity {
             return;
         }
 
-        String[] icons = newDirectionIcons();
-
         // Ensure the icon index is within bounds.
-        if (lastImageIndex < 0 || lastImageIndex >= icons.length)
+        if (lastImageIndex < 0 || lastImageIndex >= baseIcons.length)
             lastImageIndex = 0;
 
-        loadAndSetImage(icons[lastImageIndex]);
+        System.out.println(baseIcons[lastImageIndex]);
+        loadAndSetImage(baseIcons[lastImageIndex]);
     }
 
     @Override

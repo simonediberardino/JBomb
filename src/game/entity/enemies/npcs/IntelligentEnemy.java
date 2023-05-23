@@ -20,7 +20,6 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
     public IntelligentEnemy(){
         super();
         heightToHitboxSizeRatio = 0.733f;
-
     }
 
     public IntelligentEnemy(Coordinates coordinates) {

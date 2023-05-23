@@ -46,44 +46,17 @@ public class Player extends BomberEntity {
 
     @Override
     public String[] getBaseSkins() {
-        return new String[]{
-                getBasePath() + "/player_front_0.png",
-                getBasePath() + "/player_front_1.png",
-                getBasePath() + "/player_front_0.png",
-                getBasePath() + "/player_front_2.png"
-        };
-    }
 
-    @Override
-    public String[] getLeftIcons() {
+        setImageDirection();
         return new String[]{
-                getBasePath() + "/player_left_0.png",
-                getBasePath() + "/player_left_1.png",
-                getBasePath() + "/player_left_2.png",
-                getBasePath() + "/player_left_1.png"
-        };
-    }
-
-    @Override
-    public String[] getBackIcons() {
-        return new String[]{
-                getBasePath() + "/player_back_0.png",
-                getBasePath() + "/player_back_1.png",
-                getBasePath() + "/player_back_0.png",
-                getBasePath() + "/player_back_2.png"
-        };
-    }
-
-    @Override
-    public String[] getRightIcons() {
-        return new String[]{
-                getBasePath() + "/player_right_0.png",
-                getBasePath() + "/player_right_1.png",
-                getBasePath() + "/player_right_2.png",
-                getBasePath() + "/player_right_1.png"
+                getBasePath() + "/player_" + imageDirection.toString().toLowerCase()+"_"+0+".png",
+                getBasePath() + "/player_" + imageDirection.toString().toLowerCase()+"_"+1+".png",
+                getBasePath() + "/player_" + imageDirection.toString().toLowerCase()+"_"+2+".png",
+                getBasePath() + "/player_" + imageDirection.toString().toLowerCase()+"_"+1+".png",
 
         };
     }
+
 
     @Override
     protected void onSpawn() {

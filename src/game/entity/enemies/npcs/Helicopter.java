@@ -10,36 +10,10 @@ public class Helicopter extends FlyingEnemy{
 
     public String[] getBaseSkins() {
         return new String[]{
-                getBasePath() + "/heli_front_0.gif",
-                getBasePath() + "/heli_front_1.gif",
-                getBasePath() + "/heli_front_2.gif",
+                getBasePath() + "/heli_" + imageDirection.toString().toLowerCase()+"_" +"0.gif",
+                getBasePath() + "/heli_"+imageDirection.toString().toLowerCase() +"_"+"1.gif",
+                getBasePath() + "/heli_"+ imageDirection.toString().toLowerCase()+"_"+"2.gif",
         };
     }
 
-    @Override
-    public String[] getLeftIcons() {
-        return new String[]{
-                getBasePath() + "/heli_left_0.gif",
-                getBasePath() + "/heli_left_1.gif",
-                getBasePath() + "/heli_left_2.gif",
-        };
-    }
-
-    @Override
-    public String[] getBackIcons() {
-        return new String[]{
-                getBasePath() + "/heli_back_0.gif",
-                getBasePath() + "/heli_back_1.gif",
-                getBasePath() + "/heli_back_2.gif",
-        };
-    }
-
-    @Override
-    public String[] getRightIcons() {
-        return new String[]{
-                getBasePath() + "/heli_right_0.gif",
-                getBasePath() + "/heli_right_1.gif",
-                getBasePath() + "/heli_right_2.gif",
-        };
-    }
 }

@@ -21,28 +21,18 @@ public class YellowBall extends IntelligentEnemy {
 
     @Override
     public String[] getBaseSkins() {
-        Direction d = getImageDirection();
-        String basePath = getBasePath();
-        String[] skins = new String[Direction.values().length];
+        setImageDirection();
+        return new String[]{
+                Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase() +"_"+ 0 + ".png",
+                Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase()+"_" + 1 + ".png",
+                Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase()+"_" + 2 + ".png",
+                Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase() +"_"+ 3 + ".png"
+        };
 
-        for (int i = 0; i < skins.length; i++) {
-            skins[i] = String.format("%s_%s_%d.png", basePath, d.toString().toLowerCase(), i);
-        }
 
-        return skins;
+
     }
 
-    private Direction getImageDirection() {
-        if (imagePossibleDirections.contains(currDirection)) {
-            return currDirection;
-        }
-
-        if (imagePossibleDirections.contains(previousDirection)) {
-            return previousDirection;
-        }
-
-        return imagePossibleDirections.get(0);
-    }
 
 
     @Override

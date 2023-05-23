@@ -29,31 +29,10 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
 
     public String[] getBaseSkins() {
         return new String[]{
-                Paths.getEnemiesFolder() + "/tank/tank_front.png"
+                String.format("%s/tank/tank_%s.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase())
         };
     }
 
-
-    @Override
-    public String[] getLeftIcons() {
-        return new String[]{
-                Paths.getEnemiesFolder() + "/tank/tank_left.png"
-        };
-    }
-
-    @Override
-    public String[] getBackIcons() {
-        return new String[]{
-                Paths.getEnemiesFolder() + "/tank/tank_back.png"
-        };
-    }
-
-    @Override
-    public String[] getRightIcons() {
-        return new String[]{
-                Paths.getEnemiesFolder() + "/tank/tank_right.png"
-        };
-    }
 
     @Override
     public void doUpdate(boolean arg) {
