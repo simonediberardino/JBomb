@@ -140,7 +140,7 @@ public class Player extends BomberEntity {
     }
 
     @Override
-    public void setPassiveInteractionEntities() {
-        passiveInteractionEntities = new HashSet<>(Arrays.asList(Explosion.class, Enemy.class, PowerUp.class));
+    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
+        return new HashSet<>(Arrays.asList(Explosion.class, Enemy.class, PowerUp.class));
     }
 }

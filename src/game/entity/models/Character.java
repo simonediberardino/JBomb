@@ -3,6 +3,7 @@ package game.entity.models;
 import game.Bomberman;
 import game.controller.Command;
 import game.controller.ControllerManager;
+import game.entity.enemies.npcs.YellowBall;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.sound.AudioManager;
@@ -12,10 +13,7 @@ import game.utils.Utility;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
@@ -42,9 +40,9 @@ public abstract class Character extends MovingEntity {
     protected boolean isImmune = false;
     protected volatile AtomicReference<State> state = new AtomicReference<>();
     protected boolean canMove = true;
+    protected final List<Direction> imagePossibleDirections = new ArrayList<>(Arrays.asList(Direction.values()));
     private int maxHp = 100;
     private int healthPoints = maxHp;
-
 
     /**
      * Returns an array of file names for the front-facing icons for this character.
@@ -52,6 +50,20 @@ public abstract class Character extends MovingEntity {
      * @return an array of file names for the front-facing icons
      */
     public abstract String[] getBaseSkins();
+
+    public String[] getDirectionIcon(Direction d){
+        switch (d) {
+            case LEFT: return getLeftIcons();
+            case RIGHT: return getRightIcons();
+            case UP: return getBackIcons();
+            case DOWN: return getBaseSkins();
+        }
+        return getBaseSkins();
+    }
+
+    public String[] newDirectionIcons() {
+        return imagePossibleDirections.contains(currDirection) ? getDirectionIcon(currDirection) : getDirectionIcon(previousDirection);
+    }
 
     /**
      * Returns an array of file names for the left-facing icons for this character.
@@ -182,10 +194,6 @@ public abstract class Character extends MovingEntity {
             return;
         }
 
-        String[] leftIcons = getLeftIcons();
-        String[] backIcons = getBackIcons();
-        String[] rightIcons = getRightIcons();
-
         // If both previousDirection and currDirection are null, initialize currDirection to d and load the front-facing image.
         if (previousDirection == null && currDirection == null) {
             currDirection = d;
@@ -210,21 +218,7 @@ public abstract class Character extends MovingEntity {
             return;
         }
 
-        String[] icons;
-        switch (currDirection) {
-            case LEFT:
-                icons = leftIcons;
-                break;
-            case RIGHT:
-                icons = rightIcons;
-                break;
-            case UP:
-                icons = backIcons;
-                break;
-            default:
-                icons = baseIcons;
-                break;
-        }
+        String[] icons = newDirectionIcons();
 
         // Ensure the icon index is within bounds.
         if (lastImageIndex < 0 || lastImageIndex >= icons.length)
@@ -315,12 +309,10 @@ public abstract class Character extends MovingEntity {
         // If the first direction has no obstacles and the second does, and the second direction is not double-clicked, move in the second direction.
         if (!entitiesOpposite1.isEmpty() && entitiesOpposite2.isEmpty()) {
             move(direction2);
-
         }
         // If the second direction has no obstacles and the first does, and the first direction is not double-clicked, move in the first direction.
         else if (!entitiesOpposite2.isEmpty() && entitiesOpposite1.isEmpty()) {
             move(direction1);
-
         }
     }
 

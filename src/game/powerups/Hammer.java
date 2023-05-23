@@ -34,7 +34,6 @@ public class Hammer extends PowerUp{
 
     @Override
     protected void cancel(BomberEntity entity) {
-        System.out.println("REMOVED");
         entity.getListClassInteractWithMouse().remove(DestroyableBlock.class);
     }
 }

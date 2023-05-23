@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class DestroyableBlock extends Block {
@@ -75,11 +76,8 @@ public class DestroyableBlock extends Block {
         this.powerUpClass = powerUpClass;
     }
 
-
-
-
     @Override
-    public void setPassiveInteractionEntities() {
-        passiveInteractionEntities = new HashSet<>(Collections.singletonList(Explosion.class));
+    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
+        return new HashSet<>(Collections.singletonList(Explosion.class));
     }
 }

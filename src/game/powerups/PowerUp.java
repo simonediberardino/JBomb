@@ -17,8 +17,8 @@ import java.util.*;
 public abstract class PowerUp extends EntityInteractable {
     // A static array of power-up classes
     public static final Class<? extends PowerUp>[] POWER_UPS = new Class[] {
-            //ArmorPowerUp.class,
-            FirePowerUp.class,
+            ArmorPowerUp.class,
+            //FirePowerUp.class,
             //SpeedPowerUp.class,
             //TransparentDestroyableBlocksPowerUp.class,
             //LivesPowerUp.class
@@ -170,7 +170,7 @@ public abstract class PowerUp extends EntityInteractable {
     }
 
     @Override
-    public void setPassiveInteractionEntities() {
-        passiveInteractionEntities = new HashSet<>(Collections.singletonList(Player.class));
+    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
+        return new HashSet<>(Collections.singletonList(Player.class));
     }
 }

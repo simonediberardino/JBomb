@@ -34,7 +34,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     private String imagePath = "";
     private final long id;
 
-    public Set<Class<? extends Entity>> passiveInteractionEntities = new HashSet();
+    public Set<Class<? extends Entity>> passiveInteractionEntities = new HashSet<>();
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -48,10 +48,11 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     public Entity(Coordinates coordinates){
         this.id = UUID.randomUUID().getMostSignificantBits();
         this.coords = coordinates;
-        setPassiveInteractionEntities();
+        this.passiveInteractionEntities = getBasePassiveInteractionEntities();
     }
 
     protected String getBasePath(){ return ""; }
+
     protected void onSpawn(){}
     protected void onDespawn(){}
 
@@ -363,77 +364,121 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         Entity entity = (Entity) o;
         return id == entity.id;
     }
-    public void eliminated(){
+
+    /**
+     * Eliminates the entity by despawning it.
+     */
+    public void eliminated() {
         despawn();
     }
 
+    /**
+     * Handles mouse click interactions.
+     * If the entity is within one grid size distance from the player's center coordinates, it gets eliminated.
+     */
     public void mouseClickInteraction() {
         Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(Bomberman.getMatch().getPlayer()));
-        if ((getCoords().distanceTo(Coordinates.roundCoordinates(centerCoordinatesOfEntity)) <= PitchPanel.GRID_SIZE))
+
+        // Check if the entity is within one grid size distance from the player's center coordinates
+        if (getCoords().distanceTo(Coordinates.roundCoordinates(centerCoordinatesOfEntity)) <= PitchPanel.GRID_SIZE) {
             eliminated();
+        }
     }
 
-
+    /**
+     * Handles mouse drag interactions.
+     * This method allows dragging the entity to move it around.
+     */
     public synchronized void mouseDragInteraction() {
-
         MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
         Entity interactedEntity = mouseControllerManager.getEntity();
         Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(Bomberman.getMatch().getPlayer()));
         Coordinates mouseCoordinates = Coordinates.roundCoordinates(Bomberman.getMatch().getMouseControllerManager().mouseCoords);
-        if(mouseControllerManager.mouseDraggedInteractionInterrupted) return;
-        if (interactedEntity.getCoords().distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE || mouseControllerManager.mouseDragInteractionEntered) {
-            List<Entity> entitiesOnOccupiedBlock = Coordinates.getEntitiesOnBlock(mouseCoordinates);
 
-            if (!entitiesOnOccupiedBlock.isEmpty()&& entitiesOnOccupiedBlock.stream().anyMatch(e->e!=this)){
-                mouseControllerManager.mouseDraggedInteractionInterrupted = true;
-                return;
-            }
-            if (!Coordinates.isBlockOccupied(mouseCoordinates) && mouseCoordinates.validate(getSize())) {
-                //move block by dragging it
-                Bomberman.getMatch().getMouseControllerManager().mouseDragInteractionEntered = true;
-                Bomberman.getMatch().getMouseControllerManager().mouseDraggedInteractionOccured = true;
-                setCoords(mouseCoordinates);
-            }
+        if (mouseControllerManager.mouseDraggedInteractionInterrupted) {
+            return;
+        }
 
+        // Check if the interacted entity is not within one grid size distance from the player's center coordinates
+        // and the mouse drag interaction has not been entered yet
+        if (!(interactedEntity.getCoords().distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) && !mouseControllerManager.mouseDragInteractionEntered) {
+            return;
+        }
 
+        List<Entity> entitiesOnOccupiedBlock = Coordinates.getEntitiesOnBlock(mouseCoordinates);
+
+        // Check if there are other entities on the occupied block, and they are not the current entity
+        if (!entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this)) {
+            mouseControllerManager.mouseDraggedInteractionInterrupted = true;
+            return;
+        }
+
+        if (!Coordinates.isBlockOccupied(mouseCoordinates) && mouseCoordinates.validate(getSize())) {
+            // Move the entity to the dragged mouse coordinates
+            Bomberman.getMatch().getMouseControllerManager().mouseDragInteractionEntered = true;
+            Bomberman.getMatch().getMouseControllerManager().mouseDraggedInteractionOccured = true;
+            setCoords(mouseCoordinates);
         }
     }
 
+    /**
+     * Retrieves the set of base passive interaction entities.
+     *
+     * @return The set of base passive interaction entities.
+     */
+    protected abstract Set<Class<? extends Entity>> getBasePassiveInteractionEntities();
 
+    /**
+     * Removes a passive interaction entity.
+     *
+     * @param e The class of the entity to remove.
+     */
+    protected final void removePassiveInteractionEntity(Class<? extends Entity> e) {
+        passiveInteractionEntities.remove(e);
+    }
+
+    /**
+     * Adds a passive interaction entity.
+     *
+     * @param e The class of the entity to add.
+     */
+    protected final void addPassiveInteractionEntity(Class<? extends Entity> e) {
+        passiveInteractionEntities.add(e);
+    }
+
+    /**
+     * Checks if this entity can be interacted with by another entity.
+     *
+     * @param e The entity attempting to interact.
+     * @return {@code true} if the entity can be interacted with, {@code false} otherwise.
+     */
+    protected final boolean canBeInteractedBy(Entity e) {
+        return e == null || passiveInteractionEntities.stream().anyMatch(c -> c.isInstance(e));
+    }
+
+    /**
+     * Handles mouse interactions.
+     * This method is responsible for mouse click and mouse drag interactions.
+     */
     public void mouseInteractions() {
-
         MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
         Entity entity = mouseControllerManager.getEntity();
 
-        if (entity == null) return;
+        if (entity == null) {
+            return;
+        }
 
-        if(mouseControllerManager.isMouseClicked) {//TODO &&hammer is active
+        if (mouseControllerManager.isMouseClicked) { // TODO: && hammer is active
             mouseClickInteraction();
         }
 
         if (mouseControllerManager.isMouseDragged) {
             mouseDragInteraction();
-
         }
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    //to be called on construction
-    public abstract void setPassiveInteractionEntities();
-
-    public final void removePassiveInteractionEntity(Class<? extends Entity> e){
-        passiveInteractionEntities.remove(e);
-    }
-
-    public final void addPassiveInteractionEntity(Class<? extends Entity> e) {
-        passiveInteractionEntities.add(e);
-    }
-
-    public final boolean canBeInteractedBy(Entity e){
-        return e == null || passiveInteractionEntities.stream().anyMatch(c-> c.isInstance(e));
     }
 }

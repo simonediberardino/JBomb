@@ -1,6 +1,7 @@
 package game.entity.enemies.npcs;
 
 import game.models.Coordinates;
+import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 
@@ -20,13 +21,29 @@ public class YellowBall extends IntelligentEnemy {
 
     @Override
     public String[] getBaseSkins() {
-        return new String[]{
-                String.format("%s_%s.png", getBasePath(), 0),
-                String.format("%s_%s.png", getBasePath(), 1),
-                String.format("%s_%s.png", getBasePath(), 2),
-                String.format("%s_%s.png", getBasePath(), 3),
-        };
+        Direction d = getImageDirection();
+        String basePath = getBasePath();
+        String[] skins = new String[Direction.values().length];
+
+        for (int i = 0; i < skins.length; i++) {
+            skins[i] = String.format("%s_%s_%d.png", basePath, d.toString().toLowerCase(), i);
+        }
+
+        return skins;
     }
+
+    private Direction getImageDirection() {
+        if (imagePossibleDirections.contains(currDirection)) {
+            return currDirection;
+        }
+
+        if (imagePossibleDirections.contains(previousDirection)) {
+            return previousDirection;
+        }
+
+        return imagePossibleDirections.get(0);
+    }
+
 
     @Override
     public int getSize() {

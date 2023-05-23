@@ -97,7 +97,6 @@ public class DataInputOutput {
     }
 
     public static void resetLevel() {
-        System.out.println("Resetting level");
         playerDataObject.setLastWorldId(playerDataObject.getLastWorldId());
         playerDataObject.setLastLevelId(1);
         updateStoredPlayerData();
