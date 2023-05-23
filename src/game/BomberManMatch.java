@@ -72,6 +72,7 @@ public class BomberManMatch implements OnGameEvent {
     public ControllerManager getControllerManager() {
         return controllerManager;
     }
+
     public MouseControllerManager getMouseControllerManager(){
         return mouseControllerManager;
     }

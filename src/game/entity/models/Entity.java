@@ -390,18 +390,19 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * This method allows dragging the entity to move it around.
      */
     public synchronized void mouseDragInteraction() {
+        Entity player = Bomberman.getMatch().getPlayer();
         MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
         Entity interactedEntity = mouseControllerManager.getEntity();
-        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(Bomberman.getMatch().getPlayer()));
-        Coordinates mouseCoordinates = Coordinates.roundCoordinates(Bomberman.getMatch().getMouseControllerManager().mouseCoords);
+        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player));
+        Coordinates mouseCoordinates = Coordinates.roundCoordinates(mouseControllerManager.getMouseCoords());
 
-        if (mouseControllerManager.mouseDraggedInteractionInterrupted) {
+        if (mouseControllerManager.isMouseDraggedInteractionInterrupted()) {
             return;
         }
 
         // Check if the interacted entity is not within one grid size distance from the player's center coordinates
         // and the mouse drag interaction has not been entered yet
-        if (!(interactedEntity.getCoords().distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) && !mouseControllerManager.mouseDragInteractionEntered) {
+        if (!(interactedEntity.getCoords().distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) && !mouseControllerManager.isMouseDragInteractionEntered()) {
             return;
         }
 
@@ -409,14 +410,14 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
         // Check if there are other entities on the occupied block, and they are not the current entity
         if (!entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this)) {
-            mouseControllerManager.mouseDraggedInteractionInterrupted = true;
+            mouseControllerManager.setMouseDraggedInteractionInterrupted(true);
             return;
         }
 
         if (!Coordinates.isBlockOccupied(mouseCoordinates) && mouseCoordinates.validate(getSize())) {
             // Move the entity to the dragged mouse coordinates
-            Bomberman.getMatch().getMouseControllerManager().mouseDragInteractionEntered = true;
-            Bomberman.getMatch().getMouseControllerManager().mouseDraggedInteractionOccured = true;
+            Bomberman.getMatch().getMouseControllerManager().setMouseDragInteractionEntered(true);
+            Bomberman.getMatch().getMouseControllerManager().setMouseDraggedInteractionOccured(true);
             setCoords(mouseCoordinates);
         }
     }
@@ -468,11 +469,11 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
             return;
         }
 
-        if (mouseControllerManager.isMouseClicked) { // TODO: && hammer is active
+        if (mouseControllerManager.isMouseClicked()) { // TODO: && hammer is active
             mouseClickInteraction();
         }
 
-        if (mouseControllerManager.isMouseDragged) {
+        if (mouseControllerManager.isMouseDragged()) {
             mouseDragInteraction();
         }
     }
