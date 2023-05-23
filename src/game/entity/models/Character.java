@@ -3,7 +3,6 @@ package game.entity.models;
 import game.Bomberman;
 import game.controller.Command;
 import game.controller.ControllerManager;
-import game.entity.enemies.npcs.YellowBall;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.sound.AudioManager;
@@ -51,10 +50,10 @@ public abstract class Character extends MovingEntity {
      *
      * @return an array of file names for the front-facing icons
      */
-    public abstract String[] getBaseSkins();
+    public abstract String[] getCharacterOrientedImages();
 
 
-    protected void setImageDirection(){
+    private void setImageDirection(){
         if (imagePossibleDirections.contains(currDirection)) imageDirection = currDirection;
         else if(imageDirection == null) imageDirection = imagePossibleDirections.get(0);
     }
@@ -101,7 +100,7 @@ public abstract class Character extends MovingEntity {
             return this.image;
         } else {
             currDirection = Direction.DOWN;
-            return loadAndSetImage(getBaseSkins()[0]);
+            return loadAndSetImage(getCharacterOrientedImages()[0]);
         }
     }
 
@@ -138,15 +137,15 @@ public abstract class Character extends MovingEntity {
         if (stepSound != null) AudioManager.getInstance().play(stepSound);
     }
 
-    /**
-     * Updates the last direction the entity moved in and sets the appropriate image based on the direction.
-     *
-     * @param d The new direction the entity is moving in.
-     */
+
+    private String[] refreshDirectionAndGetCharsImages(){
+        setImageDirection();
+        return getCharacterOrientedImages();
+    }
     protected void updateLastDirection(Direction d) {
         // If the character doesn't have custom images for each direction, do not check if the direction has changed;
         if (useOnlyBaseIcons()) {
-            String[] baseIcons = getBaseSkins();
+            String[] baseIcons = refreshDirectionAndGetCharsImages();
 
             if (Utility.timePassed(lastImageUpdate) > getImageRefreshRate()) {
                 // If it's time to refresh the image, increment the image index.
@@ -167,7 +166,7 @@ public abstract class Character extends MovingEntity {
 
         if (previousDirection == null && currDirection == null) {
             currDirection = d;
-            loadAndSetImage(getBaseSkins()[0]);
+            loadAndSetImage(getCharacterOrientedImages()[0]);
             return;
         }
 
@@ -176,7 +175,7 @@ public abstract class Character extends MovingEntity {
         previousDirection = currDirection;
         currDirection = d;
 
-        String[] baseIcons = getBaseSkins();
+        String[] baseIcons = refreshDirectionAndGetCharsImages();
 
         // If the previousDirection and current direction are different, reset the image index and last direction update time.
         if (previousDirection != d) {
@@ -195,7 +194,6 @@ public abstract class Character extends MovingEntity {
         if (lastImageIndex < 0 || lastImageIndex >= baseIcons.length)
             lastImageIndex = 0;
 
-        System.out.println(baseIcons[lastImageIndex]);
         loadAndSetImage(baseIcons[lastImageIndex]);
     }
 

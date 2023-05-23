@@ -20,8 +20,7 @@ public abstract class Enemy extends Character{
 
     public Enemy(Coordinates coordinates) {
         super(coordinates);
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
+
     }
 
     @Override

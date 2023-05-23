@@ -13,7 +13,7 @@ public class FastEnemy extends IntelligentEnemy {
     }
 
     @Override
-    public String[] getBaseSkins() {
+    public String[] getCharacterOrientedImages() {
         return new String[]{
                 "assets/entities/enemies/yellow_ball/yellow_ball_0.png"
         };

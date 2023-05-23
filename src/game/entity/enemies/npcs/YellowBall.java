@@ -8,6 +8,8 @@ import game.utils.Paths;
 public class YellowBall extends IntelligentEnemy {
     public YellowBall() {
         super();
+        imagePossibleDirections.remove(Direction.UP);
+        imagePossibleDirections.remove(Direction.DOWN);
     }
 
     public YellowBall(Coordinates coordinates) {
@@ -20,8 +22,8 @@ public class YellowBall extends IntelligentEnemy {
     }
 
     @Override
-    public String[] getBaseSkins() {
-        setImageDirection();
+    public String[] getCharacterOrientedImages() {
+
         return new String[]{
                 Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase() +"_"+ 0 + ".png",
                 Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase()+"_" + 1 + ".png",

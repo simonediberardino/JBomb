@@ -20,7 +20,7 @@ public class Hat extends Orb {
     }
 
     @Override
-    public String[] getBaseSkins() {
+    public String[] getCharacterOrientedImages() {
         return new String[]{
                 getBasePath() + "1.png",
                 getBasePath() + "2.png",

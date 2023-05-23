@@ -133,10 +133,7 @@ public class Bomb extends DestroyableBlock implements Explosive {
         return caller != null ? caller.getCurrExplosionLength() : Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     }
 
-    @Override
-    public void mouseInteractions(){
-        explode();
-    }
+
 
     @Override
     public void destroy(){

@@ -8,12 +8,12 @@ public class Eagle extends FlyingEnemy{
         return Paths.getEnemiesFolder() + "/eagle";
     }
 
-    public String[] getBaseSkins() {
-        setImageDirection();
+    public String[] getCharacterOrientedImages() {
+
         return new String[]{
-                getBasePath() + "/eagle_"+imageDirection.toString().toLowerCase()+" _0.png",
+                getBasePath() + "/eagle_"+imageDirection.toString().toLowerCase()+"_0.png",
                 getBasePath() + "/eagle_"+ imageDirection.toString().toLowerCase()+ "_1.png",
-                getBasePath() + "/eagle_" +imageDirection.toString().toLowerCase()+" _2.png",
+                getBasePath() + "/eagle_" +imageDirection.toString().toLowerCase()+"_2.png",
         };
     }
 

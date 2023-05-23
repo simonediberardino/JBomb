@@ -67,7 +67,7 @@ public class Orb extends Enemy implements Transparent, Particle{
      @return an array of the skin of the Orb
      */
     @Override
-    public String[] getBaseSkins() {
+    public String[] getCharacterOrientedImages() {
         return new String[]{
                 "assets/entities/enemies/clown/clown_orb.png"
         };

@@ -15,7 +15,7 @@ public class Zombie extends IntelligentEnemy {
     }
 
     @Override
-    public String[] getBaseSkins() {
+    public String[] getCharacterOrientedImages() {
         return new String[]{ String.format("%s/zombie/fast_enemy.png", Paths.getEnemiesFolder()) };
     }
 }

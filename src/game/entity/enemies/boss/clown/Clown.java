@@ -70,7 +70,7 @@ public class Clown extends Boss implements Explosive {
      @return A String array of skin paths for the Clown entity.
      */
     @Override
-    public String[] getBaseSkins() {
+    public String[] getCharacterOrientedImages() {
         return new String[] { getImageFromRageStatus() };
     }
 
