@@ -10,6 +10,7 @@ import game.entity.blocks.StoneBlock;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
 import game.events.GameEvent;
+import game.events.RoundPassedGameEvent;
 import game.level.world1.*;
 import game.level.world2.*;
 import game.localization.Localization;
@@ -153,8 +154,8 @@ public abstract class Level {
             e.printStackTrace();
         }
 
+        new RoundPassedGameEvent().invoke(null);
         DataInputOutput.updateStoredPlayerData();
-        Bomberman.getMatch().onGameEvent(GameEvent.ROUND_PASSED, null);
     }
 
     protected void spawnBoss(){

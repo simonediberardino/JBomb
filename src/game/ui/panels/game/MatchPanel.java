@@ -2,12 +2,18 @@ package game.ui.panels.game;
 
 import game.BomberManMatch;
 import game.Bomberman;
+import game.data.DataInputOutput;
+import game.entity.Player;
 import game.models.Coordinates;
 import game.powerups.EmptyPowerup;
 import game.powerups.PowerUp;
 import game.powerups.SpeedPowerUp;
+import game.ui.controllers.InventoryElementController;
+import game.ui.elements.InventoryElementView;
+import game.ui.models.InventoryElementModel;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
+import game.utils.Dimensions;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -25,6 +31,7 @@ public class MatchPanel extends PagePanel {
     private JPanel bottomPanel;
     private JPanel rightPanel;
     private JPanel powerUpsPanel;
+    private JPanel inventoryPanel;
 
     public MatchPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
         super(cardLayout, parent, frame, Paths.getBackgroundImage());
@@ -172,6 +179,27 @@ public class MatchPanel extends PagePanel {
                 g.drawImage(image.getScaledInstance(borderSize, (int) frame.getPreferredSize().getHeight(), 1), pitchPanel.getX() - borderSize, 0, null);
             }
         };
+
+        inventoryPanel = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                Image powerUpsBorder = Utility.loadImage(Paths.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
+                g.drawImage(powerUpsBorder, 0, 0, null);
+                super.paint(g);
+            }
+        };
+
+        inventoryPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        inventoryPanel.setOpaque(false);
+        inventoryPanel.setLayout(new GridLayout(0, 1));
+
+        inventoryPanel.add(Bomberman.getMatch().getInventoryElementControllerPoints().getView());
+        inventoryPanel.add(Bomberman.getMatch().getInventoryElementControllerLives().getView());
+        inventoryPanel.add(Bomberman.getMatch().getInventoryElementControllerBombs().getView());
+
+        leftPanel.setLayout(new GridBagLayout());
+        leftPanel.add(inventoryPanel, new GridBagConstraints());
+
         // Set the preferred size of the panel to the specified width and height
         leftPanel.setPreferredSize(new Dimension(width, height));
         // Return the JPanel for the left side of the game window
@@ -275,7 +303,7 @@ public class MatchPanel extends PagePanel {
         final List<Class<? extends PowerUp>> powerUpsToShow = new ArrayList<>(powerUpList);
 
         // Define the dimension of each power-up image
-        final int powerUpImageDimension = Utility.px(75);
+        final int powerUpImageDimension = Dimensions.DEFAULT_INVENTORY_ICON_SIZE;
 
         // Calculate the number of rows and columns for the power-up panel
         int rows = 0, cols = powerUpList.size() <= 1 ? 1 : 2;
@@ -314,7 +342,6 @@ public class MatchPanel extends PagePanel {
         rightPanel.revalidate();
         rightPanel.repaint();
     }
-
 
     public PitchPanel getPitchPanel() {
         return pitchPanel;

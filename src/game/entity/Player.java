@@ -2,8 +2,10 @@ package game.entity;
 
 import game.Bomberman;
 import game.controller.Command;
+import game.data.DataInputOutput;
 import game.entity.bomb.Explosion;
 import game.entity.models.*;
+import game.events.DeathGameEvent;
 import game.events.GameEvent;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
@@ -18,12 +20,13 @@ import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 
 public class Player extends BomberEntity {
-    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE-SIZE)/2 ,0);
-    public Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
+    private static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE)/2 ,0);
+    private final Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
 
     public Player(Coordinates coordinates) {
         super(coordinates);
-        heightToHitboxSizeRatio = 0.733f;
+        this.heightToHitboxSizeRatio = 0.733f;
+        Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
     }
 
     @Override
@@ -46,14 +49,11 @@ public class Player extends BomberEntity {
 
     @Override
     public String[] getBaseSkins() {
-
-        setImageDirection();
         return new String[]{
-                getBasePath() + "/player_" + imageDirection.toString().toLowerCase()+"_"+0+".png",
-                getBasePath() + "/player_" + imageDirection.toString().toLowerCase()+"_"+1+".png",
-                getBasePath() + "/player_" + imageDirection.toString().toLowerCase()+"_"+2+".png",
-                getBasePath() + "/player_" + imageDirection.toString().toLowerCase()+"_"+1+".png",
-
+                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 0),
+                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 1),
+                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 2),
+                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 1),
         };
     }
 
@@ -80,7 +80,7 @@ public class Player extends BomberEntity {
     @Override
     protected void onEliminated() {
         super.onEliminated();
-        Bomberman.getMatch().onGameEvent(GameEvent.DEATH, null);
+        new DeathGameEvent().invoke(null);
     }
 
     @Override

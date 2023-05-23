@@ -5,6 +5,8 @@ import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Explosion;
 import game.events.GameEvent;
+import game.events.KilledEnemyEvent;
+import game.events.ScoreGameEvent;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
@@ -39,7 +41,8 @@ public abstract class Enemy extends Character{
     @Override
     protected synchronized void onEliminated() {
         super.onEliminated();
-        Bomberman.getMatch().onGameEvent(GameEvent.KILLED_ENEMY, this);
+        new KilledEnemyEvent().invoke(this);
+        new ScoreGameEvent().invoke(this.getMaxHp());
     }
 
     @Override

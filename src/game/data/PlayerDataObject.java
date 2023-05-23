@@ -69,7 +69,6 @@ public class PlayerDataObject implements Serializable {
         this.lostGames = lostGames;
     }
 
-
     public void setLastLevel(Level lastLevel) {
         this.lastLevelId = lastLevel.getLevelId();
         this.lastWorldId = lastLevel.getWorldId();
@@ -83,15 +82,15 @@ public class PlayerDataObject implements Serializable {
         return lastWorldId;
     }
 
-    void setKills(int kills) {
+    public void setKills(int kills) {
         this.kills = kills;
     }
 
-    void setDeaths(int deaths) {
+    public void setDeaths(int deaths) {
         this.deaths = deaths;
     }
 
-    void setPoints(long points) {
+    public void setPoints(long points) {
         this.points = points;
     }
 

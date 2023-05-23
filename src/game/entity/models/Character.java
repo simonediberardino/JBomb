@@ -367,7 +367,7 @@ public abstract class Character extends MovingEntity {
         }, 0, durationMs * 2); // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
     }
 
-    protected int getMaxHp() {
+    public int getMaxHp() {
         return maxHp;
     }
 

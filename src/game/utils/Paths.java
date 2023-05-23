@@ -66,6 +66,10 @@ public class Paths {
         return getPowerUpsFolder() + "/powerups_logo.png";
     }
 
+    public static String getInventoryPath() {
+        return getAssetsFolder() + "/inventory";
+    }
+
     public static String getSoundsPath() {
         return getAssetsFolder() + "/sounds";
     }

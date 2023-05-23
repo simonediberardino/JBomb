@@ -2,6 +2,7 @@ package game.entity.models;
 
 import game.BomberManMatch;
 import game.Bomberman;
+import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
@@ -70,9 +71,23 @@ public abstract class BomberEntity extends Character {
 
         Bomb bomb = new Bomb(this);
 
-        bomb.setOnExplodeListener(() -> placedBombs--);
+        if(this instanceof Player){
+            Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
+        }
+
+        bomb.setOnExplodeListener(() -> {
+            placedBombs--;
+            if(this instanceof Player){
+                Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
+            }
+        });
+
         bomb.spawn(true);
         bomb.trigger();
+    }
+
+    public int getCurrentBombs() {
+        return getCurrBombLimit() - placedBombs;
     }
 
     public void addClassInteractWithMouse(Class<? extends Entity> cls) {

@@ -6,13 +6,19 @@ import game.data.DataInputOutput;
 import game.engine.GameTickerObservable;
 import game.entity.*;
 import game.entity.models.*;
+import game.entity.models.Character;
 import game.events.GameEvent;
 import game.level.Level;
+import game.ui.controllers.InventoryElementController;
+import game.utils.Paths;
 import game.utils.Utility;
 
 import java.util.*;
 
 public class BomberManMatch implements OnGameEvent {
+    private InventoryElementController inventoryElementControllerPoints;
+    private InventoryElementController inventoryElementControllerBombs;
+    private InventoryElementController inventoryElementControllerLives;
     private GameTickerObservable gameTickerObservable;
     private long lastGamePauseStateTime = System.currentTimeMillis();
     private final Set<Entity> entities;
@@ -35,7 +41,17 @@ public class BomberManMatch implements OnGameEvent {
         this.mouseControllerManager = new MouseControllerManager();
         this.gameTickerObservable = new GameTickerObservable();
         this.controllerManager.register(new GamePausedObserver());
+        this.setupViewControllers();
         ControllerManager.setDefaultCommandDelay();
+    }
+
+    private void setupViewControllers() {
+        inventoryElementControllerPoints = new InventoryElementController(0, Paths.getInventoryPath() + "/points.png");
+        inventoryElementControllerLives = new InventoryElementController(0, Paths.getPowerUpsFolder()  + "/lives_up.png");
+        inventoryElementControllerBombs = new InventoryElementController(0, Paths.getAssetsFolder()  + "/bomb/bomb_0.png");
+
+        inventoryElementControllerPoints.setNumItems((int) DataInputOutput.getScore());
+        inventoryElementControllerLives.setNumItems(DataInputOutput.getLives());
     }
 
     public Level getCurrentLevel() {
@@ -119,15 +135,21 @@ public class BomberManMatch implements OnGameEvent {
         this.gameState = gameState;
     }
 
+    public InventoryElementController getInventoryElementControllerPoints() {
+        return inventoryElementControllerPoints;
+    }
+
+    public InventoryElementController getInventoryElementControllerBombs() {
+        return inventoryElementControllerBombs;
+    }
+
+    public InventoryElementController getInventoryElementControllerLives() {
+        return inventoryElementControllerLives;
+    }
+
     @Override
     public void onGameEvent(GameEvent gameEvent, Object arg) {
-        switch(gameEvent) {
-            case DEATH: DataInputOutput.increaseDeaths(); DataInputOutput.decreaseLives(); break;
-            case KILLED_ENEMY: DataInputOutput.increaseKills(); break;
-            case SCORE: DataInputOutput.increaseScore((Integer) arg); break;
-            case DEFEAT: DataInputOutput.increaseLost(); break;
-            case ROUND_PASSED: DataInputOutput.increaseRounds(); break;
-        }
+        gameEvent.invoke(arg);
     }
 
     public void destroy() {

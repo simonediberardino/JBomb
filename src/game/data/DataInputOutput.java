@@ -102,6 +102,10 @@ public class DataInputOutput {
         updateStoredPlayerData();
     }
 
+    public static long getScore() {
+        return playerDataObject.getPoints();
+    }
+
     public static void increaseScore(int score){
         playerDataObject.setPoints(playerDataObject.getPoints() + score);
         updateStoredPlayerData();

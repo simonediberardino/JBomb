@@ -1,9 +1,6 @@
 - New enemies;
 - New boss;
-- Lives;
 - HUD;
 - Player stats;
 - Points;
-- SOUND
 - hammer power up;
-- UNREGISTER MOUSE CONTROLLER

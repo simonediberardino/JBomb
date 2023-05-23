@@ -9,6 +9,7 @@ import game.level.world2.World2Level1;
 import game.localization.Localization;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
+import game.ui.controllers.InventoryElementController;
 import game.ui.elements.ToastHandler;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
