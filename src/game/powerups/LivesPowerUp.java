@@ -40,4 +40,9 @@ public class LivesPowerUp extends PowerUp{
     public boolean isDisplayable() {
         return false;
     }
+
+    @Override
+    public boolean hasNoPickupLimits() {
+        return true;
+    }
 }

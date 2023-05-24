@@ -73,7 +73,7 @@ public class MainMenuPanel extends PagePanel {
      */
     private void createStartLevelButton() {
         startLevelButton = new YellowButton(Localization.get(PLAY));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new World2Level1()));
+        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel()));
         listButtonsPanel.add(startLevelButton);
     }
 

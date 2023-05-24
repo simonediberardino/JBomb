@@ -15,6 +15,7 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MatchPanel extends PagePanel {
     private PitchPanel pitchPanel; // The main panel that contains the game
@@ -292,7 +293,13 @@ public class MatchPanel extends PagePanel {
      */
     public void refreshPowerUps(List<Class<? extends PowerUp>> powerUpList) {
         // Create a copy of the power-up list
-        final List<Class<? extends PowerUp>> powerUpsToShow = new ArrayList<>(powerUpList);
+        final List<PowerUp> powerUpsToShow = powerUpList.stream().map(p -> {
+            try {
+                return p.getConstructor(Coordinates.class).newInstance(new Coordinates());
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                return null;
+            }
+        }).filter(p -> p != null && p.isDisplayable()).collect(Collectors.toList());
 
         // Define the dimension of each power-up image
         final int powerUpImageDimension = Dimensions.DEFAULT_INVENTORY_ICON_SIZE;
@@ -308,23 +315,14 @@ public class MatchPanel extends PagePanel {
 
         // If there are no power-ups to show, add an EmptyPowerup class as a placeholder
         if (powerUpsToShow.isEmpty())
-            powerUpsToShow.add(EmptyPowerup.class);
+            powerUpsToShow.add(new EmptyPowerup(new Coordinates()));
 
         // Iterate over each power-up class
-        for (Class<? extends PowerUp> p : powerUpsToShow) {
-            PowerUp powerUp;
-
-            try {
-                // Instantiate a power-up object using its constructor with a Coordinates parameter
-                powerUp = p.getConstructor(Coordinates.class).newInstance(new Coordinates());
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                continue;
-            }
-
-            if(!powerUp.isDisplayable()) continue;
+        for (PowerUp p : powerUpsToShow) {
+            if(!p.isDisplayable()) continue;
 
             // Scale the power-up image to the desired dimensions
-            Image img = powerUp.getImage().getScaledInstance(powerUpImageDimension, powerUpImageDimension, 0);
+            Image img = p.getImage().getScaledInstance(powerUpImageDimension, powerUpImageDimension, 0);
 
             JLabel powerupLabel = new JLabel(new ImageIcon(img));
             powerupLabel.setBorder(BorderFactory.createEmptyBorder(Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING));

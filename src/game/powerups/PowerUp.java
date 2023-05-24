@@ -102,8 +102,10 @@ public abstract class PowerUp extends EntityInteractable {
         if(!canPickUp(entity))
             return;
 
-        if(entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass()))) {
-            return;
+        if(!hasNoPickupLimits()){
+            if(entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass()))) {
+                return;
+            }
         }
 
         this.applied = true;
@@ -114,13 +116,16 @@ public abstract class PowerUp extends EntityInteractable {
         var matchPanel = Bomberman.getBombermanFrame().getMatchPanel();
         AudioManager.getInstance().play(SoundModel.POWERUP);
         entity.getActivePowerUps().add(this.getClass());
-        matchPanel.refreshPowerUps(entity.getActivePowerUps());
+
+        if(isDisplayable())
+            matchPanel.refreshPowerUps(entity.getActivePowerUps());
 
         int duration = getDuration() * 1000;
         // If the power-up has a duration, schedule a TimerTask to cancel it when the duration is up
         if (duration <= 0) {
             return;
         }
+
         PowerUp thisPowerUp = this;
         TimerTask task = new TimerTask() {
             public void run() {
@@ -129,7 +134,8 @@ public abstract class PowerUp extends EntityInteractable {
                     return;
                 }
                 entity.removeActivePowerUp(thisPowerUp);
-                matchPanel.refreshPowerUps(entity.getActivePowerUps());
+                if(isDisplayable())
+                    matchPanel.refreshPowerUps(entity.getActivePowerUps());
                 PowerUp.this.cancel(entity);
             }
         };
@@ -184,5 +190,13 @@ public abstract class PowerUp extends EntityInteractable {
 
     public boolean isDisplayable() {
         return true;
+    }
+
+    /**
+     *
+     * @return wheter the powerup can be picked up indefinite times or not;
+     */
+    public boolean hasNoPickupLimits() {
+        return false;
     }
 }
