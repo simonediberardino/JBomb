@@ -4,6 +4,7 @@ import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
+import game.entity.enemies.npcs.Orb;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.utils.Utility;
@@ -42,18 +43,24 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public final void interact(Entity e) {
-        if (e == null)
-            return; // If the entity is null, there is nothing to interact with, so return.
+        if (e == null) {
+            interactAndUpdateLastInteract(null);
+            return;
+        }
+
 
         if (canInteractWith(e) && e.canBeInteractedBy(this)) {
-            this.doInteract(e); // Interact with the entity.
-            this.updateLastInteract(e); // Update the last interaction for this entity.
+            interactAndUpdateLastInteract(e);
         }
 
-        else if (e instanceof EntityInteractable && ((EntityInteractable) e).canInteractWith(this) && canBeInteractedBy(e)) {
-            e.doInteract(this); // The entity is an EntityInteractable and can be interacted with this (or vice-versa), so interact with it.
-            ((EntityInteractable) e).updateLastInteract(e); // Update the last interaction for the EntityInteractable entity.
+        else if (e instanceof EntityInteractable && ((EntityInteractable) e).canInteractWith(this) && this.canBeInteractedBy(e)) {
+            ((EntityInteractable) e).interactAndUpdateLastInteract(this);
         }
+    }
+
+    private void interactAndUpdateLastInteract(Entity e){
+        this.doInteract(e); // Interact with the entity.
+        this.updateLastInteract(e); // Update the last interaction for this entity.
     }
 
     public void updateLastInteract(Entity e) {
@@ -104,9 +111,12 @@ public abstract class EntityInteractable extends Entity {
         return moveOrInteract(d, PIXEL_UNIT);
     }
 
-
     public boolean moveOrInteract(Direction d, int stepSize){
         return moveOrInteract(d, stepSize, false);
+    }
+
+    public void move(Coordinates coordinates){
+        setCoords(coordinates);
     }
 
     /**
@@ -135,7 +145,7 @@ public abstract class EntityInteractable extends Entity {
 
         // If there are no entities present in the next occupied coordinates, update the entity's position
         if (interactedEntities.isEmpty()) {
-            setCoords(nextTopLeftCoords);
+            move(nextTopLeftCoords);
             return true;
         }
 
@@ -156,14 +166,12 @@ public abstract class EntityInteractable extends Entity {
         }
 
         // If the entity can move or it is immune to bombs, update the entity's position
-        if (canMove) {
-            setCoords(nextTopLeftCoords);
+        //if the entity is instance of explosion, it'll be able to move further anyway but no more explosions will be generated in constructor
+        if(this instanceof Explosion&&!canMove){
+            ((Explosion) this).onObstacle(nextTopLeftCoords);
+        } else if (canMove) {
+            move(nextTopLeftCoords);
         }
-        // If the entity is an instance of 'Explosion' and it cannot move further, stop expanding the explosion
-        else if (this instanceof Explosion) {
-            ((Explosion) this).cantExpandAnymore();
-        }
-
 
         // Return whether the entity can move or not
         return canMove;

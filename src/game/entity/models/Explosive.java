@@ -17,5 +17,4 @@ public interface Explosive {
 
     boolean canExplosionInteractWith(Entity e);
     int getMaxExplosionDistance();
-
 }

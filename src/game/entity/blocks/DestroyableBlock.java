@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class DestroyableBlock extends Block {
+public class DestroyableBlock extends MovableBlock {
     private static final int POWER_UP_SPAWN_CHANGE = 33;
     private Class<? extends PowerUp> powerUpClass;
 

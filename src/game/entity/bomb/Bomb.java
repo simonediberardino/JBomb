@@ -5,6 +5,7 @@ import game.Bomberman;
 import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
+import game.entity.blocks.MovableBlock;
 import game.entity.models.*;
 import game.models.Coordinates;
 import game.models.Direction;
@@ -17,13 +18,13 @@ import game.utils.Utility;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-public class Bomb extends DestroyableBlock implements Explosive {
+public class Bomb extends MovableBlock implements Explosive {
     public static final int BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 2;
     public static final long PLACE_INTERVAL = 1000;
     private final List<Explosion> explosions = new ArrayList<>();
     private static final int EXPLODE_TIMER = 5000;
     private Runnable onExplodeCallback;
-    private BomberEntity caller;
+    private final BomberEntity caller;
 
     public Bomb(BomberEntity entity) {
         super(Coordinates.getCenterCoordinatesOfEntity(entity));
@@ -83,10 +84,10 @@ public class Bomb extends DestroyableBlock implements Explosive {
 
         AudioManager.getInstance().play(SoundModel.EXPLOSION);
 
-        new Explosion(getCoords(), Direction.UP, this);
-        new Explosion(getCoords(), Direction.RIGHT, this);
-        new Explosion(getCoords(), Direction.DOWN, this);
-        new Explosion(getCoords(), Direction.LEFT, this);
+        new Explosion(getCoords(), Direction.UP, this).spawn(true,false);
+        new Explosion(getCoords(), Direction.RIGHT, this).spawn(true,false);
+        new Explosion(getCoords(), Direction.DOWN, this).spawn(true,false);
+        new Explosion(getCoords(), Direction.LEFT, this).spawn(true,false);
 
         if (onExplodeCallback != null) onExplodeCallback.run();
     }
@@ -133,11 +134,18 @@ public class Bomb extends DestroyableBlock implements Explosive {
         return caller != null ? caller.getCurrExplosionLength() : Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     }
 
-
+    @Override
+    public void mouseClickInteraction(){
+        eliminated();
+    }
 
     @Override
     public void destroy(){
         explode();
+    }
+    @Override
+    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
+        return new HashSet<>(Collections.singletonList(Explosion.class));
     }
 
     @Override

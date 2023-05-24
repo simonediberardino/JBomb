@@ -1,5 +1,6 @@
 package game.powerups;
 
+import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.Player;
 import game.entity.models.*;
@@ -24,8 +25,10 @@ public abstract class PowerUp extends EntityInteractable {
             TransparentDestroyableBlocksPowerUp.class,
             LivesPowerUp.class,
             RemoteControl.class,
-            Hammer.class
+            Hammer.class,
+            BlockMoverPowerUp.class
     };
+
     public ArrayList<Class<?extends PowerUp>> incompatiblePowerUps = new ArrayList<>();
 
     // The default duration for a power-up, in seconds
@@ -121,6 +124,10 @@ public abstract class PowerUp extends EntityInteractable {
         PowerUp thisPowerUp = this;
         TimerTask task = new TimerTask() {
             public void run() {
+                BomberManMatch match = Bomberman.getMatch();
+                if (match == null || !match.getGameState()) {
+                    return;
+                }
                 entity.removeActivePowerUp(thisPowerUp);
                 matchPanel.refreshPowerUps(entity.getActivePowerUps());
                 PowerUp.this.cancel(entity);

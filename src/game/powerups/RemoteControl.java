@@ -1,14 +1,10 @@
 package game.powerups;
 
-import game.entity.blocks.DestroyableBlock;
 import game.entity.bomb.Bomb;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;
 import game.utils.Paths;
 
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 public class RemoteControl extends PowerUp{
@@ -28,15 +24,16 @@ public class RemoteControl extends PowerUp{
 
     @Override
     public int getDuration() {
-        return 0;
+        return 30;
     }
 
     @Override
     protected void doApply(BomberEntity entity) {
-        entity.addClassInteractWithMouse(Bomb.class);
+        entity.addClassInteractWithMouseClick(Bomb.class);
     }
 
     @Override
     protected void cancel(BomberEntity entity) {
+        entity.removeClassInteractWithMouse(Bomb.class);
     }
 }

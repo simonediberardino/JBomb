@@ -35,7 +35,7 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
             return;
 
 
-        if (entity != null && Bomberman.getMatch().getPlayer().getListClassInteractWithMouse().contains(entity.getClass())) {
+        if (entity != null && Bomberman.getMatch().getPlayer().getListClassInteractWithMouseClick().contains(entity.getClass())) {
             entity.mouseInteractions();
             onPeriodicTaskEnd();
             nextCommandInQueue();

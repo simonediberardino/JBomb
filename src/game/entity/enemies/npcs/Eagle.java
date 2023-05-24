@@ -9,11 +9,10 @@ public class Eagle extends FlyingEnemy{
     }
 
     public String[] getCharacterOrientedImages() {
-
         return new String[]{
-                getBasePath() + "/eagle_"+imageDirection.toString().toLowerCase()+"_0.png",
-                getBasePath() + "/eagle_"+ imageDirection.toString().toLowerCase()+ "_1.png",
-                getBasePath() + "/eagle_" +imageDirection.toString().toLowerCase()+"_2.png",
+                String.format("%s/eagle_%s_0.png", getBasePath(), imageDirection.toString().toLowerCase()),
+                String.format("%s/eagle_%s_1.png", getBasePath(), imageDirection.toString().toLowerCase()),
+                String.format("%s/eagle_%s_2.png", getBasePath(), imageDirection.toString().toLowerCase()),
         };
     }
 

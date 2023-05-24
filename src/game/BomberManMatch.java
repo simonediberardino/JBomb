@@ -6,10 +6,11 @@ import game.data.DataInputOutput;
 import game.engine.GameTickerObservable;
 import game.entity.*;
 import game.entity.models.*;
-import game.entity.models.Character;
 import game.events.GameEvent;
 import game.level.Level;
-import game.ui.controllers.InventoryElementController;
+import game.ui.panels.game.MatchPanel;
+import game.ui.panels.menus.PausePanel;
+import game.viewcontrollers.InventoryElementController;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -23,7 +24,7 @@ public class BomberManMatch implements OnGameEvent {
     private long lastGamePauseStateTime = System.currentTimeMillis();
     private final Set<Entity> entities;
     public ControllerManager controllerManager;
-    public MouseControllerManager mouseControllerManager;
+    private final MouseControllerManager mouseControllerManager;
     private Level currentLevel;
     private Player player;
     private boolean gameState = false;
@@ -108,11 +109,13 @@ public class BomberManMatch implements OnGameEvent {
     private void pauseGame() {
         gameTickerObservable.stop();
         gameState = false;
+        Bomberman.show(PausePanel.class);
     }
 
     private void resumeGame(){
         gameTickerObservable.resume();
         gameState = true;
+        Bomberman.show(MatchPanel.class);
     }
 
     public int getEnemiesAlive() {

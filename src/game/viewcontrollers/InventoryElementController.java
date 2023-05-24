@@ -1,15 +1,15 @@
-package game.ui.controllers;
+package game.viewcontrollers;
 
-import game.ui.elements.InventoryElementView;
-import game.ui.models.InventoryElementModel;
+import game.viewelements.InventoryElementView;
+import game.viewmodels.InventoryElementModel;
 import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class InventoryElementController {
-    private InventoryElementModel model;
-    private InventoryElementView view;
+    private final InventoryElementModel model;
+    private final InventoryElementView view;
 
     public InventoryElementController(int numItems, String imagePath) {
         model = new InventoryElementModel(numItems, imagePath);

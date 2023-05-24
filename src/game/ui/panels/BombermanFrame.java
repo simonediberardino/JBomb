@@ -8,6 +8,8 @@ import game.ui.panels.game.PitchPanel;
 import game.ui.panels.menus.GameOverPanel;
 import game.ui.panels.menus.LoadingPanel;
 import game.ui.panels.menus.MainMenuPanel;
+import game.ui.panels.menus.PausePanel;
+import game.utils.Paths;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +30,7 @@ public class BombermanFrame extends JFrame {
     private MainMenuPanel mainMenuPanel;
     private LoadingPanel loadingPanel;
     private GameOverPanel gameOverPanel;
+    private PausePanel pausePanel;
 
     /**
 
@@ -38,8 +41,10 @@ public class BombermanFrame extends JFrame {
         initMenuPanel();
         initLoadingPanel();
         initGameOverPanel();
+        initPausePanel();
         finalizeFrame();
         pack();
+        setFrameCursor();
     }
 
     private void setFrameProperties() {
@@ -64,6 +69,10 @@ public class BombermanFrame extends JFrame {
         parentPanel.add(mainMenuPanel, MainMenuPanel.class.getSimpleName());
     }
 
+    private void initPausePanel() {
+        pausePanel = new PausePanel(cardLayout, parentPanel, this);
+        parentPanel.add(pausePanel, PausePanel.class.getSimpleName());
+    }
     /**
 
      Initializes the menu panel and adds it to the parent panel.
@@ -95,7 +104,7 @@ public class BombermanFrame extends JFrame {
      Finalizes the frame by setting the key listener and focusable, making the frame visible, and
      showing the menu panel.
      */
-    public void finalizeFrame() {
+    private void finalizeFrame() {
         // Set key listener and focusable
         this.setFocusable(true);
         this.requestFocus();
@@ -104,6 +113,13 @@ public class BombermanFrame extends JFrame {
         this.setVisible(true);
         this.revalidate();
         this.repaint();
+    }
+
+    private void setFrameCursor() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage(Paths.getCursorPath());
+        Cursor c = toolkit.createCustomCursor(image, new Point(getX(), getY()), "img");
+        setCursor(c);
     }
 
     /**

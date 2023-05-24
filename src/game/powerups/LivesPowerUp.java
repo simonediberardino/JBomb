@@ -34,9 +34,7 @@ public class LivesPowerUp extends PowerUp{
     }
 
     @Override
-    protected void cancel(BomberEntity entity) {
-
-    }
+    protected void cancel(BomberEntity entity) {}
 
     @Override
     public boolean isDisplayable() {

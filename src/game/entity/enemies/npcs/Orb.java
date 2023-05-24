@@ -61,15 +61,20 @@ public class Orb extends Enemy implements Transparent, Particle{
         super(coordinates);
         this.direction = direction;
     }
-    /**
 
+    @Override
+    protected String getBasePath() {
+        return Paths.getEnemiesFolder() + "/clown/clown_orb.png";
+    }
+
+    /**
      Returns an array of the skin of the Orb.
      @return an array of the skin of the Orb
      */
     @Override
     public String[] getCharacterOrientedImages() {
         return new String[]{
-                "assets/entities/enemies/clown/clown_orb.png"
+                getBasePath()
         };
     }
     /**
@@ -130,6 +135,11 @@ public class Orb extends Enemy implements Transparent, Particle{
         for (Direction d : enhancedDirection.toDirection()) {
             moveOrInteract(d);
         }
+    }
+
+    @Override
+    public float getSpeed() {
+        return 1.5f;
     }
 
     public void doUpdate(boolean gameState) {

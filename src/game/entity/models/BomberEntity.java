@@ -1,14 +1,12 @@
 package game.entity.models;
 
-import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
+import game.entity.blocks.MovableBlock;
 import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
-import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.utils.Utility;
 
@@ -16,7 +14,8 @@ import java.util.*;
 
 public abstract class BomberEntity extends Character {
     private static final int MAX_BOMB_CAN_HOLD = 10;
-    private final List<Class<? extends Entity>> listInteractWithMouse = new ArrayList<>(Collections.singletonList(DestroyableBlock.class));
+    private final List<Class<? extends Entity>> listInteractWithMouseClick = new ArrayList<>();
+    private final List<Class<? extends Entity>> listInteractWithMouseDrag = new ArrayList<>();
     private final List<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
     private int currBombLimit = Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getExplosionLength();
@@ -90,12 +89,18 @@ public abstract class BomberEntity extends Character {
         return getCurrBombLimit() - placedBombs;
     }
 
-    public void addClassInteractWithMouse(Class<? extends Entity> cls) {
-        listInteractWithMouse.add(cls);
+    public void addClassInteractWithMouseClick(Class<? extends Entity> cls) {
+        listInteractWithMouseClick.add(cls);
+    }
+    public void addClassInteractWithMouseDrag(Class<? extends Entity> cls) {
+        listInteractWithMouseDrag.add(cls);
     }
 
     public void removeClassInteractWithMouse(Class<? extends Entity> cls) {
-        listInteractWithMouse.remove(cls);
+        listInteractWithMouseClick.remove(cls);
+    }
+    public void removeClassInteractWithDrag(Class<? extends Entity> cls) {
+        listInteractWithMouseDrag.remove(cls);
     }
 
     public List<Class<? extends PowerUp>> getActivePowerUps() {
@@ -106,7 +111,10 @@ public abstract class BomberEntity extends Character {
         getActivePowerUps().removeIf(e->e.isInstance(p));
     }
 
-    public List<Class<? extends Entity>> getListClassInteractWithMouse(){
-        return listInteractWithMouse;
+    public List<Class<? extends Entity>> getListClassInteractWithMouseClick(){
+        return listInteractWithMouseClick;
+    }
+    public List<Class<? extends Entity>> getListClassInteractWithMouseDrag(){
+        return listInteractWithMouseDrag;
     }
 }

@@ -74,4 +74,11 @@ public class Paths {
         return getAssetsFolder() + "/sounds";
     }
 
+    public static String getUiFolder() {
+        return getAssetsFolder() + "/ui";
+    }
+
+    public static String getCursorPath() {
+        return getUiFolder() + "/cursor.png";
+    }
 }

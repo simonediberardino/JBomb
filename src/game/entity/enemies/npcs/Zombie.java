@@ -7,15 +7,26 @@ import game.utils.Paths;
 public class Zombie extends IntelligentEnemy {
     public Zombie() {
         super();
+        setMaxHp(300);
     }
 
     public Zombie(Coordinates coordinates) {
         super(coordinates);
-        setHp(300);
+        setMaxHp(300);
+    }
+
+    @Override
+    protected String getBasePath() {
+        return Paths.getEnemiesFolder() + "/zombie";
     }
 
     @Override
     public String[] getCharacterOrientedImages() {
-        return new String[]{ String.format("%s/zombie/fast_enemy.png", Paths.getEnemiesFolder()) };
+        return new String[] {
+                String.format("%s/zombie_%s_0.png", getBasePath(), imageDirection.toString().toLowerCase()),
+                String.format("%s/zombie_%s_1.png", getBasePath(), imageDirection.toString().toLowerCase()),
+                String.format("%s/zombie_%s_2.png", getBasePath(), imageDirection.toString().toLowerCase()),
+                String.format("%s/zombie_%s_3.png", getBasePath(), imageDirection.toString().toLowerCase())
+        };
     }
 }

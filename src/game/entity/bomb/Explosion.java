@@ -23,30 +23,28 @@ import static game.utils.Utility.loadImage;
  */
 public class Explosion extends MovingEntity implements Particle {
     public static final int SIZE = PitchPanel.COMMON_DIVISOR * 2;
+    public static final int SPAWN_OFFSET = (PitchPanel.GRID_SIZE-SIZE) / 2;
     // The distance from the bomb where the explosion was created.
-    public final int distanceFromExplosive;
+    private final int distanceFromExplosive;
 
     // The maximum distance from the bomb that the explosion can travel.
     private final int maxDistance;
     private static final int BOMB_STATES = 3;
-    private boolean canExpand;
+    private boolean canExpand =true;
 
     // The direction of the explosion.
-    public final Direction direction;
+    private final Direction direction;
     private boolean appearing = true;
     private int explosionState = 1;
     private long lastRefresh = 0;
     private final Explosive explosive;
-    public static final int spawnOffset = (PitchPanel.GRID_SIZE-SIZE)/2;
-
-
 
     public Explosion(Coordinates coordinates, Direction direction, Explosive explosive) {
         this(coordinates, direction, 0, explosive);
     }
 
-    public Explosion(Coordinates coordinates, Direction direction, int distanceFromExplosive, Explosive explosive) {
-        this(coordinates, direction, distanceFromExplosive, explosive, true);
+    public Explosion(Coordinates coordinates, Direction direction, int distanceFromBomb, Explosive explosive){
+        this(coordinates,direction,distanceFromBomb,explosive,true);
     }
 
     /**
@@ -61,28 +59,20 @@ public class Explosion extends MovingEntity implements Particle {
 
         this.direction = direction;
         this.distanceFromExplosive = distanceFromExplosive;
-
         this.explosive = explosive;
         this.maxDistance = explosive.getMaxExplosionDistance();
         this.canExpand = canExpand;
 
-        // on spawn
-        Bomberman.getMatch().addEntity(this);
-        super.setCoords(getCoords());
+        //on first (center) explosion
+        if (distanceFromExplosive == 0) {
+            List<Coordinates> desiredCoords = getAllCoordinates();
+            for (Entity e: Bomberman.getMatch().getEntities())
+                if (desiredCoords.stream().anyMatch(coord -> Coordinates.doesCollideWith(coord, e)))
+                    interact(e);
+        }
 
-            //on first (center) explosion
-            if (distanceFromExplosive == 0) {
-                List<Coordinates> desiredCoords = getAllCoordinates();
-                for (Entity e: Bomberman.getMatch().getEntities()) {
-                    if (desiredCoords.stream().anyMatch(coord -> Coordinates.doesCollideWith(coord, e))) {
-                        interact(e);
-                    }
-                }
-            }
-
-            if (getCanExpand())
-                moveOrInteract(direction, getSize(), true);
-
+        if (getCanExpand())
+            moveOrInteract(direction, getSize(), true);
     }
 
     @Override
@@ -109,7 +99,6 @@ public class Explosion extends MovingEntity implements Particle {
         }
     }
 
-
     /**
      * Returns the size of the explosion.
      *
@@ -126,8 +115,9 @@ public class Explosion extends MovingEntity implements Particle {
      * @param coordinates The new coordinates of the explosion.
      */
     @Override
-    public void setCoords(Coordinates coordinates) {
-        new Explosion(coordinates, direction, distanceFromExplosive + 1, explosive);
+    public void move(Coordinates coordinates) {
+        Coordinates nextTopLeftCoords = nextCoords(direction, getSize());
+        new Explosion(nextTopLeftCoords, direction, distanceFromExplosive + 1, getExplosive()).spawn(true,false);
     }
 
     /**
@@ -141,12 +131,8 @@ public class Explosion extends MovingEntity implements Particle {
             return loadImage(String.format("%sflame_central" + getState() + ".png", getBasePath()));
         }
 
-        String imageFileName;
-        String isLast = "";
-        if (!canExpand) {
-            isLast = "_last";
-        }
-        imageFileName = "flame_" + direction.toString().toLowerCase();
+        String isLast = canExpand ? "" : "_last";
+        String imageFileName = "flame_" + direction.toString().toLowerCase();
 
         // Load and set the image of the flame.
         String imagePath = String.format("%s%s%s%s.png", getBasePath(), imageFileName, isLast, getState());
@@ -189,19 +175,19 @@ public class Explosion extends MovingEntity implements Particle {
     public Set<Class<? extends Entity>> getObstacles() {
         return new HashSet<>(getExplosive().getExplosionObstacles());
     }
+
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities(){
          return new HashSet<>(getExplosive().getExplosionInteractionEntities());
-    };
+    }
 
     public boolean getCanExpand() {
         if (distanceFromExplosive >= maxDistance) canExpand = false;
         return canExpand;
     }
 
-    public void cantExpandAnymore() {
-        Coordinates nextTopLeftCoords = nextCoords(direction, getSize());
-        new Explosion(nextTopLeftCoords, direction, distanceFromExplosive + 1, getExplosive(), false);
+    public void onObstacle(Coordinates coordinates){
+        new Explosion(coordinates, direction, distanceFromExplosive + 1, explosive,false).spawn(true,false);
     }
 
     public Explosive getExplosive() {

@@ -8,8 +8,6 @@ public class DeathGameEvent implements GameEvent{
     public void invoke(Object arg) {
         DataInputOutput.increaseDeaths();
         DataInputOutput.decreaseLives();
-        int lives = DataInputOutput.getLives();
-        Bomberman.getMatch().getInventoryElementControllerLives().setNumItems(lives);
-        DataInputOutput.getPlayerDataObject().setLives(lives);
+        DataInputOutput.decreaseScore(1000);
     }
 }

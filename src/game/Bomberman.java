@@ -4,12 +4,9 @@ import game.data.DataInputOutput;
 import game.engine.GarbageCollectorTask;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
-import game.level.world1.World1Level5;
-import game.level.world2.World2Level1;
 import game.localization.Localization;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
-import game.ui.controllers.InventoryElementController;
 import game.ui.elements.ToastHandler;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
@@ -17,15 +14,11 @@ import game.ui.panels.game.MatchPanel;
 import game.ui.panels.menus.LoadingPanel;
 import game.ui.panels.menus.MainMenuPanel;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static game.localization.Localization.WELCOME_TEXT;
-import static game.ui.panels.menus.LoadingPanel.LOADING_TIMER;
 
 public class Bomberman {
     private static BomberManMatch bomberManMatch;

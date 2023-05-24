@@ -45,7 +45,7 @@ public class LoadingPanel extends PagePanel {
     }
 
     public void initialize() {
-        this.text = new String();
+        this.text = "";
         this.textCurrX = (int) Utility.getScreenSize().getWidth();
         this.finished = false;
         this.onLoadingCallback = null;

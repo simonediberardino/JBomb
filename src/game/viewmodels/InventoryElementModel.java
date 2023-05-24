@@ -1,4 +1,4 @@
-package game.ui.models;
+package game.viewmodels;
 
 public class InventoryElementModel {
     private int numItems;

@@ -28,7 +28,7 @@ public abstract class Character extends MovingEntity {
 
     protected long lastDirectionUpdate = 0;
     protected final List<Direction> imagePossibleDirections = new ArrayList<>(Arrays.asList(Direction.values()));
-    protected Direction currDirection = imagePossibleDirections.get(0);
+    protected Direction currDirection = DOWN;
     /**
      * The last direction this character was moving in.
      */
@@ -356,8 +356,7 @@ public abstract class Character extends MovingEntity {
                     // Make the entity visible again and wait for the specified duration
                     setInvisible(false);
                     Thread.sleep(durationMs);
-                } catch (InterruptedException ignored) {
-                }
+                } catch (InterruptedException ignored) {}
 
                 // Increment the counter to keep track of the number of iterations
                 count++;

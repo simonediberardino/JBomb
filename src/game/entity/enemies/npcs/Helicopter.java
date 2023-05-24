@@ -14,9 +14,9 @@ public class Helicopter extends FlyingEnemy{
 
     public String[] getCharacterOrientedImages() {
         return new String[]{
-                getBasePath() + "/heli_" + imageDirection.toString().toLowerCase()+"_" +"0.gif",
-                getBasePath() + "/heli_"+imageDirection.toString().toLowerCase() +"_"+"1.gif",
-                getBasePath() + "/heli_"+ imageDirection.toString().toLowerCase()+"_"+"2.gif",
+                String.format("%s/heli_%s_0.gif", getBasePath(), imageDirection.toString().toLowerCase()),
+                String.format("%s/heli_%s_1.gif", getBasePath(), imageDirection.toString().toLowerCase()),
+                String.format("%s/heli_%s_2.gif", getBasePath(), imageDirection.toString().toLowerCase()),
         };
     }
 

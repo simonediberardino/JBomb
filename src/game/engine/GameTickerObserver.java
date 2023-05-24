@@ -6,7 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public abstract class GameTickerObserver implements Observer2 {
-    private static float DEFAULT_DELAY_OBSERVER = 40;
+    private static final float DEFAULT_DELAY_OBSERVER = 40;
     protected long lastUpdate = 0L;
 
     @Override

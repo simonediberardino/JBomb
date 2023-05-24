@@ -1,5 +1,6 @@
 package game.data;
 
+import game.Bomberman;
 import game.level.Level;
 import game.level.world1.World1Level1;
 import game.utils.Paths;
@@ -71,12 +72,18 @@ public class DataInputOutput {
     }
 
     public static void resetLives(){
-        playerDataObject.setLives(START_LIVES);
-        updateStoredPlayerData();
+        setLives(START_LIVES);
     }
 
     public static void increaseLives(){
-        playerDataObject.setLives(playerDataObject.getLives()+1);
+        int nextLives = playerDataObject.getLives()+1;
+        setLives(nextLives);
+    }
+
+    private static void setLives(int nextLives) {
+        Bomberman.getMatch().getInventoryElementControllerLives().setNumItems(nextLives);
+        DataInputOutput.getPlayerDataObject().setLives(nextLives);
+        playerDataObject.setLives(nextLives);
         updateStoredPlayerData();
     }
 
@@ -85,19 +92,19 @@ public class DataInputOutput {
         if(newLives <= 0) {
             increaseLost();
             resetLevel();
+            resetScore();
         }
 
-        playerDataObject.setLives(newLives);
-        updateStoredPlayerData();
+        setLives(newLives);
     }
 
     public static void resetLivesIfNecessary() {
         if(getLives() <= 0)
-            playerDataObject.setLives(START_LIVES);
+            setLives(START_LIVES);
     }
 
     public static void resetLevel() {
-        playerDataObject.setLastWorldId(playerDataObject.getLastWorldId());
+        playerDataObject.setLastWorldId(1);
         playerDataObject.setLastLevelId(1);
         updateStoredPlayerData();
     }
@@ -106,8 +113,21 @@ public class DataInputOutput {
         return playerDataObject.getPoints();
     }
 
+    public static void resetScore() {
+        setScore(0);
+    }
+
+    public static void decreaseScore(int score){
+        setScore((int) (playerDataObject.getPoints() - score));
+    }
+
     public static void increaseScore(int score){
-        playerDataObject.setPoints(playerDataObject.getPoints() + score);
+        setScore((int) (playerDataObject.getPoints() + score));
+    }
+
+    private static void setScore(int score) {
+        score = Math.max(0, score);
+        playerDataObject.setPoints(score);
         updateStoredPlayerData();
     }
 

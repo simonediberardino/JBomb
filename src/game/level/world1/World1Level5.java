@@ -10,6 +10,7 @@ import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.level.world2.World2Level;
 import game.level.world2.World2Level1;
+import game.utils.Paths;
 
 public class World1Level5 extends World1Level{
     @Override
@@ -33,6 +34,10 @@ public class World1Level5 extends World1Level{
                 YellowBall.class,
                 Helicopter.class
         };
+    }
+    @Override
+    public String getGrassBlock() {
+        return Paths.getCurrentWorldCommonFolder() + "/clown_pitch.png";
     }
 
     @Override

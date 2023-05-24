@@ -1,6 +1,7 @@
 package game.powerups;
 
 import game.entity.blocks.DestroyableBlock;
+import game.entity.blocks.MovableBlock;
 import game.entity.models.BomberEntity;
 import game.models.Coordinates;
 
@@ -19,8 +20,8 @@ public class Hammer extends PowerUp{
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage("assets/entities/player/player_left_1_died.png");
-    }
+        return loadAndSetImage("assets/powerups/hammer.png");
+    }//TODO
 
     @Override
     public int getDuration() {
@@ -29,11 +30,11 @@ public class Hammer extends PowerUp{
 
     @Override
     protected void doApply(BomberEntity entity) {
-        entity.getListClassInteractWithMouse().add(DestroyableBlock.class);
+        entity.getListClassInteractWithMouseClick().add(DestroyableBlock.class);
     }
 
     @Override
     protected void cancel(BomberEntity entity) {
-        entity.getListClassInteractWithMouse().remove(DestroyableBlock.class);
+        entity.getListClassInteractWithMouseClick().remove(DestroyableBlock.class);
     }
 }

@@ -3,4 +3,4 @@
 - HUD;
 - Player stats;
 - Points;
-- hammer power up;
+- zombie health

@@ -20,7 +20,6 @@ import static game.localization.Localization.*;
 
 public class GameOverPanel extends PagePanel {
     private BombermanButton retryButton;
-    private BombermanButton mainMenuButton;
     private JPanel listButtonsPanel;
 
     /**
@@ -86,7 +85,7 @@ public class GameOverPanel extends PagePanel {
      * Creates the profileButton and adds it to the listButtonsPanel.
      */
     private void createMainMenuButton() {
-        mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
+        BombermanButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
         mainMenuButton.addActionListener((v) -> {
             ToastHandler.getInstance().cancel();
             Bomberman.show(MainMenuPanel.class);

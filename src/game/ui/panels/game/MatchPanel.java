@@ -1,16 +1,9 @@
 package game.ui.panels.game;
 
-import game.BomberManMatch;
 import game.Bomberman;
-import game.data.DataInputOutput;
-import game.entity.Player;
 import game.models.Coordinates;
 import game.powerups.EmptyPowerup;
 import game.powerups.PowerUp;
-import game.powerups.SpeedPowerUp;
-import game.ui.controllers.InventoryElementController;
-import game.ui.elements.InventoryElementView;
-import game.ui.models.InventoryElementModel;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.utils.Dimensions;
@@ -21,7 +14,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MatchPanel extends PagePanel {
@@ -334,8 +326,11 @@ public class MatchPanel extends PagePanel {
             // Scale the power-up image to the desired dimensions
             Image img = powerUp.getImage().getScaledInstance(powerUpImageDimension, powerUpImageDimension, 0);
 
+            JLabel powerupLabel = new JLabel(new ImageIcon(img));
+            powerupLabel.setBorder(BorderFactory.createEmptyBorder(Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING));
+
             // Create a JLabel with the scaled image and add it to the power-up panel
-            powerUpsPanel.add(new JLabel(new ImageIcon(img)));
+            powerUpsPanel.add(powerupLabel);
         }
 
         // Update and repaint the right panel to reflect the changes

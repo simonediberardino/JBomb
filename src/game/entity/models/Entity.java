@@ -4,7 +4,6 @@ import game.Bomberman;
 import game.controller.MouseControllerManager;
 import game.engine.GameTickerObserver;
 import game.entity.Player;
-import game.entity.bomb.Bomb;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
@@ -21,6 +20,7 @@ import static game.utils.Utility.loadImage;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity extends GameTickerObserver implements Comparable<Entity>{
+    protected Set<Class<? extends Entity>> passiveInteractionEntities = getBasePassiveInteractionEntities();
     protected BufferedImage image;
     protected int lastImageIndex;
     protected long lastImageUpdate;
@@ -35,8 +35,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     private String imagePath = "";
     private final long id;
 
-    public Set<Class<? extends Entity>> passiveInteractionEntities = new HashSet<>();
-
     public Entity(){
         this(new Coordinates(-1, -1));
     }
@@ -49,7 +47,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     public Entity(Coordinates coordinates){
         this.id = UUID.randomUUID().getMostSignificantBits();
         this.coords = coordinates;
-        this.passiveInteractionEntities = getBasePassiveInteractionEntities();
     }
 
     protected String getBasePath(){ return ""; }
@@ -117,8 +114,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * @return the loaded image
      */
     public BufferedImage loadAndSetImage(String imagePath) {
-        if(this instanceof Player){
-        }
         this.lastImageUpdate = System.currentTimeMillis();
         this.image = loadImage(imagePath);
         this.imagePath = imagePath;
@@ -197,6 +192,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     public final void spawn(){
         spawn(false,true);
     }
+
 
     public final void spawn(boolean forceSpawn){
         spawn(forceSpawn,true);
@@ -300,29 +296,33 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
     protected List<Coordinates> getNewCoordinatesOnUp(int steps, int offset) {
         List<Coordinates> coordinates = new ArrayList<>();
-        int first = steps;
-        int last = 0;
+        int first = steps, last = 0;
+
         for (int step = 0; step <= steps/offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
                 if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
                 coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() - first - step * offset));
-            }first = 0;
+            }
+            first = 0;
         }
+
         return coordinates;
     }
 
     protected List<Coordinates> getNewCoordinatesOnDown(int steps, int offset, int size) {
         List<Coordinates> coordinates = new ArrayList<>();
-        int first = steps;
-        int last = 0;
+        int first = steps, last = 0;
+
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
                 if (i== getSize()/offset)
                     last = PitchPanel.PIXEL_UNIT;
+
                 coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() + size - 1 + first + step * offset));
             }
             first = 0;
         }
+        
         return coordinates;
     }
 
@@ -377,9 +377,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * Handles mouse click interactions.
      * If the entity is within one grid size distance from the player's center coordinates, it gets eliminated.
      */
-    public void mouseClickInteraction() {
+    protected void mouseClickInteraction() {
         Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(Bomberman.getMatch().getPlayer()));
-
         // Check if the entity is within one grid size distance from the player's center coordinates
         if (getCoords().distanceTo(Coordinates.roundCoordinates(centerCoordinatesOfEntity)) <= PitchPanel.GRID_SIZE) {
             eliminated();
@@ -390,10 +389,9 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * Handles mouse drag interactions.
      * This method allows dragging the entity to move it around.
      */
-    public synchronized void mouseDragInteraction() {
+    protected synchronized void mouseDragInteraction() {
         Entity player = Bomberman.getMatch().getPlayer();
         MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
-        Entity interactedEntity = mouseControllerManager.getEntity();
         Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player));
         Coordinates mouseCoordinates = Coordinates.roundCoordinates(mouseControllerManager.getMouseCoords());
 
@@ -403,7 +401,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
         // Check if the interacted entity is not within one grid size distance from the player's center coordinates
         // and the mouse drag interaction has not been entered yet
-        if (!(Coordinates.roundCoordinates(interactedEntity.getCoords()).distanceTo(centerCoordinatesOfEntity) <=PitchPanel.GRID_SIZE)//todo
+        if (!(Coordinates.roundCoordinates(getCoords()).distanceTo(Coordinates.roundCoordinates(centerCoordinatesOfEntity)) <= PitchPanel.GRID_SIZE)//todo
                 && !mouseControllerManager.isMouseDragInteractionEntered()) {
             return;
         }
@@ -412,7 +410,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
         //Check if there are other entities on the occupied block, and they are not the current entity
 
-        if (!entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this||e!=Bomberman.getMatch().getPlayer())) {
+        if (!entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this&&e!=Bomberman.getMatch().getPlayer())) {
             mouseControllerManager.setMouseDraggedInteractionInterrupted(true);
             return;
         }
@@ -421,7 +419,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
             // Move the entity to the dragged mouse coordinates
             Bomberman.getMatch().getMouseControllerManager().setMouseDragInteractionEntered(true);
             Bomberman.getMatch().getMouseControllerManager().setMouseDraggedInteractionOccured(true);
-            setCoords(mouseCoordinates);
+            setCoords(Coordinates.roundCoordinates(mouseCoordinates, getSpawnOffset()));
         }
     }
 
@@ -460,30 +458,43 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return e == null || passiveInteractionEntities.stream().anyMatch(c -> c.isInstance(e));
     }
 
+    protected boolean canEntityInteractWithMouseDrag(){
+        return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseDrag().stream().anyMatch(cls->cls.isInstance(this)
+            && Bomberman.getMatch().getMouseControllerManager().isMouseDragged());
+    }
+
+    protected boolean canEntityInteractWithMouseClick(){
+        return Bomberman.getMatch()
+                .getPlayer()
+                .getListClassInteractWithMouseClick()
+                .stream()
+                .anyMatch(
+                        cls -> cls.isInstance(this)
+                )
+                && Bomberman.getMatch().getMouseControllerManager().isMouseClicked();
+    }
+
     /**
      * Handles mouse interactions.
      * This method is responsible for mouse click and mouse drag interactions.
      */
     public void mouseInteractions() {
-        if(this instanceof Bomb){
-            int a = 0;
+        MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
+        Entity entity = mouseControllerManager.getEntity();
+
+        if (entity == null) {
+            return;
         }
-        if(Bomberman.getMatch().getPlayer().getListClassInteractWithMouse().stream().noneMatch(cls->cls.isInstance(this))) return;
-            MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
-            Entity entity = mouseControllerManager.getEntity();
 
-            if (entity == null) {
-                return;
-            }
-
-            if (mouseControllerManager.isMouseClicked()) { // TODO: && hammer is active
-                mouseClickInteraction();
-            }
-
-            if (mouseControllerManager.isMouseDragged()) {
-                mouseDragInteraction();
-            }
+        if(canEntityInteractWithMouseClick()){
+            mouseClickInteraction();
+            return;
         }
+
+        if(canEntityInteractWithMouseDrag()) {
+            mouseDragInteraction();
+        }
+    }
 
     @Override
     public int hashCode() {
