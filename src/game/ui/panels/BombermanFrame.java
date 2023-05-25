@@ -5,10 +5,7 @@ import game.level.world1.World1Level1;
 import game.level.world2.World2Level5;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.game.PitchPanel;
-import game.ui.panels.menus.GameOverPanel;
-import game.ui.panels.menus.LoadingPanel;
-import game.ui.panels.menus.MainMenuPanel;
-import game.ui.panels.menus.PausePanel;
+import game.ui.panels.menus.*;
 import game.utils.Paths;
 
 import javax.swing.*;
@@ -31,6 +28,7 @@ public class BombermanFrame extends JFrame {
     private LoadingPanel loadingPanel;
     private GameOverPanel gameOverPanel;
     private PausePanel pausePanel;
+    private ProfilePanel profilePanel;
 
     /**
 
@@ -42,6 +40,7 @@ public class BombermanFrame extends JFrame {
         initLoadingPanel();
         initGameOverPanel();
         initPausePanel();
+        initProfilePanel();
         finalizeFrame();
         pack();
         setFrameCursor();
@@ -99,6 +98,16 @@ public class BombermanFrame extends JFrame {
         gameOverPanel = new GameOverPanel(cardLayout, parentPanel, this);
         parentPanel.add(gameOverPanel, GameOverPanel.class.getSimpleName());
     }
+
+    /**
+
+     Initializes the menu panel and adds it to the parent panel.
+     */
+    private void initProfilePanel() {
+        profilePanel = new ProfilePanel(cardLayout, parentPanel, this);
+        parentPanel.add(profilePanel, ProfilePanel.class.getSimpleName());
+    }
+
     /**
 
      Finalizes the frame by setting the key listener and focusable, making the frame visible, and

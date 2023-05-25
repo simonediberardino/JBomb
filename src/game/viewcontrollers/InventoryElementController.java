@@ -1,6 +1,6 @@
 package game.viewcontrollers;
 
-import game.viewelements.InventoryElementView;
+import game.viewelements.inventory.InventoryElementView;
 import game.viewmodels.InventoryElementModel;
 import game.utils.Utility;
 

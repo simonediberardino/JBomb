@@ -6,14 +6,13 @@ import game.powerups.EmptyPowerup;
 import game.powerups.PowerUp;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
-import game.utils.Dimensions;
+import game.values.Dimensions;
 import game.utils.Paths;
 import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -325,7 +324,7 @@ public class MatchPanel extends PagePanel {
             Image img = p.getImage().getScaledInstance(powerUpImageDimension, powerUpImageDimension, 0);
 
             JLabel powerupLabel = new JLabel(new ImageIcon(img));
-            powerupLabel.setBorder(BorderFactory.createEmptyBorder(Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING, Dimensions.INVENTORY_PADDING));
+            powerupLabel.setBorder(BorderFactory.createEmptyBorder(Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING));
 
             // Create a JLabel with the scaled image and add it to the power-up panel
             powerUpsPanel.add(powerupLabel);

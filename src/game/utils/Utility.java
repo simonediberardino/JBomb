@@ -1,5 +1,7 @@
 package game.utils;
 
+import game.values.Dimensions;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;

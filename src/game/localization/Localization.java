@@ -6,6 +6,41 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class Localization {
+    public static final HashMap<Locale, String> DEATHS = new HashMap<>() {{
+        put(Locale.ENGLISH, "DEATHS");
+        put(Locale.ITALY, "MORTI");
+    }};
+
+    public static final HashMap<Locale, String> PLAYER_STATS = new HashMap<>() {{
+        put(Locale.ENGLISH, "PLAYER STATS");
+        put(Locale.ITALY, "STATISTICHE");
+    }};
+
+    public static final HashMap<Locale, String> LOST_GAMES = new HashMap<>() {{
+        put(Locale.ENGLISH, "LOST GAMES");
+        put(Locale.ITALY, "PARTITE PERSE");
+    }};
+
+    public static final HashMap<Locale, String> KILLS = new HashMap<>() {{
+        put(Locale.ENGLISH, "KILLS");
+        put(Locale.ITALY, "UCCISIONI");
+    }};
+
+    public static final HashMap<Locale, String> ROUNDS = new HashMap<>() {{
+        put(Locale.ENGLISH, "ROUNDS PASSED");
+        put(Locale.ITALY, "ROUND SUPERATI");
+    }};
+
+    public static final HashMap<Locale, String> POINTS = new HashMap<>() {{
+        put(Locale.ENGLISH, "POINTS");
+        put(Locale.ITALY, "PUNTI");
+    }};
+
+    public static final HashMap<Locale, String> LIVES = new HashMap<>() {{
+        put(Locale.ENGLISH, "LIVES");
+        put(Locale.ITALY, "VITE");
+    }};
+
     public static final HashMap<Locale, String> WELCOME_TEXT = new HashMap<>() {{
         put(Locale.ENGLISH, "Welcome to Bomberman!");
         put(Locale.ITALY, "Benvenuto su Bomberman!");

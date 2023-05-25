@@ -1,4 +1,4 @@
-package game.ui.elements;
+package game.viewelements.bombermanbutton;
 
 import game.sound.AudioManager;
 import game.sound.SoundModel;
@@ -40,17 +40,27 @@ public abstract class BombermanButton extends JButton {
 
         addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
+                if (getActionListeners().length <= 0) {
+                    return;
+                }
                 mouseEntered = true;
                 repaint();
                 AudioManager.getInstance().play(SoundModel.MOUSE_HOVER);
+
             }
 
             public void mouseExited(MouseEvent e) {
+                if (getActionListeners().length <= 0) {
+                    return;
+                }
                 mouseEntered = false;
                 repaint();
             }
 
             public void mousePressed(MouseEvent e) {
+                if (getActionListeners().length <= 0) {
+                    return;
+                }
                 AudioManager.getInstance().play(SoundModel.CLICK);
             }
         });

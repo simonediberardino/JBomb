@@ -1,35 +1,27 @@
 package game.level;
 
 import game.Bomberman;
-import game.controller.ControllerManager;
-import game.controller.MouseControllerManager;
 import game.data.DataInputOutput;
 import game.entity.*;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.StoneBlock;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
-import game.events.GameEvent;
 import game.events.RoundPassedGameEvent;
 import game.level.world1.*;
 import game.level.world2.*;
-import game.localization.Localization;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
-import game.ui.elements.ToastHandler;
 import game.utils.Paths;
 import game.utils.Utility;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-import static game.localization.Localization.STARTING_LEVEL;
-import static game.localization.Localization.WELCOME_TEXT;
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 

@@ -173,7 +173,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         this.onDespawn();
     }
 
-    protected final void spawnAtRandomCoordinates() {
+    public final void spawnAtRandomCoordinates() {
         setCoords(Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE * 3));
         spawn();
     }

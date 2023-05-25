@@ -1,4 +1,6 @@
-package game.ui.elements;
+package game.viewelements.bombermanbutton;
+
+import game.values.BomberColors;
 
 import java.awt.*;
 
@@ -9,7 +11,7 @@ public class YellowButton extends BombermanButton{
 
     @Override
     public Color getBorderColor() {
-        return Color.ORANGE;
+        return BomberColors.ORANGE;
     }
 
     @Override

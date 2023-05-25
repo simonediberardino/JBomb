@@ -1,4 +1,4 @@
-package game.ui.elements;
+package game.viewelements.misc;
 
 import javax.swing.*;
 

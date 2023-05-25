@@ -2,25 +2,20 @@ package game.ui.panels.menus;
 
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
-import game.level.world1.World1Level1;
-import game.level.world1.World1Level5;
-import game.level.world2.World2Level1;
-import game.level.world2.World2Level2;
-import game.level.world2.World2Level4;
-import game.level.world2.World2Level5;
 import game.localization.Localization;
-import game.ui.elements.BombermanButton;
-import game.ui.elements.Space;
-import game.ui.elements.YellowButton;
+import game.ui.helpers.Padding;
+import game.viewelements.bombermanbutton.BombermanButton;
+import game.viewelements.misc.Space;
+import game.viewelements.bombermanbutton.YellowButton;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
-import game.ui.panels.game.MatchPanel;
 import game.utils.Paths;
 
 import javax.swing.*;
 import java.awt.*;
 
 import static game.localization.Localization.*;
+import static game.values.Dimensions.DEFAULT_PADDING;
 
 /**
  * The MenuPanel class represents the main menu screen of the game.
@@ -82,7 +77,7 @@ public class MainMenuPanel extends PagePanel {
      */
     private void createProfileButton() {
         profileButton = new YellowButton(Localization.get(PROFILE));
-        // add action listener for profile button
+        profileButton.addActionListener(l -> Bomberman.show(ProfilePanel.class));
         listButtonsPanel.add(profileButton);
     }
 
