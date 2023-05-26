@@ -5,6 +5,7 @@ import game.level.Level;
 import game.level.world1.World1Level1;
 import game.utils.Paths;
 
+import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -175,5 +176,25 @@ public class DataInputOutput {
             e.printStackTrace();
         }
         return new World1Level1();
+    }
+
+    public static String getLeftKeyChar() {
+        return KeyEvent.getKeyText(playerDataObject.getLeftKey());
+    }
+
+    public static String getForwardKeyChar() {
+        return KeyEvent.getKeyText(playerDataObject.getForwardKey());
+    }
+
+    public static String getBackKeyChar() {
+        return KeyEvent.getKeyText(playerDataObject.getBackKey());
+    }
+
+    public static String getRightKeyChar() {
+        return KeyEvent.getKeyText(playerDataObject.getRightKey());
+    }
+
+    public static String getBombKeyChar() {
+        return KeyEvent.getKeyText(playerDataObject.getBombKey());
     }
 }

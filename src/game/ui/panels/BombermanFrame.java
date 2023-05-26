@@ -1,17 +1,15 @@
 package game.ui.panels;
 
-import game.Bomberman;
 import game.level.world1.World1Level1;
-import game.level.world2.World2Level5;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.game.PitchPanel;
 import game.ui.panels.menus.*;
+import game.ui.panels.settings.ProfilePanel;
+import game.ui.panels.settings.SettingsPanel;
 import game.utils.Paths;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.logging.Level;
 
 
 /**
@@ -29,6 +27,7 @@ public class BombermanFrame extends JFrame {
     private GameOverPanel gameOverPanel;
     private PausePanel pausePanel;
     private ProfilePanel profilePanel;
+    private SettingsPanel settingsPanel;
 
     /**
 
@@ -41,6 +40,7 @@ public class BombermanFrame extends JFrame {
         initGameOverPanel();
         initPausePanel();
         initProfilePanel();
+        initSettingsPanel();
         finalizeFrame();
         pack();
         setFrameCursor();
@@ -99,13 +99,18 @@ public class BombermanFrame extends JFrame {
         parentPanel.add(gameOverPanel, GameOverPanel.class.getSimpleName());
     }
 
+    private void initProfilePanel() {
+        profilePanel = new ProfilePanel(cardLayout, parentPanel, this);
+        parentPanel.add(profilePanel, ProfilePanel.class.getSimpleName());
+    }
+
     /**
 
      Initializes the menu panel and adds it to the parent panel.
      */
-    private void initProfilePanel() {
-        profilePanel = new ProfilePanel(cardLayout, parentPanel, this);
-        parentPanel.add(profilePanel, ProfilePanel.class.getSimpleName());
+    private void initSettingsPanel() {
+        settingsPanel = new SettingsPanel(cardLayout, parentPanel, this);
+        parentPanel.add(settingsPanel, SettingsPanel.class.getSimpleName());
     }
 
     /**

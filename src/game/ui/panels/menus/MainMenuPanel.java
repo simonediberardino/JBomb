@@ -2,8 +2,9 @@ package game.ui.panels.menus;
 
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
-import game.level.world1.World1Level5;
 import game.localization.Localization;
+import game.ui.panels.settings.ProfilePanel;
+import game.ui.panels.settings.SettingsPanel;
 import game.ui.viewelements.bombermanbutton.BombermanButton;
 import game.ui.viewelements.misc.Space;
 import game.ui.viewelements.bombermanbutton.YellowButton;
@@ -23,6 +24,7 @@ public class MainMenuPanel extends PagePanel {
     private BombermanButton startLevelButton;
     private BombermanButton profileButton;
     private BombermanButton exitButton;
+    private BombermanButton settingsButton;
     private JPanel listButtonsPanel;
 
     /**
@@ -46,6 +48,7 @@ public class MainMenuPanel extends PagePanel {
         createListButtonsPanel();
         createStartLevelButton();
         createProfileButton();
+        createSettingsButton();
         createQuitButton();
     }
 
@@ -78,6 +81,12 @@ public class MainMenuPanel extends PagePanel {
         profileButton = new YellowButton(Localization.get(PROFILE));
         profileButton.addActionListener(l -> Bomberman.show(ProfilePanel.class));
         listButtonsPanel.add(profileButton);
+    }
+
+    private void createSettingsButton() {
+        settingsButton = new YellowButton(Localization.get(SETTINGS));
+        settingsButton.addActionListener(l -> Bomberman.show(SettingsPanel.class));
+        listButtonsPanel.add(settingsButton);
     }
 
     /**

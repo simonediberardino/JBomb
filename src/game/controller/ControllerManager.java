@@ -2,6 +2,7 @@
 package game.controller;
 
 import game.Bomberman;
+import game.data.DataInputOutput;
 import game.engine.PeriodicTask;
 import game.events.Observable2;
 import game.utils.Utility;
@@ -18,24 +19,12 @@ import static java.util.Map.entry;
  */
 public class ControllerManager extends Observable2 implements KeyListener {
     private static ControllerManager instance;
-    private static final int KEY_W = KeyEvent.VK_W;
-    private static final int KEY_A = KeyEvent.VK_A;
-    private static final int KEY_S = KeyEvent.VK_S;
-    private static final int KEY_D = KeyEvent.VK_D;
-    private static final int KEY_SPACE = KeyEvent.VK_SPACE;
     private static final int KEY_ESC = KeyEvent.VK_ESCAPE;
     private static int KEY_DELAY_MS = setDefaultCommandDelay();
     public Set<Command> commandQueue = new HashSet<>();
 
     // Key-Command mapping
-    private static final Map<Integer, Command> keyAssignment = Map.ofEntries(
-            entry(KEY_W, Command.MOVE_UP),
-            entry(KEY_A, Command.MOVE_LEFT),
-            entry(KEY_S, Command.MOVE_DOWN),
-            entry(KEY_D, Command.MOVE_RIGHT),
-            entry(KEY_SPACE, Command.PLACE_BOMB),
-            entry(KEY_ESC, Command.PAUSE)
-    );
+    private Map<Integer, Command> keyAssignment;
 
     // Stores the time of the last key event for each command
     private final Map<Command, Long> commandEventsTime = new HashMap<>();
@@ -44,6 +33,25 @@ public class ControllerManager extends Observable2 implements KeyListener {
     public ControllerManager(){
         instance = this;
         setupTask();
+        // If illegal keys are found, reset the key map;
+        try{
+            setKeyMap();
+        }catch (IllegalArgumentException e){
+            DataInputOutput.getPlayerDataObject().resetKeys();
+            DataInputOutput.updateStoredPlayerData();
+            setKeyMap();
+        }
+    }
+
+    private void setKeyMap(){
+        keyAssignment = Map.ofEntries(
+                entry(DataInputOutput.getPlayerDataObject().getForwardKey(), Command.MOVE_UP),
+                entry(DataInputOutput.getPlayerDataObject().getLeftKey(), Command.MOVE_LEFT),
+                entry(DataInputOutput.getPlayerDataObject().getBackKey(), Command.MOVE_DOWN),
+                entry(DataInputOutput.getPlayerDataObject().getRightKey(), Command.MOVE_RIGHT),
+                entry(DataInputOutput.getPlayerDataObject().getBombKey(), Command.PLACE_BOMB),
+                entry(KEY_ESC, Command.PAUSE)
+        );
     }
 
     public void onKeyPressed(Command action){
@@ -56,7 +64,6 @@ public class ControllerManager extends Observable2 implements KeyListener {
         }
 
         resume();
-
     }
 
     /**
@@ -76,8 +83,8 @@ public class ControllerManager extends Observable2 implements KeyListener {
     public void keyReleased(KeyEvent e) {
         Command action = keyAssignment.get(e.getKeyCode());
         onKeyReleased(action);
-
     }
+
     public void onKeyReleased(Command action){
         commandQueue.remove(action);
         if(commandQueue.isEmpty()) stop();

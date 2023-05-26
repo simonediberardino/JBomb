@@ -111,6 +111,11 @@ public class Localization {
         put(Locale.ITALY, "USERNAME");
     }};
 
+    public static final HashMap<Locale, String> SETTINGS = new HashMap<>() {{
+        put(Locale.ENGLISH, "SETTINGS");
+        put(Locale.ITALY, "IMPOSTAZIONI");
+    }};;
+
     public static Locale[] getSupportedLanguages() {
         return new Locale[]{
                 Locale.ENGLISH,

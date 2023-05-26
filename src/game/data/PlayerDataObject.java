@@ -2,6 +2,7 @@ package game.data;
 
 import game.level.Level;
 
+import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
 import static game.data.DataInputOutput.START_LIVES;
@@ -16,21 +17,94 @@ public class PlayerDataObject implements Serializable {
     private int lastLevelId;
     private int lastWorldId;
     private int lives;
+    private int forwardKey;
+    private int backKey;
+    private int leftKey;
+    private int rightKey;
+    private int bombKey;
 
     public PlayerDataObject() {
-        this("User",0,0,0,0,0, START_LIVES, 0, 0);
+        this(
+                "User",
+                0,
+                0,
+                0,
+                0,
+                0,
+                START_LIVES,
+                0,
+                0,
+                KeyEvent.VK_W,
+                KeyEvent.VK_S,
+                KeyEvent.VK_A,
+                KeyEvent.VK_D,
+                KeyEvent.VK_SPACE
+        );
     }
 
-    public PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lives, int lastLevelId, int lastWorldId) {
+    public PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lastLevelId, int lastWorldId, int lives, int forwardKey, int backKey, int leftKey, int rightKey, int bombKey) {
         this.name = name;
         this.lostGames = lostGames;
-        this.lives = lives;
         this.kills = kills;
         this.deaths = deaths;
         this.rounds = rounds;
         this.points = points;
         this.lastLevelId = lastLevelId;
         this.lastWorldId = lastWorldId;
+        this.lives = lives;
+        this.forwardKey = forwardKey;
+        this.backKey = backKey;
+        this.leftKey = leftKey;
+        this.rightKey = rightKey;
+        this.bombKey = bombKey;
+    }
+
+    public void resetKeys() {
+        this.forwardKey = KeyEvent.VK_W;
+        this.backKey = KeyEvent.VK_S;
+        this.leftKey = KeyEvent.VK_A;
+        this.rightKey = KeyEvent.VK_D;
+        this.bombKey = KeyEvent.VK_SPACE;
+    }
+
+    public int getForwardKey() {
+        return forwardKey;
+    }
+
+    public void setForwardKey(int forwardKey) {
+        this.forwardKey = forwardKey;
+    }
+
+    public int getBackKey() {
+        return backKey;
+    }
+
+    public void setBackKey(int backKey) {
+        this.backKey = backKey;
+    }
+
+    public int getLeftKey() {
+        return leftKey;
+    }
+
+    public void setLeftKey(int leftKey) {
+        this.leftKey = leftKey;
+    }
+
+    public int getRightKey() {
+        return rightKey;
+    }
+
+    public void setRightKey(int rightKey) {
+        this.rightKey = rightKey;
+    }
+
+    public int getBombKey() {
+        return bombKey;
+    }
+
+    public void setBombKey(int bombKey) {
+        this.bombKey = bombKey;
     }
 
     public String getName() {
