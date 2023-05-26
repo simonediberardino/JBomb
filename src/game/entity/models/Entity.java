@@ -3,10 +3,13 @@ package game.entity.models;
 import game.Bomberman;
 import game.controller.MouseControllerManager;
 import game.engine.GameTickerObserver;
-import game.entity.Player;
+import game.entity.enemies.boss.clown.Clown;
 import game.models.Coordinates;
 import game.models.Direction;
+import game.models.RunnablePar;
+import game.models.RunnableParReturns;
 import game.ui.panels.game.PitchPanel;
+import game.utils.Utility;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -24,8 +27,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     protected BufferedImage image;
     protected int lastImageIndex;
     protected long lastImageUpdate;
-    protected float widthToHitboxSizeRatio = 1;
-    protected float heightToHitboxSizeRatio = 1;
+    protected float hitboxSizetoWidthRatio = 1;
+    protected float hitboxSizeToHeightRatio = 1;
     private Coordinates coords;
     private boolean isSpawned = false;
     private boolean isImmune = false;
@@ -33,7 +36,25 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     private int paddingTop;
     private int paddingWidth;
     private String imagePath = "";
+    private float alpha = 1;
     private final long id;
+    protected RunnableParReturns paddingTopFunction = new RunnableParReturns() {
+        @Override
+        public <T extends Number> int execute(T par){
+            int temp = (int) ((double) getSize() / (double)par - getSize());
+            paddingTop = temp;
+            return temp;
+        }
+    };
+    protected RunnableParReturns paddingWidthFunction = new RunnableParReturns() {
+        @Override
+        public <T extends Number> int execute(T par) {
+            int temp = (int) (((double) getSize() / (double)par- getSize()) / 2);
+            paddingWidth = temp;
+            return temp;
+        }
+    };
+
 
     public Entity(){
         this(new Coordinates(-1, -1));
@@ -75,20 +96,20 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      *
      * @return the size of the entity
      */
-    public float getHeightToHitboxSizeRatio(){
-        return heightToHitboxSizeRatio;
+    public float getHitboxSizeToHeightRatio(){
+        return hitboxSizeToHeightRatio;
+    }
+    //might be override
+    public float getHitboxSizeToHeightRatio(String path){
+        return getHitboxSizeToHeightRatio();
     }
 
-    public float getHeightToHitboxSizeRatio(String path){
-        return getHeightToHitboxSizeRatio();
+    public final float getHitboxSizeToWidthRatio(String path){
+        return getHitboxSizeToWidthRatio();
     }
 
-    public float getWidthToHitboxSizeRatio(String path){
-        return getWidthToHitboxSizeRatio();
-    }
-
-    public final float getWidthToHitboxSizeRatio(){
-        return widthToHitboxSizeRatio;
+    public final float getHitboxSizeToWidthRatio(){
+        return hitboxSizetoWidthRatio;
     }
 
     public int getImageRefreshRate(){
@@ -326,24 +347,34 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return coordinates;
     }
 
-    public int getPaddingTop() {
-        paddingTop = (int) ((double) getSize() / (double) getHeightToHitboxSizeRatio() - getSize());
+
+
+    public void setPaddingTop(int p){
+        paddingTop=p;
+    }
+    public void setPaddingWidth(int p){
+        paddingWidth = p;
+    }
+    public int calculateAndGetPaddingTop(){
+        return calculateAndGetPaddingTop(getHitboxSizeToHeightRatio());
+    }
+    public int calculateAndGetPaddingTop(double ratio){
+        return paddingTopFunction.execute(ratio);
+
+
+    }
+    public int getPaddingTop(){
         return paddingTop;
     }
-
-    public int getPaddingWidth() {
-        paddingWidth = (int) (((double) getSize() / (double) getWidthToHitboxSizeRatio() - getSize())/2);
+    public int getPaddingWidth(){
         return paddingWidth;
     }
-
-    public int getPaddingTop(float ratio){
-        paddingTop = (int) ((double) getSize() / (double) ratio-getSize());
-        return paddingTop;
+    public int calculateAndGetPaddingWidth(){
+        return calculateAndGetPaddingWidth(getHitboxSizeToWidthRatio());
     }
+    public int calculateAndGetPaddingWidth(double ratio){
+        return paddingWidthFunction.execute(ratio);
 
-    public int getPaddingWidth(float ratio){
-        paddingWidth = (int) (((double) getSize() / (double) ratio-getSize())/2);
-        return paddingWidth;
     }
 
     public int getDrawPriority() {
@@ -499,5 +530,13 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void setAlpha(float alpha){
+        this.alpha = Utility.ensureRange(alpha, 0, 1);
+    }
+
+    public float getAlpha() {
+        return alpha;
     }
 }

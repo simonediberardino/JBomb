@@ -1,4 +1,4 @@
-package game.viewelements.misc;
+package game.ui.viewelements.misc;
 
 import game.sound.AudioManager;
 import game.utils.Utility;

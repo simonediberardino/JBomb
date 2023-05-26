@@ -2,6 +2,7 @@ package game.level.world1;
 
 import game.entity.enemies.boss.Boss;
 import game.entity.enemies.boss.clown.Clown;
+import game.entity.enemies.boss.ghost.GhostBoss;
 import game.entity.enemies.npcs.FlyingEnemy;
 import game.entity.enemies.npcs.Helicopter;
 import game.entity.enemies.npcs.YellowBall;
@@ -20,12 +21,12 @@ public class World1Level5 extends World1Level{
 
     @Override
     public Boss getBoss() {
-        return new Clown();
+        return new GhostBoss();
     }
 
     @Override
     public int startEnemiesCount() {
-        return 7;
+        return 0;
     }
 
     @Override

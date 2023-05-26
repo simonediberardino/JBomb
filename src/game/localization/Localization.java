@@ -6,6 +6,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class Localization {
+    public static final HashMap<Locale, String> MY_BOMBERMAN = new HashMap<>() {{
+        put(Locale.ENGLISH, "MY BOMBERMAN");
+        put(Locale.ITALY, "IL MIO BOMBERMAN");
+    }};
+
     public static final HashMap<Locale, String> DEATHS = new HashMap<>() {{
         put(Locale.ENGLISH, "DEATHS");
         put(Locale.ITALY, "MORTI");
@@ -28,7 +33,7 @@ public class Localization {
 
     public static final HashMap<Locale, String> ROUNDS = new HashMap<>() {{
         put(Locale.ENGLISH, "ROUNDS PASSED");
-        put(Locale.ITALY, "ROUND SUPERATI");
+        put(Locale.ITALY, "ROUND VINTI");
     }};
 
     public static final HashMap<Locale, String> POINTS = new HashMap<>() {{
@@ -99,6 +104,11 @@ public class Localization {
     public static final HashMap<Locale, String> QUIT = new HashMap<>() {{
         put(Locale.ENGLISH, "EXIT THE GAME");
         put(Locale.ITALY, "ESCI DAL GIOCO");
+    }};
+
+    public static final HashMap<Locale, String> USERNAME = new HashMap<>() {{
+        put(Locale.ENGLISH, "USERNAME");
+        put(Locale.ITALY, "USERNAME");
     }};
 
     public static Locale[] getSupportedLanguages() {

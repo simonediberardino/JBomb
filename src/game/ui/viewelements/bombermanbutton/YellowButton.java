@@ -1,21 +1,21 @@
-package game.viewelements.bombermanbutton;
+package game.ui.viewelements.bombermanbutton;
 
 import game.values.BomberColors;
 
 import java.awt.*;
 
-public class RedButton extends BombermanButton{
-    public RedButton(String text) {
+public class YellowButton extends BombermanButton{
+    public YellowButton(String text) {
         super(text);
     }
 
     @Override
     public Color getBorderColor() {
-        return BomberColors.RED;
+        return BomberColors.ORANGE;
     }
 
     @Override
     public Color getMouseHoverBackgroundColor() {
-        return Color.RED;
+        return  new Color(255, 102, 0);
     }
 }

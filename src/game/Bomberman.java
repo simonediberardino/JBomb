@@ -7,7 +7,7 @@ import game.level.WorldSelectorLevel;
 import game.localization.Localization;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
-import game.viewelements.misc.ToastHandler;
+import game.ui.viewelements.misc.ToastHandler;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.ui.panels.game.MatchPanel;

@@ -2,11 +2,11 @@ package game.ui.panels.menus;
 
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
+import game.level.world1.World1Level5;
 import game.localization.Localization;
-import game.ui.helpers.Padding;
-import game.viewelements.bombermanbutton.BombermanButton;
-import game.viewelements.misc.Space;
-import game.viewelements.bombermanbutton.YellowButton;
+import game.ui.viewelements.bombermanbutton.BombermanButton;
+import game.ui.viewelements.misc.Space;
+import game.ui.viewelements.bombermanbutton.YellowButton;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.utils.Paths;
@@ -15,7 +15,6 @@ import javax.swing.*;
 import java.awt.*;
 
 import static game.localization.Localization.*;
-import static game.values.Dimensions.DEFAULT_PADDING;
 
 /**
  * The MenuPanel class represents the main menu screen of the game.

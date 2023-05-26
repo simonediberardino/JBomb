@@ -3,10 +3,11 @@ package game.entity.enemies.npcs;
 import game.models.Direction;
 import game.utils.Paths;
 
-public class Helicopter extends FlyingEnemy{
+public class Helicopter extends FlyingEnemy {
     public Helicopter(){
-        imagePossibleDirections.remove(Direction.DOWN); imagePossibleDirections.remove(Direction.UP);
+        super();
     }
+
     @Override
     protected String getBasePath() {
         return Paths.getEnemiesFolder() + "/heli";

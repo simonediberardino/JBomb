@@ -1,6 +1,5 @@
 package game.entity.enemies.boss.clown;
 
-import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
@@ -8,14 +7,11 @@ import game.entity.enemies.npcs.Orb;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Entity;
 import game.entity.models.Explosive;
-import game.models.Coordinates;
-import game.models.Direction;
-import game.models.EnhancedDirection;
+import game.models.*;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 import game.utils.Utility;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -34,6 +30,7 @@ public class Clown extends Boss implements Explosive {
     private static final float RATIO_WIDTH = 0.8739f;
     private static final String SKIN_PATH_TEMPLATE = "%s/clown/clown_%s_%s.png";
 
+
     /**
      The hasHat property represents whether the Clown entity is wearing a hat or not.
      */
@@ -48,19 +45,8 @@ public class Clown extends Boss implements Explosive {
     }
 
     public Clown(){
-        super(null);
-
-        Dimension panelSize = Bomberman
-                .getBombermanFrame()
-                .getPitchPanel()
-                .getPreferredSize();
-
-        int y = (int) panelSize.getHeight() - getSize();
-        int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
-
-        setCoords(new Coordinates(x, y));
-
-        widthToHitboxSizeRatio = RATIO_WIDTH;
+        super();
+        hitboxSizetoWidthRatio = RATIO_WIDTH;
         hasHat = true;
     }
 
@@ -83,6 +69,19 @@ public class Clown extends Boss implements Explosive {
 
         return toks[1].equals("1");
     }
+    @Override
+    public float getHitboxSizeToHeightRatio(String path){
+        hitboxSizeToHeightRatio= isHatImage(path) ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
+        return hitboxSizeToHeightRatio;
+    }
+
+
+    @Override
+    public int calculateAndGetPaddingTop(double ratio) {
+
+        return super.calculateAndGetPaddingTop(ratio);
+    }
+
     /**
 
      Setter method for the hasHat property.
@@ -246,24 +245,6 @@ public class Clown extends Boss implements Explosive {
         super.doUpdate(gamestate);
     }
 
-
-    /**
-     * Updates the rage status of the Boss, loading and setting the corresponding image.
-     *
-     * @param status the new rage status to be set.
-     */
-    @Override
-    protected void updateRageStatus(int status) {
-        // If the new rage status is the same as the current one, nothing to update.
-        if(status == currRageStatus) return;
-
-        currRageStatus = status;
-        // Get the corresponding image path from the current rage status.
-        String imagePath = getImageFromRageStatus();
-        // Load and set the image.
-        loadAndSetImage(imagePath);
-    }
-
     /**
      * Returns the image path of the Boss corresponding to its current rage status.
      *
@@ -326,13 +307,7 @@ public class Clown extends Boss implements Explosive {
      *
      * @return the top padding of the hitbox.
      */
-    @Override
-    public int getPaddingTop(){
-        // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
-        heightToHitboxSizeRatio = hasHat ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
-        // Return the top padding of the hitbox.
-        return super.getPaddingTop();
-    }
+
 
     /**
      * Returns the height to hitbox size ratio of the Boss.
@@ -340,23 +315,13 @@ public class Clown extends Boss implements Explosive {
      * @return the height to hitbox size ratio.
      */
     @Override
-    public float getHeightToHitboxSizeRatio() {
+    public float getHitboxSizeToHeightRatio() {
         // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
-        heightToHitboxSizeRatio = hasHat ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
-        return heightToHitboxSizeRatio;
+        hitboxSizeToHeightRatio = hasHat ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
+        return hitboxSizeToHeightRatio;
     }
 
-    /**
-     * Returns the height to hitbox size ratio of the Boss, taking into account the image path.
-     *
-     * @param path the path of the image.
-     * @return the height to hitbox size ratio.
-     */
-    @Override
-    public float getHeightToHitboxSizeRatio(String path){
-        heightToHitboxSizeRatio = isHatImage(path) ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
-        return heightToHitboxSizeRatio;
-    }
+
 
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {

@@ -1,6 +1,6 @@
 package game.ui.panels;
 
-import game.viewelements.misc.ToastHandler;
+import game.ui.viewelements.misc.ToastHandler;
 import game.utils.Utility;
 
 import javax.swing.*;

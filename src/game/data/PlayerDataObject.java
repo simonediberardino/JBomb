@@ -33,7 +33,7 @@ public class PlayerDataObject implements Serializable {
         this.lastWorldId = lastWorldId;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
@@ -61,11 +61,11 @@ public class PlayerDataObject implements Serializable {
         return points;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    void setLostGames(int lostGames) {
+    public void setLostGames(int lostGames) {
         this.lostGames = lostGames;
     }
 
@@ -124,5 +124,4 @@ public class PlayerDataObject implements Serializable {
     public void setLastLevelId(int i) {
         this.lastLevelId = i;
     }
-
 }

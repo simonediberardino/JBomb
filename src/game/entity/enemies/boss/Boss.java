@@ -8,6 +8,7 @@ import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
 import game.ui.panels.game.PitchPanel;
 
+import java.awt.*;
 import java.util.*;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
@@ -16,6 +17,20 @@ public abstract class Boss extends IntelligentEnemy {
     protected static int SIZE = GRID_SIZE * 4;
     protected int currRageStatus = 0;
     protected TreeMap<Integer, Integer> healthStatusMap = new TreeMap<>(healthStatusMap());
+
+    public Boss() {
+        this(null);
+
+        Dimension panelSize = Bomberman
+                .getBombermanFrame()
+                .getPitchPanel()
+                .getPreferredSize();
+
+        int y = (int) panelSize.getHeight() - getSize()*2;
+        int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
+
+        setCoords(new Coordinates(x, y));
+    }
 
     public Boss(Coordinates coordinates){
         super(coordinates);
@@ -52,5 +67,19 @@ public abstract class Boss extends IntelligentEnemy {
         endLevelPortal.spawn(true,true);
     }
 
-    protected abstract void updateRageStatus(int status);
+    /**
+     * Updates the rage status of the Boss, loading and setting the corresponding image.
+     *
+     * @param status the new rage status to be set.
+     */
+    protected void updateRageStatus(int status) {
+        // If the new rage status is the same as the current one, nothing to update.
+        if(status == currRageStatus) return;
+
+        currRageStatus = status;
+        // Get the corresponding image path from the current rage status.
+        String imagePath = getImageFromRageStatus();
+        // Load and set the image.
+        loadAndSetImage(imagePath);
+    }
 }

@@ -14,6 +14,8 @@ public class YellowBall extends IntelligentEnemy {
 
     public YellowBall(Coordinates coordinates) {
         super(coordinates);
+        imagePossibleDirections.remove(Direction.UP);
+        imagePossibleDirections.remove(Direction.DOWN);
     }
 
     @Override
@@ -23,19 +25,13 @@ public class YellowBall extends IntelligentEnemy {
 
     @Override
     public String[] getCharacterOrientedImages() {
-
         return new String[]{
-                Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase() +"_"+ 0 + ".png",
-                Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase()+"_" + 1 + ".png",
-                Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase()+"_" + 2 + ".png",
-                Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball_" + imageDirection.toString().toLowerCase() +"_"+ 3 + ".png"
+                String.format("%s/yellow_ball/yellow_ball_%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 0),
+                String.format("%s/yellow_ball/yellow_ball_%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 1),
+                String.format("%s/yellow_ball/yellow_ball_%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 2),
+                String.format("%s/yellow_ball/yellow_ball_%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 3)
         };
-
-
-
     }
-
-
 
     @Override
     public int getSize() {

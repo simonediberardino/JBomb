@@ -1,11 +1,8 @@
-package game.viewelements.bombermanbutton;
+package game.ui.viewelements.bombermanbutton;
 
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.utils.Utility;
-
-import javax.swing.*;
-import java.awt.*;
 
 import java.awt.Color;
 import java.awt.Font;

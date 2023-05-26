@@ -3,21 +3,27 @@ package game.ui.panels.menus;
 import game.Bomberman;
 import game.data.DataInputOutput;
 import game.localization.Localization;
+import game.models.RunnablePar;
 import game.ui.helpers.Padding;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.utils.Paths;
 import game.utils.Utility;
 import game.values.Dimensions;
-import game.viewelements.bombermanbutton.RedButton;
-import game.viewelements.bombermanbutton.YellowButton;
-import game.viewelements.bombermanpanel.BombermanPanelYellow;
-import game.viewelements.misc.Space;
-import game.viewelements.settings.SettingsElementView;
+import game.ui.viewelements.bombermanbutton.RedButton;
+import game.ui.viewelements.bombermanbutton.YellowButton;
+import game.ui.viewelements.bombermanpanel.BombermanPanelYellow;
+import game.ui.viewelements.settings.InfoElementView;
+import game.ui.viewelements.settings.SettingsElementView;
+import game.ui.viewelements.settings.TextFieldElementView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.Collectors;
 
 import static game.localization.Localization.*;
 import static game.values.Dimensions.DEFAULT_PADDING;
@@ -88,14 +94,23 @@ public class ProfilePanel extends PagePanel {
      */
     private void addSettingsElements() {
         componentsPanel.add(new Padding(getWidth(), DEFAULT_PADDING*2));
-        componentsPanel.add(new YellowButton(Localization.get(PLAYER_STATS)));
+        componentsPanel.add(new YellowButton(Localization.get(MY_BOMBERMAN)));
         componentsPanel.add(new Padding(getWidth(), DEFAULT_PADDING));
-        SettingsElementView killsElement = addSettingsElement(Localization.get(Localization.KILLS), String.valueOf(DataInputOutput.getPlayerDataObject().getKills()));
-        SettingsElementView deathsElement = addSettingsElement(Localization.get(Localization.DEATHS), String.valueOf(DataInputOutput.getPlayerDataObject().getDeaths()));
-        SettingsElementView roundsElement = addSettingsElement(Localization.get(Localization.ROUNDS), String.valueOf(DataInputOutput.getPlayerDataObject().getRounds()));
-        SettingsElementView lostGamesElement = addSettingsElement(Localization.get(Localization.LOST_GAMES), String.valueOf(DataInputOutput.getPlayerDataObject().getLostGames()));
-        SettingsElementView pointsElement = addSettingsElement(Localization.get(Localization.POINTS), String.valueOf(DataInputOutput.getPlayerDataObject().getPoints()));
-        SettingsElementView livesElement = addSettingsElement(Localization.get(Localization.LIVES), String.valueOf(DataInputOutput.getPlayerDataObject().getLives()));
+
+        SettingsElementView userName = addTextFieldElementView(Localization.get(USERNAME), DataInputOutput.getUsername(), new RunnablePar() {
+            @Override
+            public <T> void execute(T par) {
+                if(par.toString().isBlank()) return;
+                DataInputOutput.setUsername(par.toString().trim());
+            }
+        });
+
+        SettingsElementView killsElement = addInfoElement(Localization.get(Localization.KILLS), String.valueOf(DataInputOutput.getPlayerDataObject().getKills()));
+        SettingsElementView deathsElement = addInfoElement(Localization.get(Localization.DEATHS), String.valueOf(DataInputOutput.getPlayerDataObject().getDeaths()));
+        SettingsElementView roundsElement = addInfoElement(Localization.get(Localization.ROUNDS), String.valueOf(DataInputOutput.getPlayerDataObject().getRounds()));
+        SettingsElementView lostGamesElement = addInfoElement(Localization.get(Localization.LOST_GAMES), String.valueOf(DataInputOutput.getPlayerDataObject().getLostGames()));
+        SettingsElementView pointsElement = addInfoElement(Localization.get(Localization.POINTS), String.valueOf(DataInputOutput.getPlayerDataObject().getPoints()));
+        SettingsElementView livesElement = addInfoElement(Localization.get(Localization.LIVES), String.valueOf(DataInputOutput.getPlayerDataObject().getLives()));
 
 
         JButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
@@ -111,8 +126,15 @@ public class ProfilePanel extends PagePanel {
      @param val the value of the element
      @return the SettingsElementView object that was added to the componentsPanel
      */
-    private SettingsElementView addSettingsElement(String title, String val) {
-        SettingsElementView elementView = new SettingsElementView(boxPanel, title, val);
+    private SettingsElementView addInfoElement(String title, String val) {
+        InfoElementView elementView = new InfoElementView(boxPanel, title, val);
+        componentsPanel.add(elementView);
+
+        return elementView;
+    }
+
+    private TextFieldElementView addTextFieldElementView(String title, String startText, RunnablePar callback){
+        TextFieldElementView elementView = new TextFieldElementView(boxPanel, title, startText, callback);
         componentsPanel.add(elementView);
 
         return elementView;

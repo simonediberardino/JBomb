@@ -1,6 +1,5 @@
-- New enemies;
 - New boss;
-- HUD;
-- Player stats;
-- Points;
+- pitch background;
 - zombie health
+- Settings?
+- go to main menu

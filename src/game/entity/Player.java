@@ -2,11 +2,9 @@ package game.entity;
 
 import game.Bomberman;
 import game.controller.Command;
-import game.data.DataInputOutput;
 import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.events.DeathGameEvent;
-import game.events.GameEvent;
 import game.models.Coordinates;
 import game.powerups.PowerUp;
 import game.sound.SoundModel;
@@ -23,9 +21,9 @@ public class Player extends BomberEntity {
     private static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE)/2 ,0);
     private final Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
 
-    public Player(Coordinates coordinates) {
+     public Player(Coordinates coordinates) {
         super(coordinates);
-        this.heightToHitboxSizeRatio = 0.733f;
+        this.hitboxSizeToHeightRatio = 0.733f;
         Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
     }
 

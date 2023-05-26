@@ -1,18 +1,25 @@
 package game.utils;
 
+import game.models.RunnablePar;
 import game.values.Dimensions;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
 
  A utility class containing helper methods for the game.
  */
 public class Utility {
+    public static float ensureRange(float value, float min, float max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
     public static long timePassed(long time) {
         return System.currentTimeMillis() -time;
     }

@@ -57,6 +57,14 @@ public class DataInputOutput {
         return playerDataObject;
     }
 
+    public static void setUsername(String name){
+        playerDataObject.setName(name.trim());
+    }
+
+    public static String getUsername() {
+        return playerDataObject.getName();
+    }
+
     public static void increaseKills(){
         playerDataObject.setKills(playerDataObject.getKills()+1);
         updateStoredPlayerData();

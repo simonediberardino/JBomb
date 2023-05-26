@@ -1,4 +1,4 @@
-package game.viewelements.bombermanpanel;
+package game.ui.viewelements.bombermanpanel;
 
 import game.values.BomberColors;
 

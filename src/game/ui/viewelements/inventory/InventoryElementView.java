@@ -1,4 +1,4 @@
-package game.viewelements.inventory;
+package game.ui.viewelements.inventory;
 
 import game.values.Dimensions;
 import game.utils.Utility;
