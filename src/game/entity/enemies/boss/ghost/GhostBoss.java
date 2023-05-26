@@ -1,12 +1,13 @@
 package game.entity.enemies.boss.ghost;
 
 import game.Bomberman;
+import game.entity.Player;
 import game.entity.enemies.GhostEnemy;
 import game.entity.enemies.boss.Boss;
+import game.models.Coordinates;
 import game.models.Direction;
-import game.models.RunnableGraphics;
-import game.models.RunnablePar;
-import game.models.RunnableParReturns;
+import Runnables.RunnablePar;
+import Runnables.RunnableParReturns;
 import game.ui.panels.game.PitchPanel;
 import game.utils.GradientCallbackHandler;
 import game.utils.Paths;
@@ -14,9 +15,9 @@ import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PropertyResourceBundle;
 
 public class GhostBoss extends Boss {
     private static final String SKIN_PATH_TEMPLATE = "%s/ghost_boss/ghost_with_axe_%s_%s.png";
@@ -30,6 +31,7 @@ public class GhostBoss extends Boss {
     private boolean isInvisibleTaskRunning = false;
     private long lastInvisibleTime = 0;
     private long lastGhostSpawnTime;
+    private int BOSS_ATTACK_VERTICAL_RANGE = 2;
 
     public GhostBoss() {
         super();
@@ -132,13 +134,16 @@ public class GhostBoss extends Boss {
     }
 
     public static void turnOffLights() {
+
         PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
 
         pitchPanel.addGraphicsCallback(
                 GhostBoss.class.getSimpleName(), new RunnablePar() {
                     @Override
                     public <T> void execute(T par) {
-
+                       Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
+                        g2d.setColor(new Color(0,0,0,0.95f));
+                        g2d.fillRect(0,0,Bomberman.getBombermanFrame().getHeight(),Bomberman.getBombermanFrame().getWidth());
                     }
                 }
         );
@@ -159,17 +164,48 @@ public class GhostBoss extends Boss {
             new GhostEnemy().spawnAtRandomCoordinates();
         }
     }
+    public synchronized static void performLightsAnimation(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    turnOffLights();
+                    Thread.sleep(5000);
+                    turnOnLights();
+                    Thread.sleep(100);
+                    turnOffLights();
+                    Thread.sleep(400);
+                    turnOnLights();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+    private void attack() {
+        ArrayList<Coordinates> coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInArea(
+                new Coordinates(getCoords().getX(), getCoords().getY() + getSize()),
+                new Coordinates(getCoords().getX() + getSize(), getCoords().getY() + getSize() + PitchPanel.GRID_SIZE * BOSS_ATTACK_VERTICAL_RANGE));
+
+        coordsOfUnderneathEntityBlocks.stream().forEach(c->Coordinates.getEntitiesOnBlock(c).stream().forEach(e->interact(e)));
+        attackAnimation();
+    }
 
     @Override
     public void doUpdate(boolean gamestate) {
-        Utility.runPercentage(ACTION_CHANCE, this::attackAnimation);
+        Utility.runPercentage(ACTION_CHANCE, this::attack);
         Utility.runPercentage(ACTION_CHANCE, this::disappearAndReappear);
-
+        Utility.runPercentage(ACTION_CHANCE, new Runnable() {
+            @Override
+            public void run() {
+                performLightsAnimation();
+            }
+        });
         Utility.runPercentage(ACTION_CHANCE, () -> {
             int enemyCount = (int) (Math.random() * MAX_GHOST_ENEMY_SPAWNED);     //spawn ghost enemies
             spawnGhosts(enemyCount);
         });
 
-        //super.doUpdate(gamestate);
+        super.doUpdate(gamestate);
     }
 }

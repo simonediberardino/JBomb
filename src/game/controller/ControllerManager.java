@@ -56,7 +56,6 @@ public class ControllerManager extends Observable2 implements KeyListener {
 
     public void onKeyPressed(Command action){
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
-        if(Utility.timePassed( commandEventsTime.getOrDefault(action, 0L)) < KEY_DELAY_MS) return;
 
         if(action != null) {
             commandEventsTime.put(action, System.currentTimeMillis());
@@ -74,6 +73,9 @@ public class ControllerManager extends Observable2 implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         Command action = keyAssignment.get(e.getKeyCode());
+        if(Utility.timePassed( commandEventsTime.getOrDefault(action, 0L)) < KEY_DELAY_MS) return;
+
+
         onKeyPressed(action);
         // if a button is pressed, mouse movement gets interrupted
         Bomberman.getMatch().getMouseControllerManager().stopPeriodicTask();

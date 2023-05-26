@@ -3,11 +3,9 @@ package game.entity.models;
 import game.Bomberman;
 import game.controller.MouseControllerManager;
 import game.engine.GameTickerObserver;
-import game.entity.enemies.boss.clown.Clown;
 import game.models.Coordinates;
 import game.models.Direction;
-import game.models.RunnablePar;
-import game.models.RunnableParReturns;
+import Runnables.RunnableParReturns;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 

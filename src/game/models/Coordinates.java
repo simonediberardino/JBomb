@@ -268,6 +268,21 @@ public class Coordinates {
         }
         return arrayCoordinates;
     }
+    public static ArrayList<Coordinates> getAllBlocksInArea(Coordinates topLeft,Coordinates bottomRight){
+        if(topLeft.getX()> bottomRight.getX()||topLeft.getY()> bottomRight.y){
+            System.out.println("getAllBlocksInArea:  topLeft coordinates are further down and/or right than bottomRight coordinates ");
+            return null;
+        }
+        ArrayList<Coordinates> output = new ArrayList<>();
+        topLeft = Coordinates.roundCoordinates(topLeft);
+        bottomRight = Coordinates.roundCoordinates(bottomRight);
+        for(int x = topLeft.getX(); x<=bottomRight.getX();x+=PitchPanel.GRID_SIZE){
+            for(int y = topLeft.getY();y <=bottomRight.getY();y+=PitchPanel.GRID_SIZE){
+                output.add(Coordinates.roundCoordinates(new Coordinates(x,y)));
+            }
+        }
+        return output;
+    }
 
     public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
         return !getEntitiesOnBlock(nextOccupiedCoords).isEmpty();

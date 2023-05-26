@@ -1,19 +1,14 @@
 package game.ui.panels.game;
 
 import game.Bomberman;
-import game.entity.enemies.boss.ghost.GhostBoss;
 import game.entity.models.Entity;
 import game.events.Observer2;
-import game.models.Coordinates;
-import game.models.RunnableGraphics;
-import game.models.RunnablePar;
+import Runnables.RunnablePar;
 import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 import static game.utils.Utility.loadImage;
@@ -32,6 +27,7 @@ public class PitchPanel extends JPanel implements Observer2 {
     //GRID_SIZE must be multiplied by an odd number in order to guarantee free space around borders on the game pitch
     public static final Dimension DIMENSION = new Dimension(GRID_SIZE*13, 11*GRID_SIZE);
     private final HashMap<String, RunnablePar> graphicsCallbacks = new HashMap<>();
+    public Graphics2D g2d;
 
     /**
      * Constructs a new GamePanel with the default dimensions and sets it as the observer for the game ticker observable
@@ -59,8 +55,9 @@ public class PitchPanel extends JPanel implements Observer2 {
 
     @Override
     public void paint(Graphics g) {
+
         super.paint(g);
-        Graphics2D g2d = (Graphics2D) g;
+        this.g2d = (Graphics2D) g;
         Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getGrassBlock());
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(),1), 0, 0, null);
 
@@ -73,6 +70,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         // Runs custom callbacks;
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
     }
+
 
     /**
      * Draws an entity on the game panel

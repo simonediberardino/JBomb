@@ -2,7 +2,7 @@ package game.ui.panels.settings;
 
 import game.data.DataInputOutput;
 import game.localization.Localization;
-import game.models.RunnablePar;
+import Runnables.RunnablePar;
 import game.ui.panels.BombermanFrame;
 import game.ui.viewelements.settings.SettingsElementView;
 

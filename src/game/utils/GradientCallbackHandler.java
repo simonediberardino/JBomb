@@ -1,6 +1,6 @@
 package game.utils;
 
-import game.models.RunnablePar;
+import Runnables.RunnablePar;
 
 import javax.swing.*;
 import java.util.concurrent.atomic.AtomicReference;

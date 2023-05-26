@@ -1,6 +1,6 @@
 package game.ui.viewelements.settings;
 
-import game.models.RunnablePar;
+import Runnables.RunnablePar;
 import game.ui.helpers.BombermanTextFieldFilter;
 import game.values.BomberColors;
 

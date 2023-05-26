@@ -1,9 +1,8 @@
 package game.ui.panels.settings;
 
 import game.Bomberman;
-import game.data.DataInputOutput;
 import game.localization.Localization;
-import game.models.RunnablePar;
+import Runnables.RunnablePar;
 import game.ui.helpers.Padding;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
