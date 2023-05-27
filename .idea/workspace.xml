@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Fast Enemy images (wip)">
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/simonediberardino/BomberMan" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="2OfmWX130jiiXYLcEbr4757JNFq" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/entities/enemies/fast_enemy" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="game" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\fast_enemy" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\mini_ghost" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\ghost_boss" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\out\production\BomberMan\game\entity\enemies\boss\ghost" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\mini_ghost" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\worlds\1\common" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="game.entity" />
+    </key>
+    <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="game.models" />
+      <recent name="game.entity" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="game.entity.models" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="game.ui.panels.menus" />
+      <recent name="game.powerups.portal" />
+      <recent name="game.level.world2" />
+      <recent name="game.level" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Bomberman" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="game.Bomberman" />
+      <module name="BomberMan" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="" />
+      <created>1681960044079</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681960044079</updated>
+    </task>
+    <task id="LOCAL-00001" summary="WIP #2">
+      <created>1682305098571</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1682305098571</updated>
+    </task>
+    <task id="LOCAL-00002" summary="- bomb is now placeable;&#10;- grid layout removed: components are now drawn dynamically;&#10;- Dynamic component sizes">
+      <created>1682347818587</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1682347818587</updated>
+    </task>
+    <task id="LOCAL-00003" summary="- Bomb now can explode;&#10;- Bomb new texture;&#10;- Javadoc comments;&#10;- Project refactoring;">
+      <created>1682431927365</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1682431927365</updated>
+    </task>
+    <task id="LOCAL-00004" summary="- Enemy simple AI WIP;&#10;- Grass implemented;&#10;- Movement improved;&#10;- Player icons updated;">
+      <created>1682686426301</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1682686426301</updated>
+    </task>
+    <task id="LOCAL-00005" summary="- AI implemented;&#10;- First enemy implemented;&#10;- Pause implemented;&#10;- Pitch border implemented;&#10;- Refactoring">
+      <created>1682834383985</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1682834383985</updated>
+    </task>
+    <task id="LOCAL-00006" summary="- [WIP] &#10;- 2 new enemies&#10;- Level 2&#10;- Refactoring&#10;- Safe spawn">
+      <created>1682922418948</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1682922418948</updated>
+    </task>
+    <task id="LOCAL-00007" summary="- Added temporary background image;&#10;- Implemented first power ups;&#10;- Refactoring;&#10;- Eagle added;&#10;- Bugs fixed;">
+      <created>1683117496429</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683117496429</updated>
+    </task>
+    <task id="LOCAL-00008" summary="- 5 New power ups;&#10;- Refactoring;&#10;- New background&#10;- Bugs fixed;">
+      <created>1683198195095</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683198195095</updated>
+    </task>
+    <task id="LOCAL-00009" summary="- Added method to edit character speed;&#10;- Added system for displaying pages;&#10;- Added new icons for Tank and Eagle;&#10;- Implemented random spawn of enemies;">
+      <created>1683292652801</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683292652801</updated>
+    </task>
+    <task id="LOCAL-00010" summary="- Clown boss added&#10;- Orb added&#10;- Hat added&#10;- AI movement bug fixes">
+      <created>1683523459677</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683523459677</updated>
+    </task>
+    <task id="LOCAL-00011" summary="- Refactoring&#10;- Clown Boss has now a variable texture size, based on whether he is wearing a hat or not&#10;- Clown Boss texture padding width added">
+      <created>1683580679420</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683580679420</updated>
+    </task>
+    <task id="LOCAL-00012" summary="- Added main menu;&#10;- Added world level selector;&#10;- Added localization languages;">
+      <created>1683639049586</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683639049586</updated>
+    </task>
+    <task id="LOCAL-00013" summary="[TEMP] 10 levels, page refactoring, added todo list;">
+      <created>1683737605974</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1683737605974</updated>
+    </task>
+    <task id="LOCAL-00014" summary="- Game data saved to disk;&#10;- Game events;&#10;- Draw order based on entity priorities or coordinates;&#10;- Refactoring">
+      <created>1683759006725</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1683759006725</updated>
+    </task>
+    <task id="LOCAL-00015" summary="- Switch level system implemented;&#10;- Clown set to correct coordinates;&#10;- Loading page with animated text implemented;">
+      <created>1683907657035</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1683907657035</updated>
+    </task>
+    <task id="LOCAL-00016" summary="[WIP]&#10;- Added borders to world level selector;&#10;- Added level portals in the world level selector &amp; logic;&#10;- Handled save last level in storage">
+      <created>1684030173221</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1684030173221</updated>
+    </task>
+    <task id="LOCAL-00017" summary="[TEST COMMIT]">
+      <created>1684083450237</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1684083450237</updated>
+    </task>
+    <task id="LOCAL-00018" summary="[TEST COMMIT]&#10;- Period task with Threads">
+      <created>1684090134600</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1684090134600</updated>
+    </task>
+    <task id="LOCAL-00019" summary="[FIX]&#10;Fixed speed of text animation&#10;Decreased CPU Usage">
+      <created>1684097016663</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1684097016663</updated>
+    </task>
+    <task id="LOCAL-00020" summary="- Updated portal to next level;&#10;- Decreased CPU usage;&#10;- Increased painting speed;&#10;- Game over panel created;&#10;- Power ups updated;&#10;- Dimensions working properly with every screen resolution;">
+      <created>1684104277762</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1684104277762</updated>
+    </task>
+    <task id="LOCAL-00021" summary="temporary fix for concurrent modify exception">
+      <created>1684245731680</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1684245731680</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Added loading page callback">
+      <created>1684246181351</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1684246181351</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Added toast messages;&#10;Hat on clown;&#10;Lives;&#10;Player icons;&#10;Bugs fixed;">
+      <created>1684281130704</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1684281130704</updated>
+    </task>
+    <task id="LOCAL-00024" summary="-Movement with mouse.&#10;-Interaction with mouse on entities.&#10;-Overpassing block bug fixes: entities behind block are now found correctly; Manual movement now overwrites overpassing movement so the player no longer can get stuck while overpassing.">
+      <created>1684387062054</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1684387062054</updated>
+    </task>
+    <task id="LOCAL-00025" summary="WIP COMMIT&#10;- HAMMER WIP;&#10;- POWER UPS IMAGES WIP;">
+      <created>1684434730701</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1684434730701</updated>
+    </task>
+    <task id="LOCAL-00026" summary="- Sounds added;&#10;- Mouse controller updated;&#10;- Lives working properly;&#10;- Concurrent modification exception fixed;&#10;- Game over pannel updated;">
+      <created>1684790845379</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1684790845379</updated>
+    </task>
+    <task id="LOCAL-00027" summary="- Refactoring;&#10;- Added icons to Yellow Ball mob;&#10;- Added shield icons;">
+      <created>1684854936082</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1684854936082</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Refactoring">
+      <created>1684855730412</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855730412</updated>
+    </task>
+    <task id="LOCAL-00029" summary="- Power ups list added;">
+      <created>1684861402646</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1684861402646</updated>
+    </task>
+    <task id="LOCAL-00030" summary="- Inventory view controllers;&#10;- Inventory: scores, lives, bombs.">
+      <created>1684885227966</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1684885227966</updated>
+    </task>
+    <task id="LOCAL-00031" summary="- Auto language;&#10;- Custom cursor;&#10;- Pause menu;&#10;- Zombie updated;&#10;- Hammer updated;&#10;- Hand updated;&#10;- New boss level background;&#10;- Move block updated;">
+      <created>1684970085262</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1684970085262</updated>
+    </task>
+    <task id="LOCAL-00032" summary="- Fix lives power up not being applied multiple times;">
+      <created>1684971638462</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1684971638462</updated>
+    </task>
+    <task id="LOCAL-00033" summary="- Added profile page;&#10;- WIP Ghost boss">
+      <created>1685013725081</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1685013725081</updated>
+    </task>
+    <task id="LOCAL-00034" summary="- ADDED PROFILE PAGE WITH USERNAME;&#10;- ADDED GHOST BOSS (WIP);&#10;- WIP LIGHT ON/OFF BOSS FIGHT;">
+      <created>1685113852818</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1685113852819</updated>
+    </task>
+    <task id="LOCAL-00035" summary="- Added mouse hover color to info text field;">
+      <created>1685114500122</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1685114500122</updated>
+    </task>
+    <task id="LOCAL-00036" summary="- Added settings with key editor;">
+      <created>1685117770483</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1685117770483</updated>
+    </task>
+    <task id="LOCAL-00037" summary="- Ghost Boss Animation now paired with functional attack;&#10;- PerformLightsAnimation ghost boss beta;">
+      <created>1685130195602</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1685130195602</updated>
+    </task>
+    <task id="LOCAL-00038" summary="- Ghost Boss Animation now paired with functional attack;&#10;- PerformLightsAnimation ghost boss beta;">
+      <created>1685130201885</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1685130201885</updated>
+    </task>
+    <task id="LOCAL-00039" summary="- Ghost Boss PerformLightsAnimation now works as intended;">
+      <created>1685151227640</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1685151227640</updated>
+    </task>
+    <task id="LOCAL-00040" summary="- Fast Enemy images (wip)">
+      <created>1685204231943</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1685204231943</updated>
+    </task>
+    <task id="LOCAL-00041" summary="- Fast Enemy images (wip)">
+      <created>1685204359835</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1685204359835</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="- Switch level system implemented;&#10;- Clown set to correct coordinates;&#10;- Loading page with animated text implemented;" />
+    <MESSAGE value="[WIP]&#10;- Added borders to world level selector;&#10;- Added level portals in the world level selector &amp; logic;&#10;- Handled save last level in storage" />
+    <MESSAGE value="[TEST COMMIT]" />
+    <MESSAGE value="[TEST COMMIT]&#10;- Period task with Threads" />
+    <MESSAGE value="[FIX]&#10;Fixed speed of text animation&#10;Decreased CPU Usage" />
+    <MESSAGE value="- Updated portal to next level;&#10;- Decreased CPU usage;&#10;- Increased painting speed;&#10;- Game over panel created;&#10;- Power ups updated;&#10;- Dimensions working properly with every screen resolution;" />
+    <MESSAGE value="temporary fix for concurrent modify exception" />
+    <MESSAGE value="Added loading page callback" />
+    <MESSAGE value="Added toast messages;&#10;Hat on clown;&#10;Lives;&#10;Player icons;&#10;Bugs fixed;" />
+    <MESSAGE value="-Movement with mouse.&#10;-Interaction with mouse on entities.&#10;-Overpassing block bug fixes: entities behind block are now found correctly; Manual movement now overwrites overpassing movement so the player no longer can get stuck while overpassing." />
+    <MESSAGE value="WIP COMMIT&#10;- HAMMER WIP;&#10;- POWER UPS IMAGES WIP;" />
+    <MESSAGE value="- Sounds added;&#10;- Mouse controller updated;&#10;- Lives working properly;&#10;- Concurrent modification exception fixed;&#10;- Game over pannel updated;" />
+    <MESSAGE value="- Refactoring;&#10;- Added icons to Yellow Ball mob;&#10;- Added shield icons;" />
+    <MESSAGE value="Refactoring" />
+    <MESSAGE value="- Power ups list added;" />
+    <MESSAGE value="- Inventory view controllers;&#10;- Inventory: scores, lives, bombs." />
+    <MESSAGE value="- Auto language;&#10;- Custom cursor;&#10;- Pause menu;&#10;- Zombie updated;&#10;- Hammer updated;&#10;- Hand updated;&#10;- New boss level background;&#10;- Move block updated;" />
+    <MESSAGE value="- Fix lives power up not being applied multiple times;" />
+    <MESSAGE value="- Added profile page;&#10;- WIP Ghost boss" />
+    <MESSAGE value="- ADDED PROFILE PAGE WITH USERNAME;&#10;- ADDED GHOST BOSS (WIP);&#10;- WIP LIGHT ON/OFF BOSS FIGHT;" />
+    <MESSAGE value="- Added mouse hover color to info text field;" />
+    <MESSAGE value="- Added settings with key editor;" />
+    <MESSAGE value="- Ghost Boss Animation now paired with functional attack;&#10;- PerformLightsAnimation ghost boss beta;" />
+    <MESSAGE value="- Ghost Boss PerformLightsAnimation now works as intended;" />
+    <MESSAGE value="- Fast Enemy images (wip)" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Fast Enemy images (wip)" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-method">
+          <url>file://$PROJECT_DIR$/src/game/entity/blocks/DestroyableBlock.java</url>
+          <line>22</line>
+          <properties class="game.entity.blocks.DestroyableBlock">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/game/entity/bomb/Bomb.java</url>
+          <line>151</line>
+          <properties class="game.entity.bomb.Bomb" method="getExplosions">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="153" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Clown.java</url>
+          <line>134</line>
+          <properties class="game.entity.enemies.boss.clown.Clown" method="canExplosionInteractWith">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="168" />
+        </line-breakpoint>
+        <breakpoint type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="48" />
+        </breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/powerups/TransparentBombsPowerUp.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/powerups/TransparentDestroyableBlocksPowerUp.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/powerups/FirePowerUp.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/ui/panels/game/MatchPanel.java</url>
+          <line>181</line>
+          <option name="timeStamp" value="103" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/models/EntityInteractable.java</url>
+          <line>214</line>
+          <option name="timeStamp" value="118" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/models/Coordinates.java</url>
+          <line>190</line>
+          <option name="timeStamp" value="124" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/bomb/Bomb.java</url>
+          <line>140</line>
+          <option name="timeStamp" value="125" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/blocks/DestroyableBlock.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="145" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/models/Entity.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/enemies/boss/ghost/GhostBoss.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="183" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/models/Coordinates.java</url>
+          <line>271</line>
+          <option name="timeStamp" value="186" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/models/Character.java</url>
+          <line>412</line>
+          <option name="timeStamp" value="189" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/BomberMan$Bomberman.ic" NAME="Bomberman Coverage Results" MODIFIED="1685151923216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BomberMan$Unnamed.ic" NAME="Unnamed Coverage Results" MODIFIED="1683345048610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>
