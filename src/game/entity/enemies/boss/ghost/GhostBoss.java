@@ -77,7 +77,7 @@ public class GhostBoss extends Boss {
     /**
      * This method makes the Ghost disappear and then reappear by changing its alpha value gradually.
      */
-    private void disappearAndReappear() {
+    private synchronized void disappearAndReappear() {
         if (isInvisibleTaskRunning) {
             // If an invisible task is already running, exit the method.
             return;
@@ -165,6 +165,7 @@ public class GhostBoss extends Boss {
         }
     }
     public synchronized static void performLightsAnimation(){
+        System.out.println("PERFORM");
         new Thread(new Runnable() {
             @Override
             public void run() {

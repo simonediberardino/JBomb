@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
-public class Coordinates {
+public class Coordinates implements Comparable<Coordinates> {
     private final int x;
     private final int y;
 
@@ -269,7 +269,7 @@ public class Coordinates {
         return arrayCoordinates;
     }
     public static ArrayList<Coordinates> getAllBlocksInArea(Coordinates topLeft,Coordinates bottomRight){
-        if(topLeft.getX()> bottomRight.getX()||topLeft.getY()> bottomRight.y){
+        if(topLeft.compareTo(bottomRight)>0){
             System.out.println("getAllBlocksInArea:  topLeft coordinates are further down and/or right than bottomRight coordinates ");
             return null;
         }
@@ -289,5 +289,11 @@ public class Coordinates {
     }
 
 
+    @Override
+    public int compareTo(Coordinates o) {
+        return Comparator.comparing(Coordinates::getY)
+                .thenComparing(Coordinates::getX)
+                .compare(this, o);
+    }
 
 }

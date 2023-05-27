@@ -27,7 +27,8 @@ public class PitchPanel extends JPanel implements Observer2 {
     //GRID_SIZE must be multiplied by an odd number in order to guarantee free space around borders on the game pitch
     public static final Dimension DIMENSION = new Dimension(GRID_SIZE*13, 11*GRID_SIZE);
     private final HashMap<String, RunnablePar> graphicsCallbacks = new HashMap<>();
-    public Graphics2D g2d;
+    public volatile Graphics2D g2d;
+    public volatile boolean blackScreen;
 
     /**
      * Constructs a new GamePanel with the default dimensions and sets it as the observer for the game ticker observable
@@ -78,6 +79,8 @@ public class PitchPanel extends JPanel implements Observer2 {
      * @param e the entity to draw
      */
     private void drawEntity(Graphics2D g2d, Entity e){
+
+
         // Draw entity's image at entity's coordinates and size
         if(e.isInvisible()) return;
 
@@ -87,7 +90,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         int paddingWidth = e.calculateAndGetPaddingWidth(widthRatio);
         int paddingHeight = e.calculateAndGetPaddingTop(heightRatio);
 
-        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, e.getAlpha());
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER , e.getAlpha());
         g2d.setComposite(ac);
 
         g2d.drawImage(
@@ -98,6 +101,8 @@ public class PitchPanel extends JPanel implements Observer2 {
                 (int) Math.ceil (e.getSize() / heightRatio),
                 this
         );
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+
     }
 
     public void addGraphicsCallback(String tag, RunnablePar callback){

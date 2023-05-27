@@ -64,6 +64,7 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public void updateLastInteract(Entity e) {
+        if(e == null)return;
         interactionMap.put(e, System.currentTimeMillis());
     }
 
