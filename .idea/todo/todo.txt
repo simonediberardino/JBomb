@@ -1,5 +1,3 @@
-- New boss;
 - pitch background;
-- zombie health
 - Settings?
 - go to main menu

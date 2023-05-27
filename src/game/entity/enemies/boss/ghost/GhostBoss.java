@@ -165,7 +165,6 @@ public class GhostBoss extends Boss {
         }
     }
     public synchronized static void performLightsAnimation(){
-        System.out.println("PERFORM");
         new Thread(new Runnable() {
             @Override
             public void run() {

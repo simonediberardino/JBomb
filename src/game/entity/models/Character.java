@@ -3,6 +3,7 @@ package game.entity.models;
 import game.Bomberman;
 import game.controller.Command;
 import game.controller.ControllerManager;
+import game.entity.enemies.npcs.Zombie;
 import game.models.Coordinates;
 import game.models.Direction;
 import game.sound.AudioManager;
@@ -406,22 +407,28 @@ public abstract class Character extends MovingEntity {
      *
      * @param damage The amount of damage to remove from the entity's health points.
      */
-    protected final synchronized void attackReceived(int damage) {
-        if (Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
-            return;
+    protected final void attackReceived(int damage) {
+        synchronized ((Object) lastDamageTime) {
+            if (this instanceof Zombie && lastDamageTime > 0) {
+                int a = 0;
+            }
 
-        lastDamageTime = System.currentTimeMillis();
-        // Reduce the health points by the specified amount
-        healthPoints -= damage;
+            if (Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
+                return;
+            System.out.println(damage);
+            lastDamageTime = System.currentTimeMillis();
+            // Reduce the health points by the specified amount
+            healthPoints -= damage;
 
-        startDamageAnimation();
+            startDamageAnimation();
 
-        // If the health points reach 0 or below, despawn the entity
-        if (healthPoints <= 0) {
-            healthPoints = 0;
-            eliminated();
-        } else {
-            onHit(damage);
+            // If the health points reach 0 or below, despawn the entity
+            if (healthPoints <= 0) {
+                healthPoints = 0;
+                eliminated();
+            } else {
+                onHit(damage);
+            }
         }
     }
 
