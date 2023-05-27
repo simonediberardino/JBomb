@@ -20,6 +20,7 @@ public class FastEnemy extends IntelligentEnemy {
 
     @Override
     protected String getBasePath() {
+
         return Paths.getEnemiesFolder() + "/fast_enemy/fast_enemy";
     }
 
