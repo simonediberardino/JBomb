@@ -19,6 +19,7 @@ import game.utils.Utility;
 import javax.swing.*;
 
 import java.awt.*;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -66,7 +67,7 @@ public abstract class Level {
      Returns the path to the image file for the stone block.
      @return a string representing the path to the image file.
      */
-    public String getStoneBlock() {
+    public String getStoneBlockImagePath() {
         return Paths.getCurrentWorldCommonFolder() + "/stone.png";
     }
 
@@ -75,15 +76,17 @@ public abstract class Level {
      Returns the path to the image file for the grass block.
      @return a string representing the path to the image file.
      */
-    public String getGrassBlock() {
-        return Paths.getCurrentWorldCommonFolder() + "/grass.png";
+    public String getPitchImagePath() {
+        File f =  new File(Paths.getCurrentWorldCommonFolder() + "/pitch"+levelFilePathModifier()+".png");
+        if(f.exists()) return f.getAbsolutePath();
+        return Paths.getCurrentWorldCommonFolder() + "/pitch.png";
     }
     /**
 
      Returns the path to the image file for the destroyable block.
      @return the path to the image file for the destroyable block.
      */
-    public String getDestroyableBlock() {
+    public String getDestroyableBlockImagePath() {
         return Paths.getCurrentWorldCommonFolder() + "/destroyable_block.png";
     }
 
@@ -92,11 +95,21 @@ public abstract class Level {
      *
      * @return the Images for the level pitch
      */
-    public Image[] getPitch(){
+    private String levelFilePathModifier(){
+        if (isLastLevelOfWorld()) return "_boss";
+        return "";
+    }
+    public Image[] getBorderImages(){
+
         final int SIDES = 4;
         Image[] pitch = new Image[SIDES];
         for(int i = 0; i < SIDES; i++){
-            pitch[i] = Utility.loadImage(String.format("%s/border_%d.png", Paths.getCurrentWorldCommonFolder(), i));
+
+            File file = new File(String.format("%s/border_%d%s.png", Paths.getCurrentWorldCommonFolder(), i, levelFilePathModifier()));
+            System.out.println(String.format("%s/border_%d%s.png", Paths.getCurrentWorldCommonFolder(), i, levelFilePathModifier()));
+            if(file.exists()) pitch[i] = Utility.loadImage(String.format("%s/border_%d%s.png", Paths.getCurrentWorldCommonFolder(), i,levelFilePathModifier()));
+            else pitch[i] = Utility.loadImage(String.format("%s/border_%d.png", Paths.getCurrentWorldCommonFolder(), i));
+
         }
         return pitch;
     }

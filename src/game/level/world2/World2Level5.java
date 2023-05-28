@@ -10,6 +10,7 @@ import game.entity.models.Enemy;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.level.world1.World1Level;
+import game.utils.Paths;
 
 public class World2Level5 extends World2Level {
     @Override
@@ -34,7 +35,10 @@ public class World2Level5 extends World2Level {
                 Eagle.class,
         };
     }
-
+    @Override
+    public String getPitchImagePath() {
+        return Paths.getCurrentWorldCommonFolder() + "/clown_pitch.png";
+    }
     @Override
     public boolean isLastLevelOfWorld(){
         return true;

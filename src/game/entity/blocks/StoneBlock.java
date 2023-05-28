@@ -29,7 +29,7 @@ public class StoneBlock extends HardBlock {
 
     @Override
     public BufferedImage getImage(){
-        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getStoneBlock());
+        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getStoneBlockImagePath());
     }
 
 }

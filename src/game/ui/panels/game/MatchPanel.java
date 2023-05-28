@@ -77,7 +77,7 @@ public class MatchPanel extends PagePanel {
         int borderSize = Utility.px(90);
 
         // get the images of the border panels from the current level of the game
-        Image[] borderImages = Bomberman.getMatch().getCurrentLevel().getPitch();
+        Image[] borderImages = Bomberman.getMatch().getCurrentLevel().getBorderImages();
 
         // create left panel and set the dimensions and the image
         leftPanel = createLeftPanel(

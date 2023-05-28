@@ -28,7 +28,6 @@ public class PitchPanel extends JPanel implements Observer2 {
     public static final Dimension DIMENSION = new Dimension(GRID_SIZE*13, 11*GRID_SIZE);
     private final HashMap<String, RunnablePar> graphicsCallbacks = new HashMap<>();
     public volatile Graphics2D g2d;
-    public volatile boolean blackScreen;
 
     /**
      * Constructs a new GamePanel with the default dimensions and sets it as the observer for the game ticker observable
@@ -59,7 +58,7 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         super.paint(g);
         this.g2d = (Graphics2D) g;
-        Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getGrassBlock());
+        Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getPitchImagePath());
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(),1), 0, 0, null);
 
         Set<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
