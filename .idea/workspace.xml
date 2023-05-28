@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Refactoring;&#10;- Fixed commands not saving properly;">
+    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Added Fast Enemy;">
+      <change afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/BaseMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/data" beforeDir="false" afterPath="$PROJECT_DIR$/data/data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level4.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/Bomberman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Bomberman.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/localization/Localization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/localization/Localization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/GameOverPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/GameOverPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/PausePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/PausePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -428,7 +429,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685235389453</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="- Added Fast Enemy;">
+      <created>1685235726926</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1685235726926</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -445,7 +453,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="[WIP]&#10;- Added borders to world level selector;&#10;- Added level portals in the world level selector &amp; logic;&#10;- Handled save last level in storage" />
     <MESSAGE value="[TEST COMMIT]" />
     <MESSAGE value="[TEST COMMIT]&#10;- Period task with Threads" />
     <MESSAGE value="[FIX]&#10;Fixed speed of text animation&#10;Decreased CPU Usage" />
@@ -470,7 +477,8 @@
     <MESSAGE value="- Ghost Boss PerformLightsAnimation now works as intended;" />
     <MESSAGE value="- Fast Enemy images (wip)" />
     <MESSAGE value="- Refactoring;&#10;- Fixed commands not saving properly;" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Refactoring;&#10;- Fixed commands not saving properly;" />
+    <MESSAGE value="- Added Fast Enemy;" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Added Fast Enemy;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -54,6 +54,11 @@ public class Bomberman {
         return bomberManMatch;
     }
 
+    public static void quitMatch() {
+        destroyLevel();
+        show(MainMenuPanel.class);
+    }
+
     public static void destroyLevel() {
         if(bomberManMatch != null) bomberManMatch.destroy();
         bomberManMatch = new BomberManMatch(new WorldSelectorLevel()); // Temporary sets the current level to WorldSelectorLevel to avoid null pointer exception if some threads aren't killed yet
