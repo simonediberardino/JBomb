@@ -10,17 +10,17 @@ import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.misc.Space;
 import game.ui.viewelements.misc.ToastHandler;
 import game.ui.panels.BombermanFrame;
-import game.ui.panels.PagePanel;
 import game.utils.Paths;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 import static game.localization.Localization.*;
 
-public class GameOverPanel extends PagePanel {
-    private BombermanButton retryButton;
-    private JPanel listButtonsPanel;
+public class GameOverPanel extends BaseMenu {
+    private JButton retryButton;
 
     /**
      * Constructs a MenuPanel with the specified CardLayout, parent JPanel, and BombermanFrame.
@@ -31,36 +31,19 @@ public class GameOverPanel extends PagePanel {
      */
     public GameOverPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
         super(cardLayout, parent, frame, Paths.getDeathWallpaper());
-        setupLayout();
     }
 
-    /**
-     * Sets up the layout of the MenuPanel.
-     */
-    private void setupLayout() {
-        setLayout(new GridBagLayout());
-
-        createListButtonsPanel();
-        createStartLevelButton();
-        createMainMenuButton();
+    @Override
+    protected List<JButton> getButtons() {
+        return Arrays.asList(createStartLevelButton(), createMainMenuButton());
     }
 
-    /**
-     * Creates and adds the listButtonsPanel to the MenuPanel.
-     */
-    private void createListButtonsPanel() {
-        listButtonsPanel = new JPanel();
-        listButtonsPanel.setLayout(new GridLayout(0, 1));
-        listButtonsPanel.setOpaque(false);
-        listButtonsPanel.add(new Space());
-
-        add(listButtonsPanel);
+    @Override
+    protected int getButtonsPadding() {
+        return 1;
     }
 
-    /**
-     * Creates the startLevelButton and adds it to the listButtonsPanel.
-     */
-    private void createStartLevelButton() {
+    private JButton createStartLevelButton() {
         retryButton = new RedButton("");
         retryButton.addActionListener((v) -> {
             boolean hasLives = DataInputOutput.getLives() > 0;
@@ -72,26 +55,23 @@ public class GameOverPanel extends PagePanel {
         });
 
         updatePlayAgainButtonText();
-        listButtonsPanel.add(retryButton);
+        return retryButton;
+    }
+
+    private JButton createMainMenuButton() {
+        JButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
+        mainMenuButton.addActionListener((v) -> {
+            ToastHandler.getInstance().cancel();
+            Bomberman.show(MainMenuPanel.class);
+        });
+
+        return mainMenuButton;
     }
 
     private void updatePlayAgainButtonText(){
         boolean hasLives = DataInputOutput.getLives() > 0;
         String text = hasLives ? Localization.get(PLAY_AGAIN) : Localization.get(RESET_WORLD);
         retryButton.setText(text);
-    }
-
-    /**
-     * Creates the profileButton and adds it to the listButtonsPanel.
-     */
-    private void createMainMenuButton() {
-        BombermanButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
-        mainMenuButton.addActionListener((v) -> {
-            ToastHandler.getInstance().cancel();
-            Bomberman.show(MainMenuPanel.class);
-        });
-
-        listButtonsPanel.add(mainMenuButton);
     }
 
     private void showToastMessage() {

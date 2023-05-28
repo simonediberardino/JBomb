@@ -131,6 +131,16 @@ public class Localization {
         put(Locale.ITALY, "ESCI DAL GIOCO");
     }};
 
+    public static final HashMap<Locale, String> RESUME_GAME = new HashMap<>() {{
+        put(Locale.ENGLISH, "RESUME GAME");
+        put(Locale.ITALY, "CONTINUA LA PARTITA");
+    }};
+
+    public static final HashMap<Locale, String> QUIT_GAME = new HashMap<>() {{
+        put(Locale.ENGLISH, "QUIT THE MATCH");
+        put(Locale.ITALY, "ESCI DALLA PARTITA");
+    }};
+
     public static final HashMap<Locale, String> USERNAME = new HashMap<>() {{
         put(Locale.ENGLISH, "USERNAME");
         put(Locale.ITALY, "USERNAME");
