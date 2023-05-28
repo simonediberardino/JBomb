@@ -21,7 +21,7 @@ public class World2Level4 extends World2Level {
     public Class<? extends Enemy>[] availableEnemies() {
         return new Class[]{
                 Zombie.class,
-                Eagle.class,
+                FastEnemy.class,
                 TankEnemy.class
         };
     }

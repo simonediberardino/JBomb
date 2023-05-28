@@ -4,35 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Fast Enemy images (wip)">
-      <change afterPath="$PROJECT_DIR$/src/game/runnables/RunnablePar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_3.png" afterDir="false" />
+    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Refactoring;&#10;- Fixed commands not saving properly;">
       <change beforePath="$PROJECT_DIR$/data/data" beforeDir="false" afterPath="$PROJECT_DIR$/data/data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Runnables/RunnableGraphics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/runnables/RunnableGraphics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Runnables/RunnablePar.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Runnables/RunnableParReturns.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/controller/ControllerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/controller/ControllerManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/GhostEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/GhostEnemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/ghost/GhostBoss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/ghost/GhostBoss.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/YellowBall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/YellowBall.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Character.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/localization/Localization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/localization/Localization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/game/PitchPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/game/PitchPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/settings/BoxMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/settings/BoxMenuPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/settings/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/settings/ProfilePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/settings/SettingsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/settings/SettingsPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/viewelements/settings/TextFieldElementView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/viewelements/settings/TextFieldElementView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/utils/GradientCallbackHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/utils/GradientCallbackHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -442,7 +421,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685204863245</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="- Refactoring;&#10;- Fixed commands not saving properly;">
+      <created>1685235389453</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1685235389453</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -459,7 +445,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="- Switch level system implemented;&#10;- Clown set to correct coordinates;&#10;- Loading page with animated text implemented;" />
     <MESSAGE value="[WIP]&#10;- Added borders to world level selector;&#10;- Added level portals in the world level selector &amp; logic;&#10;- Handled save last level in storage" />
     <MESSAGE value="[TEST COMMIT]" />
     <MESSAGE value="[TEST COMMIT]&#10;- Period task with Threads" />
@@ -484,7 +469,8 @@
     <MESSAGE value="- Ghost Boss Animation now paired with functional attack;&#10;- PerformLightsAnimation ghost boss beta;" />
     <MESSAGE value="- Ghost Boss PerformLightsAnimation now works as intended;" />
     <MESSAGE value="- Fast Enemy images (wip)" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Fast Enemy images (wip)" />
+    <MESSAGE value="- Refactoring;&#10;- Fixed commands not saving properly;" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Refactoring;&#10;- Fixed commands not saving properly;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

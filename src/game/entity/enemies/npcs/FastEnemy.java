@@ -25,11 +25,16 @@ public class FastEnemy extends IntelligentEnemy {
     @Override
     public String[] getCharacterOrientedImages() {
         return new String[]{
-                String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 0),
-                String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 1),
-                String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 2),
-                String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 3)
+                String.format("%s_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 0),
+                String.format("%s_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 1),
+                String.format("%s_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 2),
+                String.format("%s_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 3),
         };
+    }
+
+    @Override
+    public float getSpeed() {
+        return 2f;
     }
 
     @Override
