@@ -1,3 +1,2 @@
 - pitch background;
-- Settings?
-- go to main menu
+- Transparent bomb

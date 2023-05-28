@@ -1,14 +1,11 @@
 package game.entity.blocks;
 
 import game.Bomberman;
-import game.controller.MouseControllerManager;
 import game.entity.bomb.Explosion;
-import game.entity.models.Block;
 import game.entity.models.Entity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
-import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 
 import java.awt.image.BufferedImage;

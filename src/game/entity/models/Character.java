@@ -1,11 +1,9 @@
 package game.entity.models;
 
 import game.Bomberman;
-import game.controller.Command;
-import game.controller.ControllerManager;
+import game.hardwareinput.Command;
+import game.hardwareinput.ControllerManager;
 import game.entity.enemies.npcs.Zombie;
-import game.models.Coordinates;
-import game.models.Direction;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
@@ -17,8 +15,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-import static game.models.Direction.*;
-import static game.models.Direction.DOWN;
+import static game.entity.models.Direction.*;
+import static game.entity.models.Direction.DOWN;
 
 
 /**

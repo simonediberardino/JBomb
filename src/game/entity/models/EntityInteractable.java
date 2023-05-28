@@ -4,15 +4,12 @@ import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
-import game.entity.enemies.npcs.Orb;
-import game.models.Coordinates;
-import game.models.Direction;
 import game.utils.Utility;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static game.models.Coordinates.getEntitiesOnCoordinates;
+import static game.entity.models.Coordinates.getEntitiesOnCoordinates;
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 import static game.ui.panels.game.PitchPanel.PIXEL_UNIT;
 

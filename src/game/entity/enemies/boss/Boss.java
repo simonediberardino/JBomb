@@ -3,10 +3,9 @@ package game.entity.enemies.boss;
 import game.Bomberman;
 import game.entity.enemies.npcs.IntelligentEnemy;
 import game.entity.models.Entity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
-import game.ui.panels.game.PitchPanel;
 
 import java.awt.*;
 import java.util.*;

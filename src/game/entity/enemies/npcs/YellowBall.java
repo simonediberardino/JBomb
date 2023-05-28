@@ -1,7 +1,7 @@
 package game.entity.enemies.npcs;
 
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 

@@ -2,7 +2,7 @@ package game.entity.enemies;
 
 import game.entity.enemies.npcs.IntelligentEnemy;
 import game.entity.models.Entity;
-import game.models.Direction;
+import game.entity.models.Direction;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 

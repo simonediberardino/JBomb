@@ -3,7 +3,7 @@ package game.ui.panels.game;
 import game.Bomberman;
 import game.entity.models.Entity;
 import game.events.Observer2;
-import game.runnables.RunnablePar;
+import game.events.RunnablePar;
 import game.utils.Utility;
 
 import javax.swing.*;

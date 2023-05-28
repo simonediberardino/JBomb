@@ -10,7 +10,7 @@ import game.entity.models.Enemy;
 import game.events.RoundPassedGameEvent;
 import game.level.world1.*;
 import game.level.world2.*;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
 import game.utils.Paths;

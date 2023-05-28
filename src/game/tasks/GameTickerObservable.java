@@ -1,18 +1,10 @@
-package game.engine;
+package game.tasks;
 
-import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.models.Entity;
 import game.events.Observable2;
 import game.events.Observer2;
 import game.utils.Utility;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
 
 /**
  The GameTickerObservable class is an observable that notifies its observers periodically with a fixed delay

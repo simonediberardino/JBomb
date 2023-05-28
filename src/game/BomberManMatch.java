@@ -1,12 +1,11 @@
 package game;
 
-import game.controller.ControllerManager;
-import game.controller.MouseControllerManager;
+import game.hardwareinput.ControllerManager;
+import game.hardwareinput.MouseControllerManager;
 import game.data.DataInputOutput;
-import game.engine.GameTickerObservable;
+import game.tasks.GameTickerObservable;
 import game.entity.*;
 import game.entity.models.*;
-import game.events.GameEvent;
 import game.level.Level;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.menus.PausePanel;
@@ -16,7 +15,7 @@ import game.utils.Utility;
 
 import java.util.*;
 
-public class BomberManMatch implements OnGameEvent {
+public class BomberManMatch {
     private InventoryElementController inventoryElementControllerPoints;
     private InventoryElementController inventoryElementControllerBombs;
     private InventoryElementController inventoryElementControllerLives;
@@ -148,11 +147,6 @@ public class BomberManMatch implements OnGameEvent {
 
     public InventoryElementController getInventoryElementControllerLives() {
         return inventoryElementControllerLives;
-    }
-
-    @Override
-    public void onGameEvent(GameEvent gameEvent, Object arg) {
-        gameEvent.invoke(arg);
     }
 
     public void destroy() {

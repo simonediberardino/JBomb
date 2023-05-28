@@ -1,7 +1,7 @@
 package game.ui.panels.game;
 
 import game.Bomberman;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.EmptyPowerup;
 import game.powerups.PowerUp;
 import game.ui.panels.BombermanFrame;

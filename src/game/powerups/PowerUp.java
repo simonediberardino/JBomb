@@ -5,7 +5,7 @@ import game.Bomberman;
 import game.entity.Player;
 import game.entity.models.*;
 import game.entity.models.Character;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;

@@ -1,11 +1,9 @@
 package game.entity.models;
 
 import game.Bomberman;
-import game.controller.MouseControllerManager;
-import game.engine.GameTickerObserver;
-import game.models.Coordinates;
-import game.models.Direction;
-import game.runnables.RunnablePar;
+import game.hardwareinput.MouseControllerManager;
+import game.tasks.GameTickerObserver;
+import game.events.RunnablePar;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 

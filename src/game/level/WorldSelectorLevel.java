@@ -4,15 +4,13 @@ import game.data.DataInputOutput;
 import game.entity.blocks.InvisibleBlock;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
-import game.level.world2.World2Level3;
 import game.localization.Localization;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.portal.Portal;
 import game.powerups.portal.World1Portal;
 import game.powerups.portal.World2Portal;
 import game.powerups.portal.WorldPortal;
 import game.ui.panels.game.PitchPanel;
-import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;

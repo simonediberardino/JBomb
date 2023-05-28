@@ -1,17 +1,13 @@
 package game.entity.bomb;
 
-import game.BomberManMatch;
 import game.Bomberman;
-import game.entity.models.Particle;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
 import game.utils.Paths;
 import game.ui.panels.game.PitchPanel;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
@@ -21,7 +17,7 @@ import static game.utils.Utility.loadImage;
 /**
  * Represents an explosion that can interact with other entities in the game.
  */
-public class Explosion extends MovingEntity implements Particle {
+public class Explosion extends MovingEntity {
     public static final int SIZE = PitchPanel.COMMON_DIVISOR * 2;
     public static final int SPAWN_OFFSET = (PitchPanel.GRID_SIZE-SIZE) / 2;
     // The distance from the bomb where the explosion was created.

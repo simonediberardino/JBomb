@@ -2,10 +2,7 @@ package game.entity.models;
 
 import game.Bomberman;
 import game.entity.Player;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.MovableBlock;
 import game.entity.bomb.Bomb;
-import game.models.Coordinates;
 import game.powerups.PowerUp;
 import game.sound.SoundModel;
 import game.utils.Utility;

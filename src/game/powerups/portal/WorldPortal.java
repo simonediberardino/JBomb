@@ -5,9 +5,8 @@ import game.data.DataInputOutput;
 import game.data.PlayerDataObject;
 import game.entity.models.BomberEntity;
 import game.level.Level;
-import game.level.world1.World1Level;
 import game.level.world1.World1Level1;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.utils.Paths;
 import game.utils.Utility;
 

@@ -1,14 +1,13 @@
 package game.entity.bomb;
 
-import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.blocks.MovableBlock;
 import game.entity.models.*;
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.utils.Paths;
@@ -125,11 +124,6 @@ public class Bomb extends MovableBlock implements Explosive {
     }
 
     @Override
-    public boolean canExplosionInteractWith(Entity e) {
-        return ((e == null) || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e))) && !e.isImmune());
-    }
-
-    @Override
     public int getMaxExplosionDistance() {
         return caller != null ? caller.getCurrExplosionLength() : Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     }
@@ -148,9 +142,5 @@ public class Bomb extends MovableBlock implements Explosive {
         return new HashSet<>(Collections.singletonList(Explosion.class));
     }
 
-    @Override
-    public synchronized List<Explosion> getExplosions() {
-        return explosions;
-    }
 }
 

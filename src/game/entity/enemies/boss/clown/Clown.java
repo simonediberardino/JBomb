@@ -5,9 +5,7 @@ import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.entity.enemies.npcs.Orb;
 import game.entity.enemies.boss.Boss;
-import game.entity.models.Entity;
-import game.entity.models.Explosive;
-import game.models.*;
+import game.entity.models.*;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 import game.utils.Utility;
@@ -110,11 +108,6 @@ public class Clown extends Boss implements Explosive {
         return Collections.emptyList();
     }
 
-    @Override
-    public synchronized ArrayList<Explosion> getExplosions() {
-        return explosions;
-    }
-
     /**
      * Returns a list of entity classes that can interact with explosions.
      *
@@ -123,17 +116,6 @@ public class Clown extends Boss implements Explosive {
     @Override
     public List<Class<? extends Entity>> getExplosionInteractionEntities() {
         return Arrays.asList(Player.class, Bomb.class);
-    }
-
-    /**
-     * Determines whether this entity can interact with the given entity in an explosion.
-     *
-     * @param e the entity to check
-     * @return true if this entity can interact with the given entity in an explosion, false otherwise.
-     */
-    @Override
-    public boolean canExplosionInteractWith(Entity e) {
-        return e == null || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e)));
     }
 
     /**
