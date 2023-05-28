@@ -1,15 +1,12 @@
-package game.models;
+package game.entity.models;
 
-import game.entity.models.Entity;
 import game.ui.panels.game.PitchPanel;
-import game.utils.Utility;
 
 public enum EnhancedDirection {
     LEFTUP,
     LEFTDOWN,
     RIGHTUP,
     RIGHTDOWN;
-
 
     public Direction[] toDirection(){
         switch (this){
@@ -30,21 +27,17 @@ public enum EnhancedDirection {
             return null;
         }
 
-        for (Direction d: directions
-             ) {
-
+        for (Direction d: directions) {
             switch (d){
                 case DOWN: case UP: vertical=d; break;
                 case RIGHT: case LEFT: horizontal=d; break;
             }
-
         }
-        if (vertical == Direction.UP && horizontal==Direction.RIGHT)return RIGHTUP;
-        if (vertical == Direction.DOWN && horizontal==Direction.RIGHT)return RIGHTDOWN;
-        if (vertical == Direction.UP && horizontal==Direction.LEFT)return LEFTUP;
-        if (vertical == Direction.DOWN && horizontal==Direction.LEFT)return LEFTDOWN;
 
-
+        if (vertical == Direction.UP && horizontal == Direction.RIGHT) return RIGHTUP;
+        if (vertical == Direction.DOWN && horizontal == Direction.RIGHT) return RIGHTDOWN;
+        if (vertical == Direction.UP && horizontal == Direction.LEFT) return LEFTUP;
+        if (vertical == Direction.DOWN && horizontal == Direction.LEFT) return LEFTDOWN;
 
         return null;
     }
@@ -64,16 +57,8 @@ public enum EnhancedDirection {
         Coordinates centerEntityCoords = new Coordinates(entity.getCoords().getX()+entity.getSize()/2,entity.getCoords().getY()+entity.getSize()/2);
         Direction newHorizontalDirection;
         Direction newVerticalDirection;
-        if (centerEntityCoords.getX()>PitchPanel.DIMENSION.getWidth()/2) newHorizontalDirection = Direction.LEFT;
-        else newHorizontalDirection = Direction.RIGHT;
-        if (centerEntityCoords.getY()< PitchPanel.DIMENSION.getHeight()/2) newVerticalDirection = Direction.DOWN;
-        else newVerticalDirection = Direction.UP;
-        return toEnhancedDirection(new Direction[]{newHorizontalDirection,newVerticalDirection});
-
-
+        newHorizontalDirection = centerEntityCoords.getX() > PitchPanel.DIMENSION.getWidth() / 2 ? Direction.LEFT : Direction.RIGHT;
+        newVerticalDirection = centerEntityCoords.getY() < PitchPanel.DIMENSION.getHeight() / 2 ? Direction.DOWN : Direction.UP;
+        return toEnhancedDirection(new Direction[]{ newHorizontalDirection, newVerticalDirection});
     }
-
-
-
-
 }

@@ -1,9 +1,6 @@
-package game.engine;
+package game.tasks;
 
 import game.events.Observer2;
-
-import java.util.Observable;
-import java.util.Observer;
 
 public abstract class GameTickerObserver implements Observer2 {
     private static final float DEFAULT_DELAY_OBSERVER = 40;

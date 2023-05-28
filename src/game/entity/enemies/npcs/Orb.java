@@ -1,14 +1,12 @@
 package game.entity.enemies.npcs;
 
-import game.entity.models.Particle;
 import game.entity.Player;
-import game.entity.models.Transparent;
 import game.entity.bomb.Bomb;
 import game.entity.models.Enemy;
 import game.entity.models.Entity;
-import game.models.Coordinates;
-import game.models.Direction;
-import game.models.EnhancedDirection;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
+import game.entity.models.EnhancedDirection;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 
@@ -21,7 +19,7 @@ import java.util.Set;
  It can be instantiated with either an EnhancedDirection or a Direction, but not both.
  The Orb class implements the Transparent and Particle interfaces.
  */
-public class Orb extends Enemy implements Transparent, Particle{
+public class Orb extends Enemy {
 
     /**
      The size of the Orb.

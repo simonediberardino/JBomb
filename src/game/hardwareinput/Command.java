@@ -1,6 +1,6 @@
-package game.controller;
+package game.hardwareinput;
 
-import game.models.Direction;
+import game.entity.models.Direction;
 
 public enum Command {
     MOVE_UP,

@@ -1,6 +1,6 @@
 package game.powerups.portal;
 
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.ui.panels.game.PitchPanel;
 
 import java.awt.*;

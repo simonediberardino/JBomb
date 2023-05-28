@@ -4,8 +4,8 @@ import game.entity.Player;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
 import game.entity.models.*;
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -65,11 +65,6 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     }
 
     @Override
-    public synchronized ArrayList<Explosion> getExplosions() {
-        return explosions;
-    }
-
-    @Override
     public boolean isObstacleOfExplosion(Entity e) {
         return (e == null) || (getExplosionObstacles().stream().anyMatch(c -> c.isInstance(e)));
     }
@@ -77,11 +72,6 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     @Override
     public List<Class<? extends Entity>> getExplosionInteractionEntities() {
         return Arrays.asList(Player.class, Bomb.class);
-    }
-
-    @Override
-    public boolean canExplosionInteractWith(Entity e) {
-        return e == null || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e)));
     }
 
     @Override

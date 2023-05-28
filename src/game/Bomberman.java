@@ -1,7 +1,7 @@
 package game;
 
 import game.data.DataInputOutput;
-import game.engine.GarbageCollectorTask;
+import game.tasks.GarbageCollectorTask;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.localization.Localization;

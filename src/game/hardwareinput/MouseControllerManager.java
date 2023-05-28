@@ -1,11 +1,11 @@
-package game.controller;
+package game.hardwareinput;
 
 import game.Bomberman;
-import game.engine.PeriodicTask;
+import game.tasks.PeriodicTask;
 import game.entity.Player;
 import game.entity.models.Entity;
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
 
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -30,10 +30,10 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
         Player currPlayer = Bomberman.getMatch().getPlayer();
         if(currPlayer == null)return;
         onCooldown();
+
         //interact with mouse
         if (Bomberman.getMatch().getPlayer() != null && !currPlayer.getAliveState())
             return;
-
 
         if (entity != null && Bomberman.getMatch().getPlayer().getListClassInteractWithMouseClick().contains(entity.getClass())) {
             entity.mouseInteractions();
@@ -47,11 +47,10 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
             Bomberman.getMatch().getControllerManager().onKeyPressed(d.toCommand());
         }
 
-        if (firstDirectionsFromPlayer.isEmpty()
-                || firstDirectionsFromPlayer.stream().anyMatch(d -> latestDirectionsFromPlayer.contains(d))
-        ) {
+        if (firstDirectionsFromPlayer.isEmpty() || firstDirectionsFromPlayer.stream().anyMatch(d -> latestDirectionsFromPlayer.contains(d))) {
             return;
         }
+
         onPeriodicTaskEnd();
         nextCommandInQueue();
     };
@@ -113,7 +112,7 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
         playerMovementTask.resume();
     }
 
-    //directions are refreshed and will be replaced in task
+    // Directions are refreshed and will be replaced in task
     public void onCooldown() {
         for (Direction d: firstDirectionsFromPlayer) {
             Bomberman.getMatch().getControllerManager().onKeyReleased(d.toCommand());

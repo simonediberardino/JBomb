@@ -1,19 +1,16 @@
-package game.engine;
+package game.tasks;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class PeriodicTask {
     private final Runnable callback;
     private final int delay;
-   // private final Thread thread;
     private final Timer timer;
 
     public PeriodicTask(Runnable callback, int delay) {
         this.callback = callback;
         this.delay = delay;
-        this.timer = new Timer(delay, e -> SwingUtilities.invokeLater(callback));
+        this.timer = new Timer(delay, e -> callback.run());
     }
 
     public void start() {

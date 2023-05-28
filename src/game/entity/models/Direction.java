@@ -1,6 +1,6 @@
-package game.models;
+package game.entity.models;
 
-import game.controller.Command;
+import game.hardwareinput.Command;
 
 public enum Direction {
     LEFT,

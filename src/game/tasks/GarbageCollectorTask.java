@@ -1,4 +1,4 @@
-package game.engine;
+package game.tasks;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

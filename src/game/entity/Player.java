@@ -1,11 +1,11 @@
 package game.entity;
 
 import game.Bomberman;
-import game.controller.Command;
+import game.hardwareinput.Command;
 import game.entity.bomb.Explosion;
 import game.entity.models.*;
 import game.events.DeathGameEvent;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.sound.SoundModel;
 import game.ui.panels.menus.GameOverPanel;

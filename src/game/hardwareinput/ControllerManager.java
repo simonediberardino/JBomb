@@ -1,9 +1,9 @@
 
-package game.controller;
+package game.hardwareinput;
 
 import game.Bomberman;
 import game.data.DataInputOutput;
-import game.engine.PeriodicTask;
+import game.tasks.PeriodicTask;
 import game.events.Observable2;
 import game.utils.Utility;
 

@@ -1,7 +1,6 @@
-package game.models;
+package game.entity.models;
 
 import game.Bomberman;
-import game.entity.models.Entity;
 import game.ui.panels.game.PitchPanel;
 
 import java.awt.*;

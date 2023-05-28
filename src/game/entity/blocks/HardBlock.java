@@ -1,11 +1,9 @@
 package game.entity.blocks;
 
-import game.entity.bomb.Explosion;
 import game.entity.models.Block;
 import game.entity.models.Entity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 

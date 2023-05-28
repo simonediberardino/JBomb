@@ -1,7 +1,5 @@
 package game.entity.models;
 
-import game.models.Coordinates;
-import game.models.Direction;
 import game.sound.SoundModel;
 
 import java.util.Arrays;
@@ -10,7 +8,7 @@ import java.util.List;
 
 import static game.ui.panels.game.PitchPanel.PIXEL_UNIT;
 
-public abstract class MovingEntity extends EntityDamage {
+public abstract class MovingEntity extends EntityInteractable {
     public MovingEntity(Coordinates coordinates){
         super(coordinates);
     }
