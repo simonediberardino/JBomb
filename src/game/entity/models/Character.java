@@ -28,7 +28,7 @@ public abstract class Character extends MovingEntity {
     public static final int SIZE = PitchPanel.PIXEL_UNIT * 4 * 2;
 
     protected long lastDirectionUpdate = 0;
-    protected final List<Direction> imagePossibleDirections = new ArrayList<>(Arrays.asList(Direction.values()));
+    protected final List<Direction> imagePossibleDirections = getImageDirections();
     protected Direction currDirection = DOWN;
     /**
      * The last direction this character was moving in.
@@ -363,6 +363,10 @@ public abstract class Character extends MovingEntity {
                 count++;
             }
         }, 0, durationMs * 2); // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
+    }
+
+    protected List<Direction> getImageDirections() {
+        return Arrays.asList(Direction.values());
     }
 
     public int getMaxHp() {

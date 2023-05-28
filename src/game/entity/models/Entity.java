@@ -5,7 +5,7 @@ import game.controller.MouseControllerManager;
 import game.engine.GameTickerObserver;
 import game.models.Coordinates;
 import game.models.Direction;
-import Runnables.RunnableParReturns;
+import game.runnables.RunnablePar;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 
@@ -36,17 +36,19 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     private String imagePath = "";
     private float alpha = 1;
     private final long id;
-    protected RunnableParReturns paddingTopFunction = new RunnableParReturns() {
+
+    protected RunnablePar paddingTopFunction = new RunnablePar() {
         @Override
-        public <T extends Number> int execute(T par){
+        public <T> Object execute(T par) {
             int temp = (int) ((double) getSize() / (double)par - getSize());
             paddingTop = temp;
             return temp;
         }
     };
-    protected RunnableParReturns paddingWidthFunction = new RunnableParReturns() {
+
+    protected RunnablePar paddingWidthFunction = new RunnablePar() {
         @Override
-        public <T extends Number> int execute(T par) {
+        public <T> Object execute(T par) {
             int temp = (int) (((double) getSize() / (double)par- getSize()) / 2);
             paddingWidth = temp;
             return temp;
@@ -350,29 +352,33 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     public void setPaddingTop(int p){
         paddingTop=p;
     }
+
     public void setPaddingWidth(int p){
         paddingWidth = p;
     }
+
     public int calculateAndGetPaddingTop(){
         return calculateAndGetPaddingTop(getHitboxSizeToHeightRatio());
     }
+
     public int calculateAndGetPaddingTop(double ratio){
-        return paddingTopFunction.execute(ratio);
-
-
+        return (int) paddingTopFunction.execute(ratio);
     }
+
     public int getPaddingTop(){
         return paddingTop;
     }
+
     public int getPaddingWidth(){
         return paddingWidth;
     }
+
     public int calculateAndGetPaddingWidth(){
         return calculateAndGetPaddingWidth(getHitboxSizeToWidthRatio());
     }
-    public int calculateAndGetPaddingWidth(double ratio){
-        return paddingWidthFunction.execute(ratio);
 
+    public int calculateAndGetPaddingWidth(double ratio){
+        return (int) paddingWidthFunction.execute(ratio);
     }
 
     public int getDrawPriority() {

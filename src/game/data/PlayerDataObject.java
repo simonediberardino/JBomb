@@ -34,11 +34,11 @@ public class PlayerDataObject implements Serializable {
                 START_LIVES,
                 0,
                 0,
-                KeyEvent.VK_W,
-                KeyEvent.VK_S,
-                KeyEvent.VK_A,
-                KeyEvent.VK_D,
-                KeyEvent.VK_SPACE
+                0,
+                0,
+                0,
+                0,
+                0
         );
     }
 
@@ -60,6 +60,7 @@ public class PlayerDataObject implements Serializable {
     }
 
     public void resetKeys() {
+        System.out.println("RESETTING");
         this.forwardKey = KeyEvent.VK_W;
         this.backKey = KeyEvent.VK_S;
         this.leftKey = KeyEvent.VK_A;
@@ -72,6 +73,7 @@ public class PlayerDataObject implements Serializable {
     }
 
     public void setForwardKey(int forwardKey) {
+        System.out.println(KeyEvent.getKeyText(forwardKey));
         this.forwardKey = forwardKey;
     }
 
@@ -188,6 +190,11 @@ public class PlayerDataObject implements Serializable {
                 ", lastLevelId=" + lastLevelId +
                 ", lastWorldId=" + lastWorldId +
                 ", lives=" + lives +
+                ", forwardKey=" + KeyEvent.getKeyText(forwardKey) +
+                ", backKey=" + KeyEvent.getKeyText(backKey) +
+                ", leftKey=" + KeyEvent.getKeyText(leftKey) +
+                ", rightKey=" + KeyEvent.getKeyText(rightKey) +
+                ", bombKey=" + KeyEvent.getKeyText(bombKey) +
                 '}';
     }
 

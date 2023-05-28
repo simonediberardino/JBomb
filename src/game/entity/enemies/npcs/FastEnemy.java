@@ -5,22 +5,20 @@ import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FastEnemy extends IntelligentEnemy {
     public FastEnemy() {
         super();
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
     }
 
     public FastEnemy(Coordinates coordinates) {
         super(coordinates);
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
     }
 
     @Override
     protected String getBasePath() {
-
         return Paths.getEnemiesFolder() + "/fast_enemy/fast_enemy";
     }
 
@@ -32,6 +30,11 @@ public class FastEnemy extends IntelligentEnemy {
                 String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 2),
                 String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 3)
         };
+    }
+
+    @Override
+    protected List<Direction> getImageDirections() {
+        return Arrays.asList(Direction.RIGHT, Direction.LEFT);
     }
 
     @Override

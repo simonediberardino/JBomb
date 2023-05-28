@@ -5,13 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Fast Enemy images (wip)">
+      <change afterPath="$PROJECT_DIR$/src/game/runnables/RunnablePar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/data" beforeDir="false" afterPath="$PROJECT_DIR$/data/data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Runnables/RunnableGraphics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/runnables/RunnableGraphics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Runnables/RunnablePar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Runnables/RunnableParReturns.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/controller/ControllerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/controller/ControllerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/GhostEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/GhostEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/ghost/GhostBoss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/ghost/GhostBoss.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/YellowBall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/YellowBall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Character.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/localization/Localization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/localization/Localization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/game/PitchPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/game/PitchPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/settings/BoxMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/settings/BoxMenuPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/settings/ProfilePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/settings/ProfilePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/settings/SettingsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/settings/SettingsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/viewelements/settings/TextFieldElementView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/viewelements/settings/TextFieldElementView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/utils/GradientCallbackHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/utils/GradientCallbackHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ChangesViewManager" show_ignored="true" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -23,6 +51,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
@@ -402,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685204359835</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="- Fast Enemy images (wip)">
+      <created>1685204863245</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1685204863245</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -524,7 +564,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/game/entity/enemies/boss/ghost/GhostBoss.java</url>
-          <line>80</line>
+          <line>81</line>
           <option name="timeStamp" value="183" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -534,7 +574,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/game/entity/models/Character.java</url>
-          <line>412</line>
+          <line>416</line>
           <option name="timeStamp" value="189" />
         </line-breakpoint>
       </breakpoints>

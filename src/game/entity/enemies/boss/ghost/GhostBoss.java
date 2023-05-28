@@ -1,13 +1,11 @@
 package game.entity.enemies.boss.ghost;
 
 import game.Bomberman;
-import game.entity.Player;
 import game.entity.enemies.GhostEnemy;
 import game.entity.enemies.boss.Boss;
 import game.models.Coordinates;
 import game.models.Direction;
-import Runnables.RunnablePar;
-import Runnables.RunnableParReturns;
+import game.runnables.RunnablePar;
 import game.ui.panels.game.PitchPanel;
 import game.utils.GradientCallbackHandler;
 import game.utils.Paths;
@@ -16,6 +14,7 @@ import game.utils.Utility;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,25 +27,22 @@ public class GhostBoss extends Boss {
     private static final int MAX_GHOST_ENEMY_SPAWNED = 5;
     private static final int GHOST_SPAWN_TIME_DELAY = 10000;
     private static final int MAX_GHOSTS_ALIVE = 10;
+    private final static int BOSS_ATTACK_VERTICAL_RANGE = 2;
     private boolean isInvisibleTaskRunning = false;
     private long lastInvisibleTime = 0;
     private long lastGhostSpawnTime;
-    private int BOSS_ATTACK_VERTICAL_RANGE = 2;
 
     public GhostBoss() {
         super();
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
+        this.hitboxSizetoWidthRatio= 0.648f;
         this.hitboxSizeToHeightRatio = 0.70f;
-        paddingTopFunction = new RunnableParReturns() {
+        paddingTopFunction = new RunnablePar() {
             @Override
-            public <T extends Number> int execute(T par){
+            public <T> Object execute(T par) {
                 setPaddingTop(0);
                 return 0;
             }
         };
-        hitboxSizetoWidthRatio= 0.648f;
-        System.out.println(getHitboxSizeToWidthRatio());
     }
 
 
@@ -63,6 +59,11 @@ public class GhostBoss extends Boss {
     @Override
     public String[] getCharacterOrientedImages() {
         return new String[] { getImageFromRageStatus() };
+    }
+
+    @Override
+    protected java.util.List<Direction> getImageDirections() {
+        return Arrays.asList(Direction.RIGHT, Direction.LEFT);
     }
 
     private void attackAnimation() {
@@ -99,7 +100,7 @@ public class GhostBoss extends Boss {
         // Create a callback handler for the task of gradually showing the object.
         GradientCallbackHandler showTask = new GradientCallbackHandler(new RunnablePar() {
             @Override
-            public <T> void execute(T par) {
+            public <T> Object execute(T par) {
                 // Set the alpha value of the object to the given parameter value.
                 setAlpha((Float) par);
 
@@ -107,25 +108,28 @@ public class GhostBoss extends Boss {
                     // If the alpha value has reached or exceeded the start alpha, mark the invisible task as finished.
                     isInvisibleTaskRunning = false;
                 }
+                return null;
             }
         }, endAlpha, startAlpha, -step);
 
         // Create a callback handler for the task of gradually hiding the object.
         GradientCallbackHandler hideTask = new GradientCallbackHandler(new RunnablePar() {
             @Override
-            public <T> void execute(T par) {
+            public <T> Object execute(T par) {
                 // Set the alpha value of the object to the given parameter value.
                 setAlpha((Float) par);
 
                 if (!((Float) par <= endAlpha)) {
                     // If the alpha value is not yet less than or equal to the end alpha, exit the method.
-                    return;
+                    return null;
                 }
 
                 // Create a timer to delay the execution of the show task after the object is hidden.
                 Timer t = new Timer(INVISIBLE_DURATION, (l) -> showTask.execute());
                 t.setRepeats(false);
                 t.start();
+
+                return null;
             }
         }, startAlpha, endAlpha, step);
 
@@ -140,10 +144,11 @@ public class GhostBoss extends Boss {
         pitchPanel.addGraphicsCallback(
                 GhostBoss.class.getSimpleName(), new RunnablePar() {
                     @Override
-                    public <T> void execute(T par) {
-                       Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
+                    public <T> Object execute(T par) {
+                        Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
                         g2d.setColor(new Color(0,0,0,0.95f));
                         g2d.fillRect(0,0,Bomberman.getBombermanFrame().getHeight(),Bomberman.getBombermanFrame().getWidth());
+                        return null;
                     }
                 }
         );

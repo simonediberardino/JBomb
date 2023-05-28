@@ -2,7 +2,7 @@ package game.ui.panels.settings;
 
 import game.data.DataInputOutput;
 import game.localization.Localization;
-import Runnables.RunnablePar;
+import game.runnables.RunnablePar;
 import game.ui.panels.BombermanFrame;
 import game.ui.viewelements.settings.SettingsElementView;
 
@@ -25,9 +25,10 @@ public class ProfilePanel extends BoxMenuPanel {
     protected void addCustomElements() {
         SettingsElementView userName = addTextFieldElementView(Localization.get(USERNAME), DataInputOutput.getUsername(), new RunnablePar() {
             @Override
-            public <T> void execute(T par) {
-                if(par.toString().isBlank()) return;
+            public <T> Object execute(T par) {
+                if(par.toString().isBlank()) return null;
                 DataInputOutput.setUsername(par.toString().trim());
+                return null;
             }
         });
 

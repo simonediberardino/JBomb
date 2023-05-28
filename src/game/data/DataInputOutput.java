@@ -197,4 +197,30 @@ public class DataInputOutput {
     public static String getBombKeyChar() {
         return KeyEvent.getKeyText(playerDataObject.getBombKey());
     }
+
+
+    public static void setForwardKey(int forwardKey) {
+        playerDataObject.setForwardKey(forwardKey);
+        updateStoredPlayerData();
+    }
+
+    public static void setBackKey(int backKey) {
+        playerDataObject.setBackKey(backKey);
+        updateStoredPlayerData();
+    }
+
+    public static void setLeftKey(int leftKey) {
+        playerDataObject.setLeftKey(leftKey);
+        updateStoredPlayerData();
+    }
+
+    public static void setRightKey(int rightKey) {
+        playerDataObject.setRightKey(rightKey);
+        updateStoredPlayerData();
+    }
+
+    public static void setBombKey(int bombKey) {
+        playerDataObject.setBombKey(bombKey);
+        updateStoredPlayerData();
+    }
 }
