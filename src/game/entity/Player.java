@@ -25,7 +25,6 @@ public class Player extends BomberEntity {
         super(coordinates);
         this.hitboxSizeToHeightRatio = 0.733f;
         Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
-        isImmune=true;
     }
 
     @Override

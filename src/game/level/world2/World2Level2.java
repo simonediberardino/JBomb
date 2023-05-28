@@ -7,11 +7,11 @@ import game.level.Level;
 import game.level.world1.World1Level;
 
 public class World2Level2 extends World2Level {
-
     @Override
     public int getLevelId() {
         return 2;
     }
+
     @Override
     public int startEnemiesCount() {
         return 8;
