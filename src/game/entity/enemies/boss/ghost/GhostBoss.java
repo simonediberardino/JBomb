@@ -5,6 +5,7 @@ import game.entity.enemies.GhostEnemy;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Coordinates;
 import game.entity.models.Direction;
+import game.entity.models.Entity;
 import game.events.RunnablePar;
 import game.ui.panels.game.PitchPanel;
 import game.utils.GradientCallbackHandler;
@@ -26,8 +27,11 @@ public class GhostBoss extends Boss {
     private static final int INVISIBLE_DELAY = 10000;
     private static final int MAX_GHOST_ENEMY_SPAWNED = 5;
     private static final int GHOST_SPAWN_TIME_DELAY = 10000;
+    private static final int LIGHTS_EVENT_DELAY = 20000;
+    private static long lastLightsEvent = System.currentTimeMillis();
     private static final int MAX_GHOSTS_ALIVE = 10;
     private final static int BOSS_ATTACK_VERTICAL_RANGE = 2;
+    private final static int BOSS_ATTACK_HORIZONTAL_RANGE = 1;
     private boolean isInvisibleTaskRunning = false;
     private long lastInvisibleTime = 0;
     private long lastGhostSpawnTime;
@@ -45,7 +49,11 @@ public class GhostBoss extends Boss {
         };
     }
 
-
+    @Override
+    public void attack(Entity e){
+        attackAnimation();
+        super.attack(e);
+    }
     @Override
     protected Map<Integer, Integer> healthStatusMap() {
         return new HashMap<>();
@@ -146,7 +154,7 @@ public class GhostBoss extends Boss {
                     @Override
                     public <T> Object execute(T par) {
                         Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
-                        g2d.setColor(new Color(0,0,0,0.95f));
+                        g2d.setColor(new Color(0,0,0,0.9f));
                         g2d.fillRect(0,0,Bomberman.getBombermanFrame().getHeight(),Bomberman.getBombermanFrame().getWidth());
                         return null;
                     }
@@ -170,28 +178,36 @@ public class GhostBoss extends Boss {
         }
     }
     public synchronized static void performLightsAnimation(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    turnOffLights();
-                    Thread.sleep(5000);
-                    turnOnLights();
-                    Thread.sleep(100);
-                    turnOffLights();
-                    Thread.sleep(400);
-                    turnOnLights();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        new Thread(() -> {
+            try {
+                turnOffLights();
+                Thread.sleep(10000);
+                turnOnLights();
+                Thread.sleep(100);
+                turnOffLights();
+                Thread.sleep(400);
+                turnOnLights();
+                Thread.sleep(100);
+                turnOffLights();
+                Thread.sleep(400);
+                turnOnLights();
+                Thread.sleep(100);
+                turnOffLights();
+                Thread.sleep(400);
+                turnOnLights();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }).start();
     }
     private void attack() {
-        ArrayList<Coordinates> coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInArea(
-                new Coordinates(getCoords().getX(), getCoords().getY() + getSize()),
-                new Coordinates(getCoords().getX() + getSize(), getCoords().getY() + getSize() + PitchPanel.GRID_SIZE * BOSS_ATTACK_VERTICAL_RANGE));
 
+        ArrayList<Coordinates> coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInAreaFromDirection(this,Direction.DOWN,BOSS_ATTACK_VERTICAL_RANGE);
+        System.out.println(coordsOfUnderneathEntityBlocks);
+        ArrayList<Coordinates>  coordsOfEntitysImageDirectionBlocks = Coordinates.getAllBlocksInAreaFromDirection(this,imageDirection, BOSS_ATTACK_HORIZONTAL_RANGE);
+        coordsOfUnderneathEntityBlocks.addAll(coordsOfEntitysImageDirectionBlocks);
+
+        //merge the 2 lists into one another
         coordsOfUnderneathEntityBlocks.stream().forEach(c->Coordinates.getEntitiesOnBlock(c).stream().forEach(e->interact(e)));
         attackAnimation();
     }
@@ -203,7 +219,11 @@ public class GhostBoss extends Boss {
         Utility.runPercentage(ACTION_CHANCE, new Runnable() {
             @Override
             public void run() {
-                performLightsAnimation();
+                if(Utility.timePassed(lastLightsEvent)>LIGHTS_EVENT_DELAY){
+                    performLightsAnimation();
+                    lastLightsEvent = System.currentTimeMillis();
+
+                }
             }
         });
         Utility.runPercentage(ACTION_CHANCE, () -> {

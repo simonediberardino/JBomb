@@ -40,7 +40,7 @@ public class DestroyableBlock extends MovableBlock {
 
     @Override
     public BufferedImage getImage(){
-        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getDestroyableBlock());
+        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getDestroyableBlockImagePath());
     }
 
     @Override

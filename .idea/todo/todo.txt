@@ -1,2 +1,5 @@
 - pitch background;
-- Transparent bomb
+- Ghost sounds (axe sound etc..)
+- Both Bosses spawn coordinates to be revisioned (Randomize or fix)
+- Clown more animations?
+- sounds level;

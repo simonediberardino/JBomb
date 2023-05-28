@@ -23,6 +23,9 @@ public class Coordinates implements Comparable<Coordinates> {
         this.x = x;
         this.y = y;
     }
+    public Coordinates plus(Coordinates addend){
+        return new Coordinates(this.getX()+addend.getX(),this.getY()+addend.getY());
+    }
 
     public int getX() {
         return x;
@@ -285,6 +288,22 @@ public class Coordinates implements Comparable<Coordinates> {
 
     public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
         return !getEntitiesOnBlock(nextOccupiedCoords).isEmpty();
+    }
+    public static ArrayList<Coordinates> getAllBlocksInAreaFromDirection(Entity e, Direction d, int depth){
+        switch (d){
+            case LEFT:return getAllBlocksInArea
+                    (e.getCoords().plus(new Coordinates(-GRID_SIZE*depth+1,0)),
+                     e.getCoords().plus(new Coordinates(1,e.getSize()-1)));
+            case DOWN: return Coordinates.getAllBlocksInArea(
+                    e.getCoords().plus(new Coordinates(0,e.getSize())),
+                    e.getCoords().plus(new Coordinates(e.getSize()-1,e.getSize()+ PitchPanel.GRID_SIZE * depth-1)));
+            case UP: return getAllBlocksInArea(
+                    e.getCoords().plus(new Coordinates(-1,-(PitchPanel.GRID_SIZE * depth-1))),
+                    e.getCoords().plus(new Coordinates(e.getSize()-1,-1)));
+            case RIGHT: return getAllBlocksInArea(
+                    e.getCoords().plus(new Coordinates(e.getSize(),0)),e.getCoords().plus(new Coordinates(e.getSize()+GRID_SIZE*depth-1,e.getSize()-1)));
+        }
+        return null;
     }
 
 

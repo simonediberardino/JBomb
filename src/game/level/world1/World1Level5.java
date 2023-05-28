@@ -36,10 +36,7 @@ public class World1Level5 extends World1Level{
                 Helicopter.class
         };
     }
-    @Override
-    public String getGrassBlock() {
-        return Paths.getCurrentWorldCommonFolder() + "/clown_pitch.png";
-    }
+
 
     @Override
     public boolean isLastLevelOfWorld(){
