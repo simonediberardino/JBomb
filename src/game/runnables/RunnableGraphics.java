@@ -1,4 +1,4 @@
-package Runnables;
+package game.runnables;
 
 import java.awt.*;
 

@@ -40,6 +40,7 @@ public class ControllerManager extends Observable2 implements KeyListener {
             DataInputOutput.getPlayerDataObject().resetKeys();
             DataInputOutput.updateStoredPlayerData();
             setKeyMap();
+            e.printStackTrace();
         }
     }
 

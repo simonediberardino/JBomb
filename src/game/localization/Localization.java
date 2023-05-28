@@ -11,6 +11,31 @@ public class Localization {
         put(Locale.ITALY, "IL MIO BOMBERMAN");
     }};
 
+    public static final HashMap<Locale, String> KEY_RIGHT = new HashMap<>() {{
+        put(Locale.ENGLISH, "RIGHT");
+        put(Locale.ITALY, "DESTRA");
+    }};
+
+    public static final HashMap<Locale, String> KEY_LEFT = new HashMap<>() {{
+        put(Locale.ENGLISH, "LEFT");
+        put(Locale.ITALY, "SINISTRA");
+    }};
+
+    public static final HashMap<Locale, String> KEY_FORWARD = new HashMap<>() {{
+        put(Locale.ENGLISH, "FORWARD");
+        put(Locale.ITALY, "AVANTI");
+    }};
+
+    public static final HashMap<Locale, String> KEY_BACK = new HashMap<>() {{
+        put(Locale.ENGLISH, "BACK");
+        put(Locale.ITALY, "INDIETRO");
+    }};
+
+    public static final HashMap<Locale, String> KEY_BOMB = new HashMap<>() {{
+        put(Locale.ENGLISH, "BOMB");
+        put(Locale.ITALY, "BOMBA");
+    }};
+
     public static final HashMap<Locale, String> DEATHS = new HashMap<>() {{
         put(Locale.ENGLISH, "DEATHS");
         put(Locale.ITALY, "MORTI");
