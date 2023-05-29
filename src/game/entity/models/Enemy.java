@@ -12,7 +12,8 @@ import java.util.*;
 
 public abstract class Enemy extends Character{
     public Enemy() {
-        this(Coordinates.randomCoordinatesFromPlayer());
+        this(null);
+        setCoords(Coordinates.randomCoordinatesFromPlayer(getSize()));
     }
 
     public Enemy(Coordinates coordinates) {

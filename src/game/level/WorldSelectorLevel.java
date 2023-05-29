@@ -1,6 +1,8 @@
 package game.level;
 
+import game.Bomberman;
 import game.data.DataInputOutput;
+import game.entity.Player;
 import game.entity.blocks.InvisibleBlock;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Enemy;
@@ -48,10 +50,6 @@ public class WorldSelectorLevel extends Level{
         return 0;
     }
 
-    @Override
-    public int getExplosionLength() {
-        return 0;
-    }
 
     @Override
     public Class<? extends Level> getNextLevel() {
@@ -150,6 +148,11 @@ public class WorldSelectorLevel extends Level{
                 instantiationException.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public Coordinates getPlayerSpawnCoordinates() {
+        return Coordinates.fromRowAndColumnsToCoordinates(new Dimension(5, 2),0,0);
     }
 
     @Override

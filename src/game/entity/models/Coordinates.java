@@ -67,7 +67,14 @@ public class Coordinates implements Comparable<Coordinates> {
         return roundCoordinates(coords,new Coordinates(0,0));
     }
     public static Coordinates roundCoordinates(Coordinates coords, Coordinates offset){
-        return new Coordinates(((coords.getX() / GRID_SIZE) * GRID_SIZE + offset.getX()), ((coords.getY()/ GRID_SIZE) * GRID_SIZE + offset.getY()));
+        if(offset.getY() == 12){
+            int a =0;
+        }
+        return new Coordinates(((coords.getX()
+                / GRID_SIZE)
+                * GRID_SIZE + offset.getX()),
+                ((coords.getY()/ GRID_SIZE)
+                        * GRID_SIZE + offset.getY()));
     }
 
     public static Coordinates generateRandomCoordinates(){
@@ -88,14 +95,24 @@ public class Coordinates implements Comparable<Coordinates> {
         return Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE * 3);
     }
 
-    public static Coordinates generateRandomCoordinates(Coordinates spawnOffset){
+    public static Coordinates randomCoordinatesFromPlayer(int entitySize){
+        Coordinates c;
+        while (true){
+            c = randomCoordinatesFromPlayer();
+            if (c.validate(entitySize)) return c;
+        }
+    }
+    public static Coordinates generateRandomCoordinates(Coordinates spawnOffset, int size){
         while (true) {
             Coordinates coords = roundedRandomCoords(spawnOffset);
 
-            if (!Coordinates.isBlockOccupied(coords)){
+            if (!Coordinates.isBlockOccupied(coords)&& coords.validate(size)){
                 return coords;
             }
         }
+    }
+    public static Coordinates generateRandomCoordinates(Coordinates spawnOffset){
+        return generateRandomCoordinates(spawnOffset,GRID_SIZE);
     }
 
     public double distanceTo(Coordinates other) {
@@ -171,14 +188,18 @@ public class Coordinates implements Comparable<Coordinates> {
 
     public static Coordinates fromRowAndColumnsToCoordinates(Dimension d, int offsetX, int offsetY){
         if(offsetX>= GRID_SIZE||offsetY>=GRID_SIZE){
+            System.out.println("fromRowAndColumnsToCoordinates error");
+
             return null;
         }
 
         if ((d.getWidth()>= PitchPanel.DIMENSION.getWidth()/ GRID_SIZE)){
+            System.out.println("fromRowAndColumnsToCoordinates error");
             return null;
         }
 
         if(d.getHeight()>= PitchPanel.DIMENSION.getHeight()/GRID_SIZE){
+            System.out.println("fromRowAndColumnsToCoordinates error");
             return null;
         }
 

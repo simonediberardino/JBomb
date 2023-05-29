@@ -11,10 +11,12 @@ import java.util.List;
 public class FastEnemy extends IntelligentEnemy {
     public FastEnemy() {
         super();
+        hitboxSizeToHeightRatio = 0.527f;
     }
 
     public FastEnemy(Coordinates coordinates) {
         super(coordinates);
+        hitboxSizeToHeightRatio = 0.527f;
     }
 
     @Override

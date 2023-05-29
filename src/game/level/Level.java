@@ -58,10 +58,12 @@ public abstract class Level {
     public abstract Boss getBoss();
     public abstract int startEnemiesCount();
     public abstract int getMaxDestroyableBlocks();
-    public abstract int getExplosionLength();
+
     public abstract Class<? extends Level> getNextLevel();
     public abstract Class<? extends Enemy>[] availableEnemies();
-
+    public final int getExplosionLength(){
+        return DataInputOutput.getExplosionLength();
+    };
     /**
      *
      Returns the path to the image file for the stone block.
@@ -142,13 +144,15 @@ public abstract class Level {
         spawnBoss();
         spawnEnemies();
     }
-
+    public Coordinates getPlayerSpawnCoordinates(){
+        int a =0;
+        return Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET,GRID_SIZE);
+    }
     public void generatePlayer(){
-        Bomberman.getMatch().setPlayer(new Player(Coordinates.fromRowAndColumnsToCoordinates(new Dimension(5, 2),0,0)));
+        Coordinates coords = getPlayerSpawnCoordinates();
+        Bomberman.getMatch().setPlayer(new Player(coords));
         Bomberman.getMatch().getPlayer().spawn();
-        //TODO mousecontroller manager refresh to be refactored
-        //   |   when player is respawned mousecontrollermanager keeps last player's instance commands
-        //   V
+
     }
 
     public void endLevel() {

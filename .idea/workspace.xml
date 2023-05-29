@@ -5,28 +5,80 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Implemented pause menu;">
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/border_0_boss.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/border_1_boss.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/border_2_boss.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/border_3_boss.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/pitch_boss.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_central0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_central1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_central2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_central3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down0_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down1_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down2_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down_last0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down_last1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down_last2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_down_last3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left0_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left1_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left2_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left_last1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left_last2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_left_last3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right0_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right1_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right2_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right_last1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right_last2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_right_last3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_up0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_up0_last.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_up1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_up2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_up3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_up_last1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_up_last2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion/clown_explosion_up_last3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/birthday_hat.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/events/ExplosionLengthPowerUpEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/todo/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/todo/todo.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/0/common/grass.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/worlds/0/common/pitch.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/clown_pitch.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/worlds/2/common/pitch_boss.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/grass.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/worlds/1/common/pitch.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/grass.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/worlds/2/common/pitch.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_left_3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/entities/enemies/fast_enemy/fast_enemy_right_3.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/data" beforeDir="false" afterPath="$PROJECT_DIR$/data/data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/blocks/DestroyableBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/blocks/DestroyableBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/blocks/StoneBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/blocks/StoneBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/bomb/Explosion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/bomb/Explosion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/Boss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/Boss.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/ghost/GhostBoss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/ghost/GhostBoss.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/FastEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/entity/models/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Coordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Enemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/level/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/Level.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/WorldSelectorLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/WorldSelectorLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world1/World1Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world1/World1Level.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/level/world1/World1Level5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world1/World1Level5.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level4.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/game/MatchPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/game/MatchPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/game/PitchPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/game/PitchPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/powerups/FirePowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/FirePowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/powerups/LivesPowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/LivesPowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/powerups/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/PowerUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +134,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/worlds/1" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -95,17 +147,17 @@
       <recent name="game" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\clown_explosion" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\right_explosion" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\worlds\1" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\worlds\1\common" />
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\fast_enemy" />
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies" />
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\mini_ghost" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\worlds\1\common" />
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\worlds\2\common" />
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\worlds\2" />
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\mini_ghost" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\right_explosion" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\up_explosion" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\down_explosion" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\left_explosion" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
@@ -458,7 +510,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685237000568</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="- New images world1 boss;&#10;- Refactoring">
+      <created>1685279477687</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1685279477687</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -475,7 +534,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="[TEST COMMIT]&#10;- Period task with Threads" />
     <MESSAGE value="[FIX]&#10;Fixed speed of text animation&#10;Decreased CPU Usage" />
     <MESSAGE value="- Updated portal to next level;&#10;- Decreased CPU usage;&#10;- Increased painting speed;&#10;- Game over panel created;&#10;- Power ups updated;&#10;- Dimensions working properly with every screen resolution;" />
     <MESSAGE value="temporary fix for concurrent modify exception" />
@@ -500,7 +558,8 @@
     <MESSAGE value="- Refactoring;&#10;- Fixed commands not saving properly;" />
     <MESSAGE value="- Added Fast Enemy;" />
     <MESSAGE value="- Implemented pause menu;" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Implemented pause menu;" />
+    <MESSAGE value="- New images world1 boss;&#10;- Refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="- New images world1 boss;&#10;- Refactoring" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -529,7 +588,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/game/powerups/FirePowerUp.java</url>
-          <line>31</line>
+          <line>36</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -544,7 +603,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/game/entity/models/Coordinates.java</url>
-          <line>193</line>
+          <line>214</line>
           <option name="timeStamp" value="124" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -569,7 +628,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/game/entity/models/Coordinates.java</url>
-          <line>274</line>
+          <line>295</line>
           <option name="timeStamp" value="186" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -583,9 +642,19 @@
           <option name="timeStamp" value="190" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/models/Coordinates.java</url>
+          <line>70</line>
+          <option name="timeStamp" value="195" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/game/level/Level.java</url>
-          <line>109</line>
-          <option name="timeStamp" value="191" />
+          <line>151</line>
+          <option name="timeStamp" value="200" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/models/Coordinates.java</url>
+          <line>189</line>
+          <option name="timeStamp" value="202" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

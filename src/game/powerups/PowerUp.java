@@ -19,14 +19,14 @@ import java.util.*;
 public abstract class PowerUp extends EntityInteractable {
     // A static array of power-up classes
     public static final Class<? extends PowerUp>[] POWER_UPS = new Class[] {
-            ArmorPowerUp.class,
+            //ArmorPowerUp.class,
             FirePowerUp.class,
-            SpeedPowerUp.class,
-            TransparentDestroyableBlocksPowerUp.class,
-            LivesPowerUp.class,
+            //SpeedPowerUp.class,
+            //TransparentDestroyableBlocksPowerUp.class,
+           /* LivesPowerUp.class,
             RemoteControl.class,
             Hammer.class,
-            BlockMoverPowerUp.class
+            BlockMoverPowerUp.class*/
     };
 
     public ArrayList<Class<?extends PowerUp>> incompatiblePowerUps = new ArrayList<>();
@@ -102,11 +102,7 @@ public abstract class PowerUp extends EntityInteractable {
         if(!canPickUp(entity))
             return;
 
-        if(!hasNoPickupLimits()){
-            if(entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass()))) {
-                return;
-            }
-        }
+        if(pickUpLimit(entity))return;
 
         this.applied = true;
         this.despawn();
@@ -196,7 +192,7 @@ public abstract class PowerUp extends EntityInteractable {
      *
      * @return wheter the powerup can be picked up indefinite times or not;
      */
-    public boolean hasNoPickupLimits() {
-        return false;
+    public boolean pickUpLimit(BomberEntity entity) {
+        return entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass()));
     }
 }
