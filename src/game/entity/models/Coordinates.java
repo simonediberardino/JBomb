@@ -66,6 +66,7 @@ public class Coordinates implements Comparable<Coordinates> {
     public static Coordinates roundCoordinates(Coordinates coords){
         return roundCoordinates(coords,new Coordinates(0,0));
     }
+
     public static Coordinates roundCoordinates(Coordinates coords, Coordinates offset){
         if(offset.getY() == 12){
             int a =0;
@@ -102,11 +103,12 @@ public class Coordinates implements Comparable<Coordinates> {
             if (c.validate(entitySize)) return c;
         }
     }
+
     public static Coordinates generateRandomCoordinates(Coordinates spawnOffset, int size){
         while (true) {
             Coordinates coords = roundedRandomCoords(spawnOffset);
 
-            if (!Coordinates.isBlockOccupied(coords)&& coords.validate(size)){
+            if (!Coordinates.isBlockOccupied(coords) && coords.validate(size)){
                 return coords;
             }
         }
@@ -187,19 +189,15 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static Coordinates fromRowAndColumnsToCoordinates(Dimension d, int offsetX, int offsetY){
-        if(offsetX>= GRID_SIZE||offsetY>=GRID_SIZE){
-            System.out.println("fromRowAndColumnsToCoordinates error");
-
+        if(offsetX >= GRID_SIZE || offsetY>=GRID_SIZE){
             return null;
         }
 
-        if ((d.getWidth()>= PitchPanel.DIMENSION.getWidth()/ GRID_SIZE)){
-            System.out.println("fromRowAndColumnsToCoordinates error");
+        if ((d.getWidth() >= PitchPanel.DIMENSION.getWidth()/ GRID_SIZE)){
             return null;
         }
 
-        if(d.getHeight()>= PitchPanel.DIMENSION.getHeight()/GRID_SIZE){
-            System.out.println("fromRowAndColumnsToCoordinates error");
+        if(d.getHeight() >= PitchPanel.DIMENSION.getHeight()/GRID_SIZE){
             return null;
         }
 
@@ -293,23 +291,26 @@ public class Coordinates implements Comparable<Coordinates> {
     }
     public static ArrayList<Coordinates> getAllBlocksInArea(Coordinates topLeft,Coordinates bottomRight){
         if(topLeft.compareTo(bottomRight)>0){
-            System.out.println("getAllBlocksInArea:  topLeft coordinates are further down and/or right than bottomRight coordinates ");
             return null;
         }
+
         ArrayList<Coordinates> output = new ArrayList<>();
         topLeft = Coordinates.roundCoordinates(topLeft);
         bottomRight = Coordinates.roundCoordinates(bottomRight);
-        for(int x = topLeft.getX(); x<=bottomRight.getX();x+=PitchPanel.GRID_SIZE){
-            for(int y = topLeft.getY();y <=bottomRight.getY();y+=PitchPanel.GRID_SIZE){
+
+        for(int x = topLeft.getX(); x <= bottomRight.getX(); x += PitchPanel.GRID_SIZE){
+            for(int y = topLeft.getY(); y <= bottomRight.getY(); y += PitchPanel.GRID_SIZE){
                 output.add(Coordinates.roundCoordinates(new Coordinates(x,y)));
             }
         }
+
         return output;
     }
 
     public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
         return !getEntitiesOnBlock(nextOccupiedCoords).isEmpty();
     }
+
     public static ArrayList<Coordinates> getAllBlocksInAreaFromDirection(Entity e, Direction d, int depth){
         switch (d){
             case LEFT:return getAllBlocksInArea
@@ -326,7 +327,6 @@ public class Coordinates implements Comparable<Coordinates> {
         }
         return null;
     }
-
 
     @Override
     public int compareTo(Coordinates o) {

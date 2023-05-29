@@ -63,7 +63,6 @@ public class PlayerDataObject implements Serializable {
     }
 
     public void resetKeys() {
-        System.out.println("RESETTING");
         this.forwardKey = KeyEvent.VK_W;
         this.backKey = KeyEvent.VK_S;
         this.leftKey = KeyEvent.VK_A;
@@ -76,7 +75,6 @@ public class PlayerDataObject implements Serializable {
     }
 
     public void setForwardKey(int forwardKey) {
-        System.out.println(KeyEvent.getKeyText(forwardKey));
         this.forwardKey = forwardKey;
     }
 

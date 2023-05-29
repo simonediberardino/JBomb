@@ -1,6 +1,4 @@
-- pitch background;
-- Ghost sounds (axe sound etc..)
 - Both Bosses spawn coordinates to be revisioned (Randomize or fix)
 - Clown more animations?
-- sounds level;
 - Explosion PowerUp is currently not intentionally added to active powerups
+- player spawn coords are not random;

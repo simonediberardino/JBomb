@@ -157,6 +157,9 @@ public class BomberManMatch {
             e.despawn();
         }
 
+        if(this.currentLevel != null)
+            this.currentLevel.stopLevelSound();
+
         this.player = null;
         this.currentLevel = null;
         this.entities.clear();

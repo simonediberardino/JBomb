@@ -411,13 +411,9 @@ public abstract class Character extends MovingEntity {
      */
     protected final void attackReceived(int damage) {
         synchronized ((Object) lastDamageTime) {
-            if (this instanceof Zombie && lastDamageTime > 0) {
-                int a = 0;
-            }
-
             if (Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
-                return;
-            System.out.println(damage);
+                return
+                        ;
             lastDamageTime = System.currentTimeMillis();
             // Reduce the health points by the specified amount
             healthPoints -= damage;
@@ -439,8 +435,7 @@ public abstract class Character extends MovingEntity {
         onEliminated();
     }
 
-    protected void onEndedDeathAnimation() {
-    }
+    protected void onEndedDeathAnimation() { }
 
     protected synchronized void onEliminated() {
         canMove = false;
@@ -461,6 +456,5 @@ public abstract class Character extends MovingEntity {
         return SoundModel.ENTITY_DEATH;
     }
 
-    protected void onHit(int damage) {
-    }
+    protected void onHit(int damage) { }
 }

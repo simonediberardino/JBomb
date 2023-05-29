@@ -35,7 +35,6 @@ public abstract class BaseMenu extends PagePanel {
     private void addButtons(){
         List<JButton> buttons = getButtons();
 
-        System.out.println(buttons);
         for(JButton b : buttons) listButtonsPanel.add(b);
     }
 

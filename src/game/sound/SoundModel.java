@@ -14,6 +14,8 @@ public enum SoundModel {
     PLAYER_DEATH,
     BONUS_ALERT,
     BOMB_CLOCK,
+    AXE_HIT,
+    LIGHT_GLITCH,
     ENTITY_DEATH;
 
     public String toString() {
