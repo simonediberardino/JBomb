@@ -18,6 +18,7 @@ import static game.utils.Utility.loadImage;
  * Represents an explosion that can interact with other entities in the game.
  */
 public class Explosion extends MovingEntity {
+    public static int MAX_EXPLOSION_LENGTH = 5;
     public static final int SIZE = PitchPanel.COMMON_DIVISOR * 2;
     public static final int SPAWN_OFFSET = (PitchPanel.GRID_SIZE-SIZE) / 2;
     // The distance from the bomb where the explosion was created.
@@ -78,7 +79,7 @@ public class Explosion extends MovingEntity {
 
     @Override
     protected String getBasePath() {
-        return Paths.getAssetsFolder() + "/bomb/";
+        return Paths.getAssetsFolder() + "/entities/enemies/clown/clown_explosion/";
     }
 
     /**
@@ -124,11 +125,11 @@ public class Explosion extends MovingEntity {
     @Override
     public BufferedImage getImage() {
         if (distanceFromExplosive == 0) {
-            return loadImage(String.format("%sflame_central" + getState() + ".png", getBasePath()));
+            return loadImage(String.format("%sclown_explosion_central" + getState() + ".png", getBasePath()));
         }
 
         String isLast = canExpand ? "" : "_last";
-        String imageFileName = "flame_" + direction.toString().toLowerCase();
+        String imageFileName = "clown_explosion_" + direction.toString().toLowerCase();
 
         // Load and set the image of the flame.
         String imagePath = String.format("%s%s%s%s.png", getBasePath(), imageFileName, isLast, getState());

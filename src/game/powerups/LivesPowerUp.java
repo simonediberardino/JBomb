@@ -41,7 +41,7 @@ public class LivesPowerUp extends PowerUp{
     }
 
     @Override
-    public boolean hasNoPickupLimits() {
+    public boolean pickUpLimit(BomberEntity e) {
         return true;
     }
 }

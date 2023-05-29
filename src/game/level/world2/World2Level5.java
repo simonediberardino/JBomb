@@ -6,11 +6,17 @@ import game.entity.enemies.npcs.Eagle;
 import game.entity.enemies.npcs.FastEnemy;
 import game.entity.enemies.npcs.FlyingEnemy;
 import game.entity.enemies.npcs.YellowBall;
+import game.entity.models.Coordinates;
 import game.entity.models.Enemy;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.level.world1.World1Level;
+import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
+
+import java.awt.*;
+
+import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 public class World2Level5 extends World2Level {
     @Override
@@ -35,10 +41,7 @@ public class World2Level5 extends World2Level {
                 Eagle.class,
         };
     }
-    @Override
-    public String getPitchImagePath() {
-        return Paths.getCurrentWorldCommonFolder() + "/clown_pitch.png";
-    }
+
     @Override
     public boolean isLastLevelOfWorld(){
         return true;
@@ -47,5 +50,9 @@ public class World2Level5 extends World2Level {
     @Override
     public Class<? extends Level> getNextLevel() {
         return WorldSelectorLevel.class;
+    }
+    @Override
+    public Coordinates getPlayerSpawnCoordinates() {
+        return Coordinates.fromRowAndColumnsToCoordinates(new Dimension(0, (int) PitchPanel.DIMENSION.getHeight()/GRID_SIZE-1));
     }
 }

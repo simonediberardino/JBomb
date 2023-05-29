@@ -18,7 +18,7 @@ import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 
 public class Player extends BomberEntity {
-    private static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE)/2 ,0);
+    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE)/2 ,0);
     private final Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
 
      public Player(Coordinates coordinates) {
@@ -36,9 +36,7 @@ public class Player extends BomberEntity {
         return this.interactionEntities;
     }
 
-    private Player() {
-        super(null);
-    }
+
 
     @Override
     protected String getBasePath() {
@@ -54,7 +52,6 @@ public class Player extends BomberEntity {
                 String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 1),
         };
     }
-
 
     @Override
     protected void onSpawn() {
@@ -98,7 +95,6 @@ public class Player extends BomberEntity {
     public Coordinates getSpawnOffset(){
         return SPAWN_OFFSET;
     }
-
     // Handle the command entered by the player;
     @Override
     public void update(Object arg) {

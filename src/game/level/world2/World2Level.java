@@ -18,10 +18,6 @@ public abstract class World2Level extends Level {
         return 15;
     }
 
-    @Override
-    public final int getExplosionLength() {
-        return getLevelId();
-    }
 
     public final int getMaxBombs() {
         return 3;

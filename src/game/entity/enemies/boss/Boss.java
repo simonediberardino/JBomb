@@ -24,11 +24,7 @@ public abstract class Boss extends IntelligentEnemy {
                 .getBombermanFrame()
                 .getPitchPanel()
                 .getPreferredSize();
-
-        int y = (int) panelSize.getHeight() - getSize()*2;
-        int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
-
-        setCoords(new Coordinates(x, y));
+        setCoords(Coordinates.randomCoordinatesFromPlayer(getSize()));
     }
 
     public Boss(Coordinates coordinates){
