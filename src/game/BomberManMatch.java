@@ -48,7 +48,7 @@ public class BomberManMatch {
     private void setupViewControllers() {
         inventoryElementControllerPoints = new InventoryElementController(0, Paths.getInventoryPath() + "/points.png");
         inventoryElementControllerLives = new InventoryElementController(0, Paths.getPowerUpsFolder()  + "/lives_up.png");
-        inventoryElementControllerBombs = new InventoryElementController(0, Paths.getAssetsFolder()  + "/bomb/bomb_0.png");
+        inventoryElementControllerBombs = new InventoryElementController(0, Paths.getEntitiesFolder()  + "/bomb/bomb_0.png");
 
         inventoryElementControllerPoints.setNumItems((int) DataInputOutput.getScore());
         inventoryElementControllerLives.setNumItems(DataInputOutput.getLives());

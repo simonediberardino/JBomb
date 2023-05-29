@@ -155,6 +155,11 @@ public class WorldSelectorLevel extends Level{
         return Coordinates.fromRowAndColumnsToCoordinates(new Dimension(5, 2),0,0);
     }
 
+    // This method returns the maximum number of bombs that a player can have at one time.
+    public int getMaxBombs() {
+        return 0;
+    }
+
     @Override
     public String toString() {
         return Localization.get(ISLAND);

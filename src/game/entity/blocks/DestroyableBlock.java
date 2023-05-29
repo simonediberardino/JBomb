@@ -1,7 +1,8 @@
 package game.entity.blocks;
 
 import game.Bomberman;
-import game.entity.bomb.Explosion;
+import game.entity.bomb.AbstractExplosion;
+import game.entity.bomb.ConfettiExplosion;
 import game.entity.models.Entity;
 import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
@@ -75,6 +76,6 @@ public class DestroyableBlock extends MovableBlock {
 
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Collections.singletonList(Explosion.class));
+        return new HashSet<>(Collections.singletonList(AbstractExplosion.class));
     }
 }

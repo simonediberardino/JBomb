@@ -1,4 +1,3 @@
-- Both Bosses spawn coordinates to be revisioned (Randomize or fix)
-- Clown more animations?
-- Explosion PowerUp is currently not intentionally added to active powerups
-- player spawn coords are not random;
+- pitch background
+- welcome message with username;
+- level background sound

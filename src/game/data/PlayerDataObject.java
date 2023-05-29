@@ -191,6 +191,7 @@ public class PlayerDataObject implements Serializable {
                 ", points=" + points +
                 ", lastLevelId=" + lastLevelId +
                 ", lastWorldId=" + lastWorldId +
+                ", explosionLength=" + explosionLength +
                 ", lives=" + lives +
                 ", forwardKey=" + KeyEvent.getKeyText(forwardKey) +
                 ", backKey=" + KeyEvent.getKeyText(backKey) +

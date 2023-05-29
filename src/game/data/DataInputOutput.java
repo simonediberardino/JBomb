@@ -22,6 +22,7 @@ public class DataInputOutput {
 
     public static void retrieveData() {
         playerDataObject = getStoredPlayerData();
+        System.out.println(playerDataObject);
     }
 
     public static void updateStoredPlayerData() {
@@ -69,13 +70,20 @@ public class DataInputOutput {
         playerDataObject.setKills(playerDataObject.getKills()+1);
         updateStoredPlayerData();
     }
+
     public static void increaseExplosionLength(){
-        playerDataObject.setExplosionLength(playerDataObject.getExplosionLength()+1);
-        updateStoredPlayerData();
+        setExplosionLength(playerDataObject.getExplosionLength()+1);
     }
+
+    public static void resetExplosionLength(){
+        setExplosionLength(1);
+    }
+
     public static void setExplosionLength(int newExplosionLength){
         playerDataObject.setExplosionLength(newExplosionLength);
+        updateStoredPlayerData();
     }
+
     public static int getExplosionLength(){
         return playerDataObject.getExplosionLength();
     }
@@ -120,16 +128,12 @@ public class DataInputOutput {
         if(getLives() <= 0)
             setLives(START_LIVES);
     }
-    public static void resetExplosionLength(){
-        playerDataObject.setExplosionLength(1);
-    }
 
     public static void resetLevel() {
         playerDataObject.setLastWorldId(1);
         playerDataObject.setLastLevelId(1);
         resetExplosionLength();
         updateStoredPlayerData();
-
     }
 
     public static long getScore() {

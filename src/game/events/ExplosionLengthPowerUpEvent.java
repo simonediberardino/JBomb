@@ -9,6 +9,5 @@ public class ExplosionLengthPowerUpEvent implements GameEvent{
     @Override
     public void invoke(Object arg) {
         increaseExplosionLength();
-        updateStoredPlayerData();
     }
 }

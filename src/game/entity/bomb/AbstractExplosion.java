@@ -3,44 +3,39 @@ package game.entity.bomb;
 import game.Bomberman;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
-import game.entity.models.Coordinates;
-import game.entity.models.Direction;
-import game.utils.Paths;
 import game.ui.panels.game.PitchPanel;
+import game.utils.Paths;
 
-import java.awt.image.BufferedImage;
-import java.util.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import static game.utils.Utility.loadImage;
-
-/**
- * Represents an explosion that can interact with other entities in the game.
- */
-public class Explosion extends MovingEntity {
+public abstract class AbstractExplosion extends MovingEntity {
     public static int MAX_EXPLOSION_LENGTH = 5;
     public static final int SIZE = PitchPanel.COMMON_DIVISOR * 2;
     public static final int SPAWN_OFFSET = (PitchPanel.GRID_SIZE-SIZE) / 2;
     // The distance from the bomb where the explosion was created.
-    private final int distanceFromExplosive;
+    protected final int distanceFromExplosive;
 
     // The maximum distance from the bomb that the explosion can travel.
-    private final int maxDistance;
-    private static final int BOMB_STATES = 3;
-    private boolean canExpand =true;
+    protected final int maxDistance;
+    protected static final int BOMB_STATES = 3;
+    protected boolean canExpand;
 
     // The direction of the explosion.
-    private final Direction direction;
-    private boolean appearing = true;
-    private int explosionState = 1;
-    private long lastRefresh = 0;
-    private final Explosive explosive;
+    protected final Direction direction;
+    protected boolean appearing = true;
+    protected int explosionState = 1;
+    protected long lastRefresh = 0;
+    protected final Explosive explosive;
 
-    public Explosion(Coordinates coordinates, Direction direction, Explosive explosive) {
+    public AbstractExplosion(Coordinates coordinates, Direction direction, Explosive explosive) {
         this(coordinates, direction, 0, explosive);
     }
 
-    public Explosion(Coordinates coordinates, Direction direction, int distanceFromBomb, Explosive explosive){
+    public AbstractExplosion(Coordinates coordinates, Direction direction, Integer distanceFromBomb, Explosive explosive){
         this(coordinates,direction,distanceFromBomb,explosive,true);
     }
 
@@ -51,7 +46,7 @@ public class Explosion extends MovingEntity {
      * @param direction             The direction of the explosion.
      * @param distanceFromExplosive The distance from the bomb where the explosion was created.
      */
-    public Explosion(Coordinates coordinates, Direction direction, int distanceFromExplosive, Explosive explosive, boolean canExpand) {
+    public AbstractExplosion(Coordinates coordinates, Direction direction, Integer distanceFromExplosive, Explosive explosive, boolean canExpand) {
         super(coordinates);
 
         this.direction = direction;
@@ -75,11 +70,6 @@ public class Explosion extends MovingEntity {
     @Override
     public int getDrawPriority() {
         return 21;
-    }
-
-    @Override
-    protected String getBasePath() {
-        return Paths.getAssetsFolder() + "/entities/enemies/clown/clown_explosion/";
     }
 
     /**
@@ -114,26 +104,19 @@ public class Explosion extends MovingEntity {
     @Override
     public void move(Coordinates coordinates) {
         Coordinates nextTopLeftCoords = nextCoords(direction, getSize());
-        new Explosion(nextTopLeftCoords, direction, distanceFromExplosive + 1, getExplosive()).spawn(true,false);
-    }
 
-    /**
-     * Returns the image of the explosion.
-     *
-     * @return The image of the explosion.
-     */
-    @Override
-    public BufferedImage getImage() {
-        if (distanceFromExplosive == 0) {
-            return loadImage(String.format("%sclown_explosion_central" + getState() + ".png", getBasePath()));
+        try {
+            Constructor<? extends AbstractExplosion> constructor = getExplosionClass().getConstructor(Coordinates.class, Direction.class, int.class, Explosive.class);
+
+            constructor.newInstance(
+                    nextTopLeftCoords,
+                    direction,
+                    distanceFromExplosive + 1,
+                    getExplosive()
+            ).spawn(true,false);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
         }
-
-        String isLast = canExpand ? "" : "_last";
-        String imageFileName = "clown_explosion_" + direction.toString().toLowerCase();
-
-        // Load and set the image of the flame.
-        String imagePath = String.format("%s%s%s%s.png", getBasePath(), imageFileName, isLast, getState());
-        return loadAndSetImage(imagePath);
     }
 
     public int getState() {
@@ -175,7 +158,7 @@ public class Explosion extends MovingEntity {
 
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities(){
-         return new HashSet<>(getExplosive().getExplosionInteractionEntities());
+        return new HashSet<>(getExplosive().getExplosionInteractionEntities());
     }
 
     public boolean getCanExpand() {
@@ -184,12 +167,26 @@ public class Explosion extends MovingEntity {
     }
 
     public void onObstacle(Coordinates coordinates){
-        new Explosion(coordinates, direction, distanceFromExplosive + 1, explosive,false).spawn(true,false);
+        try {
+            Constructor<? extends AbstractExplosion> constructor = getExplosionClass().getConstructor(Coordinates.class, Direction.class, int.class, Explosive.class, boolean.class);
+
+            constructor.newInstance(
+                    coordinates,
+                    direction,
+                    distanceFromExplosive + 1,
+                    explosive,
+                    false
+            ).spawn(true,false);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     public Explosive getExplosive() {
         return explosive;
     }
+
+    protected abstract Class<? extends AbstractExplosion> getExplosionClass();
 
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {

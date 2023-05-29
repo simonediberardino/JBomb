@@ -20,7 +20,7 @@ import java.util.*;
 public class Bomb extends MovableBlock implements Explosive {
     public static final int BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 2;
     public static final long PLACE_INTERVAL = 1000;
-    private final List<Explosion> explosions = new ArrayList<>();
+    private final List<AbstractExplosion> explosions = new ArrayList<>();
     private static final int EXPLODE_TIMER = 5000;
     private Runnable onExplodeCallback;
     private final BomberEntity caller;
@@ -32,7 +32,7 @@ public class Bomb extends MovableBlock implements Explosive {
 
     @Override
     protected String getBasePath() {
-        return Paths.getAssetsFolder() + "/bomb/";
+        return String.format("%s/bomb/", Paths.getEntitiesFolder());
     }
 
     @Override
@@ -83,10 +83,10 @@ public class Bomb extends MovableBlock implements Explosive {
 
         AudioManager.getInstance().play(SoundModel.EXPLOSION);
 
-        new Explosion(getCoords(), Direction.UP, this).spawn(true,false);
-        new Explosion(getCoords(), Direction.RIGHT, this).spawn(true,false);
-        new Explosion(getCoords(), Direction.DOWN, this).spawn(true,false);
-        new Explosion(getCoords(), Direction.LEFT, this).spawn(true,false);
+        new FireExplosion(getCoords(), Direction.UP, this).spawn(true,false);
+        new FireExplosion(getCoords(), Direction.RIGHT, this).spawn(true,false);
+        new FireExplosion(getCoords(), Direction.DOWN, this).spawn(true,false);
+        new FireExplosion(getCoords(), Direction.LEFT, this).spawn(true,false);
 
         if (onExplodeCallback != null) onExplodeCallback.run();
     }
@@ -137,9 +137,10 @@ public class Bomb extends MovableBlock implements Explosive {
     public void destroy(){
         explode();
     }
+
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Collections.singletonList(Explosion.class));
+        return new HashSet<>(Arrays.asList(FireExplosion.class, AbstractExplosion.class));
     }
 
 }

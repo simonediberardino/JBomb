@@ -3,7 +3,8 @@ package game.entity.models;
 
 import game.Bomberman;
 import game.entity.Player;
-import game.entity.bomb.Explosion;
+import game.entity.bomb.AbstractExplosion;
+import game.entity.bomb.ConfettiExplosion;
 import game.events.KilledEnemyEvent;
 import game.events.ScoreGameEvent;
 import game.ui.panels.game.PitchPanel;
@@ -68,6 +69,6 @@ public abstract class Enemy extends Character{
 
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Collections.singletonList(Explosion.class));
+        return new HashSet<>(Collections.singletonList(AbstractExplosion.class));
     }
 }
