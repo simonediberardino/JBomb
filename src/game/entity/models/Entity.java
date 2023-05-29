@@ -492,7 +492,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     protected boolean canEntityInteractWithMouseDrag(){
-        return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseDrag().stream().anyMatch(cls->cls.isInstance(this)
+        return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseDrag().stream().anyMatch(cls -> cls.isInstance(this)
             && Bomberman.getMatch().getMouseControllerManager().isMouseDragged());
     }
 

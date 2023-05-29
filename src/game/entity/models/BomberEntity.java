@@ -40,10 +40,6 @@ public abstract class BomberEntity extends Character {
         return currBombLimit;
     }
 
-    public void increaseMaxBombs() {
-        if(currBombLimit < MAX_BOMB_CAN_HOLD) currBombLimit++;
-    }
-
     @Override
     protected SoundModel getStepSound() {
         return null;

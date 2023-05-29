@@ -3,7 +3,7 @@ package game.entity.enemies.boss.clown;
 import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
+import game.entity.bomb.ConfettiExplosion;
 import game.entity.enemies.npcs.Orb;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.*;
@@ -24,7 +24,7 @@ import static game.utils.Utility.px;
  The Clown entity can spawn orbs, enhanced orbs, explosions and throw its hat in random directions.
  */
 public class Clown extends Boss implements Explosive {
-    private final ArrayList<Explosion> explosions = new ArrayList<>();
+    private final ArrayList<ConfettiExplosion> explosions = new ArrayList<>();
     private static final float RATIO_HEIGHT_WITH_HAT = 0.7517f;
     private static final float RATIO_HEIGHT = 0.87f;
     private static final float RATIO_WIDTH = 0.8739f;
@@ -182,7 +182,7 @@ public class Clown extends Boss implements Explosive {
      */
     private int[] calculateExplosionOffsets(Direction d) {
         int inwardOffset = getSize() / 4;
-        int parallelOffset = -Explosion.SIZE / 2;
+        int parallelOffset = -ConfettiExplosion.SIZE / 2;
 
         switch (d) {
             case RIGHT:
@@ -206,7 +206,7 @@ public class Clown extends Boss implements Explosive {
 
         int[] offsets = calculateExplosionOffsets(d);
 
-        new Explosion(Coordinates.fromDirectionToCoordinateOnEntity(this, d, offsets[0], offsets[1], Explosion.SIZE), d, this);
+        new ConfettiExplosion(Coordinates.fromDirectionToCoordinateOnEntity(this, d, offsets[0], offsets[1], ConfettiExplosion.SIZE), d, this);
     }
 
     /**
