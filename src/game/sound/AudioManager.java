@@ -25,13 +25,17 @@ public class AudioManager {
 
     /**
      * Plays the specified sound model.
-     *
-     * @param soundModel The sound model to play.
+     *  @param soundModel The sound model to play.
      * @param loop       Determines whether the sound should be played in a loop.
+     * @return
      */
-    public void play(SoundModel soundModel, boolean loop) {
+    public Clip play(SoundModel soundModel, boolean loop) {
+        return play(soundModel.toString(), loop);
+    }
+
+    public Clip play(String sound, boolean loop){
         try {
-            InputStream in = new BufferedInputStream(new FileInputStream(soundModel.toString()));
+            InputStream in = new BufferedInputStream(new FileInputStream(sound));
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(in);
             Clip clip = AudioSystem.getClip();
 
@@ -48,8 +52,11 @@ public class AudioManager {
 
             // Start playing the clip
             clip.start();
+            return clip;
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e1) {
             e1.printStackTrace();
         }
+
+        return null;
     }
 }

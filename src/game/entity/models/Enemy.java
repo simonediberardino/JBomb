@@ -18,7 +18,6 @@ public abstract class Enemy extends Character{
 
     public Enemy(Coordinates coordinates) {
         super(coordinates);
-
     }
 
     @Override

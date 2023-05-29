@@ -20,10 +20,6 @@ public abstract class Boss extends IntelligentEnemy {
     public Boss() {
         this(null);
 
-        Dimension panelSize = Bomberman
-                .getBombermanFrame()
-                .getPitchPanel()
-                .getPreferredSize();
         setCoords(Coordinates.randomCoordinatesFromPlayer(getSize()));
     }
 

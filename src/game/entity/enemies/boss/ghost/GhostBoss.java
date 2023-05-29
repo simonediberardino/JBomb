@@ -1,5 +1,6 @@
 package game.entity.enemies.boss.ghost;
 
+import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.enemies.GhostEnemy;
 import game.entity.enemies.boss.Boss;
@@ -7,6 +8,8 @@ import game.entity.models.Coordinates;
 import game.entity.models.Direction;
 import game.entity.models.Entity;
 import game.events.RunnablePar;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
 import game.utils.GradientCallbackHandler;
 import game.utils.Paths;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static game.sound.SoundModel.LIGHT_GLITCH;
 
 public class GhostBoss extends Boss {
     private static final String SKIN_PATH_TEMPLATE = "%s/ghost_boss/ghost_with_axe_%s_%s.png";
@@ -51,9 +56,10 @@ public class GhostBoss extends Boss {
 
     @Override
     public void attack(Entity e){
-        attackAnimation();
+        attackAnimationAndSoundFX();
         super.attack(e);
     }
+
     @Override
     protected Map<Integer, Integer> healthStatusMap() {
         return new HashMap<>();
@@ -74,9 +80,10 @@ public class GhostBoss extends Boss {
         return Arrays.asList(Direction.RIGHT, Direction.LEFT);
     }
 
-    private void attackAnimation() {
+    private void attackAnimationAndSoundFX() {
         if(currRageStatus == 1) return;
 
+        AudioManager.getInstance().play(SoundModel.AXE_HIT);
         updateRageStatus(1);
         Timer t = new Timer(ATTACK_RESET_DELAY, (l) -> updateRageStatus(0));
         t.setRepeats(false);
@@ -145,9 +152,12 @@ public class GhostBoss extends Boss {
         hideTask.execute();
     }
 
-    public static void turnOffLights() {
+    private static void turnOffLights() {
+        BomberManMatch match = Bomberman.getMatch();
+        if(match == null || !match.getGameState()) return;
 
         PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
+        AudioManager.getInstance().play(LIGHT_GLITCH);
 
         pitchPanel.addGraphicsCallback(
                 GhostBoss.class.getSimpleName(), new RunnablePar() {
@@ -162,7 +172,11 @@ public class GhostBoss extends Boss {
         );
     }
 
-    public static void turnOnLights() {
+    private static void turnOnLights() {
+        BomberManMatch match = Bomberman.getMatch();
+        if(match == null || !match.getGameState()) return;
+
+        AudioManager.getInstance().play(LIGHT_GLITCH);
         PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
         pitchPanel.removeGraphicsCallback(GhostBoss.class.getSimpleName());
     }
@@ -177,7 +191,8 @@ public class GhostBoss extends Boss {
             new GhostEnemy().spawnAtRandomCoordinates();
         }
     }
-    public synchronized static void performLightsAnimation(){
+
+    private synchronized static void performLightsAnimation(){
         new Thread(() -> {
             try {
                 turnOffLights();
@@ -200,32 +215,30 @@ public class GhostBoss extends Boss {
             }
         }).start();
     }
-    private void attack() {
 
+    private void attack() {
         ArrayList<Coordinates> coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInAreaFromDirection(this,Direction.DOWN,BOSS_ATTACK_VERTICAL_RANGE);
-        System.out.println(coordsOfUnderneathEntityBlocks);
         ArrayList<Coordinates>  coordsOfEntitysImageDirectionBlocks = Coordinates.getAllBlocksInAreaFromDirection(this,imageDirection, BOSS_ATTACK_HORIZONTAL_RANGE);
         coordsOfUnderneathEntityBlocks.addAll(coordsOfEntitysImageDirectionBlocks);
 
         //merge the 2 lists into one another
-        coordsOfUnderneathEntityBlocks.stream().forEach(c->Coordinates.getEntitiesOnBlock(c).stream().forEach(e->interact(e)));
-        attackAnimation();
+        coordsOfUnderneathEntityBlocks.forEach(c-> Coordinates.getEntitiesOnBlock(c).forEach(this::interact));
+        attackAnimationAndSoundFX();
     }
 
     @Override
     public void doUpdate(boolean gamestate) {
         Utility.runPercentage(ACTION_CHANCE, this::attack);
         Utility.runPercentage(ACTION_CHANCE, this::disappearAndReappear);
-        Utility.runPercentage(ACTION_CHANCE, new Runnable() {
-            @Override
-            public void run() {
-                if(Utility.timePassed(lastLightsEvent)>LIGHTS_EVENT_DELAY){
-                    performLightsAnimation();
-                    lastLightsEvent = System.currentTimeMillis();
-
-                }
+        Utility.runPercentage(ACTION_CHANCE, () -> {
+            if (Utility.timePassed(lastLightsEvent) <= LIGHTS_EVENT_DELAY) {
+                return;
             }
+
+            performLightsAnimation();
+            lastLightsEvent = System.currentTimeMillis();
         });
+
         Utility.runPercentage(ACTION_CHANCE, () -> {
             int enemyCount = (int) (Math.random() * MAX_GHOST_ENEMY_SPAWNED);     //spawn ghost enemies
             spawnGhosts(enemyCount);

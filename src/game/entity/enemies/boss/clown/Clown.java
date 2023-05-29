@@ -1,5 +1,6 @@
 package game.entity.enemies.boss.clown;
 
+import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.Explosion;
@@ -10,6 +11,7 @@ import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 import game.utils.Utility;
 
+import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -43,9 +45,19 @@ public class Clown extends Boss implements Explosive {
     }
 
     public Clown(){
-        super();
+        super(null);
         hitboxSizetoWidthRatio = RATIO_WIDTH;
         hasHat = true;
+
+        Dimension panelSize = Bomberman
+                .getBombermanFrame()
+                .getPitchPanel()
+                .getPreferredSize();
+
+        int y = (int) panelSize.getHeight() - getSize();
+        int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
+
+        setCoords(new Coordinates(x, y));
     }
 
     /**
