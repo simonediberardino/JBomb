@@ -14,6 +14,7 @@ import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.level.world2.World2Level;
 import game.level.world2.World2Level1;
+import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 
@@ -26,6 +27,7 @@ public class World1Level5 extends World1Level{
     public int getLevelId() {
         return 5;
     }
+
 
     @Override
     public Boss getBoss() {

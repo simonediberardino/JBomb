@@ -72,8 +72,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> WELCOME_TEXT = new HashMap<>() {{
-        put(Locale.ENGLISH, "Welcome to Bomberman!");
-        put(Locale.ITALY, "Benvenuto su Bomberman!");
+        put(Locale.ENGLISH, "Welcome %user% to Bomberman!");
+        put(Locale.ITALY, "Benvenuto %user% su Bomberman!");
     }};
 
     public static final HashMap<Locale, String> PRESS_ESC_CONTINUE = new HashMap<>() {{
@@ -149,7 +149,13 @@ public class Localization {
     public static final HashMap<Locale, String> SETTINGS = new HashMap<>() {{
         put(Locale.ENGLISH, "SETTINGS");
         put(Locale.ITALY, "IMPOSTAZIONI");
-    }};;
+    }};
+
+
+    public static final HashMap<Locale, String> PLAYER = new HashMap<>() {{
+        put(Locale.ENGLISH, "PLAYER");
+        put(Locale.ITALY, "GIOCATORE");
+    }};
 
     public static Locale[] getSupportedLanguages() {
         return new Locale[]{

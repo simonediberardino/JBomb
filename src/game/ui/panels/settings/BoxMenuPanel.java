@@ -142,6 +142,6 @@ public abstract class BoxMenuPanel extends PagePanel {
 
     private void back() {
         componentsPanel.removeAll();
-        Bomberman.show(MainMenuPanel.class);
+        Bomberman.showActivity(MainMenuPanel.class);
     }
 }

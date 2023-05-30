@@ -1,3 +1,2 @@
-- pitch background
 - welcome message with username;
-- level background sound
+- sound hashmap keeps list of each sound instance's class after played, even only once. consider whether the empty list should be removed or not

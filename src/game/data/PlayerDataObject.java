@@ -1,6 +1,7 @@
 package game.data;
 
 import game.level.Level;
+import game.localization.Localization;
 
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
@@ -26,7 +27,7 @@ public class PlayerDataObject implements Serializable {
 
     public PlayerDataObject() {
         this(
-                "User",
+                Localization.get(Localization.PLAYER),
                 0,
                 0,
                 0,
@@ -42,6 +43,8 @@ public class PlayerDataObject implements Serializable {
                 0,
                 0
         );
+
+        resetKeys();
     }
 
     public PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lastLevelId, int lastWorldId, int explosionLength, int lives, int forwardKey, int backKey, int leftKey, int rightKey, int bombKey) {

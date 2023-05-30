@@ -5,9 +5,7 @@ import game.data.DataInputOutput;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.localization.Localization;
-import game.ui.viewelements.bombermanbutton.BombermanButton;
 import game.ui.viewelements.bombermanbutton.RedButton;
-import game.ui.viewelements.misc.Space;
 import game.ui.viewelements.misc.ToastHandler;
 import game.ui.panels.BombermanFrame;
 import game.utils.Paths;
@@ -62,7 +60,7 @@ public class GameOverPanel extends BaseMenu {
         JButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
         mainMenuButton.addActionListener((v) -> {
             ToastHandler.getInstance().cancel();
-            Bomberman.show(MainMenuPanel.class);
+            Bomberman.showActivity(MainMenuPanel.class);
         });
 
         return mainMenuButton;

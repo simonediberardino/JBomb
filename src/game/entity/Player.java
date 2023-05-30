@@ -3,7 +3,6 @@ package game.entity;
 import game.Bomberman;
 import game.entity.bomb.AbstractExplosion;
 import game.hardwareinput.Command;
-import game.entity.bomb.ConfettiExplosion;
 import game.entity.models.*;
 import game.events.DeathGameEvent;
 import game.entity.models.Coordinates;
@@ -70,7 +69,7 @@ public class Player extends BomberEntity {
 
     private void showDeathPage() {
         Bomberman.destroyLevel();
-        Bomberman.show(GameOverPanel.class);
+        Bomberman.showActivity(GameOverPanel.class);
     }
 
     @Override

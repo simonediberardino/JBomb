@@ -14,6 +14,7 @@ import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
 import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -61,9 +62,12 @@ public abstract class Level {
     public abstract Boss getBoss();
     public abstract int startEnemiesCount();
     public abstract int getMaxDestroyableBlocks();
-
     public abstract Class<? extends Level> getNextLevel();
     public abstract Class<? extends Enemy>[] availableEnemies();
+
+    public final String getLevelSoundtrack() {
+        return getSoundForCurrentLevel("soundtrack.wav");
+    }
 
     public final int getExplosionLength(){
         return DataInputOutput.getExplosionLength();
@@ -74,11 +78,11 @@ public abstract class Level {
      @return a string representing the path to the image file.
      */
     public String getStoneBlockImagePath() {
-        return Paths.getCurrentWorldCommonFolder() + "/stone.png";
+        return getImageForCurrentLevel("stone.png");
     }
 
     public String getPitchImagePath() {
-        return getFileForCurrentLevel("pitch.png");
+        return getImageForCurrentLevel("pitch.png");
     }
     /**
 
@@ -86,14 +90,14 @@ public abstract class Level {
      @return the path to the image file for the destroyable block.
      */
     public String getDestroyableBlockImagePath() {
-        return Paths.getCurrentWorldCommonFolder() + "/destroyable_block.png";
+        return getImageForCurrentLevel("destroyable_block.png");
     }
 
     public Image[] getBorderImages(){
         final int SIDES = 4;
         Image[] pitch = new Image[SIDES];
         for(int i = 0; i < SIDES; i++) {
-            String path = getFileForCurrentLevel(String.format("border_%d.png", i));
+            String path = getImageForCurrentLevel(String.format("border_%d.png", i));
             pitch[i] = Utility.loadImage(path);
         }
 
@@ -116,6 +120,8 @@ public abstract class Level {
      */
     public void start(JPanel jPanel) {
         updateLastLevel();
+        AudioManager.getInstance().stopBackgroundSong();
+        AudioManager.getInstance().playBackgroundSong(getLevelSoundtrack());
         Bomberman.getMatch().setGameState(true);
         DataInputOutput.resetLivesIfNecessary();
         generateEntities(jPanel);
@@ -265,14 +271,25 @@ public abstract class Level {
         }
     }
 
+    protected String getImageForCurrentLevel(String path){
+        return getFileForCurrentLevel(String.format("images/%s", path));
+    }
+
+    protected String getSoundForCurrentLevel(String path){
+        return getFileForCurrentLevel(String.format("sound/%s", path));
+    }
+
     /**
      * @return returns the path to the file: if a specific instance of the file exists for the current level, then return it, else return the current world instance;
      */
     protected String getFileForCurrentLevel(String path) {
         String specificLevelPath = Paths.getCurrentLevelFolder() + "/" + path;
-        if(!new File(specificLevelPath).exists()) return Paths.getCurrentWorldCommonFolder() + "/" + path;
+        if(new File(specificLevelPath).exists()) return specificLevelPath;
 
-        return specificLevelPath;
+        String currentWorldPath = Paths.getCurrentWorldCommonFolder() + "/" + path;
+        if(new File(currentWorldPath).exists()) return currentWorldPath;
+
+        return Paths.getWorldsFolder() + "/common/" + path;
     }
 
     public boolean isLastLevelOfWorld(){
