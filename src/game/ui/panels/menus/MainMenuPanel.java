@@ -2,18 +2,10 @@ package game.ui.panels.menus;
 
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
-import game.level.world1.World1Level5;
-import game.level.world2.World2Level2;
-import game.level.world2.World2Level3;
-import game.level.world2.World2Level4;
-import game.level.world2.World2Level5;
-import game.localization.Localization;
 import game.ui.panels.settings.ProfilePanel;
 import game.ui.panels.settings.SettingsPanel;
-import game.ui.viewelements.bombermanbutton.BombermanButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;
 import game.ui.panels.BombermanFrame;
-import game.utils.Paths;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +44,7 @@ public class MainMenuPanel extends BaseMenu {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new World2Level5()));
+        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel()));
         return startLevelButton;
     }
 
@@ -61,13 +53,13 @@ public class MainMenuPanel extends BaseMenu {
      */
     private JButton createProfileButton() {
         JButton profileButton = new YellowButton(get(PROFILE));
-        profileButton.addActionListener(l -> Bomberman.show(ProfilePanel.class));
+        profileButton.addActionListener(l -> Bomberman.showActivity(ProfilePanel.class));
         return profileButton;
     }
 
     private JButton createSettingsButton() {
         JButton settingsButton = new YellowButton(get(SETTINGS));
-        settingsButton.addActionListener(l -> Bomberman.show(SettingsPanel.class));
+        settingsButton.addActionListener(l -> Bomberman.showActivity(SettingsPanel.class));
         return settingsButton;
     }
 

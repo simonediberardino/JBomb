@@ -10,7 +10,6 @@ public enum SoundModel {
     POWERUP,
     MOUSE_HOVER,
     CLICK,
-    SOUNDTRACK,
     PLAYER_DEATH,
     BONUS_ALERT,
     BOMB_CLOCK,

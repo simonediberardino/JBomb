@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MatchPanel extends PagePanel {
+public class MatchPanel extends PagePanel implements CustomSoundMode {
     private PitchPanel pitchPanel; // The main panel that contains the game
     private JPanel leftPanel; // Borders of the Game Panel;
     private JPanel topPanel;

@@ -1,6 +1,8 @@
 package game.sound;
 
 
+import game.utils.Paths;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,9 +12,9 @@ import java.util.*;
 import javax.sound.sampled.*;
 
 public class AudioManager {
-    private HashMap<SoundModel, List<Clip>> audioHashMap = new HashMap<>();
+    private String currentBackgroundSong = "";
+    private final HashMap<String, LinkedList<Clip>> audioHashMap = new HashMap<>();
     private static AudioManager instance;
-
 
     public static AudioManager getInstance() {
         if (instance == null)
@@ -22,8 +24,8 @@ public class AudioManager {
 
     private AudioManager() {}
 
-    public void play(SoundModel soundModel){
-        play(soundModel, false);
+    public Clip play(SoundModel soundModel){
+        return play(soundModel, false);
     }
 
     /**
@@ -34,12 +36,6 @@ public class AudioManager {
      */
     public Clip play(SoundModel soundModel, boolean loop) {
         return play(soundModel.toString(), loop);
-    }
-    public void addSoundToHashMap(SoundModel key, Clip obj){
-        HashMap<SoundModel, List<Clip>> sounds = audioHashMap;
-        List<Clip> tempList =  sounds.get(key);
-        if(tempList == null) audioHashMap.put(key, Collections.singletonList(obj));
-        else tempList.add(obj);
     }
 
     public Clip play(String sound, boolean loop){
@@ -55,18 +51,81 @@ public class AudioManager {
             float volumeValue = (volume.getMinimum() + volume.getMaximum()) / 5;
             volume.setValue(volumeValue);
 
+            addSoundToHashMap(sound, clip);
+
             if (loop) {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
+                return clip;
             }
 
-            // Start playing the clip
+            //if clip doesn't loop continuosly, it is removed automatically from hashmap when it stops
+            clip.addLineListener(e -> {
+                if (e.getType() == LineEvent.Type.STOP) {
+                    removeSoundFromHashMap(sound);
+                }
+            });
             clip.start();
-            //
+
             return clip;
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e1) {
             e1.printStackTrace();
         }
 
         return null;
+    }
+
+    public void addSoundToHashMap(String soundModelString, Clip obj){
+        List<Clip> tempList =  audioHashMap.get(soundModelString);
+        if(tempList == null) audioHashMap.put(soundModelString, new LinkedList<> (Collections.singletonList(obj)));
+        else tempList.add(obj);
+    }
+
+    public Clip removeSoundFromHashMap(String soundModelString) {
+        LinkedList<Clip> map = audioHashMap.get(soundModelString);
+
+        if (map == null) {
+            return null;
+        }
+
+        Clip c = map.pop();
+        if(map.isEmpty()) audioHashMap.remove(soundModelString);
+        return c;
+    }
+
+    public void stopAllInstancesOfSound(String soundModelString) {
+        Clip c;
+        while((c = removeSoundFromHashMap(soundModelString)) != null){
+            c.stop();
+        }
+    }
+
+    public void playBackgroundSong(){
+        playBackgroundSong(Paths.getDefaultSoundTrack());
+    }
+
+    public void playBackgroundSong(String newSong) {
+        if(newSong.equals(currentBackgroundSong)) return;
+
+        if(!currentBackgroundSong.isBlank()){
+            stopAllInstancesOfSound(currentBackgroundSong);
+        }
+
+        currentBackgroundSong = newSong;
+        play(currentBackgroundSong, true);
+    }
+
+    public void stopBackgroundSong() {
+        System.out.println(currentBackgroundSong);
+        stopAllInstancesOfSound(currentBackgroundSong);
+        currentBackgroundSong = "";
+    }
+
+    public void stop(String soundModelString){
+        Clip c = removeSoundFromHashMap(soundModelString);
+        if(c != null) c.stop();
+    }
+
+    public boolean isSoundAlreadyPlayer(String soundModelString){
+        return audioHashMap.containsKey(soundModelString);
     }
 }

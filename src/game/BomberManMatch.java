@@ -3,6 +3,7 @@ package game;
 import game.hardwareinput.ControllerManager;
 import game.hardwareinput.MouseControllerManager;
 import game.data.DataInputOutput;
+import game.sound.AudioManager;
 import game.tasks.GameTickerObservable;
 import game.entity.*;
 import game.entity.models.*;
@@ -108,13 +109,13 @@ public class BomberManMatch {
     private void pauseGame() {
         gameTickerObservable.stop();
         gameState = false;
-        Bomberman.show(PausePanel.class);
+        Bomberman.showActivity(PausePanel.class);
     }
 
     private void resumeGame(){
         gameTickerObservable.resume();
         gameState = true;
-        Bomberman.show(MatchPanel.class);
+        Bomberman.showActivity(MatchPanel.class);
     }
 
     public int getEnemiesAlive() {
@@ -157,8 +158,10 @@ public class BomberManMatch {
             e.despawn();
         }
 
-        if(this.currentLevel != null)
+        if(this.currentLevel != null) {
             this.currentLevel.stopLevelSound();
+        }
+
 
         this.player = null;
         this.currentLevel = null;

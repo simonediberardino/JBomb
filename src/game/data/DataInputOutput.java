@@ -60,6 +60,7 @@ public class DataInputOutput {
 
     public static void setUsername(String name){
         playerDataObject.setName(name.trim());
+        updateStoredPlayerData();
     }
 
     public static String getUsername() {
