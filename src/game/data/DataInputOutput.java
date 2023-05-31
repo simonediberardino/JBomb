@@ -79,6 +79,9 @@ public class DataInputOutput {
     public static void resetExplosionLength(){
         setExplosionLength(1);
     }
+    public static void resetMaxBombs(){
+        setMaxBombs(1);
+    }
 
     public static void setExplosionLength(int newExplosionLength){
         playerDataObject.setExplosionLength(newExplosionLength);
@@ -87,6 +90,16 @@ public class DataInputOutput {
 
     public static int getExplosionLength(){
         return playerDataObject.getExplosionLength();
+    }
+    public static int getMaxBombs(){
+        return playerDataObject.getMaxBombs();
+    }
+    public static void setMaxBombs(int newMaxBombs){
+        playerDataObject.setMaxBombs(newMaxBombs);
+        updateStoredPlayerData();
+    }
+    public static void increaseMaxBombs(){
+        setMaxBombs(getMaxBombs()+1);
     }
 
     public static void increaseDeaths(){
@@ -134,6 +147,7 @@ public class DataInputOutput {
         playerDataObject.setLastWorldId(1);
         playerDataObject.setLastLevelId(1);
         resetExplosionLength();
+        resetMaxBombs();
         updateStoredPlayerData();
     }
 

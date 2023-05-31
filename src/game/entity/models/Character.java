@@ -1,6 +1,7 @@
 package game.entity.models;
 
 import game.Bomberman;
+import game.entity.Player;
 import game.hardwareinput.Command;
 import game.hardwareinput.ControllerManager;
 import game.entity.enemies.npcs.Zombie;
@@ -132,8 +133,11 @@ public abstract class Character extends MovingEntity {
     }
 
     protected void playStepSound() {
+        if(this instanceof Player){
+            int a =0;
+        }
         SoundModel stepSound = getStepSound();
-        if (stepSound != null) AudioManager.getInstance().play(stepSound);
+        if (stepSound != null) AudioManager.getInstance().play(stepSound,false,20);
     }
 
 

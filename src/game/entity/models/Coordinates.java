@@ -327,12 +327,18 @@ public class Coordinates implements Comparable<Coordinates> {
         }
         return null;
     }
+    public static int roundIntToGridSize(int p){
+        return p/GRID_SIZE*GRID_SIZE;
+    }
 
     @Override
     public int compareTo(Coordinates o) {
         return Comparator.comparing(Coordinates::getY)
                 .thenComparing(Coordinates::getX)
                 .compare(this, o);
+    }
+    public static Coordinates roundCoordinatesToBottom(Coordinates coords, int entitySize){
+        return new Coordinates(coords.getX(),roundIntToGridSize(coords.getY())-entitySize+GRID_SIZE);
     }
 
 }

@@ -25,7 +25,7 @@ public abstract class Boss extends IntelligentEnemy {
 
     public Boss(Coordinates coordinates){
         super(coordinates);
-        super.setMaxHp(100);
+        super.setMaxHp(1000);
         super.setHp(getMaxHp());
         super.setAttackDamage(1000);
     }

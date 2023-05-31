@@ -21,8 +21,4 @@ public abstract class World1Level extends Level {
     }
 
 
-    @Override
-    public final int getMaxBombs() {
-        return 2;
-    }
 }

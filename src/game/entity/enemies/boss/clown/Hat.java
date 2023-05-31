@@ -36,6 +36,8 @@ public class Hat extends Orb {
 
     public Hat(Coordinates coordinates, EnhancedDirection enhancedDirection) {
         super(coordinates, enhancedDirection);
+        setMaxHp(300);
+        setHp(getMaxHp());
     }
 
     @Override

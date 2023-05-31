@@ -14,7 +14,7 @@ public class TransparentBombsPowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/fire_up.png");
+        return loadAndSetImage(Paths.getPowerUpsFolder() + "/transparent_bomb_powerup.png");
     }
 
 

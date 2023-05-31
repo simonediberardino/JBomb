@@ -10,11 +10,10 @@ import game.utils.Utility;
 import java.util.*;
 
 public abstract class BomberEntity extends Character {
-    private static final int MAX_BOMB_CAN_HOLD = 10;
+    public static final int MAX_BOMB_CAN_HOLD = 10;
     private final List<Class<? extends Entity>> listInteractWithMouseClick = new ArrayList<>();
     private final List<Class<? extends Entity>> listInteractWithMouseDrag = new ArrayList<>();
     private final List<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
-    private int currBombLimit = Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     private int placedBombs = 0;
     private long lastPlacedBombTime = 0;
@@ -37,7 +36,7 @@ public abstract class BomberEntity extends Character {
     }
 
     public int getCurrBombLimit() {
-        return currBombLimit;
+        return Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     }
 
     @Override
@@ -50,7 +49,7 @@ public abstract class BomberEntity extends Character {
             return;
         }
 
-        if(placedBombs >= currBombLimit) {
+        if(placedBombs >= getCurrBombLimit()) {
             return;
         }
 

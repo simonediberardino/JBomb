@@ -5,96 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Refactoring">
-      <change afterPath="$PROJECT_DIR$/assets/menu/images/background.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/menu/images/death.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/menu/images/powerups_border.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/menu/images/welcome.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/menu/sound/soundtrack.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/0/common/images/border_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/0/common/images/border_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/0/common/images/border_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/0/common/images/border_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/0/common/images/destroyable_block.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/0/common/images/pitch.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/0/common/images/stone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/0/common/sound/soundtrack.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/images/border_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/images/border_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/images/border_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/images/border_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/images/destroyable_block.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/images/pitch.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/common/images/stone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/level/5/images/border_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/level/5/images/border_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/level/5/images/border_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/level/5/images/border_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/level/5/images/pitch.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/level/5/sound/background_sound.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/1/level/5/sound/soundtrack.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/common/images/border_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/common/images/border_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/common/images/border_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/common/images/border_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/common/images/destroyable_block.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/common/images/grasssingle.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/common/images/pitch.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/common/images/stone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/common/sound/soundtrack.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/ui/panels/game/CustomSoundMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/powerups/max_bombs_powerup.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/powerups/transparent_bomb_powerup.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/sounds/step_sound.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/worlds/2/level/5/images/pitch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/worlds/2/level/5/sound/soundtrack.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/powerups/MaxBombsPowerUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/todo/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/todo/todo.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/menu/background.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/menu/death - Copia.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/menu/death.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/menu/powerups_border.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/menu/welcome.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sounds/soundtrack.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/0/common/border_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/0/common/border_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/0/common/border_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/0/common/border_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/0/common/destroyable_block.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/0/common/pitch.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/0/common/stone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/border_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/border_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/border_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/border_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/destroyable_block.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/pitch.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/common/stone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/level/5/background_sound.wav" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/level/5/border_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/level/5/border_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/level/5/border_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/level/5/border_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/1/level/5/pitch.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/border_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/border_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/border_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/border_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/destroyable_block.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/grasssingle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/pitch.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/pitch_boss.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/worlds/2/common/stone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/data" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/BomberManMatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/BomberManMatch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/Bomberman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Bomberman.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/data" beforeDir="false" afterPath="$PROJECT_DIR$/data/data" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/Boss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/Boss.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Clown.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Clown.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Hat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Hat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/TankEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/TankEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/models/BomberEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/BomberEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Character.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Coordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/entity/models/MovingEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/MovingEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/level/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/level/world1/World1Level5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world1/World1Level5.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/localization/Localization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/localization/Localization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world1/World1Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world1/World1Level.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/powerups/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/PowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/powerups/TransparentBombsPowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/TransparentBombsPowerUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/sound/AudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/sound/AudioManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/sound/SoundModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/sound/SoundModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/game/MatchPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/game/MatchPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/GameOverPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/GameOverPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/settings/BoxMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/settings/BoxMenuPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/utils/Paths.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/utils/Paths.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,8 +46,8 @@
       <list>
         <option value="Kotlin Class" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -149,7 +88,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/entities/enemies/clown/clown_explosion" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/sounds" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -163,18 +102,18 @@
       <recent name="game" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\sounds" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\clown_explosion" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\right_explosion" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\worlds\1" />
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\worlds\1\common" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\sounds" />
+      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\step_sound" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\right_explosion" />
       <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\up_explosion" />
-      <recent name="C:\Users\Utente\IdeaProjects\BomberMan\assets\entities\enemies\clown\down_explosion" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="game.entity" />
@@ -668,8 +607,13 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/game/data/DataInputOutput.java</url>
-          <line>135</line>
+          <line>148</line>
           <option name="timeStamp" value="203" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/game/entity/models/Character.java</url>
+          <line>136</line>
+          <option name="timeStamp" value="205" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
