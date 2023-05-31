@@ -18,6 +18,7 @@ public class PlayerDataObject implements Serializable {
     private int lastLevelId;
     private int lastWorldId;
     private int explosionLength;
+    private int maxBombs;
     private int lives;
     private int forwardKey;
     private int backKey;
@@ -36,6 +37,7 @@ public class PlayerDataObject implements Serializable {
                 START_LIVES,
                 0,
                 1,
+                1,
                 0,
                 0,
                 0,
@@ -47,7 +49,7 @@ public class PlayerDataObject implements Serializable {
         resetKeys();
     }
 
-    public PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lastLevelId, int lastWorldId, int explosionLength, int lives, int forwardKey, int backKey, int leftKey, int rightKey, int bombKey) {
+    public PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lastLevelId, int lastWorldId, int explosionLength,int maxBombs, int lives, int forwardKey, int backKey, int leftKey, int rightKey, int bombKey) {
         this.name = name;
         this.lostGames = lostGames;
         this.kills = kills;
@@ -57,6 +59,7 @@ public class PlayerDataObject implements Serializable {
         this.lastLevelId = lastLevelId;
         this.lastWorldId = lastWorldId;
         this.explosionLength = explosionLength;
+        this.maxBombs = maxBombs;
         this.lives = lives;
         this.forwardKey = forwardKey;
         this.backKey = backKey;
@@ -126,6 +129,12 @@ public class PlayerDataObject implements Serializable {
     }
     public void setExplosionLength(int explosionLength){this.explosionLength = explosionLength;}
     public int getExplosionLength() {return explosionLength;}
+    public void setMaxBombs(int maxBombs){
+        this.maxBombs = maxBombs;
+    }
+    public int getMaxBombs(){
+        return maxBombs;
+    }
     public int getLostGames() {
         return lostGames;
     }

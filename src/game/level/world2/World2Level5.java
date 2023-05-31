@@ -1,11 +1,13 @@
 package game.level.world2;
 
+import game.entity.Player;
 import game.entity.enemies.boss.Boss;
 import game.entity.enemies.boss.clown.Clown;
 import game.entity.enemies.npcs.Eagle;
 import game.entity.enemies.npcs.FastEnemy;
 import game.entity.enemies.npcs.FlyingEnemy;
 import game.entity.enemies.npcs.YellowBall;
+import game.entity.models.Character;
 import game.entity.models.Coordinates;
 import game.entity.models.Enemy;
 import game.level.Level;
@@ -53,6 +55,6 @@ public class World2Level5 extends World2Level {
     }
     @Override
     public Coordinates getPlayerSpawnCoordinates() {
-        return Coordinates.fromRowAndColumnsToCoordinates(new Dimension(0, (int) PitchPanel.DIMENSION.getHeight()/GRID_SIZE-1));
+        return Coordinates.roundCoordinates(new Coordinates(0,0), Player.SPAWN_OFFSET);
     }
 }

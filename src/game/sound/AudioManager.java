@@ -37,8 +37,10 @@ public class AudioManager {
     public Clip play(SoundModel soundModel, boolean loop) {
         return play(soundModel.toString(), loop);
     }
-
-    public Clip play(String sound, boolean loop){
+    public Clip play(SoundModel soundModel,boolean loop, int volumePercentage){
+        return play(soundModel.toString(),loop,volumePercentage);
+    }
+    public Clip play(String sound, boolean loop, int volumePercentage){
         try {
             InputStream in = new BufferedInputStream(new FileInputStream(sound));
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(in);
@@ -48,7 +50,7 @@ public class AudioManager {
 
             // Set the volume of the clip to 1/5 of the available range
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float volumeValue = (volume.getMinimum() + volume.getMaximum()) / 5;
+            float volumeValue = (volume.getMaximum()) / 100*volumePercentage;
             volume.setValue(volumeValue);
 
             addSoundToHashMap(sound, clip);
@@ -72,6 +74,9 @@ public class AudioManager {
         }
 
         return null;
+    }
+    public Clip play(String sound, boolean loop){
+        return play(sound,loop,20);
     }
 
     public void addSoundToHashMap(String soundModelString, Clip obj){

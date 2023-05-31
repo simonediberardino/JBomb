@@ -18,7 +18,7 @@ import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 
 public class Player extends BomberEntity {
-    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE)/2 ,0);
+    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE)/2 ,GRID_SIZE-SIZE);
     private final Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
 
      public Player(Coordinates coordinates) {
@@ -110,5 +110,10 @@ public class Player extends BomberEntity {
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
         return new HashSet<>(Arrays.asList(AbstractExplosion.class, Enemy.class, PowerUp.class));
+    }
+
+    @Override
+    protected SoundModel getStepSound() {
+        return SoundModel.STEP_SOUND;
     }
 }

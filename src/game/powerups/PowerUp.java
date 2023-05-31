@@ -20,13 +20,15 @@ public abstract class PowerUp extends EntityInteractable {
     // A static array of power-up classes
     public static final Class<? extends PowerUp>[] POWER_UPS = new Class[] {
             //ArmorPowerUp.class,
-            FirePowerUp.class,
+            //FirePowerUp.class,
             //SpeedPowerUp.class,
             //TransparentDestroyableBlocksPowerUp.class,
            /* LivesPowerUp.class,
             RemoteControl.class,
             Hammer.class,
             BlockMoverPowerUp.class*/
+            IncreaseMaxBombsPowerUp.class,
+            TransparentBombsPowerUp.class
     };
 
     public ArrayList<Class<?extends PowerUp>> incompatiblePowerUps = new ArrayList<>();

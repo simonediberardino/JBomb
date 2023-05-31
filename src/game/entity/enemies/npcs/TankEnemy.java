@@ -7,6 +7,8 @@ import game.entity.bomb.FireExplosion;
 import game.entity.models.*;
 import game.entity.models.Coordinates;
 import game.entity.models.Direction;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -45,7 +47,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
                     int x = newCoords.getX() + AbstractExplosion.SPAWN_OFFSET;
                     newCoords = new Coordinates(x,newCoords.getY());
                 }
-
+                AudioManager.getInstance().play(SoundModel.EXPLOSION);
                 new FireExplosion(newCoords, currDirection, this);
                 canMove = false;
             }

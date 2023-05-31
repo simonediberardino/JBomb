@@ -1,2 +1,3 @@
 - welcome message with username;
-- sound hashmap keeps list of each sound instance's class after played, even only once. consider whether the empty list should be removed or not
+- re-organize file's storing system. For every entity make a sound directory and an image directory
+- custom blocks for boss levels?

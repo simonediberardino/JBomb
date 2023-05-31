@@ -66,6 +66,7 @@ public abstract class Level {
     public abstract Class<? extends Enemy>[] availableEnemies();
 
     public final String getLevelSoundtrack() {
+
         return getSoundForCurrentLevel("soundtrack.wav");
     }
 
@@ -143,7 +144,7 @@ public abstract class Level {
     protected void generatePlayer(){
         Coordinates coords = getPlayerSpawnCoordinates();
         Bomberman.getMatch().setPlayer(new Player(coords));
-        Bomberman.getMatch().getPlayer().spawn();
+        Bomberman.getMatch().getPlayer().spawn(false,false);
     }
 
     public void endLevel() {
@@ -194,7 +195,7 @@ public abstract class Level {
 
     // This method returns the maximum number of bombs that a player can have at one time.
     public int getMaxBombs() {
-        return maxBombs;
+        return DataInputOutput.getMaxBombs();
     }
 
     /**

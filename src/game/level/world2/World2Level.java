@@ -18,11 +18,6 @@ public abstract class World2Level extends Level {
         return 15;
     }
 
-
-    public final int getMaxBombs() {
-        return 3;
-    }
-
     @Override
     public Boss getBoss() {
         return null;

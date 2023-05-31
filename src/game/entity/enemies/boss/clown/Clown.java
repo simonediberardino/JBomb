@@ -7,6 +7,8 @@ import game.entity.bomb.ConfettiExplosion;
 import game.entity.enemies.npcs.Orb;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.*;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 import game.utils.Utility;
@@ -205,7 +207,7 @@ public class Clown extends Boss implements Explosive {
         Direction d = directions.get((int) (Math.random()*directions.size()));
 
         int[] offsets = calculateExplosionOffsets(d);
-
+        AudioManager.getInstance().play(SoundModel.EXPLOSION_CONFETTI);
         new ConfettiExplosion(Coordinates.fromDirectionToCoordinateOnEntity(this, d, offsets[0], offsets[1], ConfettiExplosion.SIZE), d, this);
     }
 
