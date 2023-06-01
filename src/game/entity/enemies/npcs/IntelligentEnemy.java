@@ -2,8 +2,8 @@ package game.entity.enemies.npcs;
 
 import game.entity.Player;
 import game.entity.models.*;
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
 
 import java.util.*;
 import java.util.List;

@@ -3,13 +3,12 @@ package game.entity.enemies.boss.clown;
 import game.entity.Player;
 import game.entity.enemies.npcs.Orb;
 import game.entity.models.Entity;
-import game.models.Coordinates;
-import game.models.Direction;
-import game.models.EnhancedDirection;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
+import game.entity.models.EnhancedDirection;
 import game.utils.Paths;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +36,8 @@ public class Hat extends Orb {
 
     public Hat(Coordinates coordinates, EnhancedDirection enhancedDirection) {
         super(coordinates, enhancedDirection);
+        setMaxHp(300);
+        setHp(getMaxHp());
     }
 
     @Override

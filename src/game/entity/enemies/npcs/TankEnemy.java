@@ -1,11 +1,14 @@
 package game.entity.enemies.npcs;
 
 import game.entity.Player;
+import game.entity.bomb.AbstractExplosion;
 import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
+import game.entity.bomb.FireExplosion;
 import game.entity.models.*;
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -15,7 +18,6 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     private static final int STANDING_STILL_PERIOD = 1000;
     private static final int PROBABILITY_OF_SHOOTING = 30;
     private static final int SHOOTING_REFRESH_RATE = 2000;
-    public ArrayList<Explosion> explosions = new ArrayList<>();
     private boolean canShoot = false;
     private long lastUpdate = 0;
 
@@ -33,7 +35,6 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
         };
     }
 
-
     @Override
     public void doUpdate(boolean arg) {
         if (Utility.timePassed(lastUpdate) > SHOOTING_REFRESH_RATE) {
@@ -41,12 +42,13 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
 
             if (canShoot && Math.random() * 100 < PROBABILITY_OF_SHOOTING) {
                 // explosion offset only used on vertical directions
-                Coordinates newCoords = getNewTopLeftCoordinatesOnDirection(currDirection, Explosion.SIZE);
+                Coordinates newCoords = getNewTopLeftCoordinatesOnDirection(currDirection, AbstractExplosion.SIZE);
                 if(currDirection == Direction.UP || currDirection == Direction.DOWN){
-                    int x = newCoords.getX() + Explosion.SPAWN_OFFSET;
+                    int x = newCoords.getX() + AbstractExplosion.SPAWN_OFFSET;
                     newCoords = new Coordinates(x,newCoords.getY());
                 }
-                new Explosion(newCoords, currDirection, this);
+                AudioManager.getInstance().play(SoundModel.EXPLOSION);
+                new FireExplosion(newCoords, currDirection, this);
                 canMove = false;
             }
             canShoot = true;
@@ -65,11 +67,6 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     }
 
     @Override
-    public synchronized ArrayList<Explosion> getExplosions() {
-        return explosions;
-    }
-
-    @Override
     public boolean isObstacleOfExplosion(Entity e) {
         return (e == null) || (getExplosionObstacles().stream().anyMatch(c -> c.isInstance(e)));
     }
@@ -77,11 +74,6 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     @Override
     public List<Class<? extends Entity>> getExplosionInteractionEntities() {
         return Arrays.asList(Player.class, Bomb.class);
-    }
-
-    @Override
-    public boolean canExplosionInteractWith(Entity e) {
-        return e == null || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e)));
     }
 
     @Override

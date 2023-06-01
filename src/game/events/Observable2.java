@@ -9,10 +9,6 @@ public class Observable2 {
     protected Set<Observer2> observers = new HashSet<>();
 
     public void notifyObservers(Object arg) {
-/*        SwingUtilities.invokeLater(() -> {
-            for(Observer2 o : observers)
-                o.update(arg);
-        });*/
         for(Observer2 o : observers)
             o.update(arg);
     }

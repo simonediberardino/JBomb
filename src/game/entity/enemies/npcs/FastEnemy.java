@@ -1,21 +1,22 @@
 package game.entity.enemies.npcs;
 
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class FastEnemy extends IntelligentEnemy {
     public FastEnemy() {
         super();
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
+        hitboxSizeToHeightRatio = 0.527f;
     }
 
     public FastEnemy(Coordinates coordinates) {
         super(coordinates);
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
+        hitboxSizeToHeightRatio = 0.527f;
     }
 
     @Override
@@ -26,11 +27,21 @@ public class FastEnemy extends IntelligentEnemy {
     @Override
     public String[] getCharacterOrientedImages() {
         return new String[]{
-                String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 0),
-                String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 1),
-                String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 2),
-                String.format("%s/fast_enemy/fast_enemy%s_%d.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 3)
+                String.format("%s_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 0),
+                String.format("%s_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 1),
+                String.format("%s_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 2),
+                String.format("%s_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 3),
         };
+    }
+
+    @Override
+    public float getSpeed() {
+        return 2f;
+    }
+
+    @Override
+    protected List<Direction> getImageDirections() {
+        return Arrays.asList(Direction.RIGHT, Direction.LEFT);
     }
 
     @Override

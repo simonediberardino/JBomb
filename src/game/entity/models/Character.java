@@ -1,11 +1,10 @@
 package game.entity.models;
 
 import game.Bomberman;
-import game.controller.Command;
-import game.controller.ControllerManager;
+import game.entity.Player;
+import game.hardwareinput.Command;
+import game.hardwareinput.ControllerManager;
 import game.entity.enemies.npcs.Zombie;
-import game.models.Coordinates;
-import game.models.Direction;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
@@ -17,8 +16,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-import static game.models.Direction.*;
-import static game.models.Direction.DOWN;
+import static game.entity.models.Direction.*;
+import static game.entity.models.Direction.DOWN;
 
 
 /**
@@ -28,7 +27,7 @@ public abstract class Character extends MovingEntity {
     public static final int SIZE = PitchPanel.PIXEL_UNIT * 4 * 2;
 
     protected long lastDirectionUpdate = 0;
-    protected final List<Direction> imagePossibleDirections = new ArrayList<>(Arrays.asList(Direction.values()));
+    protected final List<Direction> imagePossibleDirections = getImageDirections();
     protected Direction currDirection = DOWN;
     /**
      * The last direction this character was moving in.
@@ -135,7 +134,7 @@ public abstract class Character extends MovingEntity {
 
     protected void playStepSound() {
         SoundModel stepSound = getStepSound();
-        if (stepSound != null) AudioManager.getInstance().play(stepSound);
+        if (stepSound != null) AudioManager.getInstance().play(stepSound,false,20);
     }
 
 
@@ -365,6 +364,10 @@ public abstract class Character extends MovingEntity {
         }, 0, durationMs * 2); // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
     }
 
+    protected List<Direction> getImageDirections() {
+        return Arrays.asList(Direction.values());
+    }
+
     public int getMaxHp() {
         return maxHp;
     }
@@ -409,13 +412,9 @@ public abstract class Character extends MovingEntity {
      */
     protected final void attackReceived(int damage) {
         synchronized ((Object) lastDamageTime) {
-            if (this instanceof Zombie && lastDamageTime > 0) {
-                int a = 0;
-            }
-
             if (Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
-                return;
-            System.out.println(damage);
+                return
+                        ;
             lastDamageTime = System.currentTimeMillis();
             // Reduce the health points by the specified amount
             healthPoints -= damage;
@@ -437,8 +436,7 @@ public abstract class Character extends MovingEntity {
         onEliminated();
     }
 
-    protected void onEndedDeathAnimation() {
-    }
+    protected void onEndedDeathAnimation() { }
 
     protected synchronized void onEliminated() {
         canMove = false;
@@ -459,6 +457,5 @@ public abstract class Character extends MovingEntity {
         return SoundModel.ENTITY_DEATH;
     }
 
-    protected void onHit(int damage) {
-    }
+    protected void onHit(int damage) { }
 }

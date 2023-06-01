@@ -5,8 +5,7 @@ import game.entity.models.BomberEntity;
 import game.entity.models.Entity;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
-import game.models.Coordinates;
-import game.powerups.portal.Portal;
+import game.entity.models.Coordinates;
 import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
@@ -39,6 +38,8 @@ public class EndLevelPortal extends Portal {
 
     @Override
     protected void doApply(BomberEntity entity) {
+        super.doApply(entity);
+
         Bomberman.getMatch().getCurrentLevel().endLevel();
         try {
             Level level = Bomberman.getMatch().getCurrentLevel();

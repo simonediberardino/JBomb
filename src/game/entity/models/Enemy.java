@@ -3,24 +3,22 @@ package game.entity.models;
 
 import game.Bomberman;
 import game.entity.Player;
-import game.entity.bomb.Explosion;
-import game.events.GameEvent;
+import game.entity.bomb.AbstractExplosion;
+import game.entity.bomb.ConfettiExplosion;
 import game.events.KilledEnemyEvent;
 import game.events.ScoreGameEvent;
-import game.models.Coordinates;
-import game.models.Direction;
 import game.ui.panels.game.PitchPanel;
 
 import java.util.*;
 
 public abstract class Enemy extends Character{
     public Enemy() {
-        this(Coordinates.randomCoordinatesFromPlayer());
+        this(null);
+        setCoords(Coordinates.randomCoordinatesFromPlayer(getSize()));
     }
 
     public Enemy(Coordinates coordinates) {
         super(coordinates);
-
     }
 
     @Override
@@ -71,6 +69,6 @@ public abstract class Enemy extends Character{
 
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Collections.singletonList(Explosion.class));
+        return new HashSet<>(Collections.singletonList(AbstractExplosion.class));
     }
 }

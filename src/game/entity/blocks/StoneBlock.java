@@ -1,9 +1,8 @@
 package game.entity.blocks;
 
-import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.models.Entity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 
 import java.awt.image.BufferedImage;
 
@@ -30,7 +29,7 @@ public class StoneBlock extends HardBlock {
 
     @Override
     public BufferedImage getImage(){
-        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getStoneBlock());
+        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getStoneBlockImagePath());
     }
 
 }

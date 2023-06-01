@@ -1,12 +1,12 @@
 package game;
 
 import game.data.DataInputOutput;
-import game.engine.GarbageCollectorTask;
+import game.tasks.GarbageCollectorTask;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.localization.Localization;
 import game.sound.AudioManager;
-import game.sound.SoundModel;
+import game.ui.panels.game.CustomSoundMode;
 import game.ui.viewelements.misc.ToastHandler;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
@@ -33,9 +33,8 @@ public class Bomberman {
     private static void start() {
         bombermanFrame = new BombermanFrame();
         bombermanFrame.create();
-        show(MainMenuPanel.class);
-        ToastHandler.getInstance().show(Localization.get(WELCOME_TEXT));
-        AudioManager.getInstance().play(SoundModel.SOUNDTRACK, true);
+        showActivity(MainMenuPanel.class);
+        ToastHandler.getInstance().show(Localization.get(WELCOME_TEXT).replace("%user%", DataInputOutput.getUsername()));
     }
 
     public static void startGarbageCollectorTask() {
@@ -54,6 +53,11 @@ public class Bomberman {
         return bomberManMatch;
     }
 
+    public static void quitMatch() {
+        destroyLevel();
+        showActivity(MainMenuPanel.class);
+    }
+
     public static void destroyLevel() {
         if(bomberManMatch != null) bomberManMatch.destroy();
         bomberManMatch = new BomberManMatch(new WorldSelectorLevel()); // Temporary sets the current level to WorldSelectorLevel to avoid null pointer exception if some threads aren't killed yet
@@ -68,19 +72,22 @@ public class Bomberman {
         Bomberman.getBombermanFrame().addKeyListener(Bomberman.getMatch().getControllerManager());
         Bomberman.getBombermanFrame().getPitchPanel().addMouseListener(Bomberman.getMatch().getMouseControllerManager());
         Bomberman.getBombermanFrame().getPitchPanel().addMouseMotionListener(Bomberman.getMatch().getMouseControllerManager());
-        show(MatchPanel.class);
+        showActivity(MatchPanel.class);
     }
 
     public static void startLevel(Level level) {
         bombermanFrame.getLoadingPanel().initialize();
         bombermanFrame.getLoadingPanel().updateText(level);
         bombermanFrame.getLoadingPanel().setCallback(() -> doStartLevel(level));
-        show(LoadingPanel.class);
-
-        Bomberman.show(LoadingPanel.class);
+        showActivity(LoadingPanel.class);
+        Bomberman.showActivity(LoadingPanel.class);
     }
 
-    public static void show(Class<? extends PagePanel> page) {
+    /**
+     * Shows a new page and starts its background sound;
+     * @param page
+     */
+    public static void showActivity(Class<? extends PagePanel> page) {
         bombermanFrame.getCardLayout().show(bombermanFrame.getParentPanel(), page.getSimpleName());
 
         // Gets the component with the passed class and fires its onShowCallback;
@@ -90,6 +97,6 @@ public class Bomberman {
 
         Component shownComponent = shownComponentOpt.orElse(null);
         if(shownComponent instanceof PagePanel)
-            ((PagePanel)(shownComponent)).onShowCallback();
+            ((PagePanel)(shownComponent)).onShow();
     }
 }

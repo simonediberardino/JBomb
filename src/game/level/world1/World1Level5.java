@@ -1,23 +1,33 @@
 package game.level.world1;
 
+import game.Bomberman;
+import game.entity.Player;
 import game.entity.enemies.boss.Boss;
 import game.entity.enemies.boss.clown.Clown;
 import game.entity.enemies.boss.ghost.GhostBoss;
 import game.entity.enemies.npcs.FlyingEnemy;
 import game.entity.enemies.npcs.Helicopter;
 import game.entity.enemies.npcs.YellowBall;
+import game.entity.models.Coordinates;
 import game.entity.models.Enemy;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.level.world2.World2Level;
 import game.level.world2.World2Level1;
+import game.sound.SoundModel;
+import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
+
+import java.awt.*;
+
+import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 public class World1Level5 extends World1Level{
     @Override
     public int getLevelId() {
         return 5;
     }
+
 
     @Override
     public Boss getBoss() {
@@ -36,10 +46,6 @@ public class World1Level5 extends World1Level{
                 Helicopter.class
         };
     }
-    @Override
-    public String getGrassBlock() {
-        return Paths.getCurrentWorldCommonFolder() + "/clown_pitch.png";
-    }
 
     @Override
     public boolean isLastLevelOfWorld(){
@@ -49,5 +55,10 @@ public class World1Level5 extends World1Level{
     @Override
     public Class<? extends Level> getNextLevel() {
         return World2Level1.class;
+    }
+
+    @Override
+    public Coordinates getPlayerSpawnCoordinates() {
+        return Coordinates.fromRowAndColumnsToCoordinates(new Dimension(0, (int)PitchPanel.DIMENSION.getHeight()/GRID_SIZE-1));
     }
 }

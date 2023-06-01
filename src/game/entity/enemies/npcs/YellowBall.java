@@ -1,26 +1,30 @@
 package game.entity.enemies.npcs;
 
-import game.models.Coordinates;
-import game.models.Direction;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class YellowBall extends IntelligentEnemy {
     public YellowBall() {
         super();
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
     }
 
     public YellowBall(Coordinates coordinates) {
         super(coordinates);
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
     }
 
     @Override
     protected String getBasePath() {
         return Paths.getEnemiesFolder() + "/yellow_ball/yellow_ball";
+    }
+
+    @Override
+    protected List<Direction> getImageDirections() {
+        return Arrays.asList(Direction.RIGHT, Direction.LEFT);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package game.ui.panels.game;
 
 import game.Bomberman;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.EmptyPowerup;
 import game.powerups.PowerUp;
 import game.ui.panels.BombermanFrame;
@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MatchPanel extends PagePanel {
+public class MatchPanel extends PagePanel implements CustomSoundMode {
     private PitchPanel pitchPanel; // The main panel that contains the game
     private JPanel leftPanel; // Borders of the Game Panel;
     private JPanel topPanel;
@@ -77,7 +77,7 @@ public class MatchPanel extends PagePanel {
         int borderSize = Utility.px(90);
 
         // get the images of the border panels from the current level of the game
-        Image[] borderImages = Bomberman.getMatch().getCurrentLevel().getPitch();
+        Image[] borderImages = Bomberman.getMatch().getCurrentLevel().getBorderImages();
 
         // create left panel and set the dimensions and the image
         leftPanel = createLeftPanel(

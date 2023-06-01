@@ -3,10 +3,9 @@ package game.entity.enemies.boss;
 import game.Bomberman;
 import game.entity.enemies.npcs.IntelligentEnemy;
 import game.entity.models.Entity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
-import game.ui.panels.game.PitchPanel;
 
 import java.awt.*;
 import java.util.*;
@@ -21,15 +20,7 @@ public abstract class Boss extends IntelligentEnemy {
     public Boss() {
         this(null);
 
-        Dimension panelSize = Bomberman
-                .getBombermanFrame()
-                .getPitchPanel()
-                .getPreferredSize();
-
-        int y = (int) panelSize.getHeight() - getSize()*2;
-        int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
-
-        setCoords(new Coordinates(x, y));
+        setCoords(Coordinates.randomCoordinatesFromPlayer(getSize()));
     }
 
     public Boss(Coordinates coordinates){

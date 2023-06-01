@@ -1,11 +1,13 @@
 package game.entity;
 
 import game.Bomberman;
-import game.controller.Command;
-import game.entity.bomb.Explosion;
+import game.data.DataInputOutput;
+import game.entity.bomb.AbstractExplosion;
+import game.events.UpdateMaxBombsEvent;
+import game.hardwareinput.Command;
 import game.entity.models.*;
 import game.events.DeathGameEvent;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.sound.SoundModel;
 import game.ui.panels.menus.GameOverPanel;
@@ -18,14 +20,18 @@ import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 
 public class Player extends BomberEntity {
-    private static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE)/2 ,0);
+    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE)/2 ,GRID_SIZE-SIZE);
     private final Set<Class<? extends Entity>> interactionEntities = new HashSet<>();
 
      public Player(Coordinates coordinates) {
         super(coordinates);
         this.hitboxSizeToHeightRatio = 0.733f;
-        Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
-        isImmune=true;
+    }
+
+    private void updateBombs() {
+         int maxBombs = DataInputOutput.getMaxBombs();
+         maxBombs = Math.max(1, maxBombs);
+         new UpdateMaxBombsEvent().invoke(maxBombs);
     }
 
     @Override
@@ -35,10 +41,6 @@ public class Player extends BomberEntity {
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities() {
         return this.interactionEntities;
-    }
-
-    private Player() {
-        super(null);
     }
 
     @Override
@@ -56,10 +58,10 @@ public class Player extends BomberEntity {
         };
     }
 
-
     @Override
     protected void onSpawn() {
         super.onSpawn();
+        updateBombs();
         Bomberman.getMatch().getControllerManager().register(this);
         Bomberman.getBombermanFrame().getMatchPanel().refreshPowerUps(getActivePowerUps());
     }
@@ -73,7 +75,7 @@ public class Player extends BomberEntity {
 
     private void showDeathPage() {
         Bomberman.destroyLevel();
-        Bomberman.show(GameOverPanel.class);
+        Bomberman.showActivity(GameOverPanel.class);
     }
 
     @Override
@@ -99,7 +101,6 @@ public class Player extends BomberEntity {
     public Coordinates getSpawnOffset(){
         return SPAWN_OFFSET;
     }
-
     // Handle the command entered by the player;
     @Override
     public void update(Object arg) {
@@ -114,6 +115,11 @@ public class Player extends BomberEntity {
 
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Arrays.asList(Explosion.class, Enemy.class, PowerUp.class));
+        return new HashSet<>(Arrays.asList(AbstractExplosion.class, Enemy.class, PowerUp.class));
+    }
+
+    @Override
+    protected SoundModel getStepSound() {
+        return SoundModel.STEP_SOUND;
     }
 }

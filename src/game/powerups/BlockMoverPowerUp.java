@@ -1,12 +1,11 @@
 package game.powerups;
 
-import game.Bomberman;
 import game.entity.blocks.MovableBlock;
 import game.entity.models.BomberEntity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
+import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
 
 public class BlockMoverPowerUp extends PowerUp{
     public BlockMoverPowerUp(Coordinates coordinates){
@@ -16,7 +15,7 @@ public class BlockMoverPowerUp extends PowerUp{
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage("assets/powerups/hand.png");
+        return loadAndSetImage(Paths.getPowerUpsFolder() + "/hand.png");
     }
 
     @Override

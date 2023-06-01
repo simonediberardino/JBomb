@@ -1,17 +1,19 @@
 package game.entity.enemies.boss.clown;
 
+import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
+import game.entity.bomb.ConfettiExplosion;
 import game.entity.enemies.npcs.Orb;
 import game.entity.enemies.boss.Boss;
-import game.entity.models.Entity;
-import game.entity.models.Explosive;
-import game.models.*;
+import game.entity.models.*;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 import game.utils.Utility;
 
+import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -24,7 +26,7 @@ import static game.utils.Utility.px;
  The Clown entity can spawn orbs, enhanced orbs, explosions and throw its hat in random directions.
  */
 public class Clown extends Boss implements Explosive {
-    private final ArrayList<Explosion> explosions = new ArrayList<>();
+    private final ArrayList<ConfettiExplosion> explosions = new ArrayList<>();
     private static final float RATIO_HEIGHT_WITH_HAT = 0.7517f;
     private static final float RATIO_HEIGHT = 0.87f;
     private static final float RATIO_WIDTH = 0.8739f;
@@ -45,9 +47,19 @@ public class Clown extends Boss implements Explosive {
     }
 
     public Clown(){
-        super();
+        super(null);
         hitboxSizetoWidthRatio = RATIO_WIDTH;
         hasHat = true;
+
+        Dimension panelSize = Bomberman
+                .getBombermanFrame()
+                .getPitchPanel()
+                .getPreferredSize();
+
+        int y = (int) panelSize.getHeight() - getSize();
+        int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
+
+        setCoords(new Coordinates(x, y));
     }
 
     /**
@@ -110,11 +122,6 @@ public class Clown extends Boss implements Explosive {
         return Collections.emptyList();
     }
 
-    @Override
-    public synchronized ArrayList<Explosion> getExplosions() {
-        return explosions;
-    }
-
     /**
      * Returns a list of entity classes that can interact with explosions.
      *
@@ -123,17 +130,6 @@ public class Clown extends Boss implements Explosive {
     @Override
     public List<Class<? extends Entity>> getExplosionInteractionEntities() {
         return Arrays.asList(Player.class, Bomb.class);
-    }
-
-    /**
-     * Determines whether this entity can interact with the given entity in an explosion.
-     *
-     * @param e the entity to check
-     * @return true if this entity can interact with the given entity in an explosion, false otherwise.
-     */
-    @Override
-    public boolean canExplosionInteractWith(Entity e) {
-        return e == null || (getExplosionInteractionEntities().stream().anyMatch(c -> c.isInstance(e)));
     }
 
     /**
@@ -188,7 +184,7 @@ public class Clown extends Boss implements Explosive {
      */
     private int[] calculateExplosionOffsets(Direction d) {
         int inwardOffset = getSize() / 4;
-        int parallelOffset = -Explosion.SIZE / 2;
+        int parallelOffset = -ConfettiExplosion.SIZE / 2;
 
         switch (d) {
             case RIGHT:
@@ -211,8 +207,8 @@ public class Clown extends Boss implements Explosive {
         Direction d = directions.get((int) (Math.random()*directions.size()));
 
         int[] offsets = calculateExplosionOffsets(d);
-
-        new Explosion(Coordinates.fromDirectionToCoordinateOnEntity(this, d, offsets[0], offsets[1], Explosion.SIZE), d, this);
+        AudioManager.getInstance().play(SoundModel.EXPLOSION_CONFETTI);
+        new ConfettiExplosion(Coordinates.fromDirectionToCoordinateOnEntity(this, d, offsets[0], offsets[1], ConfettiExplosion.SIZE), d, this);
     }
 
     /**

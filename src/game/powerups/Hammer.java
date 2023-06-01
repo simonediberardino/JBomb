@@ -1,9 +1,9 @@
 package game.powerups;
 
 import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.MovableBlock;
 import game.entity.models.BomberEntity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
+import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
 
@@ -20,8 +20,8 @@ public class Hammer extends PowerUp{
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage("assets/powerups/hammer.png");
-    }//TODO
+        return loadAndSetImage(Paths.getPowerUpsFolder() + "/hammer.png");
+    }
 
     @Override
     public int getDuration() {

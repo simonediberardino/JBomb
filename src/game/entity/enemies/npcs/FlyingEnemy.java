@@ -2,8 +2,7 @@ package game.entity.enemies.npcs;
 
 import game.entity.blocks.DestroyableBlock;
 import game.entity.models.*;
-import game.models.Coordinates;
-import game.utils.Paths;
+import game.entity.models.Coordinates;
 
 import java.util.HashSet;
 import java.util.Set;

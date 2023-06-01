@@ -6,7 +6,7 @@ import game.level.Level;
 
 public class Paths {
     public static String getPlayerDataPath() {
-        return Paths.getDataFolder() + "/data";
+        return String.format("%s/data", Paths.getDataFolder());
     }
 
     public static String getDataFolder(){
@@ -18,15 +18,15 @@ public class Paths {
     }
 
     public static String getEntitiesFolder(){
-        return getAssetsFolder() + "/entities";
+        return String.format("%s/entities", getAssetsFolder());
     }
 
     public static String getEnemiesFolder(){
-        return getEntitiesFolder() + "/enemies";
+        return String.format("%s/enemies", getEntitiesFolder());
     }
 
     public static String getWorldsFolder(){
-        return getAssetsFolder() + "/worlds";
+        return String.format("%s/worlds", getAssetsFolder());
     }
 
     public static String getCurrentLevelFolder(){
@@ -39,23 +39,27 @@ public class Paths {
     }
 
     public static String getPowerUpsFolder(){
-        return getAssetsFolder() + "/powerups";
+        return String.format("%s/powerups", getAssetsFolder());
     }
 
     public static String getPowerUpsBorderPath(){
-        return getAssetsFolder() + "/menu/powerups_border.png";
+        return String.format("%s/powerups_border.png", getMenuImagesPath());
+    }
+
+    public static String getMenuImagesPath() {
+        return String.format("%s/menu/images", getAssetsFolder());
     }
 
     public static String getBackgroundImage(){
-        return getAssetsFolder() + "/menu/background.jpg";
+        return String.format("%s/background.jpg", getMenuImagesPath());
     }
 
     public static String getMainMenuWallpaper() {
-        return Paths.getAssetsFolder() + "/menu/welcome.png";
+        return String.format("%s/welcome.png", getMenuImagesPath());
     }
 
     public static String getDeathWallpaper() {
-        return Paths.getAssetsFolder() + "/menu/death.jpg";
+        return String.format("%s/death.jpg", getMenuImagesPath());
     }
 
     public static String getWorldSelectorPortalPath(int id) {
@@ -63,22 +67,30 @@ public class Paths {
     }
 
     public static String getPowerupsLogoPath() {
-        return getPowerUpsFolder() + "/powerups_logo.png";
+        return String.format("%s/powerups_logo.png", getPowerUpsFolder());
     }
 
     public static String getInventoryPath() {
-        return getAssetsFolder() + "/inventory";
+        return String.format("%s/inventory", getAssetsFolder());
     }
 
     public static String getSoundsPath() {
-        return getAssetsFolder() + "/sounds";
+        return String.format("%s/sounds", getAssetsFolder());
+    }
+
+    public static String getDefaultSoundTrack() {
+        return String.format("%s/menu/sound/soundtrack.wav", getAssetsFolder());
     }
 
     public static String getUiFolder() {
-        return getAssetsFolder() + "/ui";
+        return String.format("%s/ui", getAssetsFolder());
+    }
+
+    public static String getBackgroundSoundPath() {
+        return String.format("%s/background_sound.wav", getCurrentLevelFolder());
     }
 
     public static String getCursorPath() {
-        return getUiFolder() + "/cursor.png";
+        return String.format("%s/cursor.png", getUiFolder());
     }
 }

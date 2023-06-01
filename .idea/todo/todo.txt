@@ -1,3 +1,1 @@
-- pitch background;
-- Settings?
-- go to main menu
+- re-organize file's storing system. For every entity make a sound directory and an image directory

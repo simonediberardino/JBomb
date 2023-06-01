@@ -2,7 +2,7 @@ package game.powerups;
 
 import game.entity.bomb.Bomb;
 import game.entity.models.BomberEntity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
@@ -12,10 +12,9 @@ public class TransparentBombsPowerUp extends PowerUp {
         super(coordinates);
     }
 
-    //TODO
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/fire_up.png");
+        return loadAndSetImage(Paths.getPowerUpsFolder() + "/transparent_bomb_powerup.png");
     }
 
 

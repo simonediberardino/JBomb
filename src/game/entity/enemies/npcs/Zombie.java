@@ -1,7 +1,6 @@
 package game.entity.enemies.npcs;
 
-import game.entity.enemies.npcs.IntelligentEnemy;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.utils.Paths;
 
 public class Zombie extends IntelligentEnemy {

@@ -2,7 +2,7 @@ package game.ui.panels.settings;
 
 import game.Bomberman;
 import game.localization.Localization;
-import Runnables.RunnablePar;
+import game.events.RunnablePar;
 import game.ui.helpers.Padding;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
@@ -142,6 +142,6 @@ public abstract class BoxMenuPanel extends PagePanel {
 
     private void back() {
         componentsPanel.removeAll();
-        Bomberman.show(MainMenuPanel.class);
+        Bomberman.showActivity(MainMenuPanel.class);
     }
 }

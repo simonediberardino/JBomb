@@ -1,13 +1,15 @@
 package game.entity.enemies.boss.ghost;
 
+import game.BomberManMatch;
 import game.Bomberman;
-import game.entity.Player;
 import game.entity.enemies.GhostEnemy;
 import game.entity.enemies.boss.Boss;
-import game.models.Coordinates;
-import game.models.Direction;
-import Runnables.RunnablePar;
-import Runnables.RunnableParReturns;
+import game.entity.models.Coordinates;
+import game.entity.models.Direction;
+import game.entity.models.Entity;
+import game.events.RunnablePar;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
 import game.utils.GradientCallbackHandler;
 import game.utils.Paths;
@@ -16,8 +18,11 @@ import game.utils.Utility;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static game.sound.SoundModel.LIGHT_GLITCH;
 
 public class GhostBoss extends Boss {
     private static final String SKIN_PATH_TEMPLATE = "%s/ghost_boss/ghost_with_axe_%s_%s.png";
@@ -27,28 +32,33 @@ public class GhostBoss extends Boss {
     private static final int INVISIBLE_DELAY = 10000;
     private static final int MAX_GHOST_ENEMY_SPAWNED = 5;
     private static final int GHOST_SPAWN_TIME_DELAY = 10000;
+    private static final int LIGHTS_EVENT_DELAY = 20000;
+    private static long lastLightsEvent = System.currentTimeMillis();
     private static final int MAX_GHOSTS_ALIVE = 10;
+    private final static int BOSS_ATTACK_VERTICAL_RANGE = 2;
+    private final static int BOSS_ATTACK_HORIZONTAL_RANGE = 1;
     private boolean isInvisibleTaskRunning = false;
     private long lastInvisibleTime = 0;
     private long lastGhostSpawnTime;
-    private int BOSS_ATTACK_VERTICAL_RANGE = 2;
 
     public GhostBoss() {
         super();
-        imagePossibleDirections.remove(Direction.UP);
-        imagePossibleDirections.remove(Direction.DOWN);
+        this.hitboxSizetoWidthRatio= 0.648f;
         this.hitboxSizeToHeightRatio = 0.70f;
-        paddingTopFunction = new RunnableParReturns() {
+        paddingTopFunction = new RunnablePar() {
             @Override
-            public <T extends Number> int execute(T par){
+            public <T> Object execute(T par) {
                 setPaddingTop(0);
                 return 0;
             }
         };
-        hitboxSizetoWidthRatio= 0.648f;
-        System.out.println(getHitboxSizeToWidthRatio());
     }
 
+    @Override
+    public void attack(Entity e){
+        attackAnimationAndSoundFX();
+        super.attack(e);
+    }
 
     @Override
     protected Map<Integer, Integer> healthStatusMap() {
@@ -65,9 +75,15 @@ public class GhostBoss extends Boss {
         return new String[] { getImageFromRageStatus() };
     }
 
-    private void attackAnimation() {
+    @Override
+    protected java.util.List<Direction> getImageDirections() {
+        return Arrays.asList(Direction.RIGHT, Direction.LEFT);
+    }
+
+    private void attackAnimationAndSoundFX() {
         if(currRageStatus == 1) return;
 
+        AudioManager.getInstance().play(SoundModel.AXE_HIT);
         updateRageStatus(1);
         Timer t = new Timer(ATTACK_RESET_DELAY, (l) -> updateRageStatus(0));
         t.setRepeats(false);
@@ -99,7 +115,7 @@ public class GhostBoss extends Boss {
         // Create a callback handler for the task of gradually showing the object.
         GradientCallbackHandler showTask = new GradientCallbackHandler(new RunnablePar() {
             @Override
-            public <T> void execute(T par) {
+            public <T> Object execute(T par) {
                 // Set the alpha value of the object to the given parameter value.
                 setAlpha((Float) par);
 
@@ -107,25 +123,28 @@ public class GhostBoss extends Boss {
                     // If the alpha value has reached or exceeded the start alpha, mark the invisible task as finished.
                     isInvisibleTaskRunning = false;
                 }
+                return null;
             }
         }, endAlpha, startAlpha, -step);
 
         // Create a callback handler for the task of gradually hiding the object.
         GradientCallbackHandler hideTask = new GradientCallbackHandler(new RunnablePar() {
             @Override
-            public <T> void execute(T par) {
+            public <T> Object execute(T par) {
                 // Set the alpha value of the object to the given parameter value.
                 setAlpha((Float) par);
 
                 if (!((Float) par <= endAlpha)) {
                     // If the alpha value is not yet less than or equal to the end alpha, exit the method.
-                    return;
+                    return null;
                 }
 
                 // Create a timer to delay the execution of the show task after the object is hidden.
                 Timer t = new Timer(INVISIBLE_DURATION, (l) -> showTask.execute());
                 t.setRepeats(false);
                 t.start();
+
+                return null;
             }
         }, startAlpha, endAlpha, step);
 
@@ -133,23 +152,31 @@ public class GhostBoss extends Boss {
         hideTask.execute();
     }
 
-    public static void turnOffLights() {
+    private static void turnOffLights() {
+        BomberManMatch match = Bomberman.getMatch();
+        if(match == null || !match.getGameState()) return;
 
         PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
+        AudioManager.getInstance().play(LIGHT_GLITCH);
 
         pitchPanel.addGraphicsCallback(
                 GhostBoss.class.getSimpleName(), new RunnablePar() {
                     @Override
-                    public <T> void execute(T par) {
-                       Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
-                        g2d.setColor(new Color(0,0,0,0.95f));
+                    public <T> Object execute(T par) {
+                        Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
+                        g2d.setColor(new Color(0,0,0,0.9f));
                         g2d.fillRect(0,0,Bomberman.getBombermanFrame().getHeight(),Bomberman.getBombermanFrame().getWidth());
+                        return null;
                     }
                 }
         );
     }
 
-    public static void turnOnLights() {
+    private static void turnOnLights() {
+        BomberManMatch match = Bomberman.getMatch();
+        if(match == null || !match.getGameState()) return;
+
+        AudioManager.getInstance().play(LIGHT_GLITCH);
         PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
         pitchPanel.removeGraphicsCallback(GhostBoss.class.getSimpleName());
     }
@@ -164,43 +191,54 @@ public class GhostBoss extends Boss {
             new GhostEnemy().spawnAtRandomCoordinates();
         }
     }
-    public synchronized static void performLightsAnimation(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    turnOffLights();
-                    Thread.sleep(5000);
-                    turnOnLights();
-                    Thread.sleep(100);
-                    turnOffLights();
-                    Thread.sleep(400);
-                    turnOnLights();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+    private synchronized static void performLightsAnimation(){
+        new Thread(() -> {
+            try {
+                turnOffLights();
+                Thread.sleep(10000);
+                turnOnLights();
+                Thread.sleep(100);
+                turnOffLights();
+                Thread.sleep(400);
+                turnOnLights();
+                Thread.sleep(100);
+                turnOffLights();
+                Thread.sleep(400);
+                turnOnLights();
+                Thread.sleep(100);
+                turnOffLights();
+                Thread.sleep(400);
+                turnOnLights();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }).start();
     }
-    private void attack() {
-        ArrayList<Coordinates> coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInArea(
-                new Coordinates(getCoords().getX(), getCoords().getY() + getSize()),
-                new Coordinates(getCoords().getX() + getSize(), getCoords().getY() + getSize() + PitchPanel.GRID_SIZE * BOSS_ATTACK_VERTICAL_RANGE));
 
-        coordsOfUnderneathEntityBlocks.stream().forEach(c->Coordinates.getEntitiesOnBlock(c).stream().forEach(e->interact(e)));
-        attackAnimation();
+    private void attack() {
+        ArrayList<Coordinates> coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInAreaFromDirection(this,Direction.DOWN,BOSS_ATTACK_VERTICAL_RANGE);
+        ArrayList<Coordinates>  coordsOfEntitysImageDirectionBlocks = Coordinates.getAllBlocksInAreaFromDirection(this,imageDirection, BOSS_ATTACK_HORIZONTAL_RANGE);
+        coordsOfUnderneathEntityBlocks.addAll(coordsOfEntitysImageDirectionBlocks);
+
+        //merge the 2 lists into one another
+        coordsOfUnderneathEntityBlocks.forEach(c-> Coordinates.getEntitiesOnBlock(c).forEach(this::interact));
+        attackAnimationAndSoundFX();
     }
 
     @Override
     public void doUpdate(boolean gamestate) {
         Utility.runPercentage(ACTION_CHANCE, this::attack);
         Utility.runPercentage(ACTION_CHANCE, this::disappearAndReappear);
-        Utility.runPercentage(ACTION_CHANCE, new Runnable() {
-            @Override
-            public void run() {
-                performLightsAnimation();
+        Utility.runPercentage(ACTION_CHANCE, () -> {
+            if (Utility.timePassed(lastLightsEvent) <= LIGHTS_EVENT_DELAY) {
+                return;
             }
+
+            performLightsAnimation();
+            lastLightsEvent = System.currentTimeMillis();
         });
+
         Utility.runPercentage(ACTION_CHANCE, () -> {
             int enemyCount = (int) (Math.random() * MAX_GHOST_ENEMY_SPAWNED);     //spawn ghost enemies
             spawnGhosts(enemyCount);

@@ -1,12 +1,12 @@
 package game;
 
-import game.controller.ControllerManager;
-import game.controller.MouseControllerManager;
+import game.hardwareinput.ControllerManager;
+import game.hardwareinput.MouseControllerManager;
 import game.data.DataInputOutput;
-import game.engine.GameTickerObservable;
+import game.sound.AudioManager;
+import game.tasks.GameTickerObservable;
 import game.entity.*;
 import game.entity.models.*;
-import game.events.GameEvent;
 import game.level.Level;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.menus.PausePanel;
@@ -16,7 +16,7 @@ import game.utils.Utility;
 
 import java.util.*;
 
-public class BomberManMatch implements OnGameEvent {
+public class BomberManMatch {
     private InventoryElementController inventoryElementControllerPoints;
     private InventoryElementController inventoryElementControllerBombs;
     private InventoryElementController inventoryElementControllerLives;
@@ -49,7 +49,7 @@ public class BomberManMatch implements OnGameEvent {
     private void setupViewControllers() {
         inventoryElementControllerPoints = new InventoryElementController(0, Paths.getInventoryPath() + "/points.png");
         inventoryElementControllerLives = new InventoryElementController(0, Paths.getPowerUpsFolder()  + "/lives_up.png");
-        inventoryElementControllerBombs = new InventoryElementController(0, Paths.getAssetsFolder()  + "/bomb/bomb_0.png");
+        inventoryElementControllerBombs = new InventoryElementController(0, Paths.getEntitiesFolder()  + "/bomb/bomb_0.png");
 
         inventoryElementControllerPoints.setNumItems((int) DataInputOutput.getScore());
         inventoryElementControllerLives.setNumItems(DataInputOutput.getLives());
@@ -109,13 +109,13 @@ public class BomberManMatch implements OnGameEvent {
     private void pauseGame() {
         gameTickerObservable.stop();
         gameState = false;
-        Bomberman.show(PausePanel.class);
+        Bomberman.showActivity(PausePanel.class);
     }
 
     private void resumeGame(){
         gameTickerObservable.resume();
         gameState = true;
-        Bomberman.show(MatchPanel.class);
+        Bomberman.showActivity(MatchPanel.class);
     }
 
     public int getEnemiesAlive() {
@@ -150,11 +150,6 @@ public class BomberManMatch implements OnGameEvent {
         return inventoryElementControllerLives;
     }
 
-    @Override
-    public void onGameEvent(GameEvent gameEvent, Object arg) {
-        gameEvent.invoke(arg);
-    }
-
     public void destroy() {
         pauseGame();
 
@@ -162,6 +157,11 @@ public class BomberManMatch implements OnGameEvent {
         for (Entity e: list) {
             e.despawn();
         }
+
+        if(this.currentLevel != null) {
+            this.currentLevel.stopLevelSound();
+        }
+
 
         this.player = null;
         this.currentLevel = null;

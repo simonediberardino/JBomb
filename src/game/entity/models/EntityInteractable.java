@@ -2,17 +2,14 @@ package game.entity.models;
 
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
+import game.entity.bomb.AbstractExplosion;
 import game.entity.bomb.Bomb;
-import game.entity.bomb.Explosion;
-import game.entity.enemies.npcs.Orb;
-import game.models.Coordinates;
-import game.models.Direction;
 import game.utils.Utility;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static game.models.Coordinates.getEntitiesOnCoordinates;
+import static game.entity.models.Coordinates.getEntitiesOnCoordinates;
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 import static game.ui.panels.game.PitchPanel.PIXEL_UNIT;
 
@@ -168,8 +165,8 @@ public abstract class EntityInteractable extends Entity {
 
         // If the entity can move or it is immune to bombs, update the entity's position
         //if the entity is instance of explosion, it'll be able to move further anyway but no more explosions will be generated in constructor
-        if(this instanceof Explosion&&!canMove){
-            ((Explosion) this).onObstacle(nextTopLeftCoords);
+        if(this instanceof AbstractExplosion && !canMove){
+            ((AbstractExplosion) this).onObstacle(nextTopLeftCoords);
         } else if (canMove) {
             move(nextTopLeftCoords);
         }

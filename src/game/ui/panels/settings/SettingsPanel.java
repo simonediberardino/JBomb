@@ -2,14 +2,15 @@ package game.ui.panels.settings;
 
 import game.data.DataInputOutput;
 import game.localization.Localization;
-import Runnables.RunnablePar;
+import game.events.RunnablePar;
 import game.ui.panels.BombermanFrame;
 import game.ui.viewelements.settings.SettingsElementView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Consumer;
 
-import static game.localization.Localization.SETTINGS;
+import static game.localization.Localization.*;
 
 public class SettingsPanel extends BoxMenuPanel{
     /**
@@ -23,52 +24,32 @@ public class SettingsPanel extends BoxMenuPanel{
         super(cardLayout, parent, frame, Localization.get(SETTINGS));
     }
 
-    // TODO NEEDED REFACTOR!!!!
+    private SettingsElementView createTextFieldElementView(String label, String keyChar, RunnablePar runnablePar) {
+        return addTextFieldElementView(label, keyChar, runnablePar, 1);
+    }
+
+    private RunnablePar createKeyRunnable(final Consumer<Integer> keySetter) {
+        return new RunnablePar() {
+            @Override
+            public <T> Object execute(T par) {
+                char c = par.toString().isBlank() ? ' ' : par.toString().charAt(0);
+                keySetter.accept((int) c);
+                return null;
+            }
+        };
+    }
+
     @Override
     protected void addCustomElements() {
-        SettingsElementView forwardKey = addTextFieldElementView("FORWARD", DataInputOutput.getForwardKeyChar(), new RunnablePar() {
-            @Override
-            public <T> void execute(T par) {
-                char c = par.toString().isBlank() ? ' ' : par.toString().charAt(0);
-
-                DataInputOutput.getPlayerDataObject().setForwardKey(c);
-            }
-        }, 1);
-
-        SettingsElementView leftKey = addTextFieldElementView("LEFT", DataInputOutput.getLeftKeyChar(), new RunnablePar() {
-            @Override
-            public <T> void execute(T par) {
-                char c = par.toString().isBlank() ? ' ' : par.toString().charAt(0);
-
-                DataInputOutput.getPlayerDataObject().setLeftKey(c);
-            }
-        }, 1);
-
-        SettingsElementView backKey = addTextFieldElementView("BACK", DataInputOutput.getBackKeyChar(), new RunnablePar() {
-            @Override
-            public <T> void execute(T par) {
-                char c = par.toString().isBlank() ? ' ' : par.toString().charAt(0);
-
-                DataInputOutput.getPlayerDataObject().setBackKey(c);
-            }
-        }, 1);
-
-        SettingsElementView rightKey = addTextFieldElementView("RIGHT", DataInputOutput.getRightKeyChar(), new RunnablePar() {
-            @Override
-            public <T> void execute(T par) {
-                char c = par.toString().isBlank() ? ' ' : par.toString().charAt(0);
-
-                DataInputOutput.getPlayerDataObject().setRightKey(c);
-            }
-        }, 1);
-
-        SettingsElementView bombKey = addTextFieldElementView("BOMB", DataInputOutput.getBombKeyChar(), new RunnablePar() {
-            @Override
-            public <T> void execute(T par) {
-                char c = par.toString().isBlank() ? ' ' : par.toString().charAt(0);
-                DataInputOutput.getPlayerDataObject().setBombKey(c);
-            }
-        }, 1);
+        SettingsElementView forwardKey = createTextFieldElementView(
+                Localization.get(KEY_FORWARD),
+                DataInputOutput.getForwardKeyChar(),
+                createKeyRunnable(DataInputOutput::setForwardKey)
+        );
+        SettingsElementView leftKey = createTextFieldElementView(Localization.get(KEY_LEFT), DataInputOutput.getLeftKeyChar(), createKeyRunnable(DataInputOutput::setLeftKey));
+        SettingsElementView backKey = createTextFieldElementView(Localization.get(KEY_BACK), DataInputOutput.getBackKeyChar(), createKeyRunnable(DataInputOutput::setBackKey));
+        SettingsElementView rightKey = createTextFieldElementView(Localization.get(KEY_RIGHT), DataInputOutput.getRightKeyChar(), createKeyRunnable(DataInputOutput::setRightKey));
+        SettingsElementView bombKey = createTextFieldElementView(Localization.get(KEY_BOMB), DataInputOutput.getBombKeyChar(), createKeyRunnable(DataInputOutput::setBombKey));
 
     }
 }

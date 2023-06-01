@@ -1,6 +1,5 @@
 package game.entity.enemies.npcs;
 
-import game.models.Direction;
 import game.utils.Paths;
 
 public class Helicopter extends FlyingEnemy {

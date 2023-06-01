@@ -22,7 +22,6 @@ public class DataInputOutput {
 
     public static void retrieveData() {
         playerDataObject = getStoredPlayerData();
-        System.out.println(playerDataObject);
     }
 
     public static void updateStoredPlayerData() {
@@ -60,6 +59,7 @@ public class DataInputOutput {
 
     public static void setUsername(String name){
         playerDataObject.setName(name.trim());
+        updateStoredPlayerData();
     }
 
     public static String getUsername() {
@@ -69,6 +69,40 @@ public class DataInputOutput {
     public static void increaseKills(){
         playerDataObject.setKills(playerDataObject.getKills()+1);
         updateStoredPlayerData();
+    }
+
+    public static void increaseExplosionLength(){
+        setExplosionLength(playerDataObject.getExplosionLength()+1);
+    }
+
+    public static void resetExplosionLength(){
+        setExplosionLength(1);
+    }
+    public static void resetMaxBombs(){
+        setMaxBombs(1);
+    }
+
+    public static void setExplosionLength(int newExplosionLength){
+        playerDataObject.setExplosionLength(newExplosionLength);
+        updateStoredPlayerData();
+    }
+
+    public static int getExplosionLength(){
+        return playerDataObject.getExplosionLength();
+    }
+
+    public static int getMaxBombs(){
+        return playerDataObject.getMaxBombs();
+    }
+
+    public static void setMaxBombs(int newMaxBombs){
+        newMaxBombs = Math.max(0, newMaxBombs);
+        playerDataObject.setMaxBombs(newMaxBombs);
+        updateStoredPlayerData();
+    }
+
+    public static void increaseMaxBombs(){
+        setMaxBombs(getMaxBombs()+1);
     }
 
     public static void increaseDeaths(){
@@ -115,6 +149,8 @@ public class DataInputOutput {
     public static void resetLevel() {
         playerDataObject.setLastWorldId(1);
         playerDataObject.setLastLevelId(1);
+        resetExplosionLength();
+        resetMaxBombs();
         updateStoredPlayerData();
     }
 
@@ -196,5 +232,31 @@ public class DataInputOutput {
 
     public static String getBombKeyChar() {
         return KeyEvent.getKeyText(playerDataObject.getBombKey());
+    }
+
+
+    public static void setForwardKey(int forwardKey) {
+        playerDataObject.setForwardKey(forwardKey);
+        updateStoredPlayerData();
+    }
+
+    public static void setBackKey(int backKey) {
+        playerDataObject.setBackKey(backKey);
+        updateStoredPlayerData();
+    }
+
+    public static void setLeftKey(int leftKey) {
+        playerDataObject.setLeftKey(leftKey);
+        updateStoredPlayerData();
+    }
+
+    public static void setRightKey(int rightKey) {
+        playerDataObject.setRightKey(rightKey);
+        updateStoredPlayerData();
+    }
+
+    public static void setBombKey(int bombKey) {
+        playerDataObject.setBombKey(bombKey);
+        updateStoredPlayerData();
     }
 }

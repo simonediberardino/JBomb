@@ -2,10 +2,8 @@ package game.entity.models;
 
 import game.Bomberman;
 import game.entity.Player;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.MovableBlock;
 import game.entity.bomb.Bomb;
-import game.models.Coordinates;
+import game.events.UpdateMaxBombsEvent;
 import game.powerups.PowerUp;
 import game.sound.SoundModel;
 import game.utils.Utility;
@@ -13,14 +11,14 @@ import game.utils.Utility;
 import java.util.*;
 
 public abstract class BomberEntity extends Character {
-    private static final int MAX_BOMB_CAN_HOLD = 10;
+    public static final int MAX_BOMB_CAN_HOLD = 10;
     private final List<Class<? extends Entity>> listInteractWithMouseClick = new ArrayList<>();
     private final List<Class<? extends Entity>> listInteractWithMouseDrag = new ArrayList<>();
     private final List<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
-    private int currBombLimit = Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     private int placedBombs = 0;
     private long lastPlacedBombTime = 0;
+    private int currentBombs;
 
     /**
      * Constructs a new Character with the specified Coordinates.
@@ -40,11 +38,7 @@ public abstract class BomberEntity extends Character {
     }
 
     public int getCurrBombLimit() {
-        return currBombLimit;
-    }
-
-    public void increaseMaxBombs() {
-        if(currBombLimit < MAX_BOMB_CAN_HOLD) currBombLimit++;
+        return Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     }
 
     @Override
@@ -57,7 +51,7 @@ public abstract class BomberEntity extends Character {
             return;
         }
 
-        if(placedBombs >= currBombLimit) {
+        if(placedBombs >= getCurrBombLimit()) {
             return;
         }
 
@@ -71,13 +65,13 @@ public abstract class BomberEntity extends Character {
         Bomb bomb = new Bomb(this);
 
         if(this instanceof Player){
-            Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
+            new UpdateMaxBombsEvent().invoke(getCurrentBombs()-1);
         }
 
         bomb.setOnExplodeListener(() -> {
             placedBombs--;
             if(this instanceof Player){
-                Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
+                new UpdateMaxBombsEvent().invoke(getCurrentBombs()+1);
             }
         });
 
@@ -85,13 +79,18 @@ public abstract class BomberEntity extends Character {
         bomb.trigger();
     }
 
+    public void setCurrentBombs(int bomb) {
+        this.currentBombs = bomb;
+    }
+
     public int getCurrentBombs() {
-        return getCurrBombLimit() - placedBombs;
+        return this.currentBombs;
     }
 
     public void addClassInteractWithMouseClick(Class<? extends Entity> cls) {
         listInteractWithMouseClick.add(cls);
     }
+
     public void addClassInteractWithMouseDrag(Class<? extends Entity> cls) {
         listInteractWithMouseDrag.add(cls);
     }
@@ -99,6 +98,7 @@ public abstract class BomberEntity extends Character {
     public void removeClassInteractWithMouse(Class<? extends Entity> cls) {
         listInteractWithMouseClick.remove(cls);
     }
+
     public void removeClassInteractWithDrag(Class<? extends Entity> cls) {
         listInteractWithMouseDrag.remove(cls);
     }
@@ -114,7 +114,10 @@ public abstract class BomberEntity extends Character {
     public List<Class<? extends Entity>> getListClassInteractWithMouseClick(){
         return listInteractWithMouseClick;
     }
+
     public List<Class<? extends Entity>> getListClassInteractWithMouseDrag(){
         return listInteractWithMouseDrag;
     }
+
+
 }

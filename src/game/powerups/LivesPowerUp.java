@@ -2,10 +2,9 @@ package game.powerups;
 
 import game.data.DataInputOutput;
 import game.entity.models.BomberEntity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.utils.Paths;
 
-import javax.xml.crypto.Data;
 import java.awt.image.BufferedImage;
 
 public class LivesPowerUp extends PowerUp{
@@ -42,7 +41,7 @@ public class LivesPowerUp extends PowerUp{
     }
 
     @Override
-    public boolean hasNoPickupLimits() {
+    public boolean pickUpLimit(BomberEntity e) {
         return true;
     }
 }

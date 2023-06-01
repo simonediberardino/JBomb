@@ -5,7 +5,7 @@ import game.Bomberman;
 import game.entity.Player;
 import game.entity.models.*;
 import game.entity.models.Character;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
@@ -26,7 +26,9 @@ public abstract class PowerUp extends EntityInteractable {
             LivesPowerUp.class,
             RemoteControl.class,
             Hammer.class,
-            BlockMoverPowerUp.class
+            BlockMoverPowerUp.class,
+            IncreaseMaxBombsPowerUp.class,
+            TransparentBombsPowerUp.class
     };
 
     public ArrayList<Class<?extends PowerUp>> incompatiblePowerUps = new ArrayList<>();
@@ -102,11 +104,7 @@ public abstract class PowerUp extends EntityInteractable {
         if(!canPickUp(entity))
             return;
 
-        if(!hasNoPickupLimits()){
-            if(entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass()))) {
-                return;
-            }
-        }
+        if(pickUpLimit(entity))return;
 
         this.applied = true;
         this.despawn();
@@ -196,7 +194,7 @@ public abstract class PowerUp extends EntityInteractable {
      *
      * @return wheter the powerup can be picked up indefinite times or not;
      */
-    public boolean hasNoPickupLimits() {
-        return false;
+    public boolean pickUpLimit(BomberEntity entity) {
+        return entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass()));
     }
 }

@@ -10,11 +10,14 @@ public enum SoundModel {
     POWERUP,
     MOUSE_HOVER,
     CLICK,
-    SOUNDTRACK,
     PLAYER_DEATH,
     BONUS_ALERT,
     BOMB_CLOCK,
-    ENTITY_DEATH;
+    AXE_HIT,
+    LIGHT_GLITCH,
+    ENTITY_DEATH,
+    EXPLOSION_CONFETTI,
+    STEP_SOUND;
 
     public String toString() {
         return String.format("%s/%s.wav", Paths.getSoundsPath(), super.toString().toLowerCase());

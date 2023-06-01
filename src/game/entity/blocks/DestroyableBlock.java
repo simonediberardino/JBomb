@@ -1,14 +1,12 @@
 package game.entity.blocks;
 
 import game.Bomberman;
-import game.controller.MouseControllerManager;
-import game.entity.bomb.Explosion;
-import game.entity.models.Block;
+import game.entity.bomb.AbstractExplosion;
+import game.entity.bomb.ConfettiExplosion;
 import game.entity.models.Entity;
-import game.models.Coordinates;
+import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
-import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 
 import java.awt.image.BufferedImage;
@@ -43,7 +41,7 @@ public class DestroyableBlock extends MovableBlock {
 
     @Override
     public BufferedImage getImage(){
-        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getDestroyableBlock());
+        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getDestroyableBlockImagePath());
     }
 
     @Override
@@ -78,6 +76,6 @@ public class DestroyableBlock extends MovableBlock {
 
     @Override
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Collections.singletonList(Explosion.class));
+        return new HashSet<>(Collections.singletonList(AbstractExplosion.class));
     }
 }

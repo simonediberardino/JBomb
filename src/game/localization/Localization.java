@@ -11,6 +11,31 @@ public class Localization {
         put(Locale.ITALY, "IL MIO BOMBERMAN");
     }};
 
+    public static final HashMap<Locale, String> KEY_RIGHT = new HashMap<>() {{
+        put(Locale.ENGLISH, "RIGHT");
+        put(Locale.ITALY, "DESTRA");
+    }};
+
+    public static final HashMap<Locale, String> KEY_LEFT = new HashMap<>() {{
+        put(Locale.ENGLISH, "LEFT");
+        put(Locale.ITALY, "SINISTRA");
+    }};
+
+    public static final HashMap<Locale, String> KEY_FORWARD = new HashMap<>() {{
+        put(Locale.ENGLISH, "FORWARD");
+        put(Locale.ITALY, "AVANTI");
+    }};
+
+    public static final HashMap<Locale, String> KEY_BACK = new HashMap<>() {{
+        put(Locale.ENGLISH, "BACK");
+        put(Locale.ITALY, "INDIETRO");
+    }};
+
+    public static final HashMap<Locale, String> KEY_BOMB = new HashMap<>() {{
+        put(Locale.ENGLISH, "BOMB");
+        put(Locale.ITALY, "BOMBA");
+    }};
+
     public static final HashMap<Locale, String> DEATHS = new HashMap<>() {{
         put(Locale.ENGLISH, "DEATHS");
         put(Locale.ITALY, "MORTI");
@@ -47,8 +72,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> WELCOME_TEXT = new HashMap<>() {{
-        put(Locale.ENGLISH, "Welcome to Bomberman!");
-        put(Locale.ITALY, "Benvenuto su Bomberman!");
+        put(Locale.ENGLISH, "Welcome %user% to Bomberman!");
+        put(Locale.ITALY, "Benvenuto %user% su Bomberman!");
     }};
 
     public static final HashMap<Locale, String> PRESS_ESC_CONTINUE = new HashMap<>() {{
@@ -106,6 +131,16 @@ public class Localization {
         put(Locale.ITALY, "ESCI DAL GIOCO");
     }};
 
+    public static final HashMap<Locale, String> RESUME_GAME = new HashMap<>() {{
+        put(Locale.ENGLISH, "RESUME GAME");
+        put(Locale.ITALY, "CONTINUA LA PARTITA");
+    }};
+
+    public static final HashMap<Locale, String> QUIT_GAME = new HashMap<>() {{
+        put(Locale.ENGLISH, "QUIT THE MATCH");
+        put(Locale.ITALY, "ESCI DALLA PARTITA");
+    }};
+
     public static final HashMap<Locale, String> USERNAME = new HashMap<>() {{
         put(Locale.ENGLISH, "USERNAME");
         put(Locale.ITALY, "USERNAME");
@@ -114,7 +149,13 @@ public class Localization {
     public static final HashMap<Locale, String> SETTINGS = new HashMap<>() {{
         put(Locale.ENGLISH, "SETTINGS");
         put(Locale.ITALY, "IMPOSTAZIONI");
-    }};;
+    }};
+
+
+    public static final HashMap<Locale, String> PLAYER = new HashMap<>() {{
+        put(Locale.ENGLISH, "PLAYER");
+        put(Locale.ITALY, "GIOCATORE");
+    }};
 
     public static Locale[] getSupportedLanguages() {
         return new Locale[]{
