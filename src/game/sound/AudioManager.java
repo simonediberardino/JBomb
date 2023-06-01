@@ -120,7 +120,6 @@ public class AudioManager {
     }
 
     public void stopBackgroundSong() {
-        System.out.println(currentBackgroundSong);
         stopAllInstancesOfSound(currentBackgroundSong);
         currentBackgroundSong = "";
     }
