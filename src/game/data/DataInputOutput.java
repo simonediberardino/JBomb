@@ -91,13 +91,17 @@ public class DataInputOutput {
     public static int getExplosionLength(){
         return playerDataObject.getExplosionLength();
     }
+
     public static int getMaxBombs(){
         return playerDataObject.getMaxBombs();
     }
+
     public static void setMaxBombs(int newMaxBombs){
+        newMaxBombs = Math.max(0, newMaxBombs);
         playerDataObject.setMaxBombs(newMaxBombs);
         updateStoredPlayerData();
     }
+
     public static void increaseMaxBombs(){
         setMaxBombs(getMaxBombs()+1);
     }

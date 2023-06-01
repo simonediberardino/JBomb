@@ -1,7 +1,9 @@
 package game.entity;
 
 import game.Bomberman;
+import game.data.DataInputOutput;
 import game.entity.bomb.AbstractExplosion;
+import game.events.UpdateMaxBombsEvent;
 import game.hardwareinput.Command;
 import game.entity.models.*;
 import game.events.DeathGameEvent;
@@ -24,7 +26,12 @@ public class Player extends BomberEntity {
      public Player(Coordinates coordinates) {
         super(coordinates);
         this.hitboxSizeToHeightRatio = 0.733f;
-        Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
+    }
+
+    private void updateBombs() {
+         int maxBombs = DataInputOutput.getMaxBombs();
+         maxBombs = Math.max(1, maxBombs);
+         new UpdateMaxBombsEvent().invoke(maxBombs);
     }
 
     @Override
@@ -35,8 +42,6 @@ public class Player extends BomberEntity {
     public Set<Class<? extends Entity>> getInteractionsEntities() {
         return this.interactionEntities;
     }
-
-
 
     @Override
     protected String getBasePath() {
@@ -56,6 +61,7 @@ public class Player extends BomberEntity {
     @Override
     protected void onSpawn() {
         super.onSpawn();
+        updateBombs();
         Bomberman.getMatch().getControllerManager().register(this);
         Bomberman.getBombermanFrame().getMatchPanel().refreshPowerUps(getActivePowerUps());
     }

@@ -3,6 +3,7 @@ package game.entity.models;
 import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
+import game.events.UpdateMaxBombsEvent;
 import game.powerups.PowerUp;
 import game.sound.SoundModel;
 import game.utils.Utility;
@@ -17,6 +18,7 @@ public abstract class BomberEntity extends Character {
     private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getExplosionLength();
     private int placedBombs = 0;
     private long lastPlacedBombTime = 0;
+    private int currentBombs;
 
     /**
      * Constructs a new Character with the specified Coordinates.
@@ -63,13 +65,13 @@ public abstract class BomberEntity extends Character {
         Bomb bomb = new Bomb(this);
 
         if(this instanceof Player){
-            Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
+            new UpdateMaxBombsEvent().invoke(getCurrentBombs()-1);
         }
 
         bomb.setOnExplodeListener(() -> {
             placedBombs--;
             if(this instanceof Player){
-                Bomberman.getMatch().getInventoryElementControllerBombs().setNumItems(getCurrentBombs());
+                new UpdateMaxBombsEvent().invoke(getCurrentBombs()+1);
             }
         });
 
@@ -77,13 +79,18 @@ public abstract class BomberEntity extends Character {
         bomb.trigger();
     }
 
+    public void setCurrentBombs(int bomb) {
+        this.currentBombs = bomb;
+    }
+
     public int getCurrentBombs() {
-        return getCurrBombLimit() - placedBombs;
+        return this.currentBombs;
     }
 
     public void addClassInteractWithMouseClick(Class<? extends Entity> cls) {
         listInteractWithMouseClick.add(cls);
     }
+
     public void addClassInteractWithMouseDrag(Class<? extends Entity> cls) {
         listInteractWithMouseDrag.add(cls);
     }
@@ -91,6 +98,7 @@ public abstract class BomberEntity extends Character {
     public void removeClassInteractWithMouse(Class<? extends Entity> cls) {
         listInteractWithMouseClick.remove(cls);
     }
+
     public void removeClassInteractWithDrag(Class<? extends Entity> cls) {
         listInteractWithMouseDrag.remove(cls);
     }
@@ -106,7 +114,10 @@ public abstract class BomberEntity extends Character {
     public List<Class<? extends Entity>> getListClassInteractWithMouseClick(){
         return listInteractWithMouseClick;
     }
+
     public List<Class<? extends Entity>> getListClassInteractWithMouseDrag(){
         return listInteractWithMouseDrag;
     }
+
+
 }

@@ -97,10 +97,6 @@ public class Bomberman {
 
         Component shownComponent = shownComponentOpt.orElse(null);
         if(shownComponent instanceof PagePanel)
-            ((PagePanel)(shownComponent)).onShowCallback();
-
-        if(!(shownComponent instanceof CustomSoundMode)){
-            AudioManager.getInstance().playBackgroundSong();
-        }
+            ((PagePanel)(shownComponent)).onShow();
     }
 }
