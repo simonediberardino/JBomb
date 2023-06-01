@@ -55,6 +55,10 @@ public abstract class BomberEntity extends Character {
             return;
         }
 
+        if(getCurrentBombs() <= 0){
+            return;
+        }
+
         if(Utility.timePassed(lastPlacedBombTime) < Bomb.PLACE_INTERVAL){
             return;
         }

@@ -6,11 +6,9 @@ import game.level.world1.World1Level1;
 import game.utils.Paths;
 
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,7 +28,12 @@ public class DataInputOutput {
 
     public static void updateStoredPlayerData(PlayerDataObject serObj) {
         try {
-            FileOutputStream fileOut = new FileOutputStream(Paths.getPlayerDataPath());
+            Files.createDirectories(java.nio.file.Paths.get(Paths.getDataFolder()));
+
+            File dataFile = new File(Paths.getPlayerDataPath());
+
+            dataFile.createNewFile();
+            FileOutputStream fileOut = new FileOutputStream(dataFile, false);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(serObj);
             objectOut.close();
