@@ -127,14 +127,23 @@ public class PlayerDataObject implements Serializable {
     public void setLives(int lives) {
         this.lives = lives;
     }
-    public void setExplosionLength(int explosionLength){this.explosionLength = explosionLength;}
-    public int getExplosionLength() {return explosionLength;}
+
+    public void setExplosionLength(int explosionLength){
+        this.explosionLength = explosionLength;
+    }
+
+    public int getExplosionLength() {
+        return explosionLength;
+    }
+
     public void setMaxBombs(int maxBombs){
         this.maxBombs = maxBombs;
     }
+
     public int getMaxBombs(){
         return maxBombs;
     }
+
     public int getLostGames() {
         return lostGames;
     }

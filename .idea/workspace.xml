@@ -4,35 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Refactoring">
-      <change afterPath="$PROJECT_DIR$/assets/powerups/max_bombs_powerup.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/powerups/transparent_bomb_powerup.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/sounds/step_sound.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/level/5/images/pitch.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/worlds/2/level/5/sound/soundtrack.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/powerups/MaxBombsPowerUp.java" afterDir="false" />
+    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Refactoring&#10;- Increase Max Bombs PowerUp&#10;- Transparent Bomb PowerUp&#10;- Clown Music&#10;- Clown Confetti Explosion Sound&#10;- Clown Pitch&#10;- Step Sounds">
+      <change afterPath="$PROJECT_DIR$/assets/sounds/explosion_confetti.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/game/events/UpdateMaxBombsEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/todo/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/todo/todo.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/data" beforeDir="false" afterPath="$PROJECT_DIR$/data/data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/Bomberman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Bomberman.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/Boss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/Boss.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Clown.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Clown.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Hat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/boss/clown/Hat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/enemies/npcs/TankEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/enemies/npcs/TankEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/entity/models/BomberEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/BomberEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/entity/models/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Character.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Coordinates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/models/MovingEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/MovingEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/events/ExplosionLengthPowerUpEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/events/ExplosionLengthPowerUpEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/level/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/level/world1/World1Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world1/World1Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/world2/World2Level5.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/powerups/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/PowerUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/powerups/TransparentBombsPowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/TransparentBombsPowerUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/sound/AudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/sound/AudioManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/sound/SoundModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/sound/SoundModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/powerups/IncreaseMaxBombsPowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/IncreaseMaxBombsPowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/PagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/PagePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -486,7 +473,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685366048070</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="- Refactoring&#10;- Increase Max Bombs PowerUp&#10;- Transparent Bomb PowerUp&#10;- Clown Music&#10;- Clown Confetti Explosion Sound&#10;- Clown Pitch&#10;- Step Sounds">
+      <created>1685511224654</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1685511224654</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -503,7 +497,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="temporary fix for concurrent modify exception" />
     <MESSAGE value="Added loading page callback" />
     <MESSAGE value="Added toast messages;&#10;Hat on clown;&#10;Lives;&#10;Player icons;&#10;Bugs fixed;" />
     <MESSAGE value="-Movement with mouse.&#10;-Interaction with mouse on entities.&#10;-Overpassing block bug fixes: entities behind block are now found correctly; Manual movement now overwrites overpassing movement so the player no longer can get stuck while overpassing." />
@@ -528,7 +521,8 @@
     <MESSAGE value="- New images world1 boss;&#10;- Refactoring" />
     <MESSAGE value="- Clown explosion retexturing (wip)" />
     <MESSAGE value="- Added ghost sounds;&#10;- Added level based background sounds;&#10;- Fixed pitch background;&#10;- Refactoring;&#10;- Fixed clown coordinates;" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Added ghost sounds;&#10;- Added level based background sounds;&#10;- Fixed pitch background;&#10;- Refactoring;&#10;- Fixed clown coordinates;" />
+    <MESSAGE value="- Refactoring&#10;- Increase Max Bombs PowerUp&#10;- Transparent Bomb PowerUp&#10;- Clown Music&#10;- Clown Confetti Explosion Sound&#10;- Clown Pitch&#10;- Step Sounds" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Refactoring&#10;- Increase Max Bombs PowerUp&#10;- Transparent Bomb PowerUp&#10;- Clown Music&#10;- Clown Confetti Explosion Sound&#10;- Clown Pitch&#10;- Step Sounds" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -607,13 +601,13 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/game/data/DataInputOutput.java</url>
-          <line>148</line>
+          <line>152</line>
           <option name="timeStamp" value="203" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/game/entity/models/Character.java</url>
-          <line>136</line>
-          <option name="timeStamp" value="205" />
+          <url>file://$PROJECT_DIR$/src/game/events/UpdateMaxBombsEvent.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="206" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

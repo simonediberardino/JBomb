@@ -1,12 +1,16 @@
 package game.ui.panels.menus;
 
+import game.BomberManMatch;
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
 import game.level.world2.World2Level5;
+import game.sound.AudioManager;
+import game.ui.panels.game.CustomSoundMode;
 import game.ui.panels.settings.ProfilePanel;
 import game.ui.panels.settings.SettingsPanel;
 import game.ui.viewelements.bombermanbutton.YellowButton;
 import game.ui.panels.BombermanFrame;
+import game.utils.Paths;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +49,7 @@ public class MainMenuPanel extends BaseMenu {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new World2Level5()));
+        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel()));
         return startLevelButton;
     }
 
@@ -71,10 +75,5 @@ public class MainMenuPanel extends BaseMenu {
         JButton exitButton = new YellowButton(get(QUIT));
         exitButton.addActionListener(v -> System.exit(0));
         return exitButton;
-    }
-
-    @Override
-    public void onShowCallback() {
-
     }
 }

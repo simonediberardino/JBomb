@@ -3,12 +3,10 @@ package game.powerups;
 import game.data.DataInputOutput;
 import game.entity.models.BomberEntity;
 import game.entity.models.Coordinates;
-import game.events.ExplosionLengthPowerUpEvent;
+import game.events.UpdateMaxBombsEvent;
 import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
-
-import static game.entity.bomb.AbstractExplosion.MAX_EXPLOSION_LENGTH;
 
 public class IncreaseMaxBombsPowerUp extends PowerUp{
 
@@ -23,7 +21,7 @@ public class IncreaseMaxBombsPowerUp extends PowerUp{
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/max_bombs_powerup.png");
+        return loadAndSetImage(Paths.getPowerUpsFolder() + "/increase_max_bombs_powerup.png");
     }
 
     @Override
@@ -33,7 +31,7 @@ public class IncreaseMaxBombsPowerUp extends PowerUp{
 
     @Override
     protected void doApply(BomberEntity entity) {
-        DataInputOutput.increaseMaxBombs();
+        new UpdateMaxBombsEvent().invoke(entity.getCurrentBombs()+1);
     }
 
     @Override

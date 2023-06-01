@@ -57,8 +57,6 @@ public abstract class Level {
         put(new Integer[]{2, 5}, World2Level5.class);
     }};
 
-    protected int maxBombs = 1;
-
     public abstract Boss getBoss();
     public abstract int startEnemiesCount();
     public abstract int getMaxDestroyableBlocks();
@@ -66,7 +64,6 @@ public abstract class Level {
     public abstract Class<? extends Enemy>[] availableEnemies();
 
     public final String getLevelSoundtrack() {
-
         return getSoundForCurrentLevel("soundtrack.wav");
     }
 
@@ -195,7 +192,7 @@ public abstract class Level {
 
     // This method returns the maximum number of bombs that a player can have at one time.
     public int getMaxBombs() {
-        return DataInputOutput.getMaxBombs();
+        return 10;
     }
 
     /**

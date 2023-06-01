@@ -1,3 +1,1 @@
-- welcome message with username;
 - re-organize file's storing system. For every entity make a sound directory and an image directory
-- custom blocks for boss levels?
