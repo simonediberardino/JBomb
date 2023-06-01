@@ -48,6 +48,8 @@ public abstract class WorldPortal extends Portal{
 
     @Override
     protected void doApply(BomberEntity entity) {
+        super.doApply(entity);
+
         try {
             // Retrieve the player data object from data input/output
             PlayerDataObject playerDataObject = DataInputOutput.getPlayerDataObject();

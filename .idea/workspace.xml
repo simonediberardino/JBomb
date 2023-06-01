@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Refactoring&#10;- Increase Max Bombs PowerUp&#10;- Transparent Bomb PowerUp&#10;- Clown Music&#10;- Clown Confetti Explosion Sound&#10;- Clown Pitch&#10;- Step Sounds">
-      <change afterPath="$PROJECT_DIR$/assets/sounds/explosion_confetti.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/events/UpdateMaxBombsEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/todo/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/todo/todo.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/data" beforeDir="false" afterPath="$PROJECT_DIR$/data/data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/Bomberman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Bomberman.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/DataInputOutput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/data/PlayerDataObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/models/BomberEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/BomberEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/entity/models/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/entity/models/Character.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/events/ExplosionLengthPowerUpEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/events/ExplosionLengthPowerUpEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/level/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/level/Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/powerups/IncreaseMaxBombsPowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/powerups/IncreaseMaxBombsPowerUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/PagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/PagePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/ui/panels/menus/MainMenuPanel.java" afterDir="false" />
-    </list>
+    <list default="true" id="ccbb1b27-a219-4d1a-b8bb-02bc4ea72565" name="Default Changelist" comment="- Fixed current bombs power up" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,11 +24,12 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Prova" />
+        <entry key="$PROJECT_DIR$" value="d136ddfaf5422ce26720942a904166a9a2b28b0a" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
+    <option name="WARN_ABOUT_DETACHED_HEAD" value="false" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -136,13 +120,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1681960044079</updated>
-    </task>
-    <task id="LOCAL-00001" summary="WIP #2">
-      <created>1682305098571</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1682305098571</updated>
     </task>
     <task id="LOCAL-00002" summary="- bomb is now placeable;&#10;- grid layout removed: components are now drawn dynamically;&#10;- Dynamic component sizes">
       <created>1682347818587</created>
@@ -480,7 +457,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685511224654</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="- Fixed current bombs power up">
+      <created>1685650634124</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1685650634124</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -488,7 +472,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -497,7 +493,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Added loading page callback" />
     <MESSAGE value="Added toast messages;&#10;Hat on clown;&#10;Lives;&#10;Player icons;&#10;Bugs fixed;" />
     <MESSAGE value="-Movement with mouse.&#10;-Interaction with mouse on entities.&#10;-Overpassing block bug fixes: entities behind block are now found correctly; Manual movement now overwrites overpassing movement so the player no longer can get stuck while overpassing." />
     <MESSAGE value="WIP COMMIT&#10;- HAMMER WIP;&#10;- POWER UPS IMAGES WIP;" />
@@ -522,7 +517,8 @@
     <MESSAGE value="- Clown explosion retexturing (wip)" />
     <MESSAGE value="- Added ghost sounds;&#10;- Added level based background sounds;&#10;- Fixed pitch background;&#10;- Refactoring;&#10;- Fixed clown coordinates;" />
     <MESSAGE value="- Refactoring&#10;- Increase Max Bombs PowerUp&#10;- Transparent Bomb PowerUp&#10;- Clown Music&#10;- Clown Confetti Explosion Sound&#10;- Clown Pitch&#10;- Step Sounds" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Refactoring&#10;- Increase Max Bombs PowerUp&#10;- Transparent Bomb PowerUp&#10;- Clown Music&#10;- Clown Confetti Explosion Sound&#10;- Clown Pitch&#10;- Step Sounds" />
+    <MESSAGE value="- Fixed current bombs power up" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Fixed current bombs power up" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

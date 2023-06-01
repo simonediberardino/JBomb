@@ -38,6 +38,8 @@ public class EndLevelPortal extends Portal {
 
     @Override
     protected void doApply(BomberEntity entity) {
+        super.doApply(entity);
+
         Bomberman.getMatch().getCurrentLevel().endLevel();
         try {
             Level level = Bomberman.getMatch().getCurrentLevel();

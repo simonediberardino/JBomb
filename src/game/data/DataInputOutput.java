@@ -22,7 +22,6 @@ public class DataInputOutput {
 
     public static void retrieveData() {
         playerDataObject = getStoredPlayerData();
-        System.out.println(playerDataObject);
     }
 
     public static void updateStoredPlayerData() {
