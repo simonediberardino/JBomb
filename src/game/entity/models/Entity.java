@@ -71,7 +71,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     protected String getBasePath(){ return ""; }
 
     protected void onSpawn(){}
-    protected void onDespawn(){}
+    protected void onDespawn(){
+    }
 
     /**
      * Performs an interaction between this entity and another entity.
@@ -422,7 +423,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * Handles mouse drag interactions.
      * This method allows dragging the entity to move it around.
      */
-    protected synchronized void mouseDragInteraction() {
+    protected void mouseDragInteraction() {
         Entity player = Bomberman.getMatch().getPlayer();
         MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
         Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player));

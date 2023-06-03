@@ -66,6 +66,9 @@ public abstract class Level {
     public final String getLevelSoundtrack() {
         return getSoundForCurrentLevel("soundtrack.wav");
     }
+    public final String getLevelBackgroundSound(){
+        return getSoundForCurrentLevel("background_sound.wav");
+    }
 
     public final int getExplosionLength(){
         return DataInputOutput.getExplosionLength();
@@ -192,7 +195,7 @@ public abstract class Level {
 
     // This method returns the maximum number of bombs that a player can have at one time.
     public int getMaxBombs() {
-        return 10;
+        return Player.MAX_BOMB_CAN_HOLD;
     }
 
     /**
@@ -226,7 +229,7 @@ public abstract class Level {
     }
 
     public void playLevelSound() {
-        String soundPath = Paths.getBackgroundSoundPath();
+        String soundPath = getLevelBackgroundSound();
         if(!new File(soundPath).exists()) return;
 
         currentLevelSound = AudioManager.getInstance().play(soundPath, true);
@@ -276,6 +279,7 @@ public abstract class Level {
     protected String getSoundForCurrentLevel(String path){
         return getFileForCurrentLevel(String.format("sound/%s", path));
     }
+
 
     /**
      * @return returns the path to the file: if a specific instance of the file exists for the current level, then return it, else return the current world instance;

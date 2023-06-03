@@ -1,5 +1,6 @@
 package game.powerups;
 
+import game.Bomberman;
 import game.data.DataInputOutput;
 import game.entity.models.BomberEntity;
 import game.entity.models.Coordinates;
@@ -39,8 +40,8 @@ public class IncreaseMaxBombsPowerUp extends PowerUp{
     }
 
     @Override
-    public boolean pickUpLimit(BomberEntity entity) {
-        return DataInputOutput.getMaxBombs() > BomberEntity.MAX_BOMB_CAN_HOLD;
+    public boolean canPickUp(BomberEntity entity) {
+        return !(DataInputOutput.getObtainedBombs() >= Bomberman.getMatch().getCurrentLevel().getMaxBombs());
     }
 
 

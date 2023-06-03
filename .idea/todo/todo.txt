@@ -1,1 +1,2 @@
-- re-organize file's storing system. For every entity make a sound directory and an image directory
+- Life+ on every level completed
+- enemies overpassing blocks

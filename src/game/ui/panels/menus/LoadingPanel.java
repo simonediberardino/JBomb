@@ -2,6 +2,7 @@ package game.ui.panels.menus;
 
 import game.level.Level;
 import game.localization.Localization;
+import game.sound.SoundModel;
 import game.ui.panels.BombermanFrame;
 import game.ui.panels.PagePanel;
 import game.utils.Paths;
@@ -118,5 +119,8 @@ public class LoadingPanel extends PagePanel {
     private void startAnimation() {
         animationTimer = new javax.swing.Timer(REPAINT_DELAY_MS, e -> repaint());
         animationTimer.start();
+    }
+    public SoundModel getBossDeathSoundPath(){
+        return SoundModel.BOSS_DEATH;
     }
 }

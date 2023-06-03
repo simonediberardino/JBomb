@@ -3,7 +3,7 @@ package game.entity.models;
 import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
-import game.events.UpdateMaxBombsEvent;
+import game.events.UpdateCurrentAvailableBombsEvent;
 import game.powerups.PowerUp;
 import game.sound.SoundModel;
 import game.utils.Utility;
@@ -37,7 +37,7 @@ public abstract class BomberEntity extends Character {
         currExplosionLength++;
     }
 
-    public int getCurrBombLimit() {
+    public int getMaxBombs() {
         return Bomberman.getMatch().getCurrentLevel().getMaxBombs();
     }
 
@@ -51,7 +51,7 @@ public abstract class BomberEntity extends Character {
             return;
         }
 
-        if(placedBombs >= getCurrBombLimit()) {
+        if(placedBombs >= getMaxBombs()) {
             return;
         }
 
@@ -69,13 +69,13 @@ public abstract class BomberEntity extends Character {
         Bomb bomb = new Bomb(this);
 
         if(this instanceof Player){
-            new UpdateMaxBombsEvent().invoke(getCurrentBombs()-1);
+            new UpdateCurrentAvailableBombsEvent().invoke(getCurrentBombs()-1);
         }
 
         bomb.setOnExplodeListener(() -> {
             placedBombs--;
             if(this instanceof Player){
-                new UpdateMaxBombsEvent().invoke(getCurrentBombs()+1);
+                new UpdateCurrentAvailableBombsEvent().invoke(getCurrentBombs()+1);
             }
         });
 

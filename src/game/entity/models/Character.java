@@ -37,7 +37,7 @@ public abstract class Character extends MovingEntity {
     /**
      * Whether this character is alive or not.
      */
-    protected boolean isAlive = true;
+    protected volatile boolean isAlive = true;
     protected boolean isImmune = false;
     protected volatile AtomicReference<State> state = new AtomicReference<>();
     protected boolean canMove = true;
@@ -75,6 +75,9 @@ public abstract class Character extends MovingEntity {
      */
     public boolean getAliveState() {
         return isAlive;
+    }
+    public void setAliveState(boolean s){
+        isAlive = s;
     }
 
     /**
@@ -122,7 +125,6 @@ public abstract class Character extends MovingEntity {
     @Override
     protected void onDespawn() {
         super.onDespawn();
-        isAlive = false;
     }
 
     @Override
@@ -217,7 +219,7 @@ public abstract class Character extends MovingEntity {
      * @param d The direction to move the entity in.
      * @return true if the move was successful, false otherwise.
      */
-    public boolean move(Direction d) {
+    public final boolean move(Direction d) {
         // If the entity is not alive, return true.
         if (!getAliveState()) return true;
 
@@ -232,83 +234,7 @@ public abstract class Character extends MovingEntity {
         return false;
     }
 
-    /**
-     * Handles the move command by first attempting to move the player in the direction specified by the command.
-     * <p>
-     * If the move is not successful, it attempts to overpass a block by calling the overpassBlock method.
-     *
-     * @param command            The command specifying the direction of movement.
-     * @param oppositeDirection1 The opposite direction to the command, which is used for overpassing a block.
-     * @param oppositeDirection2 The second opposite direction to the command, which is used for overpassing a block.
-     */
-    public void handleMoveCommand(Command command, Direction oppositeDirection1, Direction oppositeDirection2) {
-        boolean moveSuccessful = move(command.commandToDirection());
 
-        if (moveSuccessful) {
-            return;
-        }
-
-        List<Coordinates> oppositeBlocksCoordinates = getNewCoordinatesOnDirection(command.commandToDirection(), PitchPanel.PIXEL_UNIT, getSize());
-        List<Entity> entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates.get(0));
-        List<Entity> entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates.get(1));
-        overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirection1, oppositeDirection2);
-    }
-
-    /**
-     * Attempts to overpass a block in the opposite direction of the player's movement.
-     * The method checks for the existence of obstacles and the player input to determine the appropriate direction to move.
-     *
-     * @param entitiesOpposite1 A list of entities on the first opposite coordinate of the player's movement.
-     * @param entitiesOpposite2 A list of entities on the second opposite coordinate of the player's movement.
-     * @param direction1        The first opposite direction to the player's movement.
-     * @param direction2        The second opposite direction to the player's movement.
-     */
-    public void overpassBlock(List<Entity> entitiesOpposite1, List<Entity> entitiesOpposite2, Direction direction1, Direction direction2) {
-        Command oppositeCommand1 = direction2.toCommand();
-        Command oppositeCommand2 = direction1.toCommand();
-        boolean doubleClick1 = false;
-        boolean doubleClick2 = false;
-
-        // Check if this is the player instance and check for input
-        if (this == Bomberman.getMatch().getPlayer()) {
-            ControllerManager controllerManager = Bomberman.getMatch().getControllerManager();
-            doubleClick1 = controllerManager.isCommandPressed(oppositeCommand1);
-            doubleClick2 = controllerManager.isCommandPressed(oppositeCommand2);
-        }
-        if (doubleClick2 || doubleClick1) return;
-        // If the first direction has no obstacles and the second does, and the second direction is not double-clicked, move in the second direction.
-        if (!entitiesOpposite1.isEmpty() && entitiesOpposite2.isEmpty()) {
-            move(direction2);
-        }
-        // If the second direction has no obstacles and the first does, and the first direction is not double-clicked, move in the first direction.
-        else if (!entitiesOpposite2.isEmpty() && entitiesOpposite1.isEmpty()) {
-            move(direction1);
-        }
-    }
-
-    /**
-     * Handles the action by calling handleMoveCommand with the appropriate opposite directions depending on the command.
-     *
-     * @param command The command specifying the action.
-     */
-    public void handleAction(Command command) {
-        if (!Bomberman.getMatch().getGameState() || !canMove) {
-            return;
-        }
-
-        switch (command) {
-            // For move up and move down, use left and right as opposite directions respectively.
-            case MOVE_UP:
-            case MOVE_DOWN:
-                handleMoveCommand(command, LEFT, RIGHT);
-                break;
-            // For move left and move right, use up and down as opposite directions respectively.
-            case MOVE_LEFT:
-            case MOVE_RIGHT:
-                handleMoveCommand(command, UP, DOWN);
-                break;
-        }
-    }
 
     @Override
     public Set<Class<? extends Entity>> getObstacles() {
@@ -344,7 +270,7 @@ public abstract class Character extends MovingEntity {
             @Override
             public void run() {
                 // If the number of iterations has been reached, cancel the timer and return
-                if (count >= iterations || !isAlive) {
+                if (count >= iterations || !isSpawned()) {
                     timer.cancel();
                     return;
                 }
@@ -413,9 +339,9 @@ public abstract class Character extends MovingEntity {
     protected final void attackReceived(int damage) {
         synchronized ((Object) lastDamageTime) {
             if (Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
-                return
-                        ;
+                return;
             lastDamageTime = System.currentTimeMillis();
+
             // Reduce the health points by the specified amount
             healthPoints -= damage;
 
@@ -432,20 +358,23 @@ public abstract class Character extends MovingEntity {
     }
 
     public void eliminated() {
-        state.set(State.DIED);
-        onEliminated();
+        if(getAliveState()) {
+            setAliveState(false);
+            state.set(State.DIED);
+            onEliminated();
+        }
     }
 
     protected void onEndedDeathAnimation() { }
 
-    protected synchronized void onEliminated() {
+    protected void onEliminated() {
         canMove = false;
-
         AudioManager.getInstance().play(getDeathSound());
 
         // Create a Timer object to schedule the animation iterations
         javax.swing.Timer timer = new javax.swing.Timer((int) INTERACTION_DELAY_MS, (e) -> {
             onEndedDeathAnimation();
+
             despawn();
         });
 

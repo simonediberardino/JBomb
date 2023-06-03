@@ -17,7 +17,8 @@ public enum SoundModel {
     LIGHT_GLITCH,
     ENTITY_DEATH,
     EXPLOSION_CONFETTI,
-    STEP_SOUND;
+    STEP_SOUND,
+    BOSS_DEATH;
 
     public String toString() {
         return String.format("%s/%s.wav", Paths.getSoundsPath(), super.toString().toLowerCase());

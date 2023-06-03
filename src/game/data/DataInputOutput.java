@@ -82,7 +82,7 @@ public class DataInputOutput {
         setExplosionLength(1);
     }
     public static void resetMaxBombs(){
-        setMaxBombs(1);
+        setObtainedBombs(1);
     }
 
     public static void setExplosionLength(int newExplosionLength){
@@ -94,18 +94,18 @@ public class DataInputOutput {
         return playerDataObject.getExplosionLength();
     }
 
-    public static int getMaxBombs(){
-        return playerDataObject.getMaxBombs();
+    public static int getObtainedBombs(){
+        return playerDataObject.getObtainedBombs();
     }
 
-    public static void setMaxBombs(int newMaxBombs){
+    public static void setObtainedBombs(int newMaxBombs){
         newMaxBombs = Math.max(0, newMaxBombs);
-        playerDataObject.setMaxBombs(newMaxBombs);
+        playerDataObject.setObtainedBombs(newMaxBombs);
         updateStoredPlayerData();
     }
 
-    public static void increaseMaxBombs(){
-        setMaxBombs(getMaxBombs()+1);
+    public static void increaseObtainedBombs(){
+        setObtainedBombs(getObtainedBombs()+1);
     }
 
     public static void increaseDeaths(){

@@ -7,9 +7,14 @@ import game.ui.panels.menus.*;
 import game.ui.panels.settings.ProfilePanel;
 import game.ui.panels.settings.SettingsPanel;
 import game.utils.Paths;
+import game.utils.Utility;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -34,6 +39,8 @@ public class BombermanFrame extends JFrame {
      Creates the main frame and sets its properties.
      */
     public void create() {
+        setIconImage(Utility.loadImage("src/game/ui/frame_icon.png"));
+        setTitle("JaBomberman");
         setFrameProperties();
         initMenuPanel();
         initLoadingPanel();

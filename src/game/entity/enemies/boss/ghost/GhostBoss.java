@@ -40,6 +40,8 @@ public class GhostBoss extends Boss {
     private boolean isInvisibleTaskRunning = false;
     private long lastInvisibleTime = 0;
     private long lastGhostSpawnTime;
+    private static int lock1;
+    private static int lock2;
 
     public GhostBoss() {
         super();
@@ -93,66 +95,70 @@ public class GhostBoss extends Boss {
     /**
      * This method makes the Ghost disappear and then reappear by changing its alpha value gradually.
      */
-    private synchronized void disappearAndReappear() {
-        if (isInvisibleTaskRunning) {
-            // If an invisible task is already running, exit the method.
-            return;
-        }
-
-        // Check if enough time has passed since the last invisibility to start the task.
-        if (Utility.timePassed(lastInvisibleTime) < INVISIBLE_DELAY) {
-            return;
-        }
-
-        // Record the current time as the last invisibility time.
-        lastInvisibleTime = System.currentTimeMillis();
-        // Set the flag to indicate that an invisible task is running.
-        isInvisibleTaskRunning = true;
-
-        // Define the start and end alpha values, and the step for alpha increment/decrement.
-        float startAlpha = 1f, endAlpha = 0f, step = 0.01f;
-
-        // Create a callback handler for the task of gradually showing the object.
-        GradientCallbackHandler showTask = new GradientCallbackHandler(new RunnablePar() {
-            @Override
-            public <T> Object execute(T par) {
-                // Set the alpha value of the object to the given parameter value.
-                setAlpha((Float) par);
-
-                if ((Float) par >= startAlpha) {
-                    // If the alpha value has reached or exceeded the start alpha, mark the invisible task as finished.
-                    isInvisibleTaskRunning = false;
-                }
-                return null;
+    private void disappearAndReappear() {
+        synchronized ((Object) lock2) {
+            if (isInvisibleTaskRunning) {
+                // If an invisible task is already running, exit the method.
+                return;
             }
-        }, endAlpha, startAlpha, -step);
 
-        // Create a callback handler for the task of gradually hiding the object.
-        GradientCallbackHandler hideTask = new GradientCallbackHandler(new RunnablePar() {
-            @Override
-            public <T> Object execute(T par) {
-                // Set the alpha value of the object to the given parameter value.
-                setAlpha((Float) par);
+            // Check if enough time has passed since the last invisibility to start the task.
+            if (Utility.timePassed(lastInvisibleTime) < INVISIBLE_DELAY) {
+                return;
+            }
 
-                if (!((Float) par <= endAlpha)) {
-                    // If the alpha value is not yet less than or equal to the end alpha, exit the method.
+            // Record the current time as the last invisibility time.
+            lastInvisibleTime = System.currentTimeMillis();
+            // Set the flag to indicate that an invisible task is running.
+            isInvisibleTaskRunning = true;
+
+            // Define the start and end alpha values, and the step for alpha increment/decrement.
+            float startAlpha = 1f, endAlpha = 0f, step = 0.01f;
+
+            // Create a callback handler for the task of gradually showing the object.
+            GradientCallbackHandler showTask = new GradientCallbackHandler(new RunnablePar() {
+                @Override
+                public <T> Object execute(T par) {
+                    // Set the alpha value of the object to the given parameter value.
+                    setAlpha((Float) par);
+
+                    if ((Float) par >= startAlpha) {
+                        // If the alpha value has reached or exceeded the start alpha, mark the invisible task as finished.
+                        isInvisibleTaskRunning = false;
+                    }
                     return null;
                 }
+            }, endAlpha, startAlpha, -step);
 
-                // Create a timer to delay the execution of the show task after the object is hidden.
-                Timer t = new Timer(INVISIBLE_DURATION, (l) -> showTask.execute());
-                t.setRepeats(false);
-                t.start();
+            // Create a callback handler for the task of gradually hiding the object.
+            GradientCallbackHandler hideTask = new GradientCallbackHandler(new RunnablePar() {
+                @Override
+                public <T> Object execute(T par) {
+                    // Set the alpha value of the object to the given parameter value.
+                    setAlpha((Float) par);
 
-                return null;
-            }
-        }, startAlpha, endAlpha, step);
+                    if (!((Float) par <= endAlpha)) {
+                        // If the alpha value is not yet less than or equal to the end alpha, exit the method.
+                        return null;
+                    }
 
-        // Start the task of gradually hiding the object.
-        hideTask.execute();
+                    // Create a timer to delay the execution of the show task after the object is hidden.
+                    Timer t = new Timer(INVISIBLE_DURATION, (l) -> showTask.execute());
+                    t.setRepeats(false);
+                    t.start();
+
+                    return null;
+                }
+            }, startAlpha, endAlpha, step);
+
+            // Start the task of gradually hiding the object.
+            hideTask.execute();
+        }
     }
 
     private static void turnOffLights() {
+        if(Bomberman.getMatch().getCurrentLevel().getLevelId()!=5||Bomberman.getMatch().getCurrentLevel().getWorldId()!=5) return;
+
         BomberManMatch match = Bomberman.getMatch();
         if(match == null || !match.getGameState()) return;
 
@@ -192,28 +198,30 @@ public class GhostBoss extends Boss {
         }
     }
 
-    private synchronized static void performLightsAnimation(){
-        new Thread(() -> {
-            try {
-                turnOffLights();
-                Thread.sleep(10000);
-                turnOnLights();
-                Thread.sleep(100);
-                turnOffLights();
-                Thread.sleep(400);
-                turnOnLights();
-                Thread.sleep(100);
-                turnOffLights();
-                Thread.sleep(400);
-                turnOnLights();
-                Thread.sleep(100);
-                turnOffLights();
-                Thread.sleep(400);
-                turnOnLights();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+    private static void performLightsAnimation() {
+        synchronized ((Object) lock1) {
+            new Thread(() -> {
+                try {
+                    turnOffLights();
+                    Thread.sleep(10000);
+                    turnOnLights();
+                    Thread.sleep(100);
+                    turnOffLights();
+                    Thread.sleep(400);
+                    turnOnLights();
+                    Thread.sleep(100);
+                    turnOffLights();
+                    Thread.sleep(400);
+                    turnOnLights();
+                    Thread.sleep(100);
+                    turnOffLights();
+                    Thread.sleep(400);
+                    turnOnLights();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
     }
 
     private void attack() {

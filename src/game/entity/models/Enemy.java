@@ -36,7 +36,7 @@ public abstract class Enemy extends Character{
     }
 
     @Override
-    protected synchronized void onEliminated() {
+    protected void onEliminated() {
         super.onEliminated();
         new KilledEnemyEvent().invoke(this);
         new ScoreGameEvent().invoke(this.getMaxHp());

@@ -1,6 +1,7 @@
 package game.powerups.portal;
 
 import game.Bomberman;
+import game.data.DataInputOutput;
 import game.entity.models.BomberEntity;
 import game.entity.models.Entity;
 import game.level.Level;
@@ -32,7 +33,7 @@ public class EndLevelPortal extends Portal {
     }
 
     @Override
-    public boolean canPickUp(Entity entity) {
+    public boolean canPickUp(BomberEntity entity) {
         return Bomberman.getMatch().getEnemiesAlive() <= 0;
     }
 
@@ -41,6 +42,7 @@ public class EndLevelPortal extends Portal {
         super.doApply(entity);
 
         Bomberman.getMatch().getCurrentLevel().endLevel();
+        DataInputOutput.increaseLives();
         try {
             Level level = Bomberman.getMatch().getCurrentLevel();
             Class<? extends Level> nextLevelClass =

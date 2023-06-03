@@ -82,9 +82,6 @@ public abstract class PowerUp extends EntityInteractable {
         super(coordinates);
     }
 
-    public boolean canPickUp(Entity entity) {
-        return true;
-    }
 
     /**
      * Returns the duration of the power-up in milliseconds.
@@ -101,10 +98,8 @@ public abstract class PowerUp extends EntityInteractable {
     public final void apply(BomberEntity entity) {
         if (applied || !isSpawned()) return;
 
-        if(!canPickUp(entity))
-            return;
 
-        if(pickUpLimit(entity))return;
+        if(!canPickUp(entity))return;
 
         this.applied = true;
         this.despawn();
@@ -194,7 +189,7 @@ public abstract class PowerUp extends EntityInteractable {
      *
      * @return wheter the powerup can be picked up indefinite times or not;
      */
-    public boolean pickUpLimit(BomberEntity entity) {
-        return entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass()));
+    public boolean canPickUp(BomberEntity entity) {
+        return !(entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass())));
     }
 }

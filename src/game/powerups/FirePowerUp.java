@@ -42,7 +42,7 @@ public class FirePowerUp extends PowerUp {
     }
 
     @Override
-    public boolean pickUpLimit(BomberEntity entity) {
-        return DataInputOutput.getExplosionLength() > MAX_EXPLOSION_LENGTH;
+    public boolean canPickUp(BomberEntity entity) {
+        return !(DataInputOutput.getExplosionLength() > MAX_EXPLOSION_LENGTH);
     }
 }

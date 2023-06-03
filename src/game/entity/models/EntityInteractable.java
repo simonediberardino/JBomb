@@ -21,8 +21,8 @@ public abstract class EntityInteractable extends Entity {
     public static final long SHOW_DEATH_PAGE_DELAY_MS = 2500;
     public final static long INTERACTION_DELAY_MS = 500;
     private final Set<Class<? extends Entity>> whitelistObstacles = new HashSet<>();
-    private final HashMap<Entity, Long> interactionMap = new HashMap<>();
-    protected long lastDamageTime = 0;
+    protected long lastInteractionTime = 0;
+    protected long  lastDamageTime = 0;
     private int attackDamage = 100;
 
     /**
@@ -55,18 +55,21 @@ public abstract class EntityInteractable extends Entity {
         }
     }
 
-    private void interactAndUpdateLastInteract(Entity e){
+    private synchronized void interactAndUpdateLastInteract(Entity e){
+        if(Utility.timePassed(getLastInteraction(e)) < INTERACTION_DELAY_MS) {
+            return;
+        }
         this.doInteract(e); // Interact with the entity.
         this.updateLastInteract(e); // Update the last interaction for this entity.
     }
 
     public void updateLastInteract(Entity e) {
         if(e == null)return;
-        interactionMap.put(e, System.currentTimeMillis());
+        lastInteractionTime = System.currentTimeMillis();
     }
 
     public long getLastInteraction(Entity e){
-        return interactionMap.getOrDefault(e, 0L);
+        return lastInteractionTime;
     }
 
     /**
@@ -192,10 +195,6 @@ public abstract class EntityInteractable extends Entity {
     public boolean canInteractWith(Entity e){
         if(e == null) return true;
 
-        if(Utility.timePassed(getLastInteraction(e)) < INTERACTION_DELAY_MS) {
-            return false;
-        }
-
         return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e));
     }
 
@@ -207,7 +206,7 @@ public abstract class EntityInteractable extends Entity {
         attackDamage = damage;
     }
 
-    public synchronized void attack(Entity e){
+    public void attack(Entity e){
         if(e == null || e.isImmune()) return;
 
         if (e instanceof Character){

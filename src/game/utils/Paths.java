@@ -86,9 +86,7 @@ public class Paths {
         return String.format("%s/ui", getAssetsFolder());
     }
 
-    public static String getBackgroundSoundPath() {
-        return String.format("%s/background_sound.wav", getCurrentLevelFolder());
-    }
+
 
     public static String getCursorPath() {
         return String.format("%s/cursor.png", getUiFolder());

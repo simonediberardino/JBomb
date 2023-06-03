@@ -92,14 +92,16 @@ public class Coordinates implements Comparable<Coordinates> {
         return coord;
     }
 
-    public static Coordinates randomCoordinatesFromPlayer() {
-        return Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE * 3);
-    }
+
+
 
     public static Coordinates randomCoordinatesFromPlayer(int entitySize){
+        return randomCoordinatesFromPlayer(entitySize,GRID_SIZE*3);
+    }
+    public static Coordinates randomCoordinatesFromPlayer(int entitySize, int distance){
         Coordinates c;
         while (true){
-            c = randomCoordinatesFromPlayer();
+            c = Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), distance);;
             if (c.validate(entitySize)) return c;
         }
     }
@@ -214,7 +216,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
 
-    public synchronized static List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords){
+    public static List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords){
         List<Entity> entityLinkedList = new LinkedList<>();
         // Check for each entity if it occupies the specified coordinates
         Set<? extends Entity> entities = new HashSet<>(Bomberman.getMatch().getEntities()) ;

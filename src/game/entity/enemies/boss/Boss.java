@@ -6,6 +6,8 @@ import game.entity.models.Entity;
 import game.entity.models.Coordinates;
 import game.powerups.PowerUp;
 import game.powerups.portal.EndLevelPortal;
+import game.sound.AudioManager;
+import game.sound.SoundModel;
 
 import java.awt.*;
 import java.util.*;
@@ -20,7 +22,7 @@ public abstract class Boss extends IntelligentEnemy {
     public Boss() {
         this(null);
 
-        setCoords(Coordinates.randomCoordinatesFromPlayer(getSize()));
+        setCoords(Coordinates.randomCoordinatesFromPlayer(getSize(), getSize()*2));
     }
 
     public Boss(Coordinates coordinates){
@@ -28,6 +30,12 @@ public abstract class Boss extends IntelligentEnemy {
         super.setMaxHp(1000);
         super.setHp(getMaxHp());
         super.setAttackDamage(1000);
+    }
+
+    @Override
+    protected void onEliminated() {
+        super.onEliminated();
+        AudioManager.getInstance().play(SoundModel.BOSS_DEATH);
     }
 
     @Override

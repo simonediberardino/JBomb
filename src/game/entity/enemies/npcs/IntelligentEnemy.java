@@ -25,6 +25,7 @@ public abstract class IntelligentEnemy extends Enemy implements ICPU {
 
     @Override
     protected final void doInteract(Entity e) {
+
         if (e instanceof BomberEntity) {
             super.doInteract(e);
         }
