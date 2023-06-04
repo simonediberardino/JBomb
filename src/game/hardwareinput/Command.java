@@ -12,12 +12,12 @@ public enum Command {
     INTERACT;
 
     public Direction commandToDirection(){
-        return switch (this) {
-            case MOVE_UP -> Direction.UP;
-            case MOVE_DOWN -> Direction.DOWN;
-            case MOVE_LEFT -> Direction.LEFT;
-            case MOVE_RIGHT -> Direction.RIGHT;
-            default -> null;
-        };
+        switch (this){
+            case MOVE_UP: return Direction.UP;
+            case MOVE_DOWN: return Direction.DOWN;
+            case MOVE_LEFT: return Direction.LEFT;
+            case MOVE_RIGHT: return Direction.RIGHT;
+        }
+        return null;
     }
 }

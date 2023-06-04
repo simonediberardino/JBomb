@@ -9,13 +9,14 @@ public enum EnhancedDirection {
     RIGHTDOWN;
 
     public Direction[] toDirection(){
-        return switch (this) {
-            case LEFTUP -> new Direction[]{Direction.LEFT, Direction.UP};
-            case LEFTDOWN -> new Direction[]{Direction.LEFT, Direction.DOWN};
-            case RIGHTDOWN -> new Direction[]{Direction.RIGHT, Direction.DOWN};
-            case RIGHTUP -> new Direction[]{Direction.RIGHT, Direction.UP};
-        };
+        switch (this){
+            case LEFTUP: return new Direction[]{ Direction.LEFT,Direction.UP };
+            case LEFTDOWN: return new Direction[]{ Direction.LEFT,Direction.DOWN };
+            case RIGHTDOWN: return new Direction[]{ Direction.RIGHT,Direction.DOWN };
+            case RIGHTUP: return new Direction[]{ Direction.RIGHT,Direction.UP };
+        }
 
+        return null;
     }
 
     public static EnhancedDirection toEnhancedDirection(Direction[] directions){
@@ -27,9 +28,9 @@ public enum EnhancedDirection {
         }
 
         for (Direction d: directions) {
-            switch (d) {
-                case DOWN, UP -> vertical = d;
-                case RIGHT, LEFT -> horizontal = d;
+            switch (d){
+                case DOWN: case UP: vertical=d; break;
+                case RIGHT: case LEFT: horizontal=d; break;
             }
         }
 
@@ -45,9 +46,9 @@ public enum EnhancedDirection {
     public EnhancedDirection opposite(Direction direction){
         Direction[] array = toDirection();
         for (int i = 0; i< array.length; i++){
+
             if (array[i]== direction) array[i] = direction.opposite();
         }
-
         return toEnhancedDirection(array);
 
     }

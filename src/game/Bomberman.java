@@ -24,6 +24,9 @@ public class Bomberman {
     private static BomberManMatch bomberManMatch;
     private static BombermanFrame bombermanFrame;
 
+    /**
+     * Starts the Java Application;
+     */
     public static void main(String[] args){
         retrievePlayerData();
         startGarbageCollectorTask();
@@ -64,6 +67,10 @@ public class Bomberman {
         System.gc();
     }
 
+    /**
+     * Starts a new level and destroys the previous one;
+     * @param level
+     */
     private static void doStartLevel(Level level) {
         destroyLevel();
         bomberManMatch = new BomberManMatch(level);
