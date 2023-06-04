@@ -1,5 +1,6 @@
-package game;
+package game.tasks;
 
+import game.Bomberman;
 import game.hardwareinput.Command;
 import game.events.Observer2;
 

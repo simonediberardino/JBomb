@@ -3,7 +3,7 @@ package game;
 import game.hardwareinput.ControllerManager;
 import game.hardwareinput.MouseControllerManager;
 import game.data.DataInputOutput;
-import game.sound.AudioManager;
+import game.tasks.GamePausedObserver;
 import game.tasks.GameTickerObservable;
 import game.entity.*;
 import game.entity.models.*;
