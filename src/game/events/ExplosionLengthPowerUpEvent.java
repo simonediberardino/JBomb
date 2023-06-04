@@ -1,6 +1,5 @@
 package game.events;
 
-import game.Bomberman;
 import game.data.DataInputOutput;
 
 import static game.data.DataInputOutput.increaseExplosionLength;

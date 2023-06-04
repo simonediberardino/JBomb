@@ -135,6 +135,9 @@ public abstract class Character extends MovingEntity {
     }
 
     protected void playStepSound() {
+        if(this instanceof Player){
+            int a =0;
+        }
         SoundModel stepSound = getStepSound();
         if (stepSound != null) AudioManager.getInstance().play(stepSound,false,20);
     }

@@ -1,10 +1,6 @@
 package game.ui.panels;
 
-import game.BomberManMatch;
-import game.Bomberman;
-import game.sound.AudioManager;
 import game.ui.viewelements.misc.ToastHandler;
-import game.utils.Paths;
 import game.utils.Utility;
 
 import javax.swing.*;
@@ -47,16 +43,6 @@ public abstract class PagePanel extends JPanel {
 
     public ToastHandler getToastHandler(){
         return toastHandler;
-    }
-
-    public final void onShow() {
-        BomberManMatch match = Bomberman.getMatch();
-        String soundTrack = match == null || match.getCurrentLevel() == null || !match.getGameState()
-                ? Paths.getDefaultSoundTrack()
-                : match.getCurrentLevel().getLevelSoundtrack();
-
-        AudioManager.getInstance().playBackgroundSong(soundTrack);
-        onShowCallback();
     }
 
     public abstract void onShowCallback();
