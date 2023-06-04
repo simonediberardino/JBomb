@@ -158,6 +158,8 @@ public class BomberManMatch {
             e.despawn();
         }
 
+        Bomberman.getBombermanFrame().getPitchPanel().clearGraphicsCallback();
+
         if(this.currentLevel != null) {
             this.currentLevel.stopLevelSound();
         }

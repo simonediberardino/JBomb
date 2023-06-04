@@ -107,12 +107,12 @@ public abstract class EntityInteractable extends Entity {
      @param d the direction to move or interact in
      @return true if the entity can move in the given direction, false otherwise
      */
-    public boolean moveOrInteract(Direction d) {
+    public final boolean moveOrInteract(Direction d) {
         // Call the moveOrInteract method with the default step size
         return moveOrInteract(d, PIXEL_UNIT);
     }
 
-    public boolean moveOrInteract(Direction d, int stepSize){
+    public final boolean moveOrInteract(Direction d, int stepSize){
         return moveOrInteract(d, stepSize, false);
     }
 
@@ -125,22 +125,31 @@ public abstract class EntityInteractable extends Entity {
      * @param d the direction to move or interact in
      * @param stepSize the step size to use
      */
-    protected boolean moveOrInteract(Direction d, int stepSize, boolean ignoreMapBorders) {
+    protected final boolean moveOrInteract(Direction d, int stepSize, boolean ignoreMapBorders) {
         if(d == null) return false;
+        Coordinates nextTopLeftCoords = nextCoords(d, stepSize);
+        //optimization, not necessary for the method to work
+        if(nextTopLeftCoords.validate(this)){
+            if(Coordinates.getAllBlocksInAreaFromDirection(this,d,stepSize).stream().allMatch(c-> Coordinates.getEntitiesOnBlock(c).stream().noneMatch(e->canInteractWith(e)||isObstacle(e)&&e!=this))) {
+                move(nextTopLeftCoords);
+                return true;
+            }
+        }else if(!ignoreMapBorders){
+            this.interact(null);
+            return false;
+        }
+
 
         // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
         // with a given step size
         List<Coordinates> nextOccupiedCoords = getNewCoordinatesOnDirection(d, stepSize, GRID_SIZE/3 / 2);
 
         // Calculate the coordinates of the top-left corner of the next position
-        Coordinates nextTopLeftCoords = nextCoords(d, stepSize);
+
         // Get a list of entities that are present in the next occupied coordinates
         List<Entity> interactedEntities = getEntitiesOnCoordinates(nextOccupiedCoords);
 
-        if(!ignoreMapBorders && !nextTopLeftCoords.validate(this)){
-            this.interact(null);
-            return false;
-        }
+
 
         //interactedEntities = interactedEntities.stream().filter(e-> canInteractWith(e) || isObstacle(e)).collect(Collectors.toList());
 

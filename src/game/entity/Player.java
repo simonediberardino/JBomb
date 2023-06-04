@@ -30,7 +30,6 @@ public class Player extends BomberEntity {
      public Player(Coordinates coordinates) {
         super(coordinates);
         this.hitboxSizeToHeightRatio = 0.733f;
-        isImmune= true;
     }
 
     private void updateBombs() {

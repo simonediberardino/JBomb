@@ -4,6 +4,7 @@ import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.ConfettiExplosion;
+import game.entity.enemies.npcs.ClownNose;
 import game.entity.enemies.npcs.Orb;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.*;
@@ -156,7 +157,7 @@ public class Clown extends Boss implements Explosive {
      */
     private void spawnOrbs() {
         for (Direction d: Direction.values()) {
-            new Orb(
+            new ClownNose(
                     Coordinates.fromDirectionToCoordinateOnEntity(
                             this,
                             d,
@@ -172,7 +173,7 @@ public class Clown extends Boss implements Explosive {
      */
     private void spawnEnhancedOrbs() {
         for (EnhancedDirection d: EnhancedDirection.values()) {
-            new Orb(Coordinates.fromDirectionToCoordinateOnEntity(this,d,Orb.SIZE),d).spawn(true, false);
+            new ClownNose(Coordinates.fromDirectionToCoordinateOnEntity(this,d,Orb.SIZE),d).spawn(true, false);
         }
     }
 

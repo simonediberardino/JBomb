@@ -19,7 +19,7 @@ import java.util.Set;
  It can be instantiated with either an EnhancedDirection or a Direction, but not both.
  The Orb class implements the Transparent and Particle interfaces.
  */
-public class Orb extends Enemy {
+public abstract class Orb extends Enemy {
 
     /**
      The size of the Orb.
@@ -61,26 +61,6 @@ public class Orb extends Enemy {
     }
 
     @Override
-    protected String getBasePath() {
-        return Paths.getEnemiesFolder() + "/clown/clown_orb.png";
-    }
-
-    /**
-     Returns an array of the skin of the Orb.
-     @return an array of the skin of the Orb
-     */
-    @Override
-    public String[] getCharacterOrientedImages() {
-        return new String[]{
-                getBasePath()
-        };
-    }
-    /**
-
-     Returns the size of the Orb.
-     @return the size of the Orb
-     */
-    @Override
     public int getSize() {
         return SIZE;
     }
@@ -90,6 +70,7 @@ public class Orb extends Enemy {
      @param e the entity to interact with
      */
     @Override
+    //
     protected void doInteract(Entity e) {
         if (canInteractWith(e)) {
             attack(e);
@@ -114,6 +95,7 @@ public class Orb extends Enemy {
      @param e the entity to check
      @return true if the entity is null, false otherwise
      */
+    //
     @Override
     public boolean isObstacle(Entity e){
         return e == null;

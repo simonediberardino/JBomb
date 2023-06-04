@@ -1,9 +1,12 @@
 package game.ui.panels.game;
 
+import game.BomberManMatch;
 import game.Bomberman;
+import game.entity.enemies.boss.ghost.GhostBoss;
 import game.entity.models.Entity;
 import game.events.Observer2;
 import game.events.RunnablePar;
+import game.sound.AudioManager;
 import game.utils.Utility;
 
 import javax.swing.*;
@@ -11,6 +14,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Set;
 
+import static game.sound.SoundModel.LIGHT_GLITCH;
 import static game.utils.Utility.loadImage;
 import static game.utils.Utility.px;
 
@@ -104,12 +108,46 @@ public class PitchPanel extends JPanel implements Observer2 {
 
     }
 
+
+    public static void turnOffLights() {
+        BomberManMatch match = Bomberman.getMatch();
+        if(match == null || !match.getGameState()) return;
+
+        PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
+        AudioManager.getInstance().play(LIGHT_GLITCH);
+
+        pitchPanel.addGraphicsCallback(
+                GhostBoss.class.getSimpleName(), new RunnablePar() {
+                    @Override
+                    public <T> Object execute(T par) {
+                        Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
+                        g2d.setColor(new Color(0,0,0,0.9f));
+                        g2d.fillRect(0,0,Bomberman.getBombermanFrame().getHeight(),Bomberman.getBombermanFrame().getWidth());
+                        return null;
+                    }
+                }
+        );
+    }
+
+    public static void turnOnLights() {
+        BomberManMatch match = Bomberman.getMatch();
+        if(match == null || !match.getGameState()) return;
+
+        AudioManager.getInstance().play(LIGHT_GLITCH);
+        PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
+        pitchPanel.removeGraphicsCallback(GhostBoss.class.getSimpleName());
+    }
+
     public void addGraphicsCallback(String tag, RunnablePar callback){
         graphicsCallbacks.put(tag, callback);
     }
 
     public void removeGraphicsCallback(String tag){
         graphicsCallbacks.remove(tag);
+    }
+
+    public void clearGraphicsCallback() {
+        graphicsCallbacks.clear();
     }
 
     /**

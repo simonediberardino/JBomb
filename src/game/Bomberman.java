@@ -103,4 +103,8 @@ public class Bomberman {
             AudioManager.getInstance().playBackgroundSong();
         }
     }
+
+    public static boolean isGameEnded() {
+        return getMatch() == null || !getMatch().getGameState();
+    }
 }

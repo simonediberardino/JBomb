@@ -18,7 +18,8 @@ public enum SoundModel {
     ENTITY_DEATH,
     EXPLOSION_CONFETTI,
     STEP_SOUND,
-    BOSS_DEATH;
+    BOSS_DEATH,
+    CLOWN_NOSE_DEATH;
 
     public String toString() {
         return String.format("%s/%s.wav", Paths.getSoundsPath(), super.toString().toLowerCase());

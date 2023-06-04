@@ -17,6 +17,8 @@ import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -156,37 +158,6 @@ public class GhostBoss extends Boss {
         }
     }
 
-    private static void turnOffLights() {
-        if(Bomberman.getMatch().getCurrentLevel().getLevelId()!=5||Bomberman.getMatch().getCurrentLevel().getWorldId()!=5) return;
-
-        BomberManMatch match = Bomberman.getMatch();
-        if(match == null || !match.getGameState()) return;
-
-        PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
-        AudioManager.getInstance().play(LIGHT_GLITCH);
-
-        pitchPanel.addGraphicsCallback(
-                GhostBoss.class.getSimpleName(), new RunnablePar() {
-                    @Override
-                    public <T> Object execute(T par) {
-                        Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
-                        g2d.setColor(new Color(0,0,0,0.9f));
-                        g2d.fillRect(0,0,Bomberman.getBombermanFrame().getHeight(),Bomberman.getBombermanFrame().getWidth());
-                        return null;
-                    }
-                }
-        );
-    }
-
-    private static void turnOnLights() {
-        BomberManMatch match = Bomberman.getMatch();
-        if(match == null || !match.getGameState()) return;
-
-        AudioManager.getInstance().play(LIGHT_GLITCH);
-        PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
-        pitchPanel.removeGraphicsCallback(GhostBoss.class.getSimpleName());
-    }
-
     private void spawnGhosts(int n) {
         if(Utility.timePassed(lastGhostSpawnTime) < GHOST_SPAWN_TIME_DELAY) return;
 
@@ -200,27 +171,33 @@ public class GhostBoss extends Boss {
 
     private static void performLightsAnimation() {
         synchronized ((Object) lock1) {
-            new Thread(() -> {
-                try {
-                    turnOffLights();
-                    Thread.sleep(10000);
-                    turnOnLights();
-                    Thread.sleep(100);
-                    turnOffLights();
-                    Thread.sleep(400);
-                    turnOnLights();
-                    Thread.sleep(100);
-                    turnOffLights();
-                    Thread.sleep(400);
-                    turnOnLights();
-                    Thread.sleep(100);
-                    turnOffLights();
-                    Thread.sleep(400);
-                    turnOnLights();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            SwingUtilities.invokeLater(() -> {
+                Timer timer = new Timer(0, null);
+                var ref = new Object() {
+                    int count = 0;
+                };
+
+                timer.addActionListener(e -> {
+                    int rand = (int) (Math.random() * 10000);
+
+                    switch (ref.count) {
+                        case 0: case 2: case 4: PitchPanel.turnOffLights(); break;
+                        case 1: case 3: PitchPanel.turnOnLights(); break;
+                    }
+
+                    timer.setDelay(rand);
+
+                    if(ref.count >= 5 || Bomberman.isGameEnded()) {
+                        PitchPanel.turnOnLights();
+                        timer.stop();
+                    }
+
+                    ref.count++;
+                });
+
+                timer.setInitialDelay(0);
+                timer.start();
+            });
         }
     }
 

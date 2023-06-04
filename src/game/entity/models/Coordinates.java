@@ -293,6 +293,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
     public static ArrayList<Coordinates> getAllBlocksInArea(Coordinates topLeft,Coordinates bottomRight){
         if(topLeft.compareTo(bottomRight)>0){
+            System.out.println("topLeft is greater than bottomRight coordinates");
             return null;
         }
 
@@ -312,7 +313,6 @@ public class Coordinates implements Comparable<Coordinates> {
     public static boolean isBlockOccupied(Coordinates nextOccupiedCoords){
         return !getEntitiesOnBlock(nextOccupiedCoords).isEmpty();
     }
-
     public static ArrayList<Coordinates> getAllBlocksInAreaFromDirection(Entity e, Direction d, int depth){
         switch (d){
             case LEFT:return getAllBlocksInArea
