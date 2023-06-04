@@ -38,9 +38,4 @@ public class ClownNose extends Orb {
         super.onDespawn();
         AudioManager.getInstance().play(SoundModel.CLOWN_NOSE_DEATH);
     }
-    /**
-
-     Returns the size of the Orb.
-     @return the size of the Orb
-     */
 }

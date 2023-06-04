@@ -72,8 +72,7 @@ public class WorldSelectorLevel extends Level{
     }
 
     public void generateInvisibleBlock(){
-        //BORDER INVISIBLE BLOCKS
-            //COLUMNS
+        //BORDER INVISIBLE BLOCKS COLUMNS
         for (int i = 0; i< PitchPanel.DIMENSION.getWidth()/PitchPanel.GRID_SIZE-1; i++){
             new InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(new Dimension(i,0))).spawn();
             new InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(new Dimension(i,(int)(PitchPanel.DIMENSION.getHeight()/PitchPanel.GRID_SIZE-1)))).spawn();

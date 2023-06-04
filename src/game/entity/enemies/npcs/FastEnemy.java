@@ -8,6 +8,9 @@ import game.utils.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * An enemy with increased speed multiplier;
+ */
 public class FastEnemy extends IntelligentEnemy {
     public FastEnemy() {
         super();

@@ -13,11 +13,6 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 
 public class EndLevelPortal extends Portal {
-    /**
-     * Constructs a PowerUp entity with the specified coordinates.
-     *
-     * @param coordinates the coordinates of the PowerUp entity
-     */
     public EndLevelPortal(Coordinates coordinates) {
         super(coordinates);
     }

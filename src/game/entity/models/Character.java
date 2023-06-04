@@ -45,13 +45,7 @@ public abstract class Character extends MovingEntity {
     private int maxHp = 100;
     private int healthPoints = maxHp;
 
-    /**
-     * Returns an array of file names for the front-facing icons for this character.
-     *
-     * @return an array of file names for the front-facing icons
-     */
     public abstract String[] getCharacterOrientedImages();
-
 
     private void setImageDirection(){
         if (imagePossibleDirections.contains(currDirection)) imageDirection = currDirection;

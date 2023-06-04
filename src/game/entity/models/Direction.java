@@ -9,31 +9,20 @@ public enum Direction {
     DOWN;
 
     public Command toCommand(){
-        switch (this) {
-            case UP: return Command.MOVE_UP;
-            case DOWN: return Command.MOVE_DOWN;
-            case LEFT: return Command.MOVE_LEFT;
-            case RIGHT: return Command.MOVE_RIGHT;
-        }
-        return Command.MOVE_UP;
+        return switch (this) {
+            case UP -> Command.MOVE_UP;
+            case DOWN -> Command.MOVE_DOWN;
+            case LEFT -> Command.MOVE_LEFT;
+            case RIGHT -> Command.MOVE_RIGHT;
+        };
     }
 
     public Direction opposite() {
-        switch (this) {
-            case UP:
-                return DOWN;
-            case DOWN:
-                return UP;
-            case LEFT:
-                return RIGHT;
-            case RIGHT:
-                return LEFT;
-            default:
-                return UP;
-        }
-
+        return switch (this) {
+            case UP -> DOWN;
+            case DOWN -> UP;
+            case LEFT -> RIGHT;
+            case RIGHT -> LEFT;
+        };
     }
-
-
-
 }

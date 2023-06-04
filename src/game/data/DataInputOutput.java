@@ -14,6 +14,9 @@ import java.util.Optional;
 
 import static game.level.Level.ID_TO_FIRST_LEVEL_MAP;
 
+/**
+ * Class that stores and retrieves player data from a file using Serialization;
+ */
 public class DataInputOutput {
     public static int START_LIVES = 3;
     private static PlayerDataObject playerDataObject;
@@ -28,6 +31,7 @@ public class DataInputOutput {
 
     public static void updateStoredPlayerData(PlayerDataObject serObj) {
         try {
+            // Creates a data file if still does not exist;
             Files.createDirectories(java.nio.file.Paths.get(Paths.getDataFolder()));
 
             File dataFile = new File(Paths.getPlayerDataPath());
@@ -81,6 +85,7 @@ public class DataInputOutput {
     public static void resetExplosionLength(){
         setExplosionLength(1);
     }
+
     public static void resetMaxBombs(){
         setObtainedBombs(1);
     }
@@ -199,22 +204,6 @@ public class DataInputOutput {
     public static void increaseRounds(){
         playerDataObject.setRounds(playerDataObject.getRounds() + 1);
         updateStoredPlayerData();
-    }
-
-    public static Level getLastLevelInstance() {
-        int worldId = playerDataObject.getLastWorldId();
-        int levelId = playerDataObject.getLastLevelId();
-
-        Optional<Class<? extends Level>> lastLevel = Level.ID_TO_LEVEL.entrySet().stream().filter(e -> e.getKey()[0] == worldId && e.getKey()[1] == levelId).findFirst().map(Map.Entry::getValue);
-
-        Class<? extends Level> levelClass = lastLevel.isPresent() ? lastLevel.get() : ID_TO_FIRST_LEVEL_MAP.get(1);
-
-        try {
-            return levelClass.getConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return new World1Level1();
     }
 
     public static String getLeftKeyChar() {

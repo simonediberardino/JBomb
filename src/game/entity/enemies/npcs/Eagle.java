@@ -15,5 +15,4 @@ public class Eagle extends FlyingEnemy{
                 String.format("%s/eagle_%s_2.png", getBasePath(), imageDirection.toString().toLowerCase()),
         };
     }
-
 }

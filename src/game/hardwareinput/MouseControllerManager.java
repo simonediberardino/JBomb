@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The MouseControllerManager class handles mouse interactions and controls player movement based on mouse input.
+ */
 public class MouseControllerManager extends MouseAdapter implements MouseMotionListener {
     private boolean mouseDraggedInteractionOccured;
     private boolean mouseDraggedInteractionInterrupted;
@@ -19,7 +22,8 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
     private boolean isMouseDragged;
     private boolean isMouseClicked;
     private LinkedList<MouseEvent> mouseClickQueue = new LinkedList<>();
-    //first and last directions from player are differentiated so the task can be terminated when they have no direction in common, in order to avoid infinite loop
+    // First and last directions from the player are differentiated so the task can be terminated when they have no direction in common,
+    // in order to avoid an infinite loop
     private List<Direction> firstDirectionsFromPlayer = new ArrayList<>();
     private List<Direction> latestDirectionsFromPlayer = new ArrayList<>();
     private Coordinates mouseCoords;
@@ -55,17 +59,26 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
         nextCommandInQueue();
     };
 
+    /**
+     * Retrieves and removes the next command in the mouseClickQueue.
+     */
     public void nextCommandInQueue(){
         mouseClickQueue.poll();
         if(!mouseClickQueue.isEmpty())
         onMouseClicked(mouseClickQueue.peekFirst());
     }
 
+    /**
+     * Called when the mouse button is released.
+     *
+     * @param event The MouseEvent representing the release of the mouse button.
+     */
     @Override
     public void mouseReleased(MouseEvent event){
-        //if mouse dragged interaction was not successful and mouse is released, call mouseClicked so that click-dependent interactions can be called.
-        //this is necessary because mouseClicked is never called when mouseDragged is called, unlike mousePressed. MouseClicked was still chosen because
-        // the two methods shouldn't be called at exactly the same time.
+        // If a mouse dragged interaction was not successful and the mouse is released, call mouseClicked
+        // so that click-dependent interactions can be called.
+        // This is necessary because mouseClicked is never called when mouseDragged is called, unlike mousePressed.
+        // mouseClicked was still chosen because the two methods shouldn't be called at exactly the same time.
         if (!isMouseDragged) {
             return;
         }
@@ -76,6 +89,11 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
         mouseDraggedInteractionInterrupted = false;
     }
 
+    /**
+     * Called when the mouse button is pressed.
+     *
+     * @param event The MouseEvent representing the press of the mouse button.
+     */
     @Override
     public void mousePressed(MouseEvent event){
         if(isMouseClicked) return;
@@ -123,14 +141,6 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
         return mouseCoords;
     }
 
-    public boolean isMouseDraggedInteractionOccured() {
-        return mouseDraggedInteractionOccured;
-    }
-
-    public LinkedList<MouseEvent> getMouseClickQueue() {
-        return mouseClickQueue;
-    }
-
     public void setMouseDraggedInteractionOccured(boolean mouseDraggedInteractionOccured) {
         this.mouseDraggedInteractionOccured = mouseDraggedInteractionOccured;
     }
@@ -155,16 +165,8 @@ public class MouseControllerManager extends MouseAdapter implements MouseMotionL
         return isMouseDragged;
     }
 
-    public void setMouseDragged(boolean mouseDragged) {
-        isMouseDragged = mouseDragged;
-    }
-
     public boolean isMouseClicked() {
         return isMouseClicked;
-    }
-
-    public void setMouseClicked(boolean mouseClicked) {
-        isMouseClicked = mouseClicked;
     }
 
     public void stopPeriodicTask(){

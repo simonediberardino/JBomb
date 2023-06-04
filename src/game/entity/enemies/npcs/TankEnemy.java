@@ -35,6 +35,10 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
         };
     }
 
+    /**
+     * Ran every game tick;
+     * @param arg
+     */
     @Override
     public void doUpdate(boolean arg) {
         if (Utility.timePassed(lastUpdate) > SHOOTING_REFRESH_RATE) {

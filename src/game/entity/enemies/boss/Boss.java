@@ -14,6 +14,10 @@ import java.util.*;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
+
+/**
+ * An abstract class for enemy bosses;
+ */
 public abstract class Boss extends IntelligentEnemy {
     protected static int SIZE = GRID_SIZE * 4;
     protected int currRageStatus = 0;

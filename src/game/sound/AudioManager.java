@@ -75,6 +75,7 @@ public class AudioManager {
 
         return null;
     }
+
     public Clip play(String sound, boolean loop){
         return play(sound,loop,20);
     }
@@ -129,7 +130,4 @@ public class AudioManager {
         if(c != null) c.stop();
     }
 
-    public boolean isSoundAlreadyPlayer(String soundModelString){
-        return audioHashMap.containsKey(soundModelString);
-    }
 }

@@ -1,6 +1,7 @@
 package game.ui.panels;
 
 import game.level.world1.World1Level1;
+import game.localization.Localization;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.game.PitchPanel;
 import game.ui.panels.menus.*;
@@ -39,8 +40,8 @@ public class BombermanFrame extends JFrame {
      Creates the main frame and sets its properties.
      */
     public void create() {
-        setIconImage(Utility.loadImage("src/game/ui/frame_icon.png"));
-        setTitle("JaBomberman");
+        setIconImage(Utility.loadImage(Paths.getIconPath()));
+        setTitle(Localization.get(Localization.APP_NAME));
         setFrameProperties();
         initMenuPanel();
         initLoadingPanel();

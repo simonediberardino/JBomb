@@ -60,6 +60,7 @@ public class Player extends BomberEntity {
                 String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 0),
         };
     }
+
     public void handleMoveCommand(Command command, Direction oppositeDirection1, Direction oppositeDirection2) {
         boolean moveSuccessful = move(command.commandToDirection());
 

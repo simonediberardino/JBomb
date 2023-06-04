@@ -6,12 +6,18 @@ import game.entity.models.*;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static game.utils.Utility.loadImage;
+
+/**
+ * An abstract class for in-game explosions;
+ */
 public abstract class AbstractExplosion extends MovingEntity {
     public static int MAX_EXPLOSION_LENGTH = 5;
     public static final int SIZE = PitchPanel.COMMON_DIVISOR * 2;
@@ -159,6 +165,20 @@ public abstract class AbstractExplosion extends MovingEntity {
     @Override
     public Set<Class<? extends Entity>> getInteractionsEntities(){
         return new HashSet<>(getExplosive().getExplosionInteractionEntities());
+    }
+
+    @Override
+    public BufferedImage getImage() {
+        if (distanceFromExplosive == 0) {
+            return loadImage(String.format("%s_central" + getState() + ".png", getBasePath()));
+        }
+
+        String isLast = canExpand ? "" : "_last";
+        String imageFileName = "_" + direction.toString().toLowerCase();
+
+        // Load and set the image of the flame.
+        String imagePath = String.format("%s%s%s%s.png", getBasePath(), imageFileName, isLast, getState());
+        return loadAndSetImage(imagePath);
     }
 
     public boolean getCanExpand() {

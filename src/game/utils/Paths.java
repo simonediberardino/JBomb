@@ -91,4 +91,8 @@ public class Paths {
     public static String getCursorPath() {
         return String.format("%s/cursor.png", getUiFolder());
     }
+
+    public static String getIconPath() {
+        return getMenuImagesPath() + "/frame_icon.png";
+    }
 }

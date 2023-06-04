@@ -157,6 +157,11 @@ public class Localization {
         put(Locale.ITALY, "GIOCATORE");
     }};
 
+    public static final HashMap<Locale, String> APP_NAME = new HashMap<>() {{
+        put(Locale.ENGLISH, "JBOMBERMAN");
+        put(Locale.ITALY, "JBOMBERMAN");
+    }};
+
     public static Locale[] getSupportedLanguages() {
         return new Locale[]{
                 Locale.ENGLISH,
