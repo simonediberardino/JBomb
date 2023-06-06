@@ -130,7 +130,7 @@ public abstract class EntityInteractable extends Entity {
         Coordinates nextTopLeftCoords = nextCoords(d, stepSize);
         //optimization, not necessary for the method to work
         if(nextTopLeftCoords.validate(this)){
-            if(Coordinates.getAllBlocksInAreaFromDirection(this,d,stepSize).stream().allMatch(c-> Coordinates.getEntitiesOnBlock(c).stream().noneMatch(e->canInteractWith(e)||isObstacle(e)&&e!=this))) {
+            if(Coordinates.getAllBlocksInAreaFromDirection(this,d,stepSize).stream().allMatch(c-> Coordinates.getEntitiesOnBlock(c).stream().noneMatch(e->canBeInteractedBy(e)|| canInteractWith(e)||isObstacle(e)&&e!=this))) {
                 move(nextTopLeftCoords);
                 return true;
             }
