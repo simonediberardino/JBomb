@@ -71,4 +71,5 @@ public abstract class Enemy extends Character{
     protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
         return new HashSet<>(Collections.singletonList(AbstractExplosion.class));
     }
+
 }

@@ -36,6 +36,11 @@ public class ClownNose extends Orb {
     @Override
     protected void onDespawn() {
         super.onDespawn();
-        AudioManager.getInstance().play(SoundModel.CLOWN_NOSE_DEATH);
+
+    }
+
+    @Override
+    protected SoundModel getDeathSound() {
+        return SoundModel.CLOWN_NOSE_DEATH;
     }
 }

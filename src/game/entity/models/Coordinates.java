@@ -338,6 +338,7 @@ public class Coordinates implements Comparable<Coordinates> {
         return Comparator.comparing(Coordinates::getY)
                 .thenComparing(Coordinates::getX)
                 .compare(this, o);
+
     }
     public static Coordinates roundCoordinatesToBottom(Coordinates coords, int entitySize){
         return new Coordinates(coords.getX(),roundIntToGridSize(coords.getY())-entitySize+GRID_SIZE);

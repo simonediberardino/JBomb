@@ -151,7 +151,6 @@ public abstract class EntityInteractable extends Entity {
 
 
 
-        //interactedEntities = interactedEntities.stream().filter(e-> canInteractWith(e) || isObstacle(e)).collect(Collectors.toList());
 
         // If there are no entities present in the next occupied coordinates, update the entity's position
         if (interactedEntities.isEmpty()) {

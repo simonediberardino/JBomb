@@ -15,6 +15,10 @@ public class Zombie extends IntelligentEnemy {
         setMaxHp(300);
         setHp(getMaxHp());
     }
+    @Override
+    public float getSpeed() {
+        return 0.5f;
+    }
 
     @Override
     protected String getBasePath() {

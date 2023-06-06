@@ -355,12 +355,14 @@ public abstract class Character extends MovingEntity {
     }
 
     public void eliminated() {
-        if(getAliveState()) {
-            setAliveState(false);
-            state.set(State.DIED);
-            onEliminated();
+        if (!getAliveState()) {
+            return;
         }
+        setAliveState(false);
+        state.set(State.DIED);
+        onEliminated();
     }
+
 
     protected void onEndedDeathAnimation() { }
 
@@ -384,4 +386,5 @@ public abstract class Character extends MovingEntity {
     }
 
     protected void onHit(int damage) { }
+
 }
