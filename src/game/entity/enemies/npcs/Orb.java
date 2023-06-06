@@ -77,7 +77,7 @@ public abstract class Orb extends Enemy {
         }
 
         if (isObstacle(e)) {
-            eliminated();
+            attack(this);
         }
     }
 
