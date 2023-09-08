@@ -5,7 +5,10 @@ JBomberman is an exciting and captivating game that draws inspiration from the t
 ## Gameplay
 
 The core gameplay of JBomberman revolves around strategically placing bombs to clear obstacles and defeat enemies within a maze-like environment. As you progress through the game, you'll have the opportunity to collect power-ups that enhance your abilities, such as increasing bomb range or speed. Your objective is to clear each level by taking down adversaries while ensuring your own self-preservation. Get ready for an adrenaline-pumping adventure filled with intense moments and strategic decision-making.
+
 Gameplay: https://www.youtube.com/watch?v=PXWsGOkttKk
+
+![Alt Text](https://i.postimg.cc/xTCLkhdK/Schermata-2023-09-08-alle-10-37-57.png)
 
 ## Innovative Features
 
