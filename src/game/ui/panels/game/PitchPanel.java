@@ -67,9 +67,23 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         Set<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
         // Draw each entity in the set
-        for (Entity e: setEntities) {
-            drawEntity(g2d, e);
+        setEntities.forEach(e -> drawEntity(g2d, e));
+        /*
+                // Group entities by draw priority in parallel
+        Map<DrawPriority, java.util.List<Entity>> groupedEntities = setEntities
+                .parallelStream()
+                .collect(Collectors.groupingByConcurrent(Entity::getDrawPriority,
+                        ConcurrentHashMap::new,
+                        Collectors.toList())
+                );
+
+        // Draw entities in the desired order
+        for (DrawPriority d : DrawPriority.values()) {
+            java.util.List<Entity> entitiesToDraw = groupedEntities.getOrDefault(d, Collections.emptyList());
+            entitiesToDraw.parallelStream().forEach(e -> drawEntity(g2d, e));
         }
+
+         */
 
         // Runs custom callbacks;
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
