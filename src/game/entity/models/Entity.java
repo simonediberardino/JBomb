@@ -386,6 +386,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     @Override
     public int compareTo(Entity other) {
         return Comparator.comparing(Entity::getDrawPriority)
+                .thenComparing(e -> e.getCoords().getY())
                 .thenComparingInt(e -> (int) e.getId())
                 .compare(this, other);
     }

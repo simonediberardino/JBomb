@@ -7,7 +7,6 @@ import game.ui.panels.game.PitchPanel;
 import game.ui.panels.menus.*;
 import game.ui.panels.settings.ProfilePanel;
 import game.ui.panels.settings.SettingsPanel;
-import game.ui.viewelements.misc.ToastHandler;
 import game.utils.Paths;
 import game.utils.Utility;
 
@@ -27,17 +26,7 @@ import java.io.IOException;
  */
 public class BombermanFrame extends JFrame {
     private final CardLayout cardLayout = new CardLayout();
-    private final JPanel parentPanel = new JPanel() {
-        @Override
-        public void paint(Graphics g) {
-            super.paint(g);
-            ToastHandler toastHandler = ToastHandler.getInstance();
-            if(toastHandler.getText() != null){
-                toastHandler.showToast((Graphics2D) g);
-                repaint();
-            }
-        }
-    };
+    private final JPanel parentPanel = new JPanel();
     private MatchPanel matchPanel;
     private MainMenuPanel mainMenuPanel;
     private LoadingPanel loadingPanel;
@@ -182,5 +171,4 @@ public class BombermanFrame extends JFrame {
     public LoadingPanel getLoadingPanel() {
         return loadingPanel;
     }
-
 }
