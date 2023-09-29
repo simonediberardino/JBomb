@@ -62,6 +62,7 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         super.paint(g);
         this.g2d = (Graphics2D) g;
+
         Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getPitchImagePath());
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(),1), 0, 0, null);
 
