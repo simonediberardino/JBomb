@@ -1,5 +1,6 @@
 package game.utils;
 
+import game.cache.Cache;
 import game.values.Dimensions;
 
 import javax.imageio.ImageIO;
@@ -7,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
 
@@ -51,10 +53,26 @@ public class Utility {
      @return The loaded image, or null if the file could not be found or read.
      */
     public static BufferedImage loadImage(String fileName) {
+        Cache cache = Cache.getInstance();
+
+        if(cache.hasInCache(fileName))
+            return cache.queryCache(fileName);
+
         try {
-            return ImageIO.read(new File(fileName));
+            // Use ClassLoader to load the image from the JAR file
+            fileName = fileName.replace("/src", "");
+            InputStream inputStream = Utility.class.getResourceAsStream("/" + fileName);
+
+            if (inputStream != null) {
+                BufferedImage image = ImageIO.read(inputStream);
+                Cache.getInstance().saveInCache(fileName, image);
+                return image;
+            } else {
+                System.out.println("Can't find " + fileName + " in the JAR!");
+                return null;
+            }
         } catch (IOException e) {
-            System.out.println("Can't read " + fileName + "!");
+            System.out.println("Error loading " + fileName + ": " + e.getMessage());
             return null;
         }
     }
