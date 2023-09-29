@@ -34,11 +34,6 @@ public abstract class PagePanel extends JPanel {
         if (width != 0 && height != 0) {
             g.drawImage(backgroundImage.getScaledInstance(width, height, 1), 0, 0, null);
         }
-
-        if(toastHandler.getText() != null){
-            toastHandler.showToast((Graphics2D) g);
-            repaint();
-        }
     }
 
     public ToastHandler getToastHandler(){
