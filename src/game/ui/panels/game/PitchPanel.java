@@ -7,12 +7,15 @@ import game.entity.models.Entity;
 import game.events.Observer2;
 import game.events.RunnablePar;
 import game.sound.AudioManager;
+import game.ui.viewelements.misc.ToastHandler;
 import game.utils.Utility;
+import game.values.DrawPriority;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static game.sound.SoundModel.LIGHT_GLITCH;
 import static game.utils.Utility.loadImage;
@@ -32,7 +35,7 @@ public class PitchPanel extends JPanel implements Observer2 {
     public static final Dimension DIMENSION = new Dimension(GRID_SIZE*13, 11*GRID_SIZE);
     private final HashMap<String, RunnablePar> graphicsCallbacks = new HashMap<>();
     public volatile Graphics2D g2d;
-
+    protected ToastHandler toastHandler = ToastHandler.getInstance();
     /**
      * Constructs a new GamePanel with the default dimensions and sets it as the observer for the game ticker observable
      */
@@ -58,19 +61,17 @@ public class PitchPanel extends JPanel implements Observer2 {
      */
 
     @Override
-    public void paint(Graphics g) {
-
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         this.g2d = (Graphics2D) g;
 
         Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getPitchImagePath());
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(),1), 0, 0, null);
 
+
         Set<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
-        // Draw each entity in the set
-        setEntities.forEach(e -> drawEntity(g2d, e));
-        /*
-                // Group entities by draw priority in parallel
+
+        // Group entities by draw priority in parallel
         Map<DrawPriority, java.util.List<Entity>> groupedEntities = setEntities
                 .parallelStream()
                 .collect(Collectors.groupingByConcurrent(Entity::getDrawPriority,
@@ -83,8 +84,6 @@ public class PitchPanel extends JPanel implements Observer2 {
             java.util.List<Entity> entitiesToDraw = groupedEntities.getOrDefault(d, Collections.emptyList());
             entitiesToDraw.parallelStream().forEach(e -> drawEntity(g2d, e));
         }
-
-         */
 
         // Runs custom callbacks;
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
