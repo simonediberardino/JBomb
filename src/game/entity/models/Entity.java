@@ -1,6 +1,7 @@
 package game.entity.models;
 
 import game.Bomberman;
+import game.entity.bomb.AbstractExplosion;
 import game.hardwareinput.MouseControllerManager;
 import game.tasks.GameTickerObserver;
 import game.events.RunnablePar;
@@ -19,7 +20,8 @@ import static game.utils.Utility.loadImage;
 /**
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
-public abstract class Entity extends GameTickerObserver implements Comparable<Entity>{
+public abstract class Entity extends GameTickerObserver implements Comparable<Entity> {
+    private final long id;
     protected Set<Class<? extends Entity>> passiveInteractionEntities = getBasePassiveInteractionEntities();
     protected BufferedImage image;
     protected int lastImageIndex;
@@ -31,31 +33,28 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     private boolean isImmune = false;
     private boolean isInvisible = false;
     private int paddingTop;
-    private int paddingWidth;
-    private String imagePath = "";
-    private float alpha = 1;
-    private final long id;
-
     protected RunnablePar paddingTopFunction = new RunnablePar() {
         @Override
         public <T> Object execute(T par) {
-            int temp = (int) ((double) getSize() / (double)par - getSize());
+            int temp = (int) ((double) getSize() / (double) par - getSize());
             paddingTop = temp;
             return temp;
         }
     };
-
+    private int paddingWidth;
     protected RunnablePar paddingWidthFunction = new RunnablePar() {
         @Override
         public <T> Object execute(T par) {
-            int temp = (int) (((double) getSize() / (double)par- getSize()) / 2);
+            int temp = (int) (((double) getSize() / (double) par - getSize()) / 2);
             paddingWidth = temp;
             return temp;
         }
     };
+    private String imagePath = "";
+    private float alpha = 1;
 
 
-    public Entity(){
+    public Entity() {
         this(new Coordinates(-1, -1));
     }
 
@@ -64,15 +63,20 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      *
      * @param coordinates the coordinates of the entity
      */
-    public Entity(Coordinates coordinates){
+    public Entity(Coordinates coordinates) {
         this.id = UUID.randomUUID().getMostSignificantBits();
         this.coords = coordinates;
     }
 
-    protected String getBasePath(){ return ""; }
+    protected String getBasePath() {
+        return "";
+    }
 
-    protected void onSpawn(){}
-    protected void onDespawn(){}
+    protected void onSpawn() {
+    }
+
+    protected void onDespawn() {
+    }
 
     /**
      * Performs an interaction between this entity and another entity.
@@ -95,23 +99,24 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      *
      * @return the size of the entity
      */
-    public float getHitboxSizeToHeightRatio(){
+    public float getHitboxSizeToHeightRatio() {
         return hitboxSizeToHeightRatio;
     }
+
     //might be override
-    public float getHitboxSizeToHeightRatio(String path){
+    public float getHitboxSizeToHeightRatio(String path) {
         return getHitboxSizeToHeightRatio();
     }
 
-    public final float getHitboxSizeToWidthRatio(String path){
+    public final float getHitboxSizeToWidthRatio(String path) {
         return getHitboxSizeToWidthRatio();
     }
 
-    public final float getHitboxSizeToWidthRatio(){
+    public final float getHitboxSizeToWidthRatio() {
         return hitboxSizetoWidthRatio;
     }
 
-    public int getImageRefreshRate(){
+    public int getImageRefreshRate() {
         return 200;
     }
 
@@ -145,21 +150,21 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     /**
-     * Sets the coordinates of the entity to the given coordinates.
-     *
-     * @param coordinates the new coordinates of the entity
-     */
-    public void setCoords(Coordinates coordinates) {
-        this.coords = coordinates;
-    }
-
-    /**
      * Returns the coordinates of the entity.
      *
      * @return the coordinates of the entity
      */
     public Coordinates getCoords() {
         return coords;
+    }
+
+    /**
+     * Sets the coordinates of the entity to the given coordinates.
+     *
+     * @param coordinates the new coordinates of the entity
+     */
+    public void setCoords(Coordinates coordinates) {
+        this.coords = coordinates;
     }
 
     /**
@@ -180,8 +185,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         isSpawned = s;
     }
 
-    protected Coordinates getSpawnOffset(){
-        return new Coordinates((PitchPanel.GRID_SIZE-getSize())/2,(PitchPanel.GRID_SIZE-getSize())/2);
+    protected Coordinates getSpawnOffset() {
+        return new Coordinates((PitchPanel.GRID_SIZE - getSize()) / 2, (PitchPanel.GRID_SIZE - getSize()) / 2);
     }
 
     /**
@@ -209,13 +214,13 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     /**
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
-    public final void spawn(){
-        spawn(false,true);
+    public final void spawn() {
+        spawn(false, true);
     }
 
 
-    public final void spawn(boolean forceSpawn){
-        spawn(forceSpawn,true);
+    public final void spawn(boolean forceSpawn) {
+        spawn(forceSpawn, true);
     }
 
     // checks if entity has already been spawned
@@ -238,34 +243,41 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     // calculates the coordinates of a point a certain distance away from the entity's top-left corner in a given direction
-    protected Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance){
+    protected Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance) {
         int sign = 0;
 
-        switch (d){
-            case UP:case LEFT: sign = -1; break; // if direction is up or left, sign is negative
-            case DOWN:case RIGHT: sign = 1; break; // if direction is down or right, sign is positive
+        switch (d) {
+            case UP:
+            case LEFT:
+                sign = -1;
+                break; // if direction is up or left, sign is negative
+            case DOWN:
+            case RIGHT:
+                sign = 1;
+                break; // if direction is down or right, sign is positive
         }
 
-        switch (d){
+        switch (d) {
             case LEFT:
             case RIGHT:
-                return new Coordinates(getCoords().getX() + distance*sign, getCoords().getY()); // calculate new x-coordinate based on direction and distance
+                return new Coordinates(getCoords().getX() + distance * sign, getCoords().getY()); // calculate new x-coordinate based on direction and distance
 
             case DOWN:
             case UP:
-                return new Coordinates(getCoords().getX() , getCoords().getY() + distance * sign); // calculate new y-coordinate based on direction and distance
+                return new Coordinates(getCoords().getX(), getCoords().getY() + distance * sign); // calculate new y-coordinate based on direction and distance
         }
 
         return null; // shouldn't happen
     }
 
     // returns a list of all the coordinates that make up the entity, including all tiles it occupies
-    protected List<Coordinates> getAllCoordinates(){
+    protected List<Coordinates> getAllCoordinates() {
         List<Coordinates> coordinates = new ArrayList<>();
         int last = 0;
         for (int step = 0; step <= getSize() / PitchPanel.COMMON_DIVISOR; step++) { // iterate over each step in entity's size
             for (int i = 0; i <= getSize() / PitchPanel.COMMON_DIVISOR; i++) { // iterate over each tile in entity
-                if (i== getSize()/PitchPanel.COMMON_DIVISOR) last = PitchPanel.PIXEL_UNIT; // if last tile, use pixel unit instead of common divisor
+                if (i == getSize() / PitchPanel.COMMON_DIVISOR)
+                    last = PitchPanel.PIXEL_UNIT; // if last tile, use pixel unit instead of common divisor
 
                 // add the new coordinate to the list of coordinates
                 coordinates.add(new Coordinates(getCoords().getX() + step * PitchPanel.COMMON_DIVISOR, getCoords().getY() + i * PitchPanel.COMMON_DIVISOR - last));
@@ -275,14 +287,18 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
-    protected List<Coordinates> getNewCoordinatesOnDirection(Direction d, int steps, int offset){
+    protected List<Coordinates> getNewCoordinatesOnDirection(Direction d, int steps, int offset) {
         List<Coordinates> desiredCoords = new ArrayList<>();
 
         switch (d) {
-            case RIGHT: return getNewCoordinatesOnRight(steps, offset); // get coordinates to the right of entity
-            case LEFT: return getNewCoordinatesOnLeft(steps, offset); // get coordinates to the left of entity
-            case UP: return getNewCoordinatesOnUp(steps, offset); // get coordinates above entity
-            case DOWN: return getNewCoordinatesOnDown(steps, offset, getSize()); // get coordinates below entity
+            case RIGHT:
+                return getNewCoordinatesOnRight(steps, offset); // get coordinates to the right of entity
+            case LEFT:
+                return getNewCoordinatesOnLeft(steps, offset); // get coordinates to the left of entity
+            case UP:
+                return getNewCoordinatesOnUp(steps, offset); // get coordinates above entity
+            case DOWN:
+                return getNewCoordinatesOnDown(steps, offset, getSize()); // get coordinates below entity
         }
 
         return desiredCoords; // shouldn't happen
@@ -293,9 +309,9 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
+                if (i == getSize() / offset) last = PitchPanel.PIXEL_UNIT;
 
-                coordinates.add(new Coordinates(getCoords().getX() + getSize()+step * offset, getCoords().getY() + i * offset - last));
+                coordinates.add(new Coordinates(getCoords().getX() + getSize() + step * offset, getCoords().getY() + i * offset - last));
             }
         }
         return coordinates;
@@ -305,11 +321,12 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         List<Coordinates> coordinates = new ArrayList<>();
         int first = steps;
         int last = 0;
-        for (int step = 0; step <= steps/offset; step++) {
+        for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
+                if (i == getSize() / offset) last = PitchPanel.PIXEL_UNIT;
                 coordinates.add(new Coordinates(getCoords().getX() - first - step * offset, getCoords().getY() + i * offset - last));
-            }first =0;
+            }
+            first = 0;
         }
         return coordinates;
     }
@@ -318,9 +335,9 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         List<Coordinates> coordinates = new ArrayList<>();
         int first = steps, last = 0;
 
-        for (int step = 0; step <= steps/offset; step++) {
+        for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset) last = PitchPanel.PIXEL_UNIT;
+                if (i == getSize() / offset) last = PitchPanel.PIXEL_UNIT;
                 coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() - first - step * offset));
             }
             first = 0;
@@ -335,46 +352,46 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i== getSize()/offset)
+                if (i == getSize() / offset)
                     last = PitchPanel.PIXEL_UNIT;
 
                 coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() + size - 1 + first + step * offset));
             }
             first = 0;
         }
-        
+
         return coordinates;
     }
-    
-    public void setPaddingTop(int p){
-        paddingTop=p;
-    }
 
-    public void setPaddingWidth(int p){
-        paddingWidth = p;
-    }
-
-    public int calculateAndGetPaddingTop(){
+    public int calculateAndGetPaddingTop() {
         return calculateAndGetPaddingTop(getHitboxSizeToHeightRatio());
     }
 
-    public int calculateAndGetPaddingTop(double ratio){
+    public int calculateAndGetPaddingTop(double ratio) {
         return (int) paddingTopFunction.execute(ratio);
     }
 
-    public int getPaddingTop(){
+    public int getPaddingTop() {
         return paddingTop;
     }
 
-    public int getPaddingWidth(){
+    public void setPaddingTop(int p) {
+        paddingTop = p;
+    }
+
+    public int getPaddingWidth() {
         return paddingWidth;
     }
 
-    public int calculateAndGetPaddingWidth(){
+    public void setPaddingWidth(int p) {
+        paddingWidth = p;
+    }
+
+    public int calculateAndGetPaddingWidth() {
         return calculateAndGetPaddingWidth(getHitboxSizeToWidthRatio());
     }
 
-    public int calculateAndGetPaddingWidth(double ratio){
+    public int calculateAndGetPaddingWidth(double ratio) {
         return (int) paddingWidthFunction.execute(ratio);
     }
 
@@ -442,7 +459,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
         //Check if there are other entities on the occupied block, and they are not the current entity
 
-        if (!entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this&&e!=Bomberman.getMatch().getPlayer())) {
+        if (!entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this && e != Bomberman.getMatch().getPlayer())) {
             mouseControllerManager.setMouseDraggedInteractionInterrupted(true);
             return;
         }
@@ -490,12 +507,12 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return e == null || passiveInteractionEntities.stream().anyMatch(c -> c.isInstance(e));
     }
 
-    protected boolean canEntityInteractWithMouseDrag(){
+    protected boolean canEntityInteractWithMouseDrag() {
         return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseDrag().stream().anyMatch(cls -> cls.isInstance(this)
-            && Bomberman.getMatch().getMouseControllerManager().isMouseDragged());
+                && Bomberman.getMatch().getMouseControllerManager().isMouseDragged());
     }
 
-    protected boolean canEntityInteractWithMouseClick(){
+    protected boolean canEntityInteractWithMouseClick() {
         return Bomberman.getMatch()
                 .getPlayer()
                 .getListClassInteractWithMouseClick()
@@ -518,12 +535,12 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
             return;
         }
 
-        if(canEntityInteractWithMouseClick()){
+        if (canEntityInteractWithMouseClick()) {
             onMouseClickInteraction();
             return;
         }
 
-        if(canEntityInteractWithMouseDrag()) {
+        if (canEntityInteractWithMouseDrag()) {
             onMouseDragInteraction();
         }
     }
@@ -533,11 +550,13 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return Objects.hash(id);
     }
 
-    public void setAlpha(float alpha){
-        this.alpha = Utility.ensureRange(alpha, 0, 1);
-    }
-
     public float getAlpha() {
         return alpha;
     }
+
+    public void setAlpha(float alpha) {
+        this.alpha = Utility.ensureRange(alpha, 0, 1);
+    }
+
+    public void onExplosion(AbstractExplosion explosion){}
 }
