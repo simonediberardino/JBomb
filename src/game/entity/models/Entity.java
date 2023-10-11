@@ -558,5 +558,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         this.alpha = Utility.ensureRange(alpha, 0, 1);
     }
 
-    public void onExplosion(AbstractExplosion explosion){}
+    public void onExplosion(AbstractExplosion explosion) {
+    }
 }
