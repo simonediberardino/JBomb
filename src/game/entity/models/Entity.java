@@ -12,6 +12,8 @@ import game.values.DrawPriority;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 import static game.utils.Utility.loadImage;
@@ -30,7 +32,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     protected float hitboxSizeToHeightRatio = 1;
     private Coordinates coords;
     private boolean isSpawned = false;
-    private boolean isImmune = false;
+    protected boolean isImmune = false;
+    protected volatile AtomicReference<State> state = new AtomicReference<>();
     private boolean isInvisible = false;
     private int paddingTop;
     protected RunnablePar paddingTopFunction = new RunnablePar() {
@@ -73,9 +76,11 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     protected void onSpawn() {
+        state.set(State.SPAWNED);
     }
 
     protected void onDespawn() {
+        state.set(State.DIED);
     }
 
     /**
@@ -128,8 +133,9 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return isImmune;
     }
 
-    public void setImmune(boolean isImmune) {
-        this.isImmune = isImmune;
+    public void setImmune(boolean immune) {
+        isImmune = immune;
+        state.set(immune ? State.IMMUNE : State.SPAWNED);
     }
 
     /**
@@ -139,6 +145,20 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * @return the loaded image
      */
     public BufferedImage loadAndSetImage(String imagePath) {
+        if (state == null)
+            return doLoadAndSetImage(imagePath);
+
+        String[] toks = imagePath.split(Pattern.quote("."));
+        String extension = toks[1];
+        String fileName = toks[0];
+
+        String imagePathWithStatus = String.format("%s_%s.%s", fileName, state.toString().toLowerCase(), extension);
+        boolean hasImageWithStatus = Utility.fileExists(imagePathWithStatus);
+
+        return hasImageWithStatus ? doLoadAndSetImage(imagePathWithStatus) : doLoadAndSetImage(imagePath);
+    }
+
+    private BufferedImage doLoadAndSetImage(String imagePath) {
         this.lastImageUpdate = System.currentTimeMillis();
         this.image = loadImage(imagePath);
         this.imagePath = imagePath;

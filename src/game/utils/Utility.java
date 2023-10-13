@@ -45,6 +45,15 @@ public class Utility {
         return (dim * ((screenSize.getWidth()) / Dimensions.DEFAULT_SCREEN_SIZE.getWidth()));
     }
 
+    public static boolean fileExists(String filePath) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        try (InputStream imageStreamWithStatus = classLoader.getResourceAsStream(filePath)) {
+            return imageStreamWithStatus != null;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     /**
      * Loads an image from a file with the given file name.
      *
