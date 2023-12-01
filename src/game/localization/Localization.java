@@ -180,8 +180,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> APP_NAME = new HashMap<>() {{
-        put(Locale.ENGLISH, "JBOMBERMAN");
-        put(Locale.ITALY, "JBOMBERMAN");
+        put(Locale.ENGLISH, "JBOMB");
+        put(Locale.ITALY, "JBOMB");
     }};
 
     public static final HashMap<Locale, String> STARTING_ROUND = new HashMap<>() {{
