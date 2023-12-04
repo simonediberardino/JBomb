@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public class Localization {
     public static final HashMap<Locale, String> MY_BOMBERMAN = new HashMap<>() {{
-        put(Locale.ENGLISH, "MY BOMBERMAN");
-        put(Locale.ITALY, "IL MIO BOMBERMAN");
+        put(Locale.ENGLISH, "MY JBOMBER");
+        put(Locale.ITALY, "IL MIO JBOMBER");
     }};
 
     public static final HashMap<Locale, String> KEY_RIGHT = new HashMap<>() {{
