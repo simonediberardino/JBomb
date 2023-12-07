@@ -58,10 +58,10 @@ public class Player extends BomberEntity {
     @Override
     public String[] getCharacterOrientedImages() {
         return new String[]{
+                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 0),
                 String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 1),
                 String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 2),
-                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 1),
-                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 0),
+                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 3),
         };
     }
 
