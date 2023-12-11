@@ -1,13 +1,11 @@
 package game.entity.enemies.npcs;
 
-import game.entity.enemies.npcs.IntelligentEnemy;
 import game.entity.models.Entity;
 import game.entity.models.Direction;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Paths;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

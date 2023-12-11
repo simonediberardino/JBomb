@@ -2,7 +2,6 @@ package game.entity.models;
 
 
 import game.ui.panels.game.PitchPanel;
-import game.values.DrawPriority;
 
 public abstract class Block extends Entity {
     public final static int SIZE = PitchPanel.GRID_SIZE;

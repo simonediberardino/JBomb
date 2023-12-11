@@ -1,12 +1,10 @@
-package game.ui.panels.settings;
+package game.ui.panels.menu;
 
 import game.Bomberman;
 import game.events.RunnablePar;
 import game.localization.Localization;
 import game.ui.helpers.Padding;
-import game.ui.panels.BombermanFrame;
-import game.ui.panels.PagePanel;
-import game.ui.panels.menus.MainMenuPanel;
+import game.ui.pages.MainMenuPanel;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;
 import game.ui.viewelements.bombermanpanel.BombermanPanelYellow;
@@ -14,8 +12,6 @@ import game.ui.viewelements.settings.InfoElementView;
 import game.ui.viewelements.settings.SettingsElementView;
 import game.ui.viewelements.settings.SlideElementView;
 import game.ui.viewelements.settings.TextFieldElementView;
-import game.utils.Paths;
-import game.utils.Utility;
 import game.values.Dimensions;
 
 import javax.swing.*;
@@ -25,31 +21,23 @@ import java.util.Arrays;
 import static game.localization.Localization.MAIN_MENU;
 import static game.values.Dimensions.DEFAULT_PADDING;
 
-public abstract class BoxMenuPanel extends PagePanel {
-    private static final int WIDTH = Utility.px(800); // The width of the panel
-
-    // Panels
+public abstract class JBombermanBoxContainerPanel extends JPanel {
     private final JPanel boxPanel = new BombermanPanelYellow(); // Parent yellow box, containing title and stats;
-    private final JPanel componentsPanel = new JPanel(); // Panel containing stats and title;
+    protected final JPanel componentsPanel = new JPanel(); // Panel containing stats and title;
     private final String title;
+    private final boolean isBackEnabled;
 
-    /**
-     * Constructs a ProfilePanel object.
-     *
-     * @param cardLayout the CardLayout of the parent container
-     * @param parent     the parent container of this panel
-     * @param frame      the BombermanFrame object
-     */
-    public BoxMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame, String title) {
-        super(cardLayout, parent, frame, Paths.getBackgroundImage());
+    public JBombermanBoxContainerPanel(String title, boolean isBackEnabled) {
         this.title = title;
-        initializeLayout();
+        this.isBackEnabled = isBackEnabled;
     }
+
+    abstract int getBoxPanelWidth();
 
     /**
      * Sets up the layout of the panel.
      */
-    private void initializeLayout() {
+    public void initializeLayout() {
         setupPanels();
         setLayout(new GridBagLayout());
 
@@ -78,7 +66,7 @@ public abstract class BoxMenuPanel extends PagePanel {
                 insidePanel.getComponents()
         ).map(e -> e.getPreferredSize().getHeight() + Dimensions.DEFAULT_PADDING).mapToInt(Double::intValue).sum();
 
-        return new Dimension(WIDTH, (int) (panelHeight));
+        return new Dimension(getBoxPanelWidth(), (int) (panelHeight));
     }
 
     /**
@@ -90,7 +78,7 @@ public abstract class BoxMenuPanel extends PagePanel {
     private void setPanelSizes(JPanel componentsPanel, JPanel parentPanel) {
         Dimension insidePanelSize = calculateInsidePanelSize(componentsPanel);
         componentsPanel.setPreferredSize(insidePanelSize);
-        parentPanel.setPreferredSize(new Dimension(WIDTH, (int) (insidePanelSize.getHeight())));
+        parentPanel.setPreferredSize(new Dimension(getBoxPanelWidth(), (int) (insidePanelSize.getHeight())));
     }
 
     /**
@@ -103,10 +91,18 @@ public abstract class BoxMenuPanel extends PagePanel {
 
         this.addCustomElements();
 
-        JButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
-        mainMenuButton.addActionListener((l) -> back());
-        componentsPanel.add(new Padding(getWidth(), DEFAULT_PADDING));
-        componentsPanel.add(mainMenuButton);
+        if (isBackEnabled) {
+            JButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
+            mainMenuButton.addActionListener((l) -> back());
+
+            componentsPanel.add(new Padding(getWidth(), DEFAULT_PADDING));
+            componentsPanel.add(mainMenuButton);
+        }
+    }
+
+    protected void refresh() {
+        componentsPanel.removeAll();
+        addSettingsElements();
     }
 
     protected abstract void addCustomElements();
@@ -142,15 +138,6 @@ public abstract class BoxMenuPanel extends PagePanel {
         return elementView;
     }
 
-    /**
-     * Implementation of the onShowCallback() method in the PagePanel superclass.
-     * Clears the componentsPanel and adds the stats settings elements again.
-     */
-    @Override
-    public void onShowCallback() {
-        componentsPanel.removeAll();
-        addSettingsElements();
-    }
 
     private void back() {
         componentsPanel.removeAll();

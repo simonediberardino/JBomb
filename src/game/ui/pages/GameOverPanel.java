@@ -1,11 +1,11 @@
-package game.ui.panels.menus;
+package game.ui.pages;
 
 import game.Bomberman;
 import game.data.DataInputOutput;
 import game.level.Level;
 import game.level.WorldSelectorLevel;
 import game.localization.Localization;
-import game.ui.panels.BombermanFrame;
+import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.misc.ToastHandler;
 import game.utils.Paths;
@@ -34,6 +34,16 @@ public class GameOverPanel extends BaseMenu {
     @Override
     protected List<JButton> getButtons() {
         return Arrays.asList(createStartLevelButton(), createMainMenuButton());
+    }
+
+    @Override
+    protected JPanel getRightPanel() {
+        return null;
+    }
+
+    @Override
+    protected JPanel getLeftPanel() {
+        return null;
     }
 
     @Override

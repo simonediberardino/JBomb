@@ -1,7 +1,8 @@
-package game.ui.panels.menus;
+package game.ui.pages;
 
-import game.ui.panels.BombermanFrame;
-import game.ui.panels.PagePanel;
+import game.ui.frames.BombermanFrame;
+import game.ui.panels.game.PagePanel;
+import game.ui.panels.menu.AvatarMenuPanel;
 import game.ui.viewelements.misc.Space;
 import game.utils.Paths;
 import game.utils.Utility;
@@ -12,8 +13,6 @@ import java.util.List;
 
 public abstract class BaseMenu extends PagePanel {
     protected JPanel listButtonsPanel;
-    private JPanel rightPanel;
-    private JPanel leftPanel;
 
     public BaseMenu(CardLayout cardLayout, JPanel parent, BombermanFrame frame, String imagePath) {
         super(cardLayout, parent, frame, imagePath);
@@ -42,6 +41,9 @@ public abstract class BaseMenu extends PagePanel {
     }
 
     private void createSidePanel(JPanel panel, String side) {
+        if (panel == null)
+            panel = new JPanel();
+
         int centerPanelWidth = (int) listButtonsPanel.getPreferredSize().getWidth();
         int height = (int) (Utility.getScreenSize().getHeight());
         int width = (int) (Utility.getScreenSize().getWidth() - centerPanelWidth) / 2;
@@ -53,13 +55,13 @@ public abstract class BaseMenu extends PagePanel {
     }
 
     private void createRightPanel() {
-        rightPanel = new JPanel();
-        createSidePanel(rightPanel, BorderLayout.EAST);
+        JPanel p = getRightPanel();
+        createSidePanel(p, BorderLayout.EAST);
     }
 
     private void createLeftPanel() {
-        leftPanel = new JPanel();
-        createSidePanel(leftPanel, BorderLayout.WEST);
+        JPanel p = getLeftPanel();
+        createSidePanel(p, BorderLayout.WEST);
     }
 
     private void addButtons() {
@@ -91,6 +93,9 @@ public abstract class BaseMenu extends PagePanel {
     protected abstract int getButtonsPadding();
 
     protected abstract List<JButton> getButtons();
+
+    protected abstract JPanel getRightPanel();
+    protected abstract JPanel getLeftPanel();
 
     @Override
     public void onShowCallback() {

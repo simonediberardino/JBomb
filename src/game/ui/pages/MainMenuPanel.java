@@ -1,10 +1,11 @@
-package game.ui.panels.menus;
+package game.ui.pages;
 
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
-import game.ui.panels.BombermanFrame;
-import game.ui.panels.settings.ProfilePanel;
-import game.ui.panels.settings.SettingsPanel;
+import game.ui.frames.BombermanFrame;
+import game.ui.panels.menu.AvatarMenuPanel;
+import game.ui.panels.menu.ProfilePanel;
+import game.ui.panels.menu.SettingsPanel;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;
 
@@ -38,6 +39,16 @@ public class MainMenuPanel extends BaseMenu {
     @Override
     protected List<JButton> getButtons() {
         return Arrays.asList(createStartLevelButton(), createStartArenaButton(), createProfileButton(), createSettingsButton(), createQuitButton());
+    }
+
+    @Override
+    protected JPanel getRightPanel() {
+        return null;
+    }
+
+    @Override
+    protected JPanel getLeftPanel() {
+        return new AvatarMenuPanel();
     }
 
     /**

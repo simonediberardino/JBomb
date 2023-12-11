@@ -6,12 +6,12 @@ import game.level.WorldSelectorLevel;
 import game.localization.Localization;
 import game.sound.AudioManager;
 import game.tasks.GarbageCollectorTask;
-import game.ui.panels.BombermanFrame;
-import game.ui.panels.PagePanel;
+import game.ui.frames.BombermanFrame;
+import game.ui.panels.game.PagePanel;
 import game.ui.panels.game.CustomSoundMode;
 import game.ui.panels.game.MatchPanel;
-import game.ui.panels.menus.LoadingPanel;
-import game.ui.panels.menus.MainMenuPanel;
+import game.ui.pages.LoadingPanel;
+import game.ui.pages.MainMenuPanel;
 import game.ui.viewelements.misc.ToastHandler;
 
 import java.awt.*;

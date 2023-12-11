@@ -1,10 +1,10 @@
-package game.ui.panels.menus;
+package game.ui.pages;
 
 import game.level.Level;
 import game.localization.Localization;
 import game.sound.SoundModel;
-import game.ui.panels.BombermanFrame;
-import game.ui.panels.PagePanel;
+import game.ui.frames.BombermanFrame;
+import game.ui.panels.game.PagePanel;
 import game.utils.Paths;
 import game.utils.Utility;
 

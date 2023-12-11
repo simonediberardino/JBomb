@@ -1,5 +1,6 @@
-package game.ui.panels;
+package game.ui.panels.game;
 
+import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.misc.ToastHandler;
 import game.utils.Utility;
 

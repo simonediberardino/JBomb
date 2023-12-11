@@ -7,16 +7,11 @@ import game.entity.models.Coordinates;
 import game.entity.models.Entity;
 import game.level.Level;
 import game.localization.Localization;
-import game.powerups.PowerUp;
-import game.ui.panels.game.PitchPanel;
 import game.ui.viewelements.misc.ToastHandler;
 import game.utils.Paths;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.Set;
 
 import static game.localization.Localization.MYSTERY_BOX_CONFIRM;
 import static game.localization.Localization.MYSTERY_BOX_ERROR_MONEY;

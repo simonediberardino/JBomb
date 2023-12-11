@@ -1,9 +1,9 @@
-package game.ui.panels.menus;
+package game.ui.pages;
 
 import game.Bomberman;
 import game.level.world1.World1Arena;
 import game.level.world2.World2Arena;
-import game.ui.panels.BombermanFrame;
+import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;
 
@@ -27,6 +27,16 @@ public class ArenaMenuPanel extends BaseMenu {
     @Override
     protected List<JButton> getButtons() {
         return Arrays.asList(createArenaWorld1Button(), createArenaWorld2Button(), createBackButton());
+    }
+
+    @Override
+    protected JPanel getRightPanel() {
+        return null;
+    }
+
+    @Override
+    protected JPanel getLeftPanel() {
+        return null;
     }
 
     private JButton createArenaWorld1Button() {

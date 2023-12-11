@@ -1,12 +1,13 @@
-package game.ui.panels.settings;
+package game.ui.panels.menu;
 
 import game.data.DataInputOutput;
 import game.events.RunnablePar;
 import game.localization.Localization;
 import game.sound.AudioManager;
-import game.ui.panels.BombermanFrame;
+import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.settings.SettingsElementView;
 import game.ui.viewelements.settings.SlideElementView;
+import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,12 +27,17 @@ public class SettingsPanel extends BoxMenuPanel {
         super(cardLayout, parent, frame, Localization.get(SETTINGS));
     }
 
+    @Override
+    int getBoxPanelWidth() {
+        return Utility.px(800);
+    }
+
     private SettingsElementView createTextFieldElementView(String label, String keyChar, RunnablePar runnablePar) {
-        return addTextFieldElementView(label, keyChar, runnablePar, 1);
+        return boxComponentsPanel.addTextFieldElementView(label, keyChar, runnablePar, 1);
     }
 
     private SlideElementView createSlideElementView(String title, int currValue, RunnablePar callback) {
-        return addSlideElementView(title, currValue, callback);
+        return boxComponentsPanel.addSlideElementView(title, currValue, callback);
     }
 
     private RunnablePar createKeyRunnable(final Consumer<Integer> keySetter) {
@@ -88,4 +94,5 @@ public class SettingsPanel extends BoxMenuPanel {
                     }
                 });
     }
+
 }

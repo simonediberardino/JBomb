@@ -6,12 +6,10 @@ import game.entity.bonus.mysterybox.MysteryBoxPerk;
 import game.items.BombItem;
 import game.items.UsableItem;
 import game.powerups.PowerUp;
-import game.powerups.TransparentBombsPowerUp;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 

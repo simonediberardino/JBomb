@@ -204,6 +204,11 @@ public class Localization {
         put(Locale.ITALY, "ARENA MONDO 2");
     }};
 
+    public static final HashMap<Locale, String> AVATAR = new HashMap<>() {{
+        put(Locale.ENGLISH, "AVATAR");
+        put(Locale.ITALY, "AVATAR");
+    }};
+
     public static Locale[] getSupportedLanguages() {
         return new Locale[]{
                 Locale.ENGLISH,

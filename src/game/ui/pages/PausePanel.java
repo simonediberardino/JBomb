@@ -1,7 +1,7 @@
-package game.ui.panels.menus;
+package game.ui.pages;
 
 import game.Bomberman;
-import game.ui.panels.BombermanFrame;
+import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.bombermanbutton.YellowButton;
 
 import javax.swing.*;
@@ -24,6 +24,16 @@ public class PausePanel extends BaseMenu {
     @Override
     protected List<JButton> getButtons() {
         return Arrays.asList(createResumeButton(), createQuitButton());
+    }
+
+    @Override
+    protected JPanel getRightPanel() {
+        return null;
+    }
+
+    @Override
+    protected JPanel getLeftPanel() {
+        return null;
     }
 
     private JButton createResumeButton() {

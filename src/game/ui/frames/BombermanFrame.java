@@ -1,12 +1,12 @@
-package game.ui.panels;
+package game.ui.frames;
 
 import game.level.world1.World1Level1;
 import game.localization.Localization;
+import game.ui.pages.*;
+import game.ui.panels.menu.ProfilePanel;
+import game.ui.panels.menu.SettingsPanel;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.game.PitchPanel;
-import game.ui.panels.menus.*;
-import game.ui.panels.settings.ProfilePanel;
-import game.ui.panels.settings.SettingsPanel;
 import game.ui.viewelements.misc.ToastHandler;
 import game.utils.Paths;
 import game.utils.Utility;

@@ -1,7 +1,6 @@
 package game.entity.models;
 
 import game.sound.SoundModel;
-import game.utils.Paths;
 
 import java.util.Arrays;
 import java.util.LinkedList;

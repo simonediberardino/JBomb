@@ -14,7 +14,7 @@ import game.level.Level;
 import game.tasks.GamePausedObserver;
 import game.tasks.GameTickerObservable;
 import game.ui.panels.game.MatchPanel;
-import game.ui.panels.menus.PausePanel;
+import game.ui.pages.PausePanel;
 import game.utils.Utility;
 import game.viewcontrollers.*;
 

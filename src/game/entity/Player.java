@@ -6,24 +6,19 @@ import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.bomb.AbstractExplosion;
 import game.entity.bomb.Bomb;
-import game.items.PistolItem;
 import game.events.UpdateCurrentAvailableBombsEvent;
 import game.hardwareinput.Command;
 import game.entity.models.*;
 import game.events.DeathGameEvent;
 import game.entity.models.Coordinates;
-import game.hardwareinput.ControllerManager;
 import game.powerups.PowerUp;
 import game.sound.SoundModel;
-import game.ui.panels.game.PitchPanel;
-import game.ui.panels.menus.GameOverPanel;
+import game.ui.pages.GameOverPanel;
 import game.utils.Paths;
 
 import javax.swing.Timer;
 import java.util.*;
 
-import static game.entity.models.Direction.*;
-import static game.entity.models.Direction.DOWN;
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
 
 

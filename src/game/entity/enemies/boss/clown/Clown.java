@@ -2,14 +2,12 @@ package game.entity.enemies.boss.clown;
 
 import game.Bomberman;
 import game.entity.Player;
-import game.entity.blocks.DestroyableBlock;
 import game.entity.bomb.Bomb;
 import game.entity.bomb.ConfettiExplosion;
 import game.entity.enemies.boss.Boss;
 import game.entity.enemies.npcs.ClownNose;
 import game.entity.enemies.npcs.Orb;
 import game.entity.models.*;
-import game.entity.models.Character;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;

@@ -1,7 +1,6 @@
 package game.entity.bomb;
 
 import game.Bomberman;
-import game.entity.Player;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.blocks.MovableBlock;

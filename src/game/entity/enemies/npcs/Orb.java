@@ -8,7 +8,6 @@ import game.entity.models.Coordinates;
 import game.entity.models.Direction;
 import game.entity.models.EnhancedDirection;
 import game.ui.panels.game.PitchPanel;
-import game.utils.Paths;
 
 import java.util.Arrays;
 import java.util.HashSet;
