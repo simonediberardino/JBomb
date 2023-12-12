@@ -1,6 +1,8 @@
 package game.ui.pages;
 
 import game.Bomberman;
+import game.data.DataInputOutput;
+import game.events.RunnablePar;
 import game.level.WorldSelectorLevel;
 import game.ui.frames.BombermanFrame;
 import game.ui.panels.menu.AvatarMenuPanel;
@@ -8,11 +10,14 @@ import game.ui.panels.menu.ProfilePanel;
 import game.ui.panels.menu.SettingsPanel;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;
+import game.utils.Paths;
+import game.utils.XMLUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static game.localization.Localization.*;
 
@@ -48,7 +53,19 @@ public class MainMenuPanel extends BaseMenu {
 
     @Override
     protected JPanel getLeftPanel() {
-        return new AvatarMenuPanel();
+        String[] avatarPaths = XMLUtils.parseXmlArray(Paths.getSkinsXml(), "skins");
+        assert avatarPaths != null;
+
+        // Define a Consumer to handle the skin change
+        Consumer<Integer> skinChangeConsumer = newIndex -> DataInputOutput.getInstance().setSkin(avatarPaths[newIndex]);
+        RunnablePar getSkinRunnable = new RunnablePar() {
+            @Override
+            public <T> Object execute(T par) {
+                return Paths.getEntitiesFolder() + "/player/" + DataInputOutput.getInstance().getSkin();
+            }
+        };
+
+        return new AvatarMenuPanel(avatarPaths, getSkinRunnable, skinChangeConsumer);
     }
 
     /**

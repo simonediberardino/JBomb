@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="skins">
+        <item>skin0</item>
+        <item>skin1</item>
+    </array>
+</resources>

@@ -12,6 +12,7 @@ import game.ui.viewelements.settings.InfoElementView;
 import game.ui.viewelements.settings.SettingsElementView;
 import game.ui.viewelements.settings.SlideElementView;
 import game.ui.viewelements.settings.TextFieldElementView;
+import game.utils.Utility;
 import game.values.Dimensions;
 
 import javax.swing.*;
@@ -119,6 +120,15 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
         componentsPanel.add(elementView);
 
         return elementView;
+    }
+
+    protected JLabel addImageLabel(String imageName) {
+        Image image = Utility.loadImage(imageName);
+
+        assert image != null;
+        JLabel imageLabel = new JLabel(new ImageIcon(image));
+        componentsPanel.add(imageLabel);
+        return imageLabel;
     }
 
     protected TextFieldElementView addTextFieldElementView(String title, String startText, RunnablePar callback) {

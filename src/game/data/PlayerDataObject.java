@@ -26,10 +26,11 @@ class PlayerDataObject implements Serializable {
     private int rightKey;
     private int bombKey;
     private int volume;
-    
+    private String skin;
+
     PlayerDataObject() {
         this(
-                Localization.get(Localization.PLAYER),
+                "",
                 0,
                 0,
                 0,
@@ -45,13 +46,14 @@ class PlayerDataObject implements Serializable {
                 0,
                 0,
                 0,
-                0
+                0,
+                ""
         );
 
         resetKeys();
     }
 
-    PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lastLevelId, int lastWorldId, int explosionLength,int maxBombs, int lives, int forwardKey, int backKey, int leftKey, int rightKey, int bombKey, int volume) {
+    PlayerDataObject(String name, int lostGames, int kills, int deaths, int rounds, long points, int lastLevelId, int lastWorldId, int explosionLength,int maxBombs, int lives, int forwardKey, int backKey, int leftKey, int rightKey, int bombKey, int volume, String skin) {
         this.name = name;
         this.lostGames = lostGames;
         this.kills = kills;
@@ -69,6 +71,7 @@ class PlayerDataObject implements Serializable {
         this.rightKey = rightKey;
         this.bombKey = bombKey;
         this.volume = volume;
+        this.skin = skin;
     }
 
     void resetKeys() {
@@ -213,6 +216,22 @@ class PlayerDataObject implements Serializable {
         this.rounds = rounds;
     }
 
+    void setSkin(String skin) {
+        this.skin = skin;
+    }
+
+    String getSkin() {
+        return skin;
+    }
+
+    void setLastWorldId(int lastWorldId) {
+        this.lastWorldId = lastWorldId;
+    }
+
+    void setLastLevelId(int i) {
+        this.lastLevelId = i;
+    }
+
     @Override
     public String toString() {
         return "PlayerDataObject{" +
@@ -233,14 +252,23 @@ class PlayerDataObject implements Serializable {
                 ", rightKey=" + rightKey +
                 ", bombKey=" + bombKey +
                 ", volume=" + volume +
+                ", skin='" + skin + '\'' +
                 '}';
     }
 
-    void setLastWorldId(int lastWorldId) {
-        this.lastWorldId = lastWorldId;
-    }
+    public boolean checkData() {
+        boolean changed = false;
 
-    void setLastLevelId(int i) {
-        this.lastLevelId = i;
+        if (skin.isEmpty()) {
+            skin = "skin0";
+            changed = true;
+        }
+
+        if (name.isBlank()) {
+            name = Localization.get(Localization.PLAYER);
+            changed = true;
+        }
+
+        return changed;
     }
 }

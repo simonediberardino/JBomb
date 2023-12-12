@@ -34,6 +34,11 @@ public class DataInputOutput {
 
     public void retrieveData() {
         playerDataObject = getStoredPlayerData();
+        boolean changed = playerDataObject.checkData();
+
+        if (changed) {
+            updateStoredPlayerData();
+        }
     }
 
     public void updateStoredPlayerData() {
@@ -75,7 +80,7 @@ public class DataInputOutput {
         return playerDataObject;
     }
 
-    public void setUsername(String name){
+    public void setUsername(String name) {
         playerDataObject.setName(name.trim());
         updateStoredPlayerData();
     }
@@ -84,63 +89,63 @@ public class DataInputOutput {
         return playerDataObject.getName();
     }
 
-    public void increaseKills(){
-        playerDataObject.setKills(playerDataObject.getKills()+1);
+    public void increaseKills() {
+        playerDataObject.setKills(playerDataObject.getKills() + 1);
         updateStoredPlayerData();
     }
 
-    public void resetExplosionLength(){
+    public void resetExplosionLength() {
         setExplosionLength(1);
     }
 
-    public void resetMaxBombs(){
+    public void resetMaxBombs() {
         setObtainedBombs(1);
     }
 
-    public void setExplosionLength(int newExplosionLength){
+    public void setExplosionLength(int newExplosionLength) {
         playerDataObject.setExplosionLength(newExplosionLength);
         updateStoredPlayerData();
     }
 
-    public int getExplosionLength(){
+    public int getExplosionLength() {
         return playerDataObject.getExplosionLength();
     }
 
-    public int getObtainedBombs(){
+    public int getObtainedBombs() {
         return playerDataObject.getObtainedBombs();
     }
 
-    public void setObtainedBombs(int newMaxBombs){
+    public void setObtainedBombs(int newMaxBombs) {
         newMaxBombs = Math.max(0, newMaxBombs);
         playerDataObject.setObtainedBombs(newMaxBombs);
         updateStoredPlayerData();
     }
 
-    public void increaseObtainedBombs(){
-        setObtainedBombs(getObtainedBombs()+1);
+    public void increaseObtainedBombs() {
+        setObtainedBombs(getObtainedBombs() + 1);
     }
 
-    public void increaseDeaths(){
-        playerDataObject.setDeaths(playerDataObject.getDeaths()+1);
+    public void increaseDeaths() {
+        playerDataObject.setDeaths(playerDataObject.getDeaths() + 1);
         updateStoredPlayerData();
     }
 
-    public int getLives(){
+    public int getLives() {
         return playerDataObject.getLives();
     }
 
-    public void resetLives(){
+    public void resetLives() {
         setLives(START_LIVES);
     }
 
-    public void increaseLives(){
-        int nextLives = playerDataObject.getLives()+1;
+    public void increaseLives() {
+        int nextLives = playerDataObject.getLives() + 1;
         setLives(nextLives);
     }
 
     private void setLives(int nextLives) {
         var controllerLives = Bomberman.getMatch().getInventoryElementControllerLives();
-        if(controllerLives != null)
+        if (controllerLives != null)
             Bomberman.getMatch().getInventoryElementControllerLives().setNumItems(nextLives);
         playerDataObject.setLives(nextLives);
         playerDataObject.setLives(nextLives);
@@ -149,7 +154,7 @@ public class DataInputOutput {
 
     public void decreaseLives() {
         int newLives = Math.max(playerDataObject.getLives() - 1, 0);
-        if(newLives <= 0) {
+        if (newLives <= 0) {
             increaseLost();
             resetLevel();
             resetScore();
@@ -159,7 +164,7 @@ public class DataInputOutput {
     }
 
     public void resetLivesIfNecessary() {
-        if(getLives() <= 0)
+        if (getLives() <= 0)
             setLives(START_LIVES);
     }
 
@@ -179,11 +184,11 @@ public class DataInputOutput {
         setScore(0);
     }
 
-    public void decreaseScore(int score){
+    public void decreaseScore(int score) {
         setScore((int) (playerDataObject.getPoints() - score));
     }
 
-    public void increaseScore(int score){
+    public void increaseScore(int score) {
         setScore((int) (playerDataObject.getPoints() + score));
     }
 
@@ -199,20 +204,30 @@ public class DataInputOutput {
     }
 
     public void setLastLevel(Level level) {
-        if(playerDataObject.getLastWorldId() > level.getWorldId()) return;
-        if(playerDataObject.getLastWorldId() == level.getWorldId() && playerDataObject.getLastLevelId() >= level.getLevelId()) return;
+        if (playerDataObject.getLastWorldId() > level.getWorldId()) return;
+        if (playerDataObject.getLastWorldId() == level.getWorldId() && playerDataObject.getLastLevelId() >= level.getLevelId())
+            return;
         playerDataObject.setLastLevel(level);
         updateStoredPlayerData();
     }
 
-    public void increaseLost(){
+    public void increaseLost() {
         playerDataObject.setLostGames(playerDataObject.getLostGames() + 1);
         updateStoredPlayerData();
     }
 
-    public void increaseRounds(){
+    public void increaseRounds() {
         playerDataObject.setRounds(playerDataObject.getRounds() + 1);
         updateStoredPlayerData();
+    }
+
+    public void setSkin(String skin) {
+        playerDataObject.setSkin(skin);
+        updateStoredPlayerData();
+    }
+
+    public String getSkin() {
+        return playerDataObject.getSkin();
     }
 
     public String getLeftKeyChar() {
@@ -234,7 +249,6 @@ public class DataInputOutput {
     public String getBombKeyChar() {
         return KeyEvent.getKeyText(playerDataObject.getBombKey());
     }
-
 
 
     public int getLeftKey() {
@@ -286,12 +300,12 @@ public class DataInputOutput {
         updateStoredPlayerData();
     }
 
-    public void setVolume(int volume){
+    public void setVolume(int volume) {
         playerDataObject.setVolume(volume);
         updateStoredPlayerData();
     }
 
-    public int getVolume(){
+    public int getVolume() {
         return playerDataObject.getVolume();
     }
 

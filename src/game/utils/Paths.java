@@ -97,4 +97,12 @@ public class Paths {
     public static String getIconPath() {
         return getMenuImagesPath() + "/frame_icon.png";
     }
+
+    public static String getXmlPath() {
+        return getAssetsFolder() + "/xml";
+    }
+
+    public static String getSkinsXml() {
+        return getXmlPath() + "/skins.xml";
+    }
 }

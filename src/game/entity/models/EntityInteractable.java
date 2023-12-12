@@ -200,9 +200,7 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public boolean canInteractWith(Entity e) {
-        if (e == null) return true;
-
-        return getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e));
+        return e == null || getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e));
     }
 
     public int getAttackDamage() {

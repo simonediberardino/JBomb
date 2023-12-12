@@ -145,8 +145,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * @return the loaded image
      */
     public BufferedImage loadAndSetImage(String imagePath) {
-        if (state == null)
-            return doLoadAndSetImage(imagePath);
+        if (state == null) return doLoadAndSetImage(imagePath);
 
         String[] toks = imagePath.split(Pattern.quote("."));
         String extension = toks[1];
@@ -251,8 +250,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         }
 
         // centers entity on tile
-        if (forceCentering)
-            setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
+        if (forceCentering) setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
 
         // spawns entity if the spawn point is free, otherwise do nothing
         if (forceSpawn || !Coordinates.isBlockOccupied(coords)) {
@@ -372,8 +370,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= getSize() / offset; i++) {
-                if (i == getSize() / offset)
-                    last = PitchPanel.PIXEL_UNIT;
+                if (i == getSize() / offset) last = PitchPanel.PIXEL_UNIT;
 
                 coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() + size - 1 + first + step * offset));
             }
@@ -421,10 +418,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
     @Override
     public int compareTo(Entity other) {
-        return Comparator.comparing(Entity::getDrawPriority)
-                .thenComparing(e -> e.getCoords().getY())
-                .thenComparingInt(e -> (int) e.getId())
-                .compare(this, other);
+        return Comparator.comparing(Entity::getDrawPriority).thenComparing(e -> e.getCoords().getY()).thenComparingInt(e -> (int) e.getId()).compare(this, other);
     }
 
     @Override
@@ -528,19 +522,11 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     protected boolean canEntityInteractWithMouseDrag() {
-        return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseDrag().stream().anyMatch(cls -> cls.isInstance(this)
-                && Bomberman.getMatch().getMouseControllerManager().isMouseDragged());
+        return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseDrag().stream().anyMatch(cls -> cls.isInstance(this) && Bomberman.getMatch().getMouseControllerManager().isMouseDragged());
     }
 
     protected boolean canEntityInteractWithMouseClick() {
-        return Bomberman.getMatch()
-                .getPlayer()
-                .getListClassInteractWithMouseClick()
-                .stream()
-                .anyMatch(
-                        cls -> cls.isInstance(this)
-                )
-                && Bomberman.getMatch().getMouseControllerManager().isMouseClicked();
+        return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseClick().stream().anyMatch(cls -> cls.isInstance(this)) && Bomberman.getMatch().getMouseControllerManager().isMouseClicked();
     }
 
     /**
