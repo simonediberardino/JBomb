@@ -10,13 +10,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class TextFieldElementView extends SettingsElementView {
+public class JBombTextFieldTagged extends SettingsElementView {
     private final JLabel name;
     private final JTextField value;
     private final Color defaultColor = Color.WHITE;
     private final Color mouseHoverColor = BomberColors.RED;
 
-    public TextFieldElementView(JPanel gridPanel, String title, String startText, RunnablePar callback, int charLimit) {
+    public JBombTextFieldTagged(JPanel gridPanel, String title, String startText, RunnablePar callback, int charLimit) {
         super(gridPanel); // Call the constructor of the superclass and pass gridPanel as a parameter.
         name = new JLabel(title, SwingConstants.CENTER); // Create a new JLabel named "name" with the specified title and center alignment.
         value = new JTextField(1);
@@ -51,7 +51,7 @@ public class TextFieldElementView extends SettingsElementView {
         add(value); // Add the "value" text field to the SettingsElementView object.
     }
 
-    public TextFieldElementView(JPanel gridPanel, String title, String startText, RunnablePar callback) {
+    public JBombTextFieldTagged(JPanel gridPanel, String title, String startText, RunnablePar callback) {
         this(gridPanel, title, startText, callback, -1);
     }
 }

@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class InventoryElementView extends JPanel {
     public static int SIZE = Dimensions.DEFAULT_INVENTORY_ICON_SIZE;
-    private final int fontSize = Utility.px(30);
+    private final int fontSize = Dimensions.FONT_SIZE_MID;
     private final JLabel icon;
     private final JLabel occurrents;
 

@@ -1,6 +1,7 @@
 package game.ui.viewelements.settings;
 
 import game.utils.Utility;
+import game.values.Dimensions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.awt.*;
 import static game.values.Dimensions.DEFAULT_Y_PADDING;
 
 public abstract class SettingsElementView extends JPanel {
-    protected final int FONT_SIZE = Utility.px(40);
+    protected final int FONT_SIZE = Dimensions.FONT_SIZE_MID;
     protected final int LEFT_PADDING = DEFAULT_Y_PADDING * 3;
     protected final int RIGHT_PADDING = DEFAULT_Y_PADDING * 10;
 

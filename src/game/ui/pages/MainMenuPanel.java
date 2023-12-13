@@ -8,6 +8,7 @@ import game.ui.frames.BombermanFrame;
 import game.ui.panels.menu.AvatarMenuPanel;
 import game.ui.panels.menu.ProfilePanel;
 import game.ui.panels.menu.SettingsPanel;
+import game.ui.panels.menu.UsernameProfilePanel;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;
 import game.utils.Paths;
@@ -48,16 +49,9 @@ public class MainMenuPanel extends BaseMenu {
 
     @Override
     protected JPanel getRightPanel() {
-        return null;
-    }
-
-    @Override
-    protected JPanel getLeftPanel() {
         String[] avatarPaths = XMLUtils.parseXmlArray(Paths.getSkinsXml(), "skins");
         assert avatarPaths != null;
 
-        // Define a Consumer to handle the skin change
-        Consumer<Integer> skinChangeConsumer = newIndex -> DataInputOutput.getInstance().setSkin(avatarPaths[newIndex]);
         RunnablePar getSkinRunnable = new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
@@ -65,7 +59,47 @@ public class MainMenuPanel extends BaseMenu {
             }
         };
 
-        return new AvatarMenuPanel(avatarPaths, getSkinRunnable, skinChangeConsumer);
+        // Define a Consumer to handle the skin change
+        Consumer<Integer> skinChangeConsumer = indexAdder -> {
+            String currAvatar = (String) getSkinRunnable.execute(null);
+
+            int newIndex = 0;
+            for (int i = 0; i < avatarPaths.length; i++) {
+                String avatarPath = avatarPaths[i];
+                if (currAvatar.endsWith("/" + avatarPath)) {
+                    newIndex = i + indexAdder;
+                    break;
+                }
+            }
+
+            if (newIndex >= avatarPaths.length) {
+                newIndex = 0;
+            } else if (newIndex < 0) {
+                newIndex = avatarPaths.length - 1;
+            }
+
+            DataInputOutput.getInstance().setSkin(avatarPaths[newIndex]);
+        };
+
+        return new AvatarMenuPanel(getSkinRunnable, skinChangeConsumer);
+    }
+
+    @Override
+    protected JPanel getLeftPanel() {
+        RunnablePar getUsernameRunnable = new RunnablePar() {
+            @Override
+            public <T> Object execute(T par) {
+                return DataInputOutput.getInstance().getUsername();
+            }
+        };
+
+        // Define a Consumer to handle the username change
+        Consumer<String> usernameChangeConsumer = username -> {
+            if (username.isBlank()) return;
+            DataInputOutput.getInstance().setUsername(username.trim());
+        };
+
+        return new UsernameProfilePanel(getUsernameRunnable, usernameChangeConsumer);
     }
 
     /**

@@ -11,7 +11,7 @@ import game.ui.viewelements.bombermanpanel.BombermanPanelYellow;
 import game.ui.viewelements.settings.InfoElementView;
 import game.ui.viewelements.settings.SettingsElementView;
 import game.ui.viewelements.settings.SlideElementView;
-import game.ui.viewelements.settings.TextFieldElementView;
+import game.ui.viewelements.settings.JBombTextFieldTagged;
 import game.utils.Utility;
 import game.values.Dimensions;
 
@@ -139,12 +139,12 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
         return imageLabel;
     }
 
-    public TextFieldElementView addTextFieldElementView(String title, String startText, RunnablePar callback) {
+    public JBombTextFieldTagged addTextFieldElementView(String title, String startText, RunnablePar callback) {
         return addTextFieldElementView(title, startText, callback, -1);
     }
 
-    public TextFieldElementView addTextFieldElementView(String title, String startText, RunnablePar callback, int charLimit) {
-        TextFieldElementView elementView = new TextFieldElementView(boxPanel, title, startText, callback, charLimit);
+    public JBombTextFieldTagged addTextFieldElementView(String title, String startText, RunnablePar callback, int charLimit) {
+        JBombTextFieldTagged elementView = new JBombTextFieldTagged(boxPanel, title, startText, callback, charLimit);
         componentsPanel.add(elementView);
 
         return elementView;

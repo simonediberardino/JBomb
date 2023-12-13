@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class GarbageCollectorTask {
-    private static final int DELAY_MS = 60 * 1000;
+    private static final int DELAY_MS = 30 * 1000;
     private final ActionListener taskPerformer = evt -> {
         System.gc();
     };
