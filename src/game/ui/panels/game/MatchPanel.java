@@ -326,7 +326,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
             Image img = p.getImage().getScaledInstance(powerUpImageDimension, powerUpImageDimension, 0);
 
             JLabel powerupLabel = new JLabel(new ImageIcon(img));
-            powerupLabel.setBorder(BorderFactory.createEmptyBorder(Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING));
+            powerupLabel.setBorder(BorderFactory.createEmptyBorder(Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING));
 
             // Create a JLabel with the scaled image and add it to the power-up panel
             powerUpsPanel.add(powerupLabel);

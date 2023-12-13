@@ -5,6 +5,7 @@ import game.events.RunnablePar;
 import game.localization.Localization;
 import game.sound.AudioManager;
 import game.ui.frames.BombermanFrame;
+import game.ui.panels.models.BoxMenuPanel;
 import game.ui.viewelements.settings.SettingsElementView;
 import game.ui.viewelements.settings.SlideElementView;
 import game.utils.Utility;
@@ -28,7 +29,7 @@ public class SettingsPanel extends BoxMenuPanel {
     }
 
     @Override
-    int getBoxPanelWidth() {
+    protected int getBoxPanelWidth() {
         return Utility.px(800);
     }
 

@@ -4,6 +4,7 @@ import game.data.DataInputOutput;
 import game.events.RunnablePar;
 import game.localization.Localization;
 import game.ui.frames.BombermanFrame;
+import game.ui.panels.models.BoxMenuPanel;
 import game.ui.viewelements.settings.SettingsElementView;
 import game.utils.Utility;
 
@@ -26,7 +27,7 @@ public class ProfilePanel extends BoxMenuPanel {
     }
 
     @Override
-    int getBoxPanelWidth() {
+    protected int getBoxPanelWidth() {
         return Utility.px(800);
     }
 

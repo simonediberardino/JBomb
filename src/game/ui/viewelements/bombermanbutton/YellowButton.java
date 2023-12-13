@@ -9,6 +9,9 @@ public class YellowButton extends BombermanButton {
         super(text);
     }
 
+    public YellowButton(String text, int fontSize) {
+        super(text, fontSize);
+    }
     @Override
     public Color getBorderColor() {
         return BomberColors.ORANGE;

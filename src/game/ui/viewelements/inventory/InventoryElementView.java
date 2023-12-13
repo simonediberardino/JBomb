@@ -16,7 +16,7 @@ public class InventoryElementView extends JPanel {
         icon = new JLabel();
         occurrents = new JLabel("", SwingConstants.CENTER);
         occurrents.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
-        setBorder(BorderFactory.createEmptyBorder(Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING, Dimensions.DEFAULT_PADDING));
+        setBorder(BorderFactory.createEmptyBorder(Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING));
         setLayout(new GridLayout(1, 2));
         add(icon);
         add(occurrents);

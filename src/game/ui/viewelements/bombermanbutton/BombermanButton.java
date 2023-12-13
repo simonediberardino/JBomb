@@ -3,6 +3,7 @@ package game.ui.viewelements.bombermanbutton;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.utils.Utility;
+import game.values.Dimensions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +12,19 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
 public abstract class BombermanButton extends JButton {
-    private final int fontSize = Utility.px(60);
-    private final int borderWidth = Utility.px(10);
+    private int fontSize = Dimensions.FONT_SIZE_BIG;
+    private int borderWidth = Utility.px(10);
     private final int cornerRadius = 15;
     private final Color backgroundColor = new Color(0, 0, 0, 0);
     private final Color textColor = new Color(255, 255, 255);
     private final Color shadowColor = new Color(0, 0, 0, 150);
     private boolean mouseEntered = false;
+
+    public BombermanButton(String text, int fontSize) {
+        this(text);
+        this.fontSize = fontSize;
+        setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+    }
 
     public BombermanButton(String text) {
         super(text);

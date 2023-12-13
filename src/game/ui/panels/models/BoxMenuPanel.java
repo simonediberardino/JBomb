@@ -1,4 +1,4 @@
-package game.ui.panels.menu;
+package game.ui.panels.models;
 
 import game.ui.frames.BombermanFrame;
 import game.ui.panels.game.PagePanel;
@@ -18,7 +18,7 @@ public abstract class BoxMenuPanel extends PagePanel {
         initializeLayout();
     }
 
-    abstract int getBoxPanelWidth();
+    protected abstract int getBoxPanelWidth();
 
     /**
      * Sets up the layout of the panel.
@@ -28,7 +28,7 @@ public abstract class BoxMenuPanel extends PagePanel {
 
         this.boxComponentsPanel = new JBombermanBoxContainerPanel(title, true) {
             @Override
-            int getBoxPanelWidth() {
+            protected int getBoxPanelWidth() {
                 return BoxMenuPanel.this.getBoxPanelWidth();
             }
 
