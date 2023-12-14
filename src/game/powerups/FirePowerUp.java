@@ -1,6 +1,7 @@
 package game.powerups;
 
 import game.data.DataInputOutput;
+import game.entity.bomb.AbstractExplosion;
 import game.entity.models.BomberEntity;
 import game.entity.models.Coordinates;
 import game.events.ExplosionLengthPowerUpEvent;
@@ -8,7 +9,6 @@ import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
 
-import static game.entity.bomb.AbstractExplosion.MAX_EXPLOSION_LENGTH;
 
 public class FirePowerUp extends PowerUp {
     /**
@@ -42,6 +42,6 @@ public class FirePowerUp extends PowerUp {
 
     @Override
     public boolean canPickUp(BomberEntity entity) {
-        return !(entity.getCurrExplosionLength() > MAX_EXPLOSION_LENGTH);
+        return !(entity.getCurrExplosionLength() > AbstractExplosion.Companion.getMAX_EXPLOSION_LENGTH());
     }
 }

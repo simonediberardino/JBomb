@@ -7,13 +7,11 @@ public class Zombie extends IntelligentEnemy {
     public Zombie() {
         super();
         setMaxHp(300);
-        setHp(getMaxHp());
     }
 
     public Zombie(Coordinates coordinates) {
         super(coordinates);
         setMaxHp(300);
-        setHp(getMaxHp());
     }
 
     @Override

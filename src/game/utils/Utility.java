@@ -61,7 +61,7 @@ public class Utility {
      * @return The loaded image, or null if the file could not be found or read.
      */
     public static BufferedImage loadImage(String fileName) {
-        Cache cache = Cache.getInstance();
+        Cache cache = Cache.Companion.getInstance();
 
         if (cache.hasInCache(fileName))
             return cache.queryCache(fileName);
@@ -73,7 +73,7 @@ public class Utility {
 
             if (inputStream != null) {
                 BufferedImage image = ImageIO.read(inputStream);
-                Cache.getInstance().saveInCache(fileName, image);
+                Cache.Companion.getInstance().saveInCache(fileName, image);
                 return image;
             } else {
                 System.out.println("Can't find " + fileName + " in the JAR!");

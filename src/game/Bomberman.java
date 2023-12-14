@@ -70,7 +70,6 @@ public class Bomberman {
             Bomberman.getBombermanFrame().removeKeyListener(bomberManMatch.getControllerManager());
             bomberManMatch.destroy();
         }
-        bomberManMatch = new BomberManMatch(new WorldSelectorLevel()); // Temporary sets the current level to WorldSelectorLevel to avoid null pointer exception if some threads aren't killed yet
         System.gc();
     }
 

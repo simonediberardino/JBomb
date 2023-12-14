@@ -16,8 +16,6 @@ import game.utils.Utility;
 import java.util.HashSet;
 import java.util.Set;
 
-import static game.entity.bomb.AbstractExplosion.SIZE;
-
 public class PistolItem extends UsableItem implements Explosive {
     private int bullets = 5;
 
@@ -52,7 +50,7 @@ public class PistolItem extends UsableItem implements Explosive {
 
         AbstractExplosion explosion = new PistolExplosion(
                 getOwner(),
-                Coordinates.nextCoords(owner.getCoords(), owner.getCurrDirection(), SIZE),
+                Coordinates.nextCoords(owner.getCoords(), owner.getCurrDirection(), AbstractExplosion.Companion.getSIZE()),
                 getOwner().getCurrDirection(),
                 1,
                 this

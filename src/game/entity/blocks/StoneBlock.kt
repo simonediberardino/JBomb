@@ -1,20 +1,13 @@
-package game.entity.blocks;
+package game.entity.blocks
 
-import game.Bomberman;
-import game.entity.models.Entity;
-import game.entity.models.Coordinates;
+import game.Bomberman
+import game.entity.models.Coordinates
+import game.entity.models.Entity
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
-
-
-public class StoneBlock extends HardBlock {
-    public StoneBlock(Coordinates coordinates) {
-        super(coordinates);
-    }
-
-    @Override
-    protected String getBasePath() {
-        return null;
+class StoneBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
+    override fun getBasePath(): String? {
+        return null
     }
 
     /**
@@ -22,14 +15,11 @@ public class StoneBlock extends HardBlock {
      *
      * @param e the other entity to interact with
      */
-    @Override
-    protected void doInteract(Entity e) {
-        if(e == null) return;
+    override fun doInteract(e: Entity?) {
+        if (e == null) return
     }
 
-    @Override
-    public BufferedImage getImage(){
-        return loadAndSetImage(Bomberman.getMatch().getCurrentLevel().getStoneBlockImagePath());
+    override fun getImage(): BufferedImage {
+        return loadAndSetImage(Bomberman.getMatch().currentLevel.stoneBlockImagePath)
     }
-
 }

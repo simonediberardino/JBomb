@@ -1,108 +1,90 @@
-package game.entity.enemies.boss.clown;
+package game.entity.enemies.boss.clown
 
-import game.entity.Player;
-import game.entity.enemies.npcs.Orb;
-import game.entity.models.Entity;
-import game.entity.models.Coordinates;
-import game.entity.models.Direction;
-import game.entity.models.EnhancedDirection;
-import game.utils.Paths;
-import game.values.DrawPriority;
+import game.entity.Player
+import game.entity.enemies.boss.clown.Clown
+import game.entity.enemies.npcs.Orb
+import game.entity.models.Coordinates
+import game.entity.models.EnhancedDirection
+import game.entity.models.Entity
+import game.utils.Paths
+import game.values.DrawPriority
+import java.util.*
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-public class Hat extends Orb {
-    public Hat(Coordinates coordinates, EnhancedDirection enhancedDirection) {
-        super(coordinates, enhancedDirection);
-        setMaxHp(300);
-        setHp(getMaxHp());
+open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : Orb(coordinates, enhancedDirection) {
+    init {
+        maxHp = 300
     }
 
-    @Override
-    protected String getBasePath() {
-        return Paths.getEnemiesFolder() + "/clown/hat";
+    override fun getBasePath(): String {
+        return "${Paths.getEnemiesFolder()}/clown/hat"
     }
 
-    @Override
-    public String[] getCharacterOrientedImages() {
-        return new String[]{
-                getBasePath() + "1.png",
-                getBasePath() + "2.png",
-                getBasePath() + "3.png",
-                getBasePath() + "4.png",
-                getBasePath() + "5.png",
-                getBasePath() + "6.png",
-                getBasePath() + "7.png",
-                getBasePath() + "8.png",
-                getBasePath() + "9.png",
-                getBasePath() + "10.png",
-        };
+    override fun getCharacterOrientedImages(): Array<String> {
+        return arrayOf(
+                "${basePath}1.png",
+                "${basePath}2.png",
+                "${basePath}3.png",
+                "${basePath}4.png",
+                "${basePath}5.png",
+                "${basePath}6.png",
+                "${basePath}7.png",
+                "${basePath}8.png",
+                "${basePath}9.png",
+                "${basePath}10.png")
     }
 
-    @Override
-    public int getSize() {
-        return SIZE * 3;
+    override fun getSize(): Int {
+        return SIZE * 3
     }
 
-    @Override
-    protected void doInteract(Entity e) {
-        if (e == null) return;
+    override fun doInteract(e: Entity?) {
+        if (e == null) return
 
-        if (e instanceof Clown) {
-            ((Clown) e).setHasHat(true);
-            despawn();
+        if (e is Clown) {
+            e.setHasHat(true)
+            despawn()
         } else {
-            attack(e);
+            attack(e)
         }
     }
 
-    @Override
-    protected boolean useOnlyBaseIcons() {
-        return true;
+    override fun useOnlyBaseIcons(): Boolean {
+        return true
     }
 
-    protected void updateDirection() {
-        if (!canMove || !isAlive) return;
+    private fun updateDirection() {
+        if (!canMove || !isAlive)
+            return
 
         if (enhancedDirection == null) {
             // When hitting a wall, bounce and change direction;
-            if (!moveOrInteract(direction))
-                direction = direction.opposite();
-
-            updateLastDirection(direction);
-
-            return;
+            if (!moveOrInteract(direction)) direction = direction.opposite()
+            updateLastDirection(direction)
+            return
         }
 
-        for (Direction d : enhancedDirection.toDirection()) {
-            currDirection = d;
+        for (d in enhancedDirection.toDirection()) {
+            currDirection = d
             if (!moveOrInteract(d)) {
-                enhancedDirection = enhancedDirection.opposite(d);
+                enhancedDirection = enhancedDirection.opposite(d)
             }
-
-            updateLastDirection(currDirection);
+            updateLastDirection(currDirection)
         }
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getInteractionsEntities() {
-        return new HashSet<>(Arrays.asList(Player.class, Clown.class));
+    override fun getInteractionsEntities(): Set<Class<out Entity>> {
+        return HashSet<Class<out Entity>>(listOf(Player::class.java, Clown::class.java))
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getObstacles() {
-        return new HashSet<>();
+    override fun getObstacles(): Set<Class<out Entity>> {
+        return HashSet()
     }
 
-    @Override
-    public void doUpdate(boolean gameState) {
-        if (gameState) updateDirection();
+    override fun doUpdate(gameState: Boolean) {
+        if (gameState) updateDirection()
     }
 
-    @Override
-    public DrawPriority getDrawPriority() {
-        return DrawPriority.DRAW_PRIORITY_3;
+    override fun getDrawPriority(): DrawPriority {
+        return DrawPriority.DRAW_PRIORITY_3
     }
 }

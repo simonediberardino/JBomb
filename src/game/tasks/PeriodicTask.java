@@ -1,16 +1,22 @@
 package game.tasks;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.util.function.Consumer;
 
 public class PeriodicTask {
     private final Runnable callback;
     private final int delay;
     private final Timer timer;
+    private final ActionListener actionListener;
 
     public PeriodicTask(Runnable callback, int delay) {
         this.callback = callback;
         this.delay = delay;
-        this.timer = new Timer(delay, e -> callback.run());
+        this.actionListener = e -> callback.run();
+
+        this.timer = new Timer(delay, actionListener);
+        this.timer.setRepeats(true);
     }
 
     public void start() {
@@ -29,9 +35,6 @@ public class PeriodicTask {
     }
 
     public void stop() {
-        try {
-            if (timer != null) timer.stop();
-        } catch (Exception ignored) {
-        }
+        timer.stop();
     }
 }

@@ -116,6 +116,7 @@ public abstract class Character extends MovingEntity {
     protected void onSpawn() {
         super.onSpawn();
         setAliveState(true);
+        setHp(maxHp);
     }
 
     protected void playStepSound() {

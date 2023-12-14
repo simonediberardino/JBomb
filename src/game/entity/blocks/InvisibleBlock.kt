@@ -1,21 +1,12 @@
-package game.entity.blocks;
+package game.entity.blocks
 
-import game.entity.models.Entity;
-import game.entity.models.Coordinates;
+import game.entity.models.Coordinates
+import game.entity.models.Entity
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
-
-public class InvisibleBlock extends HardBlock{
-
-    public InvisibleBlock(Coordinates coordinates){
-        super(coordinates);
-    }
-
-    @Override
-    protected void doInteract(Entity e) {}
-
-    @Override
-    public BufferedImage getImage() {
-        return null;
+class InvisibleBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
+    override fun doInteract(e: Entity) {}
+    override fun getImage(): BufferedImage? {
+        return null
     }
 }

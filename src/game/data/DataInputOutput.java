@@ -81,16 +81,16 @@ public class DataInputOutput {
     }
 
     public void setUsername(String name) {
-        playerDataObject.setName(name.trim());
+        playerDataObject.name = name.trim();
         updateStoredPlayerData();
     }
 
     public String getUsername() {
-        return playerDataObject.getName();
+        return playerDataObject.name;
     }
 
     public void increaseKills() {
-        playerDataObject.setKills(playerDataObject.getKills() + 1);
+        playerDataObject.kills = playerDataObject.kills + 1;
         updateStoredPlayerData();
     }
 
@@ -103,21 +103,21 @@ public class DataInputOutput {
     }
 
     public void setExplosionLength(int newExplosionLength) {
-        playerDataObject.setExplosionLength(newExplosionLength);
+        playerDataObject.explosionLength = newExplosionLength;
         updateStoredPlayerData();
     }
 
     public int getExplosionLength() {
-        return playerDataObject.getExplosionLength();
+        return playerDataObject.explosionLength;
     }
 
     public int getObtainedBombs() {
-        return playerDataObject.getObtainedBombs();
+        return playerDataObject.obtainedBombs;
     }
 
     public void setObtainedBombs(int newMaxBombs) {
         newMaxBombs = Math.max(0, newMaxBombs);
-        playerDataObject.setObtainedBombs(newMaxBombs);
+        playerDataObject.obtainedBombs = newMaxBombs;
         updateStoredPlayerData();
     }
 
@@ -126,12 +126,12 @@ public class DataInputOutput {
     }
 
     public void increaseDeaths() {
-        playerDataObject.setDeaths(playerDataObject.getDeaths() + 1);
+        playerDataObject.deaths = playerDataObject.deaths + 1;
         updateStoredPlayerData();
     }
 
     public int getLives() {
-        return playerDataObject.getLives();
+        return playerDataObject.lives;
     }
 
     public void resetLives() {
@@ -139,7 +139,7 @@ public class DataInputOutput {
     }
 
     public void increaseLives() {
-        int nextLives = playerDataObject.getLives() + 1;
+        int nextLives = playerDataObject.lives + 1;
         setLives(nextLives);
     }
 
@@ -147,13 +147,13 @@ public class DataInputOutput {
         var controllerLives = Bomberman.getMatch().getInventoryElementControllerLives();
         if (controllerLives != null)
             Bomberman.getMatch().getInventoryElementControllerLives().setNumItems(nextLives);
-        playerDataObject.setLives(nextLives);
-        playerDataObject.setLives(nextLives);
+        playerDataObject.lives = nextLives;
+        playerDataObject.lives = nextLives;
         updateStoredPlayerData();
     }
 
     public void decreaseLives() {
-        int newLives = Math.max(playerDataObject.getLives() - 1, 0);
+        int newLives = Math.max(playerDataObject.lives - 1, 0);
         if (newLives <= 0) {
             increaseLost();
             resetLevel();
@@ -169,15 +169,15 @@ public class DataInputOutput {
     }
 
     public void resetLevel() {
-        playerDataObject.setLastWorldId(1);
-        playerDataObject.setLastLevelId(1);
+        playerDataObject.lastWorldId = 1;
+        playerDataObject.lastLevelId = 1;
         resetExplosionLength();
         resetMaxBombs();
         updateStoredPlayerData();
     }
 
     public long getScore() {
-        return playerDataObject.getPoints();
+        return playerDataObject.points;
     }
 
     public void resetScore() {
@@ -185,90 +185,90 @@ public class DataInputOutput {
     }
 
     public void decreaseScore(int score) {
-        setScore((int) (playerDataObject.getPoints() - score));
+        setScore((int) (playerDataObject.points - score));
     }
 
     public void increaseScore(int score) {
-        setScore((int) (playerDataObject.getPoints() + score));
+        setScore((int) (playerDataObject.points + score));
     }
 
     private void setScore(int score) {
         score = Math.max(0, score);
-        playerDataObject.setPoints(score);
+        playerDataObject.points = score;
         updateStoredPlayerData();
     }
 
     public void setName(String name) {
-        playerDataObject.setName(name);
+        playerDataObject.name = name;
         updateStoredPlayerData();
     }
 
     public void setLastLevel(Level level) {
-        if (playerDataObject.getLastWorldId() > level.getWorldId()) return;
-        if (playerDataObject.getLastWorldId() == level.getWorldId() && playerDataObject.getLastLevelId() >= level.getLevelId())
+        if (playerDataObject.lastWorldId > level.getWorldId()) return;
+        if (playerDataObject.lastWorldId == level.getWorldId() && playerDataObject.lastLevelId >= level.getLevelId())
             return;
         playerDataObject.setLastLevel(level);
         updateStoredPlayerData();
     }
 
     public void increaseLost() {
-        playerDataObject.setLostGames(playerDataObject.getLostGames() + 1);
+        playerDataObject.lostGames = playerDataObject.lostGames + 1;
         updateStoredPlayerData();
     }
 
     public void increaseRounds() {
-        playerDataObject.setRounds(playerDataObject.getRounds() + 1);
+        playerDataObject.rounds = playerDataObject.rounds + 1;
         updateStoredPlayerData();
     }
 
     public void setSkin(String skin) {
-        playerDataObject.setSkin(skin);
+        playerDataObject.skin = skin;
         updateStoredPlayerData();
     }
 
     public String getSkin() {
-        return playerDataObject.getSkin();
+        return playerDataObject.skin;
     }
 
     public String getLeftKeyChar() {
-        return KeyEvent.getKeyText(playerDataObject.getLeftKey());
+        return KeyEvent.getKeyText(playerDataObject.leftKey);
     }
 
     public String getForwardKeyChar() {
-        return KeyEvent.getKeyText(playerDataObject.getForwardKey());
+        return KeyEvent.getKeyText(playerDataObject.forwardKey);
     }
 
     public String getBackKeyChar() {
-        return KeyEvent.getKeyText(playerDataObject.getBackKey());
+        return KeyEvent.getKeyText(playerDataObject.backKey);
     }
 
     public String getRightKeyChar() {
-        return KeyEvent.getKeyText(playerDataObject.getRightKey());
+        return KeyEvent.getKeyText(playerDataObject.rightKey);
     }
 
     public String getBombKeyChar() {
-        return KeyEvent.getKeyText(playerDataObject.getBombKey());
+        return KeyEvent.getKeyText(playerDataObject.bombKey);
     }
 
 
     public int getLeftKey() {
-        return playerDataObject.getLeftKey();
+        return playerDataObject.leftKey;
     }
 
     public int getForwardKey() {
-        return playerDataObject.getForwardKey();
+        return playerDataObject.forwardKey;
     }
 
     public int getBackKey() {
-        return playerDataObject.getBackKey();
+        return playerDataObject.backKey;
     }
 
     public int getRightKey() {
-        return playerDataObject.getRightKey();
+        return playerDataObject.rightKey;
     }
 
     public int getBombKey() {
-        return playerDataObject.getBombKey();
+        return playerDataObject.bombKey;
     }
 
     public void resetKeys() {
@@ -276,60 +276,60 @@ public class DataInputOutput {
     }
 
     public void setForwardKey(int forwardKey) {
-        playerDataObject.setForwardKey(forwardKey);
+        playerDataObject.forwardKey = forwardKey;
         updateStoredPlayerData();
     }
 
     public void setBackKey(int backKey) {
-        playerDataObject.setBackKey(backKey);
+        playerDataObject.backKey = backKey;
         updateStoredPlayerData();
     }
 
     public void setLeftKey(int leftKey) {
-        playerDataObject.setLeftKey(leftKey);
+        playerDataObject.leftKey = leftKey;
         updateStoredPlayerData();
     }
 
     public void setRightKey(int rightKey) {
-        playerDataObject.setRightKey(rightKey);
+        playerDataObject.rightKey = rightKey;
         updateStoredPlayerData();
     }
 
     public void setBombKey(int bombKey) {
-        playerDataObject.setBombKey(bombKey);
+        playerDataObject.bombKey = bombKey;
         updateStoredPlayerData();
     }
 
     public void setVolume(int volume) {
-        playerDataObject.setVolume(volume);
+        playerDataObject.volume = volume;
         updateStoredPlayerData();
     }
 
     public int getVolume() {
-        return playerDataObject.getVolume();
+        return playerDataObject.volume;
     }
 
     public int getLastLevelId() {
-        return playerDataObject.getLastLevelId();
+        return playerDataObject.lastLevelId;
     }
 
     public int getLastWorldId() {
-        return playerDataObject.getLastWorldId();
+        return playerDataObject.lastWorldId;
     }
 
     public int getDeaths() {
-        return playerDataObject.getDeaths();
+        return playerDataObject.deaths;
     }
 
     public int getKills() {
-        return playerDataObject.getKills();
+        return playerDataObject.kills;
     }
 
     public int getRounds() {
-        return playerDataObject.getRounds();
+        return playerDataObject.rounds;
     }
 
     public int getLostGames() {
-        return playerDataObject.getLostGames();
+        return playerDataObject.lostGames;
     }
 }

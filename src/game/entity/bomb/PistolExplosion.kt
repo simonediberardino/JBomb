@@ -1,56 +1,46 @@
-package game.entity.bomb;
+package game.entity.bomb
 
-import game.entity.models.*;
-import game.utils.Paths;
-import game.values.DrawPriority;
+import game.entity.models.Coordinates
+import game.entity.models.Direction
+import game.entity.models.Entity
+import game.entity.models.Explosive
+import game.utils.Paths
+import game.values.DrawPriority
 
-import java.util.Set;
+class PistolExplosion : AbstractExplosion {
+    constructor(
+            owner: Entity,
+            coordinates: Coordinates,
+            direction: Direction,
+            explosive: Explosive) : super(owner, coordinates, direction, 0, explosive)
 
-public class PistolExplosion extends AbstractExplosion {
-    public PistolExplosion(
-            Entity owner,
-            Coordinates coordinates,
-            Direction direction,
-            Explosive explosive) {
-        super(owner, coordinates, direction,0, explosive);
+    constructor(
+            owner: Entity,
+            coordinates: Coordinates,
+            direction: Direction,
+            distanceFromBomb: Int,
+            explosive: Explosive) : super(owner, coordinates, direction, distanceFromBomb, explosive)
+
+    constructor(
+            owner: Entity,
+            coordinates: Coordinates,
+            direction: Direction,
+            distanceFromExplosive: Int,
+            explosive: Explosive,
+            canExpand: Boolean) : super(owner, coordinates, direction, distanceFromExplosive, explosive, canExpand)
+
+    override fun getBasePath(): String {
+        return "${Paths.getEntitiesFolder()}/bomb/flame"
     }
 
-    public PistolExplosion(
-            Entity owner,
-            Coordinates coordinates,
-            Direction direction,
-            int distanceFromBomb,
-            Explosive explosive) {
-        super(owner, coordinates, direction, distanceFromBomb, explosive);
+    override fun getDrawPriority(): DrawPriority {
+        return DrawPriority.DRAW_PRIORITY_1
     }
 
-    public PistolExplosion(
-            Entity owner,
-            Coordinates coordinates,
-            Direction direction,
-            int distanceFromExplosive,
-            Explosive explosive,
-            boolean canExpand) {
-        super(owner, coordinates, direction, distanceFromExplosive, explosive, canExpand);
-    }
+    override val explosionClass: Class<out AbstractExplosion>
+        get() = javaClass
 
-    @Override
-    protected String getBasePath() {
-        return String.format("%s/bomb/flame", Paths.getEntitiesFolder());
-    }
-
-    @Override
-    public DrawPriority getDrawPriority() {
-        return DrawPriority.DRAW_PRIORITY_1;
-    }
-
-    @Override
-    protected Class<? extends AbstractExplosion> getExplosionClass() {
-        return getClass();
-    }
-
-    @Override
-    protected boolean shouldHideCenter() {
-        return true;
+    override fun shouldHideCenter(): Boolean {
+        return true
     }
 }

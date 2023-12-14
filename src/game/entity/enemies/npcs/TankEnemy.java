@@ -51,9 +51,9 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
             // Check if the entity can shoot and if a random probability allows shooting
             if (canShoot && Math.random() * 100 < PROBABILITY_OF_SHOOTING) {
                 // Calculate new coordinates with an explosion offset for vertical directions
-                Coordinates newCoords = getNewTopLeftCoordinatesOnDirection(currDirection, AbstractExplosion.SIZE);
+                Coordinates newCoords = getNewTopLeftCoordinatesOnDirection(currDirection, AbstractExplosion.Companion.getSIZE());
                 if (currDirection == Direction.UP || currDirection == Direction.DOWN) {
-                    int x = newCoords.getX() + AbstractExplosion.SPAWN_OFFSET;
+                    int x = newCoords.getX() + AbstractExplosion.Companion.getSPAWN_OFFSET();
                     newCoords = new Coordinates(x, newCoords.getY());
                 }
 

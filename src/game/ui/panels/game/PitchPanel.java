@@ -96,13 +96,13 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         List<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
 
-        for (Entity e : setEntities) {
+        setEntities.forEach(e -> {
             try {
                 drawEntity(g2d, e);
             } catch (ConcurrentModificationException ex) {
                 ex.printStackTrace();
             }
-        }
+        });
         // Runs custom callbacks;
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
     }

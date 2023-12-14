@@ -40,7 +40,7 @@ public class GhostBoss extends Boss {
 
     public GhostBoss() {
         super();
-        this.hitboxSizetoWidthRatio= 0.648f;
+        this.hitboxSizetoWidthRatio = 0.648f;
         this.hitboxSizeToHeightRatio = 0.70f;
         paddingTopFunction = new RunnablePar() {
             @Override
@@ -52,7 +52,7 @@ public class GhostBoss extends Boss {
     }
 
     @Override
-    public void attack(Entity e){
+    public void attack(Entity e) {
         attackAnimationAndSoundFX();
         super.attack(e);
     }
@@ -64,12 +64,12 @@ public class GhostBoss extends Boss {
 
     @Override
     protected String getImageFromRageStatus() {
-        return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), currRageStatus);
+        return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), getCurrRageStatus());
     }
 
     @Override
     public String[] getCharacterOrientedImages() {
-        return new String[] { getImageFromRageStatus() };
+        return new String[]{getImageFromRageStatus()};
     }
 
     @Override
@@ -78,7 +78,7 @@ public class GhostBoss extends Boss {
     }
 
     private void attackAnimationAndSoundFX() {
-        if(currRageStatus == 1) return;
+        if (getCurrRageStatus() == 1) return;
 
         AudioManager.getInstance().play(SoundModel.AXE_HIT);
         updateRageStatus(1);
@@ -152,12 +152,12 @@ public class GhostBoss extends Boss {
     }
 
     private void spawnGhosts(int n) {
-        if(Utility.timePassed(lastGhostSpawnTime) < GHOST_SPAWN_TIME_DELAY) return;
+        if (Utility.timePassed(lastGhostSpawnTime) < GHOST_SPAWN_TIME_DELAY) return;
 
         lastGhostSpawnTime = System.currentTimeMillis();
 
-        for(int i = 0; i < n; i++){
-            if(Bomberman.getMatch().getEnemiesAlive() >= MAX_GHOSTS_ALIVE) return;
+        for (int i = 0; i < n; i++) {
+            if (Bomberman.getMatch().getEnemiesAlive() >= MAX_GHOSTS_ALIVE) return;
             new GhostEnemy().spawnAtRandomCoordinates();
         }
     }
@@ -174,13 +174,20 @@ public class GhostBoss extends Boss {
                     int rand = (int) (Math.random() * 10000);
 
                     switch (ref.count) {
-                        case 0: case 2: case 4: PitchPanel.turnOffLights(); break;
-                        case 1: case 3: PitchPanel.turnOnLights(); break;
+                        case 0:
+                        case 2:
+                        case 4:
+                            PitchPanel.turnOffLights();
+                            break;
+                        case 1:
+                        case 3:
+                            PitchPanel.turnOnLights();
+                            break;
                     }
 
                     timer.setDelay(rand);
 
-                    if(ref.count >= 5 || Bomberman.isGameEnded()) {
+                    if (ref.count >= 5 || Bomberman.isGameEnded()) {
                         PitchPanel.turnOnLights();
                         timer.stop();
                     }
@@ -195,12 +202,12 @@ public class GhostBoss extends Boss {
     }
 
     private void attack() {
-        java.util.List<Coordinates> coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInAreaFromDirection(this,Direction.DOWN,BOSS_ATTACK_VERTICAL_RANGE);
-        java.util.List<Coordinates>  coordsOfEntitysImageDirectionBlocks = Coordinates.getAllBlocksInAreaFromDirection(this,imageDirection, BOSS_ATTACK_HORIZONTAL_RANGE);
+        java.util.List<Coordinates> coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInAreaFromDirection(this, Direction.DOWN, BOSS_ATTACK_VERTICAL_RANGE);
+        java.util.List<Coordinates> coordsOfEntitysImageDirectionBlocks = Coordinates.getAllBlocksInAreaFromDirection(this, imageDirection, BOSS_ATTACK_HORIZONTAL_RANGE);
         coordsOfUnderneathEntityBlocks.addAll(coordsOfEntitysImageDirectionBlocks);
 
         //merge the 2 lists into one another
-        coordsOfUnderneathEntityBlocks.forEach(c-> Coordinates.getEntitiesOnBlock(c).forEach(this::interact));
+        coordsOfUnderneathEntityBlocks.forEach(c -> Coordinates.getEntitiesOnBlock(c).forEach(this::interact));
         attackAnimationAndSoundFX();
     }
 

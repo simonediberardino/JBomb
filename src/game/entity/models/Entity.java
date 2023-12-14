@@ -33,7 +33,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     private Coordinates coords;
     private boolean isSpawned = false;
     protected boolean isImmune = false;
-    protected volatile AtomicReference<State> state = new AtomicReference<>();
+    public volatile AtomicReference<State> state = new AtomicReference<>();
     private boolean isInvisible = false;
     private int paddingTop;
     protected RunnablePar paddingTopFunction = new RunnablePar() {

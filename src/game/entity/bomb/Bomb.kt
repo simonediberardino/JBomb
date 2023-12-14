@@ -1,67 +1,52 @@
-package game.entity.bomb;
+package game.entity.bomb
 
-import game.Bomberman;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.HardBlock;
-import game.entity.blocks.MovableBlock;
-import game.entity.models.*;
-import game.entity.models.Character;
-import game.entity.models.Coordinates;
-import game.entity.models.Direction;
-import game.sound.AudioManager;
-import game.sound.SoundModel;
-import game.utils.Paths;
-import game.ui.panels.game.PitchPanel;
-import game.utils.Utility;
+import game.Bomberman
+import game.entity.blocks.DestroyableBlock
+import game.entity.blocks.HardBlock
+import game.entity.blocks.MovableBlock
+import game.entity.bomb.AbstractExplosion
+import game.entity.bomb.FireExplosion
+import game.entity.models.*
+import game.sound.AudioManager
+import game.sound.SoundModel
+import game.ui.panels.game.PitchPanel
+import game.utils.Paths
+import game.utils.Utility
+import java.awt.image.BufferedImage
+import java.util.*
 
-import java.awt.image.BufferedImage;
-import java.util.*;
+open class Bomb(entity: BomberEntity) : MovableBlock(Coordinates.getCenterCoordinatesOfEntity(entity)), Explosive {
+    private val caller: Entity
+    private var onExplodeCallback: Runnable? = null
 
-public class Bomb extends MovableBlock implements Explosive {
-    public static final int BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 2;
-    public static final long PLACE_INTERVAL = 1000;
-    private static final int EXPLODE_TIMER = 5000;
-    private final Entity caller;
-    private Runnable onExplodeCallback;
-
-    public Bomb(BomberEntity entity) {
-        super(Coordinates.getCenterCoordinatesOfEntity(entity));
-        this.caller = entity;
+    init {
+        caller = entity
     }
 
-    @Override
-    protected String getBasePath() {
-        return String.format("%s/bomb/", Paths.getEntitiesFolder());
+    override fun getBasePath(): String {
+        return "${Paths.getEntitiesFolder()}/bomb/"
     }
 
-    @Override
-    public BufferedImage getImage() {
-        final int imagesCount = 3;
-
-        String[] images = new String[imagesCount];
-
-        for (int i = 0; i < images.length; i++) {
-            images[i] = String.format("%sbomb_%d.png", getBasePath(), i);
+    override fun getImage(): BufferedImage {
+        val imagesCount = 3
+        val images = arrayOfNulls<String>(imagesCount)
+        for (i in images.indices) {
+            images[i] = String.format("%sbomb_%d.png", basePath, i)
         }
-
-        if (Utility.timePassed(lastImageUpdate) < getImageRefreshRate()) {
-            return this.image;
+        if (Utility.timePassed(lastImageUpdate) < imageRefreshRate) {
+            return image
         }
-
-        BufferedImage img = loadAndSetImage(images[lastImageIndex]);
-
-        AudioManager.getInstance().play(SoundModel.BOMB_CLOCK);
-
-        lastImageIndex++;
-        if (lastImageIndex >= images.length) {
-            lastImageIndex = 0;
+        val img = loadAndSetImage(images[lastImageIndex])
+        AudioManager.getInstance().play(SoundModel.BOMB_CLOCK)
+        lastImageIndex++
+        if (lastImageIndex >= images.size) {
+            lastImageIndex = 0
         }
-
-        return img;
+        return img
     }
 
-    public void setOnExplodeListener(Runnable runnable) {
-        onExplodeCallback = runnable;
+    fun setOnExplodeListener(runnable: Runnable?) {
+        onExplodeCallback = runnable
     }
 
     /**
@@ -69,84 +54,65 @@ public class Bomb extends MovableBlock implements Explosive {
      *
      * @param e the other entity to interact with
      */
-    @Override
-    protected void doInteract(Entity e) {
-    }
-
-    public void explode() {
-        if (!isSpawned()) {
-            return;
+    override fun doInteract(e: Entity) {}
+    fun explode() {
+        if (!isSpawned) {
+            return
         }
-
-        despawn();
-
-        AudioManager.getInstance().play(SoundModel.EXPLOSION);
-
-        new FireExplosion(caller, getCoords(), Direction.UP, this).explode();
-        new FireExplosion(caller, getCoords(), Direction.RIGHT, this).explode();
-        new FireExplosion(caller, getCoords(), Direction.DOWN, this).explode();
-        new FireExplosion(caller, getCoords(), Direction.LEFT, this).explode();
-
-        if (onExplodeCallback != null) onExplodeCallback.run();
+        despawn()
+        AudioManager.getInstance().play(SoundModel.EXPLOSION)
+        FireExplosion(caller, coords, Direction.UP, this).explode()
+        FireExplosion(caller, coords, Direction.RIGHT, this).explode()
+        FireExplosion(caller, coords, Direction.DOWN, this).explode()
+        FireExplosion(caller, coords, Direction.LEFT, this).explode()
+        if (onExplodeCallback != null) onExplodeCallback!!.run()
     }
 
-    public void trigger() {
-        TimerTask explodeTask = new TimerTask() {
-            public void run() {
-                explode();
+    fun trigger() {
+        val explodeTask: TimerTask = object : TimerTask() {
+            override fun run() {
+                explode()
             }
-        };
-
-        Timer timer = new Timer();
-        timer.schedule(explodeTask, EXPLODE_TIMER);
+        }
+        val timer = Timer()
+        timer.schedule(explodeTask, EXPLODE_TIMER.toLong())
     }
 
-
-    @Override
-    public int getSize() {
-        return BOMB_SIZE;
+    override fun getSize(): Int {
+        return BOMB_SIZE
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getExplosionObstacles() {
-        return new HashSet<>() {{
-            add(HardBlock.class);
-            add(DestroyableBlock.class);
-        }};
+    override fun getExplosionObstacles(): Set<Class<out Entity>> {
+        return setOf(HardBlock::class.java, DestroyableBlock::class.java)
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getExplosionInteractionEntities() {
-        return new HashSet<>() {{
-            add(DestroyableBlock.class);
-            add(Character.class);
-            add(Bomb.class);
-        }};
+    override fun getExplosionInteractionEntities(): Set<Class<out Entity?>?> {
+        return setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)
     }
 
-    @Override
-    public int getMaxExplosionDistance() {
-        return Bomberman.getMatch().getPlayer().getCurrExplosionLength();
+    override fun getMaxExplosionDistance(): Int {
+        return Bomberman.getMatch().player.currExplosionLength
     }
 
-    @Override
-    public void onMouseClickInteraction() {
-        eliminated();
+    public override fun onMouseClickInteraction() {
+        eliminated()
     }
 
-    @Override
-    public void destroy() {
-        explode();
+    override fun destroy() {
+        explode()
     }
 
-    @Override
-    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Arrays.asList(FireExplosion.class, AbstractExplosion.class));
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
+        return HashSet<Class<out Entity>>(listOf(FireExplosion::class.java, AbstractExplosion::class.java))
     }
 
-    @Override
-    public void onExplosion(AbstractExplosion explosion) {
-        explode();
+    override fun onExplosion(explosion: AbstractExplosion) {
+        explode()
+    }
+
+    companion object {
+        val BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 2
+        const val PLACE_INTERVAL: Long = 1000
+        private const val EXPLODE_TIMER = 5000
     }
 }
-

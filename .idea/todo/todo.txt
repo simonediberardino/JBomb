@@ -2,3 +2,4 @@
 high priorities:
 - Images;
 - Lives power up remove;
+- Fix leave game lag

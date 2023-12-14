@@ -1,19 +1,11 @@
-package game.entity.blocks;
+package game.entity.blocks
 
-import game.entity.models.Block;
-import game.entity.models.Entity;
-import game.entity.models.Coordinates;
+import game.entity.models.Block
+import game.entity.models.Coordinates
+import game.entity.models.Entity
 
-import java.util.HashSet;
-import java.util.Set;
-
-public abstract class HardBlock extends Block {
-    public HardBlock(Coordinates coordinates) {
-        super(coordinates);
-    }
-
-    @Override
-    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>();
+abstract class HardBlock(coordinates: Coordinates?) : Block(coordinates) {
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
+        return HashSet()
     }
 }

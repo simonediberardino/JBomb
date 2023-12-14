@@ -1,135 +1,101 @@
-package game.data;
+package game.data
 
+import java.util.*
+import java.util.function.IntFunction
 
-import java.util.Iterator;
-import java.util.LinkedList;
+class SortedLinkedList<T : Comparable<T>?> : MutableList<T> {
+    private val list: LinkedList<T> = LinkedList()
 
-import java.util.*;
-
-public class SortedLinkedList<T extends Comparable<T>> implements List<T> {
-    private final LinkedList<T> list;
-
-    public SortedLinkedList() {
-        this.list = new LinkedList<>();
-    }
-
-    @Override
-    public boolean add(T element) {
-        int index = 0;
-        while (index < list.size() && element.compareTo(list.get(index)) >= 0) {
-            index++;
+    override fun add(element: T): Boolean {
+        var index = 0
+        while (index < list.size && element!! >= list[index]) {
+            index++
         }
-        list.add(index, element);
-        return true;
+        list.add(index, element)
+        return true
     }
 
-    @Override
-    public boolean remove(Object o) {
-        return list.remove(o);
+    override fun remove(element: T): Boolean {
+        return list.remove(element)
     }
 
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return list.containsAll(c);
+    override fun containsAll(elements: Collection<T>): Boolean {
+        return list.containsAll(elements)
     }
 
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
-        return list.addAll(c);
+    override fun addAll(elements: Collection<T>): Boolean {
+        return list.addAll(elements)
     }
 
-    @Override
-    public boolean addAll(int index, Collection<? extends T> c) {
-        return list.addAll(index, c);
+    override fun addAll(index: Int, elements: Collection<T>): Boolean {
+        return list.addAll(index, elements)
     }
 
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return list.removeAll(c);
+    override fun removeAll(elements: Collection<T>): Boolean {
+        return list.removeAll(elements.toSet())
     }
 
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return list.retainAll(c);
+    override fun retainAll(elements: Collection<T>): Boolean {
+        return list.retainAll(elements.toSet())
     }
 
-    @Override
-    public void clear() {
-        list.clear();
+    override fun clear() {
+        list.clear()
     }
 
-    @Override
-    public T get(int index) {
-        return list.get(index);
+    override fun get(index: Int): T {
+        return list[index]
     }
 
-    @Override
-    public T set(int index, T element) {
-        return list.set(index, element);
+    override fun set(index: Int, element: T): T {
+        return list.set(index, element)
     }
 
-    @Override
-    public void add(int index, T element) {
-        list.add(index, element);
+    override fun add(index: Int, element: T) {
+        list.add(index, element)
     }
 
-    @Override
-    public T remove(int index) {
-        return list.remove(index);
+    override fun removeAt(index: Int): T {
+        return list.removeAt(index)
     }
 
-    @Override
-    public int indexOf(Object o) {
-        return list.indexOf(o);
+    override fun indexOf(element: T): Int {
+        return list.indexOf(element)
     }
 
-    @Override
-    public int lastIndexOf(Object o) {
-        return list.lastIndexOf(o);
+    override fun lastIndexOf(element: T): Int {
+        return list.lastIndexOf(element)
     }
 
-    @Override
-    public ListIterator<T> listIterator() {
-        return list.listIterator();
+    override fun listIterator(): MutableListIterator<T> {
+        return list.listIterator()
     }
 
-    @Override
-    public ListIterator<T> listIterator(int index) {
-        return list.listIterator(index);
+    override fun listIterator(index: Int): MutableListIterator<T> {
+        return list.listIterator(index)
     }
 
-    @Override
-    public List<T> subList(int fromIndex, int toIndex) {
-        return list.subList(fromIndex, toIndex);
+    override fun subList(fromIndex: Int, toIndex: Int): MutableList<T> {
+        return list.subList(fromIndex, toIndex)
     }
 
-    @Override
-    public int size() {
-        return list.size();
+    override val size: Int
+        get() = list.size
+
+    override fun isEmpty(): Boolean {
+        return list.isEmpty()
     }
 
-    @Override
-    public boolean isEmpty() {
-        return list.isEmpty();
+    override operator fun contains(element: T): Boolean {
+        return list.contains(element)
     }
 
-    @Override
-    public boolean contains(Object o) {
-        return list.contains(o);
+    override fun iterator(): MutableIterator<T> {
+        return list.iterator()
     }
 
-    @Override
-    public Iterator<T> iterator() {
-        return list.iterator();
+    override fun <T : Any?> toArray(generator: IntFunction<Array<T>>?): Array<T> {
+        return list.toArray(generator)
     }
 
-    @Override
-    public Object[] toArray() {
-        return list.toArray();
-    }
-
-    @Override
-    public <T1> T1[] toArray(T1[] a) {
-        return list.toArray(a);
-    }
 }

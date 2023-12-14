@@ -1,73 +1,59 @@
-package game.entity.enemies.boss;
+package game.entity.enemies.boss
 
-import game.Bomberman;
-import game.entity.enemies.npcs.IntelligentEnemy;
-import game.entity.models.Entity;
-import game.entity.models.Coordinates;
-import game.powerups.PowerUp;
-import game.powerups.portal.EndLevelPortal;
-import game.sound.AudioManager;
-import game.sound.SoundModel;
-import game.values.DrawPriority;
-
-import java.util.*;
-
-import static game.ui.panels.game.PitchPanel.GRID_SIZE;
-
+import game.Bomberman
+import game.entity.enemies.npcs.IntelligentEnemy
+import game.entity.models.Coordinates
+import game.entity.models.Entity
+import game.powerups.PowerUp
+import game.powerups.portal.EndLevelPortal
+import game.sound.AudioManager
+import game.sound.SoundModel
+import game.ui.panels.game.PitchPanel
+import game.values.DrawPriority
+import java.util.*
 
 /**
  * An abstract class for enemy bosses;
  */
-public abstract class Boss extends IntelligentEnemy {
-    protected static int SIZE = GRID_SIZE * 4;
-    protected int currRageStatus = 0;
-    protected TreeMap<Integer, Integer> healthStatusMap = new TreeMap<>(healthStatusMap());
+abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
+    protected var currRageStatus = 0
+    protected var healthStatusMap = TreeMap(healthStatusMap())
 
-    public Boss() {
-        this(null);
-
-        setCoords(Coordinates.randomCoordinatesFromPlayer(getSize(), getSize() * 2));
+    constructor() : this(null) {
+        coords = Coordinates.randomCoordinatesFromPlayer(size, size * 2)
     }
 
-    public Boss(Coordinates coordinates) {
-        super(coordinates);
-        super.setMaxHp(Bomberman.getMatch().getCurrentLevel().getBossMaxHealth());
-        super.setHp(getMaxHp());
-        super.setAttackDamage(1000);
+    init {
+        super.setMaxHp(Bomberman.getMatch().currentLevel.bossMaxHealth)
+        super.setAttackDamage(1000)
     }
 
-    @Override
-    protected void onEliminated() {
-        super.onEliminated();
-        AudioManager.getInstance().play(SoundModel.BOSS_DEATH);
+    override fun onEliminated() {
+        super.onEliminated()
+        AudioManager.getInstance().play(SoundModel.BOSS_DEATH)
     }
 
-    @Override
-    public DrawPriority getDrawPriority() {
-        return DrawPriority.DRAW_PRIORITY_3;
+    override fun getDrawPriority(): DrawPriority {
+        return DrawPriority.DRAW_PRIORITY_3
     }
 
-    @Override
-    public int getSize() {
-        return SIZE;
+    override fun getSize(): Int {
+        return SIZE
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getObstacles() {
-        return getInteractionsEntities();
+    override fun getObstacles(): Set<Class<out Entity?>> {
+        return interactionsEntities
     }
 
-    protected String getImageFromRageStatus() {
-        return getImagePath();
+    protected open fun getImageFromRageStatus(): String? {
+        return imagePath
     }
 
-    protected abstract Map<Integer, Integer> healthStatusMap();
-
-    @Override
-    protected void onDespawn() {
-        super.onDespawn();
-        PowerUp endLevelPortal = new EndLevelPortal(Coordinates.generateCoordinatesAwayFromPlayer());
-        endLevelPortal.spawn(true, true);
+    protected abstract fun healthStatusMap(): Map<Int, Int>?
+    override fun onDespawn() {
+        super.onDespawn()
+        val endLevelPortal: PowerUp = EndLevelPortal(Coordinates.generateCoordinatesAwayFromPlayer())
+        endLevelPortal.spawn(true, true)
     }
 
     /**
@@ -75,14 +61,17 @@ public abstract class Boss extends IntelligentEnemy {
      *
      * @param status the new rage status to be set.
      */
-    protected void updateRageStatus(int status) {
+    protected fun updateRageStatus(status: Int) {
         // If the new rage status is the same as the current one, nothing to update.
-        if (status == currRageStatus) return;
+        if (status == currRageStatus)
+            return
 
-        currRageStatus = status;
-        // Get the corresponding image path from the current rage status.
-        String imagePath = getImageFromRageStatus();
+        currRageStatus = status
         // Load and set the image.
-        loadAndSetImage(imagePath);
+        loadAndSetImage(getImageFromRageStatus())
+    }
+
+    companion object {
+        protected var SIZE = PitchPanel.GRID_SIZE * 4
     }
 }

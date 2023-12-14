@@ -119,7 +119,9 @@ public class ControllerManager extends Observable2 implements KeyListener {
 
     private void setupTask() {
         task = new PeriodicTask(() -> {
-            if (player == null) return;
+            if (player == null)
+                return;
+
             for (Command command : new HashSet<>(player.getCommandQueue())) {
                 notifyObservers(command);
             }

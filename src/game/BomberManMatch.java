@@ -149,7 +149,8 @@ public class BomberManMatch {
     }
 
     public void toggleGameState() {
-        if (Utility.timePassed(lastGamePauseStateTime) < 500) return;
+        if (Utility.timePassed(lastGamePauseStateTime) < 500)
+            return;
 
         lastGamePauseStateTime = System.currentTimeMillis();
 
@@ -158,16 +159,22 @@ public class BomberManMatch {
     }
 
     private void pauseGame() {
-        gameTickerObservable.stop();
+        if (gameTickerObservable != null)
+            gameTickerObservable.stop();
+
         gameState = false;
         Bomberman.showActivity(PausePanel.class);
     }
 
     private void resumeGame() {
-        gameTickerObservable.resume();
+        if (gameTickerObservable != null)
+            gameTickerObservable.resume();
+
         gameState = true;
         Bomberman.showActivity(MatchPanel.class);
-        currentLevel.playSoundTrack();
+
+        if (currentLevel != null)
+            currentLevel.playSoundTrack();
     }
 
     public int getEnemiesAlive() {
@@ -220,16 +227,27 @@ public class BomberManMatch {
             this.currentLevel.stopLevelSound();
         }
 
-
         this.player = null;
         this.currentLevel = null;
-        this.entities.clear();
         this.enemiesAlive = 0;
-        this.mouseControllerManager.stopPeriodicTask();
-        this.gameTickerObservable.unregisterAll();
-        this.gameTickerObservable = null;
-        this.controllerManager.unregisterAll();
-        this.controllerManager = null;
+
+        if (this.entities != null) {
+            this.entities.clear();
+        }
+
+        if (this.mouseControllerManager != null) {
+            this.mouseControllerManager.stopPeriodicTask();
+        }
+
+        if (this.gameTickerObservable != null) {
+            this.gameTickerObservable.unregisterAll();
+            this.gameTickerObservable = null;
+        }
+
+        if (this.controllerManager != null) {
+            this.controllerManager.unregisterAll();
+            this.controllerManager = null;
+        }
 
         System.gc();
     }

@@ -1,35 +1,22 @@
-package game.cache;
+package game.cache
 
-import java.util.HashMap;
-
-public class Cache {
-    private final HashMap<String, Object> cache = new HashMap<>();
-
-    // Private constructor to prevent direct instantiation
-    private Cache() {
-        // Initialize any necessary resources or setup here
+class Cache  // Private constructor to prevent direct instantiation
+private constructor() {
+    private val cache = HashMap<String, Any?>()
+    fun <T> queryCache(key: String): T? {
+        val element = cache.getOrDefault(key, null)
+        return element as T?
     }
 
-    // Method to provide access to the singleton instance
-    public static Cache getInstance() {
-        return InstanceHolder.instance;
+    fun hasInCache(key: String): Boolean {
+        return cache.containsKey(key)
     }
 
-    public <T> T queryCache(String key) {
-        Object element = cache.getOrDefault(key, null);
-        return (T) element;
+    fun saveInCache(key: String, o: Any?) {
+        cache[key] = o
     }
 
-    public boolean hasInCache(String key) {
-        return cache.containsKey(key);
-    }
-
-    public void saveInCache(String key, Object o) {
-        cache.put(key, o);
-    }
-
-    private static final class InstanceHolder {
-        private static final Cache instance = new Cache();
+    companion object {
+        val instance: Cache by lazy { Cache() }
     }
 }
-

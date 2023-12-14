@@ -72,8 +72,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> WELCOME_TEXT = new HashMap<>() {{
-        put(Locale.ENGLISH, "Welcome %user% to Bomberman!");
-        put(Locale.ITALY, "Benvenuto %user% su Bomberman!");
+        put(Locale.ENGLISH, "Welcome %user% to JBOMB!");
+        put(Locale.ITALY, "Benvenuto %user% su JBOMB!");
     }};
 
     public static final HashMap<Locale, String> MYSTERY_BOX_ERROR_MONEY = new HashMap<>() {{

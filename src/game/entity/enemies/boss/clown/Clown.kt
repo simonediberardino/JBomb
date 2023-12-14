@@ -1,62 +1,53 @@
-package game.entity.enemies.boss.clown;
+package game.entity.enemies.boss.clown
 
-import game.Bomberman;
-import game.entity.Player;
-import game.entity.bomb.Bomb;
-import game.entity.bomb.ConfettiExplosion;
-import game.entity.enemies.boss.Boss;
-import game.entity.enemies.npcs.ClownNose;
-import game.entity.enemies.npcs.Orb;
-import game.entity.models.*;
-import game.sound.AudioManager;
-import game.sound.SoundModel;
-import game.ui.panels.game.PitchPanel;
-import game.utils.Paths;
-import game.utils.Utility;
-
-import java.awt.*;
-import java.util.List;
-import java.util.*;
+import game.Bomberman
+import game.entity.Player
+import game.entity.bomb.AbstractExplosion
+import game.entity.bomb.Bomb
+import game.entity.bomb.ConfettiExplosion
+import game.entity.enemies.boss.Boss
+import game.entity.enemies.npcs.ClownNose
+import game.entity.enemies.npcs.Orb
+import game.entity.models.*
+import game.sound.AudioManager
+import game.sound.SoundModel
+import game.ui.panels.game.PitchPanel
+import game.utils.Paths
+import game.utils.Utility
+import java.util.*
 
 /**
  * The Clown class represents a type of Boss entity that implements the Explosive interface.
  * It has a boolean property hasHat that determines whether the Clown is wearing a hat or not.
  * The Clown entity can spawn orbs, enhanced orbs, explosions and throw its hat in random directions.
  */
-public class Clown extends Boss implements Explosive {
-    private static final float RATIO_HEIGHT_WITH_HAT = 0.7517f;
-    private static final float RATIO_HEIGHT = 0.87f;
-    private static final float RATIO_WIDTH = 0.8739f;
-    private static final String SKIN_PATH_TEMPLATE = "%s/clown/clown_%s_%s.png";
-    private final ArrayList<ConfettiExplosion> explosions = new ArrayList<>();
+class Clown : Boss, Explosive {
+    private val explosions = ArrayList<ConfettiExplosion>()
+
     /**
      * The hasHat property represents whether the Clown entity is wearing a hat or not.
      */
-    private boolean hasHat;
+    private var hasHat = false
 
     /**
      * Constructor for the Clown entity that takes in the entity's starting coordinates and sets its initial hasHat value to true.
      *
      * @param coordinates The starting coordinates of the Clown entity.
      */
-    private Clown(Coordinates coordinates) {
-        super(coordinates);
-    }
+    private constructor(coordinates: Coordinates) : super(coordinates)
 
-    public Clown() {
-        super(null);
-        hitboxSizetoWidthRatio = RATIO_WIDTH;
-        hasHat = true;
+    constructor() : super(null) {
+        hitboxSizetoWidthRatio = RATIO_WIDTH
+        hasHat = true
 
-        Dimension panelSize = Bomberman
+        val panelSize = Bomberman
                 .getBombermanFrame()
-                .getPitchPanel()
-                .getPreferredSize();
+                .pitchPanel
+                .preferredSize
 
-        int y = (int) panelSize.getHeight() - getSize();
-        int x = (int) (panelSize.getWidth() / 2 - getSize() / 2);
-
-        setCoords(new Coordinates(x, y));
+        val y = panelSize.getHeight().toInt() - size
+        val x = (panelSize.getWidth() / 2 - size / 2).toInt()
+        coords = Coordinates(x, y)
     }
 
     /**
@@ -64,32 +55,25 @@ public class Clown extends Boss implements Explosive {
      *
      * @return A String array of skin paths for the Clown entity.
      */
-    @Override
-    public String[] getCharacterOrientedImages() {
-        return new String[]{getImageFromRageStatus()};
+    override fun getCharacterOrientedImages(): Array<String> {
+        return arrayOf(getImageFromRageStatus())
     }
 
     /**
      * @return A boolean value representing whether the Clown entity is wearing a hat or not.
      */
-    public boolean isHatImage(String path) {
-        String[] toks = path.split("_");
-        if (toks.length <= 1) return false;
-
-        return toks[1].equals("1");
+    fun isHatImage(path: String): Boolean {
+        val toks = path.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        return if (toks.size <= 1) false else toks[1] == "1"
     }
 
-    @Override
-    public float getHitboxSizeToHeightRatio(String path) {
-        hitboxSizeToHeightRatio = isHatImage(path) ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
-        return hitboxSizeToHeightRatio;
+    override fun getHitboxSizeToHeightRatio(path: String): Float {
+        hitboxSizeToHeightRatio = if (isHatImage(path)) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
+        return hitboxSizeToHeightRatio
     }
 
-
-    @Override
-    public int calculateAndGetPaddingTop(double ratio) {
-
-        return super.calculateAndGetPaddingTop(ratio);
+    override fun calculateAndGetPaddingTop(ratio: Double): Int {
+        return super.calculateAndGetPaddingTop(ratio)
     }
 
     /**
@@ -97,8 +81,8 @@ public class Clown extends Boss implements Explosive {
      *
      * @param hasHat A boolean value representing whether the Clown entity is wearing a hat or not.
      */
-    public void setHasHat(boolean hasHat) {
-        this.hasHat = hasHat;
+    fun setHasHat(hasHat: Boolean) {
+        this.hasHat = hasHat
     }
 
     /**
@@ -106,9 +90,8 @@ public class Clown extends Boss implements Explosive {
      *
      * @return An empty List object.
      */
-    @Override
-    public Set<Class<? extends Entity>> getExplosionObstacles() {
-        return Collections.emptySet();
+    override fun getExplosionObstacles(): Set<Class<out Entity>> {
+        return emptySet()
     }
 
     /**
@@ -116,12 +99,13 @@ public class Clown extends Boss implements Explosive {
      *
      * @return a list of entity classes that can interact with explosions.
      */
-    @Override
-    public Set<Class<? extends Entity>> getExplosionInteractionEntities() {
-        return new HashSet<>() {{
-            add(Player.class);
-            add(Bomb.class);
-        }};
+    override fun getExplosionInteractionEntities(): Set<Class<out Entity>> {
+        return object : HashSet<Class<out Entity>>() {
+            init {
+                add(Player::class.java)
+                add(Bomb::class.java)
+            }
+        }
     }
 
     /**
@@ -129,46 +113,44 @@ public class Clown extends Boss implements Explosive {
      *
      * @return the maximum distance of an explosion from this entity.
      */
-    @Override
-    public int getMaxExplosionDistance() {
-        return 10;
+    override fun getMaxExplosionDistance(): Int {
+        return 10
     }
 
-    /**
-     * Returns the chance of this entity shooting a projectile.
-     *
-     * @return the chance of this entity shooting a projectile.
-     */
-    private int getShootingChance() {
-        return 1;
-    }
+    private val shootingChance: Int
+        /**
+         * Returns the chance of this entity shooting a projectile.
+         *
+         * @return the chance of this entity shooting a projectile.
+         */
+        private get() = 1
 
     /**
      * Spawns orbs in all directions around this entity.
      */
-    private void spawnOrbs() {
-        for (Direction d : Direction.values()) {
-            new ClownNose(
+    private fun spawnOrbs() {
+        for (d in Direction.values()) {
+            ClownNose(
                     Coordinates.fromDirectionToCoordinateOnEntity(
                             this,
                             d,
                             Orb.SIZE,
                             Orb.SIZE
                     ), d
-            ).spawn(true, false);
+            ).spawn(true, false)
         }
     }
 
     /**
      * Spawns enhanced orbs in all enhanced directions around this entity.
      */
-    private void spawnEnhancedOrbs() {
-        for (EnhancedDirection d : EnhancedDirection.values()) {
-            new ClownNose(Coordinates.fromDirectionToCoordinateOnEntity(
+    private fun spawnEnhancedOrbs() {
+        for (d in EnhancedDirection.values()) {
+            ClownNose(Coordinates.fromDirectionToCoordinateOnEntity(
                     this,
                     d,
                     Orb.SIZE
-            ), d).spawn(true, false);
+            ), d).spawn(true, false)
         }
     }
 
@@ -178,66 +160,59 @@ public class Clown extends Boss implements Explosive {
      * @param d the direction
      * @return the explosion offsets as an int array
      */
-    private int[] calculateExplosionOffsets(Direction d) {
-        int inwardOffset = getSize() / 4;
-        int parallelOffset = -ConfettiExplosion.SIZE / 2;
+    private fun calculateExplosionOffsets(d: Direction): IntArray {
+        var inwardOffset = size / 4
+        var parallelOffset = -AbstractExplosion.SIZE / 2
+        when (d) {
+            Direction.RIGHT, Direction.LEFT -> {
+                parallelOffset = 0
+                inwardOffset = size / 3 - PitchPanel.GRID_SIZE / 2
+            }
 
-        switch (d) {
-            case RIGHT:
-            case LEFT:
-                parallelOffset = 0;
-                inwardOffset = getSize() / 3 - PitchPanel.GRID_SIZE / 2;
-                break;
+            else -> {}
         }
-
-        return new int[]{inwardOffset, parallelOffset};
+        return intArrayOf(inwardOffset, parallelOffset)
     }
 
     /**
      * Spawns an explosion in a random direction.
      */
-    private void spawnExplosion() {
-        Direction[] dirs = Direction.values();
-
-        LinkedList<Direction> directions = new LinkedList<>(Arrays.asList(dirs));
-        directions.remove(Direction.DOWN);
-
-        Direction d = directions.get((int) (Math.random() * directions.size()));
-
-        int[] offsets = calculateExplosionOffsets(d);
-        AudioManager.getInstance().play(SoundModel.EXPLOSION_CONFETTI);
-
-        Coordinates explosionCoordinates = Coordinates.fromDirectionToCoordinateOnEntity(
+    private fun spawnExplosion() {
+        val dirs = Direction.values()
+        val directions = LinkedList(listOf(*dirs))
+        directions.remove(Direction.DOWN)
+        val d = directions[(Math.random() * directions.size).toInt()]
+        val offsets = calculateExplosionOffsets(d)
+        AudioManager.getInstance().play(SoundModel.EXPLOSION_CONFETTI)
+        val explosionCoordinates = Coordinates.fromDirectionToCoordinateOnEntity(
                 this,
                 d,
                 offsets[0],
                 offsets[1],
-                ConfettiExplosion.SIZE
-        );
-
-        new ConfettiExplosion(
+                AbstractExplosion.SIZE
+        )
+        ConfettiExplosion(
                 this,
                 explosionCoordinates,
                 d,
                 this
-        );
+        )
     }
 
     /**
      * Throws a hat in a random enhanced direction.
      */
-    public void throwHat() {
-        EnhancedDirection d = EnhancedDirection.randomDirectionTowardsCenter(this);
-        Entity hat = new Hat(
+    fun throwHat() {
+        val d = EnhancedDirection.randomDirectionTowardsCenter(this)
+        val hat: Entity = Hat(
                 Coordinates.fromDirectionToCoordinateOnEntity(
                         this,
                         d,
                         0),
                 d
-        );
-
-        hat.spawn(true, false);
-        hasHat = false;
+        )
+        hat.spawn(true, false)
+        hasHat = false
     }
 
     /**
@@ -245,21 +220,19 @@ public class Clown extends Boss implements Explosive {
      *
      * @param gamestate the current gamestate
      */
-    public void doUpdate(boolean gamestate) {
+    override fun doUpdate(gamestate: Boolean) {
         // Check if the entity should shoot orbs
-        Utility.runPercentage(getShootingChance(), () -> {
-            spawnEnhancedOrbs();
-            spawnOrbs();
-        });
-
-        // Check if the entity should shoot an explosion
-        Utility.runPercentage(getShootingChance(), this::spawnExplosion);
-
-        if (hasHat) {
-            Utility.runPercentage(getShootingChance(), this::throwHat);
+        Utility.runPercentage(shootingChance) {
+            spawnEnhancedOrbs()
+            spawnOrbs()
         }
 
-        super.doUpdate(gamestate);
+        // Check if the entity should shoot an explosion
+        Utility.runPercentage(shootingChance) { spawnExplosion() }
+        if (hasHat) {
+            Utility.runPercentage(shootingChance) { throwHat() }
+        }
+        super.doUpdate(gamestate)
     }
 
     /**
@@ -267,10 +240,9 @@ public class Clown extends Boss implements Explosive {
      *
      * @return the image path of the Boss.
      */
-    @Override
-    protected String getImageFromRageStatus() {
+    override fun getImageFromRageStatus(): String {
         // Format the skin path template with the appropriate values.
-        return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), hasHat ? 1 : 0, currRageStatus);
+        return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), if (hasHat) 1 else 0, currRageStatus)
     }
 
     /**
@@ -278,9 +250,8 @@ public class Clown extends Boss implements Explosive {
      *
      * @return the list with the supported directions.
      */
-    @Override
-    public List<Direction> getSupportedDirections() {
-        return Arrays.asList(Direction.LEFT, Direction.RIGHT);
+    override fun getSupportedDirections(): List<Direction> {
+        return listOf(Direction.LEFT, Direction.RIGHT)
     }
 
     /**
@@ -288,16 +259,15 @@ public class Clown extends Boss implements Explosive {
      *
      * @param damage the amount of damage the Boss received.
      */
-    @Override
-    protected void onHit(int damage) {
+    override fun onHit(damage: Int) {
         // Get the current health percentage of the Boss.
-        int hpPercentage = getHpPercentage();
+        val hpPercentage = hpPercentage
         // Get the entry from the health status map whose key is the lowest greater than or equal to hpPercentage.
-        Map.Entry<Integer, Integer> entry = healthStatusMap.ceilingEntry(hpPercentage);
+        val entry = healthStatusMap.ceilingEntry(hpPercentage)
 
         // If there is an entry, update the rage status of the Boss.
         if (entry != null) {
-            updateRageStatus(entry.getValue());
+            updateRageStatus(entry.value)
         }
     }
 
@@ -307,43 +277,42 @@ public class Clown extends Boss implements Explosive {
      *
      * @return the health status map.
      */
-    @Override
-    protected Map<Integer, Integer> healthStatusMap() {
+    override fun healthStatusMap(): Map<Int, Int> {
         // Create a new TreeMap with reverse order.
-        TreeMap<Integer, Integer> map = new TreeMap<>(Collections.reverseOrder());
+        val map = TreeMap<Int, Int>(Collections.reverseOrder())
         // Add the health percentages and their corresponding rage statuses to the map.
-        map.put(75, 0);
-        map.put(60, 1);
-        map.put(50, 2);
-        map.put(25, 3);
-        return map;
+        map[75] = 0
+        map[60] = 1
+        map[50] = 2
+        map[25] = 3
+        return map
     }
-
     /**
      * Returns the top padding of the Boss hitbox.
      *
      * @return the top padding of the hitbox.
      */
-
-
     /**
      * Returns the height to hitbox size ratio of the Boss.
      *
      * @return the height to hitbox size ratio.
      */
-    @Override
-    public float getHitboxSizeToHeightRatio() {
+    override fun getHitboxSizeToHeightRatio(): Float {
         // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
-        hitboxSizeToHeightRatio = hasHat ? RATIO_HEIGHT_WITH_HAT : RATIO_HEIGHT;
-        return hitboxSizeToHeightRatio;
+        hitboxSizeToHeightRatio = if (hasHat) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
+        return hitboxSizeToHeightRatio
     }
 
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
+        val list: MutableList<Class<out Entity>> = ArrayList(super.getBasePassiveInteractionEntities())
+        list.add(Hat::class.java)
+        return HashSet(list)
+    }
 
-    @Override
-    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        List<Class<? extends Entity>> list = new ArrayList<>(super.getBasePassiveInteractionEntities());
-        list.add(Hat.class);
-        return new HashSet<>(list);
+    companion object {
+        private const val RATIO_HEIGHT_WITH_HAT = 0.7517f
+        private const val RATIO_HEIGHT = 0.87f
+        private const val RATIO_WIDTH = 0.8739f
+        private const val SKIN_PATH_TEMPLATE = "%s/clown/clown_%s_%s.png"
     }
 }
-

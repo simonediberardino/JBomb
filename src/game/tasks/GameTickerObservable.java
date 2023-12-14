@@ -19,16 +19,16 @@ public class GameTickerObservable extends Observable2 {
      * update method of the observer with the current GameState object.
      */
     private final Runnable task = () -> {
-        Observer2[] array = observers.toArray(new Observer2[0]);
 
         // loop through each observer in the observerSet
-        for (Observer2 observer : array) {
-            if (observer instanceof Entity)
-                if (!((Entity) observer).isSpawned()) unregister(observer);
+        for (Observer2 observer : observers) {
+            if (observer instanceof Entity && !((Entity) observer).isSpawned())
+                unregister(observer);
+
             boolean delayPassed = true;
 
-            if (observer instanceof GameTickerObserver) { // check if the observer is of type GameTickerObserver
-                GameTickerObserver gameTickerObserver = (GameTickerObserver) observer; // cast the observer to GameTickerObserver
+            if (observer instanceof GameTickerObserver gameTickerObserver) { // check if the observer is of type GameTickerObserver
+                // cast the observer to GameTickerObserver
                 long lastUpdate = gameTickerObserver.getLastUpdate(); // get the last update time of the observer
                 long delayObserverUpdate = (long) gameTickerObserver.getDelayObserverUpdate(); // get the delay time of the observer
                 delayPassed = Utility.timePassed(lastUpdate) >= delayObserverUpdate; // check if the delay has passed since the last update
