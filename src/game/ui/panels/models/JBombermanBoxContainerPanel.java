@@ -1,7 +1,7 @@
 package game.ui.panels.models;
 
 import game.Bomberman;
-import game.events.RunnablePar;
+import game.events.models.RunnablePar;
 import game.localization.Localization;
 import game.ui.helpers.Padding;
 import game.ui.pages.MainMenuPanel;

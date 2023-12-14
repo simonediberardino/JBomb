@@ -3,8 +3,7 @@ package game.hardwareinput;
 import game.Bomberman;
 import game.data.DataInputOutput;
 import game.entity.Player;
-import game.entity.models.Entity;
-import game.events.Observable2;
+import game.events.game.Observable2;
 import game.tasks.PeriodicTask;
 import game.utils.Utility;
 
@@ -13,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static java.util.Map.entry;
 

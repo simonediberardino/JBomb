@@ -5,18 +5,16 @@ import game.data.DataInputOutput;
 import game.entity.models.BomberEntity;
 import game.entity.models.Enemy;
 import game.entity.models.Entity;
-import game.events.RoundPassedGameEvent;
-import game.events.UpdateCurrentAvailableBombsEvent;
-import game.events.UpdateCurrentBombsLengthEvent;
-import game.events.UpdateMaxBombsEvent;
+import game.events.game.RoundPassedGameEvent;
+import game.events.game.UpdateCurrentAvailableBombsEvent;
+import game.events.game.UpdateCurrentBombsLengthEvent;
+import game.events.game.UpdateMaxBombsEvent;
 import game.localization.Localization;
 import game.powerups.*;
 import game.ui.viewelements.misc.ToastHandler;
 
 import javax.swing.*;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static game.localization.Localization.ARENA_DIED;

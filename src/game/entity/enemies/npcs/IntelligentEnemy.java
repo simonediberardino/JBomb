@@ -3,8 +3,8 @@ package game.entity.enemies.npcs;
 import game.entity.models.*;
 import game.entity.models.Coordinates;
 import game.entity.models.Direction;
-import game.events.KilledEnemyEvent;
-import game.events.ScoreGameEvent;
+import game.events.game.KilledEnemyEvent;
+import game.events.game.ScoreGameEvent;
 
 import java.util.List;
 import java.util.stream.Collectors;

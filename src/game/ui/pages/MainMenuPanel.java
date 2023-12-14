@@ -2,7 +2,7 @@ package game.ui.pages;
 
 import game.Bomberman;
 import game.data.DataInputOutput;
-import game.events.RunnablePar;
+import game.events.models.RunnablePar;
 import game.level.WorldSelectorLevel;
 import game.ui.frames.BombermanFrame;
 import game.ui.panels.menu.AvatarMenuPanel;

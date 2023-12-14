@@ -2,7 +2,7 @@ package game.items;
 
 import game.Bomberman;
 import game.entity.bomb.Bomb;
-import game.events.UpdateCurrentAvailableBombsEvent;
+import game.events.game.UpdateCurrentAvailableBombsEvent;
 import game.utils.Paths;
 import game.utils.Utility;
 

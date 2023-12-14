@@ -4,7 +4,7 @@ package game.entity.models;
 import game.Bomberman;
 import game.entity.Player;
 import game.entity.bomb.AbstractExplosion;
-import game.events.EnemyDespawnedGameEvent;
+import game.events.game.EnemyDespawnedGameEvent;
 import game.ui.panels.game.PitchPanel;
 
 import java.util.*;

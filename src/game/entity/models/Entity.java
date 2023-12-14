@@ -4,7 +4,7 @@ import game.Bomberman;
 import game.entity.bomb.AbstractExplosion;
 import game.hardwareinput.MouseControllerManager;
 import game.tasks.GameTickerObserver;
-import game.events.RunnablePar;
+import game.events.models.RunnablePar;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 import game.values.DrawPriority;

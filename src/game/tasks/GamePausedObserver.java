@@ -1,7 +1,7 @@
 package game.tasks;
 
 import game.Bomberman;
-import game.events.Observer2;
+import game.events.models.Observer2;
 import game.hardwareinput.Command;
 
 public class GamePausedObserver implements Observer2 {

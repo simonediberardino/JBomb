@@ -1,6 +1,6 @@
 package game.ui.viewelements.misc;
 
-import game.events.NewToastGameEvent;
+import game.events.game.NewToastGameEvent;
 import game.utils.Utility;
 
 import java.awt.*;

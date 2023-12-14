@@ -6,7 +6,7 @@ import game.entity.enemies.boss.Boss;
 import game.entity.models.Coordinates;
 import game.entity.models.Direction;
 import game.entity.models.Entity;
-import game.events.RunnablePar;
+import game.events.models.RunnablePar;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;

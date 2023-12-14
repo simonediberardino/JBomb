@@ -1,10 +1,9 @@
 package game.powerups;
 
-import game.data.DataInputOutput;
 import game.entity.bomb.AbstractExplosion;
 import game.entity.models.BomberEntity;
 import game.entity.models.Coordinates;
-import game.events.ExplosionLengthPowerUpEvent;
+import game.events.game.ExplosionLengthPowerUpEvent;
 import game.utils.Paths;
 
 import java.awt.image.BufferedImage;

@@ -1,7 +1,7 @@
 package game.ui.panels.menu;
 
 import game.data.DataInputOutput;
-import game.events.RunnablePar;
+import game.events.models.RunnablePar;
 import game.localization.Localization;
 import game.sound.AudioManager;
 import game.ui.frames.BombermanFrame;

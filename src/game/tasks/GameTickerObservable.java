@@ -2,8 +2,8 @@ package game.tasks;
 
 import game.Bomberman;
 import game.entity.models.Entity;
-import game.events.Observable2;
-import game.events.Observer2;
+import game.events.game.Observable2;
+import game.events.models.Observer2;
 import game.utils.Utility;
 
 /**

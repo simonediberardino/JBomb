@@ -1,7 +1,7 @@
 package game.ui.panels.menu;
 
 import game.entity.models.Direction;
-import game.events.RunnablePar;
+import game.events.models.RunnablePar;
 import game.localization.Localization;
 import game.ui.helpers.Padding;
 import game.ui.panels.models.JBombermanBoxContainerPanel;
@@ -12,14 +12,11 @@ import game.values.Dimensions;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 
 import static game.entity.enemies.npcs.IntelligentEnemy.DIRECTION_REFRESH_RATE;
 import static game.localization.Localization.AVATAR;
 import static game.values.Dimensions.DEFAULT_X_PADDING;
-import static game.values.Dimensions.DEFAULT_Y_PADDING;
 
 public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
     private final Dimension imageDimension = new Dimension(Utility.px(75), Utility.px(75));

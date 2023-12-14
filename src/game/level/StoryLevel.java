@@ -1,7 +1,7 @@
 package game.level;
 
 import game.data.DataInputOutput;
-import game.events.RoundPassedGameEvent;
+import game.events.game.RoundPassedGameEvent;
 import game.localization.Localization;
 
 import java.lang.reflect.InvocationTargetException;

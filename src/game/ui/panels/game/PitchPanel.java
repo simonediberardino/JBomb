@@ -4,8 +4,8 @@ import game.BomberManMatch;
 import game.Bomberman;
 import game.entity.enemies.boss.ghost.GhostBoss;
 import game.entity.models.Entity;
-import game.events.Observer2;
-import game.events.RunnablePar;
+import game.events.models.Observer2;
+import game.events.models.RunnablePar;
 import game.sound.AudioManager;
 import game.utils.Utility;
 

@@ -4,7 +4,7 @@ import game.Bomberman;
 import game.data.DataInputOutput;
 import game.entity.models.BomberEntity;
 import game.entity.models.Coordinates;
-import game.events.UpdateMaxBombsEvent;
+import game.events.game.UpdateMaxBombsEvent;
 import game.utils.Paths;
 
 import java.awt.image.BufferedImage;
