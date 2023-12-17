@@ -7,15 +7,15 @@ import java.awt.*;
 
 public class ToastHandler {
     private static final int TOAST_DURATION = 3500;
-    private static final int TOAST_START_Y = (int) Utility.getScreenSize().getHeight();
-    private static final int TOAST_ANIM_STEP_SIZE = Utility.px(50);
+    private static final int TOAST_START_Y = (int) Utility.INSTANCE.getScreenSize().getHeight();
+    private static final int TOAST_ANIM_STEP_SIZE = Utility.INSTANCE.px(50);
     private static final int CORNER_RADIUS = 15;
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 0, 0);
     private static final Color TEXT_COLOR = new Color(255, 255, 255);
     private static final Color BORDER_COLOR = new Color(255, 87, 51);
     private static final Color SHADOW_COLOR = new Color(0, 0, 0, 150);
-    private static final Font TOAST_FONT = new Font(Font.MONOSPACED, Font.BOLD, Utility.px(35));
-    private static final int BORDER_WIDTH = Utility.px(5);
+    private static final Font TOAST_FONT = new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(35));
+    private static final int BORDER_WIDTH = Utility.INSTANCE.px(5);
     private static ToastHandler instance = null;
     private long animStoppedTime = 0;
     private int toastY = TOAST_START_Y;
@@ -30,7 +30,7 @@ public class ToastHandler {
         Graphics2D g2d = (Graphics2D) g.create();
 
         // Calculate the dimensions based on text length
-        Font toastFont = new Font(Font.MONOSPACED, Font.BOLD, Utility.px(35));
+        Font toastFont = new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(35));
         FontMetrics metrics = g2d.getFontMetrics(toastFont);
         int toastWidth = calculateToastWidth(metrics);
         int toastHeight = calculateToastHeight(metrics);
@@ -64,11 +64,11 @@ public class ToastHandler {
     }
 
     private int calculateToastX(int toastWidth) {
-        return (int) (Utility.getScreenSize().getWidth() / 2 - toastWidth / 2);
+        return (int) (Utility.INSTANCE.getScreenSize().getWidth() / 2 - toastWidth / 2);
     }
 
     private int calculateToastEndY() {
-        return (int) (Utility.getScreenSize().getHeight() - Utility.px(200));
+        return (int) (Utility.INSTANCE.getScreenSize().getHeight() - Utility.INSTANCE.px(200));
     }
 
     private void animateToast(int toastEndY) {

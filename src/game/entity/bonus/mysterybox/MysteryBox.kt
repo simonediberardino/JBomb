@@ -80,7 +80,7 @@ abstract class MysteryBox(
         status = Status.CLOSED
     }
 
-    override fun doInteract(e: Entity) {}
+    override fun doInteract(e: Entity?) {}
     override fun getSize(): Int {
         return PitchPanel.GRID_SIZE
     }

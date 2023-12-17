@@ -1,76 +1,68 @@
-package game.items;
+package game.items
 
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.HardBlock;
-import game.entity.bomb.AbstractExplosion;
-import game.entity.bomb.Bomb;
-import game.entity.bomb.PistolExplosion;
-import game.entity.models.Coordinates;
-import game.entity.models.Enemy;
-import game.entity.models.Entity;
-import game.entity.models.Explosive;
-import game.sound.AudioManager;
-import game.sound.SoundModel;
-import game.utils.Paths;
-import game.utils.Utility;
-import java.util.HashSet;
-import java.util.Set;
+import game.entity.blocks.DestroyableBlock
+import game.entity.blocks.HardBlock
+import game.entity.bomb.AbstractExplosion
+import game.entity.bomb.AbstractExplosion.Companion.SIZE
+import game.entity.bomb.Bomb
+import game.entity.bomb.PistolExplosion
+import game.entity.models.Coordinates
+import game.entity.models.Enemy
+import game.entity.models.Entity
+import game.entity.models.Explosive
+import game.sound.AudioManager
+import game.sound.SoundModel
+import game.utils.Paths.itemsPath
+import game.utils.Utility.timePassed
 
-public class PistolItem extends UsableItem implements Explosive {
-    private int bullets = 5;
+class PistolItem : UsableItem(), Explosive {
+    private var bullets = 5
+    override val explosionObstacles: Set<Class<out Entity>>
+        get() = setOf(
+                HardBlock::class.java,
+                DestroyableBlock::class.java
+        )
 
-    public Set<Class<? extends Entity>> getExplosionObstacles() {
-        return new HashSet<>() {{
-            add(HardBlock.class);
-            add(DestroyableBlock.class);
-        }};
-    }
+    override val explosionInteractionEntities: Set<Class<out Entity>>
+        get() = setOf(
+                Enemy::class.java,
+                Bomb::class.java
+        )
 
-    @Override
-    public Set<Class<? extends Entity>> getExplosionInteractionEntities() {
-        return new HashSet<>() {{
-            add(Enemy.class);
-            add(Bomb.class);
-        }};
-    }
-
-    @Override
-    public int getMaxExplosionDistance() {
-        return 3;
-    }
-
-    @Override
-    public void use() {
-        if (Utility.timePassed(owner.getLastPlacedBombTime()) < Bomb.PLACE_INTERVAL) {
-            return;
+    override val maxExplosionDistance: Int
+        get() {
+            return 3
         }
 
-        owner.setLastPlacedBombTime(System.currentTimeMillis());
-        bullets--;
+    override fun use() {
+        if (timePassed(owner.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
+            return
+        }
+        owner.lastPlacedBombTime = System.currentTimeMillis()
+        bullets--
 
-        AbstractExplosion explosion = new PistolExplosion(
-                getOwner(),
-                Coordinates.nextCoords(owner.getCoords(), owner.getCurrDirection(), AbstractExplosion.Companion.getSIZE()),
-                getOwner().getCurrDirection(),
+        val explosion = PistolExplosion(
+                owner,
+                Coordinates.nextCoords(owner.coords, owner.currDirection, SIZE),
+                owner.currDirection,
                 1,
                 this
-        );
+        )
 
-        AudioManager.getInstance().play(SoundModel.EXPLOSION);
-        explosion.explode();
-
+        AudioManager.getInstance().play(SoundModel.EXPLOSION)
+        explosion.explode()
         if (bullets == 0) {
-            remove();
+            remove()
         }
     }
 
-    @Override
-    public String getImagePath() {
-        return Paths.INSTANCE.getItemsPath() + "/pistol.png";
-    }
+    override val imagePath: String
+        get() {
+            return "$itemsPath/pistol.png"
+        }
 
-    @Override
-    public int getCount() {
-        return bullets;
-    }
+    override val count: Int
+        get() {
+            return bullets
+        }
 }

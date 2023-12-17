@@ -1,18 +1,21 @@
-package game.entity.enemies.npcs;
+package game.entity.enemies.npcs
 
-import game.utils.Paths;
+import game.entity.EntityTypes
+import game.utils.Paths.enemiesFolder
+import java.util.*
 
-public class Eagle extends FlyingEnemy {
-    @Override
-    protected String getBasePath() {
-        return Paths.INSTANCE.getEnemiesFolder() + "/eagle";
+class Eagle : FlyingEnemy() {
+    override fun getBasePath(): String {
+        return "$enemiesFolder/eagle"
     }
 
-    public String[] getCharacterOrientedImages() {
-        return new String[]{
-                String.format("%s/eagle_%s_0.png", getBasePath(), imageDirection.toString().toLowerCase()),
-                String.format("%s/eagle_%s_1.png", getBasePath(), imageDirection.toString().toLowerCase()),
-                String.format("%s/eagle_%s_2.png", getBasePath(), imageDirection.toString().toLowerCase()),
-        };
+    override fun getCharacterOrientedImages(): Array<String> {
+        return Array(3) { index ->
+            "$basePath/eagle_${imageDirection.toString().lowercase()}_$index.png"
+        }
+    }
+
+    override fun getType(): EntityTypes {
+        return EntityTypes.Eagle
     }
 }

@@ -1,17 +1,15 @@
-package game.events.game;
+package game.events.game
 
-import game.Bomberman;
-import game.events.models.GameEvent;
-import game.sound.AudioManager;
+import game.Bomberman
+import game.events.models.GameEvent
+import game.sound.AudioManager
+import game.sound.SoundModel
 
-import static game.sound.SoundModel.BONUS_ALERT;
-
-public class NewToastGameEvent implements GameEvent {
-    @Override
-    public void invoke(Object arg) {
-        Bomberman.getBombermanFrame().getParentPanel().repaint();
-        if ((boolean) arg) {
-            AudioManager.getInstance().play(BONUS_ALERT);
+class NewToastGameEvent : GameEvent {
+    override fun invoke(arg: Any?) {
+        Bomberman.getBombermanFrame().parentPanel.repaint()
+        if (arg as Boolean) {
+            AudioManager.getInstance().play(SoundModel.BONUS_ALERT)
         }
     }
 }

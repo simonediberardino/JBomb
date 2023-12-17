@@ -129,7 +129,7 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
     }
 
     public JLabel addImageLabel(String imageName, Dimension dimension) {
-        Image image = Utility.loadImage(imageName);
+        Image image = Utility.INSTANCE.loadImage(imageName);
         assert image != null;
 
         image = image.getScaledInstance((int) dimension.getWidth(), (int) dimension.getHeight(), 0);

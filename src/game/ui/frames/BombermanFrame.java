@@ -51,7 +51,7 @@ public class BombermanFrame extends JFrame {
      * Creates the main frame and sets its properties.
      */
     public void create() {
-        setIconImage(Utility.loadImage(Paths.INSTANCE.getIconPath()));
+        setIconImage(Utility.INSTANCE.loadImage(Paths.INSTANCE.getIconPath()));
         setTitle(Localization.get(Localization.APP_NAME));
         setFrameProperties();
         initMenuPanel();

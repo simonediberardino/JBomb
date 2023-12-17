@@ -1,34 +1,21 @@
-package game.powerups;
+package game.powerups
 
-import game.entity.blocks.DestroyableBlock;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.utils.Paths;
+import game.entity.blocks.DestroyableBlock
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
+class TransparentDestroyableBlocksPowerUp(coords: Coordinates?) : PowerUp(coords) {
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/blocks_up.gif")
 
-public class TransparentDestroyableBlocksPowerUp extends PowerUp {
-    public TransparentDestroyableBlocksPowerUp(Coordinates coords) {
-        super(coords);
+    override val duration: Int = 0
+
+    override fun doApply(entity: BomberEntity) {
+        entity.addWhiteListObstacle(DestroyableBlock::class.java)
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/blocks_up.gif");
-    }
-
-    @Override
-    public int getDuration() {
-        return 0;
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        entity.addWhiteListObstacle(DestroyableBlock.class);
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-        entity.removeWhiteListObstacle(DestroyableBlock.class);
+    override fun cancel(entity: BomberEntity) {
+        entity.removeWhiteListObstacle(DestroyableBlock::class.java)
     }
 }

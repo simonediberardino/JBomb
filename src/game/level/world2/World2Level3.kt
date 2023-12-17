@@ -1,31 +1,30 @@
-package game.level.world2;
+package game.level.world2
 
-import game.entity.enemies.npcs.FastEnemy;
-import game.entity.enemies.npcs.TankEnemy;
-import game.entity.models.Enemy;
-import game.level.Level;
+import game.entity.enemies.npcs.FastEnemy
+import game.entity.enemies.npcs.TankEnemy
+import game.entity.models.Enemy
+import game.level.Level
 
-public class World2Level3 extends World2Level {
-    @Override
-    public int getLevelId() {
-        return 3;
-    }
+class World2Level3 : World2Level() {
+    override val levelId: Int
+        get() {
+            return 3
+        }
 
-    @Override
-    public int startEnemiesCount() {
-        return 13;
-    }
+    override val startEnemiesCount: Int
+        get() {
+            return 13
+        }
 
-    @Override
-    public Class<? extends Enemy>[] availableEnemies() {
-        return new Class[]{
-                TankEnemy.class,
-                FastEnemy.class,
-        };
-    }
+    override val availableEnemies: Array<Class<out Enemy>>
+        get() {
+            return arrayOf(
+                    TankEnemy::class.java,
+                    FastEnemy::class.java)
+        }
 
-    @Override
-    public Class<? extends Level> getNextLevel() {
-        return World2Level4.class;
-    }
+    override val nextLevel: Class<out Level?>
+        get() {
+            return World2Level4::class.java
+        }
 }

@@ -1,45 +1,28 @@
-package game.powerups;
+package game.powerups
 
-import game.Bomberman;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.items.PistolItem;
-import game.utils.Paths;
+import game.Bomberman
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.items.PistolItem
+import game.utils.Paths.itemsPath
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
+class PistolPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
 
-import java.awt.image.BufferedImage;
+    override fun getImage(): BufferedImage =
+            loadAndSetImage("$itemsPath/pistol.png")
 
-public class PistolPowerUp extends PowerUp {
-    /**
-     * Constructs a PowerUp entity with the specified coordinates.
-     *
-     * @param coordinates the coordinates of the PowerUp entity
-     */
-    public PistolPowerUp(Coordinates coordinates) {
-        super(coordinates);
+    override val duration: Int
+        get() = 30
+
+    override fun doApply(entity: BomberEntity) {
+        Bomberman.getMatch().give(entity, PistolItem())
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/pistol.png");
+    override fun cancel(entity: BomberEntity) {
+        Bomberman.getMatch().removeItem(entity)
     }
 
-    @Override
-    public int getDuration() {
-        return 30;
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        Bomberman.getMatch().give(entity, new PistolItem());
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-        Bomberman.getMatch().removeItem(entity);
-    }
-
-    @Override
-    public boolean isDisplayable() {
-        return false;
-    }
+    override val isDisplayable: Boolean
+        get() = false
 }

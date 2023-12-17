@@ -1,44 +1,35 @@
-package game.entity.enemies.npcs;
+package game.entity.enemies.npcs
 
-import game.entity.models.Coordinates;
-import game.entity.models.Direction;
-import game.ui.panels.game.PitchPanel;
-import game.utils.Paths;
+import game.entity.EntityTypes
+import game.entity.models.Coordinates
+import game.entity.models.Direction
+import game.ui.panels.game.PitchPanel
+import game.utils.Paths.enemiesFolder
+import java.util.*
 
-import java.util.Arrays;
-import java.util.List;
+class YellowBall : IntelligentEnemy {
+    constructor() : super()
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
-public class YellowBall extends IntelligentEnemy {
-    public YellowBall() {
-        super();
+    override fun getBasePath(): String {
+        return "$enemiesFolder/yellow_ball/yellow_ball"
     }
 
-    public YellowBall(Coordinates coordinates) {
-        super(coordinates);
+    override fun getImageDirections(): List<Direction> {
+        return listOf(Direction.RIGHT, Direction.LEFT)
     }
 
-    @Override
-    protected String getBasePath() {
-        return Paths.INSTANCE.getEnemiesFolder() + "/yellow_ball/yellow_ball";
+    override fun getCharacterOrientedImages(): Array<String> {
+        return Array(4) { index ->
+            "$enemiesFolder/yellow_ball/yellow_ball_${imageDirection.toString().lowercase()}_$index.png"
+        }
     }
 
-    @Override
-    protected List<Direction> getImageDirections() {
-        return Arrays.asList(Direction.RIGHT, Direction.LEFT);
+    override fun getSize(): Int {
+        return PitchPanel.COMMON_DIVISOR * 2
     }
 
-    @Override
-    public String[] getCharacterOrientedImages() {
-        return new String[]{
-                String.format("%s/yellow_ball/yellow_ball_%s_%d.png", Paths.INSTANCE.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 0),
-                String.format("%s/yellow_ball/yellow_ball_%s_%d.png", Paths.INSTANCE.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 1),
-                String.format("%s/yellow_ball/yellow_ball_%s_%d.png", Paths.INSTANCE.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 2),
-                String.format("%s/yellow_ball/yellow_ball_%s_%d.png", Paths.INSTANCE.getEnemiesFolder(), imageDirection.toString().toLowerCase(), 3)
-        };
-    }
-
-    @Override
-    public int getSize() {
-        return PitchPanel.COMMON_DIVISOR * 2;
+    override fun getType(): EntityTypes {
+        return EntityTypes.YellowBall
     }
 }

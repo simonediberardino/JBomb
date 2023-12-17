@@ -6,6 +6,7 @@ import game.entity.bomb.AbstractExplosion;
 import game.entity.bomb.Bomb;
 import game.utils.Utility;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,7 @@ public abstract class EntityInteractable extends Entity {
     }
 
     private synchronized void interactAndUpdateLastInteract(Entity e) {
-        if (Utility.timePassed(getLastInteraction(e)) < INTERACTION_DELAY_MS) {
+        if (Utility.INSTANCE.timePassed(getLastInteraction(e)) < INTERACTION_DELAY_MS) {
             return;
         }
         this.doInteract(e); // Interact with the entity.
@@ -195,11 +196,11 @@ public abstract class EntityInteractable extends Entity {
 
     public abstract Set<Class<? extends Entity>> getInteractionsEntities();
 
-    public boolean isObstacle(Entity e) {
+    public boolean isObstacle(@Nullable Entity e) {
         return e == null || getObstacles().stream().anyMatch(c -> c.isInstance(e)) && whitelistObstacles.stream().noneMatch(c -> c.isInstance(e));
     }
 
-    public boolean canInteractWith(Entity e) {
+    public boolean canInteractWith(@Nullable Entity e) {
         return e == null || getInteractionsEntities().stream().anyMatch(c -> c.isInstance(e));
     }
 

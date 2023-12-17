@@ -1,161 +1,148 @@
-package game.powerups;
+package game.powerups
 
-import game.BomberManMatch;
-import game.Bomberman;
-import game.entity.Player;
-import game.entity.models.Character;
-import game.entity.models.*;
-import game.sound.AudioManager;
-import game.sound.SoundModel;
-import game.ui.panels.game.PitchPanel;
-
-import java.util.*;
+import game.Bomberman
+import game.entity.Player
+import game.entity.models.*
+import game.sound.AudioManager
+import game.sound.SoundModel
+import game.ui.panels.game.PitchPanel
+import java.util.*
 
 /**
  * The abstract PowerUp class is a superclass for all power-ups in the game.
  */
-public abstract class PowerUp extends EntityInteractable {
-    // A static array of power-up classes
-    public static final Class<? extends PowerUp>[] POWER_UPS = new Class[]{
-            PistolPowerUp.class,
-            ArmorPowerUp.class,
-            FirePowerUp.class,
-            SpeedPowerUp.class,
-            TransparentDestroyableBlocksPowerUp.class,
-            LivesPowerUp.class,
-            RemoteControl.class,
-            Hammer.class,
-            BlockMoverPowerUp.class,
-            IncreaseMaxBombsPowerUp.class,
-            TransparentBombsPowerUp.class
-    };
-    // The default duration for a power-up, in seconds
-    public static final int DEFAULT_DURATION_SEC = 15;
+abstract class PowerUp
+/**
+ * Constructs a PowerUp entity with the specified coordinates.
+ *
+ * @param coordinates the coordinates of the PowerUp entity
+ */
+(coordinates: Coordinates?) : EntityInteractable(coordinates) {
     // Whether the power-up has already been applied or not
-    protected boolean applied = false;
-    private final ArrayList<Class<? extends PowerUp>> incompatiblePowerUps = new ArrayList<>();
+    private var applied = false
+    val incompatiblePowerUps = mutableListOf<Class<out PowerUp>>()
+
     // The character the power-up is applied to
-    private Character character;
-
-    /**
-     * Constructs a PowerUp entity with the specified coordinates.
-     *
-     * @param coordinates the coordinates of the PowerUp entity
-     */
-    public PowerUp(Coordinates coordinates) {
-        super(coordinates);
-    }
-
+    private var character: Character? = null
 
     /**
      * Returns the duration of the power-up in milliseconds.
      *
      * @return the duration of the power-up
      */
-    public abstract int getDuration();
+    open val duration: Int = DEFAULT_DURATION_SEC
 
     /**
      * Applies the power-up to the specified BomberEntity.
      *
      * @param entity the BomberEntity to apply the power-up to
      */
-    public final void apply(BomberEntity entity) {
-        if (applied) return;
+    fun apply(entity: BomberEntity) {
+        if (applied || !canPickUp(entity)) return
 
-        if (!canPickUp(entity)) return;
+        applied = true
+        despawn()
+        character = entity
+        doApply(entity)
 
-        this.applied = true;
-        this.despawn();
-        this.character = entity;
-        this.doApply(entity);
+        val matchPanel = Bomberman.getBombermanFrame().matchPanel
+        AudioManager.getInstance().play(SoundModel.POWERUP)
 
-        var matchPanel = Bomberman.getBombermanFrame().getMatchPanel();
-        AudioManager.getInstance().play(SoundModel.POWERUP);
-        entity.getActivePowerUps().add(this.getClass());
+        entity.activePowerUps.add(this.javaClass)
 
-        if (isDisplayable())
-            matchPanel.refreshPowerUps(entity.getActivePowerUps());
+        if (isDisplayable) matchPanel.refreshPowerUps(entity.activePowerUps)
 
-        int duration = getDuration() * 1000;
+        val durationMillis: Long = duration * 1000L
+
         // If the power-up has a duration, schedule a TimerTask to cancel it when the duration is up
-        if (duration <= 0) {
-            return;
+        if (durationMillis <= 0) return
+
+        val thisPowerUp = this
+        val task = object : TimerTask() {
+            override fun run() {
+                val match = Bomberman.getMatch()
+                if (match == null || !match.gameState) return
+
+                entity.removeActivePowerUp(thisPowerUp)
+
+                if (isDisplayable) matchPanel.refreshPowerUps(entity.activePowerUps)
+
+                thisPowerUp.cancel(entity)
+            }
         }
 
-        PowerUp thisPowerUp = this;
-        TimerTask task = new TimerTask() {
-            public void run() {
-                BomberManMatch match = Bomberman.getMatch();
-                if (match == null || !match.getGameState()) {
-                    return;
-                }
-                entity.removeActivePowerUp(thisPowerUp);
-                if (isDisplayable())
-                    matchPanel.refreshPowerUps(entity.getActivePowerUps());
-                PowerUp.this.cancel(entity);
-            }
-        };
-
-        Timer timer = new Timer();
-        timer.schedule(task, duration);
+        Timer().schedule(task, durationMillis)
     }
+
 
     /**
      * Applies the power-up to the specified BomberEntity. This method should be implemented by the subclasses.
      *
      * @param entity the BomberEntity to apply the power-up to
      */
-    protected abstract void doApply(BomberEntity entity);
+    protected abstract fun doApply(entity: BomberEntity)
 
     /**
      * Cancels the power-up applied to the specified BomberEntity. This method should be implemented by the subclasses.
      *
      * @param entity the BomberEntity to cancel the power-up for
      */
-    protected abstract void cancel(BomberEntity entity);
+    protected abstract fun cancel(entity: BomberEntity)
 
     /**
      * Returns the size of the PowerUp entity.
      *
      * @return the size of the PowerUp entity
      */
-    @Override
-    public int getSize() {
-        return PitchPanel.COMMON_DIVISOR * 2;
+    override fun getSize(): Int {
+        return PitchPanel.COMMON_DIVISOR * 2
     }
 
-    @Override
-    protected void doInteract(Entity e) {
-        this.apply((BomberEntity) e);
+    override fun doInteract(e: Entity?) {
+        this.apply(e as BomberEntity)
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getInteractionsEntities() {
-        return new HashSet<>(Collections.singletonList(Player.class));
+    override fun getInteractionsEntities(): Set<Class<out Entity>> {
+        return HashSet<Class<out Entity>>(listOf(Player::class.java))
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getObstacles() {
-        return Collections.emptySet();
+    override fun getObstacles(): Set<Class<out Entity>> {
+        return emptySet()
     }
 
-    @Override
-    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Collections.singletonList(Player.class));
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
+        return HashSet<Class<out Entity>>(listOf(Player::class.java))
     }
 
-    public ArrayList<Class<? extends PowerUp>> getIncompatiblePowerUps() {
-        return incompatiblePowerUps;
-    }
-
-    public boolean isDisplayable() {
-        return true;
-    }
+    open val isDisplayable: Boolean
+        get() = true
 
     /**
      * @return wheter the powerup can be picked up indefinite times or not;
      */
-    public boolean canPickUp(BomberEntity entity) {
-        return !(entity.getActivePowerUps().stream().anyMatch(p -> p == this.getClass() || incompatiblePowerUps.contains(p.getClass())));
+    open fun canPickUp(entity: BomberEntity): Boolean {
+        return !entity.activePowerUps.stream().anyMatch { p: Class<out PowerUp> -> p == this.javaClass || incompatiblePowerUps.contains(p) }
+    }
+
+    companion object {
+        // A static array of power-up classes
+        @JvmField
+        val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
+                PistolPowerUp::class.java,
+                ArmorPowerUp::class.java,
+                FirePowerUp::class.java,
+                SpeedPowerUp::class.java,
+                TransparentDestroyableBlocksPowerUp::class.java,
+                LivesPowerUp::class.java,
+                RemoteControl::class.java,
+                Hammer::class.java,
+                BlockMoverPowerUp::class.java,
+                IncreaseMaxBombsPowerUp::class.java,
+                TransparentBombsPowerUp::class.java
+        )
+
+        // The default duration for a power-up, in seconds
+        const val DEFAULT_DURATION_SEC: Int = 15
+
     }
 }

@@ -13,7 +13,7 @@ import java.awt.geom.Rectangle2D;
 
 public abstract class BombermanButton extends JButton {
     private int fontSize = Dimensions.FONT_SIZE_BIG;
-    private int borderWidth = Utility.px(10);
+    private int borderWidth = Utility.INSTANCE.px(10);
     private final int cornerRadius = 15;
     private final Color backgroundColor = new Color(0, 0, 0, 0);
     private final Color textColor = new Color(255, 255, 255);

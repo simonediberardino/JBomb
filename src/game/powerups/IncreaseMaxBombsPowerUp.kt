@@ -1,48 +1,32 @@
-package game.powerups;
+package game.powerups
 
-import game.Bomberman;
-import game.data.DataInputOutput;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.events.game.UpdateMaxBombsEvent;
-import game.utils.Paths;
+import game.Bomberman
+import game.data.DataInputOutput
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.events.game.UpdateMaxBombsEvent
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
+class IncreaseMaxBombsPowerUp
+/**
+ * Constructs a PowerUp entity with the specified coordinates.
+ *
+ * @param coordinates the coordinates of the PowerUp entity
+ */
+(coordinates: Coordinates?) : PowerUp(coordinates) {
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/increase_max_bombs_powerup.png")
 
-public class IncreaseMaxBombsPowerUp extends PowerUp {
+    override val duration: Int = 0
 
-    /**
-     * Constructs a PowerUp entity with the specified coordinates.
-     *
-     * @param coordinates the coordinates of the PowerUp entity
-     */
-    public IncreaseMaxBombsPowerUp(Coordinates coordinates) {
-        super(coordinates);
+    override fun doApply(entity: BomberEntity) {
+        UpdateMaxBombsEvent().invoke((entity?.currentBombs ?: return) + 1)
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/increase_max_bombs_powerup.png");
+    override fun cancel(entity: BomberEntity) {
+        // No need to implement anything here
     }
 
-    @Override
-    public int getDuration() {
-        return 0;
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        new UpdateMaxBombsEvent().invoke(entity.getCurrentBombs() + 1);
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-    }
-
-    @Override
-    public boolean canPickUp(BomberEntity entity) {
-        return !(DataInputOutput.getInstance().getObtainedBombs() >= Bomberman.getMatch().getCurrentLevel().getMaxBombs());
-    }
-
-
+    override fun canPickUp(entity: BomberEntity): Boolean =
+            DataInputOutput.getInstance().obtainedBombs < Bomberman.getMatch().currentLevel.maxBombs
 }

@@ -1,8 +1,7 @@
 
 high priorities:
+- FIX MOUSE CONTROLLER
 - Images;
-- Lives power up remove;
 - fix death logo;
-- kotlin
 - database
 - multiplayer

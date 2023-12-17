@@ -1,40 +1,33 @@
-package game.powerups;
+package game.powerups
 
-import game.entity.blocks.DestroyableBlock;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.utils.Paths;
+import game.entity.blocks.DestroyableBlock
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
-
-public class Hammer extends PowerUp {
+class Hammer(coordinates: Coordinates?) : PowerUp(coordinates) {
     /**
      * Constructs a PowerUp entity with the specified coordinates.
      *
      * @param coordinates the coordinates of the PowerUp entity
      */
-    public Hammer(Coordinates coordinates) {
-        super(coordinates);
-        getIncompatiblePowerUps().add(BlockMoverPowerUp.class);
+    init {
+        incompatiblePowerUps.add(BlockMoverPowerUp::class.java)
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/hammer.png");
+    override fun getImage(): BufferedImage {
+        return loadAndSetImage("$powerUpsFolder/hammer.png")
     }
 
-    @Override
-    public int getDuration() {
-        return 30;
+    override val duration: Int
+        get() = 30
+
+    override fun doApply(entity: BomberEntity) {
+        entity!!.listClassInteractWithMouseClick.add(DestroyableBlock::class.java)
     }
 
-    @Override
-    protected void doApply(BomberEntity entity) {
-        entity.getListClassInteractWithMouseClick().add(DestroyableBlock.class);
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-        entity.getListClassInteractWithMouseClick().remove(DestroyableBlock.class);
+    override fun cancel(entity: BomberEntity) {
+        entity!!.listClassInteractWithMouseClick.remove(DestroyableBlock::class.java)
     }
 }

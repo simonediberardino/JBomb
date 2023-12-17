@@ -1,42 +1,34 @@
-package game.level;
+package game.level
 
-import game.data.DataInputOutput;
-import game.events.game.RoundPassedGameEvent;
-import game.localization.Localization;
+import game.data.DataInputOutput
+import game.events.game.RoundPassedGameEvent
+import game.localization.Localization
+import java.lang.reflect.InvocationTargetException
 
-import java.lang.reflect.InvocationTargetException;
-
-import static game.localization.Localization.YOU_DIED;
-
-public abstract class StoryLevel extends Level {
-    @Override
-    public String getDiedMessage() {
-        int lives = DataInputOutput.getInstance().getLives();
-        return Localization.get(YOU_DIED).replace("%lives%", Integer.toString(lives));
-    }
-
-    @Override
-    public void endLevel() {
-        try {
-            DataInputOutput.getInstance().setLastLevel(getNextLevel().getConstructor().newInstance());
-            DataInputOutput.getInstance().increaseRounds();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
-            e.printStackTrace();
+abstract class StoryLevel : Level() {
+    override val diedMessage: String
+        get() {
+            val lives = DataInputOutput.getInstance().lives
+            return Localization.get(Localization.YOU_DIED).replace("%lives%", Integer.toString(lives))
         }
 
-        new RoundPassedGameEvent().invoke(null);
-        DataInputOutput.getInstance().updateStoredPlayerData();
+    override fun endLevel() {
+        try {
+            DataInputOutput.getInstance().setLastLevel(nextLevel!!.getConstructor().newInstance())
+            DataInputOutput.getInstance().increaseRounds()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        RoundPassedGameEvent().invoke(null)
+        DataInputOutput.getInstance().updateStoredPlayerData()
     }
 
-    @Override
-    public void onDeathGameEvent() {
-        DataInputOutput.getInstance().increaseDeaths();
-        DataInputOutput.getInstance().decreaseLives();
-        DataInputOutput.getInstance().decreaseScore(1000);
+    override fun onDeathGameEvent() {
+        DataInputOutput.getInstance().increaseDeaths()
+        DataInputOutput.getInstance().decreaseLives()
+        DataInputOutput.getInstance().decreaseScore(1000)
     }
 
-    public boolean isArenaLevel() {
-        return false;
-    }
+    override val isArenaLevel: Boolean
+        get() = false
 }

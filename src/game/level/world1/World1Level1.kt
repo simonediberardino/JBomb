@@ -1,31 +1,33 @@
-package game.level.world1;
+package game.level.world1
 
-import game.entity.enemies.npcs.YellowBall;
-import game.entity.models.Enemy;
-import game.level.Level;
+import game.entity.enemies.npcs.YellowBall
+import game.entity.models.Enemy
+import game.level.Level
 
-public class World1Level1 extends World1Level {
-    public static final int LEVEL_ID = 1;
+class World1Level1 : World1Level() {
+    override val levelId: Int
+        get() {
+            return LEVEL_ID
+        }
 
-    @Override
-    public int getLevelId() {
-        return LEVEL_ID;
-    }
+    override val startEnemiesCount: Int
+        get() {
+            return 7
+        }
 
-    @Override
-    public int startEnemiesCount() {
-        return 7;
-    }
+    override val availableEnemies: Array<Class<out Enemy>>
+        get() {
+            return arrayOf(
+                    YellowBall::class.java
+            )
+        }
 
-    @Override
-    public Class<? extends Enemy>[] availableEnemies() {
-        return new Class[]{
-                YellowBall.class
-        };
-    }
+    override val nextLevel: Class<out Level?>
+        get() {
+            return World1Level2::class.java
+        }
 
-    @Override
-    public Class<? extends Level> getNextLevel() {
-        return World1Level2.class;
+    companion object {
+        const val LEVEL_ID = 1
     }
 }

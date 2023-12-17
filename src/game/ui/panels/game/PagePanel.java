@@ -26,7 +26,7 @@ public abstract class PagePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Image backgroundImage = Utility.loadImage(imagePath);
+        Image backgroundImage = Utility.INSTANCE.loadImage(imagePath);
 
         int width = (int) frame.getPreferredSize().getWidth();
         int height = (int) frame.getPreferredSize().getHeight();

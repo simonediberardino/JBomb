@@ -1,44 +1,27 @@
-package game.entity.enemies.npcs;
+package game.entity.enemies.npcs
 
-import game.entity.Player;
-import game.entity.bomb.Bomb;
-import game.entity.models.Enemy;
-import game.entity.models.Entity;
-import game.entity.models.Coordinates;
-import game.entity.models.Direction;
-import game.entity.models.EnhancedDirection;
-import game.ui.panels.game.PitchPanel;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import game.entity.Player
+import game.entity.bomb.Bomb
+import game.entity.models.*
+import game.ui.panels.game.PitchPanel
+import java.util.*
 
 /**
  * The Orb class represents a little enemy entity that moves in a specific direction.
  * It can be instantiated with either an EnhancedDirection or a Direction, but not both.
  * The Orb class implements the Transparent and Particle interfaces.
  */
-public abstract class Orb extends Enemy {
-
-    /**
-     * The size of the Orb.
-     */
-    public static final int SIZE = PitchPanel.COMMON_DIVISOR * 2;
-
+abstract class Orb : Enemy {
     /**
      * Only one field between enhancedDirection and direction can be instantiated at a time.
      * The enhancedDirection represents a direction that has been enhanced with additional directions.
      */
-    protected EnhancedDirection enhancedDirection = null;
+    protected var enhancedDirection: EnhancedDirection? = null
 
     /**
      * The direction represents the basic direction that the Orb moves in.
      */
-    protected Direction direction = null;
-
-    public Orb() {
-        super();
-    }
+    protected var direction: Direction? = null
 
     /**
      * Constructs an Orb with the given coordinates and enhanced direction.
@@ -46,9 +29,8 @@ public abstract class Orb extends Enemy {
      * @param coordinates       the coordinates of the Orb
      * @param enhancedDirection the enhanced direction of the Orb
      */
-    public Orb(Coordinates coordinates, EnhancedDirection enhancedDirection) {
-        super(coordinates);
-        this.enhancedDirection = enhancedDirection;
+    constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates) {
+        this.enhancedDirection = enhancedDirection
     }
 
     /**
@@ -57,14 +39,12 @@ public abstract class Orb extends Enemy {
      * @param coordinates the coordinates of the Orb
      * @param direction   the direction of the Orb
      */
-    public Orb(Coordinates coordinates, Direction direction) {
-        super(coordinates);
-        this.direction = direction;
+    constructor(coordinates: Coordinates?, direction: Direction?) : super(coordinates) {
+        this.direction = direction
     }
 
-    @Override
-    public int getSize() {
-        return SIZE;
+    override fun getSize(): Int {
+        return SIZE
     }
 
     /**
@@ -72,15 +52,13 @@ public abstract class Orb extends Enemy {
      *
      * @param e the entity to interact with
      */
-    @Override
     //
-    protected void doInteract(Entity e) {
+    override fun doInteract(e: Entity?) {
         if (canInteractWith(e)) {
-            attack(e);
+            attack(e)
         }
-
         if (isObstacle(e)) {
-            attack(this);
+            attack(this)
         }
     }
 
@@ -89,9 +67,8 @@ public abstract class Orb extends Enemy {
      *
      * @return the set of interaction entities for the Orb
      */
-    @Override
-    public Set<Class<? extends Entity>> getInteractionsEntities() {
-        return new HashSet<>(Arrays.asList(Player.class, Bomb.class));
+    override fun getInteractionsEntities(): Set<Class<out Entity>> {
+        return HashSet<Class<out Entity>>(Arrays.asList(Player::class.java, Bomb::class.java))
     }
 
     /**
@@ -101,33 +78,33 @@ public abstract class Orb extends Enemy {
      * @return true if the entity is null, false otherwise
      */
     //
-    @Override
-    public boolean isObstacle(Entity e) {
-        return e == null;
+    override fun isObstacle(e: Entity?): Boolean {
+        return e == null
     }
 
     /**
      * Moves the Orb in the appropriate direction or directions.
      */
-    private void moveOrb() {
-        if (!canMove || !isAlive) return;
-
+    private fun moveOrb() {
+        if (!canMove || !isAlive) return
         if (enhancedDirection == null) {
-            move(direction);
-            return;
+            move(direction)
+            return
         }
-
-        for (Direction d : enhancedDirection.toDirection()) {
-            moveOrInteract(d);
+        for (d in enhancedDirection!!.toDirection()) {
+            moveOrInteract(d)
         }
     }
 
-    @Override
-    public float getSpeed() {
-        return 1.5f;
+    override fun getSpeed(): Float {
+        return 1.5f
     }
 
-    public void doUpdate(boolean gameState) {
-        if (gameState) moveOrb();
+    override fun doUpdate(gameState: Boolean) {
+        if (gameState) moveOrb()
+    }
+
+    companion object {
+        val SIZE = PitchPanel.COMMON_DIVISOR * 2
     }
 }

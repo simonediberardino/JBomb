@@ -61,8 +61,8 @@ abstract class AbstractExplosion(private val owner: Entity,
      *
      * @param e The entity to interact with.
      */
-    override fun doInteract(e: Entity) {
-        e.onExplosion(this)
+    override fun doInteract(e: Entity?) {
+        e?.onExplosion(this)
     }
 
     /**

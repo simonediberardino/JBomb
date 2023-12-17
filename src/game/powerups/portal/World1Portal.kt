@@ -1,17 +1,10 @@
-package game.powerups.portal;
+package game.powerups.portal
 
-import game.entity.models.Coordinates;
-import game.ui.panels.game.PitchPanel;
+import game.entity.models.Coordinates
+import game.ui.panels.game.PitchPanel
+import java.awt.Dimension
 
-import java.awt.*;
-
-public class World1Portal extends WorldPortal {
-    public World1Portal() {
-        super(null, 1);
-    }
-
-    @Override
-    Coordinates getDefaultCoords() {
-        return (Coordinates.fromRowAndColumnsToCoordinates(new Dimension(3, 4), 0, -PitchPanel.GRID_SIZE / 2));
-    }
+class World1Portal : WorldPortal(null, 1) {
+    override val defaultCoords: Coordinates
+        get() = Coordinates.fromRowAndColumnsToCoordinates(Dimension(3, 4), 0, -PitchPanel.GRID_SIZE / 2)
 }

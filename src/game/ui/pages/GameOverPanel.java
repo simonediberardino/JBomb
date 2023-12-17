@@ -58,7 +58,7 @@ public class GameOverPanel extends BaseMenu {
 
             ToastHandler.getInstance().cancel();
 
-            Level level = hasLives ? Level.getCurrLevel() : new WorldSelectorLevel();
+            Level level = hasLives ? Level.Companion.getCurrLevel() : new WorldSelectorLevel();
             Bomberman.startLevel(level);
         });
 
@@ -83,7 +83,7 @@ public class GameOverPanel extends BaseMenu {
     }
 
     private void showToastMessage() {
-        Level lastLevel = Level.getCurrLevel();
+        Level lastLevel = Level.Companion.getCurrLevel();
         String diedMessage = lastLevel.getDiedMessage();
         ToastHandler.getInstance().show(diedMessage, true, true);
     }

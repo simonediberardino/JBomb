@@ -1,21 +1,21 @@
-package game.tasks;
+package game.tasks
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import javax.swing.Timer
 
-public class GarbageCollectorTask {
-    private static final int DELAY_MS = 30 * 1000;
-    private final ActionListener taskPerformer = evt -> {
-        System.gc();
-    };
-
-    private final Timer timer = new Timer(DELAY_MS, taskPerformer);
-
-    public void start() {
-        timer.start();
+class GarbageCollectorTask {
+    private val taskPerformer = ActionListener { evt: ActionEvent? -> System.gc() }
+    private val timer = Timer(DELAY_MS, taskPerformer)
+    fun start() {
+        timer.start()
     }
 
-    public void stop() {
-        timer.stop();
+    fun stop() {
+        timer.stop()
+    }
+
+    companion object {
+        private const val DELAY_MS = 30 * 1000
     }
 }

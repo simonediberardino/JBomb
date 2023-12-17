@@ -1,35 +1,27 @@
-package game.powerups;
+package game.powerups
 
-import game.entity.blocks.MovableBlock;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.utils.Paths;
+import game.entity.blocks.MovableBlock
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
+class BlockMoverPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
 
-public class BlockMoverPowerUp extends PowerUp {
-    public BlockMoverPowerUp(Coordinates coordinates) {
-        super(coordinates);
-        getIncompatiblePowerUps().add(Hammer.class);
+    init {
+        incompatiblePowerUps += Hammer::class.java
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/hand.png");
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/hand.png")
+
+    override val duration: Int
+        get() = 30
+
+    override fun doApply(entity: BomberEntity) {
+        entity.addClassInteractWithMouseDrag(MovableBlock::class.java)
     }
 
-    @Override
-    public int getDuration() {
-        return 30;
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        entity.addClassInteractWithMouseDrag(MovableBlock.class);
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-        entity.removeClassInteractWithDrag(MovableBlock.class);
+    override fun cancel(entity: BomberEntity) {
+        entity.removeClassInteractWithDrag(MovableBlock::class.java)
     }
 }

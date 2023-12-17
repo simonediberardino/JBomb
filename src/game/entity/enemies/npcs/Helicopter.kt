@@ -1,23 +1,21 @@
-package game.entity.enemies.npcs;
+package game.entity.enemies.npcs
 
-import game.utils.Paths;
+import game.entity.EntityTypes
+import game.utils.Paths.enemiesFolder
+import java.util.*
 
-public class Helicopter extends FlyingEnemy {
-    public Helicopter() {
-        super();
+class Helicopter : FlyingEnemy() {
+    override fun getBasePath(): String {
+        return "$enemiesFolder/heli"
     }
 
-    @Override
-    protected String getBasePath() {
-        return Paths.INSTANCE.getEnemiesFolder() + "/heli";
+    override fun getCharacterOrientedImages(): Array<String> {
+        return Array(3) { index ->
+            "$basePath/heli_${imageDirection.toString().lowercase()}_$index.gif"
+        }
     }
 
-    public String[] getCharacterOrientedImages() {
-        return new String[]{
-                String.format("%s/heli_%s_0.gif", getBasePath(), imageDirection.toString().toLowerCase()),
-                String.format("%s/heli_%s_1.gif", getBasePath(), imageDirection.toString().toLowerCase()),
-                String.format("%s/heli_%s_2.gif", getBasePath(), imageDirection.toString().toLowerCase()),
-        };
+    override fun getType(): EntityTypes {
+        return EntityTypes.Helicopter
     }
-
 }

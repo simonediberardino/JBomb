@@ -1,84 +1,74 @@
-package game.powerups.portal;
+package game.powerups.portal
 
-import game.Bomberman;
-import game.data.DataInputOutput;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.level.Level;
-import game.level.world1.World1Level1;
-import game.utils.Paths;
-import game.utils.Utility;
+import game.Bomberman
+import game.data.DataInputOutput
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.level.Level
+import game.level.world1.World1Level1
+import game.utils.Paths.getWorldSelectorPortalPath
+import game.utils.Utility.loadImage
+import java.awt.image.BufferedImage
+import java.lang.reflect.InvocationTargetException
+import java.util.*
 
-import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
-import java.util.Optional;
+abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) : Portal(coordinates) {
+    constructor(worldId: Int) : this(null, worldId)
 
-import static game.level.Level.ID_TO_FIRST_LEVEL_MAP;
-import static game.level.Level.ID_TO_LEVEL;
-
-public abstract class WorldPortal extends Portal {
-    private final int worldId;
-
-    public WorldPortal(int worldId) {
-        this(null, worldId);
+    init {
+        coords = defaultCoords
     }
 
-    public WorldPortal(Coordinates coordinates, int worldId) {
-        super(coordinates);
-        this.worldId = worldId;
-        setCoords(getDefaultCoords());
+    override fun getSize(): Int {
+        return super.getSize() * 3
     }
 
-    @Override
-    public int getSize() {
-        return super.getSize() * 3;
+    override val duration: Int
+        get() {
+            return 0
+        }
+
+    override fun getImage(): BufferedImage {
+        return loadImage(getWorldSelectorPortalPath(worldId))!!
     }
 
-    @Override
-    public int getDuration() {
-        return 0;
-    }
-
-    @Override
-    public BufferedImage getImage() {
-        return Utility.loadImage(Paths.INSTANCE.getWorldSelectorPortalPath(worldId));
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        super.doApply(entity);
-
+    override fun doApply(entity: BomberEntity) {
+        super.doApply(entity)
         try {
             // Get the ID of the last level and last world from the player data object
-            int savedLastLevelId = DataInputOutput.getInstance().getLastLevelId();
-            int savedLastWorldId = DataInputOutput.getInstance().getLastWorldId();
+            val savedLastLevelId = DataInputOutput.getInstance().lastLevelId
+            val savedLastWorldId = DataInputOutput.getInstance().lastWorldId
 
             // Get the class of the first level for the current world from the ID_TO_FIRST_LEVEL_MAP
-            Class<? extends Level> firstLevelOfCurrWorld = ID_TO_FIRST_LEVEL_MAP.getOrDefault(worldId, World1Level1.class);
+            val firstLevelOfCurrWorld = Level.ID_TO_FIRST_LEVEL_MAP.getOrDefault(worldId, World1Level1::class.java)
 
             // Initialize the level to start
-            Level levelToStart;
+            val levelToStart: Level
 
             // Check if the saved last world ID matches the current world ID
-            if (savedLastWorldId == worldId) {
+            levelToStart = if (savedLastWorldId == worldId) {
                 // Find the class of the last level using the saved last world ID and last level ID
-                Optional<? extends Class<? extends Level>> lastLevelOpt = findLastLevel(savedLastWorldId, savedLastLevelId);
-                Class<? extends Level> levelClass = lastLevelOpt.isPresent() ? lastLevelOpt.get() : firstLevelOfCurrWorld;
+                val lastLevelOpt = findLastLevel(savedLastWorldId, savedLastLevelId)
+                val levelClass = if (lastLevelOpt.isPresent) lastLevelOpt.get() else firstLevelOfCurrWorld
 
                 // Create an instance of the level class
-                levelToStart = levelClass.getConstructor().newInstance();
+                levelClass.getConstructor().newInstance()
             } else {
                 // Use the class of the first level for the current world
-                levelToStart = firstLevelOfCurrWorld.getConstructor().newInstance();
+                firstLevelOfCurrWorld.getConstructor().newInstance()
             }
 
             // Start the level with the obtained level instance
-            Bomberman.startLevel(levelToStart);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
+            Bomberman.startLevel(levelToStart)
+        } catch (e: InstantiationException) {
             // Print the stack trace if there is an exception
-            e.printStackTrace();
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        } catch (e: InvocationTargetException) {
+            e.printStackTrace()
+        } catch (e: NoSuchMethodException) {
+            e.printStackTrace()
         }
     }
 
@@ -89,18 +79,13 @@ public abstract class WorldPortal extends Portal {
      * @param savedLastLevelId the saved last level ID
      * @return an optional containing the class of the last level, if found
      */
-    private Optional<? extends Class<? extends Level>> findLastLevel(int savedLastWorldId, int savedLastLevelId) {
-        return ID_TO_LEVEL.entrySet()
-                .stream()
-                .filter(e -> e.getKey()[0] == savedLastWorldId && e.getKey()[1] == savedLastLevelId)
-                .map(Map.Entry::getValue)
-                .findFirst();
+    private fun findLastLevel(savedLastWorldId: Int, savedLastLevelId: Int): Optional<Class<out Level>> {
+        return Level.ID_TO_LEVEL.entries
+                .firstOrNull { (key, _) -> key[0] == savedLastWorldId && key[1] == savedLastLevelId }
+                ?.value
+                ?.let { Optional.of(it) }
+                ?: Optional.empty()
     }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-
-    }
-
-    abstract Coordinates getDefaultCoords();
+    override fun cancel(entity: BomberEntity) {}
+    abstract val defaultCoords: Coordinates?
 }

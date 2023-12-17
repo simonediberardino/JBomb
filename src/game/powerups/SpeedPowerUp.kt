@@ -1,44 +1,21 @@
-package game.powerups;
+package game.powerups
 
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.hardwareinput.ControllerManager;
-import game.utils.Paths;
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.hardwareinput.ControllerManager
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
+class SpeedPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
+    override fun getBasePath(): String? = null
 
-public class SpeedPowerUp extends PowerUp {
-    /**
-     * Constructs an entity with the given coordinates.
-     *
-     * @param coordinates the coordinates of the entity
-     */
-    public SpeedPowerUp(Coordinates coordinates) {
-        super(coordinates);
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/speed_up.png")
+
+    override fun doApply(entity: BomberEntity) {
+        ControllerManager.decreaseCommandDelay()
     }
 
-    @Override
-    protected String getBasePath() {
-        return null;
-    }
-
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/speed_up.png");
-    }
-
-    @Override
-    public int getDuration() {
-        return DEFAULT_DURATION_SEC;
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        ControllerManager.decreaseCommandDelay();
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-        ControllerManager.setDefaultCommandDelay();
+    override fun cancel(entity: BomberEntity) {
+        ControllerManager.setDefaultCommandDelay()
     }
 }

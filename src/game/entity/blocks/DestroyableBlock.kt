@@ -23,7 +23,7 @@ class DestroyableBlock(
      *
      * @param e the other entity to interact with
      */
-    override fun doInteract(e: Entity) {}
+    override fun doInteract(e: Entity?) {}
 
     override fun getImage(): BufferedImage {
         return loadAndSetImage(Bomberman.getMatch().currentLevel.destroyableBlockImagePath)

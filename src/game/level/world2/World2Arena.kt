@@ -1,55 +1,55 @@
-package game.level.world2;
+package game.level.world2
 
-import game.entity.enemies.boss.Boss;
-import game.entity.enemies.boss.clown.Clown;
-import game.entity.enemies.npcs.Eagle;
-import game.entity.enemies.npcs.FastEnemy;
-import game.entity.enemies.npcs.TankEnemy;
-import game.entity.enemies.npcs.Zombie;
-import game.entity.models.Enemy;
-import game.level.ArenaLevel;
-import game.level.Level;
+import game.entity.enemies.boss.Boss
+import game.entity.enemies.boss.clown.Clown
+import game.entity.enemies.npcs.Eagle
+import game.entity.enemies.npcs.FastEnemy
+import game.entity.enemies.npcs.TankEnemy
+import game.entity.enemies.npcs.Zombie
+import game.entity.models.Enemy
+import game.level.ArenaLevel
+import game.level.Level
 
-public class World2Arena extends ArenaLevel {
-    @Override
-    public Class<? extends Enemy>[] getSpecialRoundEnemies() {
-        return new Class[]{
-                TankEnemy.class,
-                Zombie.class
-        };
-    }
+class World2Arena : ArenaLevel() {
+    override val specialRoundEnemies: Array<Class<out Enemy?>>
+        get() {
+            return arrayOf(
+                    TankEnemy::class.java,
+                    Zombie::class.java
+            )
+        }
 
-    @Override
-    public Boss getBoss() {
-        return new Clown();
-    }
+    override val boss: Boss
+        get() {
+            return Clown()
+        }
 
-    @Override
-    public int getMaxDestroyableBlocks() {
-        return 10;
-    }
+    override val maxDestroyableBlocks: Int
+        get() {
+            return 10
+        }
 
-    @Override
-    public Class<? extends Level> getNextLevel() {
-        return null;
-    }
+    override val nextLevel: Class<out Level>?
+        get() {
+            return null
+        }
 
-    @Override
-    public Class<? extends Enemy>[] availableEnemies() {
-        return new Class[]{
-                FastEnemy.class,
-                TankEnemy.class,
-                Eagle.class
-        };
-    }
+    override val availableEnemies: Array<Class<out Enemy>>
+        get() {
+            return arrayOf(
+                    FastEnemy::class.java,
+                    TankEnemy::class.java,
+                    Eagle::class.java
+            )
+        }
 
-    @Override
-    public int getWorldId() {
-        return 2;
-    }
+    override val worldId: Int
+        get() {
+            return 2
+        }
 
-    @Override
-    public int getLevelId() {
-        return 0;
-    }
+    override val levelId: Int
+        get() {
+            return 0
+        }
 }

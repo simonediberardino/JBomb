@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import static game.ui.panels.game.PitchPanel.GRID_SIZE;
-import static game.utils.Utility.loadImage;
 
 
 /**
@@ -154,14 +153,14 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         String fileName = toks[0];
 
         String imagePathWithStatus = String.format("%s_%s.%s", fileName, state.toString().toLowerCase(), extension);
-        boolean hasImageWithStatus = Utility.fileExists(imagePathWithStatus);
+        boolean hasImageWithStatus = Utility.INSTANCE.fileExists(imagePathWithStatus);
 
         return hasImageWithStatus ? doLoadAndSetImage(imagePathWithStatus) : doLoadAndSetImage(imagePath);
     }
 
     private BufferedImage doLoadAndSetImage(String imagePath) {
         this.lastImageUpdate = System.currentTimeMillis();
-        this.image = loadImage(imagePath);
+        this.image = Utility.INSTANCE.loadImage(imagePath);
         this.imagePath = imagePath;
         return this.image;
     }
@@ -558,7 +557,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     public void setAlpha(float alpha) {
-        this.alpha = Utility.ensureRange(alpha, 0, 1);
+        this.alpha = Utility.INSTANCE.ensureRange(alpha, 0, 1);
     }
 
     public void onExplosion(AbstractExplosion explosion) {

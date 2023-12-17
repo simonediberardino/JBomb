@@ -1,28 +1,17 @@
-package game.entity.enemies.npcs;
+package game.entity.enemies.npcs
 
-import game.entity.blocks.DestroyableBlock;
-import game.entity.models.*;
-import game.entity.models.Coordinates;
-
-import java.util.HashSet;
-import java.util.Set;
+import game.entity.blocks.DestroyableBlock
+import game.entity.models.Coordinates
+import game.entity.models.Entity
 
 /**
  * Enemy that can fly over destroyable blocks;
  */
-public abstract class FlyingEnemy extends IntelligentEnemy {
-    public FlyingEnemy() {
-        super();
-    }
+abstract class FlyingEnemy : IntelligentEnemy {
+    constructor() : super()
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
-    public FlyingEnemy(Coordinates coordinates) {
-        super(coordinates);
-    }
-
-    @Override
-    public Set<Class<? extends Entity>> getObstacles() {
-        Set<Class<? extends Entity>> baseObstacles = new HashSet<>(super.getObstacles());
-        baseObstacles.remove(DestroyableBlock.class);
-        return baseObstacles;
+    override fun getObstacles(): Set<Class<out Entity?>> = HashSet(super.getObstacles()).apply {
+        remove(DestroyableBlock::class.java)
     }
 }

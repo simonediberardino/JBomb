@@ -1,91 +1,69 @@
-package game.hardwareinput;
+package game.hardwareinput
 
-import game.Bomberman;
-import game.data.DataInputOutput;
-import game.entity.Player;
-import game.events.game.Observable2;
-import game.tasks.PeriodicTask;
-import game.utils.Utility;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
-import static java.util.Map.entry;
+import game.Bomberman
+import game.data.DataInputOutput
+import game.entity.Player
+import game.events.game.Observable2
+import game.tasks.PeriodicTask
+import game.utils.Utility.timePassed
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 
 /**
  * This class represents an Observable object that observes key events and notifies its observers of the
  * corresponding command that should be executed based on the key that was pressed.
  */
-public class ControllerManager extends Observable2 implements KeyListener {
-    private static final int KEY_ESC = KeyEvent.VK_ESCAPE;
-    private static ControllerManager instance;
+class ControllerManager : Observable2(), KeyListener {
     // Stores the time of the last key event for each command
-    private final Map<Command, Long> commandEventsTime = new HashMap<>();
-    private Player player;
-    // Key-Command mapping
-    private Map<Integer, Command> keyAssignment;
-    private PeriodicTask task;
-    private static int KEY_DELAY_MS = setDefaultCommandDelay();
+    private val commandEventsTime: MutableMap<Command?, Long> = HashMap()
+    private var player: Player? = null
 
-    public ControllerManager() {
-        instance = this;
-        setupTask();
+    // Key-Command mapping
+    private var keyAssignment: Map<Int, Command>? = null
+    private var task: PeriodicTask? = null
+
+    init {
+        instance = this
+        setupTask()
         // If illegal keys are found, reset the key map;
         try {
-            setKeyMap();
-        } catch (IllegalArgumentException e) {
-            DataInputOutput.getInstance().resetKeys();
-            DataInputOutput.getInstance().updateStoredPlayerData();
-            setKeyMap();
-            e.printStackTrace();
+            setKeyMap()
+        } catch (e: IllegalArgumentException) {
+            DataInputOutput.getInstance().resetKeys()
+            DataInputOutput.getInstance().updateStoredPlayerData()
+            setKeyMap()
+            e.printStackTrace()
         }
     }
 
-    public static int decreaseCommandDelay() {
-        KEY_DELAY_MS = 15;
-        if (instance != null) {
-            instance.updateDelay();
-        }
-        return KEY_DELAY_MS;
+    fun setPlayer(entity: Player) {
+        player = entity
     }
 
-    public static int setDefaultCommandDelay() {
-        KEY_DELAY_MS = 30;
-        if (instance != null) {
-            instance.updateDelay();
-        }
-        return KEY_DELAY_MS;
+    private fun setKeyMap() {
+        val dataInputOutput = DataInputOutput.getInstance()
+
+        keyAssignment = mapOf(
+                dataInputOutput.forwardKey to Command.MOVE_UP,
+                dataInputOutput.leftKey to Command.MOVE_LEFT,
+                dataInputOutput.backKey to Command.MOVE_DOWN,
+                dataInputOutput.rightKey to Command.MOVE_RIGHT,
+                dataInputOutput.bombKey to Command.ATTACK,
+                KEY_ESC to Command.PAUSE
+        )
     }
 
-    public void setPlayer(Player entity) {
-        this.player = entity;
-    }
-
-    private void setKeyMap() {
-        keyAssignment = Map.ofEntries(
-                entry(DataInputOutput.getInstance().getForwardKey(), Command.MOVE_UP),
-                entry(DataInputOutput.getInstance().getLeftKey(), Command.MOVE_LEFT),
-                entry(DataInputOutput.getInstance().getBackKey(), Command.MOVE_DOWN),
-                entry(DataInputOutput.getInstance().getRightKey(), Command.MOVE_RIGHT),
-                entry(DataInputOutput.getInstance().getBombKey(), Command.ATTACK),
-                entry(KEY_ESC, Command.PAUSE)
-        );
-    }
-
-    public void onKeyPressed(Command action) {
+    fun onKeyPressed(action: Command?) {
         // if a button is pressed, mouse movement gets interrupted
-        Bomberman.getMatch().getMouseControllerManager().stopPeriodicTask();
+        Bomberman.getMatch().mouseControllerManager.stopPeriodicTask()
 
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
         if (action != null && player != null) {
-            commandEventsTime.put(action, System.currentTimeMillis());
-            player.getCommandQueue().add(action);
+            commandEventsTime[action] = System.currentTimeMillis()
+            player!!.commandQueue.add(action)
         }
 
-        resume();
+        resume()
     }
 
     /**
@@ -93,68 +71,80 @@ public class ControllerManager extends Observable2 implements KeyListener {
      *
      * @param e the KeyEvent object that contains the information of the key that was pressed.
      */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        Command action = keyAssignment.get(e.getKeyCode());
-        if (Utility.timePassed(commandEventsTime.getOrDefault(action, 0L)) < KEY_DELAY_MS)
-            return;
-
-        onKeyPressed(action);
+    override fun keyPressed(e: KeyEvent) {
+        val action = keyAssignment?.get(e.keyCode) ?: return
+        if (timePassed(commandEventsTime.getOrDefault(action, 0L)) < KEY_DELAY_MS)
+            return
+        onKeyPressed(action)
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        Command action = keyAssignment.get(e.getKeyCode());
-        onKeyReleased(action);
+    override fun keyReleased(e: KeyEvent) {
+        val action = keyAssignment?.get(e.keyCode) ?: return
+        onKeyReleased(action)
     }
 
-    public void onKeyReleased(Command action) {
-        player.getCommandQueue().remove(action);
+    fun onKeyReleased(action: Command?) {
+        player?.commandQueue?.remove(action)
 
-        if (player.getCommandQueue().isEmpty())
-            stop();
+        if (player?.commandQueue?.isEmpty() == true)
+            stop()
     }
 
-    private void setupTask() {
-        task = new PeriodicTask(() -> {
+    private fun setupTask() {
+        task = PeriodicTask(Runnable {
             if (player == null)
-                return;
+                return@Runnable
 
-            for (Command command : new HashSet<>(player.getCommandQueue())) {
-                notifyObservers(command);
+            for (command in HashSet(player!!.commandQueue)) {
+                notifyObservers(command)
             }
-        }, KEY_DELAY_MS);
+        }, KEY_DELAY_MS)
 
-        task.start();
+        task?.start()
     }
 
-    private void resume() {
+    private fun resume() {
         try {
-            if (task != null) {
-                task.resume();
+            task?.resume()
+        } catch (ignored: Exception) { }
+    }
+
+    private fun stop() {
+        try {
+            task?.stop()
+        } catch (ignored: Exception) { }
+    }
+
+    fun isCommandPressed(c: Command?): Boolean {
+        return player!!.commandQueue.contains(c)
+    }
+
+    private fun updateDelay() {
+        instance!!.task!!.setDelay(KEY_DELAY_MS)
+    }
+
+    override fun keyTyped(e: KeyEvent) {}
+
+    companion object {
+        private const val KEY_ESC = KeyEvent.VK_ESCAPE
+        private var instance: ControllerManager? = null
+        private var KEY_DELAY_MS = setDefaultCommandDelay()
+
+        fun decreaseCommandDelay(): Int {
+            KEY_DELAY_MS = 15
+            if (instance != null) {
+                instance!!.updateDelay()
             }
-        } catch (Exception ignored) {
+            return KEY_DELAY_MS
+        }
+
+        
+        fun setDefaultCommandDelay(): Int {
+            KEY_DELAY_MS = 30
+            if (instance != null) {
+                instance!!.updateDelay()
+            }
+            return KEY_DELAY_MS
         }
     }
-
-    private void stop() {
-        try {
-            if (task != null) task.stop();
-        } catch (Exception ignored) {
-        }
-    }
-
-    public boolean isCommandPressed(Command c) {
-        return player.getCommandQueue().contains(c);
-    }
-
-    private void updateDelay() {
-        instance.task.setDelay(KEY_DELAY_MS);
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-
 }

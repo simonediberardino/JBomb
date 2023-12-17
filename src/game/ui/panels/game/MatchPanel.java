@@ -72,7 +72,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         int heightNorthSouth = (int) ((frame.getHeight() - (pitchPanel.getMaximumSize().getHeight())) / 2);
 
         // set the size of the borders
-        int borderSize = Utility.px(90);
+        int borderSize = Utility.INSTANCE.px(90);
 
         // get the images of the border panels from the current level of the game
         Image[] borderImages = Bomberman.getMatch().getCurrentLevel().getBorderImages();
@@ -172,7 +172,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         inventoryPanel = new JPanel() {
             @Override
             public void paint(Graphics g) {
-                Image powerUpsBorder = Utility.loadImage(Paths.INSTANCE.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
+                Image powerUpsBorder = Utility.INSTANCE.loadImage(Paths.INSTANCE.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
                 g.drawImage(powerUpsBorder, 0, 0, null);
                 super.paint(g);
             }
@@ -255,9 +255,9 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
                 super.paint(g);
                 if (powerUpsPanel != null) {
                     int offset = 15;
-                    int logoWidth = Utility.px(240);
-                    int logoHeight = Utility.px(88);
-                    Image powerupsLogo = Utility.loadImage(Paths.INSTANCE.getPowerupsLogoPath()).getScaledInstance(logoWidth, logoHeight, 0);
+                    int logoWidth = Utility.INSTANCE.px(240);
+                    int logoHeight = Utility.INSTANCE.px(88);
+                    Image powerupsLogo = Utility.INSTANCE.loadImage(Paths.INSTANCE.getPowerupsLogoPath()).getScaledInstance(logoWidth, logoHeight, 0);
                     g.drawImage(powerupsLogo, powerUpsPanel.getX() - logoWidth / 2 + powerUpsPanel.getWidth() / 2, powerUpsPanel.getY() - logoHeight - offset, null);
                 }
                 // Draw the image scaled to the specified border size on the right side of the panel
@@ -268,7 +268,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         powerUpsPanel = new JPanel() {
             @Override
             public void paint(Graphics g) {
-                Image powerUpsBorder = Utility.loadImage(Paths.INSTANCE.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
+                Image powerUpsBorder = Utility.INSTANCE.loadImage(Paths.INSTANCE.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
                 g.drawImage(powerUpsBorder, 0, 0, null);
                 super.paint(g);
             }

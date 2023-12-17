@@ -1,22 +1,17 @@
-package game.powerups.portal;
+package game.powerups.portal
 
-import game.Bomberman;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.powerups.PowerUp;
+import game.Bomberman
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.powerups.PowerUp
 
-public abstract class Portal extends PowerUp {
-    public Portal(Coordinates coordinates) {
-        super(coordinates);
-    }
+abstract class Portal(coordinates: Coordinates?) : PowerUp(coordinates) {
+    override val isDisplayable: Boolean
+        get() {
+            return false
+        }
 
-    @Override
-    public boolean isDisplayable() {
-        return false;
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        Bomberman.getMatch().toggleGameState();
+    override fun doApply(entity: BomberEntity) {
+        Bomberman.getMatch().toggleGameState()
     }
 }

@@ -30,7 +30,7 @@ public class SettingsPanel extends BoxMenuPanel {
 
     @Override
     protected int getBoxPanelWidth() {
-        return Utility.px(800);
+        return Utility.INSTANCE.px(800);
     }
 
     private SettingsElementView createTextFieldElementView(String label, String keyChar, RunnablePar runnablePar) {

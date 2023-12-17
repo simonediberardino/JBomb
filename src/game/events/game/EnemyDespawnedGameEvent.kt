@@ -1,13 +1,12 @@
-package game.events.game;
+package game.events.game
 
-import game.Bomberman;
-import game.events.models.GameEvent;
+import game.Bomberman
+import game.events.models.GameEvent
 
-public class EnemyDespawnedGameEvent implements GameEvent {
-    @Override
-    public void invoke(Object arg) {
-        if (!Bomberman.getMatch().getGameState()) return;
-
-        Bomberman.getMatch().getCurrentLevel().onEnemyDespawned();
+class EnemyDespawnedGameEvent : GameEvent {
+    override fun invoke(arg: Any?) {
+        if (!Bomberman.getMatch().gameState)
+            return
+        Bomberman.getMatch().currentLevel.onEnemyDespawned()
     }
 }

@@ -1,73 +1,51 @@
-package game.entity.models;
+package game.entity.models
 
-import game.ui.panels.game.PitchPanel;
+import game.ui.panels.game.PitchPanel
 
-public enum EnhancedDirection {
-    LEFTUP,
-    LEFTDOWN,
-    RIGHTUP,
-    RIGHTDOWN;
+enum class EnhancedDirection {
+    LEFTUP, LEFTDOWN, RIGHTUP, RIGHTDOWN;
 
-    public static EnhancedDirection toEnhancedDirection(Direction[] directions) {
-        Direction vertical = null;
-        Direction horizontal = null;
-
-        if (directions.length != 2) {
-            return null;
+    fun toDirection(): Array<Direction> {
+        return when (this) {
+            LEFTUP -> arrayOf(Direction.LEFT, Direction.UP)
+            LEFTDOWN -> arrayOf(Direction.LEFT, Direction.DOWN)
+            RIGHTDOWN -> arrayOf(Direction.RIGHT, Direction.DOWN)
+            RIGHTUP -> arrayOf(Direction.RIGHT, Direction.UP)
         }
+    }
 
-        for (Direction d : directions) {
-            switch (d) {
-                case DOWN:
-                case UP:
-                    vertical = d;
-                    break;
-                case RIGHT:
-                case LEFT:
-                    horizontal = d;
-                    break;
+    fun opposite(direction: Direction): EnhancedDirection? {
+        val array = toDirection()
+        for (i in array!!.indices) {
+            if (array[i] === direction) array[i] = direction.opposite()
+        }
+        return toEnhancedDirection(array)
+    }
+
+    companion object {
+        fun toEnhancedDirection(directions: Array<Direction>?): EnhancedDirection? {
+            var vertical: Direction? = null
+            var horizontal: Direction? = null
+            if (directions!!.size != 2) {
+                return null
             }
+            for (d in directions) {
+                when (d) {
+                    Direction.DOWN, Direction.UP -> vertical = d
+                    Direction.RIGHT, Direction.LEFT -> horizontal = d
+                }
+            }
+            if (vertical === Direction.UP && horizontal === Direction.RIGHT) return RIGHTUP
+            if (vertical === Direction.DOWN && horizontal === Direction.RIGHT) return RIGHTDOWN
+            if (vertical === Direction.UP && horizontal === Direction.LEFT) return LEFTUP
+            return if (vertical === Direction.DOWN && horizontal === Direction.LEFT) LEFTDOWN else null
         }
 
-        if (vertical == Direction.UP && horizontal == Direction.RIGHT) return RIGHTUP;
-        if (vertical == Direction.DOWN && horizontal == Direction.RIGHT) return RIGHTDOWN;
-        if (vertical == Direction.UP && horizontal == Direction.LEFT) return LEFTUP;
-        if (vertical == Direction.DOWN && horizontal == Direction.LEFT) return LEFTDOWN;
-
-        return null;
-    }
-
-    public static EnhancedDirection randomDirectionTowardsCenter(Entity entity) {
-        Coordinates centerEntityCoords = new Coordinates(entity.getCoords().getX() + entity.getSize() / 2, entity.getCoords().getY() + entity.getSize() / 2);
-        Direction newHorizontalDirection;
-        Direction newVerticalDirection;
-        newHorizontalDirection = centerEntityCoords.getX() > PitchPanel.DIMENSION.getWidth() / 2 ? Direction.LEFT : Direction.RIGHT;
-        newVerticalDirection = centerEntityCoords.getY() < PitchPanel.DIMENSION.getHeight() / 2 ? Direction.DOWN : Direction.UP;
-        return toEnhancedDirection(new Direction[]{newHorizontalDirection, newVerticalDirection});
-    }
-
-    public Direction[] toDirection() {
-        switch (this) {
-            case LEFTUP:
-                return new Direction[]{Direction.LEFT, Direction.UP};
-            case LEFTDOWN:
-                return new Direction[]{Direction.LEFT, Direction.DOWN};
-            case RIGHTDOWN:
-                return new Direction[]{Direction.RIGHT, Direction.DOWN};
-            case RIGHTUP:
-                return new Direction[]{Direction.RIGHT, Direction.UP};
+        fun randomDirectionTowardsCenter(entity: Entity): EnhancedDirection? {
+            val centerEntityCoords = Coordinates(entity.coords.x + entity.size / 2, entity.coords.y + entity.size / 2)
+            val newHorizontalDirection: Direction = if (centerEntityCoords.x > PitchPanel.DIMENSION.getWidth() / 2) Direction.LEFT else Direction.RIGHT
+            val newVerticalDirection: Direction = if (centerEntityCoords.y < PitchPanel.DIMENSION.getHeight() / 2) Direction.DOWN else Direction.UP
+            return toEnhancedDirection(arrayOf(newHorizontalDirection, newVerticalDirection))
         }
-
-        return null;
-    }
-
-    public EnhancedDirection opposite(Direction direction) {
-        Direction[] array = toDirection();
-        for (int i = 0; i < array.length; i++) {
-
-            if (array[i] == direction) array[i] = direction.opposite();
-        }
-        return toEnhancedDirection(array);
-
     }
 }

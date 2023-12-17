@@ -54,7 +54,7 @@ open class Bomb(entity: BomberEntity) : MovableBlock(Coordinates.getCenterCoordi
      *
      * @param e the other entity to interact with
      */
-    override fun doInteract(e: Entity) {}
+    override fun doInteract(e: Entity?) {}
     fun explode() {
         if (!isSpawned) {
             return
@@ -82,17 +82,20 @@ open class Bomb(entity: BomberEntity) : MovableBlock(Coordinates.getCenterCoordi
         return BOMB_SIZE
     }
 
-    override fun getExplosionObstacles(): Set<Class<out Entity>> {
-        return setOf(HardBlock::class.java, DestroyableBlock::class.java)
-    }
+    override val explosionObstacles: Set<Class<out Entity>>
+        get() {
+            return setOf(HardBlock::class.java, DestroyableBlock::class.java)
+        }
 
-    override fun getExplosionInteractionEntities(): Set<Class<out Entity?>?> {
-        return setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)
-    }
+    override val explosionInteractionEntities: Set<Class<out Entity>>
+        get() {
+            return setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)
+        }
 
-    override fun getMaxExplosionDistance(): Int {
-        return Bomberman.getMatch().player.currExplosionLength
-    }
+    override val maxExplosionDistance: Int
+        get() {
+            return Bomberman.getMatch().player.currExplosionLength
+        }
 
     public override fun onMouseClickInteraction() {
         eliminated()

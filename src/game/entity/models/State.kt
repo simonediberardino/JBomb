@@ -1,7 +1,5 @@
-package game.entity.models;
+package game.entity.models
 
-public enum State {
-    SPAWNED,
-    DIED,
-    IMMUNE
+enum class State {
+    SPAWNED, DIED, IMMUNE
 }

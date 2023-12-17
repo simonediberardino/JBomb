@@ -1,5 +1,6 @@
 package game.entity.enemies.boss.clown
 
+import game.entity.EntityTypes
 import game.entity.Player
 import game.entity.enemies.boss.clown.Clown
 import game.entity.enemies.npcs.Orb
@@ -58,15 +59,17 @@ open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?)
 
         if (enhancedDirection == null) {
             // When hitting a wall, bounce and change direction;
-            if (!moveOrInteract(direction)) direction = direction.opposite()
+            if (!moveOrInteract(direction))
+                direction = direction!!.opposite()
+
             updateLastDirection(direction)
             return
         }
 
-        for (d in enhancedDirection.toDirection()) {
+        for (d in enhancedDirection!!.toDirection()) {
             currDirection = d
             if (!moveOrInteract(d)) {
-                enhancedDirection = enhancedDirection.opposite(d)
+                enhancedDirection = enhancedDirection!!.opposite(d)
             }
             updateLastDirection(currDirection)
         }
@@ -86,5 +89,9 @@ open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?)
 
     override fun getDrawPriority(): DrawPriority {
         return DrawPriority.DRAW_PRIORITY_3
+    }
+
+    override fun getType(): EntityTypes {
+        return EntityTypes.Hat
     }
 }

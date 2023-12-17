@@ -1,27 +1,21 @@
-package game.entity.models;
+package game.entity.models
 
+import game.ui.panels.game.PitchPanel
 
-import game.ui.panels.game.PitchPanel;
-
-public abstract class Block extends Entity {
-    public final static int SIZE = PitchPanel.GRID_SIZE;
-
-    public Block(Coordinates coordinates) {
-        super(coordinates);
+abstract class Block(coordinates: Coordinates?) : Entity(coordinates) {
+    override fun getSize(): Int {
+        return SIZE
     }
 
-    @Override
-    public int getSize() {
-        return SIZE;
+    override fun eliminated() {
+        destroy()
     }
 
-    @Override
-    public void eliminated() {
-        destroy();
+    open fun destroy() {
+        despawn()
     }
 
-    public void destroy() {
-        despawn();
+    companion object {
+        val SIZE = PitchPanel.GRID_SIZE
     }
-
 }

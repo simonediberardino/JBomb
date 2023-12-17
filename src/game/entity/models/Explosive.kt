@@ -1,16 +1,11 @@
-package game.entity.models;
+package game.entity.models
 
-import java.util.List;
-import java.util.Set;
-
-public interface Explosive {
-    Set<Class<? extends Entity>> getExplosionObstacles();
-
-    default boolean isObstacleOfExplosion(Entity e) {
-        return (e == null) || (getExplosionObstacles().stream().anyMatch(c -> c.isInstance(e)));
+interface Explosive {
+    val explosionObstacles: Set<Class<out Entity?>>
+    fun isObstacleOfExplosion(e: Entity?): Boolean {
+        return e == null || explosionObstacles.stream().anyMatch { c: Class<out Entity?> -> c.isInstance(e) }
     }
 
-    Set<Class<? extends Entity>> getExplosionInteractionEntities();
-
-    int getMaxExplosionDistance();
+    val explosionInteractionEntities: Set<Class<out Entity>>
+    val maxExplosionDistance: Int
 }

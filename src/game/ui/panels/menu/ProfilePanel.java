@@ -28,7 +28,7 @@ public class ProfilePanel extends BoxMenuPanel {
 
     @Override
     protected int getBoxPanelWidth() {
-        return Utility.px(800);
+        return Utility.INSTANCE.px(800);
     }
 
     @Override

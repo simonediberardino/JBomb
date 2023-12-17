@@ -1,37 +1,34 @@
-package game.level;
+package game.level
 
-import game.Bomberman;
-import game.data.DataInputOutput;
-import game.entity.Player;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.StoneBlock;
-import game.entity.bonus.mysterybox.MysteryBoxPerk;
-import game.entity.enemies.boss.Boss;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.entity.models.Enemy;
-import game.entity.models.Entity;
-import game.events.game.AllEnemiesEliminatedGameEvent;
-import game.events.game.UpdateCurrentAvailableBombsEvent;
-import game.level.world1.*;
-import game.level.world2.*;
-import game.powerups.PowerUp;
-import game.powerups.portal.EndLevelPortal;
-import game.sound.AudioManager;
-import game.utils.Paths;
-import game.utils.Utility;
-
-import javax.sound.sampled.Clip;
-import javax.swing.*;
-import java.awt.*;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.List;
-
-import static game.sound.SoundModel.BONUS_ALERT;
-import static game.ui.panels.game.PitchPanel.GRID_SIZE;
-
+import game.Bomberman
+import game.data.DataInputOutput
+import game.entity.Player
+import game.entity.blocks.DestroyableBlock
+import game.entity.blocks.StoneBlock
+import game.entity.bonus.mysterybox.MysteryBoxPerk
+import game.entity.enemies.boss.Boss
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.entity.models.Enemy
+import game.entity.models.Entity
+import game.events.game.AllEnemiesEliminatedGameEvent
+import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.level.world1.*
+import game.level.world2.*
+import game.powerups.PowerUp
+import game.powerups.portal.EndLevelPortal
+import game.sound.AudioManager
+import game.sound.SoundModel
+import game.ui.panels.game.PitchPanel
+import game.utils.Paths.currentLevelFolder
+import game.utils.Paths.currentWorldCommonFolder
+import game.utils.Paths.worldsFolder
+import game.utils.Utility.loadImage
+import java.awt.Image
+import java.lang.reflect.InvocationTargetException
+import java.util.*
+import javax.sound.sampled.Clip
+import javax.swing.JPanel
 
 /**
  * The abstract Level class represents the general structure and properties of a game level.
@@ -39,99 +36,64 @@ import static game.ui.panels.game.PitchPanel.GRID_SIZE;
  * terrain that the level is composed of, as well as the length of the explosion that occurs
  * when bombs are detonated, and the background image of the level.
  */
-public abstract class Level {
-    public static final Map<Integer, Class<? extends Level>> ID_TO_FIRST_LEVEL_MAP = new HashMap<>() {{
-        put(1, World1Level1.class);
-        put(2, World2Level1.class);
-    }};
-    public static final Map<Integer[], Class<? extends Level>> ID_TO_LEVEL = new HashMap<>() {{
-        put(new Integer[]{1, 1}, World1Level1.class);
-        put(new Integer[]{1, 2}, World1Level2.class);
-        put(new Integer[]{1, 3}, World1Level3.class);
-        put(new Integer[]{1, 4}, World1Level4.class);
-        put(new Integer[]{1, 5}, World1Level5.class);
-        put(new Integer[]{2, 1}, World2Level1.class);
-        put(new Integer[]{2, 2}, World2Level2.class);
-        put(new Integer[]{2, 3}, World2Level3.class);
-        put(new Integer[]{2, 4}, World2Level4.class);
-        put(new Integer[]{2, 5}, World2Level5.class);
-    }};
-    private static Level currLevel;
-    private Clip currentLevelSound;
+abstract class Level {
+    private var currentLevelSound: Clip? = null
+    abstract val boss: Boss?
+    open val bossMaxHealth: Int = 1000
 
-    public static Level getCurrLevel() {
-        return currLevel;
-    }
-
-    public abstract Boss getBoss();
-
-    public int getBossMaxHealth() {
-        return 1000;
-    }
-
-    public abstract int startEnemiesCount();
-
-    public abstract int getMaxDestroyableBlocks();
-
-    public abstract boolean isArenaLevel();
-
-    public abstract String getDiedMessage();
-
-    public abstract Class<? extends Level> getNextLevel();
-
-    public abstract Class<? extends Enemy>[] availableEnemies();
-
-    public void onAllEnemiesEliminated() {
-    }
-
-    public final String getLevelSoundtrack() {
-        return getSoundForCurrentLevel("soundtrack.wav");
-    }
-
-    public final String getLevelBackgroundSound() {
-        return getSoundForCurrentLevel("background_sound.wav");
-    }
-
-    public final int getExplosionLength() {
-        return DataInputOutput.getInstance().getExplosionLength();
-    }
-
-    /**
-     * Returns the path to the image file for the stone block.
-     *
-     * @return a string representing the path to the image file.
-     */
-    public String getStoneBlockImagePath() {
-        return getImageForCurrentLevel("stone.png");
-    }
-
-    public String getPitchImagePath() {
-        return getImageForCurrentLevel("pitch.png");
-    }
-
-    /**
-     * Returns the path to the image file for the destroyable block.
-     *
-     * @return the path to the image file for the destroyable block.
-     */
-    public String getDestroyableBlockImagePath() {
-        return getImageForCurrentLevel("destroyable_block.png");
-    }
-
-    public Image[] getBorderImages() {
-        final int SIDES = 4;
-        Image[] pitch = new Image[SIDES];
-        for (int i = 0; i < SIDES; i++) {
-            String path = getImageForCurrentLevel(String.format("border_%d.png", i));
-            pitch[i] = Utility.loadImage(path);
+    abstract val startEnemiesCount: Int
+    abstract val maxDestroyableBlocks: Int
+    abstract val isArenaLevel: Boolean
+    abstract val diedMessage: String?
+    abstract val nextLevel: Class<out Level?>?
+    abstract val availableEnemies: Array<Class<out Enemy>>
+    open fun onAllEnemiesEliminated() {}
+    private val levelSoundtrack: String
+        get() = getSoundForCurrentLevel("soundtrack.wav")
+    private val levelBackgroundSound: String?
+        get() = getSoundForCurrentLevel("background_sound.wav")
+    val explosionLength: Int
+        get() = DataInputOutput.getInstance().explosionLength
+    val stoneBlockImagePath: String
+        /**
+         * Returns the path to the image file for the stone block.
+         *
+         * @return a string representing the path to the image file.
+         */
+        get() = getImageForCurrentLevel("stone.png")
+    val pitchImagePath: String
+        get() = getImageForCurrentLevel("pitch.png")
+    val destroyableBlockImagePath: String
+        /**
+         * Returns the path to the image file for the destroyable block.
+         *
+         * @return the path to the image file for the destroyable block.
+         */
+        get() = getImageForCurrentLevel("destroyable_block.png")
+    val borderImages: Array<Image?>
+        get() {
+            val SIDES = 4
+            val pitch = arrayOfNulls<Image>(SIDES)
+            for (i in 0 until SIDES) {
+                val path = getImageForCurrentLevel(String.format("border_%d.png", i))
+                pitch[i] = loadImage(path)
+            }
+            return pitch
         }
 
-        return pitch;
-    }
 
-    private void updateLastLevel() {
-        if (!(this instanceof WorldSelectorLevel))
-            currLevel = this;
+    private val allowedPerks: Array<Class<out PowerUp>>
+        get() {
+            return PowerUp.POWER_UPS.filterNot { it in restrictedPerks }.toTypedArray()
+        }
+
+    open val restrictedPerks: Array<Class<out PowerUp>> = arrayOf()
+
+    val randomPowerUpClass: Class<out PowerUp>
+        get() = allowedPerks.random()
+
+    private fun updateLastLevel() {
+        if (this !is WorldSelectorLevel) currLevel = this
     }
 
     /**
@@ -139,308 +101,276 @@ public abstract class Level {
      *
      * @param jPanel the panel on which to start the game level
      */
-    public void start(JPanel jPanel) {
-        updateLastLevel();
-        playSoundTrack();
-        Bomberman.getMatch().setGameState(true);
-        DataInputOutput.getInstance().resetLivesIfNecessary();
-        generateEntities(jPanel);
-        playLevelSound();
+    open fun start(jPanel: JPanel) {
+        updateLastLevel()
+        playSoundTrack()
+        Bomberman.getMatch().gameState = true
+        DataInputOutput.getInstance().resetLivesIfNecessary()
+        generateEntities(jPanel)
+        playLevelSound()
     }
 
-    public void playSoundTrack() {
-        AudioManager.getInstance().stopBackgroundSong();
-        AudioManager.getInstance().playBackgroundSong(getLevelSoundtrack());
+    fun playSoundTrack() {
+        AudioManager.getInstance().stopBackgroundSong()
+        AudioManager.getInstance().playBackgroundSong(levelSoundtrack)
     }
 
-    public void generateEntities(JPanel jPanel) {
-        generateStone(jPanel);
-        generatePlayer();
-        startLevel();
+    open fun generateEntities(jPanel: JPanel) {
+        generateStone(jPanel)
+        generatePlayer()
+        startLevel()
     }
 
-    public void startLevel() {
-        generateDestroyableBlock();
-        spawnBoss();
-        spawnEnemies();
+    open fun startLevel() {
+        generateDestroyableBlock()
+        spawnBoss()
+        spawnEnemies()
     }
 
-    protected Coordinates getPlayerSpawnCoordinates() {
-        return Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET, GRID_SIZE);
+    protected open val playerSpawnCoordinates: Coordinates
+        protected get() = Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET, PitchPanel.GRID_SIZE)
+
+    protected fun generatePlayer() {
+        val coords = playerSpawnCoordinates
+        Bomberman.getMatch().player = Player(coords)
+        Bomberman.getMatch().player.spawn(false, false)
     }
 
-    protected void generatePlayer() {
-        Coordinates coords = getPlayerSpawnCoordinates();
-        Bomberman.getMatch().setPlayer(new Player(coords));
-        Bomberman.getMatch().getPlayer().spawn(false, false);
-    }
-
-    abstract public void endLevel();
-
-    protected void spawnBoss() {
-        Boss boss = getBoss();
-        if (boss != null) boss.spawn(true, false);
+    abstract fun endLevel()
+    protected open fun spawnBoss() {
+        val boss = boss
+        boss?.spawn(true, false)
     }
 
     // This method spawns enemies in the game.
-    protected void spawnEnemies() {
-        // Get an array of available enemy classes.
-        Class<? extends Enemy>[] availableEnemies = availableEnemies();
-        spawnEnemies(availableEnemies);
+    protected open fun spawnEnemies() {
+        spawnEnemies(availableEnemies)
     }
 
-    protected final void spawnEnemies(Class<? extends Enemy>[] availableEnemies) {
+    protected fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>) {
         // Spawn a number of enemies at the start of the game.
-        for (int i = 0; i < startEnemiesCount(); i++) {
+        for (i in 0 until startEnemiesCount) {
             // Select a random enemy class from the availableEnemies array.
-            Class<? extends Enemy> enemyClass = availableEnemies[new Random().nextInt(availableEnemies.length)];
+            val enemyClass = availableEnemies[Random().nextInt(availableEnemies.size)]
 
             // Create an instance of the enemy class using a constructor that takes a Coordinates object as an argument.
-            Enemy enemy;
+            var enemy: Enemy
             try {
-                enemy = enemyClass.getConstructor().newInstance();
+                enemy = enemyClass.getConstructor().newInstance()
 
                 // Spawn the enemy on the game board.
-                enemy.spawn(false, false);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException e) {
-                e.printStackTrace();
+                enemy.spawn(false, false)
+            } catch (e: InstantiationException) {
+                e.printStackTrace()
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            } catch (e: InvocationTargetException) {
+                e.printStackTrace()
+            } catch (e: NoSuchMethodException) {
+                e.printStackTrace()
             }
         }
     }
 
     // This method returns the ID of the world.
-    public abstract int getWorldId();
+    abstract val worldId: Int
 
     // This method returns the ID of the level.
-    public abstract int getLevelId();
+    abstract val levelId: Int
 
-    public abstract void onDeathGameEvent();
-
-    // This method returns the maximum number of bombs that a player can have at one time.
-    public int getMaxBombs() {
-        return Player.MAX_BOMB_CAN_HOLD;
-    }
+    abstract fun onDeathGameEvent()
+    open val maxBombs: Int
+        // This method returns the maximum number of bombs that a player can have at one time.
+        get() = BomberEntity.MAX_BOMB_CAN_HOLD
 
     /**
      * Generates the stone blocks in the game board for level 1.
      *
      * @param jPanel the JPanel where the stone blocks are to be placed.
      */
-    public void generateStone(JPanel jPanel) {
+    private fun generateStone(jPanel: JPanel) {
         // Set the current x and y coordinates to the top-left corner of the game board.
-        int currX = 0;
-        int currY = GRID_SIZE;
+        var currX = 0
+        var currY = PitchPanel.GRID_SIZE
 
         // Loop through the game board, adding stone blocks at every other grid position.
-        while (currY < jPanel.getPreferredSize().getHeight() - GRID_SIZE) {
-            while (currX < jPanel.getPreferredSize().getWidth() - GRID_SIZE && currX + GRID_SIZE * 2 <= jPanel.getPreferredSize().getWidth()) {
+        while (currY < jPanel.preferredSize.getHeight() - PitchPanel.GRID_SIZE) {
+            while (currX < jPanel.preferredSize.getWidth() - PitchPanel.GRID_SIZE && currX + PitchPanel.GRID_SIZE * 2 <= jPanel.preferredSize.getWidth()) {
                 // Move the current x coordinate to the next grid position.
-                currX += GRID_SIZE;
+                currX += PitchPanel.GRID_SIZE
 
                 // Create a new stone block at the current coordinates and spawn it on the game board.
-                new StoneBlock(new Coordinates(currX, currY)).spawn();
+                StoneBlock(Coordinates(currX, currY)).spawn()
 
                 // Move the current x coordinate to the next grid position.
-                currX += GRID_SIZE;
+                currX += PitchPanel.GRID_SIZE
             }
             // Move the current x coordinate back to the left side of the game board.
-            currX = 0;
+            currX = 0
 
             // Move the current y coordinate down to the next row of grid positions.
-            currY += GRID_SIZE * 2;
+            currY += PitchPanel.GRID_SIZE * 2
         }
     }
 
-    public void playLevelSound() {
-        String soundPath = getLevelBackgroundSound();
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-        if (soundPath == null) return;
+    private fun playLevelSound() {
+        val soundPath = levelBackgroundSound
+        val classLoader = Thread.currentThread().contextClassLoader
+        if (soundPath == null)
+            return
 
         // Attempt to load the resource as an InputStream
-        InputStream soundStream = classLoader.getResourceAsStream(soundPath);
-
+        val soundStream = classLoader.getResourceAsStream(soundPath)
         if (soundStream != null) {
             // If the resource exists, play it using AudioManager
-            currentLevelSound = AudioManager.getInstance().play(soundPath, true);
+            currentLevelSound = AudioManager.getInstance().play(soundPath, true)
         }
     }
 
-    public void stopLevelSound() {
+    fun stopLevelSound() {
         if (currentLevelSound == null) {
-            return;
+            return
         }
-        currentLevelSound.stop();
+        currentLevelSound!!.stop()
     }
 
-    public void despawnDestroyableBlocks() {
+    fun despawnDestroyableBlocks() {
         Bomberman.getMatch()
-                .getEntities()
+                .entities
                 .stream()
-                .filter(entity -> entity instanceof DestroyableBlock)
-                .forEach(Entity::despawn);
+                .filter { entity: Entity? -> entity is DestroyableBlock }
+                .forEach { obj: Entity -> obj.despawn() }
     }
 
-    public void spawnMisteryBox() {
-        Player player = Bomberman.getMatch().getPlayer();
-        Coordinates c = Coordinates.generateCoordinatesAwayFrom(player.getCoords(), GRID_SIZE * 2);
-        Entity mysteryBox = new MysteryBoxPerk(this, player);
-        mysteryBox.setCoords(c);
-        mysteryBox.spawn();
-    }
-
-    public final Class<? extends PowerUp>[] getAllowedPerks() {
-        Class<? extends PowerUp>[] standardPerks = PowerUp.POWER_UPS;
-        Class<? extends PowerUp>[] restrictedPerks = getRestrictedPerks();
-
-        if (restrictedPerks.length == 0)
-            return standardPerks;
-
-        Set<Class<? extends PowerUp>> restrictedPerksSet = new HashSet<>(Arrays.asList(restrictedPerks));
-
-        List<Class<? extends PowerUp>> allowedPerksList = new ArrayList<>();
-        for (Class<? extends PowerUp> perk : standardPerks) {
-            if (!restrictedPerksSet.contains(perk)) {
-                allowedPerksList.add(perk);
-            }
-        }
-
-        return allowedPerksList.toArray(new Class[0]);
-    }
-
-    public Class<? extends PowerUp>[] getRestrictedPerks() {
-        return new Class[]{};
-    }
-
-    /**
-     * Returns a random power-up class from the POWER_UPS array.
-     *
-     * @return a random power-up class
-     */
-    public Class<? extends PowerUp> getRandomPowerUpClass() {
-        Class<? extends PowerUp>[] allowedPerks = getAllowedPerks();
-        return allowedPerks[new Random().nextInt(allowedPerks.length)];
+    fun spawnMisteryBox() {
+        val player = Bomberman.getMatch().player
+        val c = Coordinates.generateCoordinatesAwayFrom(player.coords, PitchPanel.GRID_SIZE * 2)
+        val mysteryBox: Entity = MysteryBoxPerk(this, player)
+        mysteryBox.coords = c
+        mysteryBox.spawn()
     }
 
     // This method generates destroyable blocks in the game board.
-    public void generateDestroyableBlock() {
+    open fun generateDestroyableBlock() {
         // Despawn all the previous destroyable blocks;
-        despawnDestroyableBlocks();
-
-        DestroyableBlock block = new DestroyableBlock(new Coordinates(0, 0));
+        despawnDestroyableBlocks()
+        var block = DestroyableBlock(Coordinates(0, 0))
 
         // Initialize a counter for the number of destroyable blocks spawned.
-        int i = 0;
+        var i = 0
 
         // Loop until the maximum number of destroyable blocks has been spawned.
-        while (i < getMaxDestroyableBlocks()) {
+        while (i < maxDestroyableBlocks) {
             // If the current destroyable block has not been spawned, generate new coordinates for it and spawn it on the game board.
-            if (!block.isSpawned()) {
-                block.setCoords(Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE * 2));
-                block.spawn();
+            if (!block.isSpawned) {
+                block.coords = Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().player.coords, PitchPanel.GRID_SIZE * 2)
+                block.spawn()
 
                 // Force the first spawned block to have the End level portal
-                if (i == 0 && !isLastLevelOfWorld() && !isArenaLevel()) {
-                    block.setPowerUpClass(EndLevelPortal.class);
+                if (i == 0 && !isLastLevelOfWorld && !isArenaLevel) {
+                    block.powerUpClass = EndLevelPortal::class.java
                 } else {
-                    block.setPowerUpClass(getRandomPowerUpClass());
+                    block.powerUpClass = randomPowerUpClass
                 }
-            }
-
-            // If the current destroyable block has been spawned, create a new one and increment the spawn counter.
-            else {
-                block = new DestroyableBlock(new Coordinates(0, 0));
-                i++;
+            } else {
+                block = DestroyableBlock(Coordinates(0, 0))
+                i++
             }
         }
     }
 
-    protected String getImageForCurrentLevel(String path) {
-        return getFileForCurrentLevel(String.format("images/%s", path));
-    }
+    private fun getImageForCurrentLevel(path: String?): String = getFileForCurrentLevel("images/$path")
 
-    protected String getSoundForCurrentLevel(String path) {
-        return getFileForCurrentLevel(String.format("sound/%s", path));
+    private fun getSoundForCurrentLevel(path: String?): String {
+        return getFileForCurrentLevel("sound/$path")
     }
 
     /**
      * @return returns the path to the file: if a specific instance of the file exists for the current level, then return it, else return the current world instance;
      */
-    protected String getFileForCurrentLevel(String path) {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    private fun getFileForCurrentLevel(path: String): String {
+        val classLoader = Thread.currentThread().contextClassLoader
 
-        // First, try to load the resource from the specific level folder
-        InputStream specificLevelStream = classLoader.getResourceAsStream(Paths.INSTANCE.getCurrentLevelFolder() + "/" + path);
-        if (specificLevelStream != null) {
-            return Paths.INSTANCE.getCurrentLevelFolder() + "/" + path;
+        fun getResourcePath(folder: String): String? {
+            val stream = classLoader.getResourceAsStream("$folder/$path")
+            return stream?.let { "$folder/$path" }
         }
 
-        // If not found, try to load from the current world's common folder
-        InputStream currentWorldStream = classLoader.getResourceAsStream(Paths.INSTANCE.getCurrentWorldCommonFolder() + "/" + path);
-        if (currentWorldStream != null) {
-            return Paths.INSTANCE.getCurrentWorldCommonFolder() + "/" + path;
-        }
-
-        // If still not found, load from the common folder in the JAR
-        InputStream commonStream = classLoader.getResourceAsStream("common/" + path);
-        if (commonStream != null) {
-            return "common/" + path;
-        }
-
-        // File not found
-        return Paths.INSTANCE.getWorldsFolder() + "/common/" + path;
+        return getResourcePath(currentLevelFolder)
+                ?: getResourcePath(currentWorldCommonFolder)
+                ?: getResourcePath("common")
+                ?: "$worldsFolder/common/$path"
     }
 
-    public boolean isLastLevelOfWorld() {
-        return false;
+    open val isLastLevelOfWorld: Boolean = false
+
+    fun onDefeatGameEvent() {
+        DataInputOutput.getInstance().increaseLost()
     }
 
-    public void onDefeatGameEvent() {
-        DataInputOutput.getInstance().increaseLost();
-    }
-
-    public void onEnemyDespawned() {
-        if (Bomberman.getMatch().getEnemiesAlive() == 0) {
-            new AllEnemiesEliminatedGameEvent().invoke(null);
+    fun onEnemyDespawned() {
+        if (Bomberman.getMatch().enemiesAlive == 0) {
+            AllEnemiesEliminatedGameEvent().invoke(null)
         }
     }
 
-    public void onKilledEnemy() {
-        DataInputOutput.getInstance().increaseKills();
+    fun onKilledEnemy() {
+        DataInputOutput.getInstance().increaseKills()
     }
 
-    public void onRoundPassedGameEvent() {
-        DataInputOutput.getInstance().increaseRounds();
+    open fun onRoundPassedGameEvent() {
+        DataInputOutput.getInstance().increaseRounds()
     }
 
-    public void onScoreGameEvent(int arg) {
-        DataInputOutput.getInstance().increaseScore(arg);
-        Bomberman.getMatch().getInventoryElementControllerPoints().setNumItems((int) DataInputOutput.getInstance().getScore());
+    fun onScoreGameEvent(arg: Int) {
+        DataInputOutput.getInstance().increaseScore(arg)
+        Bomberman.getMatch().inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
 
-    public void onPurchaseItem(int price) {
-        AudioManager.getInstance().play(BONUS_ALERT);
-        DataInputOutput.getInstance().decreaseScore(price);
-        Bomberman.getMatch().getInventoryElementControllerPoints().setNumItems((int) DataInputOutput.getInstance().getScore());
+    fun onPurchaseItem(price: Int) {
+        AudioManager.getInstance().play(SoundModel.BONUS_ALERT)
+        DataInputOutput.getInstance().decreaseScore(price)
+        Bomberman.getMatch().inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
 
-    public void onUpdateCurrentAvailableBombsEvent(int arg) {
-        Bomberman.getMatch().getPlayer().setCurrentBombs(arg);
+    fun onUpdateCurrentAvailableBombsEvent(arg: Int) {
+        Bomberman.getMatch().player.currentBombs = arg
     }
 
-    public void onUpdateMaxBombsGameEvent(int arg) {
-        DataInputOutput.getInstance().increaseObtainedBombs();
-        new UpdateCurrentAvailableBombsEvent().invoke(arg);
+    open fun onUpdateMaxBombsGameEvent(arg: Int) {
+        DataInputOutput.getInstance().increaseObtainedBombs()
+        UpdateCurrentAvailableBombsEvent().invoke(arg)
     }
 
-    public void onUpdateBombsLengthEvent(BomberEntity entity, int arg) {
-        entity.setCurrExplosionLength(arg);
-        DataInputOutput.getInstance().setExplosionLength(arg);
+    open fun onUpdateBombsLengthEvent(entity: BomberEntity, arg: Int) {
+        entity.currExplosionLength = arg
+        DataInputOutput.getInstance().explosionLength = arg
     }
 
-    @Override
-    public String toString() {
-        return String.format("Level %d, World %d", getLevelId(), getWorldId());
+    override fun toString(): String {
+        return "Level $levelId, World $worldId"
+    }
+
+    companion object {
+        val ID_TO_FIRST_LEVEL_MAP: Map<Int, Class<out Level>> = mapOf(
+                1 to World1Level1::class.java,
+                2 to World2Level1::class.java
+        )
+
+        val ID_TO_LEVEL: Map<Array<Int>, Class<out Level>> = mapOf(
+                arrayOf(1, 1) to World1Level1::class.java,
+                arrayOf(1, 2) to World1Level2::class.java,
+                arrayOf(1, 3) to World1Level3::class.java,
+                arrayOf(1, 4) to World1Level4::class.java,
+                arrayOf(1, 5) to World1Level5::class.java,
+                arrayOf(2, 1) to World2Level1::class.java,
+                arrayOf(2, 2) to World2Level2::class.java,
+                arrayOf(2, 3) to World2Level3::class.java,
+                arrayOf(2, 4) to World2Level4::class.java,
+                arrayOf(2, 5) to World2Level5::class.java
+        )
+
+        var currLevel: Level? = null
+            private set
     }
 }

@@ -1,48 +1,28 @@
-package game.powerups;
+package game.powerups
 
-import game.data.DataInputOutput;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.utils.Paths;
+import game.data.DataInputOutput
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
+class LivesPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
 
-import java.awt.image.BufferedImage;
+    override fun getImage(): BufferedImage =
+            loadAndSetImage("$powerUpsFolder/lives_up.png")
 
-public class LivesPowerUp extends PowerUp {
-    /**
-     * Constructs a PowerUp entity with the specified coordinates.
-     *
-     * @param coordinates the coordinates of the PowerUp entity
-     */
-    public LivesPowerUp(Coordinates coordinates) {
-        super(coordinates);
+    override val duration: Int
+        get() = 0
+
+    override fun doApply(entity: BomberEntity) {
+        DataInputOutput.getInstance().increaseLives()
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/lives_up.png");
+    override fun cancel(entity: BomberEntity) {
+        // No need to implement anything here
     }
 
-    @Override
-    public int getDuration() {
-        return 0;
-    }
+    override val isDisplayable: Boolean
+        get() = false
 
-    @Override
-    protected void doApply(BomberEntity entity) {
-        DataInputOutput.getInstance().increaseLives();
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-    }
-
-    @Override
-    public boolean isDisplayable() {
-        return false;
-    }
-
-    @Override
-    public boolean canPickUp(BomberEntity entity) {
-        return true;
-    }
+    override fun canPickUp(entity: BomberEntity): Boolean = true
 }

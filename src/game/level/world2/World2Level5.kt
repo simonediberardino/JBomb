@@ -1,51 +1,52 @@
-package game.level.world2;
+package game.level.world2
 
-import game.entity.Player;
-import game.entity.enemies.boss.Boss;
-import game.entity.enemies.boss.clown.Clown;
-import game.entity.enemies.npcs.Eagle;
-import game.entity.enemies.npcs.FastEnemy;
-import game.entity.models.Coordinates;
-import game.entity.models.Enemy;
-import game.level.Level;
-import game.level.WorldSelectorLevel;
+import game.entity.Player
+import game.entity.enemies.boss.Boss
+import game.entity.enemies.boss.clown.Clown
+import game.entity.enemies.npcs.Eagle
+import game.entity.enemies.npcs.FastEnemy
+import game.entity.models.Coordinates
+import game.entity.models.Enemy
+import game.level.Level
+import game.level.WorldSelectorLevel
+import game.ui.panels.game.PitchPanel
+import java.awt.Dimension
 
-public class World2Level5 extends World2Level {
-    @Override
-    public int getLevelId() {
-        return 5;
-    }
+class World2Level5 : World2Level() {
+    override val levelId: Int
+        get() {
+            return 5
+        }
 
-    @Override
-    public Boss getBoss() {
-        return new Clown();
-    }
+    override val boss: Boss
+        get() {
+            return Clown()
+        }
 
-    @Override
-    public int startEnemiesCount() {
-        return 7;
-    }
+    override val startEnemiesCount: Int
+        get() {
+            return 7
+        }
 
-    @Override
-    public Class<? extends Enemy>[] availableEnemies() {
-        return new Class[]{
-                FastEnemy.class,
-                Eagle.class,
-        };
-    }
+    override val availableEnemies: Array<Class<out Enemy>>
+        get() {
+            return arrayOf(
+                    FastEnemy::class.java,
+                    Eagle::class.java)
+        }
 
-    @Override
-    public boolean isLastLevelOfWorld() {
-        return true;
-    }
+    override val isLastLevelOfWorld: Boolean
+        get() {
+            return true
+        }
 
-    @Override
-    public Class<? extends Level> getNextLevel() {
-        return WorldSelectorLevel.class;
-    }
+    override val nextLevel: Class<out Level?>
+        get() {
+            return WorldSelectorLevel::class.java
+        }
 
-    @Override
-    public Coordinates getPlayerSpawnCoordinates() {
-        return Coordinates.roundCoordinates(new Coordinates(0, 0), Player.SPAWN_OFFSET);
-    }
+    override val playerSpawnCoordinates: Coordinates
+        get() {
+            return Coordinates.roundCoordinates(Coordinates(0, 0), Player.SPAWN_OFFSET)
+        }
 }

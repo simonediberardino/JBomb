@@ -1,23 +1,21 @@
-package game.level.world1;
+package game.level.world1
 
-import game.entity.enemies.boss.Boss;
-import game.level.StoryLevel;
+import game.entity.enemies.boss.Boss
+import game.level.StoryLevel
 
-public abstract class World1Level extends StoryLevel {
-    @Override
-    public int getWorldId() {
-        return 1;
-    }
+abstract class World1Level : StoryLevel() {
+    override val worldId: Int
+        get() {
+            return 1
+        }
 
-    @Override
-    public Boss getBoss() {
-        return null;
-    }
+    override val boss: Boss?
+        get() {
+            return null
+        }
 
-    @Override
-    public final int getMaxDestroyableBlocks() {
-        return 10;
-    }
-
-
+    override val maxDestroyableBlocks: Int
+        get() {
+            return 10
+        }
 }

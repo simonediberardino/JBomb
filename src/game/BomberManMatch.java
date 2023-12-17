@@ -51,7 +51,7 @@ public class BomberManMatch {
         this.gameTickerObservable = new GameTickerObservable();
         this.controllerManager.register(new GamePausedObserver());
         this.setupViewControllers();
-        ControllerManager.setDefaultCommandDelay();
+        ControllerManager.Companion.setDefaultCommandDelay();
     }
 
     public void assignPlayerToControllerManager() {
@@ -75,13 +75,13 @@ public class BomberManMatch {
 
     public void give(BomberEntity owner, UsableItem item) {
         owner.setWeapon(item);
-        owner.getWeapon().setOwner(owner);
+        owner.getWeapon().owner = owner;
         updateInventoryWeaponController();
     }
 
     public void removeItem(BomberEntity owner) {
         owner.setWeapon(new BombItem());
-        owner.getWeapon().setOwner(owner);
+        owner.getWeapon().owner = owner;
         updateInventoryWeaponController();
     }
 
@@ -149,7 +149,7 @@ public class BomberManMatch {
     }
 
     public void toggleGameState() {
-        if (Utility.timePassed(lastGamePauseStateTime) < 500)
+        if (Utility.INSTANCE.timePassed(lastGamePauseStateTime) < 500)
             return;
 
         lastGamePauseStateTime = System.currentTimeMillis();

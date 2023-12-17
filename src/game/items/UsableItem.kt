@@ -1,29 +1,18 @@
-package game.items;
+package game.items
 
-import game.Bomberman;
-import game.entity.models.BomberEntity;
+import game.Bomberman
+import game.entity.models.BomberEntity
 
-public abstract class UsableItem {
-    protected BomberEntity owner;
-
-    public abstract void use();
-    public abstract String getImagePath();
-
-    public abstract int getCount();
-
-    public void setOwner(BomberEntity owner) {
-        this.owner = owner;
+abstract class UsableItem {
+    lateinit var owner: BomberEntity
+    abstract fun use()
+    abstract val imagePath: String?
+    abstract val count: Int
+    fun give() {
+        Bomberman.getMatch().give(owner, this)
     }
 
-    public void give() {
-        Bomberman.getMatch().give(owner, this);
-    }
-
-    public void remove() {
-        Bomberman.getMatch().removeItem(owner);
-    }
-
-    public BomberEntity getOwner() {
-        return owner;
+    fun remove() {
+        Bomberman.getMatch().removeItem(owner)
     }
 }

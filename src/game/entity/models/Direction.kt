@@ -1,31 +1,25 @@
-package game.entity.models;
+package game.entity.models
 
-import game.hardwareinput.Command;
+import game.hardwareinput.Command
 
-public enum Direction {
-    DOWN,
-    LEFT,
-    UP,
-    RIGHT;
+enum class Direction {
+    DOWN, LEFT, UP, RIGHT;
 
-    public Command toCommand() {
-        return switch (this) {
-            case UP -> Command.MOVE_UP;
-            case DOWN -> Command.MOVE_DOWN;
-            case LEFT -> Command.MOVE_LEFT;
-            case RIGHT -> Command.MOVE_RIGHT;
-        };
+    fun toCommand(): Command {
+        return when (this) {
+            UP -> Command.MOVE_UP
+            DOWN -> Command.MOVE_DOWN
+            LEFT -> Command.MOVE_LEFT
+            RIGHT -> Command.MOVE_RIGHT
+        }
     }
 
-    public Direction opposite() {
-        return switch (this) {
-            case UP -> DOWN;
-            case DOWN -> UP;
-            case LEFT -> RIGHT;
-            case RIGHT -> LEFT;
-        };
-
+    fun opposite(): Direction {
+        return when (this) {
+            UP -> DOWN
+            DOWN -> UP
+            LEFT -> RIGHT
+            RIGHT -> LEFT
+        }
     }
-
-
 }

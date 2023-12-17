@@ -1,14 +1,11 @@
-package game.events.game;
+package game.events.game
 
-import game.Bomberman;
-import game.events.models.GameEvent;
+import game.Bomberman
+import game.events.models.GameEvent
 
-/**
- * Fires a game event using Strategy Pattern;
- */
-public class KilledEnemyEvent implements GameEvent {
-    @Override
-    public void invoke(Object arg) {
-        Bomberman.getMatch().getCurrentLevel().onKilledEnemy();
+
+class KilledEnemyEvent : GameEvent {
+    override fun invoke(arg: Any?) {
+        Bomberman.getMatch().currentLevel.onKilledEnemy()
     }
 }

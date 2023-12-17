@@ -1,6 +1,7 @@
 package game.entity.enemies.boss.clown
 
 import game.Bomberman
+import game.entity.EntityTypes
 import game.entity.Player
 import game.entity.bomb.AbstractExplosion
 import game.entity.bomb.Bomb
@@ -90,32 +91,33 @@ class Clown : Boss, Explosive {
      *
      * @return An empty List object.
      */
-    override fun getExplosionObstacles(): Set<Class<out Entity>> {
-        return emptySet()
-    }
+    override val explosionObstacles: Set<Class<out Entity>>
+        get() {
+            return emptySet()
+        }
 
     /**
      * Returns a list of entity classes that can interact with explosions.
      *
      * @return a list of entity classes that can interact with explosions.
      */
-    override fun getExplosionInteractionEntities(): Set<Class<out Entity>> {
-        return object : HashSet<Class<out Entity>>() {
-            init {
-                add(Player::class.java)
-                add(Bomb::class.java)
-            }
+    override val explosionInteractionEntities: Set<Class<out Entity>>
+        get() {
+            return setOf(
+                    Player::class.java,
+                    Bomb::class.java
+            )
         }
-    }
 
     /**
      * Returns the maximum distance of an explosion from this entity.
      *
      * @return the maximum distance of an explosion from this entity.
      */
-    override fun getMaxExplosionDistance(): Int {
-        return 10
-    }
+    override val maxExplosionDistance: Int
+        get() {
+            return 10
+        }
 
     private val shootingChance: Int
         /**
@@ -307,6 +309,10 @@ class Clown : Boss, Explosive {
         val list: MutableList<Class<out Entity>> = ArrayList(super.getBasePassiveInteractionEntities())
         list.add(Hat::class.java)
         return HashSet(list)
+    }
+
+    override fun getType(): EntityTypes {
+        return EntityTypes.Clown
     }
 
     companion object {

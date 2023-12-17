@@ -1,24 +1,17 @@
-package game.tasks;
+package game.tasks
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-public class PeriodicTaskExecutor {
-    private final ScheduledExecutorService scheduler;
-    private final long intervalMs;
-    private final Runnable callback;
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.TimeUnit
 
-    public PeriodicTaskExecutor(Runnable callback, long intervalMs) {
-        this.scheduler = Executors.newScheduledThreadPool(1);
-        this.callback = callback;
-        this.intervalMs = intervalMs;
+class PeriodicTaskExecutor(private val callback: Runnable, private val intervalMs: Long) {
+    private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
+
+    fun scheduleAtFixedRate() {
+        scheduler.scheduleAtFixedRate(callback, 0, intervalMs, TimeUnit.MILLISECONDS)
     }
 
-    public void scheduleAtFixedRate() {
-        scheduler.scheduleAtFixedRate(callback, 0, intervalMs, TimeUnit.MILLISECONDS);
-    }
-
-    public void stop() {
-        scheduler.shutdown();
+    fun stop() {
+        scheduler.shutdown()
     }
 }

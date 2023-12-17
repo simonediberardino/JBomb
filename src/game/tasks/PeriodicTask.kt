@@ -1,40 +1,34 @@
-package game.tasks;
+package game.tasks
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.util.function.Consumer;
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import javax.swing.Timer
 
-public class PeriodicTask {
-    private final Runnable callback;
-    private final int delay;
-    private final Timer timer;
-    private final ActionListener actionListener;
+class PeriodicTask(private val callback: Runnable, private val delay: Int) {
+    private val timer: Timer
+    private val actionListener: ActionListener = ActionListener { e: ActionEvent? -> callback.run() }
 
-    public PeriodicTask(Runnable callback, int delay) {
-        this.callback = callback;
-        this.delay = delay;
-        this.actionListener = e -> callback.run();
-
-        this.timer = new Timer(delay, actionListener);
-        this.timer.setRepeats(true);
+    init {
+        timer = Timer(delay, actionListener)
+        timer.isRepeats = true
     }
 
-    public void start() {
-        timer.start();
+    fun start() {
+        timer.start()
     }
 
-    public void setDelay(int delay) {
-        timer.setDelay(delay);
+    fun setDelay(delay: Int) {
+        timer.delay = delay
     }
 
-    public void resume() {
+    fun resume() {
         try {
-            if (timer != null) timer.start();
-        } catch (Exception ignored) {
+            timer.start()
+        } catch (ignored: Exception) {
         }
     }
 
-    public void stop() {
-        timer.stop();
+    fun stop() {
+        timer?.stop()
     }
 }

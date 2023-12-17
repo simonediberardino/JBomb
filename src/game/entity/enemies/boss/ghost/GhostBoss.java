@@ -1,6 +1,7 @@
 package game.entity.enemies.boss.ghost;
 
 import game.Bomberman;
+import game.entity.EntityTypes;
 import game.entity.enemies.npcs.GhostEnemy;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Coordinates;
@@ -98,7 +99,7 @@ public class GhostBoss extends Boss {
             }
 
             // Check if enough time has passed since the last invisibility to start the task.
-            if (Utility.timePassed(lastInvisibleTime) < INVISIBLE_DELAY) {
+            if (Utility.INSTANCE.timePassed(lastInvisibleTime) < INVISIBLE_DELAY) {
                 return;
             }
 
@@ -152,7 +153,7 @@ public class GhostBoss extends Boss {
     }
 
     private void spawnGhosts(int n) {
-        if (Utility.timePassed(lastGhostSpawnTime) < GHOST_SPAWN_TIME_DELAY) return;
+        if (Utility.INSTANCE.timePassed(lastGhostSpawnTime) < GHOST_SPAWN_TIME_DELAY) return;
 
         lastGhostSpawnTime = System.currentTimeMillis();
 
@@ -213,10 +214,10 @@ public class GhostBoss extends Boss {
 
     @Override
     public void doUpdate(boolean gamestate) {
-        Utility.runPercentage(ACTION_CHANCE, this::attack);
-        Utility.runPercentage(ACTION_CHANCE, this::disappearAndReappear);
-        Utility.runPercentage(ACTION_CHANCE, () -> {
-            if (Utility.timePassed(lastLightsEvent) <= LIGHTS_EVENT_DELAY) {
+        Utility.INSTANCE.runPercentage(ACTION_CHANCE, this::attack);
+        Utility.INSTANCE.runPercentage(ACTION_CHANCE, this::disappearAndReappear);
+        Utility.INSTANCE.runPercentage(ACTION_CHANCE, () -> {
+            if (Utility.INSTANCE.timePassed(lastLightsEvent) <= LIGHTS_EVENT_DELAY) {
                 return;
             }
 
@@ -224,11 +225,16 @@ public class GhostBoss extends Boss {
             lastLightsEvent = System.currentTimeMillis();
         });
 
-        Utility.runPercentage(ACTION_CHANCE, () -> {
+        Utility.INSTANCE.runPercentage(ACTION_CHANCE, () -> {
             int enemyCount = (int) (Math.random() * MAX_GHOST_ENEMY_SPAWNED);     //spawn ghost enemies
             spawnGhosts(enemyCount);
         });
 
         super.doUpdate(gamestate);
+    }
+
+    @Override
+    public EntityTypes getType() {
+        return EntityTypes.GhostBoss;
     }
 }

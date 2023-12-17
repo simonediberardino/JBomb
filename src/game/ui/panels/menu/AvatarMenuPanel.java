@@ -19,7 +19,7 @@ import static game.localization.Localization.AVATAR;
 import static game.values.Dimensions.DEFAULT_X_PADDING;
 
 public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
-    private final Dimension imageDimension = new Dimension(Utility.px(75), Utility.px(75));
+    private final Dimension imageDimension = new Dimension(Utility.INSTANCE.px(75), Utility.INSTANCE.px(75));
     private final Consumer<Integer> callback;
     private final RunnablePar getSkinRunnable;
     private JButton imageLabel;
@@ -53,7 +53,7 @@ public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
 
     @Override
     protected int getBoxPanelWidth() {
-        return Utility.px(Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE);
+        return Utility.INSTANCE.px(Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE);
     }
 
     private String getAvatarImagesPath() {
@@ -119,7 +119,7 @@ public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
     private void updateImageAvatar() {
         lastRefreshTime = System.currentTimeMillis();
 
-        Image image = Utility.loadImage(getAvatarImagesPath());
+        Image image = Utility.INSTANCE.loadImage(getAvatarImagesPath());
         assert image != null;
 
         image = image.getScaledInstance((int) imageDimension.getWidth(), (int) imageDimension.getHeight(), 0);

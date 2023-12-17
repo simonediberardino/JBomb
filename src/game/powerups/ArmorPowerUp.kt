@@ -1,39 +1,31 @@
-package game.powerups;
+package game.powerups
 
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.utils.Paths;
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
-
-public class ArmorPowerUp extends PowerUp {
-    /**
-     * Constructs an entity with the given coordinates.
-     *
-     * @param coordinates the coordinates of the entity
-     */
-    public ArmorPowerUp(Coordinates coordinates) {
-        super(coordinates);
+class ArmorPowerUp
+/**
+ * Constructs an entity with the given coordinates.
+ *
+ * @param coordinates the coordinates of the entity
+ */
+(coordinates: Coordinates?) : PowerUp(coordinates) {
+    override fun getImage(): BufferedImage {
+        return loadAndSetImage("$powerUpsFolder/armor_up.png")
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/armor_up.png");
+    override val duration: Int
+        get() {
+            return DEFAULT_DURATION_SEC
+        }
+
+    override fun doApply(entity: BomberEntity) {
+        entity.isImmune = true
     }
 
-    @Override
-    public int getDuration() {
-        return 15;
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        entity.setImmune(true);
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-        if(entity.isSpawned())
-            entity.setImmune(false);
+    override fun cancel(entity: BomberEntity) {
+        if (entity.isSpawned) entity.isImmune = false
     }
 }

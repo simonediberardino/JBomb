@@ -134,7 +134,7 @@ public abstract class Character extends MovingEntity {
         if (useOnlyBaseIcons()) {
             String[] baseIcons = refreshDirectionAndGetCharsImages();
 
-            if (Utility.timePassed(lastImageUpdate) > getImageRefreshRate()) {
+            if (Utility.INSTANCE.timePassed(lastImageUpdate) > getImageRefreshRate()) {
                 // If it's time to refresh the image, increment the image index.
                 lastImageIndex++;
                 playStepSound();
@@ -168,7 +168,7 @@ public abstract class Character extends MovingEntity {
         if (previousDirection != d) {
             lastImageIndex = 0;
             lastDirectionUpdate = System.currentTimeMillis();
-        } else if (Utility.timePassed(lastImageUpdate) > getImageRefreshRate()) {
+        } else if (Utility.INSTANCE.timePassed(lastImageUpdate) > getImageRefreshRate()) {
             // If it's time to refresh the image, increment the image index.
             lastImageIndex++;
             playStepSound();
@@ -193,7 +193,7 @@ public abstract class Character extends MovingEntity {
         String fileName = toks[0];
 
         String imagePathWithStatus = String.format("%s_%s.%s", fileName, state.toString().toLowerCase(), extension);
-        boolean hasImageWithStatus = Utility.fileExists(imagePathWithStatus);
+        boolean hasImageWithStatus = Utility.INSTANCE.fileExists(imagePathWithStatus);
 
         return hasImageWithStatus ? super.loadAndSetImage(imagePathWithStatus) : super.loadAndSetImage(imagePath);
     }
@@ -230,7 +230,7 @@ public abstract class Character extends MovingEntity {
     }
 
     @Override
-    protected float getDelayObserverUpdate() {
+    public float getDelayObserverUpdate() {
         return super.getDelayObserverUpdate() / getSpeed();
     }
 
@@ -327,7 +327,7 @@ public abstract class Character extends MovingEntity {
      */
     protected final void attackReceived(int damage) {
         synchronized ((Object) lastDamageTime) {
-            if (Utility.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
+            if (Utility.INSTANCE.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
                 return;
 
             lastDamageTime = System.currentTimeMillis();

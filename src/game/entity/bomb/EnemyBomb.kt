@@ -7,7 +7,8 @@ import game.entity.models.BomberEntity
 import game.entity.models.Entity
 
 class EnemyBomb(entity: BomberEntity) : Bomb(entity) {
-    override fun getExplosionInteractionEntities(): Set<Class<out Entity?>?> {
-        return setOf(DestroyableBlock::class.java, Player::class.java, Bomb::class.java)
-    }
+    override val explosionInteractionEntities: Set<Class<out Entity>>
+        get() {
+            return setOf(DestroyableBlock::class.java, Player::class.java, Bomb::class.java)
+        }
 }

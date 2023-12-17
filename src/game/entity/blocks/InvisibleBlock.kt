@@ -5,7 +5,7 @@ import game.entity.models.Entity
 import java.awt.image.BufferedImage
 
 class InvisibleBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
-    override fun doInteract(e: Entity) {}
+    override fun doInteract(e: Entity?) {}
     override fun getImage(): BufferedImage? {
         return null
     }

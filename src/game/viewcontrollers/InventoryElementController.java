@@ -28,7 +28,7 @@ public class InventoryElementController {
     }
 
     private void updateView() {
-        Image img = Utility.loadImage(model.getImagePath());
+        Image img = Utility.INSTANCE.loadImage(model.getImagePath());
         ImageIcon imageIcon = new ImageIcon(img.getScaledInstance(InventoryElementView.SIZE, InventoryElementView.SIZE, 0));
         view.setIcon(imageIcon);
         view.setNumItems(model.getNumItems());

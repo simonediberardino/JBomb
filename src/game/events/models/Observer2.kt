@@ -1,5 +1,5 @@
-package game.events.models;
+package game.events.models
 
-public interface Observer2 {
-    void update(Object arg);
+interface Observer2 {
+    fun update(arg: Any?)
 }

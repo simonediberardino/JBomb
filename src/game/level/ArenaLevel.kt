@@ -1,156 +1,126 @@
-package game.level;
+package game.level
 
-import game.Bomberman;
-import game.data.DataInputOutput;
-import game.entity.models.BomberEntity;
-import game.entity.models.Enemy;
-import game.entity.models.Entity;
-import game.events.game.RoundPassedGameEvent;
-import game.events.game.UpdateCurrentAvailableBombsEvent;
-import game.events.game.UpdateCurrentBombsLengthEvent;
-import game.events.game.UpdateMaxBombsEvent;
-import game.localization.Localization;
-import game.powerups.*;
-import game.ui.viewelements.misc.ToastHandler;
+import game.Bomberman
+import game.data.DataInputOutput
+import game.entity.models.BomberEntity
+import game.entity.models.Enemy
+import game.entity.models.Entity
+import game.events.game.RoundPassedGameEvent
+import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.events.game.UpdateCurrentBombsLengthEvent
+import game.events.game.UpdateMaxBombsEvent
+import game.localization.Localization
+import game.powerups.LivesPowerUp
+import game.powerups.PowerUp
+import game.ui.viewelements.misc.ToastHandler
+import java.awt.event.ActionEvent
+import java.util.concurrent.atomic.AtomicReference
+import javax.swing.JPanel
+import javax.swing.Timer
 
-import javax.swing.*;
-
-import java.util.concurrent.atomic.AtomicReference;
-
-import static game.localization.Localization.ARENA_DIED;
-import static game.localization.Localization.STARTING_ROUND;
-
-public abstract class ArenaLevel extends Level {
-    private final static int MIN_ENEMIES_COUNT = 3;
-    private final static int MAX_ENEMIES_COUNT = 20;
-    private final static int ARENA_ROUND_LOADING_TIMER = 5000;
-    private static int CURR_ROUND = 0;
-    private final AtomicReference<Integer> currentRound = new AtomicReference<>(0);
-
-    public abstract Class<? extends Enemy>[] getSpecialRoundEnemies();
-
-    @Override
-    public void start(JPanel jPanel) {
-        super.start(jPanel);
-        if(currentRound.get() == 1) {
-            firstStart();
+abstract class ArenaLevel : Level() {
+    private val currentRound = AtomicReference(0)
+    abstract val specialRoundEnemies: Array<Class<out Enemy>>
+    override fun start(jPanel: JPanel) {
+        super.start(jPanel)
+        if (currentRound.get() == 1) {
+            firstStart()
         }
     }
 
-    @Override
-    public void startLevel() {
-        super.startLevel();
-        currentRound.set(currentRound.get() + 1);
-        CURR_ROUND = currentRound.get();
-        new RoundPassedGameEvent().invoke(null);
+    override fun startLevel() {
+        super.startLevel()
+        currentRound.set(currentRound.get() + 1)
+        CURR_ROUND = currentRound.get()
+        RoundPassedGameEvent().invoke(null)
     }
 
-    @Override
-    public boolean isArenaLevel() {
-        return true;
-    }
+    override val isArenaLevel: Boolean
+        get() = true
 
-    @Override
-    public void generateDestroyableBlock() {
+    override fun generateDestroyableBlock() {
         if (currentRound.get() != 0) {
-            return;
+            return
         }
-        spawnMisteryBox();
-        super.generateDestroyableBlock();
+        spawnMisteryBox()
+        super.generateDestroyableBlock()
     }
 
-    @Override
-    protected void spawnBoss() {
-        if (shouldSpawnBoss())
-            super.spawnBoss();
+    override fun spawnBoss() {
+        if (shouldSpawnBoss()) super.spawnBoss()
     }
 
-    @Override
-    public String getDiedMessage() {
-        return Localization.get(ARENA_DIED).replace("%rounds%", Integer.toString(CURR_ROUND));
+    override val diedMessage: String
+        get() = Localization.get(Localization.ARENA_DIED).replace("%rounds%", Integer.toString(CURR_ROUND))
+    override val bossMaxHealth: Int
+        get() = super.bossMaxHealth / 4
+
+    override val startEnemiesCount: Int
+        get() {
+            return MIN_ENEMIES_COUNT + currentRound.get()
+        }
+
+    override fun onAllEnemiesEliminated() {
+        val t = Timer(ARENA_ROUND_LOADING_TIMER) { e: ActionEvent? ->
+            val player: Entity? = Bomberman.getMatch().player
+            if (player != null && player.isSpawned) startLevel()
+        }
+        t.isRepeats = false
+        t.start()
     }
 
-    @Override
-    public int getBossMaxHealth() {
-        return super.getBossMaxHealth() / 4;
-    }
-
-    @Override
-    public int startEnemiesCount() {
-        return MIN_ENEMIES_COUNT + currentRound.get();
-    }
-
-    @Override
-    public void onAllEnemiesEliminated() {
-        Timer t = new Timer(ARENA_ROUND_LOADING_TIMER, e -> {
-            Entity player = Bomberman.getMatch().getPlayer();
-            if(player != null && player.isSpawned())
-                startLevel();
-        });
-
-        t.setRepeats(false);
-        t.start();
-    }
-
-    @Override
-    public void onRoundPassedGameEvent() {
+    override fun onRoundPassedGameEvent() {
         if (currentRound.get() > 1) {
-            super.onRoundPassedGameEvent();
+            super.onRoundPassedGameEvent()
         }
-
-        ToastHandler.getInstance().show(Localization.get(STARTING_ROUND).replace("%round%", String.valueOf(currentRound.get())));
-        Bomberman.getMatch().getInventoryElementControllerRounds().setNumItems(currentRound.get());
+        ToastHandler.getInstance().show(Localization.get(Localization.STARTING_ROUND).replace("%round%", currentRound.get().toString()))
+        Bomberman.getMatch().inventoryElementControllerRounds.setNumItems(currentRound.get())
     }
 
-    @Override
-    public Class<? extends PowerUp>[] getRestrictedPerks() {
-        return new Class[] {
-                LivesPowerUp.class
-        };
+    override val restrictedPerks: Array<Class<out PowerUp?>>
+        get() = arrayOf(
+                LivesPowerUp::class.java
+        )
+
+    override fun spawnEnemies() {
+        if (isSpecialRound) spawnEnemies(specialRoundEnemies) else super.spawnEnemies()
     }
 
-    @Override
-    protected void spawnEnemies() {
-        if (isSpecialRound())
-            spawnEnemies(getSpecialRoundEnemies());
-        else super.spawnEnemies();
+    override fun onDeathGameEvent() {
+        currentRound.set(0)
+        DataInputOutput.getInstance().increaseDeaths()
+        DataInputOutput.getInstance().decreaseScore(1000)
     }
 
-    @Override
-    public void onDeathGameEvent() {
-        currentRound.set(0);
-        DataInputOutput.getInstance().increaseDeaths();
-        DataInputOutput.getInstance().decreaseScore(1000);
+    override fun onUpdateMaxBombsGameEvent(arg: Int) {
+        UpdateCurrentAvailableBombsEvent().invoke(arg)
     }
 
-    @Override
-    public void onUpdateMaxBombsGameEvent(int arg) {
-        new UpdateCurrentAvailableBombsEvent().invoke(arg);
+    override fun onUpdateBombsLengthEvent(entity: BomberEntity, arg: Int) {
+        entity.currExplosionLength = arg
     }
 
-    @Override
-    public void onUpdateBombsLengthEvent(BomberEntity entity, int arg) {
-        entity.setCurrExplosionLength(arg);
+    override fun endLevel() {}
+    override fun toString(): String {
+        return java.lang.String.format("Arena World %d", worldId)
     }
 
-    @Override
-    public void endLevel() {}
-
-    @Override
-    public String toString() {
-        return String.format("Arena World %d", getWorldId());
+    protected fun firstStart() {
+        UpdateCurrentBombsLengthEvent().invoke(1)
+        UpdateMaxBombsEvent().invoke(1)
     }
 
-    protected void firstStart() {
-        new UpdateCurrentBombsLengthEvent().invoke(1);
-        new UpdateMaxBombsEvent().invoke(1);
+    protected val isSpecialRound: Boolean
+        protected get() = currentRound.get() % 5 == 0 && currentRound.get() > 1 && !shouldSpawnBoss()
+
+    protected fun shouldSpawnBoss(): Boolean {
+        return currentRound.get() % 10 == 0 && currentRound.get() > 1
     }
 
-    protected boolean isSpecialRound() {
-        return currentRound.get() % 5 == 0 && currentRound.get() > 1 && !shouldSpawnBoss();
-    }
-
-    protected boolean shouldSpawnBoss() {
-        return currentRound.get() % 10 == 0 && currentRound.get() > 1;
+    companion object {
+        private const val MIN_ENEMIES_COUNT = 3
+        private const val MAX_ENEMIES_COUNT = 20
+        private const val ARENA_ROUND_LOADING_TIMER = 5000
+        private var CURR_ROUND = 0
     }
 }

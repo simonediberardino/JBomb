@@ -1,142 +1,124 @@
-package game.entity;
+package game.entity
 
-import game.Bomberman;
-import game.data.DataInputOutput;
-import game.entity.blocks.DestroyableBlock;
-import game.entity.blocks.HardBlock;
-import game.entity.bomb.AbstractExplosion;
-import game.entity.bomb.Bomb;
-import game.events.game.UpdateCurrentAvailableBombsEvent;
-import game.hardwareinput.Command;
-import game.entity.models.*;
-import game.events.game.DeathGameEvent;
-import game.entity.models.Coordinates;
-import game.powerups.PowerUp;
-import game.sound.SoundModel;
-import game.ui.pages.GameOverPanel;
-import game.utils.Paths;
+import game.Bomberman
+import game.data.DataInputOutput
+import game.entity.blocks.DestroyableBlock
+import game.entity.blocks.HardBlock
+import game.entity.bomb.AbstractExplosion
+import game.entity.bomb.Bomb
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.entity.models.Enemy
+import game.entity.models.Entity
+import game.events.game.DeathGameEvent
+import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.hardwareinput.Command
+import game.powerups.PowerUp
+import game.sound.SoundModel
+import game.ui.pages.GameOverPanel
+import game.ui.panels.game.PitchPanel
+import game.utils.Paths.entitiesFolder
+import java.awt.event.ActionEvent
+import java.util.*
+import javax.swing.Timer
 
-import javax.swing.Timer;
-import java.util.*;
-
-import static game.ui.panels.game.PitchPanel.GRID_SIZE;
-
-
-public class Player extends BomberEntity {
-    public static final Coordinates SPAWN_OFFSET = new Coordinates((GRID_SIZE - SIZE) / 2, GRID_SIZE - SIZE);
-
-    public Player(Coordinates coordinates) {
-        super(coordinates);
-        this.hitboxSizeToHeightRatio = 0.733f;
+class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
+    init {
+        hitboxSizeToHeightRatio = 0.733f
     }
 
-    private void updateBombs() {
-        int maxBombs = DataInputOutput.getInstance().getObtainedBombs();
-        new UpdateCurrentAvailableBombsEvent().invoke(maxBombs);
+    private fun updateBombs() {
+        val maxBombs = DataInputOutput.getInstance().obtainedBombs
+        UpdateCurrentAvailableBombsEvent().invoke(maxBombs)
     }
 
-    @Override
-    protected void doInteract(Entity e) {}
-
-    @Override
-    public Set<Class<? extends Entity>> getInteractionsEntities() {
-        return new HashSet<>();
+    override fun doInteract(e: Entity?) {}
+    override fun getInteractionsEntities(): Set<Class<out Entity>> {
+        return HashSet()
     }
 
-    @Override
-    protected String getBasePath() {
-        return Paths.INSTANCE.getEntitiesFolder() + "/player/" + DataInputOutput.getInstance().getSkin();
+    override fun getBasePath(): String {
+        return entitiesFolder + "/player/" + DataInputOutput.getInstance().skin
     }
 
-    @Override
-    public String[] getCharacterOrientedImages() {
-        return new String[]{
-                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 0),
-                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 1),
-                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 2),
-                String.format("%s/player_%s_%d.png", getBasePath(), imageDirection.toString().toLowerCase(), 3),
-        };
+    override fun getCharacterOrientedImages(): Array<String> {
+        return arrayOf(String.format("%s/player_%s_%d.png", basePath, imageDirection.toString().lowercase(Locale.getDefault()), 0), String.format("%s/player_%s_%d.png", basePath, imageDirection.toString().lowercase(Locale.getDefault()), 1), String.format("%s/player_%s_%d.png", basePath, imageDirection.toString().lowercase(Locale.getDefault()), 2), String.format("%s/player_%s_%d.png", basePath, imageDirection.toString().lowercase(Locale.getDefault()), 3))
     }
 
-    @Override
-    protected void onSpawn() {
-        super.onSpawn();
-        updateBombs();
-        Bomberman.getMatch().getControllerManager().register(this);
-        Bomberman.getBombermanFrame().getMatchPanel().refreshPowerUps(getActivePowerUps());
+    override fun onSpawn() {
+        super.onSpawn()
+        updateBombs()
+        Bomberman.getMatch().controllerManager.register(this)
+        Bomberman.getBombermanFrame().matchPanel.refreshPowerUps(activePowerUps)
     }
 
-    @Override
-    protected void onEndedDeathAnimation() {
-        Timer t = new Timer((int) SHOW_DEATH_PAGE_DELAY_MS, (e) -> showDeathPage());
-        t.setRepeats(false);
-        t.start();
+    override fun onEndedDeathAnimation() {
+        val t = Timer(SHOW_DEATH_PAGE_DELAY_MS.toInt()) { e: ActionEvent? -> showDeathPage() }
+        t.isRepeats = false
+        t.start()
     }
 
-    private void showDeathPage() {
-        Bomberman.destroyLevel();
-        Bomberman.showActivity(GameOverPanel.class);
+    private fun showDeathPage() {
+        Bomberman.destroyLevel()
+        Bomberman.showActivity(GameOverPanel::class.java)
     }
 
-    @Override
-    protected void onEliminated() {
-        super.onEliminated();
-        new DeathGameEvent().invoke(null);
+    override fun onEliminated() {
+        super.onEliminated()
+        DeathGameEvent().invoke(null)
     }
 
-    @Override
-    public Coordinates getSpawnOffset() {
-        return SPAWN_OFFSET;
+    public override fun getSpawnOffset(): Coordinates {
+        return SPAWN_OFFSET
     }
 
     // Handle the command entered by the player;
-    @Override
-    public void update(Object arg) {
-        super.update(arg);
-        handleAction((Command) arg);
+    override fun update(arg: Any?) {
+        super.update(arg)
+        handleAction(arg as Command)
     }
 
-    @Override
-    protected SoundModel getDeathSound() {
-        return SoundModel.PLAYER_DEATH;
+    override fun getDeathSound(): SoundModel {
+        return SoundModel.PLAYER_DEATH
     }
 
-    @Override
-    protected Set<Class<? extends Entity>> getBasePassiveInteractionEntities() {
-        return new HashSet<>(Arrays.asList(AbstractExplosion.class, Enemy.class, PowerUp.class));
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
+        return HashSet<Class<out Entity>>(Arrays.asList(AbstractExplosion::class.java, Enemy::class.java, PowerUp::class.java))
     }
 
-    @Override
-    protected SoundModel getStepSound() {
-        return SoundModel.STEP_SOUND;
+    override fun getStepSound(): SoundModel {
+        return SoundModel.STEP_SOUND
     }
 
     //4 methods for pistolPowerUp only
-    @Override
-    public Set<Class<? extends Entity>> getExplosionObstacles() {
-        return new HashSet<>() {{
-            add(HardBlock.class);
-            add(DestroyableBlock.class);
-        }};
+    override val explosionObstacles: Set<Class<out Entity>>
+        get() {
+            return setOf(
+                    HardBlock::class.java,
+                    DestroyableBlock::class.java
+            )
+        }
+
+    override val explosionInteractionEntities: Set<Class<out Entity>>
+        get() {
+            return setOf(
+                    DestroyableBlock::class.java,
+                    Enemy::class.java,
+                    Bomb::class.java
+            )
+        }
+
+    override val maxExplosionDistance: Int
+        get() {
+            return Bomberman.getMatch().player.currExplosionLength
+        }
+
+    override fun doAttack() {
+        weapon.use()
+        Bomberman.getMatch().updateInventoryWeaponController()
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getExplosionInteractionEntities() {
-        return new HashSet<>() {{
-            add(DestroyableBlock.class);
-            add(Enemy.class);
-            add(Bomb.class);
-        }};
-    }
-
-    @Override
-    public int getMaxExplosionDistance() {
-        return Bomberman.getMatch().getPlayer().getCurrExplosionLength();
-    }
-
-    @Override
-    public void doAttack() {
-        getWeapon().use();
-        Bomberman.getMatch().updateInventoryWeaponController();
+    companion object {
+        val SPAWN_OFFSET = Coordinates((PitchPanel.GRID_SIZE - SIZE) / 2, PitchPanel.GRID_SIZE - SIZE)
     }
 }

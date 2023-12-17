@@ -1,25 +1,18 @@
-package game.entity.enemies.npcs;
+package game.entity.enemies.npcs
 
-import game.entity.enemies.boss.clown.Clown;
-import game.entity.models.Coordinates;
-import game.entity.models.Direction;
-import game.entity.models.EnhancedDirection;
-import game.sound.AudioManager;
-import game.sound.SoundModel;
-import game.utils.Paths;
+import game.entity.EntityTypes
+import game.entity.models.Coordinates
+import game.entity.models.Direction
+import game.entity.models.EnhancedDirection
+import game.sound.SoundModel
+import game.utils.Paths.enemiesFolder
 
-public class ClownNose extends Orb {
-    public ClownNose(Coordinates coordinates, EnhancedDirection enhancedDirection) {
-        super(coordinates, enhancedDirection);
-    }
+class ClownNose : Orb {
+    constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates, enhancedDirection)
+    constructor(coordinates: Coordinates?, direction: Direction?) : super(coordinates, direction)
 
-    public ClownNose(Coordinates coordinates, Direction direction) {
-        super(coordinates, direction);
-    }
-
-    @Override
-    protected String getBasePath() {
-        return Paths.INSTANCE.getEnemiesFolder() + "/clown/clown_orb.png";
+    override fun getBasePath(): String {
+        return "$enemiesFolder/clown/clown_orb.png"
     }
 
     /**
@@ -27,16 +20,18 @@ public class ClownNose extends Orb {
      *
      * @return an array of the skin of the Orb
      */
-    @Override
     //
-    public String[] getCharacterOrientedImages() {
-        return new String[]{
-                getBasePath()
-        };
+    override fun getCharacterOrientedImages(): Array<String> {
+        return arrayOf(
+                basePath
+        )
     }
 
-    @Override
-    protected SoundModel getDeathSound() {
-        return SoundModel.CLOWN_NOSE_DEATH;
+    override fun getDeathSound(): SoundModel {
+        return SoundModel.CLOWN_NOSE_DEATH
+    }
+
+    override fun getType(): EntityTypes {
+        return EntityTypes.ClownNose
     }
 }

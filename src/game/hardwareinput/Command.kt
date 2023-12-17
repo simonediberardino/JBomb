@@ -1,27 +1,17 @@
-package game.hardwareinput;
+package game.hardwareinput
 
-import game.entity.models.Direction;
+import game.entity.models.Direction
 
-public enum Command {
-    MOVE_UP,
-    MOVE_DOWN,
-    MOVE_RIGHT,
-    MOVE_LEFT,
-    ATTACK,
-    PAUSE,
-    INTERACT;
+enum class Command {
+    MOVE_UP, MOVE_DOWN, MOVE_RIGHT, MOVE_LEFT, ATTACK, PAUSE, INTERACT;
 
-    public Direction commandToDirection() {
-        switch (this) {
-            case MOVE_UP:
-                return Direction.UP;
-            case MOVE_DOWN:
-                return Direction.DOWN;
-            case MOVE_LEFT:
-                return Direction.LEFT;
-            case MOVE_RIGHT:
-                return Direction.RIGHT;
+    fun commandToDirection(): Direction? {
+        return when (this) {
+            MOVE_UP -> Direction.UP
+            MOVE_DOWN -> Direction.DOWN
+            MOVE_LEFT -> Direction.LEFT
+            MOVE_RIGHT -> Direction.RIGHT
+            else -> null
         }
-        return null;
     }
 }

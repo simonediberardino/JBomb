@@ -1,8 +1,5 @@
-package game.events.models;
+package game.events.models
 
-/**
- * Fires a game event using Strategy Pattern;
- */
-public interface GameEvent {
-    void invoke(Object arg);
+interface GameEvent {
+    operator fun invoke(arg: Any?)
 }

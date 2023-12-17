@@ -1,29 +1,29 @@
-package game.level.world1;
+package game.level.world1
 
-import game.entity.enemies.npcs.Helicopter;
-import game.entity.models.Enemy;
-import game.level.Level;
+import game.entity.enemies.npcs.Helicopter
+import game.entity.models.Enemy
+import game.level.Level
 
-public class World1Level2 extends World1Level {
-    @Override
-    public int getLevelId() {
-        return 2;
-    }
+class World1Level2 : World1Level() {
+    override val levelId: Int
+        get() {
+            return 2
+        }
 
-    @Override
-    public int startEnemiesCount() {
-        return 7;
-    }
+    override val startEnemiesCount: Int
+        get() {
+            return 7
+        }
 
-    @Override
-    public Class<? extends Enemy>[] availableEnemies() {
-        return new Class[]{
-                Helicopter.class
-        };
-    }
+    override val availableEnemies: Array<Class<out Enemy>>
+        get() {
+            return arrayOf(
+                    Helicopter::class.java
+            )
+        }
 
-    @Override
-    public Class<? extends Level> getNextLevel() {
-        return World1Level3.class;
-    }
+    override val nextLevel: Class<out Level?>
+        get() {
+            return World1Level3::class.java
+        }
 }

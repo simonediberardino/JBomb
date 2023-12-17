@@ -1,36 +1,35 @@
-package game.entity.enemies.npcs;
+package game.entity.enemies.npcs
 
-import game.entity.models.Entity;
-import game.entity.models.Direction;
-import game.ui.panels.game.PitchPanel;
-import game.utils.Paths;
+import game.entity.EntityTypes
+import game.entity.models.Direction
+import game.entity.models.Entity
+import game.ui.panels.game.PitchPanel
+import game.utils.Paths.enemiesFolder
+import java.util.*
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
-public class GhostEnemy extends IntelligentEnemy {
-    public GhostEnemy() {
-        hitboxSizetoWidthRatio = 0.837f;
-        hitboxSizeToHeightRatio = 1;
-    }
-    @Override
-    public String[] getCharacterOrientedImages() {
-        return new String[]{String.format("%s/mini_ghost/ghost_%s.png", Paths.INSTANCE.getEnemiesFolder(), imageDirection.toString().toLowerCase())};
+class GhostEnemy : IntelligentEnemy() {
+    init {
+        hitboxSizetoWidthRatio = 0.837f
+        hitboxSizeToHeightRatio = 1f
     }
 
-    @Override
-    protected List<Direction> getImageDirections() {
-        return Arrays.asList(Direction.RIGHT, Direction.LEFT);
+    override fun getCharacterOrientedImages(): Array<String> {
+        return arrayOf("$enemiesFolder/mini_ghost/ghost_${imageDirection.toString().lowercase()}.png")
     }
 
-    @Override
-    public Set<Class<? extends Entity>> getObstacles() {
-        return getInteractionsEntities();
+    override fun getImageDirections(): List<Direction> {
+        return listOf(Direction.RIGHT, Direction.LEFT)
     }
 
-    @Override
-    public int getSize() {
-        return PitchPanel.COMMON_DIVISOR * 2;
+    override fun getObstacles(): Set<Class<out Entity?>> {
+        return interactionsEntities
+    }
+
+    override fun getSize(): Int {
+        return PitchPanel.COMMON_DIVISOR * 2
+    }
+
+    override fun getType(): EntityTypes {
+        return EntityTypes.GhostEnemy
     }
 }

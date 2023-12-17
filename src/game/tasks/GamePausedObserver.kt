@@ -1,18 +1,16 @@
-package game.tasks;
+package game.tasks
 
-import game.Bomberman;
-import game.events.models.Observer2;
-import game.hardwareinput.Command;
+import game.Bomberman
+import game.events.models.Observer2
+import game.hardwareinput.Command
 
-public class GamePausedObserver implements Observer2 {
-    @Override
-    public void update(Object arg) {
-        if (!(arg instanceof Command)) {
-            return;
+class GamePausedObserver : Observer2 {
+    override fun update(arg: Any?) {
+        if (arg !is Command) {
+            return
         }
-
-        if (arg == Command.PAUSE) {
-            Bomberman.getMatch().toggleGameState();
+        if (arg === Command.PAUSE) {
+            Bomberman.getMatch().toggleGameState()
         }
     }
 }

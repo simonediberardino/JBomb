@@ -12,12 +12,12 @@ import javax.imageio.ImageIO
  * A utility class containing helper methods for the game.
  */
 object Utility {
-    @JvmStatic
+    
     fun ensureRange(value: Float, min: Float, max: Float): Float {
         return value.coerceAtLeast(min).coerceAtMost(max)
     }
 
-    @JvmStatic
+    
     fun timePassed(time: Long): Long {
         return System.currentTimeMillis() - time
     }
@@ -32,12 +32,12 @@ object Utility {
      * @param dim The dimension in pixels to be converted.
      * @return The converted dimension in screen units.
      */
-    @JvmStatic
+    
     fun px(dim: Int): Int {
         return px(dim.toDouble()).toInt()
     }
 
-    @JvmStatic
+    
     val screenSize: Dimension
         get() = Toolkit.getDefaultToolkit().screenSize
 
@@ -46,7 +46,7 @@ object Utility {
         return dim * (screenSize.getWidth() / Dimensions.DEFAULT_SCREEN_SIZE.getWidth())
     }
 
-    @JvmStatic
+    
     fun fileExists(filePath: String?): Boolean {
         val classLoader = Thread.currentThread().contextClassLoader
         try {
@@ -62,7 +62,7 @@ object Utility {
      * @param fileName The file name of the image to be loaded.
      * @return The loaded image, or null if the file could not be found or read.
      */
-    @JvmStatic
+    
     fun loadImage(fileName: String): BufferedImage? {
         var fileName = fileName
         val cache = instance
@@ -91,7 +91,7 @@ object Utility {
         return Math.random() * 100 <= chance
     }
 
-    @JvmStatic
+    
     fun runPercentage(chance: Int, runnable: Runnable) {
         if (chooseRandom(chance)) runnable.run()
     }

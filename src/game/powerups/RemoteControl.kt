@@ -1,39 +1,28 @@
-package game.powerups;
+package game.powerups
 
-import game.entity.bomb.Bomb;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.utils.Paths;
+import game.entity.bomb.Bomb
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
+class RemoteControl
+/**
+ * Constructs a PowerUp entity with the specified coordinates.
+ *
+ * @param coordinates the coordinates of the PowerUp entity
+ */
+(coordinates: Coordinates?) : PowerUp(coordinates) {
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/remote_up.png")
 
-public class RemoteControl extends PowerUp {
-    /**
-     * Constructs a PowerUp entity with the specified coordinates.
-     *
-     * @param coordinates the coordinates of the PowerUp entity
-     */
-    public RemoteControl(Coordinates coordinates) {
-        super(coordinates);
+    override val duration: Int = 30
+
+    override fun doApply(entity: BomberEntity) {
+        entity.addClassInteractWithMouseClick(Bomb::class.java)
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/remote_up.png");
+    override fun cancel(entity: BomberEntity) {
+        entity.removeClassInteractWithMouse(Bomb::class.java)
     }
 
-    @Override
-    public int getDuration() {
-        return 30;
-    }
-
-    @Override
-    protected void doApply(BomberEntity entity) {
-        entity.addClassInteractWithMouseClick(Bomb.class);
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-        entity.removeClassInteractWithMouse(Bomb.class);
-    }
 }

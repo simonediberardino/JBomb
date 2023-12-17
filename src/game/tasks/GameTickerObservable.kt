@@ -1,55 +1,52 @@
-package game.tasks;
+package game.tasks
 
-import game.Bomberman;
-import game.entity.models.Entity;
-import game.events.game.Observable2;
-import game.events.models.Observer2;
-import game.utils.Utility;
+import game.Bomberman
+import game.entity.models.Entity
+import game.events.game.Observable2
+import game.utils.Utility.timePassed
 
 /**
  * The GameTickerObservable class is an observable that notifies its observers periodically with a fixed delay
  * of DELAY_MS milliseconds, ignoring updates if a specific delay is not passed. It extends the Observable class.
  */
-public class GameTickerObservable extends Observable2 {
-    private final PeriodicTask periodicTask;
-    private final int DELAY_MS = 20;
+class GameTickerObservable : Observable2() {
+    private val periodicTask: PeriodicTask
+    private val DELAY_MS = 20
+
     /**
      * This ActionListener updates observers of the GameTickerObservable periodically based on the specified delay. It loops through
      * each observer in the observerSet to check if the delay has passed since the last update. If the delay has passed, it calls the
      * update method of the observer with the current GameState object.
      */
-    private final Runnable task = () -> {
+    private val task = Runnable {
+        val array = observers.toTypedArray()
 
         // loop through each observer in the observerSet
-        for (Observer2 observer : observers) {
-            if (observer instanceof Entity && !((Entity) observer).isSpawned())
-                unregister(observer);
-
-            boolean delayPassed = true;
-
-            if (observer instanceof GameTickerObserver gameTickerObserver) { // check if the observer is of type GameTickerObserver
+        for (observer in array) {
+            if (observer is Entity && !observer.isSpawned) unregister(observer)
+            var delayPassed = true
+            if (observer is GameTickerObserver) { // check if the observer is of type GameTickerObserver
                 // cast the observer to GameTickerObserver
-                long lastUpdate = gameTickerObserver.getLastUpdate(); // get the last update time of the observer
-                long delayObserverUpdate = (long) gameTickerObserver.getDelayObserverUpdate(); // get the delay time of the observer
-                delayPassed = Utility.timePassed(lastUpdate) >= delayObserverUpdate; // check if the delay has passed since the last update
+                val lastUpdate: Long = observer.lastUpdate // get the last update time of the observer
+                val delayObserverUpdate: Long = observer.getDelayObserverUpdate().toLong() // get the delay time of the observer
+                delayPassed = timePassed(lastUpdate) >= delayObserverUpdate // check if the delay has passed since the last update
             }
-
             if (delayPassed) { // if the delay has passed
-                notify(observer, Bomberman.getMatch().getGameState());
+                notify(observer, Bomberman.getMatch().gameState)
             }
         }
-    };
-
-    public GameTickerObservable() {
-        periodicTask = new PeriodicTask(task, DELAY_MS);
-        periodicTask.start();
     }
 
-    public void resume() {
-        periodicTask.resume();
+    init {
+        periodicTask = PeriodicTask(task, DELAY_MS)
+        periodicTask.start()
     }
 
-    public void stop() {
-        periodicTask.stop();
+    fun resume() {
+        periodicTask.resume()
+    }
+
+    fun stop() {
+        periodicTask.stop()
     }
 }

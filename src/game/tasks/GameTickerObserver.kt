@@ -1,21 +1,16 @@
-package game.tasks;
+package game.tasks
 
-import game.events.models.Observer2;
+import game.events.models.Observer2
 
-public abstract class GameTickerObserver implements Observer2 {
-    private static final float DEFAULT_DELAY_OBSERVER = 30;
-    protected long lastUpdate = 0L;
+abstract class GameTickerObserver : Observer2 {
+    var lastUpdate = 0L
+        protected set
 
-    @Override
-    public void update(Object arg) {
-        lastUpdate = System.currentTimeMillis();
+    override fun update(arg: Any?) {
+        lastUpdate = System.currentTimeMillis()
     }
 
-    public long getLastUpdate() {
-        return lastUpdate;
-    }
-
-    protected float getDelayObserverUpdate() {
-        return DEFAULT_DELAY_OBSERVER;
+    open fun getDelayObserverUpdate(): Float {
+        return 30f
     }
 }

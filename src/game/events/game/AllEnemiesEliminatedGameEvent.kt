@@ -1,11 +1,10 @@
-package game.events.game;
+package game.events.game
 
-import game.Bomberman;
-import game.events.models.GameEvent;
+import game.Bomberman
+import game.events.models.GameEvent
 
-public class AllEnemiesEliminatedGameEvent implements GameEvent {
-    @Override
-    public void invoke(Object arg) {
-        Bomberman.getMatch().getCurrentLevel().onAllEnemiesEliminated();
+class AllEnemiesEliminatedGameEvent : GameEvent {
+    override fun invoke(arg: Any?) {
+        Bomberman.getMatch().currentLevel.onAllEnemiesEliminated()
     }
 }

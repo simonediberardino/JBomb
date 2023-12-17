@@ -1,46 +1,35 @@
-package game.powerups;
+package game.powerups
 
-import game.entity.bomb.AbstractExplosion;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.events.game.ExplosionLengthPowerUpEvent;
-import game.utils.Paths;
+import game.entity.bomb.AbstractExplosion.Companion.MAX_EXPLOSION_LENGTH
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.events.game.ExplosionLengthPowerUpEvent
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
 
-import java.awt.image.BufferedImage;
-
-
-public class FirePowerUp extends PowerUp {
-    /**
-     * Constructs an entity with the given coordinates.
-     *
-     * @param coordinates the coordinates of the entity
-     */
-
-    public FirePowerUp(Coordinates coordinates) {
-        super(coordinates);
+class FirePowerUp
+/**
+ * Constructs an entity with the given coordinates.
+ *
+ * @param coordinates the coordinates of the entity
+ */
+(coordinates: Coordinates?) : PowerUp(coordinates) {
+    override fun getImage(): BufferedImage {
+        return loadAndSetImage("$powerUpsFolder/fire_up.png")
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/fire_up.png");
+    override val duration: Int
+        get() {
+            return 0
+        }
+
+    override fun doApply(entity: BomberEntity) {
+        ExplosionLengthPowerUpEvent().invoke(entity)
     }
 
-    @Override
-    public int getDuration() {
-        return 0;
-    }
+    override fun cancel(entity: BomberEntity) {}
 
-    @Override
-    protected void doApply(BomberEntity entity) {
-        new ExplosionLengthPowerUpEvent().invoke(entity);
-    }
-
-    @Override
-    protected void cancel(BomberEntity entity) {
-    }
-
-    @Override
-    public boolean canPickUp(BomberEntity entity) {
-        return !(entity.getCurrExplosionLength() > AbstractExplosion.Companion.getMAX_EXPLOSION_LENGTH());
+    override fun canPickUp(entity: BomberEntity): Boolean {
+        return entity.currExplosionLength <= MAX_EXPLOSION_LENGTH
     }
 }

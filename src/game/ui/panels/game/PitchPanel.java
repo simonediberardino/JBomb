@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static game.sound.SoundModel.LIGHT_GLITCH;
-import static game.utils.Utility.loadImage;
 
 /**
  * The GamePanel class represents the main game panel that displays the game world and entities
@@ -24,7 +23,7 @@ import static game.utils.Utility.loadImage;
 public class PitchPanel extends JPanel implements Observer2 {
 
     public static final int DEFAULT_PIXEL_UNIT = 6;
-    public static final int PIXEL_UNIT = Utility.px(DEFAULT_PIXEL_UNIT);
+    public static final int PIXEL_UNIT = Utility.INSTANCE.px(DEFAULT_PIXEL_UNIT);
     //to simplify calculations
     public static final int COMMON_DIVISOR = PIXEL_UNIT * 4;
     public static final int GRID_SIZE = PitchPanel.COMMON_DIVISOR * 3;
@@ -91,7 +90,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         super.paint(g);
         this.g2d = (Graphics2D) g;
 
-        Image img = loadImage(Bomberman.getMatch().getCurrentLevel().getPitchImagePath());
+        Image img = Utility.INSTANCE.loadImage(Bomberman.getMatch().getCurrentLevel().getPitchImagePath());
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(), 1), 0, 0, null);
 
         List<? extends Entity> setEntities = Bomberman.getMatch().getEntities();

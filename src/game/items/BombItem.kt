@@ -1,58 +1,47 @@
-package game.items;
+package game.items
 
-import game.Bomberman;
-import game.entity.bomb.Bomb;
-import game.events.game.UpdateCurrentAvailableBombsEvent;
-import game.utils.Paths;
-import game.utils.Utility;
+import game.BomberManMatch
+import game.Bomberman
+import game.entity.bomb.Bomb
+import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.utils.Paths.entitiesFolder
+import game.utils.Utility.timePassed
 
-
-public class BombItem extends UsableItem {
-    private Bomb bombEntity;
-
-    @Override
-    public void use() {
-        if (owner.getCurrExplosionLength() == 0) {
-            return;
+class BombItem : UsableItem() {
+    private lateinit var bombEntity: Bomb
+    override fun use() {
+        if (owner.currExplosionLength == 0 || owner.placedBombs >= owner.maxBombs || owner.currentBombs <= 0 || timePassed(owner.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
+            return
         }
 
-        if (owner.getPlacedBombs() >= owner.getMaxBombs()) {
-            return;
+        owner.lastPlacedBombTime = System.currentTimeMillis()
+        owner.placedBombs++
+        owner.setBombsSolid(false)
+        UpdateCurrentAvailableBombsEvent().invoke(owner.currentBombs - 1)
+
+        bombEntity = Bomb(owner)
+
+        val match = Bomberman.getMatch()
+        match.addBomb(bombEntity)
+
+        bombEntity.setOnExplodeListener {
+            owner.placedBombs--
+            match.removeBomb(bombEntity)
+            UpdateCurrentAvailableBombsEvent().invoke(owner.currentBombs + 1)
         }
 
-        if (owner.getCurrentBombs() <= 0) {
-            return;
-        }
-
-        if (Utility.timePassed(owner.getLastPlacedBombTime()) < Bomb.PLACE_INTERVAL) {
-            return;
-        }
-
-        owner.setLastPlacedBombTime(System.currentTimeMillis());
-        owner.setPlacedBombs(owner.getPlacedBombs() + 1);
-        owner.setBombsSolid(false);
-
-        new UpdateCurrentAvailableBombsEvent().invoke(owner.getCurrentBombs() - 1);
-        bombEntity = new Bomb(owner);
-        Bomberman.getMatch().addBomb(bombEntity);
-
-        bombEntity.setOnExplodeListener(() -> {
-            owner.setPlacedBombs(owner.getPlacedBombs() - 1);
-            Bomberman.getMatch().removeBomb(bombEntity);
-            new UpdateCurrentAvailableBombsEvent().invoke(owner.getCurrentBombs() + 1);
-        });
-
-        bombEntity.spawn(true);
-        bombEntity.trigger();
+        bombEntity.spawn(true)
+        bombEntity.trigger()
     }
 
-    @Override
-    public String getImagePath() {
-        return String.format("%s/bomb/bomb_0.png", Paths.INSTANCE.getEntitiesFolder());
-    }
 
-    @Override
-    public int getCount() {
-        return owner.getCurrentBombs();
-    }
+    override val imagePath: String
+        get() {
+            return "$entitiesFolder/bomb/bomb_0.png"
+        }
+
+    override val count: Int
+        get() {
+            return owner.currentBombs
+        }
 }

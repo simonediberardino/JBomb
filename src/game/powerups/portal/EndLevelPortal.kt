@@ -1,58 +1,48 @@
-package game.powerups.portal;
+package game.powerups.portal
 
-import game.Bomberman;
-import game.data.DataInputOutput;
-import game.entity.models.BomberEntity;
-import game.entity.models.Coordinates;
-import game.level.Level;
-import game.level.WorldSelectorLevel;
-import game.utils.Paths;
+import game.Bomberman
+import game.data.DataInputOutput
+import game.entity.models.BomberEntity
+import game.entity.models.Coordinates
+import game.level.WorldSelectorLevel
+import game.utils.Paths.powerUpsFolder
+import java.awt.image.BufferedImage
+import java.lang.reflect.InvocationTargetException
 
-import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
-
-public class EndLevelPortal extends Portal {
-    public EndLevelPortal(Coordinates coordinates) {
-        super(coordinates);
+class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
+    override fun getImage(): BufferedImage {
+        return loadAndSetImage("$powerUpsFolder/end_game.gif")
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/end_game.gif");
+    override val duration: Int
+        get() {
+            return 0
+        }
+
+    override fun canPickUp(entity: BomberEntity): Boolean {
+        return Bomberman.getMatch().enemiesAlive <= 0
     }
 
-    @Override
-    public int getDuration() {
-        return 0;
-    }
+    override fun doApply(entity: BomberEntity) {
+        super.doApply(entity)
 
-    @Override
-    public boolean canPickUp(BomberEntity entity) {
-        return Bomberman.getMatch().getEnemiesAlive() <= 0;
-    }
+        val match = Bomberman.getMatch()
+        val currentLevel = match.currentLevel
 
-    @Override
-    protected void doApply(BomberEntity entity) {
-        super.doApply(entity);
-
-        Bomberman.getMatch().getCurrentLevel().endLevel();
-        DataInputOutput.getInstance().increaseLives();
+        currentLevel.endLevel()
+        DataInputOutput.getInstance().increaseLives()
 
         try {
-            Level level = Bomberman.getMatch().getCurrentLevel();
-            Class<? extends Level> nextLevelClass =
-                    level.isLastLevelOfWorld()
-                            ? WorldSelectorLevel.class
-                            : level.getNextLevel();
+            val nextLevelClass = if (currentLevel.isLastLevelOfWorld)
+                WorldSelectorLevel::class.java
+            else currentLevel.nextLevel
 
-            Bomberman.startLevel(nextLevelClass.getConstructor().newInstance());
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
-            e.printStackTrace();
+            Bomberman.startLevel(nextLevelClass!!.getDeclaredConstructor().newInstance())
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    @Override
-    protected void cancel(BomberEntity entity) {
-    }
+
+    override fun cancel(entity: BomberEntity) {}
 }
