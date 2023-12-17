@@ -10,7 +10,8 @@ abstract class GameTickerObserver : Observer2 {
         lastUpdate = System.currentTimeMillis()
     }
 
-    open fun getDelayObserverUpdate(): Float {
-        return 30f
-    }
+    open val delayObserverUpdate: Float
+        get() {
+            return 30f
+        }
 }

@@ -28,7 +28,7 @@ class GameTickerObservable : Observable2() {
             if (observer is GameTickerObserver) { // check if the observer is of type GameTickerObserver
                 // cast the observer to GameTickerObserver
                 val lastUpdate: Long = observer.lastUpdate // get the last update time of the observer
-                val delayObserverUpdate: Long = observer.getDelayObserverUpdate().toLong() // get the delay time of the observer
+                val delayObserverUpdate: Long = observer.delayObserverUpdate.toLong() // get the delay time of the observer
                 delayPassed = timePassed(lastUpdate) >= delayObserverUpdate // check if the delay has passed since the last update
             }
             if (delayPassed) { // if the delay has passed
