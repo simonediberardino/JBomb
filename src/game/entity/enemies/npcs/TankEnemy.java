@@ -32,7 +32,7 @@ public class TankEnemy extends IntelligentEnemy implements Explosive {
     }
 
     public String[] getCharacterOrientedImages() {
-        return new String[]{String.format("%s/tank/tank_%s.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase())};
+        return new String[]{String.format("%s/tank/tank_%s.png", Paths.INSTANCE.getEnemiesFolder(), imageDirection.toString().toLowerCase())};
     }
 
     /**

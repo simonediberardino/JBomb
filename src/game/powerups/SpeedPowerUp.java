@@ -24,7 +24,7 @@ public class SpeedPowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/speed_up.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/speed_up.png");
     }
 
     @Override

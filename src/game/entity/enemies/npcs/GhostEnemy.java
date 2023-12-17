@@ -16,7 +16,7 @@ public class GhostEnemy extends IntelligentEnemy {
     }
     @Override
     public String[] getCharacterOrientedImages() {
-        return new String[]{String.format("%s/mini_ghost/ghost_%s.png", Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase())};
+        return new String[]{String.format("%s/mini_ghost/ghost_%s.png", Paths.INSTANCE.getEnemiesFolder(), imageDirection.toString().toLowerCase())};
     }
 
     @Override

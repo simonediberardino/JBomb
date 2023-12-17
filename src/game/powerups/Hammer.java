@@ -20,7 +20,7 @@ public class Hammer extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/hammer.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/hammer.png");
     }
 
     @Override

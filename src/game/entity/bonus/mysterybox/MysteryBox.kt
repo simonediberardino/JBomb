@@ -86,7 +86,7 @@ abstract class MysteryBox(
     }
 
     override fun getImage(): BufferedImage {
-        return loadAndSetImage("${Paths.getPowerUpsFolder()}/box_$status.png")
+        return loadAndSetImage("${Paths.powerUpsFolder}/box_$status.png")
     }
 
     private enum class Status {

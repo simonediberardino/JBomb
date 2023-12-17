@@ -32,6 +32,6 @@ class ConfettiExplosion : AbstractExplosion {
         get() = javaClass
 
     override fun getBasePath(): String {
-        return "${Paths.getEnemiesFolder()}/clown/clown_explosion/clown_explosion"
+        return "${Paths.enemiesFolder}/clown/clown_explosion/clown_explosion"
     }
 }

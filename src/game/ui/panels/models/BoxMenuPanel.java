@@ -13,7 +13,7 @@ public abstract class BoxMenuPanel extends PagePanel {
     protected final String title;
 
     public BoxMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame, String title) {
-        super(cardLayout, parent, frame, Paths.getBackgroundImage());
+        super(cardLayout, parent, frame, Paths.INSTANCE.getBackgroundImage());
         this.title = title;
         initializeLayout();
     }

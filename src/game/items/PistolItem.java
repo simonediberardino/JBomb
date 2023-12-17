@@ -66,7 +66,7 @@ public class PistolItem extends UsableItem implements Explosive {
 
     @Override
     public String getImagePath() {
-        return Paths.getItemsPath() + "/pistol.png";
+        return Paths.INSTANCE.getItemsPath() + "/pistol.png";
     }
 
     @Override

@@ -18,7 +18,7 @@ public class EmptyPowerup extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/no_powerup.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/no_powerup.png");
     }
 
     @Override

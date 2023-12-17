@@ -25,7 +25,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
     private JPanel inventoryPanel;
 
     public MatchPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
-        super(cardLayout, parent, frame, Paths.getBackgroundImage());
+        super(cardLayout, parent, frame, Paths.INSTANCE.getBackgroundImage());
     }
 
     /**
@@ -172,7 +172,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         inventoryPanel = new JPanel() {
             @Override
             public void paint(Graphics g) {
-                Image powerUpsBorder = Utility.loadImage(Paths.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
+                Image powerUpsBorder = Utility.loadImage(Paths.INSTANCE.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
                 g.drawImage(powerUpsBorder, 0, 0, null);
                 super.paint(g);
             }
@@ -257,7 +257,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
                     int offset = 15;
                     int logoWidth = Utility.px(240);
                     int logoHeight = Utility.px(88);
-                    Image powerupsLogo = Utility.loadImage(Paths.getPowerupsLogoPath()).getScaledInstance(logoWidth, logoHeight, 0);
+                    Image powerupsLogo = Utility.loadImage(Paths.INSTANCE.getPowerupsLogoPath()).getScaledInstance(logoWidth, logoHeight, 0);
                     g.drawImage(powerupsLogo, powerUpsPanel.getX() - logoWidth / 2 + powerUpsPanel.getWidth() / 2, powerUpsPanel.getY() - logoHeight - offset, null);
                 }
                 // Draw the image scaled to the specified border size on the right side of the panel
@@ -268,7 +268,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         powerUpsPanel = new JPanel() {
             @Override
             public void paint(Graphics g) {
-                Image powerUpsBorder = Utility.loadImage(Paths.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
+                Image powerUpsBorder = Utility.loadImage(Paths.INSTANCE.getPowerUpsBorderPath()).getScaledInstance(getWidth(), getHeight(), 0);
                 g.drawImage(powerUpsBorder, 0, 0, null);
                 super.paint(g);
             }

@@ -51,7 +51,7 @@ public class BombermanFrame extends JFrame {
      * Creates the main frame and sets its properties.
      */
     public void create() {
-        setIconImage(Utility.loadImage(Paths.getIconPath()));
+        setIconImage(Utility.loadImage(Paths.INSTANCE.getIconPath()));
         setTitle(Localization.get(Localization.APP_NAME));
         setFrameProperties();
         initMenuPanel();
@@ -159,7 +159,7 @@ public class BombermanFrame extends JFrame {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         // Use ClassLoader to load the image resource from the JAR file
-        InputStream inputStream = classLoader.getResourceAsStream(Paths.getCursorPath());
+        InputStream inputStream = classLoader.getResourceAsStream(Paths.INSTANCE.getCursorPath());
 
         if (inputStream == null) {
             System.out.println("Cursor image not found in resources.");

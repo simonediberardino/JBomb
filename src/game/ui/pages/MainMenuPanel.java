@@ -49,13 +49,13 @@ public class MainMenuPanel extends BaseMenu {
 
     @Override
     protected JPanel getRightPanel() {
-        String[] avatarPaths = XMLUtils.parseXmlArray(Paths.getSkinsXml(), "skins");
+        String[] avatarPaths = XMLUtils.parseXmlArray(Paths.INSTANCE.getSkinsXml(), "skins");
         assert avatarPaths != null;
 
         RunnablePar getSkinRunnable = new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
-                return Paths.getEntitiesFolder() + "/player/" + DataInputOutput.getInstance().getSkin();
+                return Paths.INSTANCE.getEntitiesFolder() + "/player/" + DataInputOutput.getInstance().getSkin();
             }
         };
 

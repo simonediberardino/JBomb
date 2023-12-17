@@ -20,7 +20,7 @@ public abstract class BaseMenu extends PagePanel {
     }
 
     public BaseMenu(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
-        super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
+        super(cardLayout, parent, frame, Paths.INSTANCE.getMainMenuWallpaper());
         setupLayout();
     }
 

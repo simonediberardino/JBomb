@@ -64,7 +64,7 @@ public class GhostBoss extends Boss {
 
     @Override
     protected String getImageFromRageStatus() {
-        return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), getCurrRageStatus());
+        return String.format(SKIN_PATH_TEMPLATE, Paths.INSTANCE.getEnemiesFolder(), imageDirection.toString().toLowerCase(), getCurrRageStatus());
     }
 
     @Override

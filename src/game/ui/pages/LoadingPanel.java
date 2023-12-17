@@ -33,7 +33,7 @@ public class LoadingPanel extends PagePanel {
     }
 
     public LoadingPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame, String text) {
-        super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
+        super(cardLayout, parent, frame, Paths.INSTANCE.getMainMenuWallpaper());
         this.initialize();
         setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
         this.text = text;

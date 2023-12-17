@@ -1,28 +1,29 @@
-package game.utils;
+package game.utils
 
-import game.cache.Cache;
-import game.values.Dimensions;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import game.cache.Cache.Companion.instance
+import game.values.Dimensions
+import java.awt.Dimension
+import java.awt.Toolkit
+import java.awt.image.BufferedImage
+import java.io.IOException
+import javax.imageio.ImageIO
 
 /**
  * A utility class containing helper methods for the game.
  */
-public class Utility {
-    public static float ensureRange(float value, float min, float max) {
-        return Math.min(Math.max(value, min), max);
+object Utility {
+    @JvmStatic
+    fun ensureRange(value: Float, min: Float, max: Float): Float {
+        return value.coerceAtLeast(min).coerceAtMost(max)
     }
 
-    public static long timePassed(long time) {
-        return System.currentTimeMillis() - time;
+    @JvmStatic
+    fun timePassed(time: Long): Long {
+        return System.currentTimeMillis() - time
     }
 
-    public static boolean isValueInRange(int value, int min, int max) {
-        return value >= min && value <= max;
+    fun isValueInRange(value: Int, min: Int, max: Int): Boolean {
+        return value in min..max
     }
 
     /**
@@ -31,26 +32,27 @@ public class Utility {
      * @param dim The dimension in pixels to be converted.
      * @return The converted dimension in screen units.
      */
-    public static int px(int dim) {
-        return (int) px((double) dim);
+    @JvmStatic
+    fun px(dim: Int): Int {
+        return px(dim.toDouble()).toInt()
     }
 
-    public static Dimension getScreenSize() {
-        return Toolkit.getDefaultToolkit().getScreenSize();
+    @JvmStatic
+    val screenSize: Dimension
+        get() = Toolkit.getDefaultToolkit().screenSize
+
+    fun px(dim: Double): Double {
+        val screenSize = Toolkit.getDefaultToolkit().screenSize
+        return dim * (screenSize.getWidth() / Dimensions.DEFAULT_SCREEN_SIZE.getWidth())
     }
 
-    public static double px(double dim) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        return (dim * ((screenSize.getWidth()) / Dimensions.DEFAULT_SCREEN_SIZE.getWidth()));
-    }
-
-    public static boolean fileExists(String filePath) {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        try (InputStream imageStreamWithStatus = classLoader.getResourceAsStream(filePath)) {
-            return imageStreamWithStatus != null;
-        } catch (IOException e) {
-            return false;
+    @JvmStatic
+    fun fileExists(filePath: String?): Boolean {
+        val classLoader = Thread.currentThread().contextClassLoader
+        try {
+            classLoader.getResourceAsStream(filePath).use { imageStreamWithStatus -> return imageStreamWithStatus != null }
+        } catch (e: IOException) {
+            return false
         }
     }
 
@@ -60,40 +62,37 @@ public class Utility {
      * @param fileName The file name of the image to be loaded.
      * @return The loaded image, or null if the file could not be found or read.
      */
-    public static BufferedImage loadImage(String fileName) {
-        Cache cache = Cache.Companion.getInstance();
-
-        if (cache.hasInCache(fileName))
-            return cache.queryCache(fileName);
-
-        try {
+    @JvmStatic
+    fun loadImage(fileName: String): BufferedImage? {
+        var fileName = fileName
+        val cache = instance
+        return if (cache.hasInCache(fileName)) cache.queryCache<BufferedImage>(fileName) else try {
             // Use ClassLoader to load the image from the JAR file
-            fileName = fileName.replace("/src", "");
-            InputStream inputStream = Utility.class.getResourceAsStream("/" + fileName);
-
+            fileName = fileName.replace("/src", "")
+            val inputStream = Utility::class.java.getResourceAsStream("/$fileName")
             if (inputStream != null) {
-                BufferedImage image = ImageIO.read(inputStream);
-                Cache.Companion.getInstance().saveInCache(fileName, image);
-                return image;
+                val image = ImageIO.read(inputStream)
+                instance.saveInCache(fileName, image)
+                image
             } else {
-                System.out.println("Can't find " + fileName + " in the JAR!");
-                return null;
+                println("Can't find $fileName in the JAR!")
+                null
             }
-        } catch (IOException e) {
-            System.out.println("Error loading " + fileName + ": " + e.getMessage());
-            return null;
+        } catch (e: IOException) {
+            println("Error loading " + fileName + ": " + e.message)
+            null
         }
     }
 
-    public static boolean chooseRandom(int chance) {
-        chance = Math.max(0, chance);
-        chance = Math.min(100, chance);
-
-        return Math.random() * 100 <= chance;
+    fun chooseRandom(chance: Int): Boolean {
+        var chance = chance
+        chance = 0.coerceAtLeast(chance)
+        chance = 100.coerceAtMost(chance)
+        return Math.random() * 100 <= chance
     }
 
-    public static void runPercentage(int chance, Runnable runnable) {
-        if (chooseRandom(chance))
-            runnable.run();
+    @JvmStatic
+    fun runPercentage(chance: Int, runnable: Runnable) {
+        if (chooseRandom(chance)) runnable.run()
     }
 }

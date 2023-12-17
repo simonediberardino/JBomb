@@ -15,7 +15,7 @@ public class BlockMoverPowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/hand.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/hand.png");
     }
 
     @Override

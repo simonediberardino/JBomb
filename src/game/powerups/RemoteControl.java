@@ -19,7 +19,7 @@ public class RemoteControl extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/remote_up.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/remote_up.png");
     }
 
     @Override

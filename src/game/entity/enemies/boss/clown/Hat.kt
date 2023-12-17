@@ -16,7 +16,7 @@ open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?)
     }
 
     override fun getBasePath(): String {
-        return "${Paths.getEnemiesFolder()}/clown/hat"
+        return "${Paths.enemiesFolder}/clown/hat"
     }
 
     override fun getCharacterOrientedImages(): Array<String> {

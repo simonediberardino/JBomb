@@ -18,7 +18,7 @@ public class EndLevelPortal extends Portal {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/end_game.gif");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/end_game.gif");
     }
 
     @Override

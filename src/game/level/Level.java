@@ -371,15 +371,15 @@ public abstract class Level {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         // First, try to load the resource from the specific level folder
-        InputStream specificLevelStream = classLoader.getResourceAsStream(Paths.getCurrentLevelFolder() + "/" + path);
+        InputStream specificLevelStream = classLoader.getResourceAsStream(Paths.INSTANCE.getCurrentLevelFolder() + "/" + path);
         if (specificLevelStream != null) {
-            return Paths.getCurrentLevelFolder() + "/" + path;
+            return Paths.INSTANCE.getCurrentLevelFolder() + "/" + path;
         }
 
         // If not found, try to load from the current world's common folder
-        InputStream currentWorldStream = classLoader.getResourceAsStream(Paths.getCurrentWorldCommonFolder() + "/" + path);
+        InputStream currentWorldStream = classLoader.getResourceAsStream(Paths.INSTANCE.getCurrentWorldCommonFolder() + "/" + path);
         if (currentWorldStream != null) {
-            return Paths.getCurrentWorldCommonFolder() + "/" + path;
+            return Paths.INSTANCE.getCurrentWorldCommonFolder() + "/" + path;
         }
 
         // If still not found, load from the common folder in the JAR
@@ -389,7 +389,7 @@ public abstract class Level {
         }
 
         // File not found
-        return Paths.getWorldsFolder() + "/common/" + path;
+        return Paths.INSTANCE.getWorldsFolder() + "/common/" + path;
     }
 
     public boolean isLastLevelOfWorld() {

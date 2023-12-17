@@ -45,7 +45,7 @@ public class Player extends BomberEntity {
 
     @Override
     protected String getBasePath() {
-        return Paths.getEntitiesFolder() + "/player/" + DataInputOutput.getInstance().getSkin();
+        return Paths.INSTANCE.getEntitiesFolder() + "/player/" + DataInputOutput.getInstance().getSkin();
     }
 
     @Override

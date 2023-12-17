@@ -20,7 +20,7 @@ public class PistolPowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getItemsPath() + "/pistol.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/pistol.png");
     }
 
     @Override

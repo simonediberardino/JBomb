@@ -42,7 +42,7 @@ public abstract class WorldPortal extends Portal {
 
     @Override
     public BufferedImage getImage() {
-        return Utility.loadImage(Paths.getWorldSelectorPortalPath(worldId));
+        return Utility.loadImage(Paths.INSTANCE.getWorldSelectorPortalPath(worldId));
     }
 
     @Override

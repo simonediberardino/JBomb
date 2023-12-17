@@ -14,7 +14,7 @@ public class TransparentDestroyableBlocksPowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/blocks_up.gif");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/blocks_up.gif");
     }
 
     @Override

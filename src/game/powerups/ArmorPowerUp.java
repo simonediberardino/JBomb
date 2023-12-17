@@ -18,7 +18,7 @@ public class ArmorPowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/armor_up.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/armor_up.png");
     }
 
     @Override

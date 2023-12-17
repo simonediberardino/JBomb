@@ -21,7 +21,7 @@ public class Zombie extends IntelligentEnemy {
 
     @Override
     protected String getBasePath() {
-        return Paths.getEnemiesFolder() + "/zombie";
+        return Paths.INSTANCE.getEntitiesFolder() + "/zombie";
     }
 
     @Override

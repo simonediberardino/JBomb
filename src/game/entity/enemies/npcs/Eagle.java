@@ -5,7 +5,7 @@ import game.utils.Paths;
 public class Eagle extends FlyingEnemy {
     @Override
     protected String getBasePath() {
-        return Paths.getEnemiesFolder() + "/eagle";
+        return Paths.INSTANCE.getEnemiesFolder() + "/eagle";
     }
 
     public String[] getCharacterOrientedImages() {

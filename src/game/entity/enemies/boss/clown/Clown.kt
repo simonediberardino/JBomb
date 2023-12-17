@@ -242,7 +242,7 @@ class Clown : Boss, Explosive {
      */
     override fun getImageFromRageStatus(): String {
         // Format the skin path template with the appropriate values.
-        return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), if (hasHat) 1 else 0, currRageStatus)
+        return String.format(SKIN_PATH_TEMPLATE, Paths.enemiesFolder, if (hasHat) 1 else 0, currRageStatus)
     }
 
     /**

@@ -24,7 +24,7 @@ open class Bomb(entity: BomberEntity) : MovableBlock(Coordinates.getCenterCoordi
     }
 
     override fun getBasePath(): String {
-        return "${Paths.getEntitiesFolder()}/bomb/"
+        return "${Paths.entitiesFolder}/bomb/"
     }
 
     override fun getImage(): BufferedImage {

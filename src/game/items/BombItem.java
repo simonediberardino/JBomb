@@ -48,7 +48,7 @@ public class BombItem extends UsableItem {
 
     @Override
     public String getImagePath() {
-        return String.format("%s/bomb/bomb_0.png", Paths.getEntitiesFolder());
+        return String.format("%s/bomb/bomb_0.png", Paths.INSTANCE.getEntitiesFolder());
     }
 
     @Override

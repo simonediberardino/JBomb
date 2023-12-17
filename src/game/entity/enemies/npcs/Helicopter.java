@@ -9,7 +9,7 @@ public class Helicopter extends FlyingEnemy {
 
     @Override
     protected String getBasePath() {
-        return Paths.getEnemiesFolder() + "/heli";
+        return Paths.INSTANCE.getEnemiesFolder() + "/heli";
     }
 
     public String[] getCharacterOrientedImages() {

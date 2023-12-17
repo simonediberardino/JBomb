@@ -19,7 +19,7 @@ public class ClownNose extends Orb {
 
     @Override
     protected String getBasePath() {
-        return Paths.getEnemiesFolder() + "/clown/clown_orb.png";
+        return Paths.INSTANCE.getEnemiesFolder() + "/clown/clown_orb.png";
     }
 
     /**

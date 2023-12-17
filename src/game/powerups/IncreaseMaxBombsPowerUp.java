@@ -22,7 +22,7 @@ public class IncreaseMaxBombsPowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/increase_max_bombs_powerup.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/increase_max_bombs_powerup.png");
     }
 
     @Override

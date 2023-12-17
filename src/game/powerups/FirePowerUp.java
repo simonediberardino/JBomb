@@ -22,7 +22,7 @@ public class FirePowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/fire_up.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/fire_up.png");
     }
 
     @Override

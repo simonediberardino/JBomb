@@ -48,9 +48,9 @@ public class DataInputOutput {
     public void updateStoredPlayerData(PlayerDataObject serObj) {
         try {
             // Creates a data file if still does not exist;
-            Files.createDirectories(java.nio.file.Paths.get(Paths.getDataFolder()));
+            Files.createDirectories(java.nio.file.Paths.get(Paths.dataFolder));
 
-            File dataFile = new File(Paths.getPlayerDataPath());
+            File dataFile = new File(Paths.INSTANCE.getPlayerDataPath());
 
             dataFile.createNewFile();
             FileOutputStream fileOut = new FileOutputStream(dataFile, false);
@@ -64,7 +64,7 @@ public class DataInputOutput {
 
     public PlayerDataObject getStoredPlayerData() {
         try {
-            FileInputStream fileIn = new FileInputStream(Paths.getPlayerDataPath());
+            FileInputStream fileIn = new FileInputStream(Paths.INSTANCE.getPlayerDataPath());
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
             PlayerDataObject obj = (PlayerDataObject) objectIn.readObject();

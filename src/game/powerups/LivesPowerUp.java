@@ -19,7 +19,7 @@ public class LivesPowerUp extends PowerUp {
 
     @Override
     public BufferedImage getImage() {
-        return loadAndSetImage(Paths.getPowerUpsFolder() + "/lives_up.png");
+        return loadAndSetImage(Paths.INSTANCE.getPowerUpsFolder() + "/lives_up.png");
     }
 
     @Override
