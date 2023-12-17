@@ -5,7 +5,9 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 
-class TCPClient(private val serverAddress: String, private val serverPort: Int) : TCPSocket {
+class TCPClient(private val serverAddress: String,
+                private val serverPort: Int
+) : TCPSocket {
     private lateinit var socket: Socket
     private lateinit var reader: BufferedReader
     private lateinit var writer: PrintWriter
@@ -28,5 +30,20 @@ class TCPClient(private val serverAddress: String, private val serverPort: Int) 
         reader.close()
         writer.close()
         socket.close()
+    }
+
+    companion object {
+        var instance: TCPClient? = null
+            get() {
+                if (instance == null)
+                    return null
+
+                if (instance!!.socket.isClosed) {
+                    instance = null
+                    return null
+                }
+
+                return instance
+            }
     }
 }

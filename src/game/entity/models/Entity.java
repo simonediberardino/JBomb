@@ -1,8 +1,10 @@
 package game.entity.models;
 
 import game.Bomberman;
+import game.entity.EntityTypes;
 import game.entity.bomb.AbstractExplosion;
 import game.hardwareinput.MouseControllerManager;
+import game.http.dao.EntityDao;
 import game.tasks.GameTickerObserver;
 import game.events.models.RunnablePar;
 import game.ui.panels.game.PitchPanel;
@@ -551,11 +553,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         }
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
     public float getAlpha() {
         return alpha;
     }
@@ -565,5 +562,22 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     public void onExplosion(AbstractExplosion explosion) {
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public EntityTypes getType() {
+        return EntityTypes.Entity;
+    }
+
+    public EntityDao toDao() {
+        return new EntityDao(
+                id,
+                coords,
+                getType().ordinal()
+        );
     }
 }

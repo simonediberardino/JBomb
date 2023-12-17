@@ -8,11 +8,11 @@ import java.net.ServerSocket
 import java.net.Socket
 
 class TCPServer(private var port: Int) : TCPSocket {
-    private lateinit var serverSocket: ServerSocket
+    private lateinit var socket: ServerSocket
     private var clients: MutableSet<Socket> = mutableSetOf()
 
     fun open() {
-        serverSocket = ServerSocket(port)
+        socket = ServerSocket(port)
     }
 
     private suspend fun handleClient(clientSocket: Socket) = withContext(Dispatchers.IO) {
@@ -45,7 +45,7 @@ class TCPServer(private var port: Int) : TCPSocket {
     fun start() {
         CoroutineScope(Dispatchers.IO).launch {
             while (true) {
-                val clientSocket = serverSocket.accept()
+                val clientSocket = socket.accept()
                 clients.add(clientSocket)
 
                 println("Client connected: ${clientSocket.inetAddress.hostAddress}")
@@ -65,5 +65,20 @@ class TCPServer(private var port: Int) : TCPSocket {
                 writer.println(data)
             }
         }
+    }
+
+    companion object {
+        var instance: TCPServer? = null
+            get() {
+                if (instance == null)
+                    return null
+
+                if (instance!!.socket.isClosed) {
+                    instance = null
+                    return null
+                }
+
+                return instance
+            }
     }
 }
