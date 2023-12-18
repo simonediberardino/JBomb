@@ -8,7 +8,7 @@ class HttpMessageDispatcher private constructor() {
     fun dispatch(httpMessage: HttpMessage) {
         val data: String = HttpParserSerializer.instance.serialize(httpMessage)
 
-        for (receiver in httpMessage.receivers) {
+        for (receiver in httpMessage.senders) {
             dispatch(data, receiver)
         }
     }

@@ -10,6 +10,7 @@ import game.utils.Paths.enemiesFolder
 class ClownNose : Orb {
     constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates, enhancedDirection)
     constructor(coordinates: Coordinates?, direction: Direction?) : super(coordinates, direction)
+    constructor() : this(null, null as Direction?)
 
     override fun getBasePath(): String {
         return "$enemiesFolder/clown/clown_orb.png"

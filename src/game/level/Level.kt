@@ -2,9 +2,7 @@ package game.level
 
 import game.Bomberman
 import game.data.DataInputOutput
-import game.entity.Player
 import game.entity.blocks.DestroyableBlock
-import game.entity.blocks.StoneBlock
 import game.entity.bonus.mysterybox.MysteryBoxPerk
 import game.entity.enemies.boss.Boss
 import game.entity.models.BomberEntity
@@ -13,6 +11,7 @@ import game.entity.models.Enemy
 import game.entity.models.Entity
 import game.events.game.AllEnemiesEliminatedGameEvent
 import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.level.functionalities.*
 import game.level.world1.*
 import game.level.world2.*
 import game.powerups.PowerUp
@@ -47,29 +46,32 @@ abstract class Level {
     abstract val diedMessage: String?
     abstract val nextLevel: Class<out Level?>?
     abstract val availableEnemies: Array<Class<out Enemy>>
-    open fun onAllEnemiesEliminated() {}
+    // This method returns the ID of the world.
+    abstract val worldId: Int
+
+    // This method returns the ID of the level.
+    abstract val levelId: Int
+    open val maxBombs: Int
+        // This method returns the maximum number of bombs that a player can have at one time.
+        get() = BomberEntity.MAX_BOMB_CAN_HOLD
     private val levelSoundtrack: String
         get() = getSoundForCurrentLevel("soundtrack.wav")
+
     private val levelBackgroundSound: String?
         get() = getSoundForCurrentLevel("background_sound.wav")
+
     val explosionLength: Int
         get() = DataInputOutput.getInstance().explosionLength
+
     val stoneBlockImagePath: String
-        /**
-         * Returns the path to the image file for the stone block.
-         *
-         * @return a string representing the path to the image file.
-         */
         get() = getImageForCurrentLevel("stone.png")
+
     val pitchImagePath: String
         get() = getImageForCurrentLevel("pitch.png")
+
     val destroyableBlockImagePath: String
-        /**
-         * Returns the path to the image file for the destroyable block.
-         *
-         * @return the path to the image file for the destroyable block.
-         */
         get() = getImageForCurrentLevel("destroyable_block.png")
+
     val borderImages: Array<Image?>
         get() {
             val SIDES = 4
@@ -81,7 +83,6 @@ abstract class Level {
             return pitch
         }
 
-
     private val allowedPerks: Array<Class<out PowerUp>>
         get() {
             return PowerUp.POWER_UPS.filterNot { it in restrictedPerks }.toTypedArray()
@@ -92,8 +93,13 @@ abstract class Level {
     val randomPowerUpClass: Class<out PowerUp>
         get() = allowedPerks.random()
 
+    open fun onAllEnemiesEliminated() {}
+    abstract fun endLevel()
+    abstract fun onDeathGameEvent()
+
     private fun updateLastLevel() {
-        if (this !is WorldSelectorLevel) currLevel = this
+        if (this !is WorldSelectorLevel)
+            currLevel = this
     }
 
     /**
@@ -127,19 +133,16 @@ abstract class Level {
         spawnEnemies()
     }
 
-    protected open val playerSpawnCoordinates: Coordinates
-        protected get() = Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET, PitchPanel.GRID_SIZE)
-
-    protected fun generatePlayer() {
-        val coords = playerSpawnCoordinates
-        Bomberman.getMatch().player = Player(coords)
-        Bomberman.getMatch().player.spawn(false, false)
+    private fun generateStone(jPanel: JPanel) {
+        GenerateStoneUseCase(jPanel).invoke()
     }
 
-    abstract fun endLevel()
+    private fun generatePlayer() {
+        GeneratePlayerUseCase().invoke()
+    }
+
     protected open fun spawnBoss() {
-        val boss = boss
-        boss?.spawn(true, false)
+        SpawnBossUseCase(boss ?: return).invoke()
     }
 
     // This method spawns enemies in the game.
@@ -148,69 +151,7 @@ abstract class Level {
     }
 
     protected fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>) {
-        // Spawn a number of enemies at the start of the game.
-        for (i in 0 until startEnemiesCount) {
-            // Select a random enemy class from the availableEnemies array.
-            val enemyClass = availableEnemies[Random().nextInt(availableEnemies.size)]
-
-            // Create an instance of the enemy class using a constructor that takes a Coordinates object as an argument.
-            var enemy: Enemy
-            try {
-                enemy = enemyClass.getConstructor().newInstance()
-
-                // Spawn the enemy on the game board.
-                enemy.spawn(false, false)
-            } catch (e: InstantiationException) {
-                e.printStackTrace()
-            } catch (e: IllegalAccessException) {
-                e.printStackTrace()
-            } catch (e: InvocationTargetException) {
-                e.printStackTrace()
-            } catch (e: NoSuchMethodException) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    // This method returns the ID of the world.
-    abstract val worldId: Int
-
-    // This method returns the ID of the level.
-    abstract val levelId: Int
-
-    abstract fun onDeathGameEvent()
-    open val maxBombs: Int
-        // This method returns the maximum number of bombs that a player can have at one time.
-        get() = BomberEntity.MAX_BOMB_CAN_HOLD
-
-    /**
-     * Generates the stone blocks in the game board for level 1.
-     *
-     * @param jPanel the JPanel where the stone blocks are to be placed.
-     */
-    private fun generateStone(jPanel: JPanel) {
-        // Set the current x and y coordinates to the top-left corner of the game board.
-        var currX = 0
-        var currY = PitchPanel.GRID_SIZE
-
-        // Loop through the game board, adding stone blocks at every other grid position.
-        while (currY < jPanel.preferredSize.getHeight() - PitchPanel.GRID_SIZE) {
-            while (currX < jPanel.preferredSize.getWidth() - PitchPanel.GRID_SIZE && currX + PitchPanel.GRID_SIZE * 2 <= jPanel.preferredSize.getWidth()) {
-                // Move the current x coordinate to the next grid position.
-                currX += PitchPanel.GRID_SIZE
-
-                // Create a new stone block at the current coordinates and spawn it on the game board.
-                StoneBlock(Coordinates(currX, currY)).spawn()
-
-                // Move the current x coordinate to the next grid position.
-                currX += PitchPanel.GRID_SIZE
-            }
-            // Move the current x coordinate back to the left side of the game board.
-            currX = 0
-
-            // Move the current y coordinate down to the next row of grid positions.
-            currY += PitchPanel.GRID_SIZE * 2
-        }
+        SpawnEnemiesUseCase(startEnemiesCount, availableEnemies).invoke()
     }
 
     private fun playLevelSound() {
@@ -234,14 +175,6 @@ abstract class Level {
         currentLevelSound!!.stop()
     }
 
-    fun despawnDestroyableBlocks() {
-        Bomberman.getMatch()
-                .entities
-                .stream()
-                .filter { entity: Entity? -> entity is DestroyableBlock }
-                .forEach { obj: Entity -> obj.despawn() }
-    }
-
     fun spawnMisteryBox() {
         val player = Bomberman.getMatch().player
         val c = Coordinates.generateCoordinatesAwayFrom(player.coords, PitchPanel.GRID_SIZE * 2)
@@ -253,30 +186,8 @@ abstract class Level {
     // This method generates destroyable blocks in the game board.
     open fun generateDestroyableBlock() {
         // Despawn all the previous destroyable blocks;
-        despawnDestroyableBlocks()
-        var block = DestroyableBlock(Coordinates(0, 0))
-
-        // Initialize a counter for the number of destroyable blocks spawned.
-        var i = 0
-
-        // Loop until the maximum number of destroyable blocks has been spawned.
-        while (i < maxDestroyableBlocks) {
-            // If the current destroyable block has not been spawned, generate new coordinates for it and spawn it on the game board.
-            if (!block.isSpawned) {
-                block.coords = Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().player.coords, PitchPanel.GRID_SIZE * 2)
-                block.spawn()
-
-                // Force the first spawned block to have the End level portal
-                if (i == 0 && !isLastLevelOfWorld && !isArenaLevel) {
-                    block.powerUpClass = EndLevelPortal::class.java
-                } else {
-                    block.powerUpClass = randomPowerUpClass
-                }
-            } else {
-                block = DestroyableBlock(Coordinates(0, 0))
-                i++
-            }
-        }
+        DespawnDestroyableBlocks().invoke()
+        GenerateDestroyableBlocksUseCase(this).invoke()
     }
 
     private fun getImageForCurrentLevel(path: String?): String = getFileForCurrentLevel("images/$path")

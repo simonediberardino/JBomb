@@ -27,6 +27,8 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
         hitboxSizeToHeightRatio = 0.733f
     }
 
+    constructor() : this(null)
+
     private fun updateBombs() {
         val maxBombs = DataInputOutput.getInstance().obtainedBombs
         UpdateCurrentAvailableBombsEvent().invoke(maxBombs)

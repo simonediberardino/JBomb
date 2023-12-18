@@ -35,8 +35,9 @@ class Clown : Boss, Explosive {
      *
      * @param coordinates The starting coordinates of the Clown entity.
      */
-    private constructor(coordinates: Coordinates) : super(coordinates)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
+    // TODO REFACTOR
     constructor() : super(null) {
         hitboxSizetoWidthRatio = RATIO_WIDTH
         hasHat = true

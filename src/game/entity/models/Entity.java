@@ -92,6 +92,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     protected abstract void doInteract(Entity e);
 
     public abstract int getSize();
+    public abstract EntityTypes getType();
+
 
     /**
      * Returns the image of the entity.
@@ -566,10 +568,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public EntityTypes getType() {
-        return EntityTypes.Entity;
     }
 
     public EntityDao toDao() {

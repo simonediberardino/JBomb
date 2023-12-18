@@ -15,8 +15,8 @@ class HttpRepository private constructor() {
         val string = HttpParserSerializer.instance.serialize(message)
 
         var sent = false
-        for (receiver in message.receivers) {
-            val sender = when(receiver) {
+        for (s in message.senders) {
+            val sender = when(s) {
                 HttpActor.SERVER -> TCPServer.instance
                 HttpActor.CLIENT -> TCPClient.instance
             } ?: continue

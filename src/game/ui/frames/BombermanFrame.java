@@ -4,7 +4,7 @@ import game.level.world1.World1Level1;
 import game.localization.Localization;
 import game.ui.pages.*;
 import game.ui.panels.menu.ProfilePanel;
-import game.ui.panels.menu.SettingsPanel;
+import game.ui.pages.SettingsPanel;
 import game.ui.panels.game.MatchPanel;
 import game.ui.panels.game.PitchPanel;
 import game.ui.viewelements.misc.ToastHandler;
@@ -40,6 +40,8 @@ public class BombermanFrame extends JFrame {
 
     private MatchPanel matchPanel;
     private MainMenuPanel mainMenuPanel;
+    private PlayMenuPanel playMenuPanel;
+    private ServersListMenuPanel serversListMenuPanel;
     private LoadingPanel loadingPanel;
     private GameOverPanel gameOverPanel;
     private PausePanel pausePanel;
@@ -55,6 +57,8 @@ public class BombermanFrame extends JFrame {
         setTitle(Localization.get(Localization.APP_NAME));
         setFrameProperties();
         initMenuPanel();
+        initPlayMenuPanel();
+        initServersListMenuPanel();
         initLoadingPanel();
         initGameOverPanel();
         initPausePanel();
@@ -86,6 +90,16 @@ public class BombermanFrame extends JFrame {
     private void initMenuPanel() {
         mainMenuPanel = new MainMenuPanel(cardLayout, parentPanel, this);
         parentPanel.add(mainMenuPanel, MainMenuPanel.class.getSimpleName());
+    }
+
+    private void initPlayMenuPanel () {
+        playMenuPanel = new PlayMenuPanel(cardLayout, parentPanel, this);
+        parentPanel.add(playMenuPanel, PlayMenuPanel.class.getSimpleName());
+    }
+
+    private void initServersListMenuPanel () {
+        serversListMenuPanel = new ServersListMenuPanel(cardLayout, parentPanel, this);
+        parentPanel.add(serversListMenuPanel, ServersListMenuPanel.class.getSimpleName());
     }
 
     private void initPausePanel() {

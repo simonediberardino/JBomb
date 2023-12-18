@@ -1,34 +1,23 @@
 package game.ui.pages;
 
 import game.Bomberman;
-import game.data.DataInputOutput;
-import game.events.models.RunnablePar;
 import game.level.WorldSelectorLevel;
-import game.level.world1.World1Level5;
-import game.level.world2.World2Level3;
-import game.level.world2.World2Level5;
 import game.ui.frames.BombermanFrame;
-import game.ui.panels.menu.AvatarMenuPanel;
 import game.ui.panels.menu.ProfilePanel;
-import game.ui.panels.menu.SettingsPanel;
-import game.ui.panels.menu.UsernameProfilePanel;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;
-import game.utils.Paths;
-import game.utils.XMLUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static game.localization.Localization.*;
 
 /**
  * The MenuPanel class represents the main menu screen of the game.
  */
-public class MainMenuPanel extends BaseMenu {
+public class MainMenuPanel extends AbstractMainMenuPanel {
     /**
      * Constructs a MenuPanel with the specified CardLayout, parent JPanel, and BombermanFrame.
      *
@@ -47,76 +36,15 @@ public class MainMenuPanel extends BaseMenu {
 
     @Override
     protected List<JButton> getButtons() {
-        return Arrays.asList(createStartLevelButton(), createStartArenaButton(), createProfileButton(), createSettingsButton(), createQuitButton());
-    }
-
-    @Override
-    protected JPanel getRightPanel() {
-        String[] avatarPaths = XMLUtils.parseXmlArray(Paths.INSTANCE.getSkinsXml(), "skins");
-        assert avatarPaths != null;
-
-        RunnablePar getSkinRunnable = new RunnablePar() {
-            @Override
-            public <T> Object execute(T par) {
-                return Paths.INSTANCE.getEntitiesFolder() + "/player/" + DataInputOutput.getInstance().getSkin();
-            }
-        };
-
-        // Define a Consumer to handle the skin change
-        Consumer<Integer> skinChangeConsumer = indexAdder -> {
-            String currAvatar = (String) getSkinRunnable.execute(null);
-
-            int newIndex = 0;
-            for (int i = 0; i < avatarPaths.length; i++) {
-                String avatarPath = avatarPaths[i];
-                if (currAvatar.endsWith("/" + avatarPath)) {
-                    newIndex = i + indexAdder;
-                    break;
-                }
-            }
-
-            if (newIndex >= avatarPaths.length) {
-                newIndex = 0;
-            } else if (newIndex < 0) {
-                newIndex = avatarPaths.length - 1;
-            }
-
-            DataInputOutput.getInstance().setSkin(avatarPaths[newIndex]);
-        };
-
-        return new AvatarMenuPanel(getSkinRunnable, skinChangeConsumer);
-    }
-
-    @Override
-    protected JPanel getLeftPanel() {
-        RunnablePar getUsernameRunnable = new RunnablePar() {
-            @Override
-            public <T> Object execute(T par) {
-                return DataInputOutput.getInstance().getUsername();
-            }
-        };
-
-        // Define a Consumer to handle the username change
-        Consumer<String> usernameChangeConsumer = username -> {
-            if (username.isBlank()) return;
-            DataInputOutput.getInstance().setUsername(username.trim());
-        };
-
-        return new UsernameProfilePanel(getUsernameRunnable, usernameChangeConsumer);
+        return Arrays.asList(createPlayButton(), createProfileButton(), createSettingsButton(), createQuitButton());
     }
 
     /**
      * Creates the startLevelButton and adds it to the listButtonsPanel.
      */
-    private JButton createStartLevelButton() {
+    private JButton createPlayButton() {
         JButton startLevelButton = new YellowButton(get(PLAY));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel()));
-        return startLevelButton;
-    }
-
-    private JButton createStartArenaButton() {
-        JButton startLevelButton = new YellowButton(get(START_ARENA));
-        startLevelButton.addActionListener((v) -> Bomberman.showActivity(ArenaMenuPanel.class));
+        startLevelButton.addActionListener((v) -> Bomberman.showActivity(PlayMenuPanel.class));
         return startLevelButton;
     }
 

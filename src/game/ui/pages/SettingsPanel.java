@@ -1,4 +1,4 @@
-package game.ui.panels.menu;
+package game.ui.pages;
 
 import game.data.DataInputOutput;
 import game.events.models.RunnablePar;

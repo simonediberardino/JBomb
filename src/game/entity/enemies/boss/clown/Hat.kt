@@ -16,6 +16,8 @@ open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?)
         maxHp = 300
     }
 
+    constructor() : this(null, null)
+
     override fun getBasePath(): String {
         return "${Paths.enemiesFolder}/clown/hat"
     }

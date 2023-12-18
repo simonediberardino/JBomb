@@ -5,6 +5,7 @@ import game.entity.blocks.InvisibleBlock
 import game.entity.enemies.boss.Boss
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
+import game.level.functionalities.GeneratePlayerUseCase
 import game.localization.Localization
 import game.powerups.portal.Portal
 import game.powerups.portal.World1Portal
@@ -99,7 +100,7 @@ class WorldSelectorLevel : StoryLevel() {
 
     override fun generateEntities(jPanel: JPanel) {
         generateInvisibleBlock()
-        generatePlayer()
+        GeneratePlayerUseCase().invoke()
         generatePortals()
     }
 
@@ -121,8 +122,6 @@ class WorldSelectorLevel : StoryLevel() {
         worldPortals.forEach { it.spawn(true, false) }
     }
 
-    override val playerSpawnCoordinates: Coordinates
-        get() = Coordinates.fromRowAndColumnsToCoordinates(Dimension(5, 2), 0, 0)
     override val maxBombs: Int
         // This method returns the maximum number of bombs that a player can have at one time.
         get() = 0

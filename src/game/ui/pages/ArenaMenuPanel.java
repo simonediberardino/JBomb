@@ -14,7 +14,7 @@ import java.util.List;
 
 import static game.localization.Localization.*;
 
-public class ArenaMenuPanel extends BaseMenu {
+public class ArenaMenuPanel extends AbstractMainMenuPanel {
     public ArenaMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
         super(cardLayout, parent, frame);
     }
@@ -27,16 +27,6 @@ public class ArenaMenuPanel extends BaseMenu {
     @Override
     protected List<JButton> getButtons() {
         return Arrays.asList(createArenaWorld1Button(), createArenaWorld2Button(), createBackButton());
-    }
-
-    @Override
-    protected JPanel getRightPanel() {
-        return null;
-    }
-
-    @Override
-    protected JPanel getLeftPanel() {
-        return null;
     }
 
     private JButton createArenaWorld1Button() {
@@ -52,8 +42,8 @@ public class ArenaMenuPanel extends BaseMenu {
     }
 
     private JButton createBackButton() {
-        JButton b = new RedButton(get(MAIN_MENU));
-        b.addActionListener(l -> Bomberman.showActivity(MainMenuPanel.class));
+        JButton b = new RedButton(get(BACK));
+        b.addActionListener(l -> Bomberman.showActivity(PlayMenuPanel.class));
         return b;
     }
 

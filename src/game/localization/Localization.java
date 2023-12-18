@@ -133,7 +133,18 @@ public class Localization {
         put(Locale.ITALY, "MENU PRINCIPALE");
     }};
 
+    public static final HashMap<Locale, String> BACK = new HashMap<>() {{
+        put(Locale.ENGLISH, "BACK");
+        put(Locale.ITALY, "INDIETRO");
+    }};
+
+
     public static final HashMap<Locale, String> PLAY = new HashMap<>() {{
+        put(Locale.ENGLISH, "PLAY");
+        put(Locale.ITALY, "GIOCA");
+    }};
+
+    public static final HashMap<Locale, String> PLAY_CAMPAIGN = new HashMap<>() {{
         put(Locale.ENGLISH, "PLAY STORYMODE");
         put(Locale.ITALY, "GIOCA CAMPAGNA");
     }};
@@ -143,6 +154,10 @@ public class Localization {
         put(Locale.ITALY, "GIOCA ARENA");
     }};
 
+    public static final HashMap<Locale, String> PLAY_ONLINE = new HashMap<>() {{
+        put(Locale.ENGLISH, "JOIN AN ONLINE GAME");
+        put(Locale.ITALY, "GIOCA ONLINE");
+    }};
     public static final HashMap<Locale, String> PROFILE = new HashMap<>() {{
         put(Locale.ENGLISH, "SHOW PROFILE");
         put(Locale.ITALY, "VISUALIZZA PROFILO");
