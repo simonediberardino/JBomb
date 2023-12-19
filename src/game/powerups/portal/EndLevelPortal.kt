@@ -7,7 +7,6 @@ import game.entity.models.Coordinates
 import game.level.WorldSelectorLevel
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
-import java.lang.reflect.InvocationTargetException
 
 class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
     override fun getImage(): BufferedImage {
@@ -33,9 +32,9 @@ class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
         DataInputOutput.getInstance().increaseLives()
 
         try {
-            val nextLevelClass = if (currentLevel.isLastLevelOfWorld)
+            val nextLevelClass = if (currentLevel.info.isLastLevelOfWorld)
                 WorldSelectorLevel::class.java
-            else currentLevel.nextLevel
+            else currentLevel.info.nextLevel
 
             Bomberman.startLevel(nextLevelClass!!.getDeclaredConstructor().newInstance())
         } catch (e: Exception) {

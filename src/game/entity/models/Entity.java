@@ -92,7 +92,9 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     protected abstract void doInteract(Entity e);
 
     public abstract int getSize();
-    public abstract EntityTypes getType();
+    public EntityTypes getType(){
+        return EntityTypes.Player;
+    }
 
 
     /**
@@ -239,7 +241,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     public final void spawn() {
         spawn(false, true);
     }
-
 
     public final void spawn(boolean forceSpawn) {
         spawn(forceSpawn, true);

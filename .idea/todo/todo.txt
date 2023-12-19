@@ -5,3 +5,4 @@ high priorities:
 - fix death logo;
 - database
 - multiplayer
+- entity types

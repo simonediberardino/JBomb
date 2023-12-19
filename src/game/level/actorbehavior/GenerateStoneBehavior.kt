@@ -1,20 +1,17 @@
-package game.level.functionalities
+package game.level.actorbehavior
 
 import game.entity.blocks.StoneBlock
 import game.entity.models.Coordinates
-import game.multiplayer.HostBehavior
 import game.ui.panels.game.PitchPanel
 import javax.swing.JPanel
 
-class GenerateStoneUseCase(val jPanel: JPanel) : LevelUseCase {
-    override fun invoke() {
-        val hostBehavior = object: HostBehavior {
-            override fun executeHostLogic() {
-                generateStone(jPanel)
-            }
-        }
+class GenerateStoneBehavior(private val field: JPanel) : GameBehavior {
+    override fun hostBehavior(): () -> Unit {
+        return { generateStone(field) }
+    }
 
-        hostBehavior.executeHostLogic()
+    override fun clientBehavior(): (() -> Unit) {
+        return {}
     }
 
     private fun generateStone(jPanel: JPanel) {

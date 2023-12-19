@@ -5,45 +5,56 @@ import game.entity.blocks.InvisibleBlock
 import game.entity.enemies.boss.Boss
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
-import game.level.functionalities.GeneratePlayerUseCase
+import game.level.actorbehavior.GameBehavior
+import game.level.actorbehavior.GeneratePlayerBehavior
+import game.level.gamehandler.imp.DefaultGameHandler
+import game.level.gamehandler.model.GameHandler
+import game.level.info.model.DefaultLevelInfo
+import game.level.info.model.LevelInfo
 import game.localization.Localization
 import game.powerups.portal.Portal
 import game.powerups.portal.World1Portal
 import game.powerups.portal.World2Portal
-import game.powerups.portal.WorldPortal
 import game.ui.panels.game.PitchPanel
 import java.awt.Dimension
-import java.lang.reflect.InvocationTargetException
-import java.util.function.Consumer
-import java.util.stream.Collectors
-import javax.swing.JPanel
 
 class WorldSelectorLevel : StoryLevel() {
-    override val worldId: Int
-        get() = 0
-    override val levelId: Int
-        get() = 0
-
-    override val startEnemiesCount: Int
-        get() {
-            return 0
+    override val info: LevelInfo
+        get() = object : DefaultLevelInfo(this) {
+            override val worldId: Int get() = 0
+            override val levelId: Int get() = 0
+            override val startEnemiesCount: Int get() = 0
+            override val maxBombs: Int get() = 0
+            override val maxDestroyableBlocks: Int get() = 0
+            override val isArenaLevel: Boolean get() = false
+            override val diedMessage: String? get() = null
+            override val nextLevel: Class<out Level?>? get() = null
+            override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf()
+            override val boss: Boss? get() = null
+            override val playerSpawnCoordinates: Coordinates
+                get() = Coordinates.fromRowAndColumnsToCoordinates(Dimension(5, 2), 0, 0)
         }
 
-    override val maxDestroyableBlocks: Int
-        get() = 0
-    override val nextLevel: Class<out Level?>?
-        get() = null
+    override val gameHandler: GameHandler
+        get() = object : DefaultGameHandler(this) {
+            override fun generate() {
+                object : GameBehavior {
+                    override fun hostBehavior(): () -> Unit {
+                        return {
+                            generateInvisibleBlock()
+                            GeneratePlayerBehavior(info.playerSpawnCoordinates).invoke()
+                            generatePortals()
+                        }
+                    }
 
-    override val availableEnemies: Array<Class<out Enemy>>
-        get() {
-            return arrayOf()
+                    override fun clientBehavior(): () -> Unit {
+                        return { }
+                    }
+                }.invoke()
+            }
         }
 
-    override val boss: Boss?
-        get() = null
-
-    public override fun spawnEnemies() {}
-    fun generateInvisibleBlock() {
+    private fun generateInvisibleBlock() {
         //BORDER INVISIBLE BLOCKS COLUMNS
         run {
             var i = 0
@@ -98,12 +109,6 @@ class WorldSelectorLevel : StoryLevel() {
         InvisibleBlock(Coordinates.fromRowAndColumnsToCoordinates(Dimension(10, 2), -PitchPanel.GRID_SIZE / 6, +PitchPanel.GRID_SIZE / 2)).spawn(true, false)
     }
 
-    override fun generateEntities(jPanel: JPanel) {
-        generateInvisibleBlock()
-        GeneratePlayerUseCase().invoke()
-        generatePortals()
-    }
-
     private fun generatePortals() {
         val lastWorldId = 1.coerceAtLeast(DataInputOutput.getInstance().lastWorldId)
 
@@ -121,10 +126,6 @@ class WorldSelectorLevel : StoryLevel() {
 
         worldPortals.forEach { it.spawn(true, false) }
     }
-
-    override val maxBombs: Int
-        // This method returns the maximum number of bombs that a player can have at one time.
-        get() = 0
 
     override fun toString(): String {
         return Localization.get(Localization.ISLAND)

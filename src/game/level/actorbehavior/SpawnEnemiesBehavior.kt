@@ -1,21 +1,17 @@
-package game.level.functionalities
+package game.level.actorbehavior
 
 import game.entity.models.Enemy
-import game.entity.models.Entity
-import game.level.Level
-import game.multiplayer.HostBehavior
-import java.lang.reflect.InvocationTargetException
 import java.util.*
 
-class SpawnEnemiesUseCase(val startEnemiesCount: Int, val availableEnemies: Array<Class<out Enemy>>): LevelUseCase {
-    override fun invoke() {
-        val hostBehavior = object: HostBehavior {
-            override fun executeHostLogic() {
-                spawnEnemies()
-            }
+class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Array<Class<out Enemy>>): GameBehavior {
+    override fun hostBehavior(): () -> Unit {
+        return {
+            spawnEnemies()
         }
+    }
 
-        hostBehavior.executeHostLogic()
+    override fun clientBehavior(): () -> Unit {
+        return {}
     }
 
     private fun spawnEnemies() {

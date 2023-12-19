@@ -6,6 +6,6 @@ import game.events.models.GameEvent
 
 class ScoreGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getMatch().currentLevel.onScoreGameEvent(arg as Int)
+        Bomberman.getMatch().currentLevel.eventHandler.onScoreGameEvent(arg as Int)
     }
 }

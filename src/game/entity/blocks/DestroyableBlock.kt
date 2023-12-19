@@ -9,7 +9,6 @@ import game.powerups.portal.EndLevelPortal
 import game.utils.Utility
 import java.awt.image.BufferedImage
 import java.lang.Exception
-import java.lang.reflect.InvocationTargetException
 
 class DestroyableBlock(
         coordinates: Coordinates?,
@@ -26,7 +25,7 @@ class DestroyableBlock(
     override fun doInteract(e: Entity?) {}
 
     override fun getImage(): BufferedImage {
-        return loadAndSetImage(Bomberman.getMatch().currentLevel.destroyableBlockImagePath)
+        return loadAndSetImage(Bomberman.getMatch().currentLevel.info.destroyableBlockImagePath)
     }
 
     override fun onDespawn() {
@@ -35,12 +34,16 @@ class DestroyableBlock(
             return
         }
 
-        val spawnPercentage = if (powerUpClass == EndLevelPortal::class.java) 100 else POWER_UP_SPAWN_CHANGE
+        val spawnPercentage = if (powerUpClass == EndLevelPortal::class.java)
+            100
+        else
+            POWER_UP_SPAWN_CHANGE
+
         Utility.runPercentage(spawnPercentage) {
             val powerUp: PowerUp
             try {
                 powerUp = powerUpClass!!.getConstructor(Coordinates::class.java).newInstance(coords)
-                powerUp.spawn(true, true)
+                powerUp.spawn(true)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

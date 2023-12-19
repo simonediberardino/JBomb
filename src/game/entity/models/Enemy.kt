@@ -25,7 +25,7 @@ abstract class Enemy(coordinates: Coordinates?) : Character(coordinates) {
         super.onDespawn()
         val match = Bomberman.getMatch() ?: return
         match.decreaseEnemiesAlive()
-        match.gameTickerObservable.unregister(this)
+        (match.gameTickerObservable ?: return).unregister(this)
         EnemyDespawnedGameEvent().invoke(null)
     }
 

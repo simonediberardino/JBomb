@@ -4,6 +4,6 @@ import game.utils.Paths;
 
 public class InventoryElementControllerLives extends InventoryElementController {
     public InventoryElementControllerLives() {
-        super(0, Paths.INSTANCE.getPowerUpsFolder() + "/lives_up.png");
+        super(0, Paths.powerUpsFolder + "/lives_up.png");
     }
 }

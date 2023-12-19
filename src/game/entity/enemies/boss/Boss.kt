@@ -24,7 +24,7 @@ abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
     }
 
     init {
-        super.setMaxHp(Bomberman.getMatch().currentLevel.bossMaxHealth)
+        super.setMaxHp(Bomberman.getMatch().currentLevel.info.bossMaxHealth)
         super.setAttackDamage(1000)
     }
 
@@ -53,7 +53,7 @@ abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
     override fun onDespawn() {
         super.onDespawn()
         val endLevelPortal: PowerUp = EndLevelPortal(Coordinates.generateCoordinatesAwayFromPlayer())
-        endLevelPortal.spawn(true, true)
+        endLevelPortal.spawn(true)
     }
 
     /**

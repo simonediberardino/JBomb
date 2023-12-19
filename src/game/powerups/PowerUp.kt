@@ -126,7 +126,6 @@ abstract class PowerUp
 
     companion object {
         // A static array of power-up classes
-        @JvmField
         val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
                 PistolPowerUp::class.java,
                 ArmorPowerUp::class.java,

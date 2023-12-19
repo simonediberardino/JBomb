@@ -20,7 +20,7 @@ class IncreaseMaxBombsPowerUp
     override val duration: Int = 0
 
     override fun doApply(entity: BomberEntity) {
-        UpdateMaxBombsEvent().invoke((entity?.currentBombs ?: return) + 1)
+        UpdateMaxBombsEvent().invoke(entity.currentBombs + 1)
     }
 
     override fun cancel(entity: BomberEntity) {
@@ -28,5 +28,5 @@ class IncreaseMaxBombsPowerUp
     }
 
     override fun canPickUp(entity: BomberEntity): Boolean =
-            DataInputOutput.getInstance().obtainedBombs < Bomberman.getMatch().currentLevel.maxBombs
+            DataInputOutput.getInstance().obtainedBombs < Bomberman.getMatch().currentLevel.info.maxBombs
 }

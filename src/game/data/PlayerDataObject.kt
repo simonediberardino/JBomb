@@ -58,8 +58,8 @@ internal class PlayerDataObject(
     }
 
     fun setLastLevel(lastLevel: Level) {
-        lastLevelId = lastLevel.levelId
-        lastWorldId = lastLevel.worldId
+        lastLevelId = lastLevel.info.levelId
+        lastWorldId = lastLevel.info.worldId
     }
 
     override fun toString(): String {

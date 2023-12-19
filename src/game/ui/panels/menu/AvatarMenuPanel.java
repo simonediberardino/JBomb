@@ -25,6 +25,7 @@ public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
     private JButton imageLabel;
     private int avatarIndex = 0;
     private long lastRefreshTime = 0;
+    private long lastRepaintTime = 0;
     private int currDirectionIndex = 0;
 
     public AvatarMenuPanel(RunnablePar getSkinRunnable, Consumer<Integer> callback) {
@@ -46,6 +47,7 @@ public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
             if (currDirectionIndex >= Direction.values().length) {
                 currDirectionIndex = 0;
             }
+
             repaint();
         });
         super.initializeLayout();
@@ -110,10 +112,16 @@ public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (System.currentTimeMillis() - lastRefreshTime > DIRECTION_REFRESH_RATE)
-            refresh();
+        if (Utility.INSTANCE.timePassed(lastRefreshTime) <= DIRECTION_REFRESH_RATE) {
+            return;
+        }
+        refresh();
+        javax.swing.Timer timer = new javax.swing.Timer(DIRECTION_REFRESH_RATE, (e) -> {
+            repaint();
+        });
 
-        repaint();
+        timer.setRepeats(false);
+        timer.start();
     }
 
     private void updateImageAvatar() {

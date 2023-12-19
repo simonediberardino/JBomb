@@ -50,7 +50,7 @@ public class DataInputOutput {
             // Creates a data file if still does not exist;
             Files.createDirectories(java.nio.file.Paths.get(Paths.dataFolder));
 
-            File dataFile = new File(Paths.INSTANCE.getPlayerDataPath());
+            File dataFile = new File(Paths.playerDataPath);
 
             dataFile.createNewFile();
             FileOutputStream fileOut = new FileOutputStream(dataFile, false);
@@ -64,7 +64,7 @@ public class DataInputOutput {
 
     public PlayerDataObject getStoredPlayerData() {
         try {
-            FileInputStream fileIn = new FileInputStream(Paths.INSTANCE.getPlayerDataPath());
+            FileInputStream fileIn = new FileInputStream(Paths.playerDataPath);
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
             PlayerDataObject obj = (PlayerDataObject) objectIn.readObject();
@@ -204,8 +204,8 @@ public class DataInputOutput {
     }
 
     public void setLastLevel(Level level) {
-        if (playerDataObject.lastWorldId > level.getWorldId()) return;
-        if (playerDataObject.lastWorldId == level.getWorldId() && playerDataObject.lastLevelId >= level.getLevelId())
+        if (playerDataObject.lastWorldId > level.getInfo().getWorldId()) return;
+        if (playerDataObject.lastWorldId == level.getInfo().getWorldId() && playerDataObject.lastLevelId >= level.getInfo().getLevelId())
             return;
         playerDataObject.setLastLevel(level);
         updateStoredPlayerData();

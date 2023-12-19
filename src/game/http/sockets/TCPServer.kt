@@ -21,6 +21,7 @@ class TCPServer(private var port: Int) : TCPSocket {
             val writer = PrintWriter(clientSocket.getOutputStream(), true)
 
             while (true) {
+                // Reads the stream from the client;
                 val clientData = reader.readLine()
 
                 if (clientData == null) {

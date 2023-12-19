@@ -8,45 +8,20 @@ import game.entity.enemies.npcs.FastEnemy
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
 import game.level.Level
+import game.level.StoryLevel
 import game.level.WorldSelectorLevel
-import game.ui.panels.game.PitchPanel
-import java.awt.Dimension
+import game.level.info.model.LevelInfo
+import game.level.info.imp.World2levelInfo
 
-class World2Level5 : World2Level() {
-    override val levelId: Int
-        get() {
-            return 5
-        }
-
-    override val boss: Boss
-        get() {
-            return Clown()
-        }
-
-    override val startEnemiesCount: Int
-        get() {
-            return 7
-        }
-
-    override val availableEnemies: Array<Class<out Enemy>>
-        get() {
-            return arrayOf(
-                    FastEnemy::class.java,
-                    Eagle::class.java)
-        }
-
-    override val isLastLevelOfWorld: Boolean
-        get() {
-            return true
-        }
-
-    override val nextLevel: Class<out Level?>
-        get() {
-            return WorldSelectorLevel::class.java
-        }
-
-    override val playerSpawnCoordinates: Coordinates
-        get() {
-            return Coordinates.roundCoordinates(Coordinates(0, 0), Player.SPAWN_OFFSET)
+class World2Level5 : StoryLevel() {
+    override val info: LevelInfo
+        get() = object: World2levelInfo(this) {
+            override val levelId: Int get() = 5
+            override val boss: Boss get() = Clown()
+            override val startEnemiesCount: Int get() = 7
+            override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(FastEnemy::class.java, Eagle::class.java)
+            override val isLastLevelOfWorld: Boolean get() = true
+            override val nextLevel: Class<out Level?> get() = WorldSelectorLevel::class.java
+            override val playerSpawnCoordinates: Coordinates get() = Coordinates.roundCoordinates(Coordinates(0, 0), Player.SPAWN_OFFSET)
         }
 }

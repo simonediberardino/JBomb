@@ -11,6 +11,7 @@ import game.hardwareinput.MouseControllerManager;
 import game.items.BombItem;
 import game.items.UsableItem;
 import game.level.Level;
+import game.level.actorbehavior.PlayLevelSoundTrackBehavior;
 import game.tasks.GamePausedObserver;
 import game.tasks.GameTickerObservable;
 import game.ui.panels.game.MatchPanel;
@@ -62,7 +63,7 @@ public class BomberManMatch {
         inventoryElementControllerPoints = new InventoryElementControllerPoints();
         inventoryElementControllerBombs = new InventoryElementControllerBombs();
 
-        if (currentLevel.isArenaLevel()) {
+        if (currentLevel.getInfo().isArenaLevel()) {
             inventoryElementControllerRounds = new InventoryElementControllerRounds();
         } else {
             inventoryElementControllerLives = new InventoryElementControllerLives();
@@ -174,7 +175,7 @@ public class BomberManMatch {
         Bomberman.showActivity(MatchPanel.class);
 
         if (currentLevel != null)
-            currentLevel.playSoundTrack();
+            new PlayLevelSoundTrackBehavior(currentLevel).invoke();
     }
 
     public int getEnemiesAlive() {
@@ -223,8 +224,8 @@ public class BomberManMatch {
 
         Bomberman.getBombermanFrame().getPitchPanel().clearGraphicsCallback();
 
-        if (this.currentLevel != null) {
-            this.currentLevel.stopLevelSound();
+        if (this.currentLevel != null && this.currentLevel.getCurrentLevelSound() != null) {
+            this.currentLevel.getCurrentLevelSound().stop();
         }
 
         this.player = null;

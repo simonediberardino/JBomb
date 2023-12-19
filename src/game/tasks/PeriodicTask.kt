@@ -29,6 +29,6 @@ class PeriodicTask(private val callback: Runnable, private val delay: Int) {
     }
 
     fun stop() {
-        timer?.stop()
+        timer.stop()
     }
 }

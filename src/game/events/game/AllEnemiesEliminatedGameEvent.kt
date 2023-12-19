@@ -5,6 +5,6 @@ import game.events.models.GameEvent
 
 class AllEnemiesEliminatedGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getMatch().currentLevel.onAllEnemiesEliminated()
+        Bomberman.getMatch().currentLevel.eventHandler.onAllEnemiesEliminated()
     }
 }

@@ -2,6 +2,7 @@ package game.ui.pages;
 
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
+import game.level.world2.World2Level5;
 import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;

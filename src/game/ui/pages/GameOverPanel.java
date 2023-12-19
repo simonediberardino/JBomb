@@ -28,7 +28,7 @@ public class GameOverPanel extends BaseMenu {
      * @param frame      the BombermanFrame
      */
     public GameOverPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
-        super(cardLayout, parent, frame, Paths.INSTANCE.getDeathWallpaper());
+        super(cardLayout, parent, frame, Paths.deathWallpaper);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class GameOverPanel extends BaseMenu {
 
     private void showToastMessage() {
         Level lastLevel = Level.Companion.getCurrLevel();
-        String diedMessage = lastLevel.getDiedMessage();
+        String diedMessage = lastLevel.getInfo().getDiedMessage();
         ToastHandler.getInstance().show(diedMessage, true, true);
     }
 

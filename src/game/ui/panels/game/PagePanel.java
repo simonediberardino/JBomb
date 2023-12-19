@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class PagePanel extends JPanel {
-    protected final ToastHandler toastHandler = ToastHandler.getInstance();
     protected final JPanel parent;
     protected final CardLayout cardLayout;
     protected final BombermanFrame frame;
@@ -35,10 +34,6 @@ public abstract class PagePanel extends JPanel {
         if (width != 0 && height != 0) {
             g.drawImage(backgroundImage.getScaledInstance(width, height, 1), 0, 0, null);
         }
-    }
-
-    public ToastHandler getToastHandler() {
-        return toastHandler;
     }
 
     public abstract void onShowCallback();
