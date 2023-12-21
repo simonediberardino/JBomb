@@ -4,7 +4,7 @@ import game.Bomberman
 import game.data.DataInputOutput
 import game.entity.models.BomberEntity
 import game.events.game.AllEnemiesEliminatedGameEvent
-import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.events.game.UpdateCurrentAvailableItemsEvent
 import game.level.eventhandler.model.LevelEventHandler
 import game.sound.AudioManager
 import game.sound.SoundModel
@@ -45,7 +45,7 @@ open class DefaultLevelEventHandler: LevelEventHandler {
 
     override fun onUpdateMaxBombsGameEvent(arg: Int) {
         DataInputOutput.getInstance().increaseObtainedBombs()
-        UpdateCurrentAvailableBombsEvent().invoke(arg)
+        UpdateCurrentAvailableItemsEvent().invoke(arg)
     }
 
     override fun onUpdateBombsLengthEvent(entity: BomberEntity, arg: Int) {

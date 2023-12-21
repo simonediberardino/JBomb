@@ -13,23 +13,14 @@ class GhostEnemy : IntelligentEnemy() {
         hitboxSizeToHeightRatio = 1f
     }
 
-    override fun getCharacterOrientedImages(): Array<String> {
-        return arrayOf("$enemiesFolder/mini_ghost/ghost_${imageDirection.toString().lowercase()}.png")
-    }
+    override fun getCharacterOrientedImages(): Array<String> =
+            arrayOf("$enemiesFolder/mini_ghost/ghost_${imageDirection.toString().lowercase()}.png")
 
-    override fun getImageDirections(): List<Direction> {
-        return listOf(Direction.RIGHT, Direction.LEFT)
-    }
+    override fun getImageDirections(): List<Direction> = listOf(Direction.RIGHT, Direction.LEFT)
 
-    override fun getObstacles(): Set<Class<out Entity?>> {
-        return interactionsEntities
-    }
+    override fun getObstacles(): Set<Class<out Entity?>> = interactionsEntities
 
-    override fun getSize(): Int {
-        return PitchPanel.COMMON_DIVISOR * 2
-    }
+    override fun getSize(): Int = PitchPanel.COMMON_DIVISOR * 2
 
-    override fun getType(): EntityTypes {
-        return EntityTypes.GhostEnemy
-    }
+    override fun getType(): EntityTypes = EntityTypes.GhostEnemy
 }

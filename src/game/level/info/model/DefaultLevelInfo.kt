@@ -13,7 +13,6 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
     override val maxBombs: Int get() = BomberEntity.MAX_BOMB_CAN_HOLD
     override val levelSoundtrack: String get() = level.fileSystemHandler.getSoundForCurrentLevel("soundtrack.wav")
     override val levelBackgroundSound: String get() = level.fileSystemHandler.getSoundForCurrentLevel("background_sound.wav")
-    override val explosionLength: Int get() = DataInputOutput.getInstance().explosionLength
     override val stoneBlockImagePath: String get() = level.fileSystemHandler.getImageForCurrentLevel("stone.png")
     override val pitchImagePath: String get() = level.fileSystemHandler.getImageForCurrentLevel("pitch.png")
     override val destroyableBlockImagePath: String get() = level.fileSystemHandler.getImageForCurrentLevel("destroyable_block.png")

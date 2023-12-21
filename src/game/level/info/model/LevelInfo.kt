@@ -8,12 +8,19 @@ import game.entity.models.Enemy
 import game.level.Level
 import game.powerups.PowerUp
 
+/**
+ * Abstract base class that is used to represent all the info of a Level instance;
+ */
 abstract class LevelInfo {
+    // Default max health of a Boss
     abstract val bossMaxHealth: Int
+    // Default limit of bombs that can picked up
     abstract val maxBombs: Int
+    // Loop soundtrack of the level
     abstract val levelSoundtrack: String
+    // Loop background sound of the level: e.g. noise in the background etc.
     abstract val levelBackgroundSound: String?
-    abstract val explosionLength: Int
+
     abstract val stoneBlockImagePath: String
     abstract val pitchImagePath: String
     abstract val destroyableBlockImagePath: String

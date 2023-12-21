@@ -43,9 +43,25 @@ abstract class Orb : Enemy {
         this.direction = direction
     }
 
-    override fun getSize(): Int {
-        return SIZE
-    }
+    override fun getSpeed(): Float = 1.5f
+
+    override fun getSize(): Int = SIZE
+
+    /**
+     * Returns the set of interaction entities for the Orb.
+     *
+     * @return the set of interaction entities for the Orb
+     */
+    override fun getInteractionsEntities(): Set<Class<out Entity>> = hashSetOf(Player::class.java, Bomb::class.java)
+
+    /**
+     * Returns whether the given entity is an obstacle.
+     *
+     * @param e the entity to check
+     * @return true if the entity is null, false otherwise
+     */
+    //
+    override fun isObstacle(e: Entity?): Boolean = e == null
 
     /**
      * Performs an interaction with the given entity.
@@ -63,30 +79,12 @@ abstract class Orb : Enemy {
     }
 
     /**
-     * Returns the set of interaction entities for the Orb.
-     *
-     * @return the set of interaction entities for the Orb
-     */
-    override fun getInteractionsEntities(): Set<Class<out Entity>> {
-        return HashSet<Class<out Entity>>(Arrays.asList(Player::class.java, Bomb::class.java))
-    }
-
-    /**
-     * Returns whether the given entity is an obstacle.
-     *
-     * @param e the entity to check
-     * @return true if the entity is null, false otherwise
-     */
-    //
-    override fun isObstacle(e: Entity?): Boolean {
-        return e == null
-    }
-
-    /**
      * Moves the Orb in the appropriate direction or directions.
      */
     private fun moveOrb() {
-        if (!canMove || !isAlive) return
+        if (!canMove || !isAlive)
+            return
+
         if (enhancedDirection == null) {
             move(direction)
             return
@@ -94,10 +92,6 @@ abstract class Orb : Enemy {
         for (d in enhancedDirection!!.toDirection()) {
             moveOrInteract(d)
         }
-    }
-
-    override fun getSpeed(): Float {
-        return 1.5f
     }
 
     override fun doUpdate(gameState: Boolean) {

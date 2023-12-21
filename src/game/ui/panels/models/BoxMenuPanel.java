@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class BoxMenuPanel extends PagePanel {
-    // Panels
     protected JBombermanBoxContainerPanel boxComponentsPanel;
     protected final String title;
 
@@ -20,9 +19,6 @@ public abstract class BoxMenuPanel extends PagePanel {
 
     protected abstract int getBoxPanelWidth();
 
-    /**
-     * Sets up the layout of the panel.
-     */
     private void initializeLayout() {
         setLayout(new GridBagLayout());
 
@@ -44,10 +40,6 @@ public abstract class BoxMenuPanel extends PagePanel {
 
     protected abstract void addCustomElements();
 
-    /**
-     * Implementation of the onShowCallback() method in the PagePanel superclass.
-     * Clears the componentsPanel and adds the stats settings elements again.
-     */
     @Override
     public void onShowCallback() {
         boxComponentsPanel.refresh();

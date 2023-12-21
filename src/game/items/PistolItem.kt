@@ -11,6 +11,7 @@ import game.entity.models.Coordinates
 import game.entity.models.Enemy
 import game.entity.models.Entity
 import game.entity.models.Explosive
+import game.events.game.UpdateCurrentAvailableItemsEvent
 import game.sound.AudioManager
 import game.sound.SoundModel
 import game.utils.Paths.itemsPath
@@ -30,24 +31,27 @@ class PistolItem : UsableItem(), Explosive {
                 Bomb::class.java
         )
 
+    override val imagePath: String
+        get() = "$itemsPath/pistol.png"
+
+    override val count: Int
+        get() = bullets
+
     override val maxExplosionDistance: Int
-        get() {
-            return 3
-        }
+        get() = 3
 
-    fun setBullets(i: Int) {
+    private fun setBullets(i: Int) {
         bullets = i
-        Bomberman.getMatch().updateInventoryWeaponController()
+        UpdateCurrentAvailableItemsEvent().invoke(bullets)
     }
 
-    fun addBullets(i: Int) {
-        setBullets(bullets + i)
-    }
+    private fun addBullets(i: Int) = setBullets(bullets + i)
 
     override fun use() {
         if (timePassed(owner.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
             return
         }
+
         owner.lastPlacedBombTime = System.currentTimeMillis()
         addBullets(-1)
 
@@ -69,14 +73,4 @@ class PistolItem : UsableItem(), Explosive {
     override fun combineItems(item: UsableItem) {
         addBullets((item as PistolItem).bullets)
     }
-
-    override val imagePath: String
-        get() {
-            return "$itemsPath/pistol.png"
-        }
-
-    override val count: Int
-        get() {
-            return bullets
-        }
 }

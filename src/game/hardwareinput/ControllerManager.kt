@@ -15,12 +15,12 @@ import java.awt.event.KeyListener
  */
 class ControllerManager : Observable2(), KeyListener {
     // Stores the time of the last key event for each command
-    private val commandEventsTime: MutableMap<Command?, Long> = HashMap()
-    private var player: Player? = null
+    private val commandEventsTime: MutableMap<Command?, Long> = hashMapOf()
+    var player: Player? = null
 
     // Key-Command mapping
     private var keyAssignment: Map<Int, Command>? = null
-    private var task: PeriodicTask? = null
+    private lateinit var task: PeriodicTask
 
     init {
         instance = this
@@ -36,10 +36,6 @@ class ControllerManager : Observable2(), KeyListener {
         }
     }
 
-    fun setPlayer(entity: Player) {
-        player = entity
-    }
-
     private fun setKeyMap() {
         val dataInputOutput = DataInputOutput.getInstance()
 
@@ -53,19 +49,17 @@ class ControllerManager : Observable2(), KeyListener {
         )
     }
 
-    fun pressKey(action: Command?) {
+    private fun pressKey(action: Command?) {
         // if a button is pressed, mouse movement gets interrupted
         if(action?.isMovementKey()!!) {
             Bomberman.getMatch().mouseControllerManager.stopMovementTask()
         }
         onKeyPressed(action)
     }
-    fun simulateKeyPressed(action: Command?){
-        onKeyPressed(action)
-    }
-    fun onKeyPressed(action: Command?){
+
+    fun onKeyPressed(action: Command){
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
-        if (action != null && player != null) {
+        if (player != null) {
             commandEventsTime[action] = System.currentTimeMillis()
             player!!.commandQueue.add(action)
         }
@@ -80,8 +74,10 @@ class ControllerManager : Observable2(), KeyListener {
      */
     override fun keyPressed(e: KeyEvent) {
         val action = keyAssignment?.get(e.keyCode) ?: return
+
         if (timePassed(commandEventsTime.getOrDefault(action, 0L)) < KEY_DELAY_MS)
             return
+
         pressKey(action)
     }
 
@@ -99,35 +95,34 @@ class ControllerManager : Observable2(), KeyListener {
 
     private fun setupTask() {
         task = PeriodicTask(Runnable {
-            if (player == null)
-                return@Runnable
+            player ?: return@Runnable
 
             for (command in HashSet(player!!.commandQueue)) {
                 notifyObservers(command)
             }
         }, KEY_DELAY_MS)
 
-        task?.start()
+        task.start()
     }
 
     private fun resume() {
         try {
-            task?.resume()
+            task.resume()
         } catch (ignored: Exception) { }
     }
 
     private fun stop() {
         try {
-            task?.stop()
+            task.stop()
         } catch (ignored: Exception) { }
     }
 
-    fun isCommandPressed(c: Command?): Boolean {
+    fun isCommandPressed(c: Command): Boolean {
         return player!!.commandQueue.contains(c)
     }
 
     private fun updateDelay() {
-        instance!!.task!!.setDelay(KEY_DELAY_MS)
+        instance!!.task.setDelay(KEY_DELAY_MS)
     }
 
     override fun keyTyped(e: KeyEvent) {}

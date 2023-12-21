@@ -9,6 +9,7 @@ import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
 import game.utils.Utility;
 import game.values.DrawPriority;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -220,6 +221,7 @@ public abstract class Character extends MovingEntity {
     }
 
 
+    @NotNull
     @Override
     public Set<Class<? extends Entity>> getObstacles() {
         return super.getObstacles();

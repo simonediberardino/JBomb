@@ -5,6 +5,7 @@ import game.entity.blocks.HardBlock;
 import game.entity.bomb.AbstractExplosion;
 import game.entity.bomb.Bomb;
 import game.utils.Utility;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -190,7 +191,7 @@ public abstract class EntityInteractable extends Entity {
         whitelistObstacles.remove(clazz);
     }
 
-    public Set<Class<? extends Entity>> getObstacles() {
+    public @NotNull Set<Class<? extends Entity>> getObstacles() {
         return new HashSet<>(Arrays.asList(HardBlock.class, Bomb.class, Enemy.class, DestroyableBlock.class, BomberEntity.class));
     }
 

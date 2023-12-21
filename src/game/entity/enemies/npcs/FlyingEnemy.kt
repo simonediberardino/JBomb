@@ -11,7 +11,7 @@ abstract class FlyingEnemy : IntelligentEnemy {
     constructor() : super()
     constructor(coordinates: Coordinates?) : super(coordinates)
 
-    override fun getObstacles(): Set<Class<out Entity?>> = HashSet(super.getObstacles()).apply {
+    override fun getObstacles(): Set<Class<out Entity>> = HashSet(super.getObstacles()).apply {
         remove(DestroyableBlock::class.java)
     }
 }

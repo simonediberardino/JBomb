@@ -14,7 +14,6 @@ import game.sound.AudioManager
 import game.sound.SoundModel
 import game.utils.Paths.enemiesFolder
 import game.utils.Utility.timePassed
-import java.util.*
 
 class TankEnemy : IntelligentEnemy, Explosive {
     private var canShoot = false
@@ -23,16 +22,15 @@ class TankEnemy : IntelligentEnemy, Explosive {
     constructor() : super()
     constructor(coordinates: Coordinates?) : super(coordinates)
 
-    override fun getCharacterOrientedImages(): Array<String> {
-        return arrayOf("$enemiesFolder/tank/tank_${imageDirection.toString().lowercase()}.png")
-    }
+    override fun getCharacterOrientedImages(): Array<String> =
+            arrayOf("$enemiesFolder/tank/tank_${imageDirection.toString().lowercase()}.png")
 
     /**
      * Ran every game tick;
      *
-     * @param arg
+     * @param gameState
      */
-    override fun doUpdate(arg: Boolean) {
+    override fun doUpdate(gameState: Boolean) {
         val currentTime = System.currentTimeMillis()
 
         // Check if it's time to update the shooting behavior
@@ -56,36 +54,23 @@ class TankEnemy : IntelligentEnemy, Explosive {
             canShoot = true
         }
 
-        // Check if it's time to allow movement again after standing still
-        if (timePassed(_lastUpdate) > STANDING_STILL_PERIOD) {
-            canMove = true
-        }
-
         // Call the superclass's doUpdate method
-        super.doUpdate(arg)
+        super.doUpdate(gameState)
     }
 
-    override val explosionObstacles: Set<Class<out Entity?>>
-        get() {
-            return emptySet()
-        }
+    override val explosionObstacles: Set<Class<out Entity>>
+        get() = emptySet()
 
-    override val explosionInteractionEntities: Set<Class<out Entity?>>
-        get() {
-            return setOf(
-                    Player::class.java,
-                    Bomb::class.java
-            )
-        }
+    override val explosionInteractionEntities: Set<Class<out Entity>>
+        get() = setOf(
+                Player::class.java,
+                Bomb::class.java
+        )
 
     override val maxExplosionDistance: Int
-        get() {
-            return 4
-        }
+        get() = 4
 
-    override fun getType(): EntityTypes {
-        return EntityTypes.TankEnemy
-    }
+    override fun getType(): EntityTypes = EntityTypes.TankEnemy
 
     companion object {
         private const val STANDING_STILL_PERIOD = 1000

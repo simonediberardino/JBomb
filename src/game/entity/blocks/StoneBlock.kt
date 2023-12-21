@@ -6,7 +6,7 @@ import game.entity.models.Entity
 import java.awt.image.BufferedImage
 
 class StoneBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
-    override fun getBasePath(): String? {
+    override fun getEntitiesAssetsPath(): String? {
         return null
     }
 

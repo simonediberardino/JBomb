@@ -18,7 +18,7 @@ public abstract class BomberEntity extends Character implements Explosive {
     private final List<Class<? extends Entity>> listInteractWithMouseClick = new ArrayList<>();
     private final List<Class<? extends Entity>> listInteractWithMouseDrag = new ArrayList<>();
     private final List<Class<? extends PowerUp>> activePowerUp = new ArrayList<>();
-    private int currExplosionLength = Bomberman.getMatch().getCurrentLevel().getInfo().getExplosionLength();
+    private int currExplosionLength = 0;
     private int placedBombs = 0;
     private long lastPlacedBombTime = 0;
     private int currentBombs;

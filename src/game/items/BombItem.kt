@@ -1,9 +1,8 @@
 package game.items
 
-import game.BomberManMatch
 import game.Bomberman
 import game.entity.bomb.Bomb
-import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.events.game.UpdateCurrentAvailableItemsEvent
 import game.utils.Paths.entitiesFolder
 import game.utils.Utility.timePassed
 
@@ -17,7 +16,7 @@ class BombItem : UsableItem() {
         owner.lastPlacedBombTime = System.currentTimeMillis()
         owner.placedBombs++
         owner.setBombsSolid(false)
-        UpdateCurrentAvailableBombsEvent().invoke(owner.currentBombs - 1)
+        UpdateCurrentAvailableItemsEvent().invoke(owner.currentBombs - 1)
 
         bombEntity = Bomb(owner)
 
@@ -27,7 +26,7 @@ class BombItem : UsableItem() {
         bombEntity.setOnExplodeListener {
             owner.placedBombs--
             match.removeBomb(bombEntity)
-            UpdateCurrentAvailableBombsEvent().invoke(owner.currentBombs + 1)
+            UpdateCurrentAvailableItemsEvent().invoke(owner.currentBombs + 1)
         }
 
         bombEntity.spawn(true)

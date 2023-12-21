@@ -31,7 +31,5 @@ class ConfettiExplosion : AbstractExplosion {
     override val explosionClass: Class<out AbstractExplosion>
         get() = javaClass
 
-    override fun getBasePath(): String {
-        return "${Paths.enemiesFolder}/clown/clown_explosion/clown_explosion"
-    }
+    override fun getEntitiesAssetsPath(): String = "${Paths.enemiesFolder}/clown/clown_explosion/clown_explosion"
 }

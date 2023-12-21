@@ -7,7 +7,7 @@ import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
 class SpeedPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
-    override fun getBasePath(): String? = null
+    override fun getEntitiesAssetsPath(): String? = null
 
     override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/speed_up.png")
 

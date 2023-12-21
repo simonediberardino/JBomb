@@ -27,4 +27,5 @@ class World1Arena : ArenaLevel() {
             override val worldId: Int get() = 1
             override val levelId: Int get() = 0
         }
+
 }

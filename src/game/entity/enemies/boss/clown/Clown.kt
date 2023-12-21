@@ -57,25 +57,75 @@ class Clown : Boss, Explosive {
      *
      * @return A String array of skin paths for the Clown entity.
      */
-    override fun getCharacterOrientedImages(): Array<String> {
-        return arrayOf(getImageFromRageStatus())
+    override fun getCharacterOrientedImages(): Array<String> = arrayOf(getImageFromRageStatus())
+
+    /**
+     * Returns the image path of the Boss corresponding to its current rage status.
+     *
+     * @return the image path of the Boss.
+     */
+    override fun getImageFromRageStatus(): String =
+            // Format the skin path template with the appropriate values.
+            String.format(SKIN_PATH_TEMPLATE, Paths.enemiesFolder, if (hasHat) 1 else 0, currRageStatus)
+
+    /**
+     * Returns a list with the supported directions of the Boss.
+     *
+     * @return the list with the supported directions.
+     */
+    override fun getSupportedDirections(): List<Direction> = listOf(Direction.LEFT, Direction.RIGHT)
+
+    /**
+     * Returns a map with the health percentages and their corresponding rage statuses for the Boss.
+     * Note: avoid calling this method to prevent unnecessary memory usage, use the property instead.
+     *
+     * @return the health status map.
+     */
+    override fun healthStatusMap(): Map<Int, Int> {
+        // Create a new TreeMap with reverse order.
+        val map = TreeMap<Int, Int>(Collections.reverseOrder())
+        // Add the health percentages and their corresponding rage statuses to the map.
+        map[75] = 0
+        map[60] = 1
+        map[50] = 2
+        map[25] = 3
+        return map
     }
+    /**
+     * Returns the top padding of the Boss hitbox.
+     *
+     * @return the top padding of the hitbox.
+     */
+    /**
+     * Returns the height to hitbox size ratio of the Boss.
+     *
+     * @return the height to hitbox size ratio.
+     */
+    override fun getHitboxSizeToHeightRatio(): Float {
+        // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
+        hitboxSizeToHeightRatio = if (hasHat) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
+        return hitboxSizeToHeightRatio
+    }
+
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
+        val list: MutableList<Class<out Entity>> = ArrayList(super.getBasePassiveInteractionEntities())
+        list.add(Hat::class.java)
+        return HashSet(list)
+    }
+
+    override fun getType(): EntityTypes = EntityTypes.Clown
 
     /**
      * @return A boolean value representing whether the Clown entity is wearing a hat or not.
      */
-    fun isHatImage(path: String): Boolean {
-        val toks = path.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        return if (toks.size <= 1) false else toks[1] == "1"
+    private fun isHatImage(path: String): Boolean {
+        val tokens = path.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        return if (tokens.size <= 1) false else tokens[1] == "1"
     }
 
     override fun getHitboxSizeToHeightRatio(path: String): Float {
         hitboxSizeToHeightRatio = if (isHatImage(path)) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
         return hitboxSizeToHeightRatio
-    }
-
-    override fun calculateAndGetPaddingTop(ratio: Double): Int {
-        return super.calculateAndGetPaddingTop(ratio)
     }
 
     /**
@@ -93,9 +143,7 @@ class Clown : Boss, Explosive {
      * @return An empty List object.
      */
     override val explosionObstacles: Set<Class<out Entity>>
-        get() {
-            return emptySet()
-        }
+        get() = emptySet()
 
     /**
      * Returns a list of entity classes that can interact with explosions.
@@ -103,12 +151,10 @@ class Clown : Boss, Explosive {
      * @return a list of entity classes that can interact with explosions.
      */
     override val explosionInteractionEntities: Set<Class<out Entity>>
-        get() {
-            return setOf(
-                    Player::class.java,
-                    Bomb::class.java
-            )
-        }
+        get() = setOf(
+                Player::class.java,
+                Bomb::class.java
+        )
 
     /**
      * Returns the maximum distance of an explosion from this entity.
@@ -116,9 +162,7 @@ class Clown : Boss, Explosive {
      * @return the maximum distance of an explosion from this entity.
      */
     override val maxExplosionDistance: Int
-        get() {
-            return 10
-        }
+        get() = 10
 
     private val shootingChance: Int
         /**
@@ -126,15 +170,14 @@ class Clown : Boss, Explosive {
          *
          * @return the chance of this entity shooting a projectile.
          */
-        private get() = 1
+        get() = 1
 
     /**
      * Spawns orbs in all directions around this entity.
      */
     private fun spawnOrbs() {
         for (d in Direction.values()) {
-            ClownNose(
-                    Coordinates.fromDirectionToCoordinateOnEntity(
+            ClownNose(Coordinates.fromDirectionToCoordinateOnEntity(
                             this,
                             d,
                             Orb.SIZE,
@@ -184,9 +227,12 @@ class Clown : Boss, Explosive {
         val dirs = Direction.values()
         val directions = LinkedList(listOf(*dirs))
         directions.remove(Direction.DOWN)
+
         val d = directions[(Math.random() * directions.size).toInt()]
         val offsets = calculateExplosionOffsets(d)
+
         AudioManager.getInstance().play(SoundModel.EXPLOSION_CONFETTI)
+
         val explosionCoordinates = Coordinates.fromDirectionToCoordinateOnEntity(
                 this,
                 d,
@@ -194,6 +240,7 @@ class Clown : Boss, Explosive {
                 offsets[1],
                 AbstractExplosion.SIZE
         )
+
         ConfettiExplosion(
                 this,
                 explosionCoordinates,
@@ -205,15 +252,11 @@ class Clown : Boss, Explosive {
     /**
      * Throws a hat in a random enhanced direction.
      */
-    fun throwHat() {
-        val d = EnhancedDirection.randomDirectionTowardsCenter(this)
-        val hat: Entity = Hat(
-                Coordinates.fromDirectionToCoordinateOnEntity(
-                        this,
-                        d,
-                        0),
-                d
-        )
+    private fun throwHat() {
+        val direction = EnhancedDirection.randomDirectionTowardsCenter(this)
+        val coordinates = Coordinates.fromDirectionToCoordinateOnEntity(this, direction, 0)
+        val hat: Entity = Hat(coordinates, direction)
+
         hat.spawn(true, false)
         hasHat = false
     }
@@ -221,9 +264,9 @@ class Clown : Boss, Explosive {
     /**
      * Updates this entity's state.
      *
-     * @param gamestate the current gamestate
+     * @param gameState the current gamestate
      */
-    override fun doUpdate(gamestate: Boolean) {
+    override fun doUpdate(gameState: Boolean) {
         // Check if the entity should shoot orbs
         Utility.runPercentage(shootingChance) {
             spawnEnhancedOrbs()
@@ -235,26 +278,8 @@ class Clown : Boss, Explosive {
         if (hasHat) {
             Utility.runPercentage(shootingChance) { throwHat() }
         }
-        super.doUpdate(gamestate)
-    }
 
-    /**
-     * Returns the image path of the Boss corresponding to its current rage status.
-     *
-     * @return the image path of the Boss.
-     */
-    override fun getImageFromRageStatus(): String {
-        // Format the skin path template with the appropriate values.
-        return String.format(SKIN_PATH_TEMPLATE, Paths.enemiesFolder, if (hasHat) 1 else 0, currRageStatus)
-    }
-
-    /**
-     * Returns a list with the supported directions of the Boss.
-     *
-     * @return the list with the supported directions.
-     */
-    override fun getSupportedDirections(): List<Direction> {
-        return listOf(Direction.LEFT, Direction.RIGHT)
+        super.doUpdate(gameState)
     }
 
     /**
@@ -266,54 +291,10 @@ class Clown : Boss, Explosive {
         // Get the current health percentage of the Boss.
         val hpPercentage = hpPercentage
         // Get the entry from the health status map whose key is the lowest greater than or equal to hpPercentage.
-        val entry = healthStatusMap.ceilingEntry(hpPercentage)
+        val entry = healthStatusMap.ceilingEntry(hpPercentage) ?: return
 
         // If there is an entry, update the rage status of the Boss.
-        if (entry != null) {
-            updateRageStatus(entry.value)
-        }
-    }
-
-    /**
-     * Returns a map with the health percentages and their corresponding rage statuses for the Boss.
-     * Note: avoid calling this method to prevent unnecessary memory usage, use the property instead.
-     *
-     * @return the health status map.
-     */
-    override fun healthStatusMap(): Map<Int, Int> {
-        // Create a new TreeMap with reverse order.
-        val map = TreeMap<Int, Int>(Collections.reverseOrder())
-        // Add the health percentages and their corresponding rage statuses to the map.
-        map[75] = 0
-        map[60] = 1
-        map[50] = 2
-        map[25] = 3
-        return map
-    }
-    /**
-     * Returns the top padding of the Boss hitbox.
-     *
-     * @return the top padding of the hitbox.
-     */
-    /**
-     * Returns the height to hitbox size ratio of the Boss.
-     *
-     * @return the height to hitbox size ratio.
-     */
-    override fun getHitboxSizeToHeightRatio(): Float {
-        // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
-        hitboxSizeToHeightRatio = if (hasHat) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
-        return hitboxSizeToHeightRatio
-    }
-
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        val list: MutableList<Class<out Entity>> = ArrayList(super.getBasePassiveInteractionEntities())
-        list.add(Hat::class.java)
-        return HashSet(list)
-    }
-
-    override fun getType(): EntityTypes {
-        return EntityTypes.Clown
+        updateRageStatus(entry.value)
     }
 
     companion object {

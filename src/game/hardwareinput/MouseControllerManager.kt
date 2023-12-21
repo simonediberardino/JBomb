@@ -61,7 +61,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         latestDirectionsFromPlayer = mouseCoords?.fromCoordinatesToDirection(currPlayer.coords) ?: emptyList()
 
         latestDirectionsFromPlayer.forEach {
-            match.controllerManager.simulateKeyPressed(it.toCommand())
+            match.controllerManager.onKeyPressed(it.toCommand())
         }
 
         if (firstDirectionsFromPlayer.isNotEmpty() && firstDirectionsFromPlayer.none { it !in latestDirectionsFromPlayer }) {

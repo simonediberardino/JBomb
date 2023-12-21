@@ -7,7 +7,6 @@ import game.utils.Utility
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.lang.Exception
-import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 /**
@@ -20,8 +19,6 @@ abstract class AbstractExplosion(private val owner: Entity,
                                  val explosive: Explosive,
                                  private var canExpand: Boolean
 ) : MovingEntity(coordinates) {
-    // The maximum distance from the bomb that the explosion can travel.
-    private val maxDistance: Int = explosive.maxExplosionDistance
     private var appearing = true
     private var explosionState = 1
     private var lastRefresh: Long = 0
@@ -38,23 +35,93 @@ abstract class AbstractExplosion(private val owner: Entity,
                 explosive: Explosive) : this(owner, coordinates, direction, distanceFromBomb, explosive, true)
 
     init {
-        //on first (center) explosion
+        // On first (center) explosion
         if (distanceFromExplosive == 0) {
             val desiredCoords = allCoordinates
             Bomberman.getMatch().entities
                     .parallelStream()
-                    .filter { e: Entity? -> desiredCoords.stream().anyMatch { coord: Coordinates? -> Coordinates.doesCollideWith(coord, e) } }
-                    .forEach { e: Entity? -> interact(e) }
+                    .filter { e: Entity -> desiredCoords.any { coord: Coordinates? -> Coordinates.doesCollideWith(coord, e) } }
+                    .forEach { e: Entity -> interact(e) }
         }
 
-        if (getCanExpand())
+        if (canExpand()) {
             expandBomb(direction, size)
+        }
     }
 
+    /**
+     * Returns the most specific class of the explosion instance
+     */
     protected abstract val explosionClass: Class<out AbstractExplosion>
-    override fun getDrawPriority(): DrawPriority {
-        return DrawPriority.DRAW_PRIORITY_4
+
+    /**
+     * Returns the size of the explosion.
+     *
+     * @return The size of the explosion.
+     */
+    override fun getSize(): Int = SIZE
+
+    override fun getDrawPriority(): DrawPriority = DrawPriority.DRAW_PRIORITY_4
+
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> = HashSet()
+
+    override fun getImageRefreshRate(): Int = 100
+
+    override fun isObstacle(e: Entity?): Boolean = e == null || explosive.isObstacleOfExplosion(e)
+
+    override fun getObstacles(): Set<Class<out Entity>> = explosive.explosionObstacles
+
+    override fun getInteractionsEntities(): Set<Class<out Entity>> = explosive.explosionInteractionEntities
+
+    private val _state: Int
+        get() {
+            if (explosionState == 0 && !appearing) {
+                despawn()
+                appearing = true
+                return 0
+            }
+
+            if (explosionState == BOMB_STATES)
+                appearing = false
+
+            val appearingConstant = if (!appearing) -1 else 1
+            val prevState = explosionState
+
+            if (Utility.timePassed(lastRefresh) >= imageRefreshRate) {
+                explosionState += appearingConstant
+                lastRefresh = System.currentTimeMillis()
+            }
+
+            return prevState
+        }
+
+    override fun getImage(): BufferedImage {
+        val imageName = when (distanceFromExplosive) {
+            0 -> {
+                val centralImage = "_central$_state.png"
+                "${entitiesAssetsPath}$centralImage"
+            }
+
+            else -> {
+                val isLast = if (canExpand) "" else "_last"
+                val imageFileName = "_${direction.toString().lowercase()}"
+                val expandedImage = "${entitiesAssetsPath}$imageFileName$isLast${_state}.png"
+                expandedImage
+            }
+        }
+
+        return loadAndSetImage(imageName)
     }
+
+    private fun canExpand(): Boolean {
+        if (distanceFromExplosive >= explosive.maxExplosionDistance) canExpand = false
+        return canExpand
+    }
+
+    /**
+     * Returns whether it should hide the central entity or not.
+     */
+    protected open fun shouldHideCenter(): Boolean = false
 
     /**
      * Interacts with another entity in the game.
@@ -63,15 +130,6 @@ abstract class AbstractExplosion(private val owner: Entity,
      */
     override fun doInteract(e: Entity?) {
         e?.onExplosion(this)
-    }
-
-    /**
-     * Returns the size of the explosion.
-     *
-     * @return The size of the explosion.
-     */
-    override fun getSize(): Int {
-        return SIZE
     }
 
     /**
@@ -95,56 +153,10 @@ abstract class AbstractExplosion(private val owner: Entity,
                     direction,
                     distanceFromExplosive + 1,
                     explosive
-            )!!.explode()
+            )?.explode()
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        return HashSet()
-    }
-
-    override fun getImageRefreshRate(): Int {
-        return 100
-    }
-
-    override fun isObstacle(e: Entity?): Boolean {
-        return e == null || explosive.isObstacleOfExplosion(e)
-    }
-
-    override fun getObstacles(): Set<Class<out Entity>> {
-        return HashSet(explosive.explosionObstacles)
-    }
-
-    override fun getInteractionsEntities(): Set<Class<out Entity>> {
-        return HashSet(explosive.explosionInteractionEntities)
-    }
-
-    override fun getImage(): BufferedImage {
-        val imageName = when {
-            distanceFromExplosive == 0 -> {
-                val centralImage = "_central$_state.png"
-                "${basePath}$centralImage"
-            }
-            else -> {
-                val isLast = if (canExpand) "" else "_last"
-                val imageFileName = "_${direction.toString().lowercase(Locale.getDefault())}"
-                val expandedImage = "${basePath}$imageFileName$isLast${_state}.png"
-                expandedImage
-            }
-        }
-
-        return loadAndSetImage(imageName)
-    }
-
-    private fun getCanExpand(): Boolean {
-        if (distanceFromExplosive >= maxDistance) canExpand = false
-        return canExpand
-    }
-
-    protected open fun shouldHideCenter(): Boolean {
-        return false
     }
 
     fun onObstacle(coordinates: Coordinates?) {
@@ -169,30 +181,6 @@ abstract class AbstractExplosion(private val owner: Entity,
             e.printStackTrace()
         }
     }
-
-    private val _state: Int
-        get() {
-            if (explosionState == 0 && !appearing) {
-                despawn()
-                appearing = true
-                return 0
-            }
-
-            if (explosionState == BOMB_STATES)
-                appearing = false
-
-            val appearingConstant = if (!appearing) -1 else 1
-
-            val prevState = explosionState
-            val currentTime = System.currentTimeMillis()
-
-            if (currentTime - lastRefresh >= imageRefreshRate) {
-                explosionState += appearingConstant
-                lastRefresh = currentTime
-            }
-
-            return prevState
-        }
 
     private fun expandBomb(d: Direction, stepSize: Int) {
         moveOrInteract(d, stepSize, true)

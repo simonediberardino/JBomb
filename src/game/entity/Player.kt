@@ -11,7 +11,8 @@ import game.entity.models.Coordinates
 import game.entity.models.Enemy
 import game.entity.models.Entity
 import game.events.game.DeathGameEvent
-import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.events.game.UpdateCurrentAvailableItemsEvent
+import game.events.game.UpdateCurrentBombsLengthEvent
 import game.hardwareinput.Command
 import game.powerups.PowerUp
 import game.sound.SoundModel
@@ -31,20 +32,47 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
 
     private fun updateBombs() {
         val maxBombs = DataInputOutput.getInstance().obtainedBombs
-        UpdateCurrentAvailableBombsEvent().invoke(maxBombs)
+        UpdateCurrentAvailableItemsEvent().invoke(maxBombs)
+        UpdateCurrentBombsLengthEvent().invoke(DataInputOutput.getInstance().explosionLength)
     }
 
     override fun doInteract(e: Entity?) {}
-    override fun getInteractionsEntities(): Set<Class<out Entity>> {
-        return HashSet()
-    }
 
-    override fun getBasePath(): String {
-        return entitiesFolder + "/player/" + DataInputOutput.getInstance().skin
-    }
+    override fun getInteractionsEntities(): Set<Class<out Entity>> = HashSet()
+
+    override fun getEntitiesAssetsPath(): String = "$entitiesFolder/player/${DataInputOutput.getInstance().skin}"
+
+
+    override fun getDeathSound(): SoundModel = SoundModel.PLAYER_DEATH
+
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> =
+            hashSetOf(AbstractExplosion::class.java, Enemy::class.java, PowerUp::class.java)
+
+    override fun getStepSound(): SoundModel = SoundModel.STEP_SOUND
+
+    public override fun getSpawnOffset(): Coordinates = SPAWN_OFFSET
+
+    override val explosionObstacles: Set<Class<out Entity>>
+        get() = setOf(
+                HardBlock::class.java,
+                DestroyableBlock::class.java
+        )
+
+    override val explosionInteractionEntities: Set<Class<out Entity>>
+        get() = setOf(
+                DestroyableBlock::class.java,
+                Enemy::class.java,
+                Bomb::class.java
+        )
+
+    override val maxExplosionDistance: Int
+        get() = currExplosionLength
+
 
     override fun getCharacterOrientedImages(): Array<String> {
-        return arrayOf(String.format("%s/player_%s_%d.png", basePath, imageDirection.toString().lowercase(Locale.getDefault()), 0), String.format("%s/player_%s_%d.png", basePath, imageDirection.toString().lowercase(Locale.getDefault()), 1), String.format("%s/player_%s_%d.png", basePath, imageDirection.toString().lowercase(Locale.getDefault()), 2), String.format("%s/player_%s_%d.png", basePath, imageDirection.toString().lowercase(Locale.getDefault()), 3))
+        return Array(4) { index ->
+            "$entitiesAssetsPath/player_${imageDirection.toString().lowercase()}_${index}.png"
+        }
     }
 
     override fun onSpawn() {
@@ -55,7 +83,7 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
     }
 
     override fun onEndedDeathAnimation() {
-        val t = Timer(SHOW_DEATH_PAGE_DELAY_MS.toInt()) { e: ActionEvent? -> showDeathPage() }
+        val t = Timer(SHOW_DEATH_PAGE_DELAY_MS.toInt()) { _: ActionEvent? -> showDeathPage() }
         t.isRepeats = false
         t.start()
     }
@@ -70,50 +98,11 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
         DeathGameEvent().invoke(null)
     }
 
-    public override fun getSpawnOffset(): Coordinates {
-        return SPAWN_OFFSET
-    }
-
     // Handle the command entered by the player;
     override fun update(arg: Any?) {
         super.update(arg)
         handleAction(arg as Command)
     }
-
-    override fun getDeathSound(): SoundModel {
-        return SoundModel.PLAYER_DEATH
-    }
-
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        return HashSet<Class<out Entity>>(Arrays.asList(AbstractExplosion::class.java, Enemy::class.java, PowerUp::class.java))
-    }
-
-    override fun getStepSound(): SoundModel {
-        return SoundModel.STEP_SOUND
-    }
-
-    //4 methods for pistolPowerUp only
-    override val explosionObstacles: Set<Class<out Entity>>
-        get() {
-            return setOf(
-                    HardBlock::class.java,
-                    DestroyableBlock::class.java
-            )
-        }
-
-    override val explosionInteractionEntities: Set<Class<out Entity>>
-        get() {
-            return setOf(
-                    DestroyableBlock::class.java,
-                    Enemy::class.java,
-                    Bomb::class.java
-            )
-        }
-
-    override val maxExplosionDistance: Int
-        get() {
-            return Bomberman.getMatch().player.currExplosionLength
-        }
 
     override fun doAttack() {
         weapon.use()

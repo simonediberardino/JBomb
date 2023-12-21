@@ -19,13 +19,9 @@ open class DefaultGameHandler(level: Level): GameHandler(level) {
             return pitch
         }
 
-    override fun generateStone() {
-        GenerateStoneBehavior(level.field).invoke()
-    }
+    override fun generateStone() = GenerateStoneBehavior(level.field).invoke()
 
-    override fun generatePlayer() {
-        GeneratePlayerBehavior(level.info.playerSpawnCoordinates).invoke()
-    }
+    override fun generatePlayer() = GeneratePlayerBehavior(level.info.playerSpawnCoordinates).invoke()
 
     override fun generateDestroyableBlock() {
         DespawnDestroyableBlocksBehavior().invoke()
@@ -35,11 +31,9 @@ open class DefaultGameHandler(level: Level): GameHandler(level) {
     override fun spawnBoss() {
         SpawnBossBehavior(level.info.boss ?: return).invoke()
     }
-    override fun spawnEnemies() {
-        spawnEnemies(level.info.availableEnemies)
-    }
 
-    override fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>) {
-        SpawnEnemiesBehavior(level.info.startEnemiesCount, availableEnemies).invoke()
-    }
+    override fun spawnEnemies() = spawnEnemies(level.info.availableEnemies)
+
+    override fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>) =
+            SpawnEnemiesBehavior(level.info.startEnemiesCount, availableEnemies).invoke()
 }

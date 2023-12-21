@@ -1,6 +1,5 @@
 
 high priorities:
-- FIX MOUSE CONTROLLER
 - Images;
 - fix death logo;
 - database
@@ -9,3 +8,4 @@ high priorities:
 - Update username on resume
 - server
 - dead enemies can kill you while disappearing
+- comments

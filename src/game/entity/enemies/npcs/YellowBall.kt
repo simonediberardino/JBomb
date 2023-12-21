@@ -11,25 +11,15 @@ class YellowBall : IntelligentEnemy {
     constructor() : super()
     constructor(coordinates: Coordinates?) : super(coordinates)
 
-    override fun getBasePath(): String {
-        return "$enemiesFolder/yellow_ball/yellow_ball"
+    override fun getEntitiesAssetsPath(): String = "$enemiesFolder/yellow_ball/yellow_ball"
+
+    override fun getImageDirections(): List<Direction> = listOf(Direction.RIGHT, Direction.LEFT)
+
+    override fun getCharacterOrientedImages(): Array<String> = Array(4) { index ->
+        "$enemiesFolder/yellow_ball/yellow_ball_${imageDirection.toString().lowercase()}_$index.png"
     }
 
-    override fun getImageDirections(): List<Direction> {
-        return listOf(Direction.RIGHT, Direction.LEFT)
-    }
+    override fun getSize(): Int = PitchPanel.COMMON_DIVISOR * 2
 
-    override fun getCharacterOrientedImages(): Array<String> {
-        return Array(4) { index ->
-            "$enemiesFolder/yellow_ball/yellow_ball_${imageDirection.toString().lowercase()}_$index.png"
-        }
-    }
-
-    override fun getSize(): Int {
-        return PitchPanel.COMMON_DIVISOR * 2
-    }
-
-    override fun getType(): EntityTypes {
-        return EntityTypes.YellowBall
-    }
+    override fun getType(): EntityTypes = EntityTypes.YellowBall
 }

@@ -12,27 +12,18 @@ class ClownNose : Orb {
     constructor(coordinates: Coordinates?, direction: Direction?) : super(coordinates, direction)
     constructor() : this(null, null as Direction?)
 
-    override fun getBasePath(): String {
-        return "$enemiesFolder/clown/clown_orb.png"
-    }
+    override fun getEntitiesAssetsPath(): String = "$enemiesFolder/clown/clown_orb.png"
 
     /**
      * Returns an array of the skin of the Orb.
      *
      * @return an array of the skin of the Orb
      */
-    //
-    override fun getCharacterOrientedImages(): Array<String> {
-        return arrayOf(
-                basePath
-        )
-    }
+    override fun getCharacterOrientedImages(): Array<String> = arrayOf(
+            entitiesAssetsPath
+    )
 
-    override fun getDeathSound(): SoundModel {
-        return SoundModel.CLOWN_NOSE_DEATH
-    }
+    override fun getDeathSound(): SoundModel = SoundModel.CLOWN_NOSE_DEATH
 
-    override fun getType(): EntityTypes {
-        return EntityTypes.ClownNose
-    }
+    override fun getType(): EntityTypes = EntityTypes.ClownNose
 }

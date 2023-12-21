@@ -2,20 +2,13 @@ package game.entity.enemies.npcs
 
 import game.entity.EntityTypes
 import game.utils.Paths.enemiesFolder
-import java.util.*
 
 class Eagle : FlyingEnemy() {
-    override fun getBasePath(): String {
-        return "$enemiesFolder/eagle"
+    override fun getEntitiesAssetsPath(): String = "$enemiesFolder/eagle"
+
+    override fun getCharacterOrientedImages(): Array<String> = Array(3) { index ->
+        "$entitiesAssetsPath/eagle_${imageDirection.toString().lowercase()}_$index.png"
     }
 
-    override fun getCharacterOrientedImages(): Array<String> {
-        return Array(3) { index ->
-            "$basePath/eagle_${imageDirection.toString().lowercase()}_$index.png"
-        }
-    }
-
-    override fun getType(): EntityTypes {
-        return EntityTypes.Eagle
-    }
+    override fun getType(): EntityTypes = EntityTypes.Eagle
 }

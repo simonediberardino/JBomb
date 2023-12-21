@@ -17,13 +17,6 @@ import java.util.function.Consumer;
 import static game.localization.Localization.*;
 
 public class SettingsPanel extends BoxMenuPanel {
-    /**
-     * Constructs a ProfilePanel object.
-     *
-     * @param cardLayout the CardLayout of the parent container
-     * @param parent     the parent container of this panel
-     * @param frame      the BombermanFrame object
-     */
     public SettingsPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
         super(cardLayout, parent, frame, Localization.get(SETTINGS));
     }

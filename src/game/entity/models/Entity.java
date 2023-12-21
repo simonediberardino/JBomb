@@ -72,7 +72,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         this.coords = coordinates;
     }
 
-    protected String getBasePath() {
+    protected String getEntitiesAssetsPath() {
         return "";
     }
 

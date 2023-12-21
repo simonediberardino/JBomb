@@ -41,7 +41,7 @@ abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
         return SIZE
     }
 
-    override fun getObstacles(): Set<Class<out Entity?>> {
+    override fun getObstacles(): Set<Class<out Entity>> {
         return interactionsEntities
     }
 

@@ -5,7 +5,7 @@ import game.data.DataInputOutput
 import game.entity.models.BomberEntity
 import game.entity.models.Entity
 import game.events.game.RoundPassedGameEvent
-import game.events.game.UpdateCurrentAvailableBombsEvent
+import game.events.game.UpdateCurrentAvailableItemsEvent
 import game.events.game.UpdateCurrentBombsLengthEvent
 import game.events.game.UpdateMaxBombsEvent
 import game.level.actorbehavior.SpawnMysteryBoxBehavior
@@ -62,7 +62,7 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun onUpdateMaxBombsGameEvent(arg: Int) {
-                UpdateCurrentAvailableBombsEvent().invoke(arg)
+                UpdateCurrentAvailableItemsEvent().invoke(arg)
             }
 
             override fun onUpdateBombsLengthEvent(entity: BomberEntity, arg: Int) {
