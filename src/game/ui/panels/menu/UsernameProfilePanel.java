@@ -25,14 +25,14 @@ public class UsernameProfilePanel extends JBombermanBoxContainerPanel {
     }
 
     @Override
-    protected int getBoxPanelWidth() {
+    protected int getDefaultBoxPanelWidth() {
         return Utility.INSTANCE.px(Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE);
     }
 
     @Override
     protected void addCustomElements() {
         JTextField j = new JBombInputField((String) getUsernameRunnable.execute(null), callback);
-        j.setPreferredSize(new Dimension(getBoxPanelWidth() - Dimensions.DEFAULT_X_PADDING, (int) j.getPreferredSize().getHeight()));
-        componentsPanel.add(j);
+        j.setPreferredSize(new Dimension(calculateContainerWidth() - Dimensions.DEFAULT_X_PADDING, (int) j.getPreferredSize().getHeight()));
+        addComponent(j);
     }
 }

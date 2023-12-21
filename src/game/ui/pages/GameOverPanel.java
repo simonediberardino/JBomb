@@ -28,7 +28,7 @@ public class GameOverPanel extends BaseMenu {
      * @param frame      the BombermanFrame
      */
     public GameOverPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
-        super(cardLayout, parent, frame, Paths.deathWallpaper);
+        super(cardLayout, parent, frame, Paths.getDeathWallpaper());
     }
 
     @Override

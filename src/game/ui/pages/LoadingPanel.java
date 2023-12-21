@@ -1,5 +1,6 @@
 package game.ui.pages;
 
+import game.Bomberman;
 import game.level.Level;
 import game.localization.Localization;
 import game.sound.SoundModel;
@@ -33,7 +34,7 @@ public class LoadingPanel extends PagePanel {
     }
 
     public LoadingPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame, String text) {
-        super(cardLayout, parent, frame, Paths.mainMenuWallpaper);
+        super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
         this.initialize();
         setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
         this.text = text;
@@ -45,7 +46,7 @@ public class LoadingPanel extends PagePanel {
 
     public void initialize() {
         this.text = "";
-        this.textCurrX = (int) Utility.INSTANCE.getScreenSize().getWidth();
+        this.textCurrX = (int) Bomberman.getBombermanFrame().getPreferredSize().getWidth();
         this.finished = false;
         this.onLoadingCallback = null;
     }

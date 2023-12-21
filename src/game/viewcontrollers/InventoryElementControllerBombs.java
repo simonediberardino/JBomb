@@ -4,6 +4,6 @@ import game.utils.Paths;
 
 public class InventoryElementControllerBombs extends InventoryElementController {
     public InventoryElementControllerBombs() {
-        super(0, Paths.entitiesFolder + "/bomb/bomb_0.png");
+        super(0, Paths.getEntitiesFolder() + "/bomb/bomb_0.png");
     }
 }

@@ -19,13 +19,13 @@ public abstract class AbstractMainMenuPanel extends BaseMenu {
 
     @Override
     protected JPanel getRightPanel() {
-        String[] avatarPaths = XMLUtils.parseXmlArray(Paths.skinsXml, "skins");
+        String[] avatarPaths = XMLUtils.parseXmlArray(Paths.getSkinsXml(), "skins");
         assert avatarPaths != null;
 
         RunnablePar getSkinRunnable = new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
-                return Paths.entitiesFolder + "/player/" + DataInputOutput.getInstance().getSkin();
+                return Paths.getEntitiesFolder() + "/player/" + DataInputOutput.getInstance().getSkin();
             }
         };
 

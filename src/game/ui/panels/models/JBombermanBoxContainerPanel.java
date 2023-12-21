@@ -4,7 +4,9 @@ import game.Bomberman;
 import game.events.models.RunnablePar;
 import game.localization.Localization;
 import game.ui.helpers.Padding;
+import game.ui.pages.ArenaMenuPanel;
 import game.ui.pages.MainMenuPanel;
+import game.ui.panels.menu.AvatarMenuPanel;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;
 import game.ui.viewelements.bombermanpanel.BombermanPanelYellow;
@@ -13,6 +15,7 @@ import game.ui.viewelements.settings.SettingsElementView;
 import game.ui.viewelements.settings.SlideElementView;
 import game.ui.viewelements.settings.JBombTextFieldTagged;
 import game.utils.Utility;
+import game.utils.Utils2D;
 import game.values.Dimensions;
 
 import javax.swing.*;
@@ -34,7 +37,11 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
         this.isBackEnabled = isBackEnabled;
     }
 
-    protected abstract int getBoxPanelWidth();
+    protected abstract int getDefaultBoxPanelWidth();
+
+    public int calculateContainerWidth() {
+        return Math.max(getDefaultBoxPanelWidth(), Utils2D.INSTANCE.calculateMaxWidth(componentsPanel));
+    }
 
     /**
      * Sets up the layout of the panel.
@@ -47,9 +54,12 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
 
         add(boxPanel);
         addSettingsElements();
-        setPanelSizes(componentsPanel, boxPanel);
     }
 
+    private void refreshPanelSize() {
+        setPanelSizes(componentsPanel, boxPanel);
+    }
+    
     /**
      * Sets up the layouts of the boxPanel and the componentsPanel.
      */
@@ -70,7 +80,7 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
                 insidePanel.getComponents()
         ).map(e -> e.getPreferredSize().getHeight() + Dimensions.DEFAULT_Y_PADDING).mapToInt(Double::intValue).sum();
 
-        return new Dimension(getBoxPanelWidth(), (int) (panelHeight));
+        return new Dimension(calculateContainerWidth(), (int) (panelHeight));
     }
 
     /**
@@ -82,17 +92,17 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
     private void setPanelSizes(JPanel componentsPanel, JPanel parentPanel) {
         Dimension insidePanelSize = calculateInsidePanelSize(componentsPanel);
         componentsPanel.setPreferredSize(insidePanelSize);
-        parentPanel.setPreferredSize(new Dimension(getBoxPanelWidth(), (int) (insidePanelSize.getHeight())));
+        parentPanel.setPreferredSize(new Dimension(calculateContainerWidth(), (int) (insidePanelSize.getHeight())));
     }
 
     /**
      * Adds the stats settings elements to the componentsPanel.
      */
     private void addSettingsElements() {
-        componentsPanel.add(new Padding(getWidth(), DEFAULT_Y_PADDING * 2));
+        addComponent(new Padding(getWidth(), DEFAULT_Y_PADDING * 2));
         titleButton = new YellowButton(title);
-        componentsPanel.add(titleButton);
-        componentsPanel.add(new Padding(getWidth(), DEFAULT_Y_PADDING));
+        addComponent(titleButton);
+        addComponent(new Padding(getWidth(), DEFAULT_Y_PADDING));
 
         this.addCustomElements();
 
@@ -100,11 +110,11 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
             JButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
             mainMenuButton.addActionListener((l) -> back());
 
-            componentsPanel.add(new Padding(getWidth(), DEFAULT_Y_PADDING));
-            componentsPanel.add(mainMenuButton);
+            addComponent(new Padding(getWidth(), DEFAULT_Y_PADDING));
+            addComponent(mainMenuButton);
         }
 
-        componentsPanel.add(new Padding(getWidth(), DEFAULT_Y_PADDING * 2));
+        addComponent(new Padding(getWidth(), DEFAULT_Y_PADDING * 2));
     }
 
     protected void refresh() {
@@ -123,11 +133,16 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
      */
     public SettingsElementView addInfoElement(String title, String val) {
         InfoElementView elementView = new InfoElementView(boxPanel, title, val);
-        componentsPanel.add(elementView);
+        addComponent(elementView);
 
         return elementView;
     }
 
+    public void addComponent(JComponent jComponent) {
+        componentsPanel.add(jComponent);
+        refreshPanelSize();
+    }
+    
     public JLabel addImageLabel(String imageName, Dimension dimension) {
         Image image = Utility.INSTANCE.loadImage(imageName);
         assert image != null;
@@ -135,7 +150,7 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
         image = image.getScaledInstance((int) dimension.getWidth(), (int) dimension.getHeight(), 0);
         JLabel imageLabel = new JLabel(new ImageIcon(image));
         imageLabel.setPreferredSize(dimension);
-        componentsPanel.add(imageLabel);
+        addComponent(imageLabel);
         return imageLabel;
     }
 
@@ -145,14 +160,14 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
 
     public JBombTextFieldTagged addTextFieldElementView(String title, String startText, RunnablePar callback, int charLimit) {
         JBombTextFieldTagged elementView = new JBombTextFieldTagged(boxPanel, title, startText, callback, charLimit);
-        componentsPanel.add(elementView);
+        addComponent(elementView);
 
         return elementView;
     }
 
     public SlideElementView addSlideElementView(String title, int currValue, RunnablePar callback) {
         SlideElementView elementView = new SlideElementView(boxPanel, title, currValue, callback);
-        componentsPanel.add(elementView);
+        addComponent(elementView);
         return elementView;
     }
 

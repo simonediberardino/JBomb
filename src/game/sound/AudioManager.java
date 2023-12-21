@@ -124,7 +124,7 @@ public class AudioManager {
     }
 
     public void playBackgroundSong() {
-        playBackgroundSong(Paths.defaultSoundTrack);
+        playBackgroundSong(Paths.getDefaultSoundTrack());
     }
 
     public void playBackgroundSong(String newSong) {

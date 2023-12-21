@@ -1,5 +1,6 @@
 package game.ui.viewelements.misc;
 
+import game.Bomberman;
 import game.events.game.NewToastGameEvent;
 import game.utils.Utility;
 
@@ -7,7 +8,7 @@ import java.awt.*;
 
 public class ToastHandler {
     private static final int TOAST_DURATION = 3500;
-    private static final int TOAST_START_Y = (int) Utility.INSTANCE.getScreenSize().getHeight();
+    private static final int TOAST_START_Y = (int) Bomberman.getBombermanFrame().getPreferredSize().getHeight();
     private static final int TOAST_ANIM_STEP_SIZE = Utility.INSTANCE.px(50);
     private static final int CORNER_RADIUS = 15;
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 0, 0);
@@ -64,11 +65,11 @@ public class ToastHandler {
     }
 
     private int calculateToastX(int toastWidth) {
-        return (int) (Utility.INSTANCE.getScreenSize().getWidth() / 2 - toastWidth / 2);
+        return (int) (Bomberman.getBombermanFrame().getPreferredSize().getWidth() / 2 - toastWidth / 2);
     }
 
     private int calculateToastEndY() {
-        return (int) (Utility.INSTANCE.getScreenSize().getHeight() - Utility.INSTANCE.px(200));
+        return (int) (Bomberman.getBombermanFrame().getPreferredSize().getHeight() - Utility.INSTANCE.px(200));
     }
 
     private void animateToast(int toastEndY) {

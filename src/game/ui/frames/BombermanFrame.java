@@ -10,6 +10,7 @@ import game.ui.panels.game.PitchPanel;
 import game.ui.viewelements.misc.ToastHandler;
 import game.utils.Paths;
 import game.utils.Utility;
+import game.utils.XMLUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +53,7 @@ public class BombermanFrame extends JFrame {
      * Creates the main frame and sets its properties.
      */
     public void create() {
-        setIconImage(Utility.INSTANCE.loadImage(Paths.iconPath));
+        setIconImage(Utility.INSTANCE.loadImage(Paths.getIconPath()));
         setTitle(Localization.get(Localization.APP_NAME));
         setFrameProperties();
         initMenuPanel();
@@ -74,10 +75,16 @@ public class BombermanFrame extends JFrame {
         parentPanel.setLayout(cardLayout);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+
+        Dimension fullScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        if("true".equals(XMLUtils.readConfig("full_screen"))) {
+            setPreferredSize(fullScreenSize);
+            setUndecorated(true);
+        }else {
+            setPreferredSize(new Dimension((int) (fullScreenSize.getWidth() / 2), (int) (fullScreenSize.getHeight() / 2)));
+        }
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
         setVisible(true);
         add(parentPanel);
 
@@ -172,7 +179,7 @@ public class BombermanFrame extends JFrame {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         // Use ClassLoader to load the image resource from the JAR file
-        InputStream inputStream = classLoader.getResourceAsStream(Paths.cursorPath);
+        InputStream inputStream = classLoader.getResourceAsStream(Paths.getCursorPath());
 
         if (inputStream == null) {
             System.out.println("Cursor image not found in resources.");
@@ -184,8 +191,7 @@ public class BombermanFrame extends JFrame {
             Image image = toolkit.createImage(imageBytes);
             Cursor c = toolkit.createCustomCursor(image, new Point(getX(), getY()), "img");
             setCursor(c);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
     }
 

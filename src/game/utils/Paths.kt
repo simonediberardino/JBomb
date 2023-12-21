@@ -3,29 +3,79 @@ package game.utils
 import game.Bomberman
 
 object Paths {
-    const val dataFolder: String = "data"
-    private const val assetsFolder: String = "assets"
-    const val playerDataPath: String = "$dataFolder/data"
-    const val entitiesFolder: String = "$assetsFolder/entities"
-    const val enemiesFolder: String = "$entitiesFolder/enemies"
-    const val worldsFolder: String = "$assetsFolder/worlds"
-    val currentLevelFolder: String get() = Bomberman.getMatch().currentLevel.let { "$worldsFolder/${it.info.worldId}/level/${it.info.levelId}" }
-    val currentWorldCommonFolder: String get() = String.format("%s/%d/common", worldsFolder, Bomberman.getMatch().currentLevel.info.worldId)
-    const val powerUpsFolder: String = "$assetsFolder/powerups"
-    const val menuImagesPath: String = "$assetsFolder/menu/images"
-    const val powerUpsBorderPath: String = "$menuImagesPath/powerups_border.png"
-    const val backgroundImage: String = "$menuImagesPath/background.jpg"
-    const val mainMenuWallpaper: String = "$menuImagesPath/welcome.png"
-    const val deathWallpaper: String = "$menuImagesPath/death.jpg"
-    fun getWorldSelectorPortalPath(id: Int): String = "$assetsFolder/world_selector/world$id.png"
-    const val powerupsLogoPath: String = "$powerUpsFolder/powerups_logo.png"
-    const val inventoryPath: String = "$assetsFolder/inventory"
-    const val soundsPath: String = "$assetsFolder/sounds"
-    const val itemsPath: String = "$assetsFolder/items"
-    const val defaultSoundTrack: String = "$assetsFolder/menu/sound/soundtrack.wav"
-    const val uiFolder: String = "$assetsFolder/ui"
-    const val cursorPath: String = "$uiFolder/cursor.png"
-    const val iconPath: String = "$menuImagesPath/frame_icon.png"
-    const val xmlPath: String = "$assetsFolder/xml"
-    const val skinsXml: String = "$xmlPath/skins.xml"
+    @JvmStatic
+    val playerDataPath: String get() = String.format("%s/data", dataFolder)
+
+    @JvmStatic
+    val dataFolder: String get() = "data"
+    private val assetsFolder: String get() = "assets"
+
+    @JvmStatic
+    val entitiesFolder: String get() = "$assetsFolder/entities"
+
+    @JvmStatic
+    val enemiesFolder: String get() = String.format("%s/enemies", entitiesFolder)
+
+    @JvmStatic
+    val worldsFolder: String get() = "$assetsFolder/worlds"
+
+    @JvmStatic
+    val currentLevelFolder: String
+        get() {
+            val level = Bomberman.getMatch().currentLevel
+            return "$worldsFolder/${level.info.levelId}/level/${level.info.levelId}"
+        }
+
+    @JvmStatic
+    val currentWorldCommonFolder: String get() = "$worldsFolder/${Bomberman.getMatch().currentLevel.info.worldId}/common"
+
+    @JvmStatic
+    val powerUpsFolder: String get() = "$assetsFolder/powerups"
+
+    @JvmStatic
+    val powerUpsBorderPath: String get() = "$menuImagesPath/powerups_border.png"
+    private val menuImagesPath: String get() = String.format("%s/menu/images", assetsFolder)
+
+    @JvmStatic
+    val backgroundImage: String get() = "$menuImagesPath/background.jpg"
+
+    @JvmStatic
+    val mainMenuWallpaper: String get() = "$menuImagesPath/welcome.png"
+
+    @JvmStatic
+    val deathWallpaper: String get() = "$menuImagesPath/death.jpg"
+
+    @JvmStatic
+    fun getWorldSelectorPortalPath(id: Int): String {
+        return "$assetsFolder/world_selector/world$id.png"
+    }
+
+    @JvmStatic
+    val powerupsLogoPath: String get() = "$powerUpsFolder/powerups_logo.png"
+
+    @JvmStatic
+    val inventoryPath: String get() = "$assetsFolder/inventory"
+
+    @JvmStatic
+    val soundsPath: String get() = "$assetsFolder/sounds"
+
+    @JvmStatic
+    val itemsPath: String get() = "$assetsFolder/items"
+
+    @JvmStatic
+    val defaultSoundTrack: String get() = "$assetsFolder/menu/sound/soundtrack.wav"
+    private val uiFolder: String get() = "$assetsFolder/ui"
+
+    @JvmStatic
+    val cursorPath: String get() = "$uiFolder/cursor.png"
+
+    @JvmStatic
+    val iconPath: String get() = "$menuImagesPath/frame_icon.png"
+    private val xmlPath: String get() = "xml"
+
+    @JvmStatic
+    val skinsXml: String get() = "$xmlPath/skins.xml"
+
+    @JvmStatic
+    val configXml: String get() = "$xmlPath/config.xml"
 }

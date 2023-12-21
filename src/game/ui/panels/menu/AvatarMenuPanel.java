@@ -54,7 +54,7 @@ public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
     }
 
     @Override
-    protected int getBoxPanelWidth() {
+    protected int getDefaultBoxPanelWidth() {
         return Utility.INSTANCE.px(Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE);
     }
 
@@ -105,7 +105,7 @@ public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
 
         inlinePanel.add(nextAvatarButton);
 
-        componentsPanel.add(inlinePanel);
+        addComponent(inlinePanel);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package game.ui.pages;
 
+import game.Bomberman;
 import game.ui.frames.BombermanFrame;
 import game.ui.panels.game.PagePanel;
 import game.ui.panels.menu.AvatarMenuPanel;
@@ -20,7 +21,7 @@ public abstract class BaseMenu extends PagePanel {
     }
 
     public BaseMenu(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
-        super(cardLayout, parent, frame, Paths.mainMenuWallpaper);
+        super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
         setupLayout();
     }
 
@@ -45,8 +46,8 @@ public abstract class BaseMenu extends PagePanel {
             panel = new JPanel();
 
         int centerPanelWidth = (int) listButtonsPanel.getPreferredSize().getWidth();
-        int height = (int) (Utility.INSTANCE.getScreenSize().getHeight());
-        int width = (int) (Utility.INSTANCE.getScreenSize().getWidth() - centerPanelWidth) / 2;
+        int height = (int) (Bomberman.getBombermanFrame().getPreferredSize().getHeight());
+        int width = (int) (Bomberman.getBombermanFrame().getPreferredSize().getWidth() - centerPanelWidth) / 2;
 
         panel.setPreferredSize(new Dimension(width, height));
         panel.setOpaque(false);
