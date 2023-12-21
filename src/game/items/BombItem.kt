@@ -34,6 +34,10 @@ class BombItem : UsableItem() {
         bombEntity.trigger()
     }
 
+    override fun combineItems(item: UsableItem) {
+        TODO("Not yet implemented")
+    }
+
 
     override val imagePath: String
         get() {

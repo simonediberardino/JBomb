@@ -66,11 +66,11 @@ public class Bomberman {
     }
 
     public static void destroyLevel() {
-        if (bomberManMatch != null) {
-            Bomberman.getBombermanFrame().removeKeyListener(bomberManMatch.getControllerManager());
-            bomberManMatch.destroy();
+        if (bomberManMatch == null) {
+            return;
         }
-        System.gc();
+        Bomberman.getBombermanFrame().removeKeyListener(bomberManMatch.getControllerManager());
+        bomberManMatch.destroy();
     }
 
     /**

@@ -128,7 +128,7 @@ abstract class PowerUp
         // A static array of power-up classes
         val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
                 PistolPowerUp::class.java,
-                ArmorPowerUp::class.java,
+                /*ArmorPowerUp::class.java,
                 FirePowerUp::class.java,
                 SpeedPowerUp::class.java,
                 TransparentDestroyableBlocksPowerUp::class.java,
@@ -137,7 +137,7 @@ abstract class PowerUp
                 Hammer::class.java,
                 BlockMoverPowerUp::class.java,
                 IncreaseMaxBombsPowerUp::class.java,
-                TransparentBombsPowerUp::class.java
+                TransparentBombsPowerUp::class.java*/
         )
 
         // The default duration for a power-up, in seconds

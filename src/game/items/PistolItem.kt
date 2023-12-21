@@ -1,5 +1,6 @@
 package game.items
 
+import game.Bomberman
 import game.entity.blocks.DestroyableBlock
 import game.entity.blocks.HardBlock
 import game.entity.bomb.AbstractExplosion
@@ -34,12 +35,21 @@ class PistolItem : UsableItem(), Explosive {
             return 3
         }
 
+    fun setBullets(i: Int) {
+        bullets = i
+        Bomberman.getMatch().updateInventoryWeaponController()
+    }
+
+    fun addBullets(i: Int) {
+        setBullets(bullets + i)
+    }
+
     override fun use() {
         if (timePassed(owner.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
             return
         }
         owner.lastPlacedBombTime = System.currentTimeMillis()
-        bullets--
+        addBullets(-1)
 
         val explosion = PistolExplosion(
                 owner,
@@ -54,6 +64,10 @@ class PistolItem : UsableItem(), Explosive {
         if (bullets == 0) {
             remove()
         }
+    }
+
+    override fun combineItems(item: UsableItem) {
+        addBullets((item as PistolItem).bullets)
     }
 
     override val imagePath: String

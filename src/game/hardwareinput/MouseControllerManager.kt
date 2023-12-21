@@ -43,7 +43,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
             onMouseClicked(mouseClickQueue.peekFirst())
     }
 
-    private val task = Runnable {
+    private val movementTask = Runnable {
         val match = Bomberman.getMatch()
         val currPlayer = match.player ?: return@Runnable
         onCooldown()
@@ -53,7 +53,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         val entityToInteract = entity
         if (entityToInteract != null && match.player.listClassInteractWithMouseClick.contains(entityToInteract.javaClass)) {
             entityToInteract.mouseInteractions()
-            onPeriodicTaskEnd()
+            onMovementPeriodicTaskEnd()
             nextCommandInQueue()
             return@Runnable
         }
@@ -61,14 +61,13 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         latestDirectionsFromPlayer = mouseCoords?.fromCoordinatesToDirection(currPlayer.coords) ?: emptyList()
 
         latestDirectionsFromPlayer.forEach {
-            match.controllerManager.onKeyPressed(it.toCommand())
+            match.controllerManager.simulateKeyPressed(it.toCommand())
         }
 
         if (firstDirectionsFromPlayer.isNotEmpty() && firstDirectionsFromPlayer.none { it !in latestDirectionsFromPlayer }) {
             return@Runnable
         }
-
-        onPeriodicTaskEnd()
+        onMovementPeriodicTaskEnd()
         nextCommandInQueue()
     }
 
@@ -124,10 +123,11 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         mouseCoords = Coordinates(e.x, e.y)
         firstDirectionsFromPlayer = mouseCoords!!.fromCoordinatesToDirection(Bomberman.getMatch().player.coords)
         entity = Coordinates.getEntityOnCoordinates(mouseCoords)
-        playerMovementTask.resume()
+        startMouseTasks()
     }
 
-    private val playerMovementTask = PeriodicTask(task, DELAY)
+
+    private val playerMovementTask = PeriodicTask(movementTask, DELAY)
 
     // Directions are refreshed and will be replaced in task
     fun onCooldown() {
@@ -140,12 +140,12 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         this.mouseDraggedInteractionOccured = mouseDraggedInteractionOccured
     }
 
-    fun stopPeriodicTask() {
+    fun stopMovementTask() {
         mouseClickQueue = LinkedList()
-        onPeriodicTaskEnd()
+        onMovementPeriodicTaskEnd()
     }
 
-    fun onPeriodicTaskEnd() {
+    private fun onMovementPeriodicTaskEnd() {
         if (!isMouseClicked) return
         playerMovementTask.stop()
         onCooldown()
@@ -158,5 +158,8 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         mouseCoords = Coordinates(event.x, event.y)
         if (entity == null) return
         entity!!.mouseInteractions()
+    }
+    fun startMouseTasks(){
+        playerMovementTask.resume()
     }
 }

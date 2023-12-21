@@ -74,10 +74,18 @@ public class BomberManMatch {
         updateInventoryWeaponController();
     }
 
+    public void give(BomberEntity owner, UsableItem item, boolean combineSameItem) {
+        if (combineSameItem && owner.getWeapon().getClass() == item.getClass()) {
+            owner.getWeapon().combineItems(item);
+        } else {
+            owner.setWeapon(item);
+            owner.getWeapon().owner = owner;
+            updateInventoryWeaponController();
+        }
+    }
+
     public void give(BomberEntity owner, UsableItem item) {
-        owner.setWeapon(item);
-        owner.getWeapon().owner = owner;
-        updateInventoryWeaponController();
+        give(owner, item, false);
     }
 
     public void removeItem(BomberEntity owner) {
@@ -87,7 +95,7 @@ public class BomberManMatch {
     }
 
     public void updateInventoryWeaponController() {
-        if(player == null)
+        if (player == null)
             return;
 
         inventoryElementControllerBombs.setImagePath(player.getWeapon().getImagePath());
@@ -237,7 +245,7 @@ public class BomberManMatch {
         }
 
         if (this.mouseControllerManager != null) {
-            this.mouseControllerManager.stopPeriodicTask();
+            this.mouseControllerManager.stopMovementTask();
         }
 
         if (this.gameTickerObservable != null) {

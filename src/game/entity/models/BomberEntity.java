@@ -144,6 +144,7 @@ public abstract class BomberEntity extends Character implements Explosive {
         getActivePowerUps().removeIf(e -> e.isInstance(p));
     }
 
+
     public List<Class<? extends Entity>> getListClassInteractWithMouseClick() {
         return listInteractWithMouseClick;
     }

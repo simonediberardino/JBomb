@@ -14,4 +14,7 @@ enum class Command {
             else -> null
         }
     }
+    fun isMovementKey(): Boolean {
+        return arrayOf(MOVE_UP, MOVE_DOWN, MOVE_RIGHT, MOVE_LEFT).contains(this)
+    }
 }

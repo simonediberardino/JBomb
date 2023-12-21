@@ -53,10 +53,17 @@ class ControllerManager : Observable2(), KeyListener {
         )
     }
 
-    fun onKeyPressed(action: Command?) {
+    fun pressKey(action: Command?) {
         // if a button is pressed, mouse movement gets interrupted
-        Bomberman.getMatch().mouseControllerManager.stopPeriodicTask()
-
+        if(action?.isMovementKey()!!) {
+            Bomberman.getMatch().mouseControllerManager.stopMovementTask()
+        }
+        onKeyPressed(action)
+    }
+    fun simulateKeyPressed(action: Command?){
+        onKeyPressed(action)
+    }
+    fun onKeyPressed(action: Command?){
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
         if (action != null && player != null) {
             commandEventsTime[action] = System.currentTimeMillis()
@@ -75,7 +82,7 @@ class ControllerManager : Observable2(), KeyListener {
         val action = keyAssignment?.get(e.keyCode) ?: return
         if (timePassed(commandEventsTime.getOrDefault(action, 0L)) < KEY_DELAY_MS)
             return
-        onKeyPressed(action)
+        pressKey(action)
     }
 
     override fun keyReleased(e: KeyEvent) {

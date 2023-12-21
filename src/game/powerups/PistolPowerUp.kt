@@ -5,8 +5,8 @@ import game.entity.models.BomberEntity
 import game.entity.models.Coordinates
 import game.items.PistolItem
 import game.utils.Paths.itemsPath
-import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
+
 class PistolPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
 
     override fun getImage(): BufferedImage =
@@ -16,7 +16,7 @@ class PistolPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
         get() = 30
 
     override fun doApply(entity: BomberEntity) {
-        Bomberman.getMatch().give(entity, PistolItem())
+        Bomberman.getMatch().give(entity, PistolItem(),true)
     }
 
     override fun cancel(entity: BomberEntity) {
@@ -25,4 +25,8 @@ class PistolPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
 
     override val isDisplayable: Boolean
         get() = false
+
+    override fun canPickUp(entity: BomberEntity): Boolean {
+        return true
+    }
 }

@@ -6,6 +6,7 @@ import game.entity.models.BomberEntity
 abstract class UsableItem {
     lateinit var owner: BomberEntity
     abstract fun use()
+    abstract fun combineItems(item: UsableItem)
     abstract val imagePath: String?
     abstract val count: Int
     fun give() {

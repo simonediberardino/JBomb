@@ -6,3 +6,6 @@ high priorities:
 - database
 - multiplayer
 - entity types
+- Update username on resume
+- server
+- dead enemies can kill you while disappearing
