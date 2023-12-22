@@ -17,6 +17,10 @@ class ClientGameHandler : TCPClientCallback {
         client.register(this)
     }
 
+    override fun onError() {
+        connected = false
+    }
+
     override fun onDisconnect() {
         connected = false
     }

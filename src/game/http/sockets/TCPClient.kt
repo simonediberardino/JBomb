@@ -5,6 +5,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
+import java.net.UnknownHostException
 
 class TCPClient(private val serverAddress: String,
                 private val serverPort: Int
@@ -15,12 +16,20 @@ class TCPClient(private val serverAddress: String,
     private val listeners: MutableSet<TCPClientCallback> = mutableSetOf()
 
     fun connect() {
-        socket = Socket(serverAddress, serverPort)
-        reader = BufferedReader(InputStreamReader(socket.getInputStream()))
-        writer = PrintWriter(socket.getOutputStream(), true)
+        try {
+            socket = Socket(serverAddress, serverPort)
+            reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+            writer = PrintWriter(socket.getOutputStream(), true)
 
-        for (listener in listeners) {
-            listener.onConnect()
+            for (listener in listeners) {
+                listener.onConnect()
+            }
+        } catch (exception: UnknownHostException) {
+            exception.printStackTrace()
+
+            for (listener in listeners) {
+                listener.onError()
+            }
         }
     }
 
@@ -53,15 +62,14 @@ class TCPClient(private val serverAddress: String,
     companion object {
         var instance: TCPClient? = null
             get() {
-                if (instance == null)
-                    return null
+                field ?: return null
 
-                if (instance!!.socket.isClosed) {
-                    instance = null
+                if (field!!.socket.isClosed) {
+                    field = null
                     return null
                 }
 
-                return instance
+                return field
             }
     }
 }

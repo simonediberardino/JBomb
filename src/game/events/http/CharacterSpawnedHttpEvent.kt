@@ -16,9 +16,18 @@ class CharacterSpawnedHttpEvent: HttpEvent {
         println("CharacterSpawnedHttpEvent: $clientId")
 
         clientId ?: return
-        val coordinates = Bomberman.getMatch().currentLevel.info.playerSpawnCoordinates
+        val match = Bomberman.getMatch() ?: return
+        val coordinates = match.currentLevel.info.playerSpawnCoordinates
 
         val player = Player(coordinates, clientId)
         player.spawn()
+
+        // if ID is equal to client id, assign it to BombermanMatch player
+        if (Bomberman.getMatch().isClient) {
+            if (player.id == match.clientGameHandler.id.toLong()) {
+                match.player = player
+                match.assignPlayerToControllerManager()
+            }
+        }
     }
 }
