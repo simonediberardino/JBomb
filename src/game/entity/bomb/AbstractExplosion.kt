@@ -38,7 +38,7 @@ abstract class AbstractExplosion(private val owner: Entity,
         // On first (center) explosion
         if (distanceFromExplosive == 0) {
             val desiredCoords = allCoordinates
-            Bomberman.getMatch().entities
+            Bomberman.getMatch().getEntities()
                     .parallelStream()
                     .filter { e: Entity -> desiredCoords.any { coord: Coordinates? -> Coordinates.doesCollideWith(coord, e) } }
                     .forEach { e: Entity -> interact(e) }

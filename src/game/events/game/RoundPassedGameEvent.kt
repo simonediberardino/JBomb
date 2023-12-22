@@ -6,6 +6,6 @@ import game.events.models.GameEvent
 
 class RoundPassedGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getMatch().currentLevel.eventHandler.onRoundPassedGameEvent()
+        Bomberman.getMatch().currentLevel!!.eventHandler.onRoundPassedGameEvent()
     }
 }

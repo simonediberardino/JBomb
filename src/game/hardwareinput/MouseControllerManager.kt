@@ -18,18 +18,23 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
     private var mouseDraggedInteractionOccured = false
     var isMouseDraggedInteractionInterrupted = false
     var isMouseDragInteractionEntered = false
+
     var isMouseDragged = false
         private set
+
     var isMouseClicked = false
         private set
+
     private var mouseClickQueue = LinkedList<MouseEvent>()
 
     // First and last directions from the player are differentiated so the task can be terminated when they have no direction in common,
     // in order to avoid an infinite loop
     private var firstDirectionsFromPlayer: List<Direction> = ArrayList()
     private var latestDirectionsFromPlayer: List<Direction> = ArrayList()
+
     var mouseCoords: Coordinates? = null
         private set
+
     var entity: Entity? = null
         private set
 
@@ -48,10 +53,12 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         val currPlayer = match.player ?: return@Runnable
         onCooldown()
 
-        if (!currPlayer.aliveState) return@Runnable
+        if (!currPlayer.aliveState)
+            return@Runnable
 
-        val entityToInteract = entity
-        if (entityToInteract != null && match.player.listClassInteractWithMouseClick.contains(entityToInteract.javaClass)) {
+        val entityToInteract = entity ?: return@Runnable
+
+        if (currPlayer.listClassInteractWithMouseClick.contains(entityToInteract.javaClass)) {
             entityToInteract.mouseInteractions()
             onMovementPeriodicTaskEnd()
             nextCommandInQueue()
@@ -61,12 +68,13 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         latestDirectionsFromPlayer = mouseCoords?.fromCoordinatesToDirection(currPlayer.coords) ?: emptyList()
 
         latestDirectionsFromPlayer.forEach {
-            match.controllerManager.onKeyPressed(it.toCommand())
+            match.controllerManager?.onKeyPressed(it.toCommand())
         }
 
         if (firstDirectionsFromPlayer.isNotEmpty() && firstDirectionsFromPlayer.none { it !in latestDirectionsFromPlayer }) {
             return@Runnable
         }
+
         onMovementPeriodicTaskEnd()
         nextCommandInQueue()
     }
@@ -84,7 +92,10 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         if (!isMouseDragged) {
             return
         }
-        if (!mouseDraggedInteractionOccured) mouseClicked(event)
+
+        if (!mouseDraggedInteractionOccured)
+            mouseClicked(event)
+
         isMouseDragInteractionEntered = false
         isMouseDragged = false
         mouseDraggedInteractionOccured = false
@@ -111,17 +122,20 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         onMouseClicked(e)
     }
 
-    fun onMouseClicked(e: MouseEvent) {
-        if (isMouseClicked) return
+    private fun onMouseClicked(e: MouseEvent) {
+        if (isMouseClicked)
+            return
+
         isMouseClicked = true
-        val player = Bomberman.getMatch().player
-        if (player == null || !player.aliveState) {
+
+        val player = Bomberman.getMatch().player ?: return
+        if (!player.aliveState) {
             return
         }
 
-        //isMouseClicked = true;
         mouseCoords = Coordinates(e.x, e.y)
-        firstDirectionsFromPlayer = mouseCoords!!.fromCoordinatesToDirection(Bomberman.getMatch().player.coords)
+        firstDirectionsFromPlayer = mouseCoords!!.fromCoordinatesToDirection(Bomberman.getMatch().player?.coords
+                ?: return)
         entity = Coordinates.getEntityOnCoordinates(mouseCoords)
         startMouseTasks()
     }
@@ -130,9 +144,9 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
     private val playerMovementTask = PeriodicTask(movementTask, DELAY)
 
     // Directions are refreshed and will be replaced in task
-    fun onCooldown() {
+    private fun onCooldown() {
         for (d in firstDirectionsFromPlayer) {
-            Bomberman.getMatch().controllerManager.onKeyReleased(d.toCommand())
+            Bomberman.getMatch().controllerManager?.onKeyReleased(d.toCommand())
         }
     }
 
@@ -159,7 +173,8 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         if (entity == null) return
         entity!!.mouseInteractions()
     }
-    fun startMouseTasks(){
+
+    private fun startMouseTasks() {
         playerMovementTask.resume()
     }
 }

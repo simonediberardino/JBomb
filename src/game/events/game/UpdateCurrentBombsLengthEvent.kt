@@ -5,6 +5,6 @@ import game.events.models.GameEvent
 
 class UpdateCurrentBombsLengthEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getMatch().currentLevel.eventHandler.onUpdateBombsLengthEvent(Bomberman.getMatch().player, arg as Int)
+        Bomberman.getMatch().currentLevel!!.eventHandler.onUpdateBombsLengthEvent(Bomberman.getMatch().player ?: return, arg as Int)
     }
 }

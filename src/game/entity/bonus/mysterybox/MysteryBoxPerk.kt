@@ -19,6 +19,6 @@ class MysteryBoxPerk(level: Level, entity: Entity) : MysteryBox(level, entity) {
             throw RuntimeException(e)
         }
 
-        powerUpInstance.apply(Bomberman.getMatch().player)
+        powerUpInstance.apply(Bomberman.getMatch().player ?: return)
     }
 }

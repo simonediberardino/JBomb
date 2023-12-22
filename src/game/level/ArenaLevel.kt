@@ -52,7 +52,7 @@ abstract class ArenaLevel : Level() {
                     super.onRoundPassedGameEvent()
                 }
                 ToastHandler.getInstance().show(Localization.get(Localization.STARTING_ROUND).replace("%round%", currentRound.get().toString()))
-                Bomberman.getMatch().inventoryElementControllerRounds.setNumItems(currentRound.get())
+                Bomberman.getMatch().inventoryElementControllerRounds?.setNumItems(currentRound.get())
             }
 
             override fun onDeathGameEvent() {

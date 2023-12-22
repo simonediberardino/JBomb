@@ -2,8 +2,8 @@ package game;
 
 import game.data.DataInputOutput;
 import game.level.Level;
-import game.level.WorldSelectorLevel;
 import game.localization.Localization;
+import game.match.BomberManMatch;
 import game.sound.AudioManager;
 import game.tasks.GarbageCollectorTask;
 import game.ui.frames.BombermanFrame;
@@ -13,13 +13,9 @@ import game.ui.panels.game.MatchPanel;
 import game.ui.pages.LoadingPanel;
 import game.ui.pages.MainMenuPanel;
 import game.ui.viewelements.misc.ToastHandler;
-import game.utils.Paths;
-import game.utils.Utility;
-import game.utils.XMLUtils;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Optional;
 
 import static game.localization.Localization.WELCOME_TEXT;

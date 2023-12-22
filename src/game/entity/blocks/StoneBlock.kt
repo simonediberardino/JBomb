@@ -20,6 +20,6 @@ class StoneBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
     }
 
     override fun getImage(): BufferedImage {
-        return loadAndSetImage(Bomberman.getMatch().currentLevel.info.stoneBlockImagePath)
+        return loadAndSetImage(Bomberman.getMatch().currentLevel!!!!.info.stoneBlockImagePath)
     }
 }

@@ -25,7 +25,7 @@ class DestroyableBlock(
     override fun doInteract(e: Entity?) {}
 
     override fun getImage(): BufferedImage {
-        return loadAndSetImage(Bomberman.getMatch().currentLevel.info.destroyableBlockImagePath)
+        return loadAndSetImage(Bomberman.getMatch().currentLevel!!!!.info.destroyableBlockImagePath)
     }
 
     override fun onDespawn() {

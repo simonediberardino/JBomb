@@ -1,6 +1,6 @@
 package game.ui.panels.game;
 
-import game.BomberManMatch;
+import game.match.BomberManMatch;
 import game.Bomberman;
 import game.entity.enemies.boss.ghost.GhostBoss;
 import game.entity.models.Entity;

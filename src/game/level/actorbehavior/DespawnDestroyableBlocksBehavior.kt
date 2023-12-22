@@ -17,7 +17,7 @@ class DespawnDestroyableBlocksBehavior : GameBehavior {
 
     private fun despawnDestroyableBlocks() {
         Bomberman.getMatch()
-                .entities
+                .getEntities()
                 .stream()
                 .filter { entity: Entity? -> entity is DestroyableBlock }
                 .forEach { obj: Entity -> obj.despawn() }

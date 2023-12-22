@@ -26,7 +26,7 @@ class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
         super.doApply(entity)
 
         val match = Bomberman.getMatch()
-        val currentLevel = match.currentLevel
+        val currentLevel = match.currentLevel ?: return
 
         currentLevel.endLevel()
         DataInputOutput.getInstance().increaseLives()
@@ -41,7 +41,6 @@ class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
             e.printStackTrace()
         }
     }
-
 
     override fun cancel(entity: BomberEntity) {}
 }

@@ -85,7 +85,7 @@ open class Bomb(private val caller: Entity) : MovableBlock(Coordinates.getCenter
         get() = setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)
 
     override val maxExplosionDistance: Int
-        get() = Bomberman.getMatch().player.currExplosionLength
+        get() = Bomberman.getMatch().player?.currExplosionLength ?: 0
 
     override fun onMouseClickInteraction() {
         eliminated()

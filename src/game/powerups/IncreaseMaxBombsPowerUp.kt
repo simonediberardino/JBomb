@@ -28,5 +28,5 @@ class IncreaseMaxBombsPowerUp
     }
 
     override fun canPickUp(entity: BomberEntity): Boolean =
-            DataInputOutput.getInstance().obtainedBombs < Bomberman.getMatch().currentLevel.info.maxBombs
+            DataInputOutput.getInstance().obtainedBombs < Bomberman.getMatch().currentLevel!!.info.maxBombs
 }

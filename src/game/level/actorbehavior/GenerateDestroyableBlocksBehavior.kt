@@ -30,7 +30,7 @@ class GenerateDestroyableBlocksBehavior(val level: Level): GameBehavior {
         while (i < levelInfo.maxDestroyableBlocks) {
             // If the current destroyable block has not been spawned, generate new coordinates for it and spawn it on the game board.
             if (!block.isSpawned) {
-                block.coords = Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().player.coords, PitchPanel.GRID_SIZE * 2)
+                block.coords = Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().player?.coords, PitchPanel.GRID_SIZE * 2)
                 block.spawn()
 
                 // Force the first spawned block to have the End level portal

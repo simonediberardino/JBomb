@@ -18,7 +18,7 @@ abstract class Enemy(coordinates: Coordinates?) : Character(coordinates) {
     override fun onSpawn() {
         super.onSpawn()
         Bomberman.getMatch().increaseEnemiesAlive()
-        Bomberman.getMatch().gameTickerObservable.register(this)
+        Bomberman.getMatch().gameTickerObservable?.register(this)
     }
 
     override fun onDespawn() {

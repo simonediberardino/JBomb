@@ -16,7 +16,7 @@ class CharacterSpawnedHttpEvent: HttpEvent {
         println("CharacterSpawnedHttpEvent: $clientId")
 
         clientId ?: return
-        val coordinates = Bomberman.getMatch().currentLevel.info.playerSpawnCoordinates
+        val coordinates = (Bomberman.getMatch().currentLevel!! ?: return).info.playerSpawnCoordinates
 
         val player = Player(coordinates, clientId)
         player.spawn()

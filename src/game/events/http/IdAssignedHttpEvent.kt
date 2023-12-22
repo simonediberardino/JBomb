@@ -10,7 +10,7 @@ class IdAssignedHttpEvent: HttpEvent {
         val id = info["id"]?.toInt()
         println("IdAssignedHttpEvent: $id")
 
-        Bomberman.getMatch().clientGameHandler.id = id ?: return
+        Bomberman.getMatch().clientGameHandler?.id = id ?: return
 
         // client confirms to join the match after getting id;
         HttpMessageDispatcher.instance.dispatch(PlayerJoinRequestHttpMessage(id))

@@ -81,7 +81,7 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
     override fun onSpawn() {
         super.onSpawn()
         updateBombs()
-        Bomberman.getMatch().controllerManager.register(this)
+        Bomberman.getMatch().controllerManager?.register(this)
         Bomberman.getBombermanFrame().matchPanel.refreshPowerUps(activePowerUps)
     }
 

@@ -226,8 +226,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      */
     public final void despawn() {
         setSpawned(false);
-        Bomberman.getMatch().removeEntity(this);
         this.onDespawn();
+        Bomberman.getMatch().removeEntity(this);
     }
 
     public final void spawnAtRandomCoordinates() {

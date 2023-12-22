@@ -65,7 +65,7 @@ abstract class MysteryBox(
             return
         }
         onPurchaseConfirm()
-        Bomberman.getMatch().currentLevel.eventHandler.onPurchaseItem(price)
+        Bomberman.getMatch().currentLevel!!.eventHandler.onPurchaseItem(price)
         openBox()
     }
 

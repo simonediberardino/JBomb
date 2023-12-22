@@ -23,7 +23,8 @@ import java.util.*
  * The Clown entity can spawn orbs, enhanced orbs, explosions and throw its hat in random directions.
  */
 class Clown : Boss, Explosive {
-    private val explosions = ArrayList<ConfettiExplosion>()
+    private var attackDelay = 5000
+    private var lastAttackTime: Long = 0
 
     /**
      * The hasHat property represents whether the Clown entity is wearing a hat or not.
@@ -31,7 +32,7 @@ class Clown : Boss, Explosive {
     private var hasHat = false
 
     /**
-     * Constructor for the Clown entity that takes in the entity's starting coordinates and sets its initial hasHat value to true.
+     * Constructor for the Clown entity that takes in the clown boss's starting coordinates and sets its initial hasHat value to true.
      *
      * @param coordinates The starting coordinates of the Clown entity.
      */
@@ -108,9 +109,9 @@ class Clown : Boss, Explosive {
     }
 
     override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        val list: MutableList<Class<out Entity>> = ArrayList(super.getBasePassiveInteractionEntities())
-        list.add(Hat::class.java)
-        return HashSet(list)
+        return super.getBasePassiveInteractionEntities().toMutableList()
+                .apply { add(Hat::class.java) }
+                .toSet()
     }
 
     override fun getType(): EntityTypes = EntityTypes.Clown
@@ -178,11 +179,11 @@ class Clown : Boss, Explosive {
     private fun spawnOrbs() {
         for (d in Direction.values()) {
             ClownNose(Coordinates.fromDirectionToCoordinateOnEntity(
-                            this,
-                            d,
-                            Orb.SIZE,
-                            Orb.SIZE
-                    ), d
+                    this,
+                    d,
+                    Orb.SIZE,
+                    Orb.SIZE
+            ), d
             ).spawn(true, false)
         }
     }
@@ -266,20 +267,60 @@ class Clown : Boss, Explosive {
      *
      * @param gameState the current gamestate
      */
+    /**
+     * Overrides the base method to perform entity-specific updates, including potential attacks.
+     *
+     * @param gameState The current state of the game.
+     */
     override fun doUpdate(gameState: Boolean) {
-        // Check if the entity should shoot orbs
+        // Check and potentially spawn explosions
+        checkAndSpawnExplosion()
+
+        // Check and potentially spawn orbs
+        checkAndSpawnOrbs()
+
+        // Check and potentially throw a hat
+        checkAndThrowHat()
+
+        // Perform the common update logic for the clown boss
+        super.doUpdate(gameState)
+    }
+
+    /**
+     * Checks if the clown boss should spawn an explosion and does so if the conditions are met.
+     */
+    private fun checkAndSpawnExplosion() {
+        if (Utility.timePassed(lastAttackTime) <= attackDelay) return
+        // Run a percentage-based chance for spawning an explosion
         Utility.runPercentage(shootingChance) {
+            lastAttackTime = System.currentTimeMillis()
+            spawnExplosion()
+        }
+    }
+
+    /**
+     * Checks if the clown boss should spawn orbs and does so if the conditions are met.
+     */
+    private fun checkAndSpawnOrbs() {
+        if (Utility.timePassed(lastAttackTime) <= attackDelay) return
+        // Run a percentage-based chance for spawning enhanced and regular orbs
+        Utility.runPercentage(shootingChance) {
+            lastAttackTime = System.currentTimeMillis()
             spawnEnhancedOrbs()
             spawnOrbs()
         }
+    }
 
-        // Check if the entity should shoot an explosion
-        Utility.runPercentage(shootingChance) { spawnExplosion() }
-        if (hasHat) {
-            Utility.runPercentage(shootingChance) { throwHat() }
+    /**
+     * Checks if the clown boss should throw a hat and does so if the conditions are met.
+     */
+    private fun checkAndThrowHat() {
+        if (Utility.timePassed(lastAttackTime) <= attackDelay || !hasHat) return
+        // Run a percentage-based chance for throwing a hat
+        Utility.runPercentage(shootingChance) {
+            lastAttackTime = System.currentTimeMillis()
+            throwHat()
         }
-
-        super.doUpdate(gameState)
     }
 
     /**

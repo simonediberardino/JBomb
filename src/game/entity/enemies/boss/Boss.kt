@@ -24,7 +24,7 @@ abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
     }
 
     init {
-        super.setMaxHp(Bomberman.getMatch().currentLevel.info.bossMaxHealth)
+        super.setMaxHp(Bomberman.getMatch().currentLevel!!.info.bossMaxHealth)
         super.setAttackDamage(1000)
     }
 

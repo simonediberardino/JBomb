@@ -19,7 +19,7 @@ class SpawnMysteryBoxBehavior(val level: Level): GameBehavior {
     }
 
     private fun spawnMysteryBox() {
-        val player = Bomberman.getMatch().player
+        val player = Bomberman.getMatch().player ?: return
         val c = Coordinates.generateCoordinatesAwayFrom(player.coords, PitchPanel.GRID_SIZE * 2)
         val mysteryBox: Entity = MysteryBoxPerk(level, player)
         mysteryBox.coords = c
