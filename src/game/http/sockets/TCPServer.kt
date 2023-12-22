@@ -1,7 +1,9 @@
 package game.http.sockets
 
+import game.http.callbacks.TCPServerCallback
 import kotlinx.coroutines.*
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.ServerSocket
@@ -9,16 +11,35 @@ import java.net.Socket
 
 class TCPServer(private var port: Int) : TCPSocket {
     private lateinit var socket: ServerSocket
-    private var clients: MutableSet<Socket> = mutableSetOf()
+    private var clients: MutableMap<Int, IndexedClient> = mutableMapOf()
+    private val listeners: MutableSet<TCPServerCallback> = mutableSetOf()
+    private var progressiveId = 0
 
     fun open() {
-        socket = ServerSocket(port)
+        try {
+            socket = ServerSocket(port)
+            onStart()
+        } catch (ioException: IOException) {
+            onClose()
+        }
     }
 
-    private suspend fun handleClient(clientSocket: Socket) = withContext(Dispatchers.IO) {
+    private fun onClose() {
+        for (listener in listeners) {
+            listener.onCloseServer()
+        }
+    }
+
+    private fun onStart() {
+        for (listener in listeners) {
+            listener.onStartServer()
+        }
+    }
+
+    private suspend fun handleClient(clientSocket: IndexedClient) = withContext(Dispatchers.IO) {
         try {
-            val reader = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
-            val writer = PrintWriter(clientSocket.getOutputStream(), true)
+            val reader = BufferedReader(InputStreamReader(clientSocket.client.getInputStream()))
+            val writer = PrintWriter(clientSocket.client.getOutputStream(), true)
 
             while (true) {
                 // Reads the stream from the client;
@@ -38,8 +59,8 @@ class TCPServer(private var port: Int) : TCPSocket {
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
-            clientSocket.close()
-            clients.remove(clientSocket)
+            clientSocket.client.close()
+            clients.remove(clientSocket.id)
         }
     }
 
@@ -47,13 +68,16 @@ class TCPServer(private var port: Int) : TCPSocket {
         CoroutineScope(Dispatchers.IO).launch {
             while (true) {
                 val clientSocket = socket.accept()
-                clients.add(clientSocket)
+                val indexedClient = IndexedClient(progressiveId, clientSocket)
+
+                clients[progressiveId] = indexedClient
+                progressiveId++
 
                 println("Client connected: ${clientSocket.inetAddress.hostAddress}")
 
                 // Launch coroutine to handle the client
                 launch {
-                    handleClient(clientSocket)
+                    handleClient(indexedClient)
                 }
             }
         }
@@ -61,11 +85,28 @@ class TCPServer(private var port: Int) : TCPSocket {
 
     override fun sendData(data: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            clients.parallelStream().forEach {
-                val writer = PrintWriter(it.getOutputStream(), true)
-                writer.println(data)
+            clients.values.parallelStream().forEach {
+                sendData(it.client, data)
             }
         }
+    }
+
+    fun sendData(clientId: Int, data: String) {
+        println("sendData: $clientId does not exist")
+        sendData(clients[clientId]?.client ?: return, data)
+    }
+
+    private fun sendData(client: Socket, data: String) {
+        val writer = PrintWriter(client.getOutputStream(), true)
+        writer.println(data)
+    }
+
+    fun register(tcpServerCallback: TCPServerCallback) {
+        listeners.add(tcpServerCallback)
+    }
+
+    fun unregister(tcpServerCallback: TCPServerCallback) {
+        listeners.remove(tcpServerCallback)
     }
 
     companion object {
@@ -82,4 +123,6 @@ class TCPServer(private var port: Int) : TCPSocket {
                 return instance
             }
     }
+
+    class IndexedClient(val id: Int, val client: Socket)
 }

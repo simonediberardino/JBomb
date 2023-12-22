@@ -18,7 +18,5 @@ class LocationHttpMessage(private val character: CharacterDao): HttpMessage {
     }
 
     override val senders: Array<HttpActor>
-        get() {
-            return arrayOf(HttpActor.CLIENT, HttpActor.SERVER)
-        }
+        get() = arrayOf(HttpActor.CLIENT, HttpActor.SERVER)
 }

@@ -24,7 +24,7 @@ import static game.ui.panels.game.PitchPanel.GRID_SIZE;
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 public abstract class Entity extends GameTickerObserver implements Comparable<Entity> {
-    private final long id;
+    private long id;
     protected Set<Class<? extends Entity>> passiveInteractionEntities = getBasePassiveInteractionEntities();
     protected BufferedImage image;
     protected int lastImageIndex;
@@ -70,6 +70,10 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     public Entity(Coordinates coordinates) {
         this.id = UUID.randomUUID().getMostSignificantBits();
         this.coords = coordinates;
+    }
+
+    public Entity(long id) {
+        this.id = id;
     }
 
     protected String getEntitiesAssetsPath() {
@@ -132,6 +136,10 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
     public long getId() {
         return id;
+    }
+
+    protected void setId(long id) {
+        this.id = id;
     }
 
     public boolean isImmune() {

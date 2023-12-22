@@ -13,9 +13,10 @@ class HttpMessageDispatcher private constructor() {
         }
     }
 
-    fun dispatch(data: String, httpActor: HttpActor) {
+    private fun dispatch(data: String, httpActor: HttpActor) {
 
     }
+
     companion object {
         val instance: HttpMessageDispatcher by lazy { HttpMessageDispatcher() }
     }

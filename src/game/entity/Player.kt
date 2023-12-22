@@ -20,12 +20,15 @@ import game.ui.pages.GameOverPanel
 import game.ui.panels.game.PitchPanel
 import game.utils.Paths.entitiesFolder
 import java.awt.event.ActionEvent
-import java.util.*
 import javax.swing.Timer
 
 class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
     init {
         hitboxSizeToHeightRatio = 0.733f
+    }
+
+    constructor(coordinates: Coordinates?, id: Long) : this(coordinates) {
+        this.id = id
     }
 
     constructor() : this(null)

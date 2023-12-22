@@ -12,6 +12,8 @@ import game.items.BombItem;
 import game.items.UsableItem;
 import game.level.Level;
 import game.level.actorbehavior.PlayLevelSoundTrackBehavior;
+import game.level.online.ClientGameHandler;
+import game.level.online.ServerGameHandler;
 import game.tasks.GamePausedObserver;
 import game.tasks.GameTickerObservable;
 import game.ui.panels.game.MatchPanel;
@@ -26,6 +28,8 @@ import java.util.List;
 public class BomberManMatch {
     private final SortedLinkedList<Entity> entities;
     private final MouseControllerManager mouseControllerManager;
+    private ClientGameHandler clientGameHandler;
+    private ServerGameHandler serverGameHandler;
     private InventoryElementController inventoryElementControllerPoints;
     private InventoryElementController inventoryElementControllerBombs;
     private InventoryElementController inventoryElementControllerLives;
@@ -102,6 +106,22 @@ public class BomberManMatch {
         inventoryElementControllerBombs.setNumItems(player.getWeapon().getCount());
     }
 
+    public ClientGameHandler getClientGameHandler() {
+        return clientGameHandler;
+    }
+
+    public ServerGameHandler getServerGameHandler() {
+        return serverGameHandler;
+    }
+
+    public boolean isClient() {
+        return clientGameHandler != null && clientGameHandler.getConnected();
+    }
+
+    public boolean isServer() {
+        return serverGameHandler != null && serverGameHandler.getRunning();
+    }
+
     public Level getCurrentLevel() {
         return currentLevel;
     }
@@ -131,7 +151,6 @@ public class BomberManMatch {
             return new LinkedList<>(entities);
         }
     }
-
 
     public void addEntity(Entity entity) {
         synchronized (entities) {
