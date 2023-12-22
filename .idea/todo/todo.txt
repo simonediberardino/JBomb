@@ -9,3 +9,4 @@ high priorities:
 - server
 - dead enemies can kill you while disappearing
 - comments
+- fix bomb after pistol
