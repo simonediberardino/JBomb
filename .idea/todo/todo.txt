@@ -10,3 +10,4 @@ high priorities:
 - dead enemies can kill you while disappearing
 - comments
 - mystery box story mode
+- fix bomb after pistol
