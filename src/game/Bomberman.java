@@ -2,6 +2,7 @@ package game;
 
 import game.data.DataInputOutput;
 import game.level.Level;
+import game.level.online.OnlineGameHandler;
 import game.localization.Localization;
 import game.match.BomberManMatch;
 import game.sound.AudioManager;
@@ -72,11 +73,10 @@ public class Bomberman {
     /**
      * Starts a new level and destroys the previous one;
      *
-     * @param level
      */
-    private static void doStartLevel(Level level) {
+    private static void doStartLevel(Level level, OnlineGameHandler onlineGameHandler) {
         destroyLevel();
-        bomberManMatch = new BomberManMatch(level);
+        bomberManMatch = new BomberManMatch(level, onlineGameHandler);
         bombermanFrame.initGamePanel();
         bomberManMatch.getCurrentLevel().start(bombermanFrame.getPitchPanel());
 
@@ -89,10 +89,10 @@ public class Bomberman {
         showActivity(MatchPanel.class);
     }
 
-    public static void startLevel(Level level) {
+    public static void startLevel(Level level, OnlineGameHandler onlineGameHandler) {
         bombermanFrame.getLoadingPanel().initialize();
         bombermanFrame.getLoadingPanel().updateText(level);
-        bombermanFrame.getLoadingPanel().setCallback(() -> doStartLevel(level));
+        bombermanFrame.getLoadingPanel().setCallback(() -> doStartLevel(level, onlineGameHandler));
         showActivity(LoadingPanel.class);
         Bomberman.showActivity(LoadingPanel.class);
     }

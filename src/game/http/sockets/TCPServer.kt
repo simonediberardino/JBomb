@@ -19,6 +19,7 @@ class TCPServer(private var port: Int) : TCPSocket {
         try {
             socket = ServerSocket(port)
             onStart()
+            start()
         } catch (ioException: IOException) {
             onClose()
         }
@@ -40,6 +41,10 @@ class TCPServer(private var port: Int) : TCPSocket {
         try {
             val reader = BufferedReader(InputStreamReader(clientSocket.client.getInputStream()))
             val writer = PrintWriter(clientSocket.client.getOutputStream(), true)
+
+            for (listener in listeners) {
+                listener.onClientConnected(clientSocket)
+            }
 
             while (true) {
                 // Reads the stream from the client;
@@ -92,8 +97,8 @@ class TCPServer(private var port: Int) : TCPSocket {
     }
 
     fun sendData(clientId: Int, data: String) {
-        println("sendData: $clientId does not exist")
         sendData(clients[clientId]?.client ?: return, data)
+        println("sendData: $clientId sent $data")
     }
 
     private fun sendData(client: Socket, data: String) {

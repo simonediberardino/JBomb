@@ -9,6 +9,7 @@ import game.http.dao.CharacterDao
 import game.http.dispatch.HttpMessageDispatcher
 import game.http.messages.PlayerJoinRequestHttpMessage
 import game.http.messages.SpawnedEntityHttpMessage
+import game.level.online.ClientGameHandler
 
 class CharacterSpawnedHttpEvent: HttpEvent {
     override fun invoke(info: Map<String, String>) {
@@ -24,7 +25,7 @@ class CharacterSpawnedHttpEvent: HttpEvent {
 
         // if ID is equal to client id, assign it to BombermanMatch player
         if (Bomberman.getMatch().isClient) {
-            if (player.id == match.clientGameHandler?.id?.toLong()) {
+            if (player.id == (match.onlineGameHandler as ClientGameHandler).id.toLong()) {
                 match.player = player
                 match.assignPlayerToControllerManager()
             }

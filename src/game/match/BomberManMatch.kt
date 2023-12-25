@@ -15,6 +15,7 @@ import game.items.UsableItem
 import game.level.Level
 import game.level.actorbehavior.PlayLevelSoundTrackBehavior
 import game.level.online.ClientGameHandler
+import game.level.online.OnlineGameHandler
 import game.level.online.ServerGameHandler
 import game.tasks.GamePausedObserver
 import game.tasks.GameTickerObservable
@@ -24,7 +25,7 @@ import game.utils.Utility.timePassed
 import game.viewcontrollers.*
 import java.util.*
 
-class BomberManMatch(var currentLevel: Level?) {
+class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGameHandler?) {
     // Timestamp of the last game pause state
     private var lastGamePauseStateTime = System.currentTimeMillis()
 
@@ -33,10 +34,6 @@ class BomberManMatch(var currentLevel: Level?) {
 
     // Manager for mouse controllers
     val mouseControllerManager: MouseControllerManager = MouseControllerManager()
-
-    // Handlers for client and server game logic (nullable)
-    val clientGameHandler: ClientGameHandler? = null
-    val serverGameHandler: ServerGameHandler? = null
 
     // Manager for general controllers (nullable)
     var controllerManager: ControllerManager? = ControllerManager()
@@ -69,12 +66,13 @@ class BomberManMatch(var currentLevel: Level?) {
     var enemiesAlive = 0
         private set
 
-    private constructor() : this(null)
+    private constructor() : this(null, null)
 
     init {
         controllerManager?.register(GamePausedObserver())
         setupViewControllers()
         setDefaultCommandDelay()
+        onlineGameHandler?.onStart()
     }
 
     fun assignPlayerToControllerManager() {
@@ -179,7 +177,7 @@ class BomberManMatch(var currentLevel: Level?) {
      * @return True if the client game handler is not null and connected, false otherwise.
      */
     val isClient: Boolean
-        get() = clientGameHandler != null && clientGameHandler.connected
+        get() = onlineGameHandler is ClientGameHandler && onlineGameHandler.connected
 
     /**
      * Checks if the game is running in server mode.
@@ -187,7 +185,7 @@ class BomberManMatch(var currentLevel: Level?) {
      * @return True if the server game handler is not null and running, false otherwise.
      */
     val isServer: Boolean
-        get() = serverGameHandler != null && serverGameHandler.running
+        get() = onlineGameHandler is ServerGameHandler && onlineGameHandler.running
 
     /**
      * Adds a bomb to the list of bombs in the game.

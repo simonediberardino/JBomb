@@ -5,13 +5,17 @@ import game.http.dispatch.HttpMessageReceiverHandler
 import game.http.serializing.HttpParserSerializer
 import game.http.sockets.TCPClient
 
-class ClientGameHandler : TCPClientCallback {
+class ClientGameHandler(
+        private val serverAddress: String,
+        private val serverPort: Int
+) : TCPClientCallback, OnlineGameHandler {
+
     private lateinit var client: TCPClient
     var id = -1
     var connected: Boolean = false
         private set
 
-    fun connect(serverAddress: String, serverPort: Int) {
+    private fun connect() {
         client = TCPClient(serverAddress, serverPort)
         client.connect()
         client.register(this)
@@ -35,7 +39,15 @@ class ClientGameHandler : TCPClientCallback {
     }
 
     override fun onDataReceived(data: String) {
+        println("onDataReceived $data")
         val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
         HttpMessageReceiverHandler.instance.handle(formattedData)
+    }
+
+    override fun onStart() {
+        connect()
+    }
+
+    override fun onClose() {
     }
 }

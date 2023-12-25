@@ -59,7 +59,7 @@ public class GameOverPanel extends BaseMenu {
             ToastHandler.getInstance().cancel();
 
             Level level = hasLives ? Level.Companion.getCurrLevel() : new WorldSelectorLevel();
-            Bomberman.startLevel(level);
+            Bomberman.startLevel(level, Bomberman.getMatch().getOnlineGameHandler());
         });
 
         updatePlayAgainButtonText();

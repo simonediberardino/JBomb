@@ -59,7 +59,7 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
             }
 
             // Start the level with the obtained level instance
-            Bomberman.startLevel(levelToStart)
+            Bomberman.startLevel(levelToStart,Bomberman.getMatch().onlineGameHandler)
         } catch (e: InstantiationException) {
             // Print the stack trace if there is an exception
             e.printStackTrace()

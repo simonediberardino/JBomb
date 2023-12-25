@@ -36,7 +36,7 @@ class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
                 WorldSelectorLevel::class.java
             else currentLevel.info.nextLevel
 
-            Bomberman.startLevel(nextLevelClass!!.getDeclaredConstructor().newInstance())
+            Bomberman.startLevel(nextLevelClass!!.getDeclaredConstructor().newInstance(), match.onlineGameHandler)
         } catch (e: Exception) {
             e.printStackTrace()
         }
