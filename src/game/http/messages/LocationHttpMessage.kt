@@ -6,14 +6,14 @@ import game.http.models.HttpActor
 import game.http.models.HttpMessage
 import game.http.models.HttpMessageTypes
 
-class LocationHttpMessage(private val character: CharacterDao): HttpMessage {
+class LocationHttpMessage(private val character: EntityDao): HttpMessage {
     override fun serialize(): String {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.LOCATION.ordinal.toString()
         data["entityId"] = character.entityId.toString()
         data["location"] = "${character.entityLocation.x} ${character.entityLocation.y}"
-        data["direction"] = character.direction.toString()
-        data["skinStatus"] = character.skinStatus.toString()
+        //data["direction"] = character.direction.toString()
+        //data["skinStatus"] = character.skinStatus.toString()
         return data.toString()
     }
 

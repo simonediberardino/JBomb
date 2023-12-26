@@ -2,7 +2,7 @@ package game.level
 
 import game.Bomberman
 import game.data.DataInputOutput
-import game.level.actorbehavior.*
+import game.actorbehavior.*
 import game.level.eventhandler.imp.DefaultLevelEventHandler
 import game.level.eventhandler.model.LevelEventHandler
 import game.level.filesystem.LevelFileSystemHandler

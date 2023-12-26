@@ -8,10 +8,10 @@ import game.http.sockets.TCPClient
 class ClientGameHandler(
         private val serverAddress: String,
         private val serverPort: Int
-) : TCPClientCallback, OnlineGameHandler {
+) : TCPClientCallback {
 
     private lateinit var client: TCPClient
-    var id = -1
+    var id = -1L
     var connected: Boolean = false
         private set
 
@@ -33,15 +33,8 @@ class ClientGameHandler(
         connected = true
     }
 
-    override fun onIdReceived(id: Int) {
+    override fun onIdReceived(id: Long) {
         this.id = id
-        println("onIdReceived: $id")
-    }
-
-    override fun onDataReceived(data: String) {
-        println("onDataReceived $data")
-        val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
-        HttpMessageReceiverHandler.instance.handle(formattedData)
     }
 
     override fun onStart() {
@@ -49,5 +42,16 @@ class ClientGameHandler(
     }
 
     override fun onClose() {
+    }
+
+    override fun onDataReceived(data: String) {
+        println("${javaClass.simpleName} onDataReceived $data")
+        val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
+        HttpMessageReceiverHandler.instance.handle(formattedData)
+    }
+
+    override fun sendData(data: String) {
+        println("${javaClass.simpleName} sendData")
+        client.sendData(data)
     }
 }

@@ -1,9 +1,10 @@
 package game.http.callbacks
 
-interface TCPClientCallback {
+import game.level.online.OnlineGameHandler
+
+interface TCPClientCallback : OnlineGameHandler {
     fun onError()
     fun onDisconnect()
     fun onConnect()
-    fun onDataReceived(data: String)
-    fun onIdReceived(id: Int)
+    fun onIdReceived(id: Long)
 }

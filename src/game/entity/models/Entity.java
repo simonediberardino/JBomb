@@ -1,6 +1,7 @@
 package game.entity.models;
 
 import game.Bomberman;
+import game.actorbehavior.LocationChangedBehavior;
 import game.entity.EntityTypes;
 import game.entity.bomb.AbstractExplosion;
 import game.hardwareinput.MouseControllerManager;
@@ -81,6 +82,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     protected void onSpawn() {
+        System.out.println("onSpawn: " + id);
+        new LocationChangedBehavior(toDao()).invoke();
         state.set(State.SPAWNED);
     }
 
@@ -199,6 +202,12 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         this.coords = coordinates;
     }
 
+    public void onLocationChanged() {
+        if (!isSpawned)
+            return;
+
+        new LocationChangedBehavior(toDao()).invoke();
+    }
     /**
      * Returns true if the entity has been spawned in the game world, false otherwise.
      *

@@ -13,7 +13,7 @@ import game.hardwareinput.MouseControllerManager
 import game.items.BombItem
 import game.items.UsableItem
 import game.level.Level
-import game.level.actorbehavior.PlayLevelSoundTrackBehavior
+import game.actorbehavior.PlayLevelSoundTrackBehavior
 import game.level.online.ClientGameHandler
 import game.level.online.OnlineGameHandler
 import game.level.online.ServerGameHandler
@@ -73,6 +73,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         setupViewControllers()
         setDefaultCommandDelay()
         onlineGameHandler?.onStart()
+        println("${javaClass.simpleName}, onlineGameHandler: $onlineGameHandler")
     }
 
     fun assignPlayerToControllerManager() {
@@ -177,7 +178,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * @return True if the client game handler is not null and connected, false otherwise.
      */
     val isClient: Boolean
-        get() = onlineGameHandler is ClientGameHandler && onlineGameHandler.connected
+        get() = onlineGameHandler is ClientGameHandler /*&& onlineGameHandler.connected*/
 
     /**
      * Checks if the game is running in server mode.
@@ -185,7 +186,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * @return True if the server game handler is not null and running, false otherwise.
      */
     val isServer: Boolean
-        get() = onlineGameHandler is ServerGameHandler && onlineGameHandler.running
+        get() = onlineGameHandler is ServerGameHandler /*&& onlineGameHandler.running*/
 
     /**
      * Adds a bomb to the list of bombs in the game.
@@ -209,6 +210,10 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * Returns a copy of the list of _entities to prevent external modifications.
      */
     fun getEntities(): List<Entity> = synchronized(_entities) { LinkedList(_entities) }
+
+    fun getEntityById(entityId: Long): Entity {
+        return getEntities().first { it.id == entityId }
+    }
 
     fun addEntity(entity: Entity) {
         synchronized(_entities) {
@@ -373,5 +378,4 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
     private fun performGarbageCollection() {
         System.gc()
     }
-
 }

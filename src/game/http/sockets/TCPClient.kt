@@ -32,20 +32,21 @@ class TCPClient(private val serverAddress: String,
             readStream()
         } catch (exception: UnknownHostException) {
             close()
+            onError()
             exception.printStackTrace()
-
-            for (listener in listeners) {
-                listener.onError()
-            }
         }
     }
 
-    fun register(tcpClientCallback: TCPClientCallback) {
-        listeners.add(tcpClientCallback)
+    private fun onError() {
+        for (listener in listeners) {
+            listener.onError()
+        }
     }
 
-    fun unregister(tcpClientCallback: TCPClientCallback) {
-        listeners.remove(tcpClientCallback)
+    private fun onDataReceived(data: String) {
+        listeners.forEach {
+            it.onDataReceived(data)
+        }
     }
 
     override fun sendData(data: String) {
@@ -60,12 +61,12 @@ class TCPClient(private val serverAddress: String,
                     val serverData = reader.readLine()
 
                     if (serverData == null) {
-                        // Client disconnected
+                        // Server disconnected
                         println("Server disconnected")
                         break
                     }
 
-                    println("Received from server: $serverData")
+                    onDataReceived(serverData)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -75,7 +76,7 @@ class TCPClient(private val serverAddress: String,
         }
     }
 
-    fun close() {
+    private fun close() {
         reader.close()
         writer.close()
         socket.close()
@@ -85,17 +86,11 @@ class TCPClient(private val serverAddress: String,
         }
     }
 
-    companion object {
-        var instance: TCPClient? = null
-            get() {
-                field ?: return null
+    fun register(tcpClientCallback: TCPClientCallback) {
+        listeners.add(tcpClientCallback)
+    }
 
-                if (field!!.socket.isClosed) {
-                    field = null
-                    return null
-                }
-
-                return field
-            }
+    fun unregister(tcpClientCallback: TCPClientCallback) {
+        listeners.remove(tcpClientCallback)
     }
 }

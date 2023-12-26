@@ -1,4 +1,4 @@
-package game.level.actorbehavior
+package game.actorbehavior
 
 import game.entity.blocks.StoneBlock
 import game.entity.models.Coordinates

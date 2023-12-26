@@ -2,7 +2,7 @@ package game.level.gamehandler.imp
 
 import game.entity.models.Enemy
 import game.level.Level
-import game.level.actorbehavior.*
+import game.actorbehavior.*
 import game.level.gamehandler.model.GameHandler
 import game.utils.Utility
 import java.awt.Image

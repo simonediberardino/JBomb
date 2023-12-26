@@ -12,7 +12,7 @@ class HttpRepository private constructor() {
     }
 
     fun send(message: HttpMessage) {
-        val string = HttpParserSerializer.instance.serialize(message)
+        /* val string = HttpParserSerializer.instance.serialize(message)
 
         var sent = false
         for (s in message.senders) {
@@ -26,6 +26,6 @@ class HttpRepository private constructor() {
             sender.sendData(string)
             break
         }
-        println("Message $message sent: $sent")
+        println("Message $message sent: $sent") */
     }
 }

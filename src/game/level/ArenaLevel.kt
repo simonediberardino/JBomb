@@ -8,7 +8,7 @@ import game.events.game.RoundPassedGameEvent
 import game.events.game.UpdateCurrentAvailableItemsEvent
 import game.events.game.UpdateCurrentBombsLengthEvent
 import game.events.game.UpdateMaxBombsEvent
-import game.level.actorbehavior.SpawnMysteryBoxBehavior
+import game.actorbehavior.SpawnMysteryBoxBehavior
 import game.level.eventhandler.imp.DefaultLevelEventHandler
 import game.level.eventhandler.model.LevelEventHandler
 import game.level.gamehandler.imp.DefaultGameHandler

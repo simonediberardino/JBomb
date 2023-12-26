@@ -1,4 +1,4 @@
-package game.level.actorbehavior
+package game.actorbehavior
 
 import game.level.Level
 import game.sound.AudioManager

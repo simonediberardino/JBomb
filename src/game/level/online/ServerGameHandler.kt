@@ -2,6 +2,7 @@ package game.level.online
 
 import game.http.callbacks.TCPServerCallback
 import game.http.dao.EntityDao
+import game.http.dispatch.HttpMessageReceiverHandler
 import game.http.messages.AssignIdHttpMessage
 import game.http.messages.SpawnedEntityHttpMessage
 import game.http.repo.HttpRepository
@@ -9,7 +10,7 @@ import game.http.serializing.HttpParserSerializer
 import game.http.sockets.TCPServer
 
 // add level as parameter, online handler
-class ServerGameHandler(private val port: Int) : TCPServerCallback, OnlineGameHandler {
+class ServerGameHandler(private val port: Int) : TCPServerCallback {
     private lateinit var server: TCPServer
     var running: Boolean = false
         private set
@@ -37,4 +38,13 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback, OnlineGameHa
     }
 
     override fun onClose() {}
+
+    override fun sendData(data: String) {
+        server.sendData(data)
+    }
+
+    override fun onDataReceived(data: String) {
+        val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
+        HttpMessageReceiverHandler.instance.handle(formattedData)
+    }
 }

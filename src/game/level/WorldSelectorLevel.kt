@@ -5,8 +5,8 @@ import game.entity.blocks.InvisibleBlock
 import game.entity.enemies.boss.Boss
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
-import game.level.actorbehavior.GameBehavior
-import game.level.actorbehavior.GeneratePlayerBehavior
+import game.actorbehavior.GameBehavior
+import game.actorbehavior.GeneratePlayerBehavior
 import game.level.gamehandler.imp.DefaultGameHandler
 import game.level.gamehandler.model.GameHandler
 import game.level.info.model.DefaultLevelInfo
