@@ -50,34 +50,44 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
 
     private val movementTask = Runnable {
         val match = Bomberman.getMatch()
-        val currPlayer = match.player ?: return@Runnable
+        val player = match.player
+
+        // Check if there is a player and the player is alive
+        if (player == null || !player.aliveState) {
+            return@Runnable // If not, exit the task
+        }
+
         onCooldown()
 
-        if (!currPlayer.aliveState)
-            return@Runnable
+        val entityToInteract = entity
 
-        val entityToInteract = entity ?: return@Runnable
-
-        if (currPlayer.listClassInteractWithMouseClick.contains(entityToInteract.javaClass)) {
+        // Check if there is an entity to interact with and it's clickable
+        if (entityToInteract != null && player.isMouseClickInteractable(entityToInteract.javaClass)) {
+            // Perform mouse interactions on the entity
             entityToInteract.mouseInteractions()
             onMovementPeriodicTaskEnd()
             nextCommandInQueue()
-            return@Runnable
+            return@Runnable // Exit the task
         }
 
-        latestDirectionsFromPlayer = mouseCoords?.fromCoordinatesToDirection(currPlayer.coords) ?: emptyList()
+        // Calculate directions based on mouse coordinates
+        latestDirectionsFromPlayer = mouseCoords?.fromCoordinatesToDirection(player.coords) ?: emptyList()
 
+        // Press keys corresponding to calculated directions
         latestDirectionsFromPlayer.forEach {
             match.controllerManager?.onKeyPressed(it.toCommand())
         }
 
-        if (firstDirectionsFromPlayer.isNotEmpty() && firstDirectionsFromPlayer.none { it !in latestDirectionsFromPlayer }) {
-            return@Runnable
+        // Check if first directions are not empty and all are in the latest directions
+        if (firstDirectionsFromPlayer.isNotEmpty() && firstDirectionsFromPlayer.all { it in latestDirectionsFromPlayer }) {
+            return@Runnable // Exit the task
         }
 
+        // Perform end-of-movement task operations
         onMovementPeriodicTaskEnd()
         nextCommandInQueue()
     }
+
 
     /**
      * Called when the mouse button is released.

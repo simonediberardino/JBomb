@@ -3,6 +3,7 @@ package game.ui.pages;
 import game.Bomberman;
 import game.level.WorldSelectorLevel;
 import game.level.online.ClientGameHandler;
+import game.level.online.ServerGameHandler;
 import game.level.world2.World2Level5;
 import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.bombermanbutton.RedButton;
@@ -36,7 +37,7 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY_CAMPAIGN));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel(), new ClientGameHandler("localhost", 28960)));
+        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel(), null));
         return startLevelButton;
     }
 

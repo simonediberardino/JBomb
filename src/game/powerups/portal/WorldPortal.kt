@@ -2,7 +2,7 @@ package game.powerups.portal
 
 import game.Bomberman
 import game.data.DataInputOutput
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.level.Level
 import game.level.world1.World1Level1

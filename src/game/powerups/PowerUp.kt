@@ -1,8 +1,9 @@
 package game.powerups
 
 import game.Bomberman
-import game.entity.Player
+import game.entity.player.Player
 import game.entity.models.*
+import game.entity.player.BomberEntity
 import game.sound.AudioManager
 import game.sound.SoundModel
 import game.ui.panels.game.PitchPanel

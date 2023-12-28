@@ -1,7 +1,7 @@
 package game.powerups
 
 import game.entity.bomb.AbstractExplosion.Companion.MAX_EXPLOSION_LENGTH
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.events.game.ExplosionLengthPowerUpEvent
 import game.utils.Paths.powerUpsFolder

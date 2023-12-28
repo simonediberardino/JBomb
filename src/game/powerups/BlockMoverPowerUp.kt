@@ -1,7 +1,7 @@
 package game.powerups
 
 import game.entity.blocks.MovableBlock
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage

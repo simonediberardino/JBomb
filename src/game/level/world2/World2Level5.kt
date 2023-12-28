@@ -1,12 +1,13 @@
 package game.level.world2
 
-import game.entity.Player
+import game.entity.player.Player
 import game.entity.enemies.boss.Boss
 import game.entity.enemies.boss.clown.Clown
 import game.entity.enemies.npcs.Eagle
 import game.entity.enemies.npcs.FastEnemy
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
+import game.entity.player.BomberEntity
 import game.level.Level
 import game.level.StoryLevel
 import game.level.WorldSelectorLevel
@@ -22,6 +23,6 @@ class World2Level5 : StoryLevel() {
             override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(FastEnemy::class.java, Eagle::class.java)
             override val isLastLevelOfWorld: Boolean get() = true
             override val nextLevel: Class<out Level?> get() = WorldSelectorLevel::class.java
-            override val playerSpawnCoordinates: Coordinates get() = Coordinates.roundCoordinates(Coordinates(0, 0), Player.SPAWN_OFFSET)
+            override val playerSpawnCoordinates: Coordinates get() = Coordinates.roundCoordinates(Coordinates(0, 0), BomberEntity.SPAWN_OFFSET)
         }
 }

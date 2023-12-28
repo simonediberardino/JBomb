@@ -4,8 +4,10 @@ import game.Bomberman;
 import game.actorbehavior.LocationChangedBehavior;
 import game.entity.EntityTypes;
 import game.entity.bomb.AbstractExplosion;
+import game.entity.player.Player;
 import game.hardwareinput.MouseControllerManager;
 import game.http.dao.EntityDao;
+import game.match.BomberManMatch;
 import game.tasks.GameTickerObserver;
 import game.events.models.RunnablePar;
 import game.ui.panels.game.PitchPanel;
@@ -462,50 +464,74 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * If the entity is within one grid size distance from the player's center coordinates, it gets eliminated.
      */
     protected void onMouseClickInteraction() {
-        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(Bomberman.getMatch().getPlayer()));
+        // Retrieve the current match and player
+        BomberManMatch match = Bomberman.getMatch();
+        Player player = match.getPlayer();
+
+        // Calculate the center coordinates of the player's entity
+        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player));
+
         // Check if the entity is within one grid size distance from the player's center coordinates
-        if (getCoords().distanceTo(Coordinates.roundCoordinates(centerCoordinatesOfEntity)) <= PitchPanel.GRID_SIZE) {
+        if (getCoords().distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) {
             eliminated();
         }
     }
+
 
     /**
      * Handles mouse drag interactions.
      * This method allows dragging the entity to move it around.
      */
+    /**
+     * Handles the interaction logic when the mouse is dragged.
+     */
     protected void onMouseDragInteraction() {
-        Entity player = Bomberman.getMatch().getPlayer();
-        MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
-        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player));
+        // Retrieve the current match, mouse controller manager, and player entity
+        BomberManMatch match = Bomberman.getMatch();
+        MouseControllerManager mouseControllerManager = match.getMouseControllerManager();
+        Entity player = match.getPlayer();
+
+        // Calculate relevant coordinates for the player, entity, and mouse
+        Coordinates playerCenter = Coordinates.getCenterCoordinatesOfEntity(player);
+        Coordinates roundedEntityCoords = Coordinates.roundCoordinates(getCoords());
+        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(playerCenter);
         Coordinates mouseCoordinates = Coordinates.roundCoordinates(mouseControllerManager.getMouseCoords());
 
-        if (mouseControllerManager.isMouseDraggedInteractionInterrupted()) {
+        // Check if the mouse dragged interaction is interrupted
+        boolean isDragInterrupted = mouseControllerManager.isMouseDraggedInteractionInterrupted();
+        if (isDragInterrupted) {
             return;
         }
 
-        // Check if the interacted entity is not within one grid size distance from the player's center coordinates
-        // and the mouse drag interaction has not been entered yet
-        if (!(Coordinates.roundCoordinates(getCoords()).distanceTo(Coordinates.roundCoordinates(centerCoordinatesOfEntity)) <= PitchPanel.GRID_SIZE)//todo
-                && !mouseControllerManager.isMouseDragInteractionEntered()) {
+        // Check if the entity is within one grid size distance from the player's center coordinates
+        boolean isEntityWithinGrid = roundedEntityCoords.distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE;
+        boolean isDragEntered = mouseControllerManager.isMouseDragInteractionEntered();
+
+        // Check if the entity is not within one grid size distance and the drag interaction has not been entered yet
+        if (!isEntityWithinGrid && !isDragEntered) {
             return;
         }
 
+        // Check for other entities on the occupied block during the mouse drag
         List<Entity> entitiesOnOccupiedBlock = Coordinates.getEntitiesOnBlock(mouseCoordinates);
+        boolean isBlockOccupied = Coordinates.isBlockOccupied(mouseCoordinates);
+        boolean areEntitiesOnBlock = !entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this && e != player);
 
-        //Check if there are other entities on the occupied block, and they are not the current entity
-
-        if (!entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this && e != Bomberman.getMatch().getPlayer())) {
+        // If there are other entities on the occupied block, interrupt the mouse dragged interaction
+        if (areEntitiesOnBlock) {
             mouseControllerManager.setMouseDraggedInteractionInterrupted(true);
             return;
         }
 
-        if (!Coordinates.isBlockOccupied(mouseCoordinates) && mouseCoordinates.validate(getSize())) {
+        // Check if the block is not occupied and the mouse coordinates are valid
+        if (!isBlockOccupied && mouseCoordinates.validate(getSize())) {
             // Move the entity to the dragged mouse coordinates
-            Bomberman.getMatch().getMouseControllerManager().setMouseDragInteractionEntered(true);
-            Bomberman.getMatch().getMouseControllerManager().setMouseDraggedInteractionOccured(true);
+            mouseControllerManager.setMouseDragInteractionEntered(true);
+            mouseControllerManager.setMouseDraggedInteractionOccured(true);
             setCoords(Coordinates.roundCoordinates(mouseCoordinates, getSpawnOffset()));
         }
     }
+
 
     /**
      * Retrieves the set of base passive interaction entities.
@@ -543,11 +569,19 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     protected boolean canEntityInteractWithMouseDrag() {
-        return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseDrag().stream().anyMatch(cls -> cls.isInstance(this) && Bomberman.getMatch().getMouseControllerManager().isMouseDragged());
+        BomberManMatch match = Bomberman.getMatch();
+        Player player = match.getPlayer();
+
+        // Check if the player can interact with mouse drag and if the mouse is being dragged
+        return player.isMouseDragInteractable(this.getClass()) && match.getMouseControllerManager().isMouseDragged();
     }
 
     protected boolean canEntityInteractWithMouseClick() {
-        return Bomberman.getMatch().getPlayer().getListClassInteractWithMouseClick().stream().anyMatch(cls -> cls.isInstance(this)) && Bomberman.getMatch().getMouseControllerManager().isMouseClicked();
+        BomberManMatch match = Bomberman.getMatch();
+        Player player = match.getPlayer();
+
+        // Check if the player can interact with mouse click and if the mouse is being dragged
+        return player.isMouseClickInteractable(this.getClass()) && match.getMouseControllerManager().isMouseDragged();
     }
 
     /**
@@ -580,8 +614,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         this.alpha = Utility.INSTANCE.ensureRange(alpha, 0, 1);
     }
 
-    public void onExplosion(AbstractExplosion explosion) {
-    }
+    public void onExplosion(AbstractExplosion explosion) {}
 
     @Override
     public int hashCode() {

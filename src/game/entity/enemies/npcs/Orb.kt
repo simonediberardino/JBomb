@@ -1,10 +1,9 @@
 package game.entity.enemies.npcs
 
-import game.entity.Player
+import game.entity.player.Player
 import game.entity.bomb.Bomb
 import game.entity.models.*
 import game.ui.panels.game.PitchPanel
-import java.util.*
 
 /**
  * The Orb class represents a little enemy entity that moves in a specific direction.

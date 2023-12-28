@@ -1,7 +1,7 @@
 package game.powerups
 
 import game.entity.blocks.DestroyableBlock
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
@@ -24,10 +24,10 @@ class Hammer(coordinates: Coordinates?) : PowerUp(coordinates) {
         get() = 30
 
     override fun doApply(entity: BomberEntity) {
-        entity!!.listClassInteractWithMouseClick.add(DestroyableBlock::class.java)
+        entity.addClassInteractWithMouseClick(DestroyableBlock::class.java)
     }
 
     override fun cancel(entity: BomberEntity) {
-        entity!!.listClassInteractWithMouseClick.remove(DestroyableBlock::class.java)
+        entity.removeClassInteractWithMouseClick(DestroyableBlock::class.java)
     }
 }

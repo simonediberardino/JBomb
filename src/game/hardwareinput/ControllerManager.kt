@@ -2,7 +2,7 @@ package game.hardwareinput
 
 import game.Bomberman
 import game.data.DataInputOutput
-import game.entity.Player
+import game.entity.player.Player
 import game.events.game.Observable2
 import game.tasks.PeriodicTask
 import game.utils.Utility.timePassed
@@ -98,6 +98,7 @@ class ControllerManager : Observable2(), KeyListener {
             player ?: return@Runnable
 
             for (command in HashSet(player!!.commandQueue)) {
+                println("Executing $command: ${player!!.id}")
                 notifyObservers(command)
             }
         }, KEY_DELAY_MS)

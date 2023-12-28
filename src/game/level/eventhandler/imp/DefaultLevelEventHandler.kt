@@ -2,14 +2,14 @@ package game.level.eventhandler.imp
 
 import game.Bomberman
 import game.data.DataInputOutput
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.events.game.AllEnemiesEliminatedGameEvent
 import game.events.game.UpdateCurrentAvailableItemsEvent
 import game.level.eventhandler.model.LevelEventHandler
 import game.sound.AudioManager
 import game.sound.SoundModel
 
-open class DefaultLevelEventHandler: LevelEventHandler {
+open class DefaultLevelEventHandler : LevelEventHandler {
     override fun onDefeatGameEvent() {
         DataInputOutput.getInstance().increaseLost()
     }
@@ -40,6 +40,7 @@ open class DefaultLevelEventHandler: LevelEventHandler {
     }
 
     override fun onUpdateCurrentAvailableBombsEvent(arg: Int) {
+        println("PLAYER ${Bomberman.getMatch().player}")
         Bomberman.getMatch().player?.currentBombs = arg
     }
 
@@ -52,6 +53,7 @@ open class DefaultLevelEventHandler: LevelEventHandler {
         entity.currExplosionLength = arg
         DataInputOutput.getInstance().explosionLength = arg
     }
+
     override fun onDeathGameEvent() {
         DataInputOutput.getInstance().increaseDeaths()
         DataInputOutput.getInstance().decreaseLives()

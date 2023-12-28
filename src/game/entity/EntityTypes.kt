@@ -4,6 +4,7 @@ import game.entity.enemies.boss.clown.Clown
 import game.entity.enemies.boss.clown.Hat
 import game.entity.enemies.boss.ghost.GhostBoss
 import game.entity.enemies.npcs.*
+import game.entity.player.Player
 
 enum class EntityTypes {
     Player,

@@ -1,7 +1,7 @@
 package game.actorbehavior
 
 import game.Bomberman
-import game.entity.Player
+import game.entity.player.Player
 import game.entity.models.Coordinates
 
 class GeneratePlayerBehavior(val coordinates: Coordinates): GameBehavior {

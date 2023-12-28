@@ -1,7 +1,7 @@
 package game.entity.enemies.boss.clown
 
 import game.entity.EntityTypes
-import game.entity.Player
+import game.entity.player.Player
 import game.entity.enemies.npcs.Orb
 import game.entity.models.Coordinates
 import game.entity.models.EnhancedDirection

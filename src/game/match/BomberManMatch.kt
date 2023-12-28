@@ -3,9 +3,9 @@ package game.match
 import game.Bomberman
 import game.data.DataInputOutput
 import game.data.SortedLinkedList
-import game.entity.Player
+import game.entity.player.Player
 import game.entity.bomb.Bomb
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.entity.models.Entity
 import game.hardwareinput.ControllerManager
 import game.hardwareinput.ControllerManager.Companion.setDefaultCommandDelay
@@ -137,7 +137,6 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * @param item The UsableItem to be given.
      * @param combineSameItem Flag indicating whether to combine items of the same type.
      */
-    @JvmOverloads
     fun give(owner: BomberEntity, item: UsableItem, combineSameItem: Boolean = false) {
         if (combineSameItem && owner.weapon.javaClass == item.javaClass) {
             // Combine items if requested and owner already has the same type of item
@@ -168,8 +167,9 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      */
     fun updateInventoryWeaponController() {
         player ?: return
-        inventoryElementControllerBombs.setImagePath(player!!.weapon.imagePath)
-        inventoryElementControllerBombs.setNumItems(player!!.weapon.count)
+        val playerItem = player!!.weapon ?: return
+        inventoryElementControllerBombs.setImagePath(playerItem.imagePath)
+        inventoryElementControllerBombs.setNumItems(playerItem.count)
     }
 
     /**
@@ -186,7 +186,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * @return True if the server game handler is not null and running, false otherwise.
      */
     val isServer: Boolean
-        get() = onlineGameHandler is ServerGameHandler /*&& onlineGameHandler.running*/
+        get() = onlineGameHandler is ServerGameHandler || onlineGameHandler == null /*&& onlineGameHandler.running*/
 
     /**
      * Adds a bomb to the list of bombs in the game.

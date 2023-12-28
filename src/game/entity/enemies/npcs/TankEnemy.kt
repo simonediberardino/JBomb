@@ -1,7 +1,7 @@
 package game.entity.enemies.npcs
 
 import game.entity.EntityTypes
-import game.entity.Player
+import game.entity.player.Player
 import game.entity.bomb.AbstractExplosion
 import game.entity.bomb.AbstractExplosion.Companion.SPAWN_OFFSET
 import game.entity.bomb.Bomb

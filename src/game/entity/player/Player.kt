@@ -1,4 +1,4 @@
-package game.entity
+package game.entity.player
 
 import game.Bomberman
 import game.data.DataInputOutput
@@ -6,7 +6,6 @@ import game.entity.blocks.DestroyableBlock
 import game.entity.blocks.HardBlock
 import game.entity.bomb.AbstractExplosion
 import game.entity.bomb.Bomb
-import game.entity.models.BomberEntity
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
 import game.entity.models.Entity
@@ -23,54 +22,15 @@ import java.awt.event.ActionEvent
 import javax.swing.Timer
 
 class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
-    init {
-        hitboxSizeToHeightRatio = 0.733f
-    }
-
     constructor(coordinates: Coordinates?, id: Long) : this(coordinates) {
         this.id = id
     }
 
     constructor() : this(null)
 
-    private fun updateBombs() {
-        val maxBombs = DataInputOutput.getInstance().obtainedBombs
-        UpdateCurrentAvailableItemsEvent().invoke(maxBombs)
-        UpdateCurrentBombsLengthEvent().invoke(DataInputOutput.getInstance().explosionLength)
-    }
-
-    override fun doInteract(e: Entity?) {}
-
-    override fun getInteractionsEntities(): Set<Class<out Entity>> = HashSet()
-
     override fun getEntitiesAssetsPath(): String = "$entitiesFolder/player/${DataInputOutput.getInstance().skin}"
 
-
     override fun getDeathSound(): SoundModel = SoundModel.PLAYER_DEATH
-
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> =
-            hashSetOf(AbstractExplosion::class.java, Enemy::class.java, PowerUp::class.java)
-
-    override fun getStepSound(): SoundModel = SoundModel.STEP_SOUND
-
-    public override fun getSpawnOffset(): Coordinates = SPAWN_OFFSET
-
-    override val explosionObstacles: Set<Class<out Entity>>
-        get() = setOf(
-                HardBlock::class.java,
-                DestroyableBlock::class.java
-        )
-
-    override val explosionInteractionEntities: Set<Class<out Entity>>
-        get() = setOf(
-                DestroyableBlock::class.java,
-                Enemy::class.java,
-                Bomb::class.java
-        )
-
-    override val maxExplosionDistance: Int
-        get() = currExplosionLength
-
 
     override fun getCharacterOrientedImages(): Array<String> {
         return Array(4) { index ->
@@ -85,15 +45,11 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
         Bomberman.getBombermanFrame().matchPanel.refreshPowerUps(activePowerUps)
     }
 
+    // TODO!!!
     override fun onEndedDeathAnimation() {
         val t = Timer(SHOW_DEATH_PAGE_DELAY_MS.toInt()) { _: ActionEvent? -> showDeathPage() }
         t.isRepeats = false
         t.start()
-    }
-
-    private fun showDeathPage() {
-        Bomberman.destroyLevel()
-        Bomberman.showActivity(GameOverPanel::class.java)
     }
 
     override fun onEliminated() {
@@ -112,7 +68,15 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
         Bomberman.getMatch().updateInventoryWeaponController()
     }
 
-    companion object {
-        val SPAWN_OFFSET = Coordinates((PitchPanel.GRID_SIZE - SIZE) / 2, PitchPanel.GRID_SIZE - SIZE)
+    private fun showDeathPage() {
+        Bomberman.destroyLevel()
+        Bomberman.showActivity(GameOverPanel::class.java)
+    }
+
+    private fun updateBombs() {
+        val maxBombs = DataInputOutput.getInstance().obtainedBombs
+        println(maxBombs)
+        UpdateCurrentAvailableItemsEvent().invoke(maxBombs)
+        UpdateCurrentBombsLengthEvent().invoke(DataInputOutput.getInstance().explosionLength)
     }
 }

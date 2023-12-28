@@ -1,6 +1,7 @@
 package game.entity.enemies.npcs
 
 import game.entity.models.*
+import game.entity.player.BomberEntity
 import game.events.game.KilledEnemyEvent
 import game.events.game.ScoreGameEvent
 import java.util.stream.Collectors

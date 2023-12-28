@@ -1,8 +1,7 @@
 package game.level.info.model
 
-import game.data.DataInputOutput
-import game.entity.Player
-import game.entity.models.BomberEntity
+import game.entity.player.Player
+import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.level.Level
 import game.powerups.PowerUp
@@ -20,6 +19,6 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
 
     override val restrictedPerks: Array<Class<out PowerUp>> = arrayOf()
     override val randomPowerUpClass: Class<out PowerUp> get() = allowedPerks.random()
-    override val playerSpawnCoordinates: Coordinates get() = Coordinates.generateRandomCoordinates(Player.SPAWN_OFFSET, PitchPanel.GRID_SIZE)
+    override val playerSpawnCoordinates: Coordinates get() = Coordinates.generateRandomCoordinates(BomberEntity.SPAWN_OFFSET, PitchPanel.GRID_SIZE)
     override val isLastLevelOfWorld: Boolean get() = false
 }

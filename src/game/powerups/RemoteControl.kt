@@ -1,7 +1,7 @@
 package game.powerups
 
 import game.entity.bomb.Bomb
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
@@ -22,7 +22,7 @@ class RemoteControl
     }
 
     override fun cancel(entity: BomberEntity) {
-        entity.removeClassInteractWithMouse(Bomb::class.java)
+        entity.removeClassInteractWithMouseClick(Bomb::class.java)
     }
 
 }

@@ -1,8 +1,6 @@
 package game.level.info.model
 
-import game.data.DataInputOutput
 import game.entity.enemies.boss.Boss
-import game.entity.models.BomberEntity
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
 import game.level.Level

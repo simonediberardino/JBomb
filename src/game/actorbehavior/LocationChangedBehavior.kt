@@ -1,7 +1,7 @@
 package game.actorbehavior
 
 import game.Bomberman
-import game.entity.Player
+import game.entity.player.Player
 import game.http.dao.EntityDao
 import game.http.dispatch.HttpMessageDispatcher
 import game.http.messages.LocationHttpMessage

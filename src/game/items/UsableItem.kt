@@ -1,7 +1,7 @@
 package game.items
 
 import game.Bomberman
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 
 abstract class UsableItem {
     lateinit var owner: BomberEntity

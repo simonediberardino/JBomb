@@ -40,7 +40,6 @@ class TCPServer(private var port: Int) : TCPSocket {
     private suspend fun handleClient(clientSocket: IndexedClient) = withContext(Dispatchers.IO) {
         try {
             val reader = BufferedReader(InputStreamReader(clientSocket.client.getInputStream()))
-            val writer = PrintWriter(clientSocket.client.getOutputStream(), true)
 
             for (listener in listeners) {
                 listener.onClientConnected(clientSocket)
@@ -57,9 +56,9 @@ class TCPServer(private var port: Int) : TCPSocket {
                 }
 
                 println("Received from client: $clientData")
-
-                // Respond to the client
-                writer.println("Hello from server!")
+                for (listener in listeners) {
+                    listener.onDataReceived(clientData)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -112,21 +111,6 @@ class TCPServer(private var port: Int) : TCPSocket {
 
     fun unregister(tcpServerCallback: TCPServerCallback) {
         listeners.remove(tcpServerCallback)
-    }
-
-    companion object {
-        var instance: TCPServer? = null
-            get() {
-                if (instance == null)
-                    return null
-
-                if (instance!!.socket.isClosed) {
-                    instance = null
-                    return null
-                }
-
-                return instance
-            }
     }
 
     class IndexedClient(val id: Int, val client: Socket)

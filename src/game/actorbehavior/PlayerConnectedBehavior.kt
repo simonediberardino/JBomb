@@ -1,8 +1,7 @@
 package game.actorbehavior
 
 import game.Bomberman
-import game.entity.Player
-import game.level.online.ClientGameHandler
+import game.entity.player.Player
 import game.utils.Extensions.getOrTrim
 
 class PlayerConnectedBehavior(val info: Map<String, String>) : GameBehavior {

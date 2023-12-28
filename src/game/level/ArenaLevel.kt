@@ -2,7 +2,7 @@ package game.level
 
 import game.Bomberman
 import game.data.DataInputOutput
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.entity.models.Entity
 import game.events.game.RoundPassedGameEvent
 import game.events.game.UpdateCurrentAvailableItemsEvent

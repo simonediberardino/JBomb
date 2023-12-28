@@ -1,8 +1,9 @@
 package game.entity.models
 
 import game.Bomberman
-import game.entity.Player
+import game.entity.player.Player
 import game.entity.bomb.AbstractExplosion
+import game.entity.player.BomberEntity
 import game.events.game.EnemyDespawnedGameEvent
 import game.ui.panels.game.PitchPanel
 

@@ -1,7 +1,7 @@
 package game.events.game
 
 import game.Bomberman
-import game.entity.models.BomberEntity
+import game.entity.player.BomberEntity
 import game.events.models.GameEvent
 
 
