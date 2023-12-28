@@ -31,30 +31,38 @@ abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates),
         hitboxSizeToHeightRatio = 0.733f
     }
 
-    override fun onSpawn() {
-        super.onSpawn()
-        Bomberman.getMatch().give(this, BombItem())
-    }
-
-    override fun move(coordinates: Coordinates) {
-        super.move(coordinates)
-        handleInteractionWithBombs()
-    }
-
+    // Defines the set of obstacle entities that block the propagation of explosions.
     override val explosionObstacles: Set<Class<out Entity>>
         get() = setOf(HardBlock::class.java, DestroyableBlock::class.java)
 
+    // Defines the set of entities that can interact with explosions.
     override val explosionInteractionEntities: Set<Class<out Entity>>
         get() = setOf(DestroyableBlock::class.java, Enemy::class.java, Bomb::class.java)
 
+    // Defines the maximum distance an explosion can propagate.
     override val maxExplosionDistance: Int
         get() = currExplosionLength
 
+    // Calculates the minimum distance to any bomb from the current entity. If there are no bombs, returns 0.0.
     private val minDistanceToBomb: Double
         get() = Bomberman.getMatch().bombs.minOfOrNull { bomb -> bomb.coords.distanceTo(coords) } ?: 0.0
 
+    // Retrieves the maximum number of bombs the current level allows.
     val maxBombs: Int
         get() = Bomberman.getMatch().currentLevel?.info?.maxBombs ?: 0
+
+
+    override fun onSpawn() {
+        super.onSpawn()
+
+        // Give the current entity a BombItem when it is spawned in the match.
+        Bomberman.getMatch().give(this, BombItem())
+    }
+
+    override fun onMove(coordinates: Coordinates) {
+        // Handle interactions with bombs after the entity has moved.
+        handleInteractionWithBombs()
+    }
 
     override fun doInteract(e: Entity?) {}
 
@@ -67,20 +75,29 @@ abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates),
 
     override fun getSpawnOffset(): Coordinates = SPAWN_OFFSET
 
+    // Handles the interaction of the entity with bombs, determining whether it should be solid based on bomb proximity.
     private fun handleInteractionWithBombs() {
+        // If bombs are forced solid or bombs are already solid, no further action is needed.
         if (bombsSolid || forceBombsSolid) {
             return
         }
-        if (minDistanceToBomb > PitchPanel.GRID_SIZE / 2f) setBombsSolid(true)
+
+        // If the minimum distance to a bomb is greater than half the grid size, make bombs solid.
+        if (minDistanceToBomb > PitchPanel.GRID_SIZE / 2f) {
+            setBombsSolid(true)
+        }
     }
 
+    // Forces the entity's interaction with bombs to be not solid or vice versa.
     fun forceSetBombsNotSolid(bombsNotSolid: Boolean) {
         forceBombsSolid = bombsNotSolid
     }
 
+    // Sets the interaction of the entity with bombs to be solid or not based on the specified boolean.
     fun setBombsSolid(bombsSolid: Boolean) {
         this.bombsSolid = bombsSolid
 
+        // Adjust the whitelist of obstacles based on the bombs' solidity.
         if (!bombsSolid) {
             addWhiteListObstacle(Bomb::class.java)
         } else if (!forceBombsSolid) {
@@ -88,26 +105,33 @@ abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates),
         }
     }
 
+    // Checks if the entity is interactable with a mouse click based on the entity's class.
     fun isMouseClickInteractable(cls: Class<out Entity>): Boolean = entitiesClassListMouseClick.contains(cls)
 
+    // Checks if the entity is interactable with a mouse drag based on the entity's class.
     fun isMouseDragInteractable(cls: Class<out Entity>): Boolean = entitiesClassListMouseDrag.contains(cls)
 
+    // Adds the specified class to the list of entities interactable with a mouse click.
     fun addClassInteractWithMouseClick(cls: Class<out Entity>) {
         entitiesClassListMouseClick.add(cls)
     }
 
+    // Adds the specified class to the list of entities interactable with a mouse drag.
     fun addClassInteractWithMouseDrag(cls: Class<out Entity>) {
         entitiesClassListMouseDrag.add(cls)
     }
 
+    // Removes the specified class from the list of entities interactable with a mouse click.
     fun removeClassInteractWithMouseClick(cls: Class<out Entity>) {
         entitiesClassListMouseClick.remove(cls)
     }
 
+    // Removes the specified class from the list of entities interactable with a mouse drag.
     fun removeClassInteractWithDrag(cls: Class<out Entity>) {
         entitiesClassListMouseDrag.remove(cls)
     }
 
+    // Removes an active power-up from the list of active power-ups.
     fun removeActivePowerUp(p: PowerUp?) {
         activePowerUps.removeIf { e: Class<out PowerUp> -> e.isInstance(p) }
     }

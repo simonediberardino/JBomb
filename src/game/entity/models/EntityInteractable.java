@@ -100,7 +100,10 @@ public abstract class EntityInteractable extends Entity {
 
     public void move(Coordinates coordinates) {
         setCoords(coordinates);
+        onMove(coordinates);
     }
+
+    protected void onMove(Coordinates coordinates) {}
 
     /**
      * Moves or interacts with other entities in the given direction and with the given step size and default offset.
