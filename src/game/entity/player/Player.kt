@@ -22,10 +22,6 @@ import java.awt.event.ActionEvent
 import javax.swing.Timer
 
 class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
-    constructor(coordinates: Coordinates?, id: Long) : this(coordinates) {
-        this.id = id
-    }
-
     constructor() : this(null)
 
     override fun getEntitiesAssetsPath(): String = "$entitiesFolder/player/${DataInputOutput.getInstance().skin}"

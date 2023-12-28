@@ -1,7 +1,8 @@
 package game.http.dispatch
 
 import game.actorbehavior.PlayerConnectedBehavior
-import game.events.http.IdAssignedHttpEvent
+import game.http.events.process.IdAssignedHttpEventProcessor
+import game.http.events.process.PlayerConnectedHttpEventProcessor
 import game.http.models.HttpMessageTypes
 
 class HttpMessageReceiverHandler private constructor() {
@@ -14,11 +15,11 @@ class HttpMessageReceiverHandler private constructor() {
         when (HttpMessageTypes.values()[messageTypeInt]) {
             HttpMessageTypes.ASSIGN_ID -> {
                 // After receiving an ID, the client requests to join the match;
-                IdAssignedHttpEvent().invoke(map)
+                IdAssignedHttpEventProcessor().invoke(map)
             }
             HttpMessageTypes.PLAYER_JOIN_REQUEST -> {
                 // After the host received a join request, spawns the connected player
-                PlayerConnectedBehavior(map).invoke()
+                PlayerConnectedHttpEventProcessor().invoke(map)
             }
             else -> {}
         }

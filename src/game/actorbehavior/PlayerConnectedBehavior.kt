@@ -1,7 +1,7 @@
 package game.actorbehavior
 
 import game.Bomberman
-import game.entity.player.Player
+import game.entity.player.RemotePlayer
 import game.utils.Extensions.getOrTrim
 
 class PlayerConnectedBehavior(val info: Map<String, String>) : GameBehavior {
@@ -14,7 +14,7 @@ class PlayerConnectedBehavior(val info: Map<String, String>) : GameBehavior {
             val coordinates = (match.currentLevel)?.info?.playerSpawnCoordinates
 
             if (coordinates != null && clientId != null) {
-                val player = Player(coordinates, clientId)
+                val player = RemotePlayer(coordinates, clientId, 1)
                 player.spawn()
             }
         }

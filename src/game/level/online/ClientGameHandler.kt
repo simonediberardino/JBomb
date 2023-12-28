@@ -54,4 +54,8 @@ class ClientGameHandler(
         println("${javaClass.simpleName} sendData")
         client.sendData(data)
     }
+
+    override fun sendData(data: String, receiverId: Int) {
+        sendData(data)
+    }
 }

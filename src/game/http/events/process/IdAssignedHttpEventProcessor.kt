@@ -1,4 +1,4 @@
-package game.events.http
+package game.http.events.process
 
 import game.Bomberman
 import game.events.models.HttpEvent
@@ -7,11 +7,11 @@ import game.http.messages.PlayerJoinRequestHttpMessage
 import game.level.online.ClientGameHandler
 import game.utils.Extensions.getOrTrim
 
-class IdAssignedHttpEvent: HttpEvent {
+class IdAssignedHttpEventProcessor : HttpEvent {
     override fun invoke(info: Map<String, String>) {
         val id = info.getOrTrim("id")?.toInt() ?: return
 
-        println("IdAssignedHttpEvent: $info, }}")
+        println("IdAssignedHttpEventProcessor: $info, }}")
 
         (Bomberman.getMatch().onlineGameHandler as ClientGameHandler).id = id.toLong()
 

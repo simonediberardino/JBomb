@@ -37,7 +37,7 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY_CAMPAIGN));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel(), null));
+        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel(), new ClientGameHandler("localhost", 28960)));
         return startLevelButton;
     }
 
