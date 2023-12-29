@@ -11,6 +11,7 @@ class SpawnedEntityHttpMessage(private val entity: EntityDao): HttpMessage {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.SPAWNED_ENTITY.ordinal.toString()
         data["entityId"] = entity.entityId.toString()
+        data["entityType"] = entity.entityType.toString()
         data["location"] = "${entity.entityLocation.x} ${entity.entityLocation.y}"
         return data.toString()
     }

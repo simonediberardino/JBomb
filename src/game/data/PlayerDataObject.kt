@@ -1,6 +1,6 @@
 package game.data
 
-import game.level.Level
+import game.level.levels.Level
 import game.localization.Localization
 import java.awt.event.KeyEvent
 import java.io.Serializable

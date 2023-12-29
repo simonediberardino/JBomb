@@ -1,7 +1,6 @@
 package game.ui.pages;
 
 import game.Bomberman;
-import game.level.WorldSelectorLevel;
 import game.ui.frames.BombermanFrame;
 import game.ui.panels.menu.ProfilePanel;
 import game.ui.viewelements.bombermanbutton.RedButton;

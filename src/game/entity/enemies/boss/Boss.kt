@@ -50,6 +50,7 @@ abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
     }
 
     protected abstract fun healthStatusMap(): Map<Int, Int>?
+
     override fun onDespawn() {
         super.onDespawn()
         val endLevelPortal: PowerUp = EndLevelPortal(Coordinates.generateCoordinatesAwayFromPlayer())

@@ -5,5 +5,6 @@ enum class HttpMessageTypes {
     PLAYER_JOIN_REQUEST,
     SPAWNED_ENTITY,
     NEW_LEVEL,
-    ASSIGN_ID
+    ASSIGN_ID,
+    LEVEL_INFO
 }

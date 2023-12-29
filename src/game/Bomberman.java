@@ -1,7 +1,7 @@
 package game;
 
 import game.data.DataInputOutput;
-import game.level.Level;
+import game.level.levels.Level;
 import game.level.online.OnlineGameHandler;
 import game.localization.Localization;
 import game.match.BomberManMatch;

@@ -19,6 +19,10 @@ class TankEnemy : IntelligentEnemy, Explosive {
     private var canShoot = false
     private var _lastUpdate: Long = 0
 
+    constructor(id: Long) : this() {
+        this.id = id
+    }
+
     constructor() : super()
     constructor(coordinates: Coordinates?) : super(coordinates)
 

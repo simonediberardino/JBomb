@@ -11,9 +11,9 @@ import java.net.Socket
 
 class TCPServer(private var port: Int) : TCPSocket {
     private lateinit var socket: ServerSocket
-    private var clients: MutableMap<Int, IndexedClient> = mutableMapOf()
+    private var clients: MutableMap<Long, IndexedClient> = mutableMapOf()
     private val listeners: MutableSet<TCPServerCallback> = mutableSetOf()
-    private var progressiveId = 0
+    private var progressiveId = 0L
 
     fun open() {
         try {
@@ -95,7 +95,7 @@ class TCPServer(private var port: Int) : TCPSocket {
         }
     }
 
-    fun sendData(clientId: Int, data: String) {
+    fun sendData(clientId: Long, data: String) {
         sendData(clients[clientId]?.client ?: return, data)
         println("sendData: $clientId sent $data")
     }
@@ -113,5 +113,5 @@ class TCPServer(private var port: Int) : TCPSocket {
         listeners.remove(tcpServerCallback)
     }
 
-    class IndexedClient(val id: Int, val client: Socket)
+    class IndexedClient(val id: Long, val client: Socket)
 }

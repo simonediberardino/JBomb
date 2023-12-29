@@ -1,12 +1,15 @@
 
 high priorities:
+- handle controller manager on client;
+- handle location updates server/client;
+- better handling of AI client with less memory usage;
+- only spawn 1 enemy client;
+
 - Images;
 - fix death logo;
 - database
 - multiplayer
-- entity types
 - Update username on resume
-- server
 - dead enemies can kill you while disappearing
 - comments
 - mystery box story mode

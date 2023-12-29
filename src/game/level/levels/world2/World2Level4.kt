@@ -1,10 +1,10 @@
-package game.level.world2
+package game.level.levels.world2
 
 import game.entity.enemies.npcs.FastEnemy
 import game.entity.enemies.npcs.TankEnemy
 import game.entity.models.Enemy
-import game.level.Level
-import game.level.StoryLevel
+import game.level.levels.Level
+import game.level.levels.StoryLevel
 import game.level.info.model.LevelInfo
 import game.level.info.imp.World2levelInfo
 

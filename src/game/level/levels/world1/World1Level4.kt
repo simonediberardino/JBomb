@@ -1,11 +1,11 @@
-package game.level.world1
+package game.level.levels.world1
 
 import game.entity.enemies.npcs.Helicopter
 import game.entity.enemies.npcs.YellowBall
 import game.entity.enemies.npcs.Zombie
 import game.entity.models.Enemy
-import game.level.Level
-import game.level.StoryLevel
+import game.level.levels.Level
+import game.level.levels.StoryLevel
 import game.level.info.model.LevelInfo
 import game.level.info.imp.World1LevelInfo
 

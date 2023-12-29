@@ -1,7 +1,7 @@
 package game.level.info.model
 
 import game.entity.models.Enemy
-import game.level.ArenaLevel
+import game.level.levels.ArenaLevel
 import game.localization.Localization
 
 abstract class DefaultArenaLevelInfo(level: ArenaLevel): DefaultLevelInfo(level) {

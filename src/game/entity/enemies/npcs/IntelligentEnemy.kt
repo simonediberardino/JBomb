@@ -1,5 +1,6 @@
 package game.entity.enemies.npcs
 
+import game.Bomberman
 import game.entity.models.*
 import game.entity.player.BomberEntity
 import game.events.game.KilledEnemyEvent
@@ -73,8 +74,12 @@ abstract class IntelligentEnemy : Enemy, ICPU {
         if (!canMove || !gameState) {
             return
         }
-        commandQueue.add(chooseDirection(false).toCommand())
-        executeQueue()
+
+        // TODO HANDLE CLIENT BEHAVIOR
+        if (Bomberman.getMatch().isServer) {
+            commandQueue.add(chooseDirection(false).toCommand())
+            executeQueue()
+        }
     }
 
     override fun onEliminated() {

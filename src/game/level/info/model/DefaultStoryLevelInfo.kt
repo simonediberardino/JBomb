@@ -1,7 +1,7 @@
 package game.level.info.model
 
 import game.data.DataInputOutput
-import game.level.Level
+import game.level.levels.Level
 import game.localization.Localization
 import game.powerups.LivesPowerUp
 import game.powerups.PowerUp

@@ -4,8 +4,8 @@ import game.Bomberman
 import game.data.DataInputOutput
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
-import game.level.Level
-import game.level.world1.World1Level1
+import game.level.levels.Level
+import game.level.levels.world1.World1Level1
 import game.utils.Paths.getWorldSelectorPortalPath
 import game.utils.Utility.loadImage
 import java.awt.image.BufferedImage
@@ -80,12 +80,9 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
      * @return an optional containing the class of the last level, if found
      */
     private fun findLastLevel(savedLastWorldId: Int, savedLastLevelId: Int): Optional<Class<out Level>> {
-        return Level.ID_TO_LEVEL.entries
-                .firstOrNull { (key, _) -> key[0] == savedLastWorldId && key[1] == savedLastLevelId }
-                ?.value
-                ?.let { Optional.of(it) }
-                ?: Optional.empty()
+        return Level.findLevel(savedLastWorldId, savedLastLevelId)
     }
+
     override fun cancel(entity: BomberEntity) {}
     abstract val defaultCoords: Coordinates?
 }

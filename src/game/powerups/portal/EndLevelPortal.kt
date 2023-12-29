@@ -4,7 +4,7 @@ import game.Bomberman
 import game.data.DataInputOutput
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
-import game.level.WorldSelectorLevel
+import game.level.levels.lobby.WorldSelectorLevel
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 

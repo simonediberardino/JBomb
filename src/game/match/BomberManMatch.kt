@@ -12,7 +12,7 @@ import game.hardwareinput.ControllerManager.Companion.setDefaultCommandDelay
 import game.hardwareinput.MouseControllerManager
 import game.items.BombItem
 import game.items.UsableItem
-import game.level.Level
+import game.level.levels.Level
 import game.actorbehavior.PlayLevelSoundTrackBehavior
 import game.level.online.ClientGameHandler
 import game.level.online.OnlineGameHandler
@@ -72,8 +72,11 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         controllerManager?.register(GamePausedObserver())
         setupViewControllers()
         setDefaultCommandDelay()
-        onlineGameHandler?.onStart()
-        println("${javaClass.simpleName}, onlineGameHandler: $onlineGameHandler")
+        println("${javaClass.simpleName}, onlineGameHandler: $onlineGameHandler, ${onlineGameHandler?.isRunning()}")
+
+        if (onlineGameHandler?.isRunning() != true) {
+            onlineGameHandler?.onStart()
+        }
     }
 
     fun assignPlayerToControllerManager() {

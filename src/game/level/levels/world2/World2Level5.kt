@@ -1,6 +1,5 @@
-package game.level.world2
+package game.level.levels.world2
 
-import game.entity.player.Player
 import game.entity.enemies.boss.Boss
 import game.entity.enemies.boss.clown.Clown
 import game.entity.enemies.npcs.Eagle
@@ -8,9 +7,9 @@ import game.entity.enemies.npcs.FastEnemy
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
 import game.entity.player.BomberEntity
-import game.level.Level
-import game.level.StoryLevel
-import game.level.WorldSelectorLevel
+import game.level.levels.Level
+import game.level.levels.StoryLevel
+import game.level.levels.lobby.WorldSelectorLevel
 import game.level.info.model.LevelInfo
 import game.level.info.imp.World2levelInfo
 

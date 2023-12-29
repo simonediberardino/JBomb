@@ -12,13 +12,16 @@ class ClientGameHandler(
 
     private lateinit var client: TCPClient
     var id = -1L
-    var connected: Boolean = false
-        private set
+
+    companion object {
+        var connected: Boolean = false
+            private set
+    }
 
     private fun connect() {
         client = TCPClient(serverAddress, serverPort)
-        client.connect()
         client.register(this)
+        client.connect()
     }
 
     override fun onError() {
@@ -27,10 +30,12 @@ class ClientGameHandler(
 
     override fun onDisconnect() {
         connected = false
+        println("ClientGameHandler onDisconnect")
     }
 
     override fun onConnect() {
         connected = true
+        println("ClientGameHandler onConnect")
     }
 
     override fun onIdReceived(id: Long) {
@@ -55,7 +60,11 @@ class ClientGameHandler(
         client.sendData(data)
     }
 
-    override fun sendData(data: String, receiverId: Int) {
+    override fun sendData(data: String, receiverId: Long) {
         sendData(data)
+    }
+
+    override fun isRunning(): Boolean {
+        return connected
     }
 }

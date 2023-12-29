@@ -1,13 +1,9 @@
 package game.level.online
 
+import game.Bomberman
 import game.http.callbacks.TCPServerCallback
-import game.http.dao.EntityDao
 import game.http.dispatch.HttpMessageReceiverHandler
-import game.http.events.forward.AssignIdHttpEventForwarder
-import game.http.messages.AssignIdHttpMessage
-import game.http.messages.SpawnedEntityHttpMessage
-import game.http.models.HttpMessageTypes
-import game.http.repo.HttpRepository
+import game.http.events.forward.LevelInfoHttpEventForwarder
 import game.http.serializing.HttpParserSerializer
 import game.http.sockets.TCPServer
 
@@ -34,8 +30,15 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
         val data: MutableMap<String, String> = HashMap()
         data["id"] = indexedClient.id.toString()
 
+        val levelInfo = Bomberman.getMatch().currentLevel?.info ?: return
+
+        data["levelId"] = levelInfo.levelId.toString()
+        data["worldId"] = levelInfo.worldId.toString()
+
+        println("onClientConnected $data")
+        LevelInfoHttpEventForwarder().invoke(data)
         // After connection, the server delivers the assigned ID to the client;
-        AssignIdHttpEventForwarder().invoke(data)
+        //AssignIdHttpEventForwarder().invoke(data)
     }
 
     override fun onStart() {
@@ -48,8 +51,8 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
         server.sendData(data)
     }
 
-    override fun sendData(data: String, receiverId: Int) {
-        if (receiverId == -1) {
+    override fun sendData(data: String, receiverId: Long) {
+        if (receiverId == -1L) {
             sendData(data)
             return
         }
@@ -60,5 +63,9 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
     override fun onDataReceived(data: String) {
         val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
         HttpMessageReceiverHandler.instance.handle(formattedData)
+    }
+
+    override fun isRunning(): Boolean {
+        return running
     }
 }

@@ -1,7 +1,7 @@
 package game.level.gamehandler.model
 
 import game.entity.models.Enemy
-import game.level.Level
+import game.level.levels.Level
 import java.awt.Image
 
 abstract class GameHandler(protected val level: Level) {

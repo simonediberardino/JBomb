@@ -10,7 +10,7 @@ class HttpMessageDispatcher private constructor() {
         dispatch(httpMessage, -1)
     }
 
-    fun dispatch(httpMessage: HttpMessage, receiverId: Int) {
+    fun dispatch(httpMessage: HttpMessage, receiverId: Long) {
         val data: String = HttpParserSerializer.instance.serialize(httpMessage)
 
         println("HttpMessageDispatcher: $httpMessage, $receiverId")
@@ -21,7 +21,7 @@ class HttpMessageDispatcher private constructor() {
         }
     }
 
-    private fun dispatch(data: String, httpActor: HttpActor, receiverId: Int) : Boolean {
+    private fun dispatch(data: String, httpActor: HttpActor, receiverId: Long) : Boolean {
         println("""
             {
               "message": "dispatch",

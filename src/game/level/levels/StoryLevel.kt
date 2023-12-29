@@ -1,4 +1,4 @@
-package game.level
+package game.level.levels
 
 import game.data.DataInputOutput
 import game.events.game.RoundPassedGameEvent

@@ -2,10 +2,11 @@ package game.entity.bonus.mysterybox
 
 import game.Bomberman
 import game.data.DataInputOutput
+import game.entity.EntityTypes
 import game.entity.blocks.HardBlock
 import game.entity.models.Coordinates
 import game.entity.models.Entity
-import game.level.Level
+import game.level.levels.Level
 import game.localization.Localization
 import game.ui.panels.game.PitchPanel
 import game.ui.viewelements.misc.ToastHandler
@@ -18,10 +19,13 @@ abstract class MysteryBox(
         protected var level: Level,
         private var buyer: Entity
 ) : HardBlock(Coordinates(0, 0)) {
+
     private var status = Status.CLOSED
     private var lastClickInteraction: Long = 0
     abstract val price: Int
+
     abstract fun onPurchaseConfirm()
+
     override fun onMouseClickInteraction() {
         if (status == Status.OPEN) {
             return
@@ -81,9 +85,8 @@ abstract class MysteryBox(
     }
 
     override fun doInteract(e: Entity?) {}
-    override fun getSize(): Int {
-        return PitchPanel.GRID_SIZE
-    }
+
+    override fun getSize(): Int = PitchPanel.GRID_SIZE
 
     override fun getImage(): BufferedImage {
         return loadAndSetImage("${Paths.powerUpsFolder}/box_$status.png")
@@ -93,6 +96,8 @@ abstract class MysteryBox(
         CLOSED,
         OPEN
     }
+
+    override fun getType(): EntityTypes = EntityTypes.MysteryBoxPerk
 
     companion object {
         private const val OPEN_BOX_TIME = 5000

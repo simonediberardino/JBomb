@@ -1,9 +1,8 @@
 package game.level.info.model
 
-import game.entity.player.Player
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
-import game.level.Level
+import game.level.levels.Level
 import game.powerups.PowerUp
 import game.ui.panels.game.PitchPanel
 

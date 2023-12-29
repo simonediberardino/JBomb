@@ -1,6 +1,7 @@
 package game.entity.blocks
 
 import game.Bomberman
+import game.entity.EntityTypes
 import game.entity.bomb.AbstractExplosion
 import game.entity.models.Coordinates
 import game.entity.models.Entity
@@ -12,10 +13,13 @@ import java.lang.Exception
 
 class DestroyableBlock(
         coordinates: Coordinates?,
-        public var powerUpClass: Class<out PowerUp>? = null
+        var powerUpClass: Class<out PowerUp>? = null
 ) : MovableBlock(coordinates) {
-
     constructor(coordinates: Coordinates?) : this(coordinates, null)
+
+    constructor(id: Long) : this(null) {
+        this.id = id
+    }
 
     /**
      * Performs an interaction between this entity and another entity.
@@ -57,6 +61,8 @@ class DestroyableBlock(
     override fun onExplosion(explosion: AbstractExplosion) {
         explosion.attack(this)
     }
+
+    override fun getType(): EntityTypes = EntityTypes.DestroyableBlock
 
     companion object {
         private const val POWER_UP_SPAWN_CHANGE = 33

@@ -2,8 +2,8 @@ package game.ui.pages;
 
 import game.Bomberman;
 import game.data.DataInputOutput;
-import game.level.Level;
-import game.level.WorldSelectorLevel;
+import game.level.levels.Level;
+import game.level.levels.lobby.WorldSelectorLevel;
 import game.localization.Localization;
 import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.bombermanbutton.RedButton;

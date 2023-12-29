@@ -3,7 +3,7 @@ package game.level.info.model
 import game.entity.enemies.boss.Boss
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
-import game.level.Level
+import game.level.levels.Level
 import game.powerups.PowerUp
 
 /**

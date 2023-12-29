@@ -1,4 +1,4 @@
-package game.level
+package game.level.levels
 
 import game.Bomberman
 import game.data.DataInputOutput

@@ -14,6 +14,10 @@ class FastEnemy : IntelligentEnemy {
         hitboxSizeToHeightRatio = 0.527f
     }
 
+    constructor(id: Long) : this() {
+        this.id = id
+    }
+
     constructor(coordinates: Coordinates?) : super(coordinates) {
         hitboxSizeToHeightRatio = 0.527f
     }

@@ -7,10 +7,14 @@ import game.ui.panels.game.PitchPanel
 import game.utils.Paths.enemiesFolder
 import java.util.*
 
-class GhostEnemy : IntelligentEnemy() {
+class GhostEnemy() : IntelligentEnemy() {
     init {
         hitboxSizetoWidthRatio = 0.837f
         hitboxSizeToHeightRatio = 1f
+    }
+
+    constructor(id: Long) : this() {
+        this.id = id
     }
 
     override fun getCharacterOrientedImages(): Array<String> =

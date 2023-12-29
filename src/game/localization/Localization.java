@@ -1,5 +1,7 @@
 package game.localization;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -222,6 +224,11 @@ public class Localization {
     public static final HashMap<Locale, String> AVATAR = new HashMap<>() {{
         put(Locale.ENGLISH, "AVATAR");
         put(Locale.ITALY, "AVATAR");
+    }};
+
+    public static final HashMap<Locale, String> WAITING_ROOM = new HashMap<>() {{
+        put(Locale.ENGLISH, "WAITING ROOM");
+        put(Locale.ITALY, "SALA D'ATTESA");
     }};
 
     public static Locale[] getSupportedLanguages() {

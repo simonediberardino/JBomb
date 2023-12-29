@@ -3,7 +3,7 @@ package game.actorbehavior
 import game.Bomberman
 import game.entity.blocks.DestroyableBlock
 import game.entity.models.Coordinates
-import game.level.Level
+import game.level.levels.Level
 import game.powerups.portal.EndLevelPortal
 import game.ui.panels.game.PitchPanel
 

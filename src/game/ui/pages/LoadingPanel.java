@@ -1,7 +1,7 @@
 package game.ui.pages;
 
 import game.Bomberman;
-import game.level.Level;
+import game.level.levels.Level;
 import game.localization.Localization;
 import game.sound.SoundModel;
 import game.ui.frames.BombermanFrame;

@@ -11,6 +11,9 @@ class ClownNose : Orb {
     constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates, enhancedDirection)
     constructor(coordinates: Coordinates?, direction: Direction?) : super(coordinates, direction)
     constructor() : this(null, null as Direction?)
+    constructor(id: Long) : this() {
+        this.id = id
+    }
 
     override fun getEntitiesAssetsPath(): String = "$enemiesFolder/clown/clown_orb.png"
 

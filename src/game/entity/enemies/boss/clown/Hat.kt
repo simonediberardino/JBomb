@@ -17,6 +17,10 @@ open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?)
 
     constructor() : this(null, null)
 
+    constructor(id : Long) : this() {
+        this.id = id
+    }
+
     override fun getEntitiesAssetsPath(): String = "${Paths.enemiesFolder}/clown/hat"
     override fun getDrawPriority(): DrawPriority = DrawPriority.DRAW_PRIORITY_3
     override fun getType(): EntityTypes = EntityTypes.Hat

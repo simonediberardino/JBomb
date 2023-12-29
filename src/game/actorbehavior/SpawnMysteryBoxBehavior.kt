@@ -4,7 +4,7 @@ import game.Bomberman
 import game.entity.bonus.mysterybox.MysteryBoxPerk
 import game.entity.models.Coordinates
 import game.entity.models.Entity
-import game.level.Level
+import game.level.levels.Level
 import game.ui.panels.game.PitchPanel
 
 class SpawnMysteryBoxBehavior(val level: Level): GameBehavior {

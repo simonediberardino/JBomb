@@ -1,6 +1,6 @@
 package game.actorbehavior
 
-import game.level.Level
+import game.level.levels.Level
 import game.sound.AudioManager
 
 class PlayLevelSoundBehavior(private val level: Level): GameBehavior {

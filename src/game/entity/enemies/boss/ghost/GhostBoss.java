@@ -52,6 +52,11 @@ public class GhostBoss extends Boss {
         };
     }
 
+    public GhostBoss(long id) {
+        this();
+        this.setId(id);
+    }
+
     @Override
     public void attack(Entity e) {
         attackAnimationAndSoundFX();

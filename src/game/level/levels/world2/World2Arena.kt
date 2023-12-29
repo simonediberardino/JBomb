@@ -1,11 +1,11 @@
-package game.level.world2
+package game.level.levels.world2
 
 import game.entity.enemies.boss.Boss
 import game.entity.enemies.boss.clown.Clown
 import game.entity.enemies.npcs.*
 import game.entity.models.Enemy
-import game.level.ArenaLevel
-import game.level.Level
+import game.level.levels.ArenaLevel
+import game.level.levels.Level
 import game.level.info.model.DefaultArenaLevelInfo
 import game.level.info.model.LevelInfo
 

@@ -273,7 +273,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         }
 
         // centers entity on tile
-        if (forceCentering) setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
+        if (forceCentering)
+            setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
 
         // spawns entity if the spawn point is free, otherwise do nothing
         if (forceSpawn || !Coordinates.isBlockOccupied(coords)) {

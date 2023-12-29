@@ -2,8 +2,8 @@ package game.ui.pages;
 
 import game.Bomberman;
 import game.level.online.ServerGameHandler;
-import game.level.world1.World1Arena;
-import game.level.world2.World2Arena;
+import game.level.levels.world1.World1Arena;
+import game.level.levels.world2.World2Arena;
 import game.ui.frames.BombermanFrame;
 import game.ui.viewelements.bombermanbutton.RedButton;
 import game.ui.viewelements.bombermanbutton.YellowButton;

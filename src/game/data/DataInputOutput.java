@@ -1,7 +1,7 @@
 package game.data;
 
 import game.Bomberman;
-import game.level.Level;
+import game.level.levels.Level;
 import game.utils.Paths;
 import kotlin.UninitializedPropertyAccessException;
 

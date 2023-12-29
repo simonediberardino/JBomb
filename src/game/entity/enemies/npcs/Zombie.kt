@@ -5,8 +5,10 @@ import game.entity.models.Coordinates
 import game.utils.Paths.enemiesFolder
 
 class Zombie : IntelligentEnemy {
-
-    constructor() : super() {}
+    constructor(id: Long) : this() {
+        this.id = id
+    }
+    constructor() : super()
     constructor(coordinates: Coordinates?) : super(coordinates) {}
 
     override fun getSpeed(): Float = 0.5f

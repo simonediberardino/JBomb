@@ -1,6 +1,6 @@
 package game.ui.frames;
 
-import game.level.world1.World1Level1;
+import game.level.levels.world1.World1Level1;
 import game.localization.Localization;
 import game.ui.pages.*;
 import game.ui.panels.menu.ProfilePanel;
@@ -14,7 +14,6 @@ import game.utils.XMLUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.io.InputStream;
 
 

@@ -24,6 +24,10 @@ import javax.swing.Timer
 class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
     constructor() : this(null)
 
+    constructor(id : Long) : this() {
+        this.id = id
+    }
+
     override fun getEntitiesAssetsPath(): String = "$entitiesFolder/player/${DataInputOutput.getInstance().skin}"
 
     override fun getDeathSound(): SoundModel = SoundModel.PLAYER_DEATH

@@ -8,6 +8,10 @@ import game.utils.Paths.enemiesFolder
 import java.util.*
 
 class YellowBall : IntelligentEnemy {
+    constructor(id: Long) : this() {
+        this.id = id
+    }
+
     constructor() : super()
     constructor(coordinates: Coordinates?) : super(coordinates)
 
