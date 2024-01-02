@@ -1,11 +1,15 @@
 package game.powerups
 
 import game.data.DataInputOutput
+import game.entity.EntityTypes
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 class LivesPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
+    constructor(id: Long) : this(null) {
+        this.id = id
+    }
 
     override fun getImage(): BufferedImage =
             loadAndSetImage("$powerUpsFolder/lives_up.png")
@@ -25,4 +29,6 @@ class LivesPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
         get() = false
 
     override fun canPickUp(entity: BomberEntity): Boolean = true
+
+    override fun getType(): EntityTypes = EntityTypes.LivesPowerUp
 }

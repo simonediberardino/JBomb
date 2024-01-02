@@ -1,5 +1,6 @@
 package game.powerups
 
+import game.entity.EntityTypes
 import game.entity.bomb.AbstractExplosion.Companion.MAX_EXPLOSION_LENGTH
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
@@ -14,9 +15,11 @@ class FirePowerUp
  * @param coordinates the coordinates of the entity
  */
 (coordinates: Coordinates?) : PowerUp(coordinates) {
-    override fun getImage(): BufferedImage {
-        return loadAndSetImage("$powerUpsFolder/fire_up.png")
+    constructor(id: Long) : this(null) {
+        this.id = id
     }
+
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/fire_up.png")
 
     override val duration: Int
         get() {
@@ -29,7 +32,7 @@ class FirePowerUp
 
     override fun cancel(entity: BomberEntity) {}
 
-    override fun canPickUp(entity: BomberEntity): Boolean {
-        return entity.currExplosionLength <= MAX_EXPLOSION_LENGTH
-    }
+    override fun canPickUp(entity: BomberEntity): Boolean = entity.currExplosionLength <= MAX_EXPLOSION_LENGTH
+
+    override fun getType(): EntityTypes = EntityTypes.FirePowerUp
 }

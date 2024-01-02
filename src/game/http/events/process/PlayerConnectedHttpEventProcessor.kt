@@ -16,13 +16,12 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         val match = Bomberman.getMatch()
         val coordinates = (match.currentLevel ?: return).info.playerSpawnCoordinates
 
-        val player = RemotePlayer(coordinates, clientId, 1)
-        player.spawn()
-
-        val entities = match.getEntities()
-        entities.forEach { e ->
+        match.getEntities().forEach { e ->
             println("Sending entity $e to $clientId")
             SpawnEntityEventForwarder(clientId).invoke(e.toDao())
         }
+
+        val player = RemotePlayer(coordinates, clientId, 1)
+        player.spawn()
     }
 }

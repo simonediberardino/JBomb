@@ -104,16 +104,12 @@ abstract class PowerUp
     }
 
     override fun getInteractionsEntities(): Set<Class<out Entity>> {
-        return HashSet<Class<out Entity>>(listOf(Player::class.java))
+        return hashSetOf(Player::class.java)
     }
 
-    override fun getObstacles(): Set<Class<out Entity>> {
-        return emptySet()
-    }
+    override fun getObstacles(): Set<Class<out Entity>> = emptySet()
 
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        return HashSet<Class<out Entity>>(listOf(Player::class.java))
-    }
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> = hashSetOf(Player::class.java)
 
     open val isDisplayable: Boolean
         get() = true
@@ -129,16 +125,16 @@ abstract class PowerUp
         // A static array of power-up classes
         val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
                 PistolPowerUp::class.java,
-                /*ArmorPowerUp::class.java,
+                ArmorPowerUp::class.java,
                 FirePowerUp::class.java,
                 SpeedPowerUp::class.java,
                 TransparentDestroyableBlocksPowerUp::class.java,
                 LivesPowerUp::class.java,
-                RemoteControl::class.java,
-                Hammer::class.java,
+                RemoteControlPowerUp::class.java,
+                HammerPowerUp::class.java,
                 BlockMoverPowerUp::class.java,
                 IncreaseMaxBombsPowerUp::class.java,
-                TransparentBombsPowerUp::class.java*/
+                TransparentBombsPowerUp::class.java
         )
 
         // The default duration for a power-up, in seconds

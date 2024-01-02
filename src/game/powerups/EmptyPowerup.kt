@@ -1,5 +1,6 @@
 package game.powerups
 
+import game.entity.EntityTypes
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
@@ -12,15 +13,18 @@ class EmptyPowerup
  * @param coordinates the coordinates of the PowerUp entity
  */
 (coordinates: Coordinates?) : PowerUp(coordinates) {
-    override fun getImage(): BufferedImage {
-        return loadAndSetImage("$powerUpsFolder/no_powerup.png")
+    constructor(id: Long) : this(null) {
+        this.id = id
     }
 
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/no_powerup.png")
+
     override val duration: Int
-        get() {
-            return 0
-        }
+        get() = 0
 
     override fun doApply(entity: BomberEntity) {}
     override fun cancel(entity: BomberEntity) {}
+
+    override fun getType(): EntityTypes = EntityTypes.EmptyPowerup
+
 }

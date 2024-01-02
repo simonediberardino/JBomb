@@ -1,5 +1,6 @@
 package game.entity.bomb
 
+import game.entity.EntityTypes
 import game.entity.models.Coordinates
 import game.entity.models.Direction
 import game.entity.models.Entity
@@ -29,6 +30,8 @@ class FireExplosion : AbstractExplosion {
             canExpand: Boolean) : super(owner, coordinates, direction, distanceFromExplosive, explosive, canExpand)
 
     override fun getEntitiesAssetsPath(): String = "${Paths.entitiesFolder}/bomb/flame"
+
+    override fun getType(): EntityTypes = EntityTypes.FireExplosion
 
     override val explosionClass: Class<out AbstractExplosion>
         get() = javaClass

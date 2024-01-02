@@ -1,5 +1,6 @@
 package game.entity.bomb
 
+import game.entity.EntityTypes
 import game.entity.models.Coordinates
 import game.entity.models.Direction
 import game.entity.models.Entity
@@ -30,6 +31,8 @@ class ConfettiExplosion : AbstractExplosion {
 
     override val explosionClass: Class<out AbstractExplosion>
         get() = javaClass
+
+    override fun getType(): EntityTypes = EntityTypes.ConfettiExplosion
 
     override fun getEntitiesAssetsPath(): String = "${Paths.enemiesFolder}/clown/clown_explosion/clown_explosion"
 }

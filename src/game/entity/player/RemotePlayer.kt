@@ -1,13 +1,18 @@
 package game.entity.player
 
 import game.Bomberman
+import game.entity.EntityTypes
 import game.entity.models.Coordinates
 import game.match.BomberManMatch
 import game.sound.SoundModel
 import game.utils.Paths
 
-class RemotePlayer(coordinates: Coordinates?, private val skinId: Int) : BomberEntity(coordinates) {
+class RemotePlayer(coordinates: Coordinates?, private val skinId: Int = 1) : BomberEntity(coordinates) {
     constructor(coordinates: Coordinates?, id: Long, skinId: Int) : this(coordinates, skinId) {
+        this.id = id
+    }
+
+    constructor(id : Long) : this(null) {
         this.id = id
     }
 
@@ -23,4 +28,5 @@ class RemotePlayer(coordinates: Coordinates?, private val skinId: Int) : BomberE
     override val maxExplosionDistance: Int
         get() = Bomberman.getMatch().player?.maxBombs ?: 0 // TODO
 
+    override fun getType(): EntityTypes = EntityTypes.RemotePlayer
 }

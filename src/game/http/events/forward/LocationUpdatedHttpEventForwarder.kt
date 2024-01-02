@@ -9,6 +9,6 @@ import game.http.messages.SpawnedEntityHttpMessage
 
 class LocationUpdatedHttpEventForwarder : HttpEvent {
     override fun invoke(info: Any) {
-        HttpMessageDispatcher.instance.dispatch(LocationHttpMessage(info as CharacterDao))
+        HttpMessageDispatcher.instance.dispatch(LocationHttpMessage(info as CharacterDao), info.entityId, true)
     }
 }

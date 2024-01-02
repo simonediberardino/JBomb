@@ -1,5 +1,6 @@
 package game.entity.bomb
 
+import game.entity.EntityTypes
 import game.entity.models.Coordinates
 import game.entity.models.Direction
 import game.entity.models.Entity
@@ -37,4 +38,6 @@ class PistolExplosion : AbstractExplosion {
         get() = javaClass
 
     override fun shouldHideCenter(): Boolean = true
+
+    override fun getType(): EntityTypes = EntityTypes.PistolExplosion
 }

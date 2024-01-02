@@ -101,9 +101,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     protected abstract void doInteract(Entity e);
 
     public abstract int getSize();
-    public EntityTypes getType(){
-        return EntityTypes.Player;
-    }
+
+    public abstract EntityTypes getType();
 
 
     /**

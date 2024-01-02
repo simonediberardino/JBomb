@@ -1,10 +1,12 @@
 package game.http.events.process
 
+import game.Bomberman
 import game.entity.EntityTypes
 import game.entity.bonus.mysterybox.MysteryBox
 import game.entity.models.Coordinates
 import game.events.models.HttpEvent
 import game.http.models.HttpMessageTypes
+import game.level.online.ClientGameHandler
 import game.ui.pages.LoadingPanel.LOADING_TIMER
 import game.utils.Extensions.getOrTrim
 import java.awt.event.ActionEvent
@@ -22,7 +24,15 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
 
             println("SpawnedEntityHttpEventProcessor received $entityId, $entityType, $locationString")
 
-            val entity = EntityTypes.values()[entityType].toEntity(entityId)
+            println("Type $entityType $entityId")
+
+            val entity = if (entityId == (Bomberman.getMatch().onlineGameHandler as ClientGameHandler?)?.id) {
+                println("Spawning player $entityId")
+                EntityTypes.Player.toEntity(entityId) ?: return@Timer
+            } else {
+                EntityTypes.values()[entityType].toEntity(entityId) ?: return@Timer
+            }
+
             entity.coords = location
             entity.spawn(true)
         }

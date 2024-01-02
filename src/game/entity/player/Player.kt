@@ -2,6 +2,7 @@ package game.entity.player
 
 import game.Bomberman
 import game.data.DataInputOutput
+import game.entity.EntityTypes
 import game.entity.blocks.DestroyableBlock
 import game.entity.blocks.HardBlock
 import game.entity.bomb.AbstractExplosion
@@ -29,6 +30,8 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
     }
 
     override fun getEntitiesAssetsPath(): String = "$entitiesFolder/player/${DataInputOutput.getInstance().skin}"
+
+    override fun getType(): EntityTypes = EntityTypes.BomberEntity
 
     override fun getDeathSound(): SoundModel = SoundModel.PLAYER_DEATH
 

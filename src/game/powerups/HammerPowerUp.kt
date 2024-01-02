@@ -1,24 +1,22 @@
 package game.powerups
 
+import game.entity.EntityTypes
 import game.entity.blocks.DestroyableBlock
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
-class Hammer(coordinates: Coordinates?) : PowerUp(coordinates) {
-    /**
-     * Constructs a PowerUp entity with the specified coordinates.
-     *
-     * @param coordinates the coordinates of the PowerUp entity
-     */
+class HammerPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
+    constructor(id: Long) : this(null) {
+        this.id = id
+    }
+
     init {
         incompatiblePowerUps.add(BlockMoverPowerUp::class.java)
     }
 
-    override fun getImage(): BufferedImage {
-        return loadAndSetImage("$powerUpsFolder/hammer.png")
-    }
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/hammer.png")
 
     override val duration: Int
         get() = 30
@@ -30,4 +28,6 @@ class Hammer(coordinates: Coordinates?) : PowerUp(coordinates) {
     override fun cancel(entity: BomberEntity) {
         entity.removeClassInteractWithMouseClick(DestroyableBlock::class.java)
     }
+
+    override fun getType(): EntityTypes = EntityTypes.HammerPowerUp
 }

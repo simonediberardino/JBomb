@@ -1,6 +1,7 @@
 package game.entity.bomb
 
 import game.Bomberman
+import game.entity.EntityTypes
 import game.entity.blocks.DestroyableBlock
 import game.entity.blocks.HardBlock
 import game.entity.blocks.MovableBlock
@@ -13,12 +14,24 @@ import game.utils.Utility
 import java.awt.image.BufferedImage
 import java.util.*
 
-open class Bomb(private val caller: Entity) : MovableBlock(Coordinates.getCenterCoordinatesOfEntity(caller)), Explosive {
+open class Bomb(private var caller: Entity?) : MovableBlock(Coordinates.getCenterCoordinatesOfEntity(caller)), Explosive {
     private var onExplodeCallback: Runnable? = null
 
-    override fun getEntitiesAssetsPath(): String {
-        return "${Paths.entitiesFolder}/bomb/"
+    constructor(id: Long) : this(null) {
+        this.id = id
     }
+
+    override fun onSpawn() {
+        super.onSpawn()
+
+        // TODO SUPER TEMPORARY!!
+        if (coords == null) {
+            caller = Bomberman.getMatch().player
+            coords = Coordinates.getCenterCoordinatesOfEntity(caller)
+        }
+    }
+
+    override fun getEntitiesAssetsPath(): String = "${Paths.entitiesFolder}/bomb/"
 
     override fun getImage(): BufferedImage {
         val imagesCount = 3
@@ -49,6 +62,8 @@ open class Bomb(private val caller: Entity) : MovableBlock(Coordinates.getCenter
      */
     override fun doInteract(e: Entity?) {}
 
+    override fun getType(): EntityTypes = EntityTypes.Bomb
+
     fun explode() {
         if (!isSpawned) {
             return
@@ -58,7 +73,7 @@ open class Bomb(private val caller: Entity) : MovableBlock(Coordinates.getCenter
         AudioManager.getInstance().play(SoundModel.EXPLOSION)
 
         for (direction in Direction.values()) {
-            FireExplosion(caller, coords, direction, this).explode()
+            FireExplosion(caller!!, coords, direction, this).explode()
         }
 
         onExplodeCallback?.run()
@@ -74,9 +89,7 @@ open class Bomb(private val caller: Entity) : MovableBlock(Coordinates.getCenter
         timer.schedule(explodeTask, EXPLODE_TIMER.toLong())
     }
 
-    override fun getSize(): Int {
-        return BOMB_SIZE
-    }
+    override fun getSize(): Int = BOMB_SIZE
 
     override val explosionObstacles: Set<Class<out Entity>>
         get() = setOf(HardBlock::class.java, DestroyableBlock::class.java)
@@ -91,17 +104,12 @@ open class Bomb(private val caller: Entity) : MovableBlock(Coordinates.getCenter
         eliminated()
     }
 
-    override fun destroy() {
-        explode()
-    }
+    override fun destroy() = explode()
 
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        return hashSetOf(FireExplosion::class.java, AbstractExplosion::class.java)
-    }
+    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> =
+            hashSetOf(FireExplosion::class.java, AbstractExplosion::class.java)
 
-    override fun onExplosion(explosion: AbstractExplosion) {
-        explode()
-    }
+    override fun onExplosion(explosion: AbstractExplosion) = explode()
 
     companion object {
         val BOMB_SIZE = PitchPanel.COMMON_DIVISOR * 2

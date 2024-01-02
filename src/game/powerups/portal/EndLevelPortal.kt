@@ -2,6 +2,7 @@ package game.powerups.portal
 
 import game.Bomberman
 import game.data.DataInputOutput
+import game.entity.EntityTypes
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.level.levels.lobby.WorldSelectorLevel
@@ -9,14 +10,14 @@ import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
 class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
-    override fun getImage(): BufferedImage {
-        return loadAndSetImage("$powerUpsFolder/end_game.gif")
+    constructor(id: Long) : this(null) {
+        this.id = id
     }
 
+    override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/end_game.gif")
+
     override val duration: Int
-        get() {
-            return 0
-        }
+        get() = 0
 
     override fun canPickUp(entity: BomberEntity): Boolean {
         return Bomberman.getMatch().enemiesAlive <= 0
@@ -43,4 +44,6 @@ class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
     }
 
     override fun cancel(entity: BomberEntity) {}
+
+    override fun getType(): EntityTypes = EntityTypes.EndLevelPortal
 }

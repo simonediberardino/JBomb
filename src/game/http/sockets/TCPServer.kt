@@ -95,7 +95,15 @@ class TCPServer(private var port: Int) : TCPSocket {
         }
     }
 
-    fun sendData(clientId: Long, data: String) {
+    fun sendData(clientId: Long, data: String, ignore: Boolean) {
+        if (ignore) {
+            for (client in clients.values) {
+                if (client.id != clientId)
+                    sendData(client.client, data)
+            }
+            return
+        }
+
         sendData(clients[clientId]?.client ?: return, data)
         println("sendData: $clientId sent $data")
     }
