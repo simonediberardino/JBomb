@@ -214,8 +214,8 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      */
     fun getEntities(): List<Entity> = synchronized(_entities) { LinkedList(_entities) }
 
-    fun getEntityById(entityId: Long): Entity {
-        return getEntities().first { it.id == entityId }
+    fun getEntityById(entityId: Long): Entity? {
+        return getEntities().firstOrNull { it.id == entityId }
     }
 
     fun addEntity(entity: Entity) {

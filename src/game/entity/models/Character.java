@@ -1,9 +1,12 @@
 package game.entity.models;
 
 import game.Bomberman;
+import game.actorbehavior.LocationChangedBehavior;
 import game.entity.bomb.AbstractExplosion;
 import game.hardwareinput.Command;
 import game.hardwareinput.ControllerManager;
+import game.http.dao.CharacterDao;
+import game.http.dao.EntityDao;
 import game.sound.AudioManager;
 import game.sound.SoundModel;
 import game.ui.panels.game.PitchPanel;
@@ -116,6 +119,7 @@ public abstract class Character extends MovingEntity {
     @Override
     protected void onSpawn() {
         super.onSpawn();
+        new LocationChangedBehavior(toDao()).invoke();
         setAliveState(true);
         setHp(maxHp);
     }
@@ -130,7 +134,7 @@ public abstract class Character extends MovingEntity {
         return getCharacterOrientedImages();
     }
 
-    protected void updateLastDirection(Direction d) {
+    public void updateLastDirection(Direction d) {
         // If the character doesn't have custom images for each direction, do not check if the direction has changed;
         if (useOnlyBaseIcons()) {
             String[] baseIcons = refreshDirectionAndGetCharsImages();
@@ -220,6 +224,11 @@ public abstract class Character extends MovingEntity {
         return false;
     }
 
+    @Override
+    public void setCoords(Coordinates coordinates) {
+        super.setCoords(coordinates);
+        new LocationChangedBehavior(toDao()).invoke();
+    }
 
     @NotNull
     @Override
@@ -463,4 +472,13 @@ public abstract class Character extends MovingEntity {
         commandQueue.clear();
     }
 
+    @Override
+    public EntityDao toDao() {
+        return new CharacterDao(
+                getId(),
+                getCoords(),
+                getType().ordinal(),
+                currDirection.ordinal()
+        );
+    }
 }

@@ -97,6 +97,7 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         setEntities.forEach(e -> {
             try {
+                System.out.println("Painting " + e);
                 drawEntity(g2d, e);
             } catch (ConcurrentModificationException ex) {
                 ex.printStackTrace();

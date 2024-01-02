@@ -1,9 +1,11 @@
 
 high priorities:
 - handle controller manager on client;
-- handle location updates server/client;
 - better handling of AI client with less memory usage;
-- only spawn 1 enemy client;
+- handle movement on client;
+- spawn all entities (bomb for example)
+- status update (bomb tick for example, fire)
+
 
 - Images;
 - fix death logo;

@@ -17,9 +17,8 @@ import javax.swing.Timer
 
 abstract class MysteryBox(
         protected var level: Level,
-        private var buyer: Entity
+        private var buyer: Entity?
 ) : HardBlock(Coordinates(0, 0)) {
-
     private var status = Status.CLOSED
     private var lastClickInteraction: Long = 0
     abstract val price: Int
@@ -27,13 +26,18 @@ abstract class MysteryBox(
     abstract fun onPurchaseConfirm()
 
     override fun onMouseClickInteraction() {
+        if (buyer == null)
+            buyer = Bomberman.getMatch().player
+
         if (status == Status.OPEN) {
             return
         }
-        if (!buyer.isSpawned) {
+
+        if (!buyer!!.isSpawned) {
             return
         }
-        val distanceToUser = coords.distanceTo(buyer.coords)
+
+        val distanceToUser = coords.distanceTo(buyer!!.coords)
         if (distanceToUser >= PitchPanel.GRID_SIZE * 1.5) {
             return
         }

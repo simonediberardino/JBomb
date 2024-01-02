@@ -7,6 +7,7 @@ import game.entity.bomb.AbstractExplosion;
 import game.entity.player.Player;
 import game.hardwareinput.MouseControllerManager;
 import game.http.dao.EntityDao;
+import game.http.events.forward.SpawnEntityEventForwarder;
 import game.match.BomberManMatch;
 import game.tasks.GameTickerObserver;
 import game.events.models.RunnablePar;
@@ -84,9 +85,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     }
 
     protected void onSpawn() {
-        System.out.println("onSpawn: " + id);
-        new LocationChangedBehavior(toDao()).invoke();
         state.set(State.SPAWNED);
+        new SpawnEntityEventForwarder(-1).invoke(toDao());
     }
 
     protected void onDespawn() {
@@ -204,12 +204,6 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         this.coords = coordinates;
     }
 
-    public void onLocationChanged() {
-        if (!isSpawned)
-            return;
-
-        new LocationChangedBehavior(toDao()).invoke();
-    }
     /**
      * Returns true if the entity has been spawned in the game world, false otherwise.
      *
@@ -628,5 +622,14 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
                 coords,
                 getType().ordinal()
         );
+    }
+
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "id=" + id +
+                ", coords=" + coords +
+                ", type=" + getType() +
+                '}';
     }
 }

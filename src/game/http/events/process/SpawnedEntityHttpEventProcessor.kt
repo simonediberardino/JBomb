@@ -28,6 +28,5 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         }
         t.isRepeats = false
         t.start()
-
     }
 }

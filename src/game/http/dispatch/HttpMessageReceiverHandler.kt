@@ -1,6 +1,7 @@
 package game.http.dispatch
 
 import game.http.events.process.LevelInfoHttpEventProcessor
+import game.http.events.process.LocationUpdatedHttpEventProcessor
 import game.http.events.process.PlayerConnectedHttpEventProcessor
 import game.http.events.process.SpawnedEntityHttpEventProcessor
 import game.http.models.HttpMessageTypes
@@ -22,6 +23,9 @@ class HttpMessageReceiverHandler private constructor() {
             }
             HttpMessageTypes.SPAWNED_ENTITY -> {
                 SpawnedEntityHttpEventProcessor().invoke(map)
+            }
+            HttpMessageTypes.LOCATION -> {
+                LocationUpdatedHttpEventProcessor().invoke(map)
             }
             else -> {}
         }

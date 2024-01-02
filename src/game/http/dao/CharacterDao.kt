@@ -6,7 +6,6 @@ class CharacterDao(
         entityId: Long,
         entityLocation: Coordinates,
         entityType: Int,
-        val direction: Int,
-        val skinStatus: Int)
+        val direction: Int)
     : EntityDao(entityId, entityLocation, entityType) {
 }

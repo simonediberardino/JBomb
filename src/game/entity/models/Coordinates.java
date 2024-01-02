@@ -95,7 +95,6 @@ public class Coordinates implements Comparable<Coordinates> {
         Coordinates c;
         while (true) {
             c = Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), distance);
-            ;
             if (c.validate(entitySize)) return c;
         }
     }

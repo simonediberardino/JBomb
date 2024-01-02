@@ -7,12 +7,12 @@ import game.level.levels.Level
 import game.powerups.PowerUp
 import java.lang.Exception
 
-class MysteryBoxPerk(level: Level, entity: Entity) : MysteryBox(level, entity) {
+class MysteryBoxPerk(level: Level, entity: Entity?) : MysteryBox(level, entity) {
     override val price: Int
         get() = 200
 
     // TODO Refactor
-    constructor(id: Long) : this(Bomberman.getMatch().currentLevel!!, Bomberman.getMatch().player!!) {
+    constructor(id: Long) : this(Bomberman.getMatch().currentLevel!!, null) {
         this.id = id
     }
 

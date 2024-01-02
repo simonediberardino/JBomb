@@ -9,7 +9,9 @@ import game.ui.panels.game.PitchPanel
 
 abstract class Enemy(coordinates: Coordinates?) : Character(coordinates) {
     constructor() : this(null) {
-        coords = Coordinates.randomCoordinatesFromPlayer(size)
+        if (Bomberman.getMatch().player != null) {
+            coords = Coordinates.randomCoordinatesFromPlayer(size)
+        }
     }
 
     override fun doInteract(e: Entity?) {
