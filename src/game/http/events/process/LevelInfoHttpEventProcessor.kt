@@ -11,8 +11,8 @@ import java.lang.Exception
 import java.lang.RuntimeException
 
 class LevelInfoHttpEventProcessor : HttpEvent {
-    override fun invoke(info: Any) {
-        info as Map<String, String>
+    override fun invoke(vararg extras: Any) {
+        val info = extras[0] as Map<String, String>
 
         val id = info.getOrTrim("id")?.toIntOrNull() ?: return
         val levelId = info.getOrTrim("levelId")?.toIntOrNull() ?: return

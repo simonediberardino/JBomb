@@ -86,7 +86,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
 
     protected void onSpawn() {
         state.set(State.SPAWNED);
-        new SpawnEntityEventForwarder(-1).invoke(toDao());
+        new SpawnEntityEventForwarder(-1).invoke(toDao(), getExtras());
     }
 
     protected void onDespawn() {
@@ -621,6 +621,10 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
                 coords,
                 getType().ordinal()
         );
+    }
+
+    public Map<String, String> getExtras() {
+        return new HashMap<>();
     }
 
     @Override

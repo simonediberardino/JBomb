@@ -8,7 +8,9 @@ import game.http.messages.SpawnedEntityHttpMessage
 import game.utils.Extensions.getOrTrim
 
 class SpawnEntityEventForwarder(private val clientId: Long) : HttpEvent {
-    override fun invoke(info: Any) {
-        HttpMessageDispatcher.instance.dispatch(SpawnedEntityHttpMessage(info as EntityDao), clientId)
+    override fun invoke(vararg extras: Any) {
+        val info = extras[0] as EntityDao
+        val entityExtras = extras[1] as Map<String, String>
+        HttpMessageDispatcher.instance.dispatch(SpawnedEntityHttpMessage(info, entityExtras), clientId)
     }
 }

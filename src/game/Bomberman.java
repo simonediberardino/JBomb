@@ -122,4 +122,18 @@ public class Bomberman {
     public static boolean isGameEnded() {
         return getMatch() == null || !getMatch().getGameState();
     }
+
+    public static boolean isInGame() {
+        BomberManMatch match = getMatch();
+        Level currentLevel = match != null ? match.getCurrentLevel() : null;
+
+        if (currentLevel == null) {
+            // Handle the case when getCurrentLevel() is null
+            return false;
+        }
+
+        System.out.println("isInGame: " +  match.getGameState() + " ");
+        return match.getGameState() && currentLevel.getInfo().getWorldId() > 0;
+    }
+
 }

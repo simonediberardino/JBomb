@@ -2,10 +2,8 @@ package game.http.events.process
 
 import game.Bomberman
 import game.entity.EntityTypes
-import game.entity.bonus.mysterybox.MysteryBox
 import game.entity.models.Coordinates
 import game.events.models.HttpEvent
-import game.http.models.HttpMessageTypes
 import game.level.online.ClientGameHandler
 import game.ui.pages.LoadingPanel.LOADING_TIMER
 import game.utils.Extensions.getOrTrim
@@ -13,30 +11,41 @@ import java.awt.event.ActionEvent
 import javax.swing.Timer
 
 class SpawnedEntityHttpEventProcessor : HttpEvent {
-    override fun invoke(info: Any) {
-        info as Map<String, String>
-        val t = Timer(LOADING_TIMER + 1000) { _: ActionEvent? ->
-            val entityId = info.getOrTrim("entityId")?.toLong() ?: return@Timer
-            val entityType = info.getOrTrim("entityType")?.toInt() ?: return@Timer
-            val locationString = info.getOrTrim("location") ?: return@Timer
-            val locTokens = locationString.split(" ").map { it.toInt() }
-            val location = Coordinates(locTokens[0], locTokens[1])
+    override fun invoke(vararg extras: Any) {
+        val info = extras[0] as Map<String, String>
 
-            println("SpawnedEntityHttpEventProcessor received $entityId, $entityType, $locationString")
+        val entityId = info.getOrTrim("entityId")?.toLong() ?: return
+        val entityType = info.getOrTrim("entityType")?.toInt() ?: return
+        val locationString = info.getOrTrim("location") ?: return
+        val locTokens = locationString.split(" ").map { it.toInt() }
+        val location = Coordinates(locTokens[0], locTokens[1])
 
-            println("Type $entityType $entityId")
+        println("SpawnedEntityHttpEventProcessor received $entityId, $entityType, $locationString")
+        println("Type $entityType $entityId")
 
-            val entity = if (entityId == (Bomberman.getMatch().onlineGameHandler as ClientGameHandler?)?.id) {
-                println("Spawning player $entityId")
-                EntityTypes.Player.toEntity(entityId) ?: return@Timer
-            } else {
-                EntityTypes.values()[entityType].toEntity(entityId) ?: return@Timer
-            }
+        val entity = createEntity(entityId, entityType, info) ?: return
+        entity.coords = location
 
-            entity.coords = location
+        val delay = if (!Bomberman.isInGame()) LOADING_TIMER + 1000 else 0
+
+        val timer = Timer(delay) { _: ActionEvent? ->
             entity.spawn(true)
         }
-        t.isRepeats = false
-        t.start()
+
+        timer.isRepeats = false
+        timer.start()
     }
+
+    private fun createEntity(
+            entityId: Long,
+            entityType: Int,
+            info: Map<String, String>
+    ): game.entity.models.Entity? {
+        return if (entityId == (Bomberman.getMatch().onlineGameHandler as ClientGameHandler?)?.id) {
+            EntityTypes.Player.toEntity(info)
+        } else {
+            EntityTypes.values().getOrElse(entityType) { return null }.toEntity(info)
+        }
+    }
+
 }

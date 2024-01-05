@@ -12,8 +12,8 @@ import java.awt.event.ActionEvent
 import javax.swing.Timer
 
 class LocationUpdatedHttpEventProcessor : HttpEvent {
-    override fun invoke(info: Any) {
-        info as Map<String, String>
+    override fun invoke(vararg extras: Any) {
+        val info = extras[0] as Map<String, String>
         val entityId = info.getOrTrim("entityId")?.toLong() ?: return
         val locationString = info.getOrTrim("location") ?: return
         val direction = info.getOrTrim("direction")?.toInt() ?: return

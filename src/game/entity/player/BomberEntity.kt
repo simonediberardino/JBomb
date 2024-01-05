@@ -4,7 +4,7 @@ import game.Bomberman
 import game.entity.blocks.DestroyableBlock
 import game.entity.blocks.HardBlock
 import game.entity.bomb.AbstractExplosion
-import game.entity.bomb.Bomb
+import game.entity.placeable.Bomb
 import game.entity.bonus.mysterybox.MysteryBoxPerk
 import game.entity.models.*
 import game.items.BombItem

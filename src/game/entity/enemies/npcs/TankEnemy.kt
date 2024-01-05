@@ -4,7 +4,7 @@ import game.entity.EntityTypes
 import game.entity.player.Player
 import game.entity.bomb.AbstractExplosion
 import game.entity.bomb.AbstractExplosion.Companion.SPAWN_OFFSET
-import game.entity.bomb.Bomb
+import game.entity.placeable.Bomb
 import game.entity.bomb.FireExplosion
 import game.entity.models.Coordinates
 import game.entity.models.Direction

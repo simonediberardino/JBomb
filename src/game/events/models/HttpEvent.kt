@@ -1,5 +1,5 @@
 package game.events.models
 
 interface HttpEvent {
-    fun invoke(info: Any)
+    fun invoke(vararg extras: Any)
 }

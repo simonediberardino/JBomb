@@ -1,7 +1,7 @@
 package game.powerups
 
 import game.entity.EntityTypes
-import game.entity.bomb.Bomb
+import game.entity.placeable.Bomb
 import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder

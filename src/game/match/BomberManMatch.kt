@@ -4,7 +4,7 @@ import game.Bomberman
 import game.data.DataInputOutput
 import game.data.SortedLinkedList
 import game.entity.player.Player
-import game.entity.bomb.Bomb
+import game.entity.placeable.Bomb
 import game.entity.player.BomberEntity
 import game.entity.models.Entity
 import game.hardwareinput.ControllerManager

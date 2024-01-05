@@ -8,7 +8,8 @@ import game.http.messages.LocationHttpMessage
 import game.http.messages.SpawnedEntityHttpMessage
 
 class LocationUpdatedHttpEventForwarder : HttpEvent {
-    override fun invoke(info: Any) {
-        HttpMessageDispatcher.instance.dispatch(LocationHttpMessage(info as CharacterDao), info.entityId, true)
+    override fun invoke(vararg extras: Any) {
+        val info = extras[0] as CharacterDao
+        HttpMessageDispatcher.instance.dispatch(LocationHttpMessage(info), info.entityId, true)
     }
 }

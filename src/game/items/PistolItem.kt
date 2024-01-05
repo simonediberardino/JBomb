@@ -1,11 +1,9 @@
 package game.items
 
-import game.Bomberman
 import game.entity.blocks.DestroyableBlock
 import game.entity.blocks.HardBlock
-import game.entity.bomb.AbstractExplosion
 import game.entity.bomb.AbstractExplosion.Companion.SIZE
-import game.entity.bomb.Bomb
+import game.entity.placeable.Bomb
 import game.entity.bomb.PistolExplosion
 import game.entity.models.Coordinates
 import game.entity.models.Enemy
@@ -19,6 +17,7 @@ import game.utils.Utility.timePassed
 
 class PistolItem : UsableItem(), Explosive {
     private var bullets = 5
+
     override val explosionObstacles: Set<Class<out Entity>>
         get() = setOf(
                 HardBlock::class.java,

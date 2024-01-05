@@ -7,8 +7,8 @@ import game.http.events.forward.SpawnEntityEventForwarder
 import game.utils.Extensions.getOrTrim
 
 class PlayerConnectedHttpEventProcessor : HttpEvent {
-    override fun invoke(info: Any) {
-        info as Map<String, String>
+    override fun invoke(vararg extras: Any) {
+        val info = extras[0] as Map<String, String>
 
         val clientId = info.getOrTrim("id")?.toLong() ?: return
         println("PlayerConnectedHttpEventProcessor: $clientId")
@@ -18,7 +18,7 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
 
         match.getEntities().forEach { e ->
             println("Sending entity $e to $clientId")
-            SpawnEntityEventForwarder(clientId).invoke(e.toDao())
+            SpawnEntityEventForwarder(clientId).invoke(e.toDao(), e.extras)
         }
 
         val player = RemotePlayer(coordinates, clientId, 1)

@@ -1,7 +1,7 @@
 package game.entity.enemies.npcs
 
 import game.entity.player.Player
-import game.entity.bomb.Bomb
+import game.entity.placeable.Bomb
 import game.entity.models.*
 import game.ui.panels.game.PitchPanel
 

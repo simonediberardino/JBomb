@@ -6,13 +6,14 @@ import game.http.models.HttpActor
 import game.http.models.HttpMessage
 import game.http.models.HttpMessageTypes
 
-class SpawnedEntityHttpMessage(private val entity: EntityDao): HttpMessage {
+class SpawnedEntityHttpMessage(private val entity: EntityDao, private val extras: Map<String, String> = hashMapOf()): HttpMessage {
     override fun serialize(): String {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.SPAWNED_ENTITY.ordinal.toString()
         data["entityId"] = entity.entityId.toString()
         data["entityType"] = entity.entityType.toString()
         data["location"] = "${entity.entityLocation.x} ${entity.entityLocation.y}"
+        data.putAll(extras)
         return data.toString()
     }
 

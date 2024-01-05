@@ -1,8 +1,7 @@
 
 high priorities:
-- handle controller manager on client;
 - better handling of AI client with less memory usage;
-- handle movement on client;
+- handle explosion only server side
 - spawn all entities (bomb for example)
 - status update (bomb tick for example, fire)
 

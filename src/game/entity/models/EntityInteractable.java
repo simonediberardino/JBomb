@@ -3,7 +3,7 @@ package game.entity.models;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.bomb.AbstractExplosion;
-import game.entity.bomb.Bomb;
+import game.entity.placeable.Bomb;
 import game.entity.player.BomberEntity;
 import game.utils.Utility;
 import org.jetbrains.annotations.NotNull;
