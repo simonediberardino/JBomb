@@ -14,6 +14,7 @@ import game.items.BombItem
 import game.items.UsableItem
 import game.level.levels.Level
 import game.actorbehavior.PlayLevelSoundTrackBehavior
+import game.http.events.forward.UseItemHttpEventForwarder
 import game.level.online.ClientGameHandler
 import game.level.online.OnlineGameHandler
 import game.level.online.ServerGameHandler
@@ -151,6 +152,12 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
             updateInventoryWeaponController()
         }
     }
+
+    fun useItem(owner: BomberEntity) {
+        owner.weapon.use()
+        UseItemHttpEventForwarder().invoke(owner.toDao(), owner.weapon.type)
+    }
+
 
     /**
      * Removes the current item from the specified owner (BomberEntity) and replaces it with a BombItem.
@@ -330,7 +337,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * Destroys all _entities in the game by despawning them.
      */
     private fun destroy_entities() {
-        getEntities().forEach { it.despawn() }
+        getEntities().forEach { it.despawnAndNotify() }
     }
 
     /**

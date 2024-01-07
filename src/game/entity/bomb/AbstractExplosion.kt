@@ -76,7 +76,7 @@ abstract class AbstractExplosion(private val owner: Entity,
     private val _state: Int
         get() {
             if (explosionState == 0 && !appearing) {
-                despawn()
+                despawnAndNotify()
                 appearing = true
                 return 0
             }

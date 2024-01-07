@@ -2,9 +2,9 @@ package game.actorbehavior
 
 import game.Bomberman
 
-interface GameBehavior {
-    fun hostBehavior(): () -> Unit
-    fun clientBehavior(): (() -> Unit)
+abstract class GameBehavior {
+    abstract fun hostBehavior(): () -> Unit
+    abstract fun clientBehavior(): (() -> Unit)
 
     fun invoke() {
         if (Bomberman.getMatch().isServer) {

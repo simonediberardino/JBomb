@@ -7,7 +7,7 @@ import game.entity.models.Entity
 import game.level.levels.Level
 import game.ui.panels.game.PitchPanel
 
-class SpawnMysteryBoxBehavior(val level: Level): GameBehavior {
+class SpawnMysteryBoxBehavior(val level: Level): GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
             spawnMysteryBox()

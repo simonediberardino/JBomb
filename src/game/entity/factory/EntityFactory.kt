@@ -42,7 +42,6 @@ class EntityFactory {
             EntityTypes.InvisibleBlock -> InvisibleBlock(id)
             EntityTypes.StoneBlock -> StoneBlock(id)
             EntityTypes.MysteryBoxPerk -> MysteryBoxPerk(id)
-            EntityTypes.Bomb -> createBombEntity(id, extras)
             EntityTypes.ConfettiExplosion, EntityTypes.FireExplosion, EntityTypes.PistolExplosion -> null
             EntityTypes.ArmorPowerUp -> ArmorPowerUp(id)
             EntityTypes.BlockMoverPowerUp -> BlockMoverPowerUp(id)
@@ -59,6 +58,7 @@ class EntityFactory {
             EntityTypes.EndLevelPortal -> EndLevelPortal(id)
             EntityTypes.World1Portal -> World1Portal(id)
             EntityTypes.World2Portal -> World2Portal(id)
+            else -> { null }
         }
     }
 
@@ -71,15 +71,6 @@ class EntityFactory {
             isClient && id == (Bomberman.getMatch().onlineGameHandler as ClientGameHandler?)?.id -> Player(id)
             else -> RemotePlayer(id)
         }
-    }
-
-    private fun createBombEntity(id: Long, extras: Map<String, String>): game.entity.models.Entity? {
-        val callerId = extras.getOrTrim("callerId")?.toLong() ?: return null
-        val character = Bomberman.getMatch().getEntityById(callerId) as Character?
-
-        val bombEntity = Bomb(id, character ?: return null)
-        // bombEntity.trigger() // temporary, only server should implement this
-        return bombEntity
     }
 
     companion object {

@@ -41,16 +41,19 @@ abstract class MysteryBox(
         if (distanceToUser >= PitchPanel.GRID_SIZE * 1.5) {
             return
         }
+
         val currentPoints = DataInputOutput.getInstance().score
         if (currentPoints < price) {
             showErrorMessage()
             return
         }
+
         if (isConfirmDelayExpired) {
             lastClickInteraction = System.currentTimeMillis()
             showConfirmMessage()
             return
         }
+
         buy()
     }
 

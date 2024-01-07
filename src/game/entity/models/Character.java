@@ -334,9 +334,10 @@ public abstract class Character extends MovingEntity {
      * If the health points reach 0 or below, the entity is despawned.
      * Otherwise, a damage animation is started.
      *
-     * @param damage The amount of damage to remove from the entity's health points.
+     * @param value The amount of damage to remove from the entity's health points.
      */
-    protected final void attackReceived(int damage) {
+    @Override
+    public void onAttackReceived(int value) {
         synchronized ((Object) lastDamageTime) {
             if (Utility.INSTANCE.timePassed(lastDamageTime) < INTERACTION_DELAY_MS)
                 return;
@@ -344,7 +345,7 @@ public abstract class Character extends MovingEntity {
             lastDamageTime = System.currentTimeMillis();
 
             // Reduce the health points by the specified amount
-            healthPoints -= damage;
+            healthPoints -= value;
 
             startDamageAnimation();
 
@@ -353,7 +354,7 @@ public abstract class Character extends MovingEntity {
                 healthPoints = 0;
                 eliminated();
             } else {
-                onHit(damage);
+                onHit(value);
             }
         }
     }
@@ -378,7 +379,7 @@ public abstract class Character extends MovingEntity {
         javax.swing.Timer timer = new javax.swing.Timer((int) INTERACTION_DELAY_MS, (e) -> {
             onEndedDeathAnimation();
 
-            despawn();
+            despawnAndNotify();
         });
 
         timer.setRepeats(false);

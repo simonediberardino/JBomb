@@ -3,7 +3,7 @@ package game.actorbehavior
 import game.entity.models.Enemy
 import java.util.*
 
-class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Array<Class<out Enemy>>): GameBehavior {
+class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Array<Class<out Enemy>>): GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
             spawnEnemies()

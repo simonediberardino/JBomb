@@ -5,6 +5,7 @@ import game.entity.models.*
 import game.entity.player.BomberEntity
 import game.events.game.KilledEnemyEvent
 import game.events.game.ScoreGameEvent
+import game.utils.XMLUtils
 import java.util.stream.Collectors
 
 abstract class IntelligentEnemy : Enemy, ICPU {
@@ -75,10 +76,11 @@ abstract class IntelligentEnemy : Enemy, ICPU {
             return
         }
 
-        // TODO HANDLE CLIENT BEHAVIOR
-        if (Bomberman.getMatch().isServer) {
-            commandQueue.add(chooseDirection(false).toCommand())
-            executeQueue()
+        if ("true" == XMLUtils.readConfig("bots_move")) {
+            if (Bomberman.getMatch().isServer) {
+                commandQueue.add(chooseDirection(false).toCommand())
+                executeQueue()
+            }
         }
     }
 

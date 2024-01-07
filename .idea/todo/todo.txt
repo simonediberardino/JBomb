@@ -1,10 +1,9 @@
 
 high priorities:
 - better handling of AI client with less memory usage;
-- handle explosion only server side
-- spawn all entities (bomb for example)
-- status update (bomb tick for example, fire)
-
+- spawn all entities, explosions
+- handle perks
+- idea: update status of entity: bombs length, status etc....
 
 - Images;
 - fix death logo;

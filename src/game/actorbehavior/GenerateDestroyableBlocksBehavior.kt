@@ -7,7 +7,7 @@ import game.level.levels.Level
 import game.powerups.portal.EndLevelPortal
 import game.ui.panels.game.PitchPanel
 
-class GenerateDestroyableBlocksBehavior(val level: Level): GameBehavior {
+class GenerateDestroyableBlocksBehavior(val level: Level): GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
             generateDestroyableBlocks()

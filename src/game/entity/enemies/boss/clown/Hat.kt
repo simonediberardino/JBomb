@@ -40,7 +40,7 @@ open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?)
 
         if (e is Clown) {
             e.setHasHat(true)
-            despawn()
+            despawnAndNotify()
         } else {
             attack(e)
         }

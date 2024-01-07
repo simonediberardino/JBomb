@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <config
-            full_screen="false">
+            full_screen="false"
+            bots_move="true">
     </config>
 </resources>

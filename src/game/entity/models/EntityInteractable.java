@@ -1,11 +1,15 @@
 package game.entity.models;
 
+import game.actorbehavior.GameBehavior;
 import game.entity.blocks.DestroyableBlock;
 import game.entity.blocks.HardBlock;
 import game.entity.bomb.AbstractExplosion;
 import game.entity.placeable.Bomb;
 import game.entity.player.BomberEntity;
+import game.http.events.forward.AttackEntityEventForwarder;
 import game.utils.Utility;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -217,11 +221,32 @@ public abstract class EntityInteractable extends Entity {
         attackDamage = damage;
     }
 
-    public void attack(Entity e) {
-        if (e == null || e.isImmune()) return;
 
-        if (e instanceof Character) {
-            ((Character) e).attackReceived(getAttackDamage());
-        } else if (e instanceof Block) ((Block) e).destroy();
+    public void attack(Entity e) {
+        GameBehavior gameBehavior = new GameBehavior() {
+            @NotNull
+            @Override
+            public Function0<Unit> hostBehavior() {
+                return () -> {
+                    if (e == null || e.isImmune())
+                        return null;
+
+                    int attackDamage = getAttackDamage();
+
+                    e.onAttackReceived(attackDamage);
+                    new AttackEntityEventForwarder().invoke(e.toDao(), attackDamage);
+
+                    return null;
+                };
+            }
+
+            @NotNull
+            @Override
+            public Function0<Unit> clientBehavior() {
+                return () -> null;
+            }
+        };
+
+        gameBehavior.invoke();
     }
 }

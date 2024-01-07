@@ -87,7 +87,7 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
         if (!isSpawned)
             return
 
-        despawn()
+        despawnAndNotify()
         AudioManager.getInstance().play(SoundModel.EXPLOSION)
 
         // Trigger explosions in all directions

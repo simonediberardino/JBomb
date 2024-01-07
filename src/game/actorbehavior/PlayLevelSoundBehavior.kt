@@ -3,7 +3,7 @@ package game.actorbehavior
 import game.level.levels.Level
 import game.sound.AudioManager
 
-class PlayLevelSoundBehavior(private val level: Level): GameBehavior {
+class PlayLevelSoundBehavior(private val level: Level): GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
             playLevelSound()

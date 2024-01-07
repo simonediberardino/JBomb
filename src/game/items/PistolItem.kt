@@ -1,5 +1,6 @@
 package game.items
 
+import game.entity.EntityTypes
 import game.entity.blocks.DestroyableBlock
 import game.entity.blocks.HardBlock
 import game.entity.bomb.AbstractExplosion.Companion.SIZE
@@ -35,6 +36,8 @@ class PistolItem : UsableItem(), Explosive {
 
     override val count: Int
         get() = bullets
+
+    override val type: ItemsTypes = ItemsTypes.PistolItem
 
     override val maxExplosionDistance: Int
         get() = 3

@@ -10,17 +10,23 @@ class BombItem : UsableItem() {
     private lateinit var bombEntity: Bomb
 
     override fun use() {
-        if (owner.currExplosionLength == 0 || owner.placedBombs >= owner.maxBombs || owner.currentBombs <= 0 || timePassed(owner.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
+        val match = Bomberman.getMatch() ?: return
+
+        val isLocalPlayer = owner == match.player
+        val isBombPlacementValid = isLocalPlayer &&
+                (owner.currExplosionLength == 0 || owner.placedBombs >= owner.maxBombs || owner.currentBombs <= 0)
+
+        val isBombPlacementIntervalValid = timePassed(owner.lastPlacedBombTime) < Bomb.PLACE_INTERVAL
+
+        if (isBombPlacementValid || isBombPlacementIntervalValid) {
             return
         }
-
-        val match = Bomberman.getMatch() ?: return
 
         owner.lastPlacedBombTime = System.currentTimeMillis()
         owner.placedBombs++
         owner.setBombsSolid(false)
 
-        if (owner == match.player)
+        if (isLocalPlayer)
             UpdateCurrentAvailableItemsEvent().invoke(owner.currentBombs - 1)
 
         bombEntity = Bomb(owner)
@@ -31,7 +37,7 @@ class BombItem : UsableItem() {
             owner.placedBombs--
             match.removeBomb(bombEntity)
 
-            if (owner == match.player)
+            if (isLocalPlayer)
                 UpdateCurrentAvailableItemsEvent().invoke(owner.currentBombs + 1)
         }
 
@@ -43,9 +49,10 @@ class BombItem : UsableItem() {
     }
 
 
-    override val imagePath: String
-        get() = "$entitiesFolder/bomb/bomb_0.png"
+    override val imagePath: String = "$entitiesFolder/bomb/bomb_0.png"
 
     override val count: Int
         get() = owner.currentBombs
+
+    override val type: ItemsTypes = ItemsTypes.BombItem
 }

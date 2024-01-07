@@ -59,7 +59,7 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
     }
 
     override fun doAttack() {
-        weapon.use()
+        Bomberman.getMatch().useItem(this)
         Bomberman.getMatch().updateInventoryWeaponController()
     }
 

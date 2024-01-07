@@ -4,7 +4,7 @@ import game.Bomberman
 import game.entity.blocks.DestroyableBlock
 import game.entity.models.Entity
 
-class DespawnDestroyableBlocksBehavior : GameBehavior {
+class DespawnDestroyableBlocksBehavior : GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
             despawnDestroyableBlocks()
@@ -20,7 +20,7 @@ class DespawnDestroyableBlocksBehavior : GameBehavior {
                 .getEntities()
                 .stream()
                 .filter { entity: Entity? -> entity is DestroyableBlock }
-                .forEach { obj: Entity -> obj.despawn() }
+                .forEach { obj: Entity -> obj.despawnAndNotify() }
     }
 
 }

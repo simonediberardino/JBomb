@@ -6,7 +6,7 @@ import game.http.dao.EntityDao
 import game.http.events.forward.LocationUpdatedHttpEventForwarder
 import game.level.online.ClientGameHandler
 
-class LocationChangedBehavior(private val entityDao: EntityDao) : GameBehavior {
+class LocationChangedBehavior(private val entityDao: EntityDao) : GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
             LocationUpdatedHttpEventForwarder().invoke(entityDao)

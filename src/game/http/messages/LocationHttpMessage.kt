@@ -14,7 +14,6 @@ class LocationHttpMessage(private val character: CharacterDao): HttpMessage {
         data["entityId"] = character.entityId.toString()
         data["location"] = "${character.entityLocation.x} ${character.entityLocation.y}"
         data["direction"] = character.direction.toString()
-
         return data.toString()
     }
 

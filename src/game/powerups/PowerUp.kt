@@ -42,7 +42,7 @@ abstract class PowerUp
         if (applied || !canPickUp(entity)) return
 
         applied = true
-        despawn()
+        despawnAndNotify()
         character = entity
         doApply(entity)
 

@@ -5,7 +5,7 @@ import game.entity.models.Coordinates
 import game.ui.panels.game.PitchPanel
 import javax.swing.JPanel
 
-class GenerateStoneBehavior(private val field: JPanel) : GameBehavior {
+class GenerateStoneBehavior(private val field: JPanel) : GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return { generateStone(field) }
     }

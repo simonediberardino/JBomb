@@ -1,12 +1,12 @@
 package game.entity.models;
 
 import game.Bomberman;
-import game.actorbehavior.LocationChangedBehavior;
 import game.entity.EntityTypes;
 import game.entity.bomb.AbstractExplosion;
 import game.entity.player.Player;
 import game.hardwareinput.MouseControllerManager;
 import game.http.dao.EntityDao;
+import game.http.events.forward.DespawnEntityEventForwarder;
 import game.http.events.forward.SpawnEntityEventForwarder;
 import game.match.BomberManMatch;
 import game.tasks.GameTickerObserver;
@@ -225,9 +225,13 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         return new Coordinates((PitchPanel.GRID_SIZE - getSize()) / 2, (PitchPanel.GRID_SIZE - getSize()) / 2);
     }
 
-    /**
-     * Despawns the entity from the game world.
-     */
+    public void onAttackReceived(int value) {}
+
+    public final void despawnAndNotify() {
+        despawn();
+        new DespawnEntityEventForwarder().invoke(toDao());
+    }
+
     public final void despawn() {
         setSpawned(false);
         this.onDespawn();
@@ -450,7 +454,7 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * Eliminates the entity by despawning it.
      */
     public void eliminated() {
-        despawn();
+        despawnAndNotify();
     }
 
     /**
@@ -574,8 +578,8 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
         BomberManMatch match = Bomberman.getMatch();
         Player player = match.getPlayer();
 
-        // Check if the player can interact with mouse click and if the mouse is being dragged
-        return player.isMouseClickInteractable(this.getClass()) && match.getMouseControllerManager().isMouseDragged();
+        // Check if the player can interact with mouse click and if the mouse is being clicked
+        return player.isMouseClickInteractable(this.getClass()) && match.getMouseControllerManager().isMouseClicked();
     }
 
     /**
