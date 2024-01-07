@@ -5,11 +5,10 @@ import game.entity.models.Direction
 import game.entity.models.Entity
 import game.ui.panels.game.PitchPanel
 import game.utils.Paths.enemiesFolder
-import java.util.*
 
 class GhostEnemy() : IntelligentEnemy() {
     init {
-        hitboxSizetoWidthRatio = 0.837f
+        hitboxSizeToWidthRatio = 0.837f
         hitboxSizeToHeightRatio = 1f
     }
 
@@ -24,7 +23,9 @@ class GhostEnemy() : IntelligentEnemy() {
 
     override fun getObstacles(): Set<Class<out Entity?>> = interactionsEntities
 
-    override fun getSize(): Int = PitchPanel.COMMON_DIVISOR * 2
+    override val size: Int
+        get() = PitchPanel.COMMON_DIVISOR * 2
 
-    override fun getType(): EntityTypes = EntityTypes.GhostEnemy
+    override val type: EntityTypes
+        get() = EntityTypes.GhostEnemy
 }

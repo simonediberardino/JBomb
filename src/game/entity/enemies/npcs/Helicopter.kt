@@ -8,11 +8,12 @@ class Helicopter() : FlyingEnemy() {
         this.id = id
     }
 
-    override fun getEntitiesAssetsPath(): String = "$enemiesFolder/heli"
+    override val entitiesAssetsPath: String get() ="$enemiesFolder/heli"
 
     override fun getCharacterOrientedImages(): Array<String> = Array(3) { index ->
         "$entitiesAssetsPath/heli_${imageDirection.toString().lowercase()}_$index.gif"
     }
 
-    override fun getType(): EntityTypes = EntityTypes.Helicopter
+    override val type: EntityTypes
+        get() = EntityTypes.Helicopter
 }

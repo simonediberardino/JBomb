@@ -7,7 +7,6 @@ import game.utils.Utility
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.lang.Exception
-import java.util.*
 
 /**
  * An abstract class for in-game explosions;
@@ -37,7 +36,7 @@ abstract class AbstractExplosion(private val owner: Entity,
     init {
         // On first (center) explosion
         if (distanceFromExplosive == 0) {
-            val desiredCoords = allCoordinates
+            val desiredCoords = Coordinates.getAllCoordinates(coords, size)
             Bomberman.getMatch().getEntities()
                     .parallelStream()
                     .filter { e: Entity -> desiredCoords.any { coord: Coordinates? -> Coordinates.doesCollideWith(coord, e) } }
@@ -59,13 +58,17 @@ abstract class AbstractExplosion(private val owner: Entity,
      *
      * @return The size of the explosion.
      */
-    override fun getSize(): Int = SIZE
+    override val size: Int
+        get() = SIZE
 
-    override fun getDrawPriority(): DrawPriority = DrawPriority.DRAW_PRIORITY_4
+    override val drawPriority: DrawPriority
+        get() = DrawPriority.DRAW_PRIORITY_4
 
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> = HashSet()
+    override val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+        get() = hashSetOf()
 
-    override fun getImageRefreshRate(): Int = 100
+    override val imageRefreshRate: Int
+        get() = 100
 
     override fun isObstacle(e: Entity?): Boolean = e == null || explosive.isObstacleOfExplosion(e)
 
@@ -110,7 +113,7 @@ abstract class AbstractExplosion(private val owner: Entity,
             }
         }
 
-        return loadAndSetImage(imageName)
+        return loadAndSetImage(imageName)!!
     }
 
     private fun canExpand(): Boolean {

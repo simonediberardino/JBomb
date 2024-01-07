@@ -21,9 +21,12 @@ open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?)
         this.id = id
     }
 
-    override fun getEntitiesAssetsPath(): String = "${Paths.enemiesFolder}/clown/hat"
-    override fun getDrawPriority(): DrawPriority = DrawPriority.DRAW_PRIORITY_3
-    override fun getType(): EntityTypes = EntityTypes.Hat
+    override val entitiesAssetsPath: String get() ="${Paths.enemiesFolder}/clown/hat"
+    override val drawPriority: DrawPriority
+        get() = DrawPriority.DRAW_PRIORITY_3
+
+    override val type: EntityTypes
+        get() = EntityTypes.Hat
 
     override fun getInteractionsEntities(): Set<Class<out Entity>> = hashSetOf(Player::class.java, Clown::class.java)
 
@@ -33,13 +36,14 @@ open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?)
         "${entitiesAssetsPath}${index + 1}.png"
     }
 
-    override fun getSize(): Int = SIZE * 3
+    override val size: Int
+        get() = SIZE * 3
 
     override fun doInteract(e: Entity?) {
         if (e == null) return
 
         if (e is Clown) {
-            e.setHasHat(true)
+            e.hasHat = true
             despawnAndNotify()
         } else {
             attack(e)

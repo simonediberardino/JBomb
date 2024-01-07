@@ -12,7 +12,8 @@ class SpeedPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
         this.id = id
     }
 
-    override fun getEntitiesAssetsPath(): String? = null
+    override val entitiesAssetsPath: String?
+        get() = null
 
     override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/speed_up.png")
 
@@ -24,5 +25,6 @@ class SpeedPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
         ControllerManager.setDefaultCommandDelay()
     }
 
-    override fun getType(): EntityTypes = EntityTypes.SpeedPowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.SpeedPowerUp
 }

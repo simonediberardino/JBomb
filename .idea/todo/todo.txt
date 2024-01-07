@@ -1,9 +1,11 @@
 
 high priorities:
-- better handling of AI client with less memory usage;
+- handle entity info
+- implement auto convert to map
 - spawn all entities, explosions
 - handle perks
 - idea: update status of entity: bombs length, status etc....
+- forward client message to all clients;
 
 - Images;
 - fix death logo;

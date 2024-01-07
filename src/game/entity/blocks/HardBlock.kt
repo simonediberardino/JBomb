@@ -5,7 +5,6 @@ import game.entity.models.Coordinates
 import game.entity.models.Entity
 
 abstract class HardBlock(coordinates: Coordinates?) : Block(coordinates) {
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        return HashSet()
-    }
+    override val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+        get() = hashSetOf()
 }

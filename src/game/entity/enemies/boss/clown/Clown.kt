@@ -29,7 +29,7 @@ class Clown : Boss, Explosive {
     /**
      * The hasHat property represents whether the Clown entity is wearing a hat or not.
      */
-    private var hasHat = false
+    var hasHat = false
 
     /**
      * Constructor for the Clown entity that takes in the clown boss's starting coordinates and sets its initial hasHat value to true.
@@ -40,7 +40,7 @@ class Clown : Boss, Explosive {
 
     // TODO REFACTOR
     constructor() : super(null) {
-        hitboxSizetoWidthRatio = RATIO_WIDTH
+        hitboxSizeToWidthRatio = RATIO_WIDTH
         hasHat = true
 
         val panelSize = Bomberman
@@ -102,19 +102,22 @@ class Clown : Boss, Explosive {
      *
      * @return the height to hitbox size ratio.
      */
-    override fun getHitboxSizeToHeightRatio(): Float {
-        // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
-        hitboxSizeToHeightRatio = if (hasHat) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
+    override var hitboxSizeToHeightRatio: Float = RATIO_HEIGHT_WITH_HAT
+        get() {
+            // Set the height to hitbox size ratio based on whether the Boss has a hat or not.
+            field = if (hasHat) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
+            return field
+        }
+
+    override fun getHitboxSizeToHeightRatio(path: String): Float {
+        hitboxSizeToHeightRatio = if (isHatImage(path)) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
         return hitboxSizeToHeightRatio
     }
 
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        return super.getBasePassiveInteractionEntities().toMutableList()
-                .apply { add(Hat::class.java) }
-                .toSet()
-    }
-
-    override fun getType(): EntityTypes = EntityTypes.Clown
+    override val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+        get() = super.basePassiveInteractionEntities.apply {
+            add(Hat::class.java)
+        }
 
     /**
      * @return A boolean value representing whether the Clown entity is wearing a hat or not.
@@ -124,19 +127,6 @@ class Clown : Boss, Explosive {
         return if (tokens.size <= 1) false else tokens[1] == "1"
     }
 
-    override fun getHitboxSizeToHeightRatio(path: String): Float {
-        hitboxSizeToHeightRatio = if (isHatImage(path)) RATIO_HEIGHT_WITH_HAT else RATIO_HEIGHT
-        return hitboxSizeToHeightRatio
-    }
-
-    /**
-     * Setter method for the hasHat property.
-     *
-     * @param hasHat A boolean value representing whether the Clown entity is wearing a hat or not.
-     */
-    fun setHasHat(hasHat: Boolean) {
-        this.hasHat = hasHat
-    }
 
     /**
      * Overrides the getExplosionObstacles method from the Explosive interface to return an empty list.
@@ -337,6 +327,9 @@ class Clown : Boss, Explosive {
         // If there is an entry, update the rage status of the Boss.
         updateRageStatus(entry.value)
     }
+
+    override val type: EntityTypes
+        get() = EntityTypes.Clown
 
     companion object {
         private const val RATIO_HEIGHT_WITH_HAT = 0.7517f

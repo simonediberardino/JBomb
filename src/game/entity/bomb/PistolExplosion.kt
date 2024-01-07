@@ -30,14 +30,16 @@ class PistolExplosion : AbstractExplosion {
             explosive: Explosive,
             canExpand: Boolean) : super(owner, coordinates, direction, distanceFromExplosive, explosive, canExpand)
 
-    override fun getEntitiesAssetsPath(): String = "${Paths.entitiesFolder}/bomb/flame"
+    override val entitiesAssetsPath: String get() ="${Paths.entitiesFolder}/bomb/flame"
 
-    override fun getDrawPriority(): DrawPriority = DrawPriority.DRAW_PRIORITY_1
+    override val drawPriority: DrawPriority
+        get() = DrawPriority.DRAW_PRIORITY_1
 
     override val explosionClass: Class<out AbstractExplosion>
         get() = javaClass
 
     override fun shouldHideCenter(): Boolean = true
 
-    override fun getType(): EntityTypes = EntityTypes.PistolExplosion
+    override val type: EntityTypes
+        get() = EntityTypes.PistolExplosion
 }

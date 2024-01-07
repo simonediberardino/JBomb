@@ -6,6 +6,7 @@ import game.entity.enemies.npcs.GhostEnemy;
 import game.entity.enemies.boss.Boss;
 import game.entity.models.Coordinates;
 import game.entity.models.Direction;
+import game.entity.models.Enemy;
 import game.entity.models.Entity;
 import game.events.models.RunnablePar;
 import game.sound.AudioManager;
@@ -14,6 +15,7 @@ import game.ui.panels.game.PitchPanel;
 import game.utils.GradientCallbackHandler;
 import game.utils.Paths;
 import game.utils.Utility;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -29,10 +31,10 @@ public class GhostBoss extends Boss {
     private static final int MAX_GHOST_ENEMY_SPAWNED = 5;
     private static final int GHOST_SPAWN_TIME_DELAY = 10000;
     private static final int LIGHTS_EVENT_DELAY = 20000;
-    private static long lastLightsEvent = System.currentTimeMillis();
     private static final int MAX_GHOSTS_ALIVE = 10;
     private final static int BOSS_ATTACK_VERTICAL_RANGE = 2;
     private final static int BOSS_ATTACK_HORIZONTAL_RANGE = 1;
+    private long lastLightsEvent = System.currentTimeMillis();
     private boolean isInvisibleTaskRunning = false;
     private long lastInvisibleTime = 0;
     private long lastGhostSpawnTime;
@@ -41,15 +43,15 @@ public class GhostBoss extends Boss {
 
     public GhostBoss() {
         super();
-        this.hitboxSizetoWidthRatio = 0.648f;
-        this.hitboxSizeToHeightRatio = 0.70f;
-        paddingTopFunction = new RunnablePar() {
+        this.setHitboxSizeToWidthRatio(0.648f);
+        this.setHitboxSizeToHeightRatio(0.70f);
+        setPaddingTopFunction(new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
                 setPaddingTop(0);
                 return 0;
             }
-        };
+        });
     }
 
     public GhostBoss(long id) {
@@ -68,6 +70,7 @@ public class GhostBoss extends Boss {
         return new HashMap<>();
     }
 
+    @NotNull
     @Override
     protected String getImageFromRageStatus() {
         return String.format(SKIN_PATH_TEMPLATE, Paths.getEnemiesFolder(), imageDirection.toString().toLowerCase(), getCurrRageStatus());
@@ -163,8 +166,12 @@ public class GhostBoss extends Boss {
         lastGhostSpawnTime = System.currentTimeMillis();
 
         for (int i = 0; i < n; i++) {
-            if (Bomberman.getMatch().getEnemiesAlive() >= MAX_GHOSTS_ALIVE) return;
-            new GhostEnemy().spawnAtRandomCoordinates();
+            if (Bomberman.getMatch().getEnemiesAlive() >= MAX_GHOSTS_ALIVE)
+                return;
+            GhostEnemy ghostEnemy = new GhostEnemy();
+            Coordinates randomCoordinates = Coordinates.randomCoordinatesFromPlayer(ghostEnemy.getSize());
+            ghostEnemy.setCoords(randomCoordinates);
+            ghostEnemy.spawn();
         }
     }
 
@@ -180,15 +187,8 @@ public class GhostBoss extends Boss {
                     int rand = (int) (Math.random() * 10000);
 
                     switch (ref.count) {
-                        case 0:
-                        case 2:
-                        case 4:
-                            PitchPanel.turnOffLights();
-                            break;
-                        case 1:
-                        case 3:
-                            PitchPanel.turnOnLights();
-                            break;
+                        case 0: case 2: case 4: PitchPanel.turnOffLights(); break;
+                        case 1: case 3: PitchPanel.turnOnLights(); break;
                     }
 
                     timer.setDelay(rand);
@@ -238,8 +238,9 @@ public class GhostBoss extends Boss {
         super.doUpdate(gamestate);
     }
 
+    @NotNull
     @Override
-    public EntityTypes getType() {
+    protected EntityTypes getType() {
         return EntityTypes.GhostBoss;
     }
 }

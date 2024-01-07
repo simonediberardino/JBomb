@@ -250,7 +250,7 @@ public class Coordinates implements Comparable<Coordinates> {
     public static List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords) {
         List<Entity> entityLinkedList = new LinkedList<>();
         // Check for each entity if it occupies the specified coordinates
-        List<? extends Entity> entities = Bomberman.getMatch().getEntities();
+        Collection<Entity> entities = Bomberman.getMatch().getEntities();
 
         entities.parallelStream().forEach(e -> {
             for (Coordinates coord : desiredCoords) {
@@ -266,6 +266,77 @@ public class Coordinates implements Comparable<Coordinates> {
         return entityLinkedList;
     }
 
+
+    // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
+    protected static List<Coordinates> getNewCoordinatesOnDirection(Coordinates position, Direction d, int steps, int offset, int size) {
+        List<Coordinates> desiredCoords = new ArrayList<>();
+
+        return switch (d) {
+            case RIGHT -> getNewCoordinatesOnRight(position, steps, offset, size); // get coordinates to the right of entity
+            case LEFT -> getNewCoordinatesOnLeft(position, steps, offset, size); // get coordinates to the left of entity
+            case UP -> getNewCoordinatesOnUp(position, steps, offset, size); // get coordinates above entity
+            case DOWN -> getNewCoordinatesOnDown(position, steps, offset, size); // get coordinates below entity
+        };
+    }
+
+    protected static List<Coordinates> getNewCoordinatesOnRight(Coordinates position, int steps, int offset, int size) {
+        List<Coordinates> coordinates = new ArrayList<>();
+        int last = 0;
+        for (int step = 0; step <= steps / offset; step++) {
+            for (int i = 0; i <= size / offset; i++) {
+                if (i == size / offset) last = PitchPanel.PIXEL_UNIT;
+
+                coordinates.add(new Coordinates(position.getX() + size + step * offset, position.getY() + i * offset - last));
+            }
+        }
+        return coordinates;
+    }
+
+    protected static List<Coordinates> getNewCoordinatesOnLeft(Coordinates position, int steps, int offset, int size) {
+        List<Coordinates> coordinates = new ArrayList<>();
+        int first = steps;
+        int last = 0;
+        for (int step = 0; step <= steps / offset; step++) {
+            for (int i = 0; i <= size / offset; i++) {
+                if (i == size / offset) last = PitchPanel.PIXEL_UNIT;
+                coordinates.add(new Coordinates(position.getX() - first - step * offset, position.getY() + i * offset - last));
+            }
+            first = 0;
+        }
+        return coordinates;
+    }
+
+    protected static List<Coordinates> getNewCoordinatesOnUp(Coordinates position, int steps, int offset, int size) {
+        List<Coordinates> coordinates = new ArrayList<>();
+        int first = steps, last = 0;
+
+        for (int step = 0; step <= steps / offset; step++) {
+            for (int i = 0; i <= size / offset; i++) {
+                if (i == size / offset) last = PitchPanel.PIXEL_UNIT;
+                coordinates.add(new Coordinates(position.getX() + i * offset - last, position.getY() - first - step * offset));
+            }
+            first = 0;
+        }
+
+        return coordinates;
+    }
+
+    protected static List<Coordinates> getNewCoordinatesOnDown(Coordinates position, int steps, int offset, int size) {
+        List<Coordinates> coordinates = new ArrayList<>();
+        int first = steps, last = 0;
+
+        for (int step = 0; step <= steps / offset; step++) {
+            for (int i = 0; i <= size / offset; i++) {
+                if (i == size / offset) last = PitchPanel.PIXEL_UNIT;
+
+                coordinates.add(new Coordinates(position.getX() + i * offset - last, position.getY() + size - 1 + first + step * offset));
+            }
+            first = 0;
+        }
+
+        return coordinates;
+    }
+
     /**
      * Gets a list of entities that occupy the specified coordinate.
      *
@@ -273,6 +344,9 @@ public class Coordinates implements Comparable<Coordinates> {
      * @return a list of entities that occupy the specified coordinate
      */
     public static List<Entity> getEntitiesOnBlock(Coordinates nextOccupiedCoords) {
+        if (nextOccupiedCoords == null)
+            return Collections.emptyList();
+
         ArrayList<Coordinates> arrayCoordinates = getAllCoordinates(Coordinates.roundCoordinates(nextOccupiedCoords), GRID_SIZE);
         // Get all the blocks and entities in the game
         var entities = Bomberman.getMatch().getEntities();
@@ -301,6 +375,34 @@ public class Coordinates implements Comparable<Coordinates> {
         return nextOccupiedCoords.getX() >= entityCoords.getX() && nextOccupiedCoords.getX() <= entityBottomRightX && nextOccupiedCoords.getY() >= entityCoords.getY() && nextOccupiedCoords.getY() <= entityBottomRightY;
     }
 
+    // calculates the coordinates of a point a certain distance away from the entity's top-left corner in a given direction
+    public static Coordinates getNewTopLeftCoordinatesOnDirection(Coordinates coordinates, Direction d, int distance) {
+        int sign = 0;
+
+        switch (d) {
+            case UP:
+            case LEFT:
+                sign = -1;
+                break; // if direction is up or left, sign is negative
+            case DOWN:
+            case RIGHT:
+                sign = 1;
+                break; // if direction is down or right, sign is positive
+        }
+
+        switch (d) {
+            case LEFT:
+            case RIGHT:
+                return new Coordinates(coordinates.getX() + distance * sign, coordinates.getY()); // calculate new x-coordinate based on direction and distance
+
+            case DOWN:
+            case UP:
+                return new Coordinates(coordinates.getX(), coordinates.getY() + distance * sign); // calculate new y-coordinate based on direction and distance
+        }
+
+        return null; // shouldn't happen
+    }
+
     public static ArrayList<Coordinates> getAllCoordinates(Coordinates coords, int size) {
         int lastX;
         int lastY;
@@ -308,11 +410,12 @@ public class Coordinates implements Comparable<Coordinates> {
         for (int x = 0; x <= size / PitchPanel.COMMON_DIVISOR; x++) {
             for (int y = 0; y <= size / PitchPanel.COMMON_DIVISOR; y++) {
                 lastX = lastY = 0;
-                if (x == size / PitchPanel.COMMON_DIVISOR) lastX = PitchPanel.PIXEL_UNIT;
-                if (y == size / PitchPanel.COMMON_DIVISOR) lastY = PitchPanel.PIXEL_UNIT;
+                if (x == size / PitchPanel.COMMON_DIVISOR)
+                    lastX = PitchPanel.PIXEL_UNIT;
+
+                if (y == size / PitchPanel.COMMON_DIVISOR)
+                    lastY = PitchPanel.PIXEL_UNIT;
                 arrayCoordinates.add(new Coordinates(coords.getX() + x * PitchPanel.COMMON_DIVISOR - lastX, coords.getY() + y * PitchPanel.COMMON_DIVISOR - lastY));
-
-
             }
         }
         return arrayCoordinates;

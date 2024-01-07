@@ -32,12 +32,10 @@ abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates),
     }
 
     // Defines the set of obstacle entities that block the propagation of explosions.
-    override val explosionObstacles: Set<Class<out Entity>>
-        get() = setOf(HardBlock::class.java, DestroyableBlock::class.java)
+    override val explosionObstacles: Set<Class<out Entity>> = setOf(HardBlock::class.java, DestroyableBlock::class.java)
 
     // Defines the set of entities that can interact with explosions.
-    override val explosionInteractionEntities: Set<Class<out Entity>>
-        get() = setOf(DestroyableBlock::class.java, Enemy::class.java, Bomb::class.java)
+    override val explosionInteractionEntities: Set<Class<out Entity>> = setOf(DestroyableBlock::class.java, Enemy::class.java, Bomb::class.java)
 
     // Defines the maximum distance an explosion can propagate.
     override val maxExplosionDistance: Int
@@ -45,12 +43,11 @@ abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates),
 
     // Calculates the minimum distance to any bomb from the current entity. If there are no bombs, returns 0.0.
     private val minDistanceToBomb: Double
-        get() = Bomberman.getMatch().bombs.minOfOrNull { bomb -> bomb.coords.distanceTo(coords) } ?: 0.0
+        get() = Bomberman.getMatch().bombs.minOfOrNull { bomb -> bomb.coords!!.distanceTo(coords) } ?: 0.0
 
     // Retrieves the maximum number of bombs the current level allows.
     val maxBombs: Int
         get() = Bomberman.getMatch().currentLevel?.info?.maxBombs ?: 0
-
 
     override fun onSpawn() {
         super.onSpawn()
@@ -68,12 +65,13 @@ abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates),
 
     override fun getInteractionsEntities(): Set<Class<out Entity>> = HashSet()
 
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> =
-            hashSetOf(AbstractExplosion::class.java, Enemy::class.java, PowerUp::class.java)
+    override val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+        get() = hashSetOf(AbstractExplosion::class.java, Enemy::class.java, PowerUp::class.java)
 
     override fun getStepSound(): SoundModel = SoundModel.STEP_SOUND
 
-    override fun getSpawnOffset(): Coordinates = SPAWN_OFFSET
+    override val spawnOffset: Coordinates
+        get() = SPAWN_OFFSET
 
     // Handles the interaction of the entity with bombs, determining whether it should be solid based on bomb proximity.
     private fun handleInteractionWithBombs() {

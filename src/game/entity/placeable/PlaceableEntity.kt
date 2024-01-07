@@ -6,9 +6,8 @@ import game.entity.models.Coordinates
 import game.http.dao.EntityDao
 
 abstract class PlaceableEntity(protected val user: Character) : MovableBlock(Coordinates.getCenterCoordinatesOfEntity(user)) {
-    override fun getExtras(): MutableMap<String, String> {
-        return hashMapOf(
+    override val extras: Map<String, String>
+        get() = hashMapOf(
                 "callerId" to user.id.toString()
         )
-    }
 }

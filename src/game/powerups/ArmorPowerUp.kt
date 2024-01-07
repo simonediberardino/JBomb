@@ -30,5 +30,6 @@ class ArmorPowerUp
         if (entity.isSpawned) entity.isImmune = false
     }
 
-    override fun getType(): EntityTypes = EntityTypes.ArmorPowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.ArmorPowerUp
 }

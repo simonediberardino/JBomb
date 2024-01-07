@@ -36,17 +36,16 @@ abstract class Enemy(coordinates: Coordinates?) : Character(coordinates) {
         return HashSet<Class<out Entity>>(listOf(Player::class.java))
     }
 
-    override fun update(gameState: Any?) {
-        super.update(gameState)
-        if (gameState as Boolean) doUpdate(gameState)
+    override fun update(arg: Any?) {
+        super.update(arg)
+        if (arg as Boolean) doUpdate(arg)
     }
 
     abstract fun doUpdate(gameState: Boolean)
-    override fun getSize(): Int {
-        return PitchPanel.GRID_SIZE
-    }
 
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        return HashSet<Class<out Entity>>(listOf(AbstractExplosion::class.java))
-    }
+    override val size: Int
+        get() = PitchPanel.GRID_SIZE
+
+    override val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+        get() = hashSetOf(AbstractExplosion::class.java)
 }

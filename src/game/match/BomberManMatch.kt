@@ -25,13 +25,15 @@ import game.ui.panels.game.MatchPanel
 import game.utils.Utility.timePassed
 import game.viewcontrollers.*
 import java.util.*
+import kotlin.collections.HashMap
 
 class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGameHandler?) {
     // Timestamp of the last game pause state
     private var lastGamePauseStateTime = System.currentTimeMillis()
 
     // List of entities sorted by a linked list
-    private val _entities: SortedLinkedList<Entity> = SortedLinkedList()
+    private val _entitiesList: SortedLinkedList<Entity> = SortedLinkedList()
+    private val _entitiesMap: HashMap<Long, Entity> = HashMap()
 
     // Manager for mouse controllers
     val mouseControllerManager: MouseControllerManager = MouseControllerManager()
@@ -219,23 +221,31 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
     /**
      * Returns a copy of the list of _entities to prevent external modifications.
      */
-    fun getEntities(): List<Entity> = synchronized(_entities) { LinkedList(_entities) }
+    fun getEntities(): List<Entity> = synchronized(_entitiesList) { LinkedList(_entitiesList) }
 
-    fun getEntityById(entityId: Long): Entity? {
-        return getEntities().firstOrNull { it.id == entityId }
-    }
+    fun getEntityById(entityId: Long): Entity? = _entitiesMap[entityId]
 
     fun addEntity(entity: Entity) {
-        synchronized(_entities) {
-            _entities.add(entity)
+        synchronized(_entitiesList) {
+            _entitiesList.add(entity)
         }
+
+        synchronized(_entitiesMap) {
+            _entitiesMap.put(entity.id, entity)
+        }
+
         System.gc()
     }
 
     fun removeEntity(entity: Entity) {
-        synchronized(_entities) {
-            _entities.removeIf { it.id == entity.id }
+        synchronized(_entitiesList) {
+            _entitiesList.removeIf { it.id == entity.id }
         }
+
+        synchronized(_entitiesMap) {
+            _entitiesMap.remove(entity.id)
+        }
+
         System.gc()
     }
 
@@ -361,7 +371,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         player = null
         currentLevel = null
         enemiesAlive = 0
-        _entities.clear()
+        _entitiesList.clear()
     }
 
     /**

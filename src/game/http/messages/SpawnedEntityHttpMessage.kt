@@ -12,7 +12,7 @@ class SpawnedEntityHttpMessage(private val entity: EntityDao, private val extras
         data["messageType"] = HttpMessageTypes.SPAWNED_ENTITY.ordinal.toString()
         data["entityId"] = entity.entityId.toString()
         data["entityType"] = entity.entityType.toString()
-        data["location"] = "${entity.entityLocation.x} ${entity.entityLocation.y}"
+        data["location"] = "${entity.entityLocation!!.x} ${entity.entityLocation.y}"
         data.putAll(extras)
         return data.toString()
     }

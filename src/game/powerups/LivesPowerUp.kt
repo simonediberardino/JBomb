@@ -30,5 +30,6 @@ class LivesPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
 
     override fun canPickUp(entity: BomberEntity): Boolean = true
 
-    override fun getType(): EntityTypes = EntityTypes.LivesPowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.LivesPowerUp
 }

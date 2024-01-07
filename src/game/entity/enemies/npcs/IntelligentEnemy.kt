@@ -79,7 +79,7 @@ abstract class IntelligentEnemy : Enemy, ICPU {
         if ("true" == XMLUtils.readConfig("bots_move")) {
             if (Bomberman.getMatch().isServer) {
                 commandQueue.add(chooseDirection(false).toCommand())
-                executeQueue()
+                executeCommandQueue()
             }
         }
     }

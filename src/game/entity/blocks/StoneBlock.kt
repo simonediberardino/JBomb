@@ -11,7 +11,8 @@ class StoneBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
         this.id = id
     }
 
-    override fun getEntitiesAssetsPath(): String? = null
+    override val entitiesAssetsPath: String?
+        get() = null
 
     /**
      * Performs an interaction between this entity and another entity.
@@ -25,5 +26,6 @@ class StoneBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
     override fun getImage(): BufferedImage =
             loadAndSetImage(Bomberman.getMatch().currentLevel!!.info.stoneBlockImagePath)
 
-    override fun getType(): EntityTypes = EntityTypes.StoneBlock
+    override val type: EntityTypes
+        get() = EntityTypes.StoneBlock
 }

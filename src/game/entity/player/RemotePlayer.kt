@@ -3,8 +3,6 @@ package game.entity.player
 import game.Bomberman
 import game.entity.EntityTypes
 import game.entity.models.Coordinates
-import game.match.BomberManMatch
-import game.sound.SoundModel
 import game.utils.Paths
 
 class RemotePlayer(coordinates: Coordinates?, private val skinId: Int = 1) : BomberEntity(coordinates) {
@@ -17,7 +15,7 @@ class RemotePlayer(coordinates: Coordinates?, private val skinId: Int = 1) : Bom
     }
 
     // TODO
-    override fun getEntitiesAssetsPath(): String = "${Paths.entitiesFolder}/player/skin$skinId"
+    override val entitiesAssetsPath: String get() ="${Paths.entitiesFolder}/player/skin$skinId"
 
     override fun getCharacterOrientedImages(): Array<String> {
         return Array(4) { index ->
@@ -28,5 +26,6 @@ class RemotePlayer(coordinates: Coordinates?, private val skinId: Int = 1) : Bom
     override val maxExplosionDistance: Int
         get() = Bomberman.getMatch().player?.maxBombs ?: 0 // TODO
 
-    override fun getType(): EntityTypes = EntityTypes.RemotePlayer
+    override val type: EntityTypes
+        get() = EntityTypes.RemotePlayer
 }

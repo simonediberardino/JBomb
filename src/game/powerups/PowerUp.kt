@@ -95,9 +95,8 @@ abstract class PowerUp
      *
      * @return the size of the PowerUp entity
      */
-    override fun getSize(): Int {
-        return PitchPanel.COMMON_DIVISOR * 2
-    }
+    override val size: Int
+        get() = PitchPanel.COMMON_DIVISOR * 2
 
     override fun doInteract(e: Entity?) {
         this.apply(e as BomberEntity)
@@ -109,7 +108,8 @@ abstract class PowerUp
 
     override fun getObstacles(): Set<Class<out Entity>> = emptySet()
 
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> = hashSetOf(Player::class.java)
+    override val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+        get() = hashSetOf(Player::class.java)
 
     open val isDisplayable: Boolean
         get() = true

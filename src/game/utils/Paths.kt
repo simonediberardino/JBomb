@@ -23,7 +23,7 @@ object Paths {
     val currentLevelFolder: String
         get() {
             val level = Bomberman.getMatch().currentLevel!!
-            return "$worldsFolder/${level.info.levelId}/level/${level.info.levelId}"
+            return "$worldsFolder/${level.info.worldId}/level/${level.info.levelId}"
         }
 
     @JvmStatic

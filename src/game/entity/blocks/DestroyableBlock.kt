@@ -29,7 +29,7 @@ class DestroyableBlock(
     override fun doInteract(e: Entity?) {}
 
     override fun getImage(): BufferedImage {
-        return loadAndSetImage(Bomberman.getMatch().currentLevel!!!!.info.destroyableBlockImagePath)
+        return loadAndSetImage(Bomberman.getMatch().currentLevel!!.info.destroyableBlockImagePath)!!
     }
 
     override fun onDespawn() {
@@ -54,15 +54,15 @@ class DestroyableBlock(
         }
     }
 
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> {
-        return HashSet<Class<out Entity>>(listOf(AbstractExplosion::class.java))
+    override val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+        get() = hashSetOf(AbstractExplosion::class.java)
+
+    override fun onExplosion(explosion: AbstractExplosion?) {
+        explosion?.attack(this)
     }
 
-    override fun onExplosion(explosion: AbstractExplosion) {
-        explosion.attack(this)
-    }
-
-    override fun getType(): EntityTypes = EntityTypes.DestroyableBlock
+    override val type: EntityTypes
+        get() = EntityTypes.DestroyableBlock
 
     companion object {
         private const val POWER_UP_SPAWN_CHANGE = 33

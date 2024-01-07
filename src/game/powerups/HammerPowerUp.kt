@@ -29,5 +29,6 @@ class HammerPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
         entity.removeClassInteractWithMouseClick(DestroyableBlock::class.java)
     }
 
-    override fun getType(): EntityTypes = EntityTypes.HammerPowerUp
+    override val type: EntityTypes
+        get() =  EntityTypes.HammerPowerUp
 }

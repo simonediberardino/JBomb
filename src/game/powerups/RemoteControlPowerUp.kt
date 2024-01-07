@@ -30,5 +30,6 @@ class RemoteControlPowerUp
         entity.removeClassInteractWithMouseClick(Bomb::class.java)
     }
 
-    override fun getType(): EntityTypes = EntityTypes.RemoteControlPowerUp
+    override val type: EntityTypes
+        get() =  EntityTypes.RemoteControlPowerUp
 }

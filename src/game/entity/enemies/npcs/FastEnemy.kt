@@ -22,7 +22,7 @@ class FastEnemy : IntelligentEnemy {
         hitboxSizeToHeightRatio = 0.527f
     }
 
-    override fun getEntitiesAssetsPath(): String = "$enemiesFolder/fast_enemy/fast_enemy"
+    override val entitiesAssetsPath: String get() ="$enemiesFolder/fast_enemy/fast_enemy"
 
     override fun getCharacterOrientedImages(): Array<String> = Array(4) { index ->
         "${entitiesAssetsPath}_${imageDirection.toString().lowercase()}_$index.png"
@@ -32,7 +32,9 @@ class FastEnemy : IntelligentEnemy {
 
     override fun getImageDirections(): List<Direction> = listOf(Direction.RIGHT, Direction.LEFT)
 
-    override fun getSize(): Int = PitchPanel.COMMON_DIVISOR * 2
+    override val size: Int
+        get() = PitchPanel.COMMON_DIVISOR * 2
 
-    override fun getType(): EntityTypes = EntityTypes.FastEnemy
+    override val type: EntityTypes
+        get() = EntityTypes.FastEnemy
 }

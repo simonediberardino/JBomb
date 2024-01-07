@@ -1,96 +1,132 @@
-package game.entity.models;
+package game.entity.models
 
-import game.Bomberman;
-import game.entity.EntityTypes;
-import game.entity.bomb.AbstractExplosion;
-import game.entity.player.Player;
-import game.hardwareinput.MouseControllerManager;
-import game.http.dao.EntityDao;
-import game.http.events.forward.DespawnEntityEventForwarder;
-import game.http.events.forward.SpawnEntityEventForwarder;
-import game.match.BomberManMatch;
-import game.tasks.GameTickerObserver;
-import game.events.models.RunnablePar;
-import game.ui.panels.game.PitchPanel;
-import game.utils.Utility;
-import game.values.DrawPriority;
-
-import java.awt.image.BufferedImage;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
-
-import static game.ui.panels.game.PitchPanel.GRID_SIZE;
-
+import game.Bomberman
+import game.data.EntityInfo
+import game.entity.EntityTypes
+import game.entity.bomb.AbstractExplosion
+import game.events.models.RunnablePar
+import game.http.dao.EntityDao
+import game.http.events.forward.DespawnEntityEventForwarder
+import game.http.events.forward.SpawnEntityEventForwarder
+import game.tasks.GameTickerObserver
+import game.ui.panels.game.PitchPanel
+import game.utils.Utility.ensureRange
+import game.utils.Utility.fileExists
+import game.utils.Utility.loadImage
+import game.values.DrawPriority
+import java.awt.image.BufferedImage
+import java.util.*
+import java.util.concurrent.atomic.AtomicReference
+import java.util.regex.Pattern
 
 /**
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
-public abstract class Entity extends GameTickerObserver implements Comparable<Entity> {
-    private long id;
-    protected Set<Class<? extends Entity>> passiveInteractionEntities = getBasePassiveInteractionEntities();
-    protected BufferedImage image;
-    protected int lastImageIndex;
-    protected long lastImageUpdate;
-    protected float hitboxSizetoWidthRatio = 1;
-    protected float hitboxSizeToHeightRatio = 1;
-    private Coordinates coords;
-    private boolean isSpawned = false;
-    protected boolean isImmune = false;
-    public volatile AtomicReference<State> state = new AtomicReference<>();
-    private boolean isInvisible = false;
-    private int paddingTop;
-    protected RunnablePar paddingTopFunction = new RunnablePar() {
-        @Override
-        public <T> Object execute(T par) {
-            int temp = (int) ((double) getSize() / (double) par - getSize());
-            paddingTop = temp;
-            return temp;
-        }
-    };
-    private int paddingWidth;
-    protected RunnablePar paddingWidthFunction = new RunnablePar() {
-        @Override
-        public <T> Object execute(T par) {
-            int temp = (int) (((double) getSize() / (double) par - getSize()) / 2);
-            paddingWidth = temp;
-            return temp;
-        }
-    };
-    private String imagePath = "";
-    private float alpha = 1;
+abstract class Entity : GameTickerObserver, Comparable<Entity> {
+    var entityInfo = EntityInfo()
+    var coords: Coordinates? = null
+    protected abstract val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+    protected var _image: BufferedImage? = null
+    protected var lastImageIndex = 0
+    protected var lastImageUpdate: Long = 0
+    private var passiveInteractionEntities = basePassiveInteractionEntities
+    abstract val size: Int
+    protected abstract val type: EntityTypes
+    var hitboxSizeToWidthRatio = 1f
+        protected set
 
+    /**
+     * Returns the size of the entity in pixels.
+     *
+     * @return the size of the entity
+     */
+    open var hitboxSizeToHeightRatio = 1f
+        protected set
 
-    public Entity() {
-        this(new Coordinates(-1, -1));
+    /**
+     * Returns true if the entity has been spawned in the game world, false otherwise.
+     *
+     * @return true if the entity has been spawned, false otherwise
+     */
+    /**
+     * Sets whether the entity has been spawned in the game world.
+     *
+     * @param s true if the entity has been spawned, false otherwise
+     */
+    var isSpawned = false
+        /**
+         * Sets whether the entity has been spawned in the game world.
+         *
+         * @param s true if the entity has been spawned, false otherwise
+         */
+        protected set
+
+    var isImmune = false
+        set(value) {
+            state!!.set(if (value) State.IMMUNE else State.SPAWNED)
+            field = value
+        }
+
+    @Volatile
+    var state: AtomicReference<State>? = AtomicReference()
+    var isInvisible = false
+        protected set
+
+    var paddingTop = 0
+
+    protected var paddingTopFunction: RunnablePar = object : RunnablePar {
+        override fun <T> execute(par: T): Any {
+            val temp: Int = (size.toDouble() / par as Double - size).toInt()
+            paddingTop = temp
+            return temp
+        }
     }
+
+    var paddingWidth = 0
+    private var paddingWidthFunction: RunnablePar = object : RunnablePar {
+        override fun <T> execute(par: T): Any {
+            val temp: Int = ((size.toDouble() / par as Double - size) / 2).toInt()
+            paddingWidth = temp
+            return temp
+        }
+    }
+
+    var imagePath = ""
+        private set
+    var alpha = 1f
+        set(alpha) {
+            field = ensureRange(alpha, 0f, 1f)
+        }
+
+    protected open val spawnOffset: Coordinates
+        get() = Coordinates((PitchPanel.GRID_SIZE - size) / 2, (PitchPanel.GRID_SIZE - size) / 2)
+
+    open val drawPriority: DrawPriority = DrawPriority.DRAW_PRIORITY_1
+    open val imageRefreshRate: Int = 200
+
+    var id: Long
+        get() = entityInfo.id!!
+        protected set(id) {
+            entityInfo.id = id
+        }
 
     /**
      * Constructs an entity with the given coordinates.
      *
      * @param coordinates the coordinates of the entity
      */
-    public Entity(Coordinates coordinates) {
-        this.id = UUID.randomUUID().getMostSignificantBits();
-        this.coords = coordinates;
+    constructor(coordinates: Coordinates? = Coordinates(-1, -1)) {
+        entityInfo.id = UUID.randomUUID().mostSignificantBits
+        entityInfo.coords = coordinates
+        entityInfo.type = type
+
+        // TEMPORARY
+        this.coords = coordinates
+        this.id = entityInfo.id!!
     }
 
-    public Entity(long id) {
-        this.id = id;
-    }
-
-    protected String getEntitiesAssetsPath() {
-        return "";
-    }
-
-    protected void onSpawn() {
-        state.set(State.SPAWNED);
-        new SpawnEntityEventForwarder(-1).invoke(toDao(), getExtras());
-    }
-
-    protected void onDespawn() {
-        state.set(State.DIED);
+    constructor(id: Long) {
+        entityInfo.id = id
     }
 
     /**
@@ -98,61 +134,63 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      *
      * @param e the other entity to interact with
      */
-    protected abstract void doInteract(Entity e);
-
-    public abstract int getSize();
-
-    public abstract EntityTypes getType();
-
+    protected abstract fun doInteract(e: Entity?)
 
     /**
      * Returns the image of the entity.
      *
      * @return the image of the entity
      */
-    public abstract BufferedImage getImage();
+    abstract fun getImage(): BufferedImage?
+
+    protected open val entitiesAssetsPath: String?
+        get() = ""
+
+    protected open fun onSpawn() {
+        state!!.set(State.SPAWNED)
+        SpawnEntityEventForwarder(-1).invoke(toDao(), extras)
+    }
+
+    protected open fun onDespawn() {
+        state!!.set(State.DIED)
+    }
+
+
+    fun despawnAndNotify() {
+        despawn()
+        DespawnEntityEventForwarder().invoke(toDao())
+    }
+
+    fun despawn() {
+        isSpawned = false
+        onDespawn()
+        Bomberman.getMatch().removeEntity(this)
+    }
 
     /**
-     * Returns the size of the entity in pixels.
-     *
-     * @return the size of the entity
+     * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
-    public float getHitboxSizeToHeightRatio() {
-        return hitboxSizeToHeightRatio;
+    fun spawn() {
+        spawn(forceSpawn = false, forceCentering = true)
     }
 
-    //might be override
-    public float getHitboxSizeToHeightRatio(String path) {
-        return getHitboxSizeToHeightRatio();
-    }
+    /**
+     * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
+     */
+    fun spawn(forceSpawn: Boolean = false, forceCentering: Boolean = true) {
+        if (isSpawned) { // if entity is already spawned, return
+            return
+        }
 
-    public final float getHitboxSizeToWidthRatio(String path) {
-        return getHitboxSizeToWidthRatio();
-    }
+        // centers entity on tile
+        if (forceCentering) coords = Coordinates.roundCoordinates(coords, spawnOffset)
 
-    public final float getHitboxSizeToWidthRatio() {
-        return hitboxSizetoWidthRatio;
-    }
-
-    public int getImageRefreshRate() {
-        return 200;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    protected void setId(long id) {
-        this.id = id;
-    }
-
-    public boolean isImmune() {
-        return isImmune;
-    }
-
-    public void setImmune(boolean immune) {
-        isImmune = immune;
-        state.set(immune ? State.IMMUNE : State.SPAWNED);
+        // spawns entity if the spawn point is free, otherwise do nothing
+        if (forceSpawn || !Coordinates.isBlockOccupied(coords)) {
+            isSpawned = true // mark entity as spawned
+            Bomberman.getMatch().addEntity(this) // add entity to the game state
+            onSpawn() // run entity-specific spawn logic
+        }
     }
 
     /**
@@ -161,320 +199,67 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      * @param imagePath the file path of the image to load
      * @return the loaded image
      */
-    public BufferedImage loadAndSetImage(String imagePath) {
-        if (state == null) return doLoadAndSetImage(imagePath);
+    open fun loadAndSetImage(imagePath: String): BufferedImage {
+        if (state == null)
+            return doLoadAndSetImage(imagePath)
 
-        String[] toks = imagePath.split(Pattern.quote("."));
-        String extension = toks[1];
-        String fileName = toks[0];
-
-        String imagePathWithStatus = String.format("%s_%s.%s", fileName, state.toString().toLowerCase(), extension);
-        boolean hasImageWithStatus = Utility.INSTANCE.fileExists(imagePathWithStatus);
-
-        return hasImageWithStatus ? doLoadAndSetImage(imagePathWithStatus) : doLoadAndSetImage(imagePath);
+        val toks = imagePath.split(Pattern.quote(".").toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val extension = toks[1]
+        val fileName = toks[0]
+        val imagePathWithStatus = "${fileName}_${state.toString().lowercase(Locale.getDefault())}.$extension"
+        val hasImageWithStatus = fileExists(imagePathWithStatus)
+        return if (hasImageWithStatus) doLoadAndSetImage(imagePathWithStatus) else doLoadAndSetImage(imagePath)
     }
 
-    private BufferedImage doLoadAndSetImage(String imagePath) {
-        this.lastImageUpdate = System.currentTimeMillis();
-        this.image = Utility.INSTANCE.loadImage(imagePath);
-        this.imagePath = imagePath;
-        return this.image;
+    private fun doLoadAndSetImage(imagePath: String): BufferedImage {
+        lastImageUpdate = System.currentTimeMillis()
+        _image = loadImage(imagePath)
+        this.imagePath = imagePath
+        return _image!!
     }
 
-    public String getImagePath() {
-        return imagePath;
+    open fun getHitboxSizeToHeightRatio(path: String): Float {
+        return hitboxSizeToHeightRatio
     }
 
-    /**
-     * Returns the coordinates of the entity.
-     *
-     * @return the coordinates of the entity
-     */
-    public Coordinates getCoords() {
-        return coords;
+    open fun getHitboxSizeToWidthRatio(path: String): Float {
+        return hitboxSizeToWidthRatio
     }
 
-    /**
-     * Sets the coordinates of the entity to the given coordinates.
-     *
-     * @param coordinates the new coordinates of the entity
-     */
-    public void setCoords(Coordinates coordinates) {
-        this.coords = coordinates;
+    open fun onAttackReceived(value: Int) {}
+
+    fun calculateAndGetPaddingTop(ratio: Double = hitboxSizeToHeightRatio.toDouble()): Int {
+        return paddingTopFunction.execute(ratio) as Int
     }
 
-    /**
-     * Returns true if the entity has been spawned in the game world, false otherwise.
-     *
-     * @return true if the entity has been spawned, false otherwise
-     */
-    public boolean isSpawned() {
-        return isSpawned;
-    }
-
-    /**
-     * Sets whether the entity has been spawned in the game world.
-     *
-     * @param s true if the entity has been spawned, false otherwise
-     */
-    protected void setSpawned(boolean s) {
-        isSpawned = s;
-    }
-
-    protected Coordinates getSpawnOffset() {
-        return new Coordinates((PitchPanel.GRID_SIZE - getSize()) / 2, (PitchPanel.GRID_SIZE - getSize()) / 2);
-    }
-
-    public void onAttackReceived(int value) {}
-
-    public final void despawnAndNotify() {
-        despawn();
-        new DespawnEntityEventForwarder().invoke(toDao());
-    }
-
-    public final void despawn() {
-        setSpawned(false);
-        this.onDespawn();
-        Bomberman.getMatch().removeEntity(this);
-    }
-
-    public final void spawnAtRandomCoordinates() {
-        setCoords(Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getCoords(), GRID_SIZE * 3));
-        spawn();
-    }
-
-    public boolean isInvisible() {
-        return isInvisible;
-    }
-
-    protected void setInvisible(boolean invisible) {
-        isInvisible = invisible;
-    }
-
-    /**
-     * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
-     */
-    public final void spawn() {
-        spawn(false, true);
-    }
-
-    public final void spawn(boolean forceSpawn) {
-        spawn(forceSpawn, true);
-    }
-
-    // checks if entity has already been spawned
-    // if not, force spawn it and add it to the game state
-    public final void spawn(boolean forceSpawn, boolean forceCentering) {
-        if (isSpawned()) { // if entity is already spawned, return
-            return;
-        }
-
-        // centers entity on tile
-        if (forceCentering)
-            setCoords(Coordinates.roundCoordinates(getCoords(), getSpawnOffset()));
-
-        // spawns entity if the spawn point is free, otherwise do nothing
-        if (forceSpawn || !Coordinates.isBlockOccupied(coords)) {
-            setSpawned(true); // mark entity as spawned
-            Bomberman.getMatch().addEntity(this); // add entity to the game state
-            onSpawn(); // run entity-specific spawn logic
-        }
-    }
-
-    // calculates the coordinates of a point a certain distance away from the entity's top-left corner in a given direction
-    protected Coordinates getNewTopLeftCoordinatesOnDirection(Direction d, int distance) {
-        int sign = 0;
-
-        switch (d) {
-            case UP:
-            case LEFT:
-                sign = -1;
-                break; // if direction is up or left, sign is negative
-            case DOWN:
-            case RIGHT:
-                sign = 1;
-                break; // if direction is down or right, sign is positive
-        }
-
-        switch (d) {
-            case LEFT:
-            case RIGHT:
-                return new Coordinates(getCoords().getX() + distance * sign, getCoords().getY()); // calculate new x-coordinate based on direction and distance
-
-            case DOWN:
-            case UP:
-                return new Coordinates(getCoords().getX(), getCoords().getY() + distance * sign); // calculate new y-coordinate based on direction and distance
-        }
-
-        return null; // shouldn't happen
-    }
-
-    // returns a list of all the coordinates that make up the entity, including all tiles it occupies
-    protected List<Coordinates> getAllCoordinates() {
-        List<Coordinates> coordinates = new ArrayList<>();
-        int last = 0;
-        for (int step = 0; step <= getSize() / PitchPanel.COMMON_DIVISOR; step++) { // iterate over each step in entity's size
-            for (int i = 0; i <= getSize() / PitchPanel.COMMON_DIVISOR; i++) { // iterate over each tile in entity
-                if (i == getSize() / PitchPanel.COMMON_DIVISOR)
-                    last = PitchPanel.PIXEL_UNIT; // if last tile, use pixel unit instead of common divisor
-
-                // add the new coordinate to the list of coordinates
-                coordinates.add(new Coordinates(getCoords().getX() + step * PitchPanel.COMMON_DIVISOR, getCoords().getY() + i * PitchPanel.COMMON_DIVISOR - last));
-            }
-        }
-        return coordinates; // return list of all coordinates that make up the entity
-    }
-
-    // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
-    protected List<Coordinates> getNewCoordinatesOnDirection(Direction d, int steps, int offset) {
-        List<Coordinates> desiredCoords = new ArrayList<>();
-
-        switch (d) {
-            case RIGHT:
-                return getNewCoordinatesOnRight(steps, offset); // get coordinates to the right of entity
-            case LEFT:
-                return getNewCoordinatesOnLeft(steps, offset); // get coordinates to the left of entity
-            case UP:
-                return getNewCoordinatesOnUp(steps, offset); // get coordinates above entity
-            case DOWN:
-                return getNewCoordinatesOnDown(steps, offset, getSize()); // get coordinates below entity
-        }
-
-        return desiredCoords; // shouldn't happen
-    }
-
-    protected List<Coordinates> getNewCoordinatesOnRight(int steps, int offset) {
-        List<Coordinates> coordinates = new ArrayList<>();
-        int last = 0;
-        for (int step = 0; step <= steps / offset; step++) {
-            for (int i = 0; i <= getSize() / offset; i++) {
-                if (i == getSize() / offset) last = PitchPanel.PIXEL_UNIT;
-
-                coordinates.add(new Coordinates(getCoords().getX() + getSize() + step * offset, getCoords().getY() + i * offset - last));
-            }
-        }
-        return coordinates;
-    }
-
-    protected List<Coordinates> getNewCoordinatesOnLeft(int steps, int offset) {
-        List<Coordinates> coordinates = new ArrayList<>();
-        int first = steps;
-        int last = 0;
-        for (int step = 0; step <= steps / offset; step++) {
-            for (int i = 0; i <= getSize() / offset; i++) {
-                if (i == getSize() / offset) last = PitchPanel.PIXEL_UNIT;
-                coordinates.add(new Coordinates(getCoords().getX() - first - step * offset, getCoords().getY() + i * offset - last));
-            }
-            first = 0;
-        }
-        return coordinates;
-    }
-
-    protected List<Coordinates> getNewCoordinatesOnUp(int steps, int offset) {
-        List<Coordinates> coordinates = new ArrayList<>();
-        int first = steps, last = 0;
-
-        for (int step = 0; step <= steps / offset; step++) {
-            for (int i = 0; i <= getSize() / offset; i++) {
-                if (i == getSize() / offset) last = PitchPanel.PIXEL_UNIT;
-                coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() - first - step * offset));
-            }
-            first = 0;
-        }
-
-        return coordinates;
-    }
-
-    protected List<Coordinates> getNewCoordinatesOnDown(int steps, int offset, int size) {
-        List<Coordinates> coordinates = new ArrayList<>();
-        int first = steps, last = 0;
-
-        for (int step = 0; step <= steps / offset; step++) {
-            for (int i = 0; i <= getSize() / offset; i++) {
-                if (i == getSize() / offset) last = PitchPanel.PIXEL_UNIT;
-
-                coordinates.add(new Coordinates(getCoords().getX() + i * offset - last, getCoords().getY() + size - 1 + first + step * offset));
-            }
-            first = 0;
-        }
-
-        return coordinates;
-    }
-
-    public int calculateAndGetPaddingTop() {
-        return calculateAndGetPaddingTop(getHitboxSizeToHeightRatio());
-    }
-
-    public int calculateAndGetPaddingTop(double ratio) {
-        return (int) paddingTopFunction.execute(ratio);
-    }
-
-    public int getPaddingTop() {
-        return paddingTop;
-    }
-
-    public void setPaddingTop(int p) {
-        paddingTop = p;
-    }
-
-    public int getPaddingWidth() {
-        return paddingWidth;
-    }
-
-    public void setPaddingWidth(int p) {
-        paddingWidth = p;
-    }
-
-    public int calculateAndGetPaddingWidth() {
-        return calculateAndGetPaddingWidth(getHitboxSizeToWidthRatio());
-    }
-
-    public int calculateAndGetPaddingWidth(double ratio) {
-        return (int) paddingWidthFunction.execute(ratio);
-    }
-
-    public DrawPriority getDrawPriority() {
-        return DrawPriority.DRAW_PRIORITY_1;
-    }
-
-    @Override
-    public int compareTo(Entity other) {
-        return Comparator.comparing(Entity::getDrawPriority).thenComparing(e -> e.getCoords().getY()).thenComparingInt(e -> (int) e.getId()).compare(this, other);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Entity)) return false;
-        Entity entity = (Entity) o;
-        return id == entity.id;
+    fun calculateAndGetPaddingWidth(ratio: Double = hitboxSizeToWidthRatio.toDouble()): Int {
+        return paddingWidthFunction.execute(ratio) as Int
     }
 
     /**
      * Eliminates the entity by despawning it.
      */
-    public void eliminated() {
-        despawnAndNotify();
+    open fun eliminated() {
+        despawnAndNotify()
     }
 
     /**
      * Handles mouse click interactions.
      * If the entity is within one grid size distance from the player's center coordinates, it gets eliminated.
      */
-    protected void onMouseClickInteraction() {
+    protected open fun onMouseClickInteraction() {
         // Retrieve the current match and player
-        BomberManMatch match = Bomberman.getMatch();
-        Player player = match.getPlayer();
+        val match = Bomberman.getMatch()
+        val player = match.player
 
         // Calculate the center coordinates of the player's entity
-        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player));
+        val centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player))
 
         // Check if the entity is within one grid size distance from the player's center coordinates
-        if (getCoords().distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) {
-            eliminated();
+        if (coords!!.distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) {
+            eliminated()
         }
     }
-
 
     /**
      * Handles mouse drag interactions.
@@ -483,68 +268,60 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
     /**
      * Handles the interaction logic when the mouse is dragged.
      */
-    protected void onMouseDragInteraction() {
+    private fun onMouseDragInteraction() {
         // Retrieve the current match, mouse controller manager, and player entity
-        BomberManMatch match = Bomberman.getMatch();
-        MouseControllerManager mouseControllerManager = match.getMouseControllerManager();
-        Entity player = match.getPlayer();
+        val match = Bomberman.getMatch()
+        val mouseControllerManager = match.mouseControllerManager
+        val player: Entity? = match.player
 
         // Calculate relevant coordinates for the player, entity, and mouse
-        Coordinates playerCenter = Coordinates.getCenterCoordinatesOfEntity(player);
-        Coordinates roundedEntityCoords = Coordinates.roundCoordinates(getCoords());
-        Coordinates centerCoordinatesOfEntity = Coordinates.roundCoordinates(playerCenter);
-        Coordinates mouseCoordinates = Coordinates.roundCoordinates(mouseControllerManager.getMouseCoords());
+        val playerCenter = Coordinates.getCenterCoordinatesOfEntity(player)
+        val roundedEntityCoords = Coordinates.roundCoordinates(coords)
+        val centerCoordinatesOfEntity = Coordinates.roundCoordinates(playerCenter)
+        val mouseCoordinates = Coordinates.roundCoordinates(mouseControllerManager.mouseCoords)
 
         // Check if the mouse dragged interaction is interrupted
-        boolean isDragInterrupted = mouseControllerManager.isMouseDraggedInteractionInterrupted();
+        val isDragInterrupted = mouseControllerManager.isMouseDraggedInteractionInterrupted
         if (isDragInterrupted) {
-            return;
+            return
         }
 
         // Check if the entity is within one grid size distance from the player's center coordinates
-        boolean isEntityWithinGrid = roundedEntityCoords.distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE;
-        boolean isDragEntered = mouseControllerManager.isMouseDragInteractionEntered();
+        val isEntityWithinGrid = roundedEntityCoords.distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE
+        val isDragEntered = mouseControllerManager.isMouseDragInteractionEntered
 
         // Check if the entity is not within one grid size distance and the drag interaction has not been entered yet
         if (!isEntityWithinGrid && !isDragEntered) {
-            return;
+            return
         }
 
         // Check for other entities on the occupied block during the mouse drag
-        List<Entity> entitiesOnOccupiedBlock = Coordinates.getEntitiesOnBlock(mouseCoordinates);
-        boolean isBlockOccupied = Coordinates.isBlockOccupied(mouseCoordinates);
-        boolean areEntitiesOnBlock = !entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch(e -> e != this && e != player);
+        val entitiesOnOccupiedBlock = Coordinates.getEntitiesOnBlock(mouseCoordinates)
+        val isBlockOccupied = Coordinates.isBlockOccupied(mouseCoordinates)
+        val areEntitiesOnBlock = !entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch { e: Entity -> e !== this && e !== player }
 
         // If there are other entities on the occupied block, interrupt the mouse dragged interaction
         if (areEntitiesOnBlock) {
-            mouseControllerManager.setMouseDraggedInteractionInterrupted(true);
-            return;
+            mouseControllerManager.isMouseDraggedInteractionInterrupted = true
+            return
         }
 
         // Check if the block is not occupied and the mouse coordinates are valid
-        if (!isBlockOccupied && mouseCoordinates.validate(getSize())) {
+        if (!isBlockOccupied && mouseCoordinates.validate(size)) {
             // Move the entity to the dragged mouse coordinates
-            mouseControllerManager.setMouseDragInteractionEntered(true);
-            mouseControllerManager.setMouseDraggedInteractionOccured(true);
-            setCoords(Coordinates.roundCoordinates(mouseCoordinates, getSpawnOffset()));
+            mouseControllerManager.isMouseDragInteractionEntered = true
+            mouseControllerManager.setMouseDraggedInteractionOccured(true)
+            coords = Coordinates.roundCoordinates(mouseCoordinates, spawnOffset)
         }
     }
-
-
-    /**
-     * Retrieves the set of base passive interaction entities.
-     *
-     * @return The set of base passive interaction entities.
-     */
-    protected abstract Set<Class<? extends Entity>> getBasePassiveInteractionEntities();
 
     /**
      * Removes a passive interaction entity.
      *
      * @param e The class of the entity to remove.
      */
-    protected final void removePassiveInteractionEntity(Class<? extends Entity> e) {
-        passiveInteractionEntities.remove(e);
+    protected fun removePassiveInteractionEntity(e: Class<out Entity>) {
+        passiveInteractionEntities.remove(e)
     }
 
     /**
@@ -552,91 +329,73 @@ public abstract class Entity extends GameTickerObserver implements Comparable<En
      *
      * @param e The class of the entity to add.
      */
-    protected final void addPassiveInteractionEntity(Class<? extends Entity> e) {
-        passiveInteractionEntities.add(e);
+    protected fun addPassiveInteractionEntity(e: Class<out Entity>) {
+        passiveInteractionEntities.add(e)
     }
 
     /**
      * Checks if this entity can be interacted with by another entity.
      *
      * @param e The entity attempting to interact.
-     * @return {@code true} if the entity can be interacted with, {@code false} otherwise.
+     * @return `true` if the entity can be interacted with, `false` otherwise.
      */
-    protected final boolean canBeInteractedBy(Entity e) {
-        return e == null || passiveInteractionEntities.stream().anyMatch(c -> c.isInstance(e));
+    fun canBeInteractedBy(e: Entity?): Boolean {
+        return e == null || passiveInteractionEntities.stream().anyMatch { c: Class<out Entity> -> c.isInstance(e) }
     }
 
-    protected boolean canEntityInteractWithMouseDrag() {
-        BomberManMatch match = Bomberman.getMatch();
-        Player player = match.getPlayer();
+    private fun canEntityInteractWithMouseDrag(): Boolean {
+        val match = Bomberman.getMatch()
+        val player = match.player
 
         // Check if the player can interact with mouse drag and if the mouse is being dragged
-        return player.isMouseDragInteractable(this.getClass()) && match.getMouseControllerManager().isMouseDragged();
+        return player!!.isMouseDragInteractable(this.javaClass) && match.mouseControllerManager.isMouseDragged
     }
 
-    protected boolean canEntityInteractWithMouseClick() {
-        BomberManMatch match = Bomberman.getMatch();
-        Player player = match.getPlayer();
+    private fun canEntityInteractWithMouseClick(): Boolean {
+        val match = Bomberman.getMatch()
+        val player = match.player
 
         // Check if the player can interact with mouse click and if the mouse is being clicked
-        return player.isMouseClickInteractable(this.getClass()) && match.getMouseControllerManager().isMouseClicked();
+        return player!!.isMouseClickInteractable(this.javaClass) && match.mouseControllerManager.isMouseClicked
     }
 
     /**
      * Handles mouse interactions.
      * This method is responsible for mouse click and mouse drag interactions.
      */
-    public void mouseInteractions() {
-        MouseControllerManager mouseControllerManager = Bomberman.getMatch().getMouseControllerManager();
-        Entity entity = mouseControllerManager.getEntity();
-
-        if (entity == null) {
-            return;
-        }
-
+    fun mouseInteractions() {
+        val mouseControllerManager = Bomberman.getMatch().mouseControllerManager
+        mouseControllerManager.entity ?: return
         if (canEntityInteractWithMouseClick()) {
-            onMouseClickInteraction();
-            return;
+            onMouseClickInteraction()
+            return
         }
-
         if (canEntityInteractWithMouseDrag()) {
-            onMouseDragInteraction();
+            onMouseDragInteraction()
         }
     }
 
-    public float getAlpha() {
-        return alpha;
+    open fun onExplosion(explosion: AbstractExplosion?) {}
+    override fun compareTo(other: Entity): Int {
+        return Comparator.comparing { obj: Entity -> obj.drawPriority }.thenComparing { e: Entity -> e.coords!!.y }.thenComparingInt { e: Entity -> e.id.toInt() }.compare(this, other)
     }
 
-    public void setAlpha(float alpha) {
-        this.alpha = Utility.INSTANCE.ensureRange(alpha, 0, 1);
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Entity) return false
+        return id == other.id
     }
 
-    public void onExplosion(AbstractExplosion explosion) {}
+    override fun hashCode(): Int = Objects.hash(entityInfo.id)
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    open fun toDao(): EntityDao {
+        return EntityDao(0, Coordinates(1,1), type.ordinal) // TEMPORARY!!!!
     }
 
-    public EntityDao toDao() {
-        return new EntityDao(
-                id,
-                coords,
-                getType().ordinal()
-        );
-    }
+    open val extras: Map<String, String>
+        get() = HashMap()
 
-    public Map<String, String> getExtras() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public String toString() {
-        return "Entity{" +
-                "id=" + id +
-                ", coords=" + coords +
-                ", type=" + getType() +
-                '}';
+    override fun toString(): String {
+        return "Entity{id=$id, entityInfo= $entityInfo}"
     }
 }

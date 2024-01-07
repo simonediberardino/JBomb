@@ -12,5 +12,6 @@ class InvisibleBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
 
     override fun doInteract(e: Entity?) {}
     override fun getImage(): BufferedImage? = null
-    override fun getType(): EntityTypes = EntityTypes.InvisibleBlock
+    override val type: EntityTypes
+        get() = EntityTypes.InvisibleBlock
 }

@@ -21,9 +21,10 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
         this.id = id
     }
 
-    override fun getEntitiesAssetsPath(): String = "$entitiesFolder/player/${DataInputOutput.getInstance().skin}"
+    override val entitiesAssetsPath: String get() ="$entitiesFolder/player/${DataInputOutput.getInstance().skin}"
 
-    override fun getType(): EntityTypes = EntityTypes.BomberEntity
+    override val type: EntityTypes
+        get() = EntityTypes.BomberEntity
 
     override fun getDeathSound(): SoundModel = SoundModel.PLAYER_DEATH
 

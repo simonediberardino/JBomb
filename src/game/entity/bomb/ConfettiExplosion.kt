@@ -32,7 +32,8 @@ class ConfettiExplosion : AbstractExplosion {
     override val explosionClass: Class<out AbstractExplosion>
         get() = javaClass
 
-    override fun getType(): EntityTypes = EntityTypes.ConfettiExplosion
+    override val type: EntityTypes
+        get() = EntityTypes.ConfettiExplosion
 
-    override fun getEntitiesAssetsPath(): String = "${Paths.enemiesFolder}/clown/clown_explosion/clown_explosion"
+    override val entitiesAssetsPath: String get() ="${Paths.enemiesFolder}/clown/clown_explosion/clown_explosion"
 }

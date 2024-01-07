@@ -29,9 +29,10 @@ class FireExplosion : AbstractExplosion {
             explosive: Explosive,
             canExpand: Boolean) : super(owner, coordinates, direction, distanceFromExplosive, explosive, canExpand)
 
-    override fun getEntitiesAssetsPath(): String = "${Paths.entitiesFolder}/bomb/flame"
+    override val entitiesAssetsPath: String get() ="${Paths.entitiesFolder}/bomb/flame"
 
-    override fun getType(): EntityTypes = EntityTypes.FireExplosion
+    override val type: EntityTypes
+        get() = EntityTypes.FireExplosion
 
     override val explosionClass: Class<out AbstractExplosion>
         get() = javaClass

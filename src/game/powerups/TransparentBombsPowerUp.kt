@@ -23,5 +23,6 @@ class TransparentBombsPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) 
         entity.setBombsSolid(true)
     }
 
-    override fun getType(): EntityTypes = EntityTypes.TransparentBombsPowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.TransparentBombsPowerUp
 }

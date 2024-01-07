@@ -37,7 +37,7 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
      *
      * @return The assets path for the bomb.
      */
-    override fun getEntitiesAssetsPath(): String = "${Paths.entitiesFolder}/bomb/"
+    override val entitiesAssetsPath: String get() ="${Paths.entitiesFolder}/bomb/"
 
     /**
      * Gets the current image representing the bomb.
@@ -50,7 +50,7 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
 
         // Check if enough time has passed for an image refresh
         if (Utility.timePassed(lastImageUpdate) < imageRefreshRate) {
-            return image
+            return _image!!
         }
 
         // Load the next image in the sequence
@@ -58,7 +58,7 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
         AudioManager.getInstance().play(SoundModel.BOMB_CLOCK)
         lastImageIndex = (lastImageIndex + 1) % images.size
 
-        return img
+        return img!!
     }
 
     /**
@@ -73,7 +73,8 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
      *
      * @return The type of the entity.
      */
-    override fun getType(): EntityTypes = EntityTypes.Bomb
+    override val type: EntityTypes
+        get() = EntityTypes.Bomb
 
     /**
      * Callback for the bomb exploding. Initiates the explosion in all directions.
@@ -92,7 +93,7 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
 
         // Trigger explosions in all directions
         Direction.values().forEach {
-            FireExplosion(user, coords, it, this).explode()
+            FireExplosion(user, coords!!, it, this).explode()
         }
 
         // Invoke the explode callback if set
@@ -115,7 +116,8 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
      *
      * @return The size of the bomb.
      */
-    override fun getSize(): Int = BOMB_SIZE
+    override val size: Int
+        get() = BOMB_SIZE
 
     /**
      * Gets the set of obstacle entities affected by the bomb explosion.
@@ -158,15 +160,17 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
      *
      * @return The set of base passive interaction entities.
      */
-    override fun getBasePassiveInteractionEntities(): Set<Class<out Entity>> =
-            setOf(FireExplosion::class.java, AbstractExplosion::class.java)
+    override val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
+        get() = hashSetOf(FireExplosion::class.java, AbstractExplosion::class.java)
 
     /**
      * Callback for handling the bomb's reaction to an explosion.
      *
      * @param explosion The explosion that triggered the callback.
      */
-    override fun onExplosion(explosion: AbstractExplosion) = explode()
+    override fun onExplosion(explosion: AbstractExplosion?) {
+        explode()
+    }
 
     /**
      * Companion object containing constant values for the Bomb class.

@@ -15,7 +15,7 @@ class ClownNose : Orb {
         this.id = id
     }
 
-    override fun getEntitiesAssetsPath(): String = "$enemiesFolder/clown/clown_orb.png"
+    override val entitiesAssetsPath: String get() ="$enemiesFolder/clown/clown_orb.png"
 
     /**
      * Returns an array of the skin of the Orb.
@@ -28,5 +28,6 @@ class ClownNose : Orb {
 
     override fun getDeathSound(): SoundModel = SoundModel.CLOWN_NOSE_DEATH
 
-    override fun getType(): EntityTypes = EntityTypes.ClownNose
+    override val type: EntityTypes
+        get() = EntityTypes.ClownNose
 }

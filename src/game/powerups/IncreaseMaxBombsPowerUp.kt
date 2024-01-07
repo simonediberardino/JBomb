@@ -35,5 +35,6 @@ class IncreaseMaxBombsPowerUp
     override fun canPickUp(entity: BomberEntity): Boolean =
             DataInputOutput.getInstance().obtainedBombs < Bomberman.getMatch().currentLevel!!.info.maxBombs
 
-    override fun getType(): EntityTypes = EntityTypes.IncreaseMaxBombsPowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.IncreaseMaxBombsPowerUp
 }

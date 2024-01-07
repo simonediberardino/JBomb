@@ -44,7 +44,8 @@ abstract class Orb : Enemy {
 
     override fun getSpeed(): Float = 1.5f
 
-    override fun getSize(): Int = SIZE
+    override val size: Int
+        get() = SIZE
 
     /**
      * Returns the set of interaction entities for the Orb.

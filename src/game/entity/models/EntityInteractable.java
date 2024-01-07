@@ -148,7 +148,7 @@ public abstract class EntityInteractable extends Entity {
 
         // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
         // with a given step size
-        List<Coordinates> nextOccupiedCoords = getNewCoordinatesOnDirection(d, stepSize, GRID_SIZE / 3 / 2);
+        List<Coordinates> nextOccupiedCoords = Coordinates.getNewCoordinatesOnDirection(getCoords(), d, stepSize, GRID_SIZE / 3 / 2, getSize());
 
         // Get a list of entities that are present in the next occupied coordinates
         List<Entity> interactedEntities = getEntitiesOnCoordinates(nextOccupiedCoords);

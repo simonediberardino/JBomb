@@ -34,5 +34,6 @@ class FirePowerUp
 
     override fun canPickUp(entity: BomberEntity): Boolean = entity.currExplosionLength <= MAX_EXPLOSION_LENGTH
 
-    override fun getType(): EntityTypes = EntityTypes.FirePowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.FirePowerUp
 }

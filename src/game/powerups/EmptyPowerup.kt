@@ -25,6 +25,7 @@ class EmptyPowerup
     override fun doApply(entity: BomberEntity) {}
     override fun cancel(entity: BomberEntity) {}
 
-    override fun getType(): EntityTypes = EntityTypes.EmptyPowerup
+    override val type: EntityTypes
+        get() = EntityTypes.EmptyPowerup
 
 }

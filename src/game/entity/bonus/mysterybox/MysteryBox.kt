@@ -37,7 +37,7 @@ abstract class MysteryBox(
             return
         }
 
-        val distanceToUser = coords.distanceTo(buyer!!.coords)
+        val distanceToUser = coords!!.distanceTo(buyer!!.coords)
         if (distanceToUser >= PitchPanel.GRID_SIZE * 1.5) {
             return
         }
@@ -93,7 +93,8 @@ abstract class MysteryBox(
 
     override fun doInteract(e: Entity?) {}
 
-    override fun getSize(): Int = PitchPanel.GRID_SIZE
+    override val size: Int
+        get() = PitchPanel.GRID_SIZE
 
     override fun getImage(): BufferedImage {
         return loadAndSetImage("${Paths.powerUpsFolder}/box_$status.png")
@@ -104,7 +105,8 @@ abstract class MysteryBox(
         OPEN
     }
 
-    override fun getType(): EntityTypes = EntityTypes.MysteryBoxPerk
+    override val type: EntityTypes
+        get() =  EntityTypes.MysteryBoxPerk
 
     companion object {
         private const val OPEN_BOX_TIME = 5000

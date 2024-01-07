@@ -45,5 +45,6 @@ class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
 
     override fun cancel(entity: BomberEntity) {}
 
-    override fun getType(): EntityTypes = EntityTypes.EndLevelPortal
+    override val type: EntityTypes
+        get() = EntityTypes.EndLevelPortal
 }

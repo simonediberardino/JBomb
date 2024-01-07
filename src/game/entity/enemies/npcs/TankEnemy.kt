@@ -44,7 +44,7 @@ class TankEnemy : IntelligentEnemy, Explosive {
             // Check if the entity can shoot and if a random probability allows shooting
             if (canShoot && Math.random() * 100 < PROBABILITY_OF_SHOOTING) {
                 // Calculate new coordinates with an explosion offset for vertical directions
-                var newCoords = getNewTopLeftCoordinatesOnDirection(currDirection, AbstractExplosion.SIZE)
+                var newCoords = Coordinates.getNewTopLeftCoordinatesOnDirection(coords, currDirection, AbstractExplosion.SIZE)
                 if (currDirection == Direction.UP || currDirection == Direction.DOWN) {
                     val x = newCoords.x + SPAWN_OFFSET
                     newCoords = Coordinates(x, newCoords.y)
@@ -74,7 +74,8 @@ class TankEnemy : IntelligentEnemy, Explosive {
     override val maxExplosionDistance: Int
         get() = 4
 
-    override fun getType(): EntityTypes = EntityTypes.TankEnemy
+    override val type: EntityTypes
+        get() = EntityTypes.TankEnemy
 
     companion object {
         private const val STANDING_STILL_PERIOD = 1000

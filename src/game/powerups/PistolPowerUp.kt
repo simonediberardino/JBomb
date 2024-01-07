@@ -32,5 +32,6 @@ class PistolPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
 
     override fun canPickUp(entity: BomberEntity): Boolean = true
 
-    override fun getType(): EntityTypes = EntityTypes.PistolPowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.PistolPowerUp
 }

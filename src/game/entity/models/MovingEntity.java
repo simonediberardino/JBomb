@@ -38,7 +38,7 @@ public abstract class MovingEntity extends EntityInteractable {
 
         }
         for (Direction d : Direction.values()) {
-            List<Coordinates> newCoordinates = getNewCoordinatesOnDirection(d, PIXEL_UNIT, getSize() / 2);
+            List<Coordinates> newCoordinates = Coordinates.getNewCoordinatesOnDirection(getCoords(), d, PIXEL_UNIT, getSize() / 2, getSize());
             // Check if any entities on the next coordinates are blocks or have invalid coordinates
             boolean areCoordinatesValid = Coordinates.getEntitiesOnCoordinates(
                     newCoordinates

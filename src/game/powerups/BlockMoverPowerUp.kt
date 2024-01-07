@@ -26,5 +26,6 @@ class BlockMoverPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
 
     override fun cancel(entity: BomberEntity) = entity.removeClassInteractWithDrag(MovableBlock::class.java)
 
-    override fun getType(): EntityTypes = EntityTypes.BlockMoverPowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.BlockMoverPowerUp
 }

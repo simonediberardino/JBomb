@@ -2,9 +2,9 @@ package game.http.dao
 
 import game.entity.models.Coordinates
 
-class CharacterDao(
+open class CharacterDao(
         entityId: Long,
-        entityLocation: Coordinates,
+        entityLocation: Coordinates?,
         entityType: Int,
         val direction: Int)
     : EntityDao(entityId, entityLocation, entityType) {

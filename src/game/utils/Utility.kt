@@ -7,6 +7,7 @@ import java.awt.Dimension
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 import java.io.IOException
+import java.lang.RuntimeException
 import javax.imageio.ImageIO
 
 /**
@@ -65,28 +66,24 @@ object Utility {
      * @return The loaded image, or null if the file could not be found or read.
      */
     
-    fun loadImage(fileName: String): BufferedImage? {
+    fun loadImage(fileName: String): BufferedImage {
         var fileName = fileName
-        val cache = instance
-        return if (cache.hasInCache(fileName)) cache.queryCache<BufferedImage>(fileName) else try {
-            // Use ClassLoader to load the image from the JAR file
-            fileName = fileName.replace("/src", "")
-            val inputStream = Utility::class.java.getResourceAsStream("/$fileName")
-            if (inputStream != null) {
-                val image = ImageIO.read(inputStream)
-                instance.saveInCache(fileName, image)
-                image
-            } else {
-                println("Can't find $fileName in the JAR!")
-                null
-            }
-        } catch (e: IOException) {
-            println("Error loading " + fileName + ": " + e.message)
-            null
+        val cache = game.cache.Cache.instance
+
+        if (cache.hasInCache(fileName)) {
+            return cache.queryCache<BufferedImage>(fileName) ?: throw RuntimeException()
         }
+
+        // Use ClassLoader to load the image from the JAR file
+        fileName = fileName.replace("/src", "")
+        val inputStream = Utility::class.java.getResourceAsStream("/$fileName") ?: throw RuntimeException()
+
+        val image = ImageIO.read(inputStream) ?: throw RuntimeException()
+        instance.saveInCache(fileName, image)
+        return image
     }
 
-    fun chooseRandom(chance: Int): Boolean {
+    private fun chooseRandom(chance: Int): Boolean {
         var chance = chance
         chance = 0.coerceAtLeast(chance)
         chance = 100.coerceAtMost(chance)

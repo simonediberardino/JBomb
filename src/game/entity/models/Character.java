@@ -73,7 +73,7 @@ public abstract class Character extends MovingEntity {
 
     public void setAliveState(boolean s) {
         isAlive = s;
-        state.set(s ? State.SPAWNED : State.DIED);
+        getState().set(s ? State.SPAWNED : State.DIED);
     }
 
     /**
@@ -94,8 +94,8 @@ public abstract class Character extends MovingEntity {
     @Override
     public BufferedImage getImage() {
         setImageDirection();
-        if (this.image != null) {
-            return this.image;
+        if (this.get_image() != null) {
+            return this.get_image();
         } else {
             currDirection = Direction.DOWN;
             return loadAndSetImage(getCharacterOrientedImages()[0]);
@@ -124,6 +124,12 @@ public abstract class Character extends MovingEntity {
         setHp(maxHp);
     }
 
+    @Override
+    protected void onMove(Coordinates coordinates) {
+        super.onMove(coordinates);
+        new LocationChangedBehavior(toDao()).invoke();
+    }
+
     protected void playStepSound() {
         SoundModel stepSound = getStepSound();
         if (stepSound != null) AudioManager.getInstance().play(stepSound, false);
@@ -139,17 +145,17 @@ public abstract class Character extends MovingEntity {
         if (useOnlyBaseIcons()) {
             String[] baseIcons = refreshDirectionAndGetCharsImages();
 
-            if (Utility.INSTANCE.timePassed(lastImageUpdate) > getImageRefreshRate()) {
+            if (Utility.INSTANCE.timePassed(getLastImageUpdate()) > getImageRefreshRate()) {
                 // If it's time to refresh the image, increment the image index.
-                lastImageIndex++;
+                setLastImageIndex(getLastImageIndex() + 1);
                 playStepSound();
             } else return;
 
             // Ensure the icon index is within bounds.
-            if (lastImageIndex < 0 || lastImageIndex >= baseIcons.length)
-                lastImageIndex = 0;
+            if (getLastImageIndex() < 0 || getLastImageUpdate() >= baseIcons.length)
+                setLastImageIndex(0);
 
-            loadAndSetImage(baseIcons[lastImageIndex]);
+            loadAndSetImage(baseIcons[getLastImageIndex()]);
 
             return;
         }
@@ -171,11 +177,11 @@ public abstract class Character extends MovingEntity {
 
         // If the previousDirection and current direction are different, reset the image index and last direction update time.
         if (previousDirection != d) {
-            lastImageIndex = 0;
+            setLastImageIndex(0);
             lastDirectionUpdate = System.currentTimeMillis();
-        } else if (Utility.INSTANCE.timePassed(lastImageUpdate) > getImageRefreshRate()) {
+        } else if (Utility.INSTANCE.timePassed(getLastImageUpdate()) > getImageRefreshRate()) {
             // If it's time to refresh the image, increment the image index.
-            lastImageIndex++;
+            setLastImageIndex(getLastImageIndex() + 1);
             playStepSound();
         } else {
             // Otherwise, don't update the image yet.
@@ -183,21 +189,21 @@ public abstract class Character extends MovingEntity {
         }
 
         // Ensure the icon index is within bounds.
-        if (lastImageIndex < 0 || lastImageIndex >= baseIcons.length)
-            lastImageIndex = 0;
+        if (getLastImageIndex() < 0 || getLastImageIndex() >= baseIcons.length)
+            setLastImageIndex(0);
 
-        loadAndSetImage(baseIcons[lastImageIndex]);
+        loadAndSetImage(baseIcons[getLastImageIndex()]);
     }
 
     @Override
     public BufferedImage loadAndSetImage(String imagePath) {
-        if (state == null) return super.loadAndSetImage(imagePath);
+        if (getState() == null) return super.loadAndSetImage(imagePath);
 
         String[] toks = imagePath.split(Pattern.quote("."));
         String extension = toks[1];
         String fileName = toks[0];
 
-        String imagePathWithStatus = String.format("%s_%s.%s", fileName, state.toString().toLowerCase(), extension);
+        String imagePathWithStatus = String.format("%s_%s.%s", fileName, getState().toString().toLowerCase(), extension);
         boolean hasImageWithStatus = Utility.INSTANCE.fileExists(imagePathWithStatus);
 
         return hasImageWithStatus ? super.loadAndSetImage(imagePathWithStatus) : super.loadAndSetImage(imagePath);
@@ -222,12 +228,6 @@ public abstract class Character extends MovingEntity {
 
         // Otherwise, return false.
         return false;
-    }
-
-    @Override
-    public void setCoords(Coordinates coordinates) {
-        super.setCoords(coordinates);
-        new LocationChangedBehavior(toDao()).invoke();
     }
 
     @NotNull
@@ -324,6 +324,7 @@ public abstract class Character extends MovingEntity {
         return (int) (((float) getHp() / (float) getMaxHp()) * 100);
     }
 
+    @NotNull
     @Override
     public DrawPriority getDrawPriority() {
         return DrawPriority.DRAW_PRIORITY_2;
@@ -436,7 +437,7 @@ public abstract class Character extends MovingEntity {
             return;
         }
 
-        List<Coordinates> oppositeBlocksCoordinates = getNewCoordinatesOnDirection(command.commandToDirection(), PitchPanel.PIXEL_UNIT, getSize());
+        List<Coordinates> oppositeBlocksCoordinates = Coordinates.getNewCoordinatesOnDirection(getCoords(), command.commandToDirection(), PitchPanel.PIXEL_UNIT, getSize(), getSize());
         List<Entity> entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates.get(0));
         List<Entity> entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates.get(1));
         overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirection1, oppositeDirection2);
@@ -466,13 +467,14 @@ public abstract class Character extends MovingEntity {
         }
     }
 
-    public void executeQueue() {
+    public void executeCommandQueue() {
         for (Command c : commandQueue) {
             handleAction(c);
         }
         commandQueue.clear();
     }
 
+    @NotNull
     @Override
     public EntityDao toDao() {
         return new CharacterDao(

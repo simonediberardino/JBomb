@@ -15,11 +15,12 @@ class Zombie : IntelligentEnemy {
 
     override fun getMaxHp(): Int = 300
 
-    override fun getEntitiesAssetsPath(): String = "$enemiesFolder/zombie"
+    override val entitiesAssetsPath: String get() ="$enemiesFolder/zombie"
 
     override fun getCharacterOrientedImages(): Array<String> = Array(4) {
         "$entitiesAssetsPath/zombie_${imageDirection.toString().lowercase()}_$it.png"
     }
 
-    override fun getType(): EntityTypes = EntityTypes.Zombie
+    override val type: EntityTypes
+        get() = EntityTypes.Zombie
 }

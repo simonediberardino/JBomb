@@ -20,7 +20,7 @@ abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
     protected var healthStatusMap = TreeMap(healthStatusMap())
 
     constructor() : this(null) {
-        coords = Coordinates.randomCoordinatesFromPlayer(size, size * 2)
+        coords = (Coordinates.randomCoordinatesFromPlayer(size, size * 2))
     }
 
     init {
@@ -33,21 +33,15 @@ abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
         AudioManager.getInstance().play(SoundModel.BOSS_DEATH)
     }
 
-    override fun getDrawPriority(): DrawPriority {
-        return DrawPriority.DRAW_PRIORITY_3
-    }
+    override val drawPriority: DrawPriority
+        get() = DrawPriority.DRAW_PRIORITY_3
 
-    override fun getSize(): Int {
-        return SIZE
-    }
+    final override val size: Int
+        get() = SIZE
 
-    override fun getObstacles(): Set<Class<out Entity>> {
-        return interactionsEntities
-    }
+    override fun getObstacles(): Set<Class<out Entity>> = interactionsEntities
 
-    protected open fun getImageFromRageStatus(): String? {
-        return imagePath
-    }
+    protected open fun getImageFromRageStatus(): String = imagePath
 
     protected abstract fun healthStatusMap(): Map<Int, Int>?
 

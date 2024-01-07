@@ -24,5 +24,6 @@ class TransparentDestroyableBlocksPowerUp(coords: Coordinates?) : PowerUp(coords
         entity.removeWhiteListObstacle(DestroyableBlock::class.java)
     }
 
-    override fun getType(): EntityTypes = EntityTypes.TransparentDestroyableBlocksPowerUp
+    override val type: EntityTypes
+        get() = EntityTypes.TransparentDestroyableBlocksPowerUp
 }

@@ -19,9 +19,8 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
         coords = defaultCoords
     }
 
-    override fun getSize(): Int {
-        return super.getSize() * 3
-    }
+    override val size: Int
+        get() = super.size * 3
 
     override val duration: Int
         get() {
@@ -29,7 +28,7 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
         }
 
     override fun getImage(): BufferedImage {
-        return loadImage(getWorldSelectorPortalPath(worldId))!!
+        return loadImage(getWorldSelectorPortalPath(worldId))
     }
 
     override fun doApply(entity: BomberEntity) {
@@ -43,10 +42,9 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
             val firstLevelOfCurrWorld = Level.ID_TO_FIRST_LEVEL_MAP.getOrDefault(worldId, World1Level1::class.java)
 
             // Initialize the level to start
-            val levelToStart: Level
 
             // Check if the saved last world ID matches the current world ID
-            levelToStart = if (savedLastWorldId == worldId) {
+            val levelToStart: Level = if (savedLastWorldId == worldId) {
                 // Find the class of the last level using the saved last world ID and last level ID
                 val lastLevelOpt = findLastLevel(savedLastWorldId, savedLastLevelId)
                 val levelClass = if (lastLevelOpt.isPresent) lastLevelOpt.get() else firstLevelOfCurrWorld
