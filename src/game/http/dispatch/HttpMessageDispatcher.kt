@@ -4,6 +4,7 @@ import game.Bomberman
 import game.http.models.HttpMessage
 import game.http.models.HttpActor
 import game.http.serializing.HttpParserSerializer
+import game.utils.Log
 
 /**
  * A class responsible for dispatching HTTP messages within the Bomberman game.
@@ -39,7 +40,7 @@ class HttpMessageDispatcher private constructor() {
     fun dispatch(httpMessage: HttpMessage, receiverId: Long, ignore: Boolean) {
         val data: String = HttpParserSerializer.instance.serialize(httpMessage)
 
-        println("HttpMessageDispatcher: $httpMessage, $receiverId, $ignore")
+        Log.i("HttpMessageDispatcher: $httpMessage, $receiverId, $ignore")
 
         for (sender in httpMessage.senders) {
             if (dispatch(data, sender, receiverId, ignore))
@@ -57,7 +58,7 @@ class HttpMessageDispatcher private constructor() {
      * @return True if the message was successfully dispatched, false otherwise.
      */
     private fun dispatch(data: String, httpActor: HttpActor, receiverId: Long, ignore: Boolean) : Boolean {
-        println("""
+        Log.i("""
             {
               "message": "dispatch",
               "data": "$data",

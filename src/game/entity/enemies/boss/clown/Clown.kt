@@ -50,7 +50,7 @@ class Clown : Boss, Explosive {
 
         val y = panelSize.getHeight().toInt() - size
         val x = (panelSize.getWidth() / 2 - size / 2).toInt()
-        coords = Coordinates(x, y)
+        entityInfo.position = Coordinates(x, y)
     }
 
     /**

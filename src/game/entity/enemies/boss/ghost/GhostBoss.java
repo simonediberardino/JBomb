@@ -55,8 +55,7 @@ public class GhostBoss extends Boss {
     }
 
     public GhostBoss(long id) {
-        this();
-        this.setId(id);
+        super(id);
     }
 
     @Override
@@ -168,9 +167,10 @@ public class GhostBoss extends Boss {
         for (int i = 0; i < n; i++) {
             if (Bomberman.getMatch().getEnemiesAlive() >= MAX_GHOSTS_ALIVE)
                 return;
+
             GhostEnemy ghostEnemy = new GhostEnemy();
             Coordinates randomCoordinates = Coordinates.randomCoordinatesFromPlayer(ghostEnemy.getSize());
-            ghostEnemy.setCoords(randomCoordinates);
+            ghostEnemy.move(randomCoordinates);
             ghostEnemy.spawn();
         }
     }

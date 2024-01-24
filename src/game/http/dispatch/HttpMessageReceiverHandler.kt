@@ -3,13 +3,14 @@ package game.http.dispatch
 import game.http.events.process.*
 import game.http.models.HttpMessageTypes
 import game.utils.Extensions.getOrTrim
+import game.utils.Log
 
 class HttpMessageReceiverHandler private constructor() {
     // Handles the behavior of each http message;
     fun handle(map: Map<String, String>) {
         val messageTypeInt = map.getOrTrim("messageType")?.toInt() ?: -1
 
-        println("handling $map")
+        Log.i("handling $map")
 
         val httpEvent = when (HttpMessageTypes.values()[messageTypeInt]) {
             HttpMessageTypes.PLAYER_JOIN_REQUEST -> PlayerConnectedHttpEventProcessor()

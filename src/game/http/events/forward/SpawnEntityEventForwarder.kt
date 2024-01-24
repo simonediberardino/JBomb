@@ -6,6 +6,7 @@ import game.http.dispatch.HttpMessageDispatcher
 import game.http.messages.LevelInfoHttpMessage
 import game.http.messages.SpawnedEntityHttpMessage
 import game.utils.Extensions.getOrTrim
+import game.utils.Log
 
 class SpawnEntityEventForwarder(private val clientId: Long) : HttpEvent {
     override fun invoke(vararg extras: Any) {

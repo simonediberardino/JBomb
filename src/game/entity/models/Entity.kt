@@ -10,11 +10,13 @@ import game.http.events.forward.DespawnEntityEventForwarder
 import game.http.events.forward.SpawnEntityEventForwarder
 import game.tasks.GameTickerObserver
 import game.ui.panels.game.PitchPanel
+import game.utils.Log
 import game.utils.Utility.ensureRange
 import game.utils.Utility.fileExists
 import game.utils.Utility.loadImage
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
+import java.lang.Exception
 import java.util.*
 import java.util.concurrent.atomic.AtomicReference
 import java.util.regex.Pattern
@@ -23,15 +25,15 @@ import java.util.regex.Pattern
  * Represents an entity in the game world, such as a player, enemy, or obstacle.
  */
 abstract class Entity : GameTickerObserver, Comparable<Entity> {
-    var entityInfo = EntityInfo()
-    var coords: Coordinates? = null
     protected abstract val basePassiveInteractionEntities: MutableSet<Class<out Entity>>
     protected var _image: BufferedImage? = null
     protected var lastImageIndex = 0
     protected var lastImageUpdate: Long = 0
+    var entityInfo = EntityInfo()
+    protected abstract val type: EntityTypes
     private var passiveInteractionEntities = basePassiveInteractionEntities
     abstract val size: Int
-    protected abstract val type: EntityTypes
+
     var hitboxSizeToWidthRatio = 1f
         protected set
 
@@ -93,6 +95,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
 
     var imagePath = ""
         private set
+
     var alpha = 1f
         set(alpha) {
             field = ensureRange(alpha, 0f, 1f)
@@ -104,12 +107,6 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
     open val drawPriority: DrawPriority = DrawPriority.DRAW_PRIORITY_1
     open val imageRefreshRate: Int = 200
 
-    var id: Long
-        get() = entityInfo.id!!
-        protected set(id) {
-            entityInfo.id = id
-        }
-
     /**
      * Constructs an entity with the given coordinates.
      *
@@ -117,16 +114,23 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
      */
     constructor(coordinates: Coordinates? = Coordinates(-1, -1)) {
         entityInfo.id = UUID.randomUUID().mostSignificantBits
-        entityInfo.coords = coordinates
-        entityInfo.type = type
 
-        // TEMPORARY
-        this.coords = coordinates
-        this.id = entityInfo.id!!
+        if (coordinates != null)
+            entityInfo.position = coordinates
     }
 
     constructor(id: Long) {
         entityInfo.id = id
+    }
+
+    constructor() : this(null)
+
+    init {
+        try {
+            entityInfo.type = type
+        } catch (exception: Exception) {
+            Log.e(exception.message.toString())
+        }
     }
 
     /**
@@ -167,6 +171,11 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         Bomberman.getMatch().removeEntity(this)
     }
 
+    fun spawn(coordinates: Coordinates) {
+        entityInfo.position = coordinates
+        spawn()
+    }
+
     /**
      * Spawns the entity if it is not already spawned and if there is no other entity at the desired coordinates.
      */
@@ -183,10 +192,11 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         }
 
         // centers entity on tile
-        if (forceCentering) coords = Coordinates.roundCoordinates(coords, spawnOffset)
+        if (forceCentering)
+            entityInfo.position = Coordinates.roundCoordinates(entityInfo.position, spawnOffset)
 
         // spawns entity if the spawn point is free, otherwise do nothing
-        if (forceSpawn || !Coordinates.isBlockOccupied(coords)) {
+        if (forceSpawn || !Coordinates.isBlockOccupied(entityInfo.position)) {
             isSpawned = true // mark entity as spawned
             Bomberman.getMatch().addEntity(this) // add entity to the game state
             onSpawn() // run entity-specific spawn logic
@@ -256,7 +266,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         val centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player))
 
         // Check if the entity is within one grid size distance from the player's center coordinates
-        if (coords!!.distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) {
+        if (entityInfo.position.distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) {
             eliminated()
         }
     }
@@ -276,7 +286,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
 
         // Calculate relevant coordinates for the player, entity, and mouse
         val playerCenter = Coordinates.getCenterCoordinatesOfEntity(player)
-        val roundedEntityCoords = Coordinates.roundCoordinates(coords)
+        val roundedEntityCoords = Coordinates.roundCoordinates(entityInfo.position)
         val centerCoordinatesOfEntity = Coordinates.roundCoordinates(playerCenter)
         val mouseCoordinates = Coordinates.roundCoordinates(mouseControllerManager.mouseCoords)
 
@@ -298,7 +308,9 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         // Check for other entities on the occupied block during the mouse drag
         val entitiesOnOccupiedBlock = Coordinates.getEntitiesOnBlock(mouseCoordinates)
         val isBlockOccupied = Coordinates.isBlockOccupied(mouseCoordinates)
-        val areEntitiesOnBlock = !entitiesOnOccupiedBlock.isEmpty() && entitiesOnOccupiedBlock.stream().anyMatch { e: Entity -> e !== this && e !== player }
+        val areEntitiesOnBlock = entitiesOnOccupiedBlock.isNotEmpty() && entitiesOnOccupiedBlock.any {
+            e: Entity -> e !== this && e !== player
+        }
 
         // If there are other entities on the occupied block, interrupt the mouse dragged interaction
         if (areEntitiesOnBlock) {
@@ -311,7 +323,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
             // Move the entity to the dragged mouse coordinates
             mouseControllerManager.isMouseDragInteractionEntered = true
             mouseControllerManager.setMouseDraggedInteractionOccured(true)
-            coords = Coordinates.roundCoordinates(mouseCoordinates, spawnOffset)
+            entityInfo.position = Coordinates.roundCoordinates(mouseCoordinates, spawnOffset)
         }
     }
 
@@ -376,26 +388,33 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
     }
 
     open fun onExplosion(explosion: AbstractExplosion?) {}
+
     override fun compareTo(other: Entity): Int {
-        return Comparator.comparing { obj: Entity -> obj.drawPriority }.thenComparing { e: Entity -> e.coords!!.y }.thenComparingInt { e: Entity -> e.id.toInt() }.compare(this, other)
+        return Comparator.comparing {
+            obj: Entity -> obj.drawPriority
+        }.thenComparing {
+            e: Entity -> e.entityInfo.position.y
+        }.thenComparingInt {
+            e: Entity -> e.entityInfo.id.toInt()
+        }.compare(this, other)
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Entity) return false
-        return id == other.id
+        return entityInfo.id == other.entityInfo.id
     }
 
     override fun hashCode(): Int = Objects.hash(entityInfo.id)
 
     open fun toDao(): EntityDao {
-        return EntityDao(0, Coordinates(1,1), type.ordinal) // TEMPORARY!!!!
+        return EntityDao(entityInfo.id, entityInfo.position, type.ordinal)
     }
 
     open val extras: Map<String, String>
         get() = HashMap()
 
     override fun toString(): String {
-        return "Entity{id=$id, entityInfo= $entityInfo}"
+        return "Entity{id=${entityInfo.id}, entityInfo= $entityInfo}"
     }
 }

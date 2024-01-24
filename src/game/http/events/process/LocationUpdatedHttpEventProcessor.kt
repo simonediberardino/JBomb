@@ -1,15 +1,12 @@
 package game.http.events.process
 
 import game.Bomberman
-import game.entity.EntityTypes
 import game.entity.models.Character
 import game.entity.models.Coordinates
 import game.entity.models.Direction
 import game.events.models.HttpEvent
-import game.ui.pages.LoadingPanel
 import game.utils.Extensions.getOrTrim
-import java.awt.event.ActionEvent
-import javax.swing.Timer
+import game.utils.Log
 
 class LocationUpdatedHttpEventProcessor : HttpEvent {
     override fun invoke(vararg extras: Any) {
@@ -20,10 +17,10 @@ class LocationUpdatedHttpEventProcessor : HttpEvent {
         val locTokens = locationString.split(" ").map { it.toInt() }
         val location = Coordinates(locTokens[0], locTokens[1])
 
-        println("LocationUpdatedHttpEventProcessor received $entityId, $locationString")
+        Log.i("LocationUpdatedHttpEventProcessor received $entityId, $locationString")
 
         val entity: Character = Bomberman.getMatch().getEntityById(entityId) as Character? ?: return
-        entity.coords = location
+        entity.entityInfo.position = location
         entity.updateLastDirection(Direction.values()[direction])
     }
 }

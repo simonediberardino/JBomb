@@ -13,6 +13,14 @@ public abstract class MovingEntity extends EntityInteractable {
         super(coordinates);
     }
 
+    public MovingEntity(long id) {
+        super(id);
+    }
+
+    public MovingEntity() {
+        super();
+    }
+
     public List<Direction> getSupportedDirections() {
         return Arrays.asList(Direction.values());
     }
@@ -30,7 +38,7 @@ public abstract class MovingEntity extends EntityInteractable {
         // Iterate over each direction
         for (Direction d : Direction.values()) {
             boolean areCoordinatesValid =
-                    Coordinates.getEntitiesOnBlock(Coordinates.nextCoords(getCoords(),d,getSize())).stream().anyMatch(e->canInteractWith(e));
+                    Coordinates.getEntitiesOnBlock(Coordinates.nextCoords(getEntityInfo().getPosition(),d,getSize())).stream().anyMatch(e->canInteractWith(e));
             if(areCoordinatesValid){
                 result.add(d);
                 return result;
@@ -38,7 +46,7 @@ public abstract class MovingEntity extends EntityInteractable {
 
         }
         for (Direction d : Direction.values()) {
-            List<Coordinates> newCoordinates = Coordinates.getNewCoordinatesOnDirection(getCoords(), d, PIXEL_UNIT, getSize() / 2, getSize());
+            List<Coordinates> newCoordinates = Coordinates.getNewCoordinatesOnDirection(getEntityInfo().getPosition(), d, PIXEL_UNIT, getSize() / 2, getSize());
             // Check if any entities on the next coordinates are blocks or have invalid coordinates
             boolean areCoordinatesValid = Coordinates.getEntitiesOnCoordinates(
                     newCoordinates

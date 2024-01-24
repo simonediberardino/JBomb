@@ -12,13 +12,10 @@ import java.util.*
 /**
  * The abstract PowerUp class is a superclass for all power-ups in the game.
  */
-abstract class PowerUp
-/**
- * Constructs a PowerUp entity with the specified coordinates.
- *
- * @param coordinates the coordinates of the PowerUp entity
- */
-(coordinates: Coordinates?) : EntityInteractable(coordinates) {
+abstract class PowerUp : EntityInteractable {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
+
     // Whether the power-up has already been applied or not
     private var applied = false
     val incompatiblePowerUps = mutableListOf<Class<out PowerUp>>()

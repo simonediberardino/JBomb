@@ -11,11 +11,11 @@ import java.util.stream.Collectors
 abstract class IntelligentEnemy : Enemy, ICPU {
     private val CHANGE_DIRECTION_RATE = 10 // percentage
 
-    constructor() : super() {
-        hitboxSizeToHeightRatio = 0.733f
-    }
+    constructor() : super()
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
-    constructor(coordinates: Coordinates?) : super(coordinates) {
+    init {
         hitboxSizeToHeightRatio = 0.733f
     }
 

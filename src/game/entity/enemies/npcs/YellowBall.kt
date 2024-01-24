@@ -7,11 +7,8 @@ import game.ui.panels.game.PitchPanel
 import game.utils.Paths.enemiesFolder
 
 class YellowBall : IntelligentEnemy {
-    constructor(id: Long) : this() {
-        this.id = id
-    }
-
     constructor() : super()
+    constructor(id: Long) : super(id)
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val entitiesAssetsPath: String get() ="$enemiesFolder/yellow_ball/yellow_ball"

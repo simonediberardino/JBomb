@@ -1,6 +1,7 @@
 package game.http.sockets
 
 import game.http.callbacks.TCPServerCallback
+import game.utils.Log
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.IOException
@@ -51,11 +52,11 @@ class TCPServer(private var port: Int) : TCPSocket {
 
                 if (clientData == null) {
                     // Client disconnected
-                    println("Client disconnected")
+                    Log.i("Client disconnected")
                     break
                 }
 
-                println("Received from client: $clientData")
+                Log.i("Received from client: $clientData")
                 for (listener in listeners) {
                     listener.onDataReceived(clientData)
                 }
@@ -77,7 +78,7 @@ class TCPServer(private var port: Int) : TCPSocket {
                 clients[progressiveId] = indexedClient
                 progressiveId++
 
-                println("Client connected: ${clientSocket.inetAddress.hostAddress}")
+                Log.i("Client connected: ${clientSocket.inetAddress.hostAddress}")
 
                 // Launch coroutine to handle the client
                 launch {
@@ -105,7 +106,7 @@ class TCPServer(private var port: Int) : TCPSocket {
         }
 
         sendData(clients[clientId]?.client ?: return, data)
-        println("sendData: $clientId sent $data")
+        Log.i("sendData: $clientId sent $data")
     }
 
     private fun sendData(client: Socket, data: String) {

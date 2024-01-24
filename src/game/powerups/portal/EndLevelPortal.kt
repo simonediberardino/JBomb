@@ -9,10 +9,9 @@ import game.level.levels.lobby.WorldSelectorLevel
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
-class EndLevelPortal(coordinates: Coordinates?) : Portal(coordinates) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+class EndLevelPortal : Portal {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/end_game.gif")
 

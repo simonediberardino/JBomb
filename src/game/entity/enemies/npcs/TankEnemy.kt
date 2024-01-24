@@ -19,11 +19,8 @@ class TankEnemy : IntelligentEnemy, Explosive {
     private var canShoot = false
     private var _lastUpdate: Long = 0
 
-    constructor(id: Long) : this() {
-        this.id = id
-    }
-
     constructor() : super()
+    constructor(id: Long) : super(id)
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override fun getCharacterOrientedImages(): Array<String> =
@@ -44,7 +41,7 @@ class TankEnemy : IntelligentEnemy, Explosive {
             // Check if the entity can shoot and if a random probability allows shooting
             if (canShoot && Math.random() * 100 < PROBABILITY_OF_SHOOTING) {
                 // Calculate new coordinates with an explosion offset for vertical directions
-                var newCoords = Coordinates.getNewTopLeftCoordinatesOnDirection(coords, currDirection, AbstractExplosion.SIZE)
+                var newCoords = Coordinates.getNewTopLeftCoordinatesOnDirection(entityInfo.position, currDirection, AbstractExplosion.SIZE)
                 if (currDirection == Direction.UP || currDirection == Direction.DOWN) {
                     val x = newCoords.x + SPAWN_OFFSET
                     newCoords = Coordinates(x, newCoords.y)

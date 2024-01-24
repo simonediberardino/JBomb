@@ -7,7 +7,7 @@ import game.http.messages.PlayerJoinRequestHttpMessage
 import game.level.levels.Level
 import game.level.online.ClientGameHandler
 import game.utils.Extensions.getOrTrim
-import java.lang.Exception
+import game.utils.Log
 import java.lang.RuntimeException
 
 class LevelInfoHttpEventProcessor : HttpEvent {
@@ -23,7 +23,7 @@ class LevelInfoHttpEventProcessor : HttpEvent {
 
         val levelClassOpt = Level.findLevel(worldId, levelId)
 
-        println("LevelInfoHttpEventProcessor: $info, $levelClassOpt")
+        Log.i("LevelInfoHttpEventProcessor: $info, $levelClassOpt")
 
         Thread.sleep(1500) // TODO
 

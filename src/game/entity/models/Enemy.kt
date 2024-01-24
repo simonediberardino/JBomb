@@ -7,10 +7,13 @@ import game.entity.player.BomberEntity
 import game.events.game.EnemyDespawnedGameEvent
 import game.ui.panels.game.PitchPanel
 
-abstract class Enemy(coordinates: Coordinates?) : Character(coordinates) {
+abstract class Enemy : Character {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
+
     constructor() : this(null) {
         if (Bomberman.getMatch().player != null) {
-            coords = Coordinates.randomCoordinatesFromPlayer(size)
+            entityInfo.position = Coordinates.randomCoordinatesFromPlayer(size)
         }
     }
 

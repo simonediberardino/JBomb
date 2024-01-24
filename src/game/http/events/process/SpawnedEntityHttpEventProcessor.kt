@@ -7,6 +7,7 @@ import game.events.models.HttpEvent
 import game.level.online.ClientGameHandler
 import game.ui.pages.LoadingPanel.LOADING_TIMER
 import game.utils.Extensions.getOrTrim
+import game.utils.Log
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 
@@ -20,11 +21,11 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         val locTokens = locationString.split(" ").map { it.toInt() }
         val location = Coordinates(locTokens[0], locTokens[1])
 
-        println("SpawnedEntityHttpEventProcessor received $entityId, $entityType, $locationString")
-        println("Type $entityType $entityId")
+        Log.i("SpawnedEntityHttpEventProcessor received $entityId, $entityType, $locationString")
+        Log.i("Type $entityType $entityId")
 
         val entity = createEntity(entityId, entityType, info) ?: return
-        entity.coords = location
+        entity.entityInfo.position = location
 
         val delay = if (!Bomberman.isInGame()) LOADING_TIMER + 1000 else 0
 

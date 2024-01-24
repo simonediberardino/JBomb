@@ -129,8 +129,8 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         g2d.drawImage(
                 e.getImage(),
-                e.getCoords().getX() - paddingWidth,
-                e.getCoords().getY() - paddingHeight,
+                e.getEntityInfo().getPosition().getX() - paddingWidth,
+                e.getEntityInfo().getPosition().getY() - paddingHeight,
                 (int) Math.ceil(e.getSize() / widthRatio),
                 (int) Math.ceil(e.getSize() / heightRatio),
                 this

@@ -13,10 +13,9 @@ class RemoteControlPowerUp
  *
  * @param coordinates the coordinates of the PowerUp entity
  */
-(coordinates: Coordinates?) : PowerUp(coordinates) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+ : PowerUp {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/remote_up.png")
 

@@ -7,14 +7,12 @@ import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
-class BlockMoverPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
+class BlockMoverPowerUp : PowerUp {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     init {
         incompatiblePowerUps += HammerPowerUp::class.java
-    }
-
-    constructor(id: Long) : this(null) {
-        this.id = id
     }
 
     override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/hand.png")

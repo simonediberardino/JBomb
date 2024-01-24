@@ -15,12 +15,15 @@ import java.util.*
 /**
  * An abstract class for enemy bosses;
  */
-abstract class Boss(coordinates: Coordinates?) : IntelligentEnemy(coordinates) {
+abstract class Boss : IntelligentEnemy {
     protected var currRageStatus = 0
     protected var healthStatusMap = TreeMap(healthStatusMap())
 
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
+
     constructor() : this(null) {
-        coords = (Coordinates.randomCoordinatesFromPlayer(size, size * 2))
+        move((Coordinates.randomCoordinatesFromPlayer(size, size * 2)))
     }
 
     init {

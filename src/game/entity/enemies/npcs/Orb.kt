@@ -42,6 +42,9 @@ abstract class Orb : Enemy {
         this.direction = direction
     }
 
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
+
     override fun getSpeed(): Float = 1.5f
 
     override val size: Int

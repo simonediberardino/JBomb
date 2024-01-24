@@ -1,12 +1,12 @@
 package game.entity.enemies.npcs
 
 import game.entity.EntityTypes
+import game.entity.models.Coordinates
 import game.utils.Paths.enemiesFolder
 
-class Helicopter() : FlyingEnemy() {
-    constructor(id: Long) : this() {
-        this.id = id
-    }
+class Helicopter : FlyingEnemy {
+    constructor() : super()
+    constructor(id: Long) : super(id)
 
     override val entitiesAssetsPath: String get() ="$enemiesFolder/heli"
 

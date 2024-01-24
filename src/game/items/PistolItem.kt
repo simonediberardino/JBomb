@@ -59,7 +59,7 @@ class PistolItem : UsableItem(), Explosive {
 
         val explosion = PistolExplosion(
                 owner,
-                Coordinates.nextCoords(owner.coords, owner.currDirection, SIZE),
+                Coordinates.nextCoords(owner.entityInfo.position, owner.currDirection, SIZE),
                 owner.currDirection,
                 1,
                 this

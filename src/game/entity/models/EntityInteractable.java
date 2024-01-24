@@ -48,6 +48,14 @@ public abstract class EntityInteractable extends Entity {
         super(coordinates);
     }
 
+    public EntityInteractable(long id) {
+        super(id);
+    }
+
+    public EntityInteractable() {
+        super();
+    }
+
     public final void interact(Entity e) {
         if (e == null) {
             interactAndUpdateLastInteract(null);
@@ -103,7 +111,7 @@ public abstract class EntityInteractable extends Entity {
     }
 
     public void move(Coordinates coordinates) {
-        setCoords(coordinates);
+        getEntityInfo().setPosition(coordinates);
         onMove(coordinates);
     }
 
@@ -119,7 +127,7 @@ public abstract class EntityInteractable extends Entity {
         if (d == null)
             return false;
 
-        Coordinates nextTopLeftCoords = Coordinates.nextCoords(getCoords(), d, stepSize);
+        Coordinates nextTopLeftCoords = Coordinates.nextCoords(getEntityInfo().getPosition(), d, stepSize);
 
         if (!nextTopLeftCoords.validate(this)) {
             if (!ignoreMapBorders) {
@@ -148,7 +156,7 @@ public abstract class EntityInteractable extends Entity {
 
         // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
         // with a given step size
-        List<Coordinates> nextOccupiedCoords = Coordinates.getNewCoordinatesOnDirection(getCoords(), d, stepSize, GRID_SIZE / 3 / 2, getSize());
+        List<Coordinates> nextOccupiedCoords = Coordinates.getNewCoordinatesOnDirection(getEntityInfo().getPosition(), d, stepSize, GRID_SIZE / 3 / 2, getSize());
 
         // Get a list of entities that are present in the next occupied coordinates
         List<Entity> interactedEntities = getEntitiesOnCoordinates(nextOccupiedCoords);

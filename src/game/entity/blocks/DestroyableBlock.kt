@@ -11,15 +11,16 @@ import game.utils.Utility
 import java.awt.image.BufferedImage
 import java.lang.Exception
 
-class DestroyableBlock(
-        coordinates: Coordinates?,
-        var powerUpClass: Class<out PowerUp>? = null
-) : MovableBlock(coordinates) {
+class DestroyableBlock : MovableBlock {
+    var powerUpClass: Class<out PowerUp>? = null
+
+    constructor(coordinates: Coordinates?, powerUpClass: Class<out PowerUp>? = null) : super(coordinates) {
+        this.powerUpClass = powerUpClass
+    }
+
     constructor(coordinates: Coordinates?) : this(coordinates, null)
 
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+    constructor(id: Long) : super(id)
 
     /**
      * Performs an interaction between this entity and another entity.
@@ -46,7 +47,7 @@ class DestroyableBlock(
         Utility.runPercentage(spawnPercentage) {
             val powerUp: PowerUp
             try {
-                powerUp = powerUpClass!!.getConstructor(Coordinates::class.java).newInstance(coords)
+                powerUp = powerUpClass!!.getConstructor(Coordinates::class.java).newInstance(entityInfo.position)
                 powerUp.spawn(true)
             } catch (e: Exception) {
                 e.printStackTrace()

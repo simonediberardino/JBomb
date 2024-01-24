@@ -11,9 +11,7 @@ class ClownNose : Orb {
     constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates, enhancedDirection)
     constructor(coordinates: Coordinates?, direction: Direction?) : super(coordinates, direction)
     constructor() : this(null, null as Direction?)
-    constructor(id: Long) : this() {
-        this.id = id
-    }
+    constructor(id: Long) : super(id)
 
     override val entitiesAssetsPath: String get() ="$enemiesFolder/clown/clown_orb.png"
 
@@ -22,12 +20,9 @@ class ClownNose : Orb {
      *
      * @return an array of the skin of the Orb
      */
-    override fun getCharacterOrientedImages(): Array<String> = arrayOf(
-            entitiesAssetsPath
-    )
+    override fun getCharacterOrientedImages(): Array<String> = arrayOf(entitiesAssetsPath)
 
     override fun getDeathSound(): SoundModel = SoundModel.CLOWN_NOSE_DEATH
 
-    override val type: EntityTypes
-        get() = EntityTypes.ClownNose
+    override val type: EntityTypes = EntityTypes.ClownNose
 }

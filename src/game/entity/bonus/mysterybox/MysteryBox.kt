@@ -37,7 +37,7 @@ abstract class MysteryBox(
             return
         }
 
-        val distanceToUser = coords!!.distanceTo(buyer!!.coords)
+        val distanceToUser = entityInfo.position.distanceTo(buyer!!.entityInfo.position)
         if (distanceToUser >= PitchPanel.GRID_SIZE * 1.5) {
             return
         }

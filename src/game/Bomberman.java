@@ -132,7 +132,6 @@ public class Bomberman {
             return false;
         }
 
-        System.out.println("isInGame: " +  match.getGameState() + " ");
         return match.getGameState() && currentLevel.getInfo().getWorldId() > 0;
     }
 

@@ -39,7 +39,8 @@ enum class EntityTypes {
     TransparentDestroyableBlocksPowerUp,
     EndLevelPortal,
     World1Portal,
-    World2Portal;
+    World2Portal,
+    Entity;
 
     fun toInt(): Int {
         return ordinal

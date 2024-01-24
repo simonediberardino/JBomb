@@ -1,10 +1,10 @@
 package game.http.sockets
 
 import game.http.callbacks.TCPClientCallback
+import game.utils.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
@@ -62,7 +62,7 @@ class TCPClient(private val serverAddress: String,
 
                     if (serverData == null) {
                         // Server disconnected
-                        println("Server disconnected")
+                        Log.i("Server disconnected")
                         break
                     }
 

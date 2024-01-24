@@ -4,6 +4,8 @@ import game.http.callbacks.TCPClientCallback
 import game.http.dispatch.HttpMessageReceiverHandler
 import game.http.serializing.HttpParserSerializer
 import game.http.sockets.TCPClient
+import game.utils.Log
+
 /**
  * Handles communication with the game server from the client-side using TCP.
  *
@@ -47,7 +49,7 @@ class ClientGameHandler(
      */
     override fun onDisconnect() {
         connected = false
-        println("ClientGameHandler onDisconnect")
+        Log.i("ClientGameHandler onDisconnect")
     }
 
     /**
@@ -55,7 +57,7 @@ class ClientGameHandler(
      */
     override fun onConnect() {
         connected = true
-        println("ClientGameHandler onConnect")
+        Log.i("ClientGameHandler onConnect")
     }
 
     /**
@@ -86,7 +88,7 @@ class ClientGameHandler(
      * @param data The raw data received from the game server.
      */
     override fun onDataReceived(data: String) {
-        println("${javaClass.simpleName} onDataReceived $data")
+        Log.i("${javaClass.simpleName} onDataReceived $data")
         val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
         HttpMessageReceiverHandler.instance.handle(formattedData)
     }
@@ -97,7 +99,7 @@ class ClientGameHandler(
      * @param data The data to be sent to the game server.
      */
     override fun sendData(data: String) {
-        println("${javaClass.simpleName} sendData")
+        Log.i("${javaClass.simpleName} sendData")
         client.sendData(data)
     }
 

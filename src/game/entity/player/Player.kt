@@ -10,16 +10,15 @@ import game.events.game.UpdateCurrentBombsLengthEvent
 import game.hardwareinput.Command
 import game.sound.SoundModel
 import game.ui.pages.GameOverPanel
+import game.utils.Log
 import game.utils.Paths.entitiesFolder
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 
-class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
-    constructor() : this(null)
-
-    constructor(id : Long) : this() {
-        this.id = id
-    }
+class Player : BomberEntity {
+    constructor() : super()
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val entitiesAssetsPath: String get() ="$entitiesFolder/player/${DataInputOutput.getInstance().skin}"
 
@@ -71,7 +70,7 @@ class Player(coordinates: Coordinates?) : BomberEntity(coordinates) {
 
     private fun updateBombs() {
         val maxBombs = DataInputOutput.getInstance().obtainedBombs
-        println(maxBombs)
+        Log.i(maxBombs)
         UpdateCurrentAvailableItemsEvent().invoke(maxBombs)
         UpdateCurrentBombsLengthEvent().invoke(DataInputOutput.getInstance().explosionLength)
     }

@@ -10,6 +10,7 @@ import game.entity.models.Entity
 abstract class FlyingEnemy : IntelligentEnemy {
     constructor() : super()
     constructor(coordinates: Coordinates?) : super(coordinates)
+    constructor(id: Long) : super(id)
 
     override fun getObstacles(): Set<Class<out Entity>> = HashSet(super.getObstacles()).apply {
         remove(DestroyableBlock::class.java)

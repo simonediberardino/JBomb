@@ -7,10 +7,9 @@ import game.hardwareinput.ControllerManager
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
-class SpeedPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+class SpeedPowerUp : PowerUp {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val entitiesAssetsPath: String?
         get() = null

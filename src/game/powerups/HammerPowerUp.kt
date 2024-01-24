@@ -7,10 +7,9 @@ import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
-class HammerPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+class HammerPowerUp : PowerUp {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     init {
         incompatiblePowerUps.add(BlockMoverPowerUp::class.java)

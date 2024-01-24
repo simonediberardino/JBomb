@@ -5,14 +5,18 @@ import game.entity.EntityTypes
 import game.entity.models.Coordinates
 import game.utils.Paths
 
-class RemotePlayer(coordinates: Coordinates?, private val skinId: Int = 1) : BomberEntity(coordinates) {
-    constructor(coordinates: Coordinates?, id: Long, skinId: Int) : this(coordinates, skinId) {
-        this.id = id
+class RemotePlayer : BomberEntity {
+    private val skinId: Int
+
+    constructor(coordinates: Coordinates?, skinId: Int = 1) : super(coordinates) {
+        this.skinId = skinId
     }
 
-    constructor(id : Long) : this(null) {
-        this.id = id
+    constructor(coordinates: Coordinates?, id: Long, skinId: Int) : this(coordinates, skinId) {
+        this.entityInfo.id = id
     }
+
+    constructor(id: Long) : this(null, id, 1)
 
     // TODO
     override val entitiesAssetsPath: String get() ="${Paths.entitiesFolder}/player/skin$skinId"

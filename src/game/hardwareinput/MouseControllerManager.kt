@@ -71,7 +71,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         }
 
         // Calculate directions based on mouse coordinates
-        latestDirectionsFromPlayer = mouseCoords?.fromCoordinatesToDirection(player.coords) ?: emptyList()
+        latestDirectionsFromPlayer = mouseCoords?.fromCoordinatesToDirection(player.entityInfo.position) ?: emptyList()
 
         // Press keys corresponding to calculated directions
         latestDirectionsFromPlayer.forEach {
@@ -144,8 +144,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         }
 
         mouseCoords = Coordinates(e.x, e.y)
-        firstDirectionsFromPlayer = mouseCoords!!.fromCoordinatesToDirection(Bomberman.getMatch().player?.coords
-                ?: return)
+        firstDirectionsFromPlayer = mouseCoords!!.fromCoordinatesToDirection(player.entityInfo.position)
         entity = Coordinates.getEntityOnCoordinates(mouseCoords)
         startMouseTasks()
     }

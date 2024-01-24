@@ -10,19 +10,15 @@ import game.utils.Paths.enemiesFolder
  * An enemy with increased speed multiplier;
  */
 class FastEnemy : IntelligentEnemy {
-    constructor() : super() {
+    constructor() : super()
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
+
+    init {
         hitboxSizeToHeightRatio = 0.527f
     }
 
-    constructor(id: Long) : this() {
-        this.id = id
-    }
-
-    constructor(coordinates: Coordinates?) : super(coordinates) {
-        hitboxSizeToHeightRatio = 0.527f
-    }
-
-    override val entitiesAssetsPath: String get() ="$enemiesFolder/fast_enemy/fast_enemy"
+    override val entitiesAssetsPath: String get() = "$enemiesFolder/fast_enemy/fast_enemy"
 
     override fun getCharacterOrientedImages(): Array<String> = Array(4) { index ->
         "${entitiesAssetsPath}_${imageDirection.toString().lowercase()}_$index.png"

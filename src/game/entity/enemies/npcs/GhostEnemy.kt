@@ -1,20 +1,20 @@
 package game.entity.enemies.npcs
 
 import game.entity.EntityTypes
+import game.entity.models.Coordinates
 import game.entity.models.Direction
 import game.entity.models.Entity
 import game.ui.panels.game.PitchPanel
 import game.utils.Paths.enemiesFolder
 
-class GhostEnemy() : IntelligentEnemy() {
+class GhostEnemy : IntelligentEnemy {
     init {
         hitboxSizeToWidthRatio = 0.837f
         hitboxSizeToHeightRatio = 1f
     }
 
-    constructor(id: Long) : this() {
-        this.id = id
-    }
+    constructor() : super()
+    constructor(id: Long) : super(id)
 
     override fun getCharacterOrientedImages(): Array<String> =
             arrayOf("$enemiesFolder/mini_ghost/ghost_${imageDirection.toString().lowercase()}.png")

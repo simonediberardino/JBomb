@@ -7,7 +7,7 @@ import java.awt.Dimension
 
 class World2Portal() : WorldPortal(2) {
     constructor(id: Long) : this() {
-        this.id = id
+        this.entityInfo.id = id
     }
 
     override val defaultCoords: Coordinates

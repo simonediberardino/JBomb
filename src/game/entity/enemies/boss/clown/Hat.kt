@@ -10,15 +10,17 @@ import game.utils.Paths
 import game.values.DrawPriority
 import java.util.*
 
-open class Hat(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : Orb(coordinates, enhancedDirection) {
-    init {
-        maxHp = 300
+open class Hat : Orb {
+    constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates, enhancedDirection) {
+        initHat()
     }
 
     constructor() : this(null, null)
 
-    constructor(id : Long) : this() {
-        this.id = id
+    constructor(id: Long) : super(id)
+
+    private fun initHat() {
+        maxHp = 300
     }
 
     override val entitiesAssetsPath: String get() ="${Paths.enemiesFolder}/clown/hat"

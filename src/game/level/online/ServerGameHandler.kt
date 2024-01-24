@@ -6,6 +6,7 @@ import game.http.dispatch.HttpMessageReceiverHandler
 import game.http.events.forward.LevelInfoHttpEventForwarder
 import game.http.serializing.HttpParserSerializer
 import game.http.sockets.TCPServer
+import game.utils.Log
 
 /**
  * Handles communication with clients from the server-side using TCP.
@@ -56,7 +57,7 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
         data["levelId"] = levelInfo.levelId.toString()
         data["worldId"] = levelInfo.worldId.toString()
 
-        println("onClientConnected $data")
+        Log.i("onClientConnected $data")
 
         // Sends the info of the level to the client
         LevelInfoHttpEventForwarder().invoke(data)

@@ -22,6 +22,7 @@ import game.tasks.GamePausedObserver
 import game.tasks.GameTickerObservable
 import game.ui.pages.PausePanel
 import game.ui.panels.game.MatchPanel
+import game.utils.Log
 import game.utils.Utility.timePassed
 import game.viewcontrollers.*
 import java.util.*
@@ -75,7 +76,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         controllerManager?.register(GamePausedObserver())
         setupViewControllers()
         setDefaultCommandDelay()
-        println("${javaClass.simpleName}, onlineGameHandler: $onlineGameHandler, ${onlineGameHandler?.isRunning()}")
+        Log.i("${javaClass.simpleName}, onlineGameHandler: $onlineGameHandler, ${onlineGameHandler?.isRunning()}")
 
         if (onlineGameHandler?.isRunning() != true) {
             onlineGameHandler?.onStart()
@@ -231,7 +232,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         }
 
         synchronized(_entitiesMap) {
-            _entitiesMap.put(entity.id, entity)
+            _entitiesMap.put(entity.entityInfo.id, entity)
         }
 
         System.gc()
@@ -239,11 +240,11 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
 
     fun removeEntity(entity: Entity) {
         synchronized(_entitiesList) {
-            _entitiesList.removeIf { it.id == entity.id }
+            _entitiesList.removeIf { it.entityInfo.id == entity.entityInfo.id }
         }
 
         synchronized(_entitiesMap) {
-            _entitiesMap.remove(entity.id)
+            _entitiesMap.remove(entity.entityInfo.id)
         }
 
         System.gc()

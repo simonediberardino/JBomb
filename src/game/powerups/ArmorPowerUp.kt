@@ -6,16 +6,9 @@ import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
-class ArmorPowerUp
-/**
- * Constructs an entity with the given coordinates.
- *
- * @param coordinates the coordinates of the entity
- */
-(coordinates: Coordinates?) : PowerUp(coordinates) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+class ArmorPowerUp : PowerUp {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/armor_up.png")
 

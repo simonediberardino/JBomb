@@ -6,10 +6,9 @@ import game.entity.models.Coordinates
 import game.entity.models.Entity
 import java.awt.image.BufferedImage
 
-class StoneBlock(coordinates: Coordinates?) : HardBlock(coordinates) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+class StoneBlock : HardBlock {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val entitiesAssetsPath: String?
         get() = null

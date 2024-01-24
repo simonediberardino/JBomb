@@ -14,7 +14,7 @@ import game.sound.SoundModel
 import game.ui.panels.game.PitchPanel
 import java.util.*
 
-abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates), Explosive {
+abstract class BomberEntity : Character, Explosive {
     val activePowerUps: MutableList<Class<out PowerUp>> = ArrayList()
     var currExplosionLength = 0
     var placedBombs = 0
@@ -25,6 +25,10 @@ abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates),
     private var forceBombsSolid = false
     private val entitiesClassListMouseClick: MutableList<Class<out Entity>> = mutableListOf()
     private val entitiesClassListMouseDrag: MutableList<Class<out Entity>> = mutableListOf()
+
+    constructor() : super()
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     init {
         entitiesClassListMouseClick.add(MysteryBoxPerk::class.java)
@@ -42,8 +46,9 @@ abstract class BomberEntity(coordinates: Coordinates?) : Character(coordinates),
         get() = currExplosionLength
 
     // Calculates the minimum distance to any bomb from the current entity. If there are no bombs, returns 0.0.
-    private val minDistanceToBomb: Double
-        get() = Bomberman.getMatch().bombs.minOfOrNull { bomb -> bomb.coords!!.distanceTo(coords) } ?: 0.0
+    private val minDistanceToBomb: Double = Bomberman.getMatch().bombs.minOfOrNull {
+        bomb -> bomb.entityInfo.position.distanceTo(entityInfo.position)
+    } ?: 0.0
 
     // Retrieves the maximum number of bombs the current level allows.
     val maxBombs: Int

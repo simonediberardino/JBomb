@@ -181,7 +181,6 @@ public class BombermanFrame extends JFrame {
         InputStream inputStream = classLoader.getResourceAsStream(Paths.getCursorPath());
 
         if (inputStream == null) {
-            System.out.println("Cursor image not found in resources.");
             return;
         }
 

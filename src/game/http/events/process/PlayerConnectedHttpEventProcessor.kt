@@ -5,19 +5,20 @@ import game.entity.player.RemotePlayer
 import game.events.models.HttpEvent
 import game.http.events.forward.SpawnEntityEventForwarder
 import game.utils.Extensions.getOrTrim
+import game.utils.Log
 
 class PlayerConnectedHttpEventProcessor : HttpEvent {
     override fun invoke(vararg extras: Any) {
         val info = extras[0] as Map<String, String>
 
         val clientId = info.getOrTrim("id")?.toLong() ?: return
-        println("PlayerConnectedHttpEventProcessor: $clientId")
+        Log.i("PlayerConnectedHttpEventProcessor: $clientId")
 
         val match = Bomberman.getMatch()
         val coordinates = (match.currentLevel ?: return).info.playerSpawnCoordinates
 
         match.getEntities().forEach { e ->
-            println("Sending entity $e to $clientId")
+            Log.i("Sending entity $e to $clientId")
             SpawnEntityEventForwarder(clientId).invoke(e.toDao(), e.extras)
         }
 

@@ -16,7 +16,7 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
     constructor(worldId: Int) : this(null, worldId)
 
     init {
-        coords = defaultCoords
+        entityInfo.position = defaultCoords!!
     }
 
     override val size: Int

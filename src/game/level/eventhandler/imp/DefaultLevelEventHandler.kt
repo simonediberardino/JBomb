@@ -40,7 +40,6 @@ open class DefaultLevelEventHandler : LevelEventHandler {
     }
 
     override fun onUpdateCurrentAvailableBombsEvent(arg: Int) {
-        println("PLAYER ${Bomberman.getMatch().player}")
         Bomberman.getMatch().player?.currentBombs = arg
     }
 

@@ -40,6 +40,5 @@ class PistolExplosion : AbstractExplosion {
 
     override fun shouldHideCenter(): Boolean = true
 
-    override val type: EntityTypes
-        get() = EntityTypes.PistolExplosion
+    override val type: EntityTypes = EntityTypes.PistolExplosion
 }

@@ -98,7 +98,6 @@ class ControllerManager : Observable2(), KeyListener {
             player ?: return@Runnable
 
             for (command in HashSet(player!!.commandQueue)) {
-                println("Executing $command: ${player!!.id}")
                 notifyObservers(command)
             }
         }, KEY_DELAY_MS)

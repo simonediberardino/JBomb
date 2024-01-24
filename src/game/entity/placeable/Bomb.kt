@@ -20,17 +20,10 @@ import java.util.*
  *
  * @param caller The entity that spawned the bomb.
  */
-open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
-
-    /**
-     * Constructor for creating a bomb with a specific ID.
-     *
-     * @param id The unique identifier for the bomb.
-     * @param caller The entity that spawned the bomb.
-     */
-    constructor(id: Long, caller: Character) : this(caller) {
-        this.id = id
-    }
+open class Bomb : PlaceableEntity, Explosive {
+    constructor(caller: Character) : super(caller)
+    constructor(id: Long, caller: Character) : super(id, caller)
+    constructor(coordinates: Coordinates?, caller: Character) : super(coordinates, caller)
 
     /**
      * Gets the path to the folder containing bomb-related assets.
@@ -93,10 +86,10 @@ open class Bomb(caller: Character) : PlaceableEntity(caller), Explosive {
 
         // Trigger explosions in all directions
         Direction.values().forEach {
-            FireExplosion(user, coords!!, it, this).explode()
+            FireExplosion(caller, entityInfo.position, it, this).explode()
         }
 
-        // Invoke the explode callback if set
+        // Invoke the explosion callback if set
         onExplodeCallback?.invoke()
     }
 

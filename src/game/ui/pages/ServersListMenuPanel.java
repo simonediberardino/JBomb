@@ -37,7 +37,5 @@ public class ServersListMenuPanel extends AbstractMainMenuPanel {
     @Override
     public void onShowCallback() {
         super.onShowCallback();
-
-        System.out.println("Servers list!!");
     }
 }

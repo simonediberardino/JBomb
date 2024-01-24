@@ -55,6 +55,14 @@ public abstract class Character extends MovingEntity {
         super(coordinates);
     }
 
+    public Character(long id) {
+        super(id);
+    }
+
+    public Character() {
+        super();
+    }
+
     public abstract String[] getCharacterOrientedImages();
 
     private void setImageDirection() {
@@ -437,7 +445,7 @@ public abstract class Character extends MovingEntity {
             return;
         }
 
-        List<Coordinates> oppositeBlocksCoordinates = Coordinates.getNewCoordinatesOnDirection(getCoords(), command.commandToDirection(), PitchPanel.PIXEL_UNIT, getSize(), getSize());
+        List<Coordinates> oppositeBlocksCoordinates = Coordinates.getNewCoordinatesOnDirection(getEntityInfo().getPosition(), command.commandToDirection(), PitchPanel.PIXEL_UNIT, getSize(), getSize());
         List<Entity> entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates.get(0));
         List<Entity> entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates.get(1));
         overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirection1, oppositeDirection2);
@@ -478,8 +486,8 @@ public abstract class Character extends MovingEntity {
     @Override
     public EntityDao toDao() {
         return new CharacterDao(
-                getId(),
-                getCoords(),
+                getEntityInfo().getId(),
+                getEntityInfo().getPosition(),
                 getType().ordinal(),
                 currDirection.ordinal()
         );

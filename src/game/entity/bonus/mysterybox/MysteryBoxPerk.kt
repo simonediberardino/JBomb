@@ -13,7 +13,7 @@ class MysteryBoxPerk(level: Level, entity: Entity?) : MysteryBox(level, entity) 
 
     // TODO Refactor
     constructor(id: Long) : this(Bomberman.getMatch().currentLevel!!, null) {
-        this.id = id
+        this.entityInfo.id = id
     }
 
     override fun onPurchaseConfirm() {

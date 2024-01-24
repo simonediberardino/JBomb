@@ -36,7 +36,7 @@ abstract class AbstractExplosion(private val owner: Entity,
     init {
         // On first (center) explosion
         if (distanceFromExplosive == 0) {
-            val desiredCoords = Coordinates.getAllCoordinates(coords, size)
+            val desiredCoords = Coordinates.getAllCoordinates(entityInfo.position, size)
             Bomberman.getMatch().getEntities()
                     .parallelStream()
                     .filter { e: Entity -> desiredCoords.any { coord: Coordinates? -> Coordinates.doesCollideWith(coord, e) } }
@@ -141,7 +141,7 @@ abstract class AbstractExplosion(private val owner: Entity,
      * @param coordinates The new coordinates of the explosion.
      */
     override fun move(coordinates: Coordinates) {
-        val nextTopLeftCoords = Coordinates.nextCoords(coords, direction, size)
+        val nextTopLeftCoords = Coordinates.nextCoords(entityInfo.position, direction, size)
         try {
             val constructor = explosionClass.getConstructor(
                     Entity::class.java,

@@ -8,10 +8,9 @@ import game.items.PistolItem
 import game.utils.Paths.itemsPath
 import java.awt.image.BufferedImage
 
-class PistolPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+class PistolPowerUp : PowerUp {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override fun getImage(): BufferedImage =
             loadAndSetImage("$itemsPath/pistol.png")

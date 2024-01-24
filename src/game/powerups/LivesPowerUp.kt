@@ -6,10 +6,9 @@ import game.entity.player.BomberEntity
 import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
-class LivesPowerUp(coordinates: Coordinates?) : PowerUp(coordinates) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+class LivesPowerUp : PowerUp {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override fun getImage(): BufferedImage =
             loadAndSetImage("$powerUpsFolder/lives_up.png")

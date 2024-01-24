@@ -7,10 +7,9 @@ import game.entity.models.Coordinates
 import game.utils.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
-class TransparentDestroyableBlocksPowerUp(coords: Coordinates?) : PowerUp(coords) {
-    constructor(id: Long) : this(null) {
-        this.id = id
-    }
+class TransparentDestroyableBlocksPowerUp : PowerUp {
+    constructor(id: Long) : super(id)
+    constructor(coordinates: Coordinates?) : super(coordinates)
 
     override fun getImage(): BufferedImage = loadAndSetImage("$powerUpsFolder/blocks_up.gif")
 
