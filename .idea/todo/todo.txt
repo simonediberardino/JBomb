@@ -1,6 +1,6 @@
 
 high priorities:
-- handle entity info
+- Fix multiplayer movement not working
 - implement auto convert to map
 - spawn all entities, explosions
 - handle perks
