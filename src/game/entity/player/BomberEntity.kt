@@ -62,6 +62,7 @@ abstract class BomberEntity : Character, Explosive {
     }
 
     override fun onMove(coordinates: Coordinates) {
+        super.onMove(coordinates)
         // Handle interactions with bombs after the entity has moved.
         handleInteractionWithBombs()
     }

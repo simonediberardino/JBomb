@@ -1,18 +1,14 @@
 
 high priorities:
-- Fix multiplayer movement not working
+- handle perks/status, bombs length
 - implement auto convert to map
-- spawn all entities, explosions
-- handle perks
-- idea: update status of entity: bombs length, status etc....
 - forward client message to all clients;
+- handle you message and skin;
+
 
 - Images;
-- fix death logo;
 - database
-- multiplayer
 - Update username on resume
 - dead enemies can kill you while disappearing
-- comments
 - mystery box story mode
 - fix bomb after pistol
