@@ -1,0 +1,224 @@
+package game.engine.ui.frames;
+
+import game.engine.level.levels.world1.World1Level1;
+import game.localization.Localization;
+import game.engine.ui.pages.*;
+import game.engine.ui.panels.menu.ProfilePanel;
+import game.engine.ui.pages.SettingsPanel;
+import game.engine.ui.panels.game.MatchPanel;
+import game.engine.ui.panels.game.PitchPanel;
+import game.engine.ui.viewelements.misc.ToastHandler;
+import game.utils.Paths;
+import game.utils.Utility;
+import game.utils.XMLUtils;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.InputStream;
+
+
+/**
+ * The BombermanFrame class creates the main frame of the game and handles the creation and switching
+ * <p>
+ * between the menu and match panels.
+ */
+public class BombermanFrame extends JFrame {
+    private final CardLayout cardLayout = new CardLayout();
+    private final JPanel parentPanel = new JPanel() {
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+            ToastHandler toastHandler = ToastHandler.getInstance();
+            if (toastHandler.getText() == null) {
+                return;
+            }
+            toastHandler.showToast((Graphics2D) g);
+            repaint();
+        }
+    };
+
+    private MatchPanel matchPanel;
+    private MainMenuPanel mainMenuPanel;
+    private PlayMenuPanel playMenuPanel;
+    private ServersListMenuPanel serversListMenuPanel;
+    private LoadingPanel loadingPanel;
+    private GameOverPanel gameOverPanel;
+    private PausePanel pausePanel;
+    private ProfilePanel profilePanel;
+    private SettingsPanel settingsPanel;
+    private ArenaMenuPanel arenaMenuPanel;
+
+    /**
+     * Creates the main frame and sets its properties.
+     */
+    public void create() {
+        setIconImage(Utility.INSTANCE.loadImage(Paths.getIconPath()));
+        setTitle(Localization.get(Localization.APP_NAME));
+        setFrameProperties();
+        initMenuPanel();
+        initPlayMenuPanel();
+        initServersListMenuPanel();
+        initLoadingPanel();
+        initGameOverPanel();
+        initPausePanel();
+        initProfilePanel();
+        initSettingsPanel();
+        initArenaMenuPanel();
+        finalizeFrame();
+        pack();
+        setFrameCursor();
+    }
+
+    private void setFrameProperties() {
+        setLayout(new BorderLayout());
+        parentPanel.setLayout(cardLayout);
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        Dimension fullScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        if("true".equals(XMLUtils.readConfig("full_screen"))) {
+            setPreferredSize(fullScreenSize);
+            setUndecorated(true);
+        }else {
+            setPreferredSize(new Dimension((int) (fullScreenSize.getWidth() / 2), (int) (fullScreenSize.getHeight() / 2)));
+        }
+
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setVisible(true);
+        add(parentPanel);
+
+    }
+
+    /**
+     * Initializes the menu panel and adds it to the parent panel.
+     */
+    private void initMenuPanel() {
+        mainMenuPanel = new MainMenuPanel(cardLayout, parentPanel, this);
+        parentPanel.add(mainMenuPanel, MainMenuPanel.class.getSimpleName());
+    }
+
+    private void initPlayMenuPanel () {
+        playMenuPanel = new PlayMenuPanel(cardLayout, parentPanel, this);
+        parentPanel.add(playMenuPanel, PlayMenuPanel.class.getSimpleName());
+    }
+
+    private void initServersListMenuPanel () {
+        serversListMenuPanel = new ServersListMenuPanel(cardLayout, parentPanel, this);
+        parentPanel.add(serversListMenuPanel, ServersListMenuPanel.class.getSimpleName());
+    }
+
+    private void initPausePanel() {
+        pausePanel = new PausePanel(cardLayout, parentPanel, this);
+        parentPanel.add(pausePanel, PausePanel.class.getSimpleName());
+    }
+
+    /**
+     * Initializes the menu panel and adds it to the parent panel.
+     */
+    private void initLoadingPanel() {
+        loadingPanel = new LoadingPanel(cardLayout, parentPanel, this, new World1Level1());
+        parentPanel.add(loadingPanel, LoadingPanel.class.getSimpleName());
+    }
+
+    /**
+     * Initializes the match panel and adds it to the parent panel.
+     */
+    public void initGamePanel() {
+        matchPanel = new MatchPanel(cardLayout, parentPanel, this);
+        matchPanel.initGamePanel();
+        parentPanel.add(matchPanel, MatchPanel.class.getSimpleName());
+    }
+
+    /**
+     * Initializes the menu panel and adds it to the parent panel.
+     */
+    private void initGameOverPanel() {
+        gameOverPanel = new GameOverPanel(cardLayout, parentPanel, this);
+        parentPanel.add(gameOverPanel, GameOverPanel.class.getSimpleName());
+    }
+
+    private void initProfilePanel() {
+        profilePanel = new ProfilePanel(cardLayout, parentPanel, this);
+        parentPanel.add(profilePanel, ProfilePanel.class.getSimpleName());
+    }
+
+    /**
+     * Initializes the menu panel and adds it to the parent panel.
+     */
+    private void initSettingsPanel() {
+        settingsPanel = new SettingsPanel(cardLayout, parentPanel, this);
+        parentPanel.add(settingsPanel, SettingsPanel.class.getSimpleName());
+    }
+
+    /**
+     * Initializes the arena panel and adds it to the parent panel.
+     */
+    private void initArenaMenuPanel() {
+        arenaMenuPanel = new ArenaMenuPanel(cardLayout, parentPanel, this);
+        parentPanel.add(arenaMenuPanel, ArenaMenuPanel.class.getSimpleName());
+    }
+
+    /**
+     * Finalizes the frame by setting the key listener and focusable, making the frame visible, and
+     * showing the menu panel.
+     */
+    private void finalizeFrame() {
+        // Set key listener and focusable
+        this.setFocusable(true);
+        this.requestFocus();
+
+        // Make the frame visible
+        this.setVisible(true);
+        this.revalidate();
+        this.repaint();
+    }
+
+    private void setFrameCursor() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+        // Use ClassLoader to load the image resource from the JAR file
+        InputStream inputStream = classLoader.getResourceAsStream(Paths.getCursorPath());
+
+        if (inputStream == null) {
+            return;
+        }
+
+        try {
+            byte[] imageBytes = inputStream.readAllBytes();
+            Image image = toolkit.createImage(imageBytes);
+            Cursor c = toolkit.createCustomCursor(image, new Point(getX(), getY()), "img");
+            setCursor(c);
+        } catch (Exception ignored) {
+        }
+    }
+
+    /**
+     * Gets the pitch panel from the match panel.
+     *
+     * @return the pitch panel
+     */
+    public PitchPanel getPitchPanel() {
+        return matchPanel.getPitchPanel();
+    }
+
+    public CardLayout getCardLayout() {
+        return cardLayout;
+    }
+
+    public JPanel getParentPanel() {
+        return parentPanel;
+    }
+
+    public MatchPanel getMatchPanel() {
+        return matchPanel;
+    }
+
+    public MainMenuPanel getMainMenuPanel() {
+        return mainMenuPanel;
+    }
+
+    public LoadingPanel getLoadingPanel() {
+        return loadingPanel;
+    }
+}

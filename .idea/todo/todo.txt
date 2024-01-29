@@ -1,10 +1,11 @@
 
 high priorities:
+- Handle specific aspect of entity independentely (image, info, logic, etc.)
 - handle perks/status, bombs length
 - implement auto convert to map
 - forward client message to all clients;
 - handle you message and skin;
-
+- disable mp;
 
 - Images;
 - database

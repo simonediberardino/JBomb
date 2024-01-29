@@ -1,19 +1,19 @@
 package game;
 
-import game.data.DataInputOutput;
-import game.level.levels.Level;
-import game.level.online.OnlineGameHandler;
+import game.storage.data.DataInputOutput;
+import game.engine.level.levels.Level;
+import game.engine.level.online.OnlineGameHandler;
 import game.localization.Localization;
-import game.match.BomberManMatch;
-import game.sound.AudioManager;
-import game.tasks.GarbageCollectorTask;
-import game.ui.frames.BombermanFrame;
-import game.ui.panels.game.PagePanel;
-import game.ui.panels.game.CustomSoundMode;
-import game.ui.panels.game.MatchPanel;
-import game.ui.pages.LoadingPanel;
-import game.ui.pages.MainMenuPanel;
-import game.ui.viewelements.misc.ToastHandler;
+import game.engine.match.BomberManMatch;
+import game.engine.sound.AudioManager;
+import game.engine.tasks.GarbageCollectorTask;
+import game.engine.ui.frames.BombermanFrame;
+import game.engine.ui.panels.game.PagePanel;
+import game.engine.ui.panels.game.CustomSoundMode;
+import game.engine.ui.panels.game.MatchPanel;
+import game.engine.ui.pages.LoadingPanel;
+import game.engine.ui.pages.MainMenuPanel;
+import game.engine.ui.viewelements.misc.ToastHandler;
 
 import java.awt.*;
 import java.util.Arrays;
