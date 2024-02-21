@@ -1,10 +1,10 @@
 package game.network.events.forward
 
 import game.engine.events.models.HttpEvent
-import game.engine.world.entity.dto.EntityDto
+import game.engine.world.network.dto.EntityDto
 import game.network.dispatch.HttpMessageDispatcher
 import game.network.messages.UseItemHttpMessage
-import game.engine.world.items.ItemsTypes
+import game.engine.world.domain.entity.items.ItemsTypes
 
 class UseItemHttpEventForwarder : HttpEvent {
     override fun invoke(vararg extras: Any) {

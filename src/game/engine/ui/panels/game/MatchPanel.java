@@ -1,9 +1,9 @@
 package game.engine.ui.panels.game;
 
 import game.Bomberman;
-import game.engine.world.geo.Coordinates;
-import game.engine.world.pickups.powerups.EmptyPowerup;
-import game.engine.world.pickups.powerups.PowerUp;
+import game.engine.world.domain.entity.geo.Coordinates;
+import game.engine.world.domain.entity.pickups.powerups.EmptyPowerup;
+import game.engine.world.domain.entity.pickups.powerups.PowerUp;
 import game.engine.ui.frames.BombermanFrame;
 import game.utils.Paths;
 import game.utils.Utility;

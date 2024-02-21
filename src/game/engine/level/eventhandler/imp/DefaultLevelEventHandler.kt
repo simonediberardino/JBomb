@@ -2,7 +2,7 @@ package game.engine.level.eventhandler.imp
 
 import game.Bomberman
 import game.storage.data.DataInputOutput
-import game.engine.world.entity.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.player.BomberEntity
 import game.engine.events.game.AllEnemiesEliminatedGameEvent
 import game.engine.events.game.UpdateCurrentAvailableItemsEvent
 import game.engine.level.eventhandler.model.LevelEventHandler

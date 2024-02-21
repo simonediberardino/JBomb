@@ -1,0 +1,25 @@
+package game.engine.world.domain.entity.geo
+
+import game.engine.hardwareinput.Command
+
+enum class Direction {
+    DOWN, LEFT, UP, RIGHT;
+
+    fun toCommand(): Command {
+        return when (this) {
+            UP -> Command.MOVE_UP
+            DOWN -> Command.MOVE_DOWN
+            LEFT -> Command.MOVE_LEFT
+            RIGHT -> Command.MOVE_RIGHT
+        }
+    }
+
+    fun opposite(): Direction {
+        return when (this) {
+            UP -> DOWN
+            DOWN -> UP
+            LEFT -> RIGHT
+            RIGHT -> LEFT
+        }
+    }
+}

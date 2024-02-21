@@ -1,9 +1,9 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.world.entity.types.EntityTypes
-import game.engine.world.geo.Coordinates
-import game.engine.world.entity.impl.models.Entity
+import game.engine.world.dto.EntityTypes
+import game.engine.world.domain.entity.geo.Coordinates
+import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.events.models.HttpEvent
 import game.engine.level.online.ClientGameHandler
 import game.engine.ui.pages.LoadingPanel.LOADING_TIMER
@@ -25,13 +25,13 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         Log.i("SpawnedEntityHttpEventProcessor received $entityId, $entityType, $locationString")
         Log.i("Type $entityType $entityId")
 
-        val entity = createEntity(entityId, entityType, info) ?: return
+        val entity = createEntity(entityId, entityType) ?: return
         entity.info.position = location
 
         val delay = if (!Bomberman.isInGame()) LOADING_TIMER + 1000 else 0
 
         val timer = Timer(delay) { _: ActionEvent? ->
-            entity.spawn(true)
+            entity.logic.spawn(true)
         }
 
         timer.isRepeats = false
@@ -40,13 +40,12 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
 
     private fun createEntity(
             entityId: Long,
-            entityType: Int,
-            info: Map<String, String>
+            entityType: Int
     ): Entity? {
         return if (entityId == (Bomberman.getMatch().onlineGameHandler as ClientGameHandler?)?.id) {
-            EntityTypes.Player.toEntity(info)
+            EntityTypes.Player.toEntity(entityId)
         } else {
-            EntityTypes.values().getOrElse(entityType) { return null }.toEntity(info)
+            EntityTypes.values().getOrElse(entityType) { return null }.toEntity(entityId)
         }
     }
 

@@ -1,7 +1,7 @@
 package game.engine.level.behavior
 
-import game.engine.world.entity.impl.blocks.StoneBlock
-import game.engine.world.geo.Coordinates
+import game.engine.world.domain.entity.actors.impl.blocks.StoneBlock
+import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.ui.panels.game.PitchPanel
 import javax.swing.JPanel
 

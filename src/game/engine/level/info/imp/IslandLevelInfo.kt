@@ -1,6 +1,6 @@
 package game.engine.level.info.imp
 
-import game.engine.world.geo.Coordinates
+import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.level.levels.Level
 import java.awt.Dimension
 

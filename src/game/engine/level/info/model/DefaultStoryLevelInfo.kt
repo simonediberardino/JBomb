@@ -3,8 +3,8 @@ package game.engine.level.info.model
 import game.storage.data.DataInputOutput
 import game.engine.level.levels.Level
 import game.localization.Localization
-import game.engine.world.pickups.powerups.LivesPowerUp
-import game.engine.world.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.LivesPowerUp
+import game.engine.world.domain.entity.pickups.powerups.PowerUp
 
 abstract class DefaultStoryLevelInfo(level: Level) : DefaultLevelInfo(level) {
     override val diedMessage: String

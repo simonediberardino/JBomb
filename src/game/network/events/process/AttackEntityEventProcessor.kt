@@ -1,7 +1,7 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.world.entity.impl.models.Entity
+import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.events.models.HttpEvent
 import game.utils.Extensions.getOrTrim
 import game.utils.Log
@@ -15,6 +15,6 @@ class AttackEntityEventProcessor : HttpEvent {
         Log.i("AttackEntityEventProcessor received $victimId")
 
         val entity: Entity = Bomberman.getMatch().getEntityById(victimId) ?: return
-        entity.onAttackReceived(damage)
+        entity.logic.onAttackReceived(damage)
     }
 }

@@ -1,6 +1,6 @@
 package game.engine.ui.panels.menu;
 
-import game.engine.world.geo.Direction;
+import game.engine.world.domain.entity.geo.Direction;
 import game.engine.events.models.RunnablePar;
 import game.localization.Localization;
 import game.engine.ui.helpers.Padding;
@@ -14,7 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;
 
-import static game.engine.world.entity.impl.enemies.npcs.IntelligentEnemy.DIRECTION_REFRESH_RATE;
+import static game.engine.world.domain.entity.actors.impl.enemies.npcs.IntelligentEnemy.DIRECTION_REFRESH_RATE;
 import static game.localization.Localization.AVATAR;
 import static game.values.Dimensions.DEFAULT_X_PADDING;
 

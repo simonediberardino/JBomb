@@ -1,6 +1,6 @@
 package game.engine.level.gamehandler.model
 
-import game.engine.world.entity.impl.models.Enemy
+import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.level.levels.Level
 import java.awt.Image
 

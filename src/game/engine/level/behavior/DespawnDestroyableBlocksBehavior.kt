@@ -1,8 +1,8 @@
 package game.engine.level.behavior
 
 import game.Bomberman
-import game.engine.world.entity.impl.blocks.DestroyableBlock
-import game.engine.world.entity.impl.models.Entity
+import game.engine.world.domain.entity.actors.impl.blocks.DestroyableBlock
+import game.engine.world.domain.entity.actors.abstracts.base.Entity
 
 class DespawnDestroyableBlocksBehavior : GameBehavior() {
     override fun hostBehavior(): () -> Unit {

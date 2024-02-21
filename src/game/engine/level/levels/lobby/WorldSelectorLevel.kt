@@ -2,8 +2,8 @@ package game.engine.level.levels.lobby
 
 import game.storage.data.DataInputOutput
 import game.localization.Localization
-import game.engine.world.pickups.portals.World1Portal
-import game.engine.world.pickups.portals.World2Portal
+import game.engine.world.domain.entity.pickups.portals.World1Portal
+import game.engine.world.domain.entity.pickups.portals.World2Portal
 
 class WorldSelectorLevel : IslandLevel() {
     override fun generateLevel() {

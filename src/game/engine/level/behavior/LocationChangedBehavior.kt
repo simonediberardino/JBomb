@@ -1,8 +1,8 @@
 package game.engine.level.behavior
 
 import game.Bomberman
-import game.engine.world.entity.impl.player.Player
-import game.engine.world.entity.dto.EntityDto
+import game.engine.world.domain.entity.actors.impl.player.Player
+import game.engine.world.network.dto.EntityDto
 import game.network.events.forward.LocationUpdatedHttpEventForwarder
 import game.engine.level.online.ClientGameHandler
 

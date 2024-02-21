@@ -1,9 +1,9 @@
 package game.engine.level.behavior
 
 import game.Bomberman
-import game.engine.world.entity.impl.bonus.mystery_box.MysteryBoxPerk
-import game.engine.world.geo.Coordinates
-import game.engine.world.entity.impl.models.Entity
+import game.engine.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
+import game.engine.world.domain.entity.geo.Coordinates
+import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.level.levels.Level
 import game.engine.ui.panels.game.PitchPanel
 

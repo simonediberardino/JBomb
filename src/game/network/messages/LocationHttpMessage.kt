@@ -1,6 +1,6 @@
 package game.network.messages
 
-import game.engine.world.entity.dto.CharacterDto
+import game.engine.world.network.dto.CharacterDto
 import game.network.models.HttpActor
 import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes

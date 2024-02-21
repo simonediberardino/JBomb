@@ -1,7 +1,7 @@
 package game.engine.tasks
 
 import game.Bomberman
-import game.engine.world.entity.impl.models.Entity
+import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.tasks.observer.Observable2
 import game.utils.Utility.timePassed
 

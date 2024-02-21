@@ -1,7 +1,7 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.world.entity.impl.models.Entity
+import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.events.models.HttpEvent
 import game.utils.Extensions.getOrTrim
 import game.utils.Log

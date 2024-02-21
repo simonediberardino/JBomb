@@ -1,6 +1,6 @@
 package game.engine.hardwareinput
 
-import game.engine.world.geo.Direction
+import game.engine.world.domain.entity.geo.Direction
 
 enum class Command {
     MOVE_UP, MOVE_DOWN, MOVE_RIGHT, MOVE_LEFT, ATTACK, PAUSE, INTERACT;

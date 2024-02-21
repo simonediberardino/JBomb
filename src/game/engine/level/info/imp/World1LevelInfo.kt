@@ -1,6 +1,6 @@
 package game.engine.level.info.imp
 
-import game.engine.world.entity.impl.enemies.boss.Boss
+import game.engine.world.domain.entity.actors.impl.enemies.boss.Boss
 import game.engine.level.levels.Level
 import game.engine.level.info.model.DefaultStoryLevelInfo
 

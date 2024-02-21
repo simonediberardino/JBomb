@@ -1,7 +1,7 @@
 package game.network.events.forward
 
 import game.engine.events.models.HttpEvent
-import game.engine.world.entity.dto.CharacterDto
+import game.engine.world.network.dto.CharacterDto
 import game.network.dispatch.HttpMessageDispatcher
 import game.network.messages.LocationHttpMessage
 

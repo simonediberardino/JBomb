@@ -1,6 +1,6 @@
 package game.engine.level.info.model
 
-import game.engine.world.entity.impl.models.Enemy
+import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.level.levels.ArenaLevel
 import game.localization.Localization
 

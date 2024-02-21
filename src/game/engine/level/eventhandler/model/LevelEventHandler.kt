@@ -1,6 +1,6 @@
 package game.engine.level.eventhandler.model
 
-import game.engine.world.entity.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.player.BomberEntity
 
 interface LevelEventHandler {
     fun onDefeatGameEvent()

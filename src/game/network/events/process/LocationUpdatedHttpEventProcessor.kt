@@ -1,9 +1,9 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.world.entity.impl.models.Character
-import game.engine.world.geo.Coordinates
-import game.engine.world.geo.Direction
+import game.engine.world.domain.entity.actors.abstracts.character.Character
+import game.engine.world.domain.entity.geo.Coordinates
+import game.engine.world.domain.entity.geo.Direction
 import game.engine.events.models.HttpEvent
 import game.utils.Extensions.getOrTrim
 import game.utils.Log
@@ -21,6 +21,6 @@ class LocationUpdatedHttpEventProcessor : HttpEvent {
 
         val entity: Character = Bomberman.getMatch().getEntityById(entityId) as Character? ?: return
         entity.info.position = location
-        entity.updateMovementDirection(Direction.values()[direction])
+        entity.logic.updateMovementDirection(Direction.values()[direction])
     }
 }

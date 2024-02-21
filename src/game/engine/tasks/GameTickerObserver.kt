@@ -12,6 +12,10 @@ abstract class GameTickerObserver : Observer2 {
 
     open val delayObserverUpdate: Float
         get() {
-            return 30f
+            return DEFAULT_OBSERVER_UPDATE
         }
+
+    companion object {
+        val DEFAULT_OBSERVER_UPDATE = 30f
+    }
 }

@@ -1,7 +1,7 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.world.entity.impl.player.RemotePlayer
+import game.engine.world.domain.entity.actors.impl.player.RemotePlayer
 import game.engine.events.models.HttpEvent
 import game.network.events.forward.SpawnEntityEventForwarder
 import game.utils.Extensions.getOrTrim
@@ -23,6 +23,6 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         }
 
         val player = RemotePlayer(coordinates, clientId, 1)
-        player.spawn()
+        player.logic.spawn()
     }
 }

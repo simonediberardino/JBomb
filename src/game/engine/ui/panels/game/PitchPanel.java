@@ -2,8 +2,8 @@ package game.engine.ui.panels.game;
 
 import game.engine.match.BomberManMatch;
 import game.Bomberman;
-import game.engine.world.entity.impl.enemies.boss.ghost.GhostBoss;
-import game.engine.world.entity.impl.models.Entity;
+import game.engine.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
+import game.engine.world.domain.entity.actors.abstracts.base.Entity;
 import game.engine.tasks.observer.Observer2;
 import game.engine.events.models.RunnablePar;
 import game.engine.sound.AudioManager;

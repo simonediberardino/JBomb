@@ -1,6 +1,6 @@
 package game.engine.level.behavior
 
-import game.engine.world.entity.impl.models.Enemy
+import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import java.util.*
 
 class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Array<Class<out Enemy>>): GameBehavior() {

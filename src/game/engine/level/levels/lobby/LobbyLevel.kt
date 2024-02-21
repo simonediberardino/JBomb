@@ -1,7 +1,7 @@
 package game.engine.level.levels.lobby
 
 import game.Bomberman
-import game.engine.world.entity.impl.player.Player
+import game.engine.world.domain.entity.actors.impl.player.Player
 import game.engine.level.gamehandler.imp.DefaultGameHandler
 import game.engine.level.gamehandler.model.GameHandler
 import game.engine.level.levels.StoryLevel

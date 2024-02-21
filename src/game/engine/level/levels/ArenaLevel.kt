@@ -2,8 +2,8 @@ package game.engine.level.levels
 
 import game.Bomberman
 import game.storage.data.DataInputOutput
-import game.engine.world.entity.impl.player.BomberEntity
-import game.engine.world.entity.impl.models.Entity
+import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.events.game.RoundPassedGameEvent
 import game.engine.events.game.UpdateCurrentAvailableItemsEvent
 import game.engine.events.game.UpdateCurrentBombsLengthEvent

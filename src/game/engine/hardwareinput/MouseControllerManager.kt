@@ -1,9 +1,9 @@
 package game.engine.hardwareinput
 
 import game.Bomberman
-import game.engine.world.geo.Coordinates
-import game.engine.world.geo.Direction
-import game.engine.world.entity.impl.models.Entity
+import game.engine.world.domain.entity.geo.Coordinates
+import game.engine.world.domain.entity.geo.Direction
+import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.tasks.PeriodicTask
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent

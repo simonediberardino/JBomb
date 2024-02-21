@@ -1,10 +1,10 @@
 package game.engine.level.behavior
 
 import game.Bomberman
-import game.engine.world.entity.impl.blocks.DestroyableBlock
-import game.engine.world.geo.Coordinates
+import game.engine.world.domain.entity.actors.impl.blocks.DestroyableBlock
+import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.level.levels.Level
-import game.engine.world.pickups.portals.EndLevelPortal
+import game.engine.world.domain.entity.pickups.portals.EndLevelPortal
 import game.engine.ui.panels.game.PitchPanel
 
 class GenerateDestroyableBlocksBehavior(val level: Level): GameBehavior() {
