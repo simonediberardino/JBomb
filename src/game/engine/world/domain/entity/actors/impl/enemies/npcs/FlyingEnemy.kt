@@ -1,6 +1,6 @@
 package game.engine.world.domain.entity.actors.impl.enemies.npcs
 
-import game.engine.world.domain.entity.actors.impl.blocks.DestroyableBlock
+import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 

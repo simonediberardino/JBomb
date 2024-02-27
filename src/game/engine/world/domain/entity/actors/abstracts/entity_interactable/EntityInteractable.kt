@@ -22,4 +22,12 @@ abstract class EntityInteractable : Entity {
         const val SHOW_DEATH_PAGE_DELAY_MS: Long = 2500
         const val INTERACTION_DELAY_MS: Long = 500
     }
+
+    internal object DEFAULT {
+        val WHITELIST_OBSTACLES: MutableSet<Class<out Entity>> = hashSetOf()
+        val OBSTACLES: Set<Class<out Entity>> = mutableSetOf()
+        val LAST_INTERACTION_TIME: Long = 0L
+        val LAST_DAMAGE_TIME: Long = 0L
+        val ATTACK_DAMAGE = 100
+    }
 }

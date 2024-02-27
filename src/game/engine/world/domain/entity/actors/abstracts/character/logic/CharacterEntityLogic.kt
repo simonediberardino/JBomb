@@ -8,7 +8,7 @@ import game.engine.ui.panels.game.PitchPanel
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
-import game.engine.world.domain.entity.actors.impl.bomb.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.models.State
 import game.engine.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
 import game.engine.world.domain.entity.geo.Coordinates
@@ -48,8 +48,8 @@ abstract class CharacterEntityLogic(
 
     private fun directionUpdateLogic(direction: Direction) {
         // Update previousDirection and currDirection to reflect the new direction.
-        entity.state.previousDirection = entity.state.currDirection
-        entity.state.currDirection = direction
+        entity.state.previousDirection = entity.state.direction
+        entity.state.direction = direction
     }
 
     override fun onStep() {

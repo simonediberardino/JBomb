@@ -1,32 +1,33 @@
-package game.engine.world.domain.entity.actors.abstracts.character.graphics
+package game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.graphics
 
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.base.EntityImageModel
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
 import java.awt.image.BufferedImage
 
-class CharacterImageModel(
+class ExplosionImageModel(
         entity: Entity,
         entitiesAssetsPath: String = Entity.DEFAULT.ENTITIES_ASSETS_PATH,
         hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
         hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO,
         paddingTop: Int = Entity.DEFAULT.PADDING_TOP,
         paddingWidth: Int = Entity.DEFAULT.PADDING_WIDTH,
-        imageRefreshRate: Int = Entity.DEFAULT.IMAGE_REFRESH_RATE,
+        imageRefreshRate: Int = AbstractExplosion.DEFAULT.IMAGE_REFRESH_RATE,
         _image: BufferedImage? = Entity.DEFAULT.IMAGE,
         lastImageIndex: Int = Entity.DEFAULT.LAST_IMAGE_INDEX,
         lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
         imagePath: String = Entity.DEFAULT.IMAGE_PATH,
-        val characterOrientedImages: Array<String>,
 ) : EntityImageModel(
-        entity,
-        entitiesAssetsPath,
-        hitboxSizeToWidthRatio,
-        hitboxSizeToHeightRatio,
-        paddingTop,
-        paddingWidth,
-        imageRefreshRate,
-        _image,
-        lastImageIndex,
-        lastImageUpdate,
-        imagePath
-)
+        entity = entity,
+        entitiesAssetsPath = entitiesAssetsPath,
+        hitboxSizeToWidthRatio = hitboxSizeToWidthRatio,
+        hitboxSizeToHeightRatio = hitboxSizeToHeightRatio,
+        paddingTop = paddingTop,
+        paddingWidth = paddingWidth,
+        imageRefreshRate = imageRefreshRate,
+        _image = _image,
+        lastImageIndex = lastImageIndex,
+        lastImageUpdate = lastImageUpdate,
+        imagePath = imagePath
+) {
+}

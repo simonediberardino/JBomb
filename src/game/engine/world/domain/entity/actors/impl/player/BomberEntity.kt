@@ -1,9 +1,9 @@
 package game.engine.world.domain.entity.actors.impl.player
 
 import game.Bomberman
-import game.engine.world.domain.entity.actors.impl.blocks.DestroyableBlock
+import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.engine.world.domain.entity.actors.impl.blocks.HardBlock
-import game.engine.world.domain.entity.actors.impl.bomb.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
 import game.engine.world.network.dto.BomberEntityDto

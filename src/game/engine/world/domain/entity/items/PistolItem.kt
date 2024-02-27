@@ -1,8 +1,8 @@
 package game.engine.world.domain.entity.items
 
-import game.engine.world.domain.entity.actors.impl.blocks.DestroyableBlock
+import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.engine.world.domain.entity.actors.impl.blocks.HardBlock
-import game.engine.world.domain.entity.actors.impl.bomb.AbstractExplosion.Companion.SIZE
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion.Companion.SIZE
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.actors.impl.bomb.PistolExplosion
 import game.engine.world.domain.entity.geo.Coordinates

@@ -2,8 +2,8 @@ package game.engine.world.domain.entity.actors.abstracts.entity_interactable.log
 
 import game.engine.level.behavior.GameBehavior
 import game.engine.ui.panels.game.PitchPanel
-import game.engine.world.domain.entity.actors.abstracts.base.logic.DefaultEntityGameBehavior
-import game.engine.world.domain.entity.actors.impl.bomb.AbstractExplosion
+import game.engine.world.domain.entity.actors.abstracts.base.logic.EntityLogic
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.engine.world.domain.entity.geo.Coordinates
@@ -14,7 +14,7 @@ import java.util.*
 
 abstract class EntityInteractableLogic(
         override val entity: EntityInteractable
-) : DefaultEntityGameBehavior(entity), IEntityInteractableLogic {
+) : EntityLogic(entity), IEntityInteractableLogic {
     override fun attack(e: Entity?) {
         val gameBehavior: GameBehavior = object : GameBehavior() {
             override fun hostBehavior(): () -> Unit {
@@ -148,7 +148,7 @@ abstract class EntityInteractableLogic(
         // If the entity can move or it is immune to bombs, update the entity's position
         //if the entity is instance of explosion, it'll be able to move further anyway but no more explosions will be generated in constructor
         if (entity is AbstractExplosion && !canMove) {
-            (entity as AbstractExplosion).onObstacle(nextTopLeftCoords)
+            (entity as AbstractExplosion).logic.onObstacle(nextTopLeftCoords)
         } else if (canMove) {
             move(nextTopLeftCoords)
         }

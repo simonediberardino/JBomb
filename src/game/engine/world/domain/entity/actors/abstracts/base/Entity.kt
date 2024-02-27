@@ -3,7 +3,7 @@ package game.engine.world.domain.entity.actors.abstracts.base
 import game.engine.events.models.RunnablePar
 import game.engine.tasks.GameTickerObserver
 import game.engine.world.network.dto.EntityDto
-import game.engine.world.domain.entity.actors.impl.bomb.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.models.State
 import game.engine.world.dto.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
@@ -15,7 +15,7 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicReference
 
 // Interface defining common behavior for entities
-interface IEntityGameBehavior {
+interface IEntityLogic {
     fun onAttackReceived(damage: Int)
     fun interact(e: Entity?)
     fun doInteract(e: Entity?)
@@ -42,14 +42,15 @@ interface IEntityGameBehavior {
 
 // Class representing the state of an entity
 open class EntityState(
-        var isSpawned: Boolean = false,
-        var isImmune: Boolean = false,
-        var state: AtomicReference<State>? = AtomicReference(),
-        var isInvisible: Boolean = false,
-        val size: Int,
-        var alpha: Float = 1f,
-        val interactionEntities: MutableSet<Class<out Entity>> = mutableSetOf(),
-        var lastImageUpdate: Long = 0L
+        open var entity: Entity,
+        open var isSpawned: Boolean = Entity.DEFAULT.SPAWNED,
+        open var isImmune: Boolean = Entity.DEFAULT.IMMUNE,
+        open var state: AtomicReference<State>? = Entity.DEFAULT.STATE,
+        open var isInvisible: Boolean = Entity.DEFAULT.IS_INVISIBLE,
+        open val size: Int,
+        open var alpha: Float = Entity.DEFAULT.ALPHA,
+        open val interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
+        open var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE
 )
 
 data class EntityInfo(
@@ -65,16 +66,16 @@ open class EntityProperties(
 
 open class EntityImageModel(
         val entity: Entity,
-        val entitiesAssetsPath: String = "",
-        var hitboxSizeToWidthRatio: Float = 1f,
-        var hitboxSizeToHeightRatio: Float = 1f,
-        var paddingTop: Int = 0,
-        var paddingWidth: Int = 0,
-        val imageRefreshRate: Int = 200,
-        var _image: BufferedImage? = null,
-        var lastImageIndex: Int = 0,
-        var lastImageUpdate: Long = 0,
-        var imagePath: String = ""
+        val entitiesAssetsPath: String = Entity.DEFAULT.ENTITIES_ASSETS_PATH,
+        var hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
+        var hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO,
+        var paddingTop: Int = Entity.DEFAULT.PADDING_TOP,
+        var paddingWidth: Int = Entity.DEFAULT.PADDING_WIDTH,
+        val imageRefreshRate: Int = Entity.DEFAULT.IMAGE_REFRESH_RATE,
+        var _image: BufferedImage? = Entity.DEFAULT.IMAGE,
+        var lastImageIndex: Int = Entity.DEFAULT.LAST_IMAGE_INDEX,
+        var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
+        var imagePath: String = Entity.DEFAULT.IMAGE_PATH
 ) {
     private val defaultPaddingTopFunction : RunnablePar = object : RunnablePar {
         override fun <T> execute(par: T): Any {
@@ -119,32 +120,55 @@ interface IEntityGraphicsBehavior {
 
 // Main Entity class implementing EntityBehavior
 abstract class Entity : GameTickerObserver, Comparable<Entity> {
-    abstract val logic: IEntityGameBehavior
-    abstract val entityInfo: EntityInfo
+    abstract val logic: IEntityLogic
+    abstract val info: EntityInfo
     abstract val properties: EntityProperties
     abstract val state: EntityState
     abstract val image: EntityImageModel
     abstract val graphicsBehavior: IEntityGraphicsBehavior
-    var info = EntityInfo()
 
     constructor(coordinates: Coordinates? = Coordinates(-1, -1)) {
-        info.id = UUID.randomUUID().mostSignificantBits
+        // MEGA WORKAROUND! Remove.
+        while (true) {
+            try {
+                info.id = UUID.randomUUID().mostSignificantBits
 
-        if (coordinates != null)
-            info.position = coordinates
+                if (coordinates != null)
+                    info.position = coordinates
+
+                break
+
+            } catch (exception: Exception) {
+                Log.e(exception.message.toString())
+            }
+        }
     }
 
     constructor(id: Long) {
-        info.id = id
+        // MEGA WORKAROUND! Remove.
+        while (true) {
+            try {
+                info.id = id
+                break
+
+            } catch (exception: Exception) {
+                Log.e(exception.message.toString())
+            }
+        }
     }
 
     constructor() : this(null)
 
     init {
-        try {
-            info.type = properties.type
-        } catch (exception: Exception) {
-            Log.e(exception.message.toString())
+        // MEGA WORKAROUND! Remove.
+        while (true) {
+            try {
+                info.type = properties.type
+                break
+
+            } catch (exception: Exception) {
+                Log.e(exception.message.toString())
+            }
         }
     }
 
@@ -160,9 +184,9 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
 
     open fun toDto(): EntityDto {
         return EntityDto(
-                entityInfo.id,
-                entityInfo.position,
-                entityInfo.type.ordinal
+                info.id,
+                info.position,
+                info.type.ordinal
         )
     }
 
@@ -173,12 +197,33 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Entity) return false
-        return entityInfo.id == other.entityInfo.id
+        return info.id == other.info.id
     }
 
-    override fun hashCode(): Int = Objects.hash(entityInfo.id)
+    override fun hashCode(): Int = Objects.hash(info.id)
 
     override fun toString(): String {
-        return "Entity{id=${entityInfo.id}, entityInfo= $entityInfo}"
+        return "Entity{id=${info.id}, info= $info}"
+    }
+
+    internal object DEFAULT {
+        val ALPHA = 1f
+        val LAST_IMAGE_UPDATE = 0L
+        val IS_INVISIBLE = false
+        val STATE = AtomicReference<State>()
+        val SPAWNED: Boolean = false
+        val IMMUNE: Boolean = false
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf()
+        val ENTITIES_ASSETS_PATH = ""
+        val HITBOX_WIDTH_RATIO = 1f
+        val HITBOX_HEIGHT_RATIO = 1f
+        val PADDING_TOP = 0
+        val PADDING_WIDTH = 0
+        val IMAGE_REFRESH_RATE = 200
+        val LAST_IMAGE_INDEX = 0
+        val IMAGE_PATH = ""
+        val IMAGE = null
+        
+        var imagePath: String = Entity.DEFAULT.IMAGE_PATH
     }
 }

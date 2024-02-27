@@ -2,15 +2,15 @@ package game.engine.world.domain.entity.actors.abstracts.base.logic
 
 import game.Bomberman
 import game.engine.ui.panels.game.PitchPanel
-import game.engine.world.domain.entity.actors.impl.bomb.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
-import game.engine.world.domain.entity.actors.abstracts.base.IEntityGameBehavior
+import game.engine.world.domain.entity.actors.abstracts.base.IEntityLogic
 import game.engine.world.domain.entity.actors.impl.models.State
 import game.engine.world.domain.entity.geo.Coordinates
 import game.network.events.forward.DespawnEntityEventForwarder
 import game.network.events.forward.SpawnEntityEventForwarder
 
-abstract class DefaultEntityGameBehavior(open val entity: Entity) : IEntityGameBehavior {
+abstract class EntityLogic(open val entity: Entity) : IEntityLogic {
     override fun eliminated() {
         despawn()
         notifyDespawn()

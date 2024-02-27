@@ -4,6 +4,10 @@ import game.engine.world.dto.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
+import game.engine.world.domain.entity.actors.abstracts.base.EntityImageModel
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.graphics.ExplosionImageModel
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.state.ExplosionProperties
 import game.engine.world.domain.entity.actors.impl.models.Explosive
 import game.utils.Paths
 import game.values.DrawPriority
@@ -30,15 +34,15 @@ class PistolExplosion : AbstractExplosion {
             explosive: Explosive,
             canExpand: Boolean) : super(owner, coordinates, direction, distanceFromExplosive, explosive, canExpand)
 
-    override val entitiesAssetsPath: String get() ="${Paths.entitiesFolder}/bomb/flame"
+    override val properties: ExplosionProperties = ExplosionProperties(
+            types = EntityTypes.PistolExplosion,
+            explosionClass = javaClass,
+            drawPriority = DrawPriority.DRAW_PRIORITY_1,
+            ignoreCenter = true
+    )
 
-    override val drawPriority: DrawPriority
-        get() = DrawPriority.DRAW_PRIORITY_1
-
-    override val explosionClass: Class<out AbstractExplosion>
-        get() = javaClass
-
-    override fun shouldHideCenter(): Boolean = true
-
-    override val type: EntityTypes = EntityTypes.PistolExplosion
+    override val image: ExplosionImageModel = ExplosionImageModel(
+            entity = this,
+            entitiesAssetsPath = "${Paths.entitiesFolder}/bomb/flame"
+    )
 }

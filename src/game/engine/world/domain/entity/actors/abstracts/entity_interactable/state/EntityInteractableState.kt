@@ -2,19 +2,36 @@ package game.engine.world.domain.entity.actors.abstracts.entity_interactable.sta
 
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.base.EntityState
+import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
+import game.engine.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
+import game.engine.world.domain.entity.actors.impl.blocks.HardBlock
+import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.engine.world.domain.entity.actors.impl.models.State
+import game.engine.world.domain.entity.actors.impl.placeable.Bomb
+import game.engine.world.domain.entity.actors.impl.player.BomberEntity
 import java.util.concurrent.atomic.AtomicReference
 
-open class EntityInteractableState(isSpawned: Boolean = false,
-                                   isImmune: Boolean = false,
-                                   state: AtomicReference<State>? = AtomicReference(),
-                                   isInvisible: Boolean = false,
-                                   size: Int,
-                                   alpha: Float = 1f,
-                                   interactionEntities: MutableSet<Class<out Entity>> = mutableSetOf(),
-                                   val whitelistObstacles: MutableSet<Class<out Entity>> = mutableSetOf(),
-                                   val obstacles: Set<Class<out Entity>> = mutableSetOf(),
-                                   var lastInteractionTime: Long = 0L,
-                                   var lastDamageTime: Long = 0,
-                                   var attackDamage: Int = 100
-) : EntityState(isSpawned, isImmune, state, isInvisible, size, alpha, interactionEntities)
+open class EntityInteractableState(
+        entity: Entity,
+        isSpawned: Boolean = Entity.DEFAULT.SPAWNED,
+        isImmune: Boolean = Entity.DEFAULT.IMMUNE,
+        state: AtomicReference<State>? = Entity.DEFAULT.STATE,
+        isInvisible: Boolean = Entity.DEFAULT.IS_INVISIBLE,
+        size: Int,
+        alpha: Float = Entity.DEFAULT.ALPHA,
+        interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
+        open val whitelistObstacles: MutableSet<Class<out Entity>> = EntityInteractable.DEFAULT.WHITELIST_OBSTACLES,
+        open val obstacles: Set<Class<out Entity>> = EntityInteractable.DEFAULT.OBSTACLES,
+        open var lastInteractionTime: Long = EntityInteractable.DEFAULT.LAST_INTERACTION_TIME,
+        open var lastDamageTime: Long = EntityInteractable.DEFAULT.LAST_DAMAGE_TIME,
+        open var attackDamage: Int = EntityInteractable.DEFAULT.ATTACK_DAMAGE
+) : EntityState(
+        entity = entity,
+        isSpawned = isSpawned,
+        isImmune = isImmune,
+        state = state,
+        isInvisible = isInvisible,
+        size = size,
+        alpha = alpha,
+        interactionEntities = interactionEntities
+)

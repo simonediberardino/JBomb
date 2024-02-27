@@ -1,7 +1,7 @@
 package game.engine.level.behavior
 
 import game.Bomberman
-import game.engine.world.domain.entity.actors.impl.blocks.DestroyableBlock
+import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.level.levels.Level
 import game.engine.world.domain.entity.pickups.portals.EndLevelPortal

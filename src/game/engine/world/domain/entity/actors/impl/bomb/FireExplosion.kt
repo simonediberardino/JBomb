@@ -4,6 +4,10 @@ import game.engine.world.dto.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
+import game.engine.world.domain.entity.actors.abstracts.base.EntityImageModel
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.graphics.ExplosionImageModel
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.state.ExplosionProperties
 import game.engine.world.domain.entity.actors.impl.models.Explosive
 import game.utils.Paths
 
@@ -29,11 +33,13 @@ class FireExplosion : AbstractExplosion {
             explosive: Explosive,
             canExpand: Boolean) : super(owner, coordinates, direction, distanceFromExplosive, explosive, canExpand)
 
-    override val entitiesAssetsPath: String get() ="${Paths.entitiesFolder}/bomb/flame"
+    override val properties: ExplosionProperties = ExplosionProperties(
+            types = EntityTypes.FireExplosion,
+            explosionClass = javaClass
+    )
 
-    override val type: EntityTypes
-        get() = EntityTypes.FireExplosion
-
-    override val explosionClass: Class<out AbstractExplosion>
-        get() = javaClass
+    override val image: ExplosionImageModel = ExplosionImageModel(
+            entity = this,
+            entitiesAssetsPath = "${Paths.entitiesFolder}/bomb/flame"
+    )
 }

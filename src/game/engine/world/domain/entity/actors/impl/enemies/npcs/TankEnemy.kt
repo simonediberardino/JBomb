@@ -2,8 +2,8 @@ package game.engine.world.domain.entity.actors.impl.enemies.npcs
 
 import game.engine.world.dto.EntityTypes
 import game.engine.world.domain.entity.actors.impl.player.Player
-import game.engine.world.domain.entity.actors.impl.bomb.AbstractExplosion
-import game.engine.world.domain.entity.actors.impl.bomb.AbstractExplosion.Companion.SPAWN_OFFSET
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion.Companion.SPAWN_OFFSET
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.actors.impl.bomb.FireExplosion
 import game.engine.world.domain.entity.geo.Coordinates

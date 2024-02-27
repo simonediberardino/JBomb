@@ -1,7 +1,7 @@
 package game.engine.world.dto
 
 import game.Bomberman
-import game.engine.world.domain.entity.actors.impl.blocks.DestroyableBlock
+import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.engine.world.domain.entity.actors.impl.blocks.InvisibleBlock
 import game.engine.world.domain.entity.actors.impl.blocks.StoneBlock
 import game.engine.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk

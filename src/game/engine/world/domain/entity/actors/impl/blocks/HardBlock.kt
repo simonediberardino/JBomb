@@ -1,8 +1,8 @@
 package game.engine.world.domain.entity.actors.impl.blocks
 
-import game.engine.world.domain.entity.actors.impl.models.Block
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
+import game.engine.world.domain.entity.actors.impl.blocks.base_block.Block
 
 abstract class HardBlock : Block {
     constructor(id: Long) : super(id)
