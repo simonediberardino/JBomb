@@ -2,8 +2,8 @@ package game.engine.world.domain.entity.pickups.portals
 
 import game.Bomberman
 import game.storage.data.DataInputOutput
-import game.engine.world.dto.EntityTypes
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.types.EntityTypes
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.level.levels.lobby.WorldSelectorLevel
 import game.utils.Paths.powerUpsFolder

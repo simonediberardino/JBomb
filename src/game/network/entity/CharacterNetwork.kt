@@ -1,10 +1,10 @@
-package game.engine.world.network.dto
+package game.network.entity
 
 import game.engine.world.domain.entity.geo.Coordinates
 
-open class CharacterDto(
+open class CharacterNetwork(
         entityId: Long,
         entityLocation: Coordinates?,
         entityType: Int,
         val direction: Int)
-    : EntityDto(entityId, entityLocation, entityType)
+    : EntityNetwork(entityId, entityLocation, entityType)

@@ -1,7 +1,7 @@
 package game.engine.world.domain.entity.actors.impl.enemies.npcs
 
 import game.engine.world.domain.entity.actors.impl.models.*
-import game.engine.world.domain.entity.actors.impl.player.Player
+import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction

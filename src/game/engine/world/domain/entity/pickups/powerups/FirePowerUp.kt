@@ -1,8 +1,8 @@
 package game.engine.world.domain.entity.pickups.powerups
 
-import game.engine.world.dto.EntityTypes
+import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion.Companion.MAX_EXPLOSION_LENGTH
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.events.game.ExplosionLengthPowerUpEvent
 import game.utils.Paths.powerUpsFolder

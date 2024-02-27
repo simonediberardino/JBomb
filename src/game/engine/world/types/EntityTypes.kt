@@ -1,4 +1,4 @@
-package game.engine.world.dto
+package game.engine.world.types
 
 enum class EntityTypes {
     Player,
@@ -42,9 +42,5 @@ enum class EntityTypes {
 
     fun toInt(): Int {
         return ordinal
-    }
-
-    fun toEntity(id: Long) : game.engine.world.domain.entity.actors.abstracts.base.Entity? {
-        return EntityFactory.instance.toEntity(this, id)
     }
 }

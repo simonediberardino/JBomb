@@ -1,14 +1,12 @@
-package game.engine.world.network.dto
+package game.network.entity
 
 import game.engine.world.domain.entity.geo.Coordinates
 
-class BomberEntityDto(
+class BomberEntityNetwork(
         entityId: Long,
         entityLocation: Coordinates,
         entityType: Int,
         direction: Int,
         val currExplosionLength: Int,
-        val currentBombs: Int,
-
-        ) :
-        CharacterDto(entityId, entityLocation, entityType, direction)
+        val currentBombs: Int
+) : CharacterNetwork(entityId, entityLocation, entityType, direction)

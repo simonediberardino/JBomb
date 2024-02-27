@@ -2,13 +2,8 @@ package game.engine.world.domain.entity.actors.abstracts.entity_interactable.sta
 
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.base.EntityState
-import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
-import game.engine.world.domain.entity.actors.impl.blocks.HardBlock
-import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.engine.world.domain.entity.actors.impl.models.State
-import game.engine.world.domain.entity.actors.impl.placeable.Bomb
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
 import java.util.concurrent.atomic.AtomicReference
 
 open class EntityInteractableState(

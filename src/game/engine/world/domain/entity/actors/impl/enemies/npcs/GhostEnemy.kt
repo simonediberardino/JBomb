@@ -1,6 +1,6 @@
 package game.engine.world.domain.entity.actors.impl.enemies.npcs
 
-import game.engine.world.dto.EntityTypes
+import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.ui.panels.game.PitchPanel

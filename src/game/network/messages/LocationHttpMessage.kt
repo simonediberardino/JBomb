@@ -1,11 +1,11 @@
 package game.network.messages
 
-import game.engine.world.network.dto.CharacterDto
+import game.network.entity.CharacterNetwork
 import game.network.models.HttpActor
 import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes
 
-class LocationHttpMessage(private val character: CharacterDto): HttpMessage {
+class LocationHttpMessage(private val character: CharacterNetwork): HttpMessage {
     override fun serialize(): String {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.LOCATION.ordinal.toString()

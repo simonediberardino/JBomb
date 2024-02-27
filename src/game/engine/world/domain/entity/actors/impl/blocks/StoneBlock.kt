@@ -1,7 +1,7 @@
 package game.engine.world.domain.entity.actors.impl.blocks
 
 import game.Bomberman
-import game.engine.world.dto.EntityTypes
+import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import java.awt.image.BufferedImage

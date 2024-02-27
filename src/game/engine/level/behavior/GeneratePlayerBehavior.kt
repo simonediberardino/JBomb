@@ -1,7 +1,7 @@
 package game.engine.level.behavior
 
 import game.Bomberman
-import game.engine.world.domain.entity.actors.impl.player.Player
+import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.engine.world.domain.entity.geo.Coordinates
 
 class GeneratePlayerBehavior(val coordinates: Coordinates): GameBehavior() {

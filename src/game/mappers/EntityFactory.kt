@@ -1,4 +1,4 @@
-package game.engine.world.dto
+package game.mappers
 
 import game.Bomberman
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
@@ -10,13 +10,14 @@ import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.Hat
 import game.engine.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.*
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
-import game.engine.world.domain.entity.actors.impl.player.Player
-import game.engine.world.domain.entity.actors.impl.player.RemotePlayer
+import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.engine.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
 import game.engine.level.online.ClientGameHandler
 import game.engine.world.domain.entity.pickups.portals.EndLevelPortal
 import game.engine.world.domain.entity.pickups.portals.World1Portal
 import game.engine.world.domain.entity.pickups.portals.World2Portal
 import game.engine.world.domain.entity.pickups.powerups.*
+import game.engine.world.types.EntityTypes
 
 class EntityFactory {
     fun toEntity(entityTypes: EntityTypes, id: Long): Entity? {

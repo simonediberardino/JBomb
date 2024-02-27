@@ -4,7 +4,7 @@ import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.base.EntityImageModel
 import java.awt.image.BufferedImage
 
-class CharacterImageModel(
+abstract class CharacterImageModel(
         entity: Entity,
         entitiesAssetsPath: String = Entity.DEFAULT.ENTITIES_ASSETS_PATH,
         hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
@@ -15,8 +15,7 @@ class CharacterImageModel(
         _image: BufferedImage? = Entity.DEFAULT.IMAGE,
         lastImageIndex: Int = Entity.DEFAULT.LAST_IMAGE_INDEX,
         lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
-        imagePath: String = Entity.DEFAULT.IMAGE_PATH,
-        val characterOrientedImages: Array<String>,
+        imagePath: String = Entity.DEFAULT.IMAGE_PATH
 ) : EntityImageModel(
         entity,
         entitiesAssetsPath,
@@ -29,4 +28,6 @@ class CharacterImageModel(
         lastImageIndex,
         lastImageUpdate,
         imagePath
-)
+) {
+    abstract fun characterOrientedImages(): Array<String>
+}

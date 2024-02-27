@@ -1,6 +1,6 @@
 package game.engine.world.domain.entity.pickups.portals
 
-import game.engine.world.dto.EntityTypes
+import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.ui.panels.game.PitchPanel
 import java.awt.Dimension

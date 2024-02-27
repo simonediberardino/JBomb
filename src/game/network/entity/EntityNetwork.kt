@@ -1,8 +1,8 @@
-package game.engine.world.network.dto
+package game.network.entity
 
 import game.engine.world.domain.entity.geo.Coordinates
 
-open class EntityDto(
+open class EntityNetwork(
         val entityId: Long,
         val entityLocation: Coordinates?,
         val entityType: Int

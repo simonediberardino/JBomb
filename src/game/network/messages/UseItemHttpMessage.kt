@@ -1,12 +1,12 @@
 package game.network.messages
 
-import game.engine.world.network.dto.EntityDto
+import game.network.entity.EntityNetwork
 import game.network.models.HttpActor
 import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes
 import game.engine.world.domain.entity.items.ItemsTypes
 
-class UseItemHttpMessage(private val userDao: EntityDto, private val itemType: ItemsTypes) : HttpMessage {
+class UseItemHttpMessage(private val userDao: EntityNetwork, private val itemType: ItemsTypes) : HttpMessage {
     override fun serialize(): String {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.USE_ITEM.ordinal.toString()

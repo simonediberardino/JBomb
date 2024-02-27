@@ -1,7 +1,7 @@
 package game.engine.world.domain.entity.actors.impl.enemies.boss.ghost;
 
 import game.Bomberman;
-import game.engine.world.dto.EntityTypes;
+import game.engine.world.types.EntityTypes;
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.GhostEnemy;
 import game.engine.world.domain.entity.actors.impl.enemies.boss.Boss;
 import game.engine.world.domain.entity.geo.Coordinates;

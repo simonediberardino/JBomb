@@ -6,7 +6,7 @@ import game.engine.world.domain.entity.actors.impl.enemies.npcs.Eagle
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.FastEnemy
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.level.levels.Level
 import game.engine.level.levels.StoryLevel
 import game.engine.level.levels.lobby.WorldSelectorLevel

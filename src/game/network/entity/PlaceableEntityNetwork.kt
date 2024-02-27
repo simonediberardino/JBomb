@@ -1,10 +1,10 @@
-package game.engine.world.network.dto
+package game.network.entity
 
 import game.engine.world.domain.entity.geo.Coordinates
 
-class PlaceableEntityDto(
+class PlaceableEntityNetwork(
         entityId: Long,
         entityLocation: Coordinates?,
         entityType: Int,
         val callerId: Long)
-    : EntityDto(entityId, entityLocation, entityType)
+    : EntityNetwork(entityId, entityLocation, entityType)

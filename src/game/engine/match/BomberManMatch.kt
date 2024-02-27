@@ -3,9 +3,9 @@ package game.engine.match
 import game.Bomberman
 import game.storage.data.DataInputOutput
 import game.storage.data.SortedLinkedList
-import game.engine.world.domain.entity.actors.impl.player.Player
+import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.hardwareinput.ControllerManager
 import game.engine.hardwareinput.ControllerManager.Companion.setDefaultCommandDelay

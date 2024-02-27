@@ -2,7 +2,7 @@ package game.engine.hardwareinput
 
 import game.Bomberman
 import game.storage.data.DataInputOutput
-import game.engine.world.domain.entity.actors.impl.player.Player
+import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.engine.tasks.observer.Observable2
 import game.engine.tasks.PeriodicTask
 import game.utils.Utility.timePassed

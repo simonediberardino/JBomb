@@ -2,7 +2,7 @@ package game.engine.world.domain.entity.actors.impl.enemies.npcs
 
 import game.Bomberman
 import game.engine.world.domain.entity.actors.impl.models.*
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.events.game.KilledEnemyEvent
 import game.engine.events.game.ScoreGameEvent
 import game.engine.world.domain.entity.actors.abstracts.base.Entity

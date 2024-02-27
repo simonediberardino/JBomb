@@ -12,5 +12,5 @@ abstract class BlockEntityLogic(entity: Entity) : EntityLogic(entity), IBlockEnt
         destroy()
     }
 
-    override fun onGameTick(arg: Any?) {}
+    override fun observerUpdate(arg: Any?) {}
 }

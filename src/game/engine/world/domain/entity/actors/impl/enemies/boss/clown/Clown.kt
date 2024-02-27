@@ -1,8 +1,8 @@
 package game.engine.world.domain.entity.actors.impl.enemies.boss.clown
 
 import game.Bomberman
-import game.engine.world.dto.EntityTypes
-import game.engine.world.domain.entity.actors.impl.player.Player
+import game.engine.world.types.EntityTypes
+import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.actors.impl.bomb.ConfettiExplosion

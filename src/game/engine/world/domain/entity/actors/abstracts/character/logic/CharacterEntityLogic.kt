@@ -206,8 +206,8 @@ abstract class CharacterEntityLogic(
                 /* position = */ entity.info.position,
                 /* d = */ command.commandToDirection(),
                 /* steps = */ PitchPanel.PIXEL_UNIT,
-                /* offset = */ Character.size,
-                /* size = */ Character.size
+                /* offset = */ Character.DEFAULT.SIZE,
+                /* size = */ Character.DEFAULT.SIZE
         )
         val entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[0])
         val entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[1])

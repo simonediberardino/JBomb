@@ -8,11 +8,11 @@ import game.engine.world.domain.entity.actors.abstracts.character.graphics.IChar
 import game.engine.world.domain.entity.actors.abstracts.character.logic.ICharacterEntityLogic
 import game.engine.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
 import game.engine.world.domain.entity.actors.abstracts.character.properties.CharacterEntityState
-import game.engine.world.network.dto.CharacterDto
+import game.network.entity.CharacterNetwork
 import game.engine.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
-import java.util.HashSet
+import game.values.DrawPriority
 
 /**
  * Represents a character in the game, which can move and interact with the environment.
@@ -33,8 +33,8 @@ abstract class Character : MovingEntity {
     constructor(id: Long) : super(id)
     constructor() : super()
 
-    override fun toDto(): CharacterDto {
-        return CharacterDto(
+    override fun toDto(): CharacterNetwork {
+        return CharacterNetwork(
                 info.id,
                 info.position,
                 info.type.ordinal,
@@ -57,5 +57,7 @@ abstract class Character : MovingEntity {
         val STEP_SOUND = SoundModel.STEP_SOUND
         val IMAGE_DIRECTIONS = Direction.values().asList()
         val DEATH_SOUND = SoundModel.ENTITY_DEATH
+        val SIZE = PitchPanel.COMMON_DIVISOR * 2
+        val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_2
     }
 }

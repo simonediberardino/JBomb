@@ -1,17 +1,17 @@
 package game.network.messages
 
-import game.engine.world.network.dto.EntityDto
+import game.network.entity.EntityNetwork
 import game.network.models.HttpActor
 import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes
 import game.utils.Extensions.toMap
 import game.utils.Log
 
-class UpdateInfoHttpMessage(private val entityDto: EntityDto) : HttpMessage {
+class UpdateInfoHttpMessage(private val entityNetwork: EntityNetwork) : HttpMessage {
     override fun serialize(): String {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.UPDATE_INFO.ordinal.toString()
-        data.putAll(entityDto.toMap())
+        data.putAll(entityNetwork.toMap())
 
         Log.i("UpdateInfoHttpMessage $data")
         return data.toString()

@@ -1,11 +1,11 @@
 package game.network.messages
 
-import game.engine.world.network.dto.EntityDto
+import game.network.entity.EntityNetwork
 import game.network.models.HttpActor
 import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes
 
-class DespawnedEntityHttpMessage(private val entity: EntityDto): HttpMessage {
+class DespawnedEntityHttpMessage(private val entity: EntityNetwork): HttpMessage {
     override fun serialize(): String {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.DESPAWNED_ENTITY.ordinal.toString()

@@ -16,7 +16,7 @@ class ExplosionLogic(override val entity: AbstractExplosion) : MovingEntityLogic
         e?.logic?.onExplosion(entity)
     }
 
-    override fun onGameTick(arg: Any?) {}
+    override fun observerUpdate(arg: Any?) {}
 
     override fun explode() {
         spawn(forceSpawn = true, forceCentering = false)

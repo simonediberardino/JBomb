@@ -18,7 +18,7 @@ abstract class CharacterEntityState(
         isImmune: Boolean = Entity.DEFAULT.IMMUNE,
         state: AtomicReference<State>? = Entity.DEFAULT.STATE,
         isInvisible: Boolean = Entity.DEFAULT.IS_INVISIBLE,
-        size: Int,
+        size: Int = Character.DEFAULT.SIZE,
         alpha: Float = Entity.DEFAULT.ALPHA,
         interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
         whitelistObstacles: MutableSet<Class<out Entity>> = EntityInteractable.DEFAULT.WHITELIST_OBSTACLES,

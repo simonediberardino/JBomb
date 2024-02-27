@@ -1,6 +1,6 @@
 package game.engine.world.domain.entity.actors.impl.enemies.npcs
 
-import game.engine.world.dto.EntityTypes
+import game.engine.world.types.EntityTypes
 import game.utils.Paths.enemiesFolder
 
 class Helicopter : FlyingEnemy {

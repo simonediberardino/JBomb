@@ -8,7 +8,7 @@ import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
 import game.engine.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
 import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 
 abstract class Enemy : Character {
     constructor(id: Long) : super(id)
@@ -16,7 +16,7 @@ abstract class Enemy : Character {
 
     constructor() : this(null) {
         if (Bomberman.getMatch().player != null) {
-            info.position = Coordinates.randomCoordinatesFromPlayer(size)
+            info.position = Coordinates.randomCoordinatesFromPlayer(Character.DEFAULT.SIZE)
         }
     }
 
@@ -25,7 +25,7 @@ abstract class Enemy : Character {
 
     override fun update(arg: Any?) {
         super.update(arg)
-        if (arg as Boolean) logic.onGameTick(arg)
+        if (arg as Boolean) logic.observerUpdate(arg)
     }
 
     internal object DEFAULT {

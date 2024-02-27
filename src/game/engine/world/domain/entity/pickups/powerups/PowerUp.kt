@@ -5,8 +5,8 @@ import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
-import game.engine.world.domain.entity.actors.impl.player.Player
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.sound.AudioManager
 import game.engine.sound.SoundModel
 import game.engine.ui.panels.game.PitchPanel

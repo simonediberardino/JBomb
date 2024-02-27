@@ -5,7 +5,7 @@ import game.engine.events.game.EnemyDespawnedGameEvent
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
-import game.engine.world.domain.entity.actors.impl.player.BomberEntity
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 
 abstract class EnemyEntityLogic(override val entity: Enemy) : CharacterEntityLogic(entity) {
     override fun doInteract(e: Entity?) {

@@ -2,10 +2,10 @@ package game.engine.world.domain.entity.actors.abstracts.base
 
 import game.engine.events.models.RunnablePar
 import game.engine.tasks.GameTickerObserver
-import game.engine.world.network.dto.EntityDto
+import game.network.entity.EntityNetwork
 import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.models.State
-import game.engine.world.dto.EntityTypes
+import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
 import game.utils.Extensions.toMap
 import game.utils.Log
@@ -37,7 +37,7 @@ interface IEntityLogic {
     fun mouseInteractions()
     fun onMouseClickInteraction()
     fun onMouseDragInteraction()
-    fun onGameTick(arg: Any?)
+    fun observerUpdate(arg: Any?)
 }
 
 // Class representing the state of an entity
@@ -182,8 +182,8 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         }.compare(this, other)
     }
 
-    open fun toDto(): EntityDto {
-        return EntityDto(
+    open fun toDto(): EntityNetwork {
+        return EntityNetwork(
                 info.id,
                 info.position,
                 info.type.ordinal
