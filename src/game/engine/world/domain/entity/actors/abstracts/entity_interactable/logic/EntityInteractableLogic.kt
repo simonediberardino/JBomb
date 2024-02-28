@@ -3,7 +3,7 @@ package game.engine.world.domain.entity.actors.abstracts.entity_interactable.log
 import game.engine.level.behavior.GameBehavior
 import game.engine.ui.panels.game.PitchPanel
 import game.engine.world.domain.entity.actors.abstracts.base.logic.EntityLogic
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.engine.world.domain.entity.geo.Coordinates

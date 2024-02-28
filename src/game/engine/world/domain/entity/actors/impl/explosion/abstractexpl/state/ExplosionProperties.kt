@@ -1,9 +1,9 @@
-package game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.state
+package game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.state
 
 import game.engine.sound.SoundModel
 import game.engine.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.engine.world.domain.entity.actors.abstracts.moving_entity.properties.MovingEntityProperties
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.types.EntityTypes
 import game.values.DrawPriority

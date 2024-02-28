@@ -1,7 +1,7 @@
 package game.engine.world.domain.entity.actors.impl.bomber_entity.base
 
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
-import game.engine.world.domain.entity.actors.impl.blocks.HardBlock
+import game.engine.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
 import game.engine.world.domain.entity.actors.impl.models.*

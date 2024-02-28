@@ -1,6 +1,6 @@
 package game.engine.world.domain.entity.actors.impl.placeable
 
-import game.engine.world.domain.entity.actors.impl.blocks.MovableBlock
+import game.engine.world.domain.entity.actors.impl.blocks.movable_block.MovableBlock
 import game.network.entity.EntityNetwork
 import game.network.entity.PlaceableEntityNetwork
 import game.engine.world.domain.entity.actors.abstracts.character.Character

@@ -1,6 +1,6 @@
 package game.engine.level.levels.lobby
 
-import game.engine.world.domain.entity.actors.impl.blocks.InvisibleBlock
+import game.engine.world.domain.entity.actors.impl.blocks.invisible_block.InvisibleBlock
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.level.info.imp.IslandLevelInfo
 import game.engine.level.info.model.LevelInfo

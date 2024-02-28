@@ -1,10 +1,10 @@
 package game.engine.world.domain.entity.items
 
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
-import game.engine.world.domain.entity.actors.impl.blocks.HardBlock
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion.Companion.SIZE
+import game.engine.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion.Companion.SIZE
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
-import game.engine.world.domain.entity.actors.impl.bomb.PistolExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.PistolExplosion
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.world.domain.entity.actors.abstracts.base.Entity

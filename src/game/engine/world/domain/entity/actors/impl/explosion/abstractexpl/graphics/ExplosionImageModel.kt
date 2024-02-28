@@ -1,8 +1,8 @@
-package game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.graphics
+package game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.graphics
 
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.base.EntityImageModel
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import java.awt.image.BufferedImage
 
 class ExplosionImageModel(

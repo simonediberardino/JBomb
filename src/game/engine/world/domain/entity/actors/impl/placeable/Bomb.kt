@@ -3,9 +3,9 @@ package game.engine.world.domain.entity.actors.impl.placeable
 import game.Bomberman
 import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
-import game.engine.world.domain.entity.actors.impl.blocks.HardBlock
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
-import game.engine.world.domain.entity.actors.impl.bomb.FireExplosion
+import game.engine.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.FireExplosion
 import game.engine.world.domain.entity.actors.impl.models.*
 import game.engine.world.domain.entity.graphics.*
 import game.engine.world.domain.entity.geo.Coordinates

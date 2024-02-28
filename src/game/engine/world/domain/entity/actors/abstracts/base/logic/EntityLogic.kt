@@ -2,7 +2,7 @@ package game.engine.world.domain.entity.actors.abstracts.base.logic
 
 import game.Bomberman
 import game.engine.ui.panels.game.PitchPanel
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.base.IEntityLogic
 import game.engine.world.domain.entity.actors.impl.models.State

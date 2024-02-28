@@ -1,4 +1,4 @@
-package game.engine.world.domain.entity.actors.impl.blocks
+package game.engine.world.domain.entity.actors.impl.blocks.movable_block
 
 import game.engine.world.domain.entity.actors.impl.blocks.base_block.Block
 import game.engine.world.domain.entity.geo.Coordinates

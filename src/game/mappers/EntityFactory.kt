@@ -2,11 +2,11 @@ package game.mappers
 
 import game.Bomberman
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
-import game.engine.world.domain.entity.actors.impl.blocks.InvisibleBlock
-import game.engine.world.domain.entity.actors.impl.blocks.StoneBlock
+import game.engine.world.domain.entity.actors.impl.blocks.invisible_block.InvisibleBlock
+import game.engine.world.domain.entity.actors.impl.blocks.stone_block.StoneBlock
 import game.engine.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.Clown
-import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.Hat
+import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
 import game.engine.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.*
 import game.engine.world.domain.entity.actors.abstracts.base.Entity

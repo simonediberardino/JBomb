@@ -1,10 +1,10 @@
-package game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.state
+package game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.state
 
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.engine.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.engine.world.domain.entity.actors.abstracts.moving_entity.properties.MovingEntityState
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.models.Explosive
 import game.engine.world.domain.entity.actors.impl.models.State
 import game.engine.world.domain.entity.geo.Direction

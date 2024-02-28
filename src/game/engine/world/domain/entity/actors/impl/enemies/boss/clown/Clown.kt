@@ -3,12 +3,12 @@ package game.engine.world.domain.entity.actors.impl.enemies.boss.clown
 import game.Bomberman
 import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
-import game.engine.world.domain.entity.actors.impl.bomb.ConfettiExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.ConfettiExplosion
 import game.engine.world.domain.entity.actors.impl.enemies.boss.Boss
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ClownNose
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.Orb
+import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
 import game.engine.world.domain.entity.actors.impl.models.*
 import game.engine.world.domain.entity.graphics.*
 import game.engine.world.domain.entity.geo.Coordinates
@@ -18,6 +18,7 @@ import game.engine.sound.AudioManager
 import game.engine.sound.SoundModel
 import game.engine.ui.panels.game.PitchPanel
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
+import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
 import game.utils.Paths
 import game.utils.Utility
 import java.util.*

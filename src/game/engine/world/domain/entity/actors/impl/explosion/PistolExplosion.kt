@@ -1,12 +1,12 @@
-package game.engine.world.domain.entity.actors.impl.bomb
+package game.engine.world.domain.entity.actors.impl.explosion
 
 import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.graphics.ExplosionImageModel
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.state.ExplosionProperties
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.graphics.ExplosionImageModel
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.state.ExplosionProperties
 import game.engine.world.domain.entity.actors.impl.models.Explosive
 import game.utils.Paths
 import game.values.DrawPriority

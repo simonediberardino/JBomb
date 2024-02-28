@@ -8,7 +8,7 @@ import game.engine.ui.panels.game.PitchPanel
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.models.State
 import game.engine.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
 import game.engine.world.domain.entity.geo.Coordinates

@@ -4,7 +4,7 @@ import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.actors.abstracts.character.properties.CharacterEntityState
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.items.UsableItem
@@ -24,6 +24,7 @@ class BomberEntityState(
     var placedBombs = 0
     var lastPlacedBombTime: Long = 0
     var currentBombs = 0
+
     var bombsSolid: Boolean = true
         set(value) {
             field = value

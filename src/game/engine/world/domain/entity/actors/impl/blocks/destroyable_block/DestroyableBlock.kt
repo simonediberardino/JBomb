@@ -3,7 +3,7 @@ package game.engine.world.domain.entity.actors.impl.blocks.destroyable_block
 import game.engine.world.domain.entity.actors.abstracts.base.EntityImageModel
 import game.engine.world.domain.entity.actors.abstracts.base.EntityInfo
 import game.engine.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
-import game.engine.world.domain.entity.actors.impl.blocks.MovableBlock
+import game.engine.world.domain.entity.actors.impl.blocks.movable_block.MovableBlock
 import game.engine.world.domain.entity.actors.impl.blocks.base_block.logic.IBlockEntityLogic
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.graphics.DestroyableBlockGraphics
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.logic.DestroyableBlockLogic
@@ -24,7 +24,7 @@ class DestroyableBlock : MovableBlock {
     override val logic: IBlockEntityLogic = DestroyableBlockLogic(this)
     override val properties: DestroyableBlockProperties = DestroyableBlockProperties()
     override val image: EntityImageModel = EntityImageModel(entity = this)
-    override val state: DestroyableBlockState = DestroyableBlockState()
+    override val state: DestroyableBlockState = DestroyableBlockState(entity = this)
     override val info: EntityInfo = EntityInfo()
     override val graphicsBehavior: IEntityGraphicsBehavior = DestroyableBlockGraphics()
 }

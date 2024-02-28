@@ -7,7 +7,7 @@ import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
 import game.engine.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 
 abstract class Enemy : Character {

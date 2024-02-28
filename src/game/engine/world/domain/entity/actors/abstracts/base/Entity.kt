@@ -3,7 +3,7 @@ package game.engine.world.domain.entity.actors.abstracts.base
 import game.engine.events.models.RunnablePar
 import game.engine.tasks.GameTickerObserver
 import game.network.entity.EntityNetwork
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.models.State
 import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates

@@ -1,16 +1,16 @@
-package game.engine.world.domain.entity.actors.impl.bomb
+package game.engine.world.domain.entity.actors.impl.explosion
 
 import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.AbstractExplosion
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.graphics.ExplosionImageModel
-import game.engine.world.domain.entity.actors.impl.bomb.abstractexpl.state.ExplosionProperties
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.graphics.ExplosionImageModel
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.state.ExplosionProperties
 import game.engine.world.domain.entity.actors.impl.models.Explosive
 import game.utils.Paths
 
-class FireExplosion : AbstractExplosion {
+class ConfettiExplosion : AbstractExplosion {
     constructor(
             owner: Entity,
             coordinates: Coordinates,
@@ -33,12 +33,12 @@ class FireExplosion : AbstractExplosion {
             canExpand: Boolean) : super(owner, coordinates, direction, distanceFromExplosive, explosive, canExpand)
 
     override val properties: ExplosionProperties = ExplosionProperties(
-            types = EntityTypes.FireExplosion,
+            types = EntityTypes.ConfettiExplosion,
             explosionClass = javaClass
     )
 
     override val image: ExplosionImageModel = ExplosionImageModel(
             entity = this,
-            entitiesAssetsPath = "${Paths.entitiesFolder}/bomb/flame"
+            entitiesAssetsPath = "${Paths.enemiesFolder}/clown/clown_explosion/clown_explosion"
     )
 }

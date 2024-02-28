@@ -5,6 +5,7 @@ import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.domain.entity.geo.EnhancedDirection
 import game.engine.sound.SoundModel
+import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
 import game.utils.Paths.enemiesFolder
 
 class ClownNose : Orb {
