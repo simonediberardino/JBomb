@@ -4,12 +4,13 @@ import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.ui.panels.game.PitchPanel
+import game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.AiEnemy
 import game.utils.Paths.enemiesFolder
 
 /**
  * An enemy with increased speed multiplier;
  */
-class FastEnemy : IntelligentEnemy {
+class FastEnemy : AiEnemy {
     constructor() : super()
     constructor(id: Long) : super(id)
     constructor(coordinates: Coordinates?) : super(coordinates)

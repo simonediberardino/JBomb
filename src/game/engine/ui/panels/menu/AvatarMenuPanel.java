@@ -14,7 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;
 
-import static game.engine.world.domain.entity.actors.impl.enemies.npcs.IntelligentEnemy.DIRECTION_REFRESH_RATE;
+import static game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.AiEnemy.DIRECTION_REFRESH_RATE;
 import static game.localization.Localization.AVATAR;
 import static game.values.Dimensions.DEFAULT_X_PADDING;
 

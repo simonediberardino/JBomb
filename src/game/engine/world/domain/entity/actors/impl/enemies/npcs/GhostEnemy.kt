@@ -4,9 +4,10 @@ import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.ui.panels.game.PitchPanel
+import game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.AiEnemy
 import game.utils.Paths.enemiesFolder
 
-class GhostEnemy : IntelligentEnemy {
+class GhostEnemy : AiEnemy {
     init {
         hitboxSizeToWidthRatio = 0.837f
         hitboxSizeToHeightRatio = 1f

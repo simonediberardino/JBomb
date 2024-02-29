@@ -6,7 +6,7 @@ import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.actors.impl.explosion.ConfettiExplosion
-import game.engine.world.domain.entity.actors.impl.enemies.boss.Boss
+import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ClownNose
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
 import game.engine.world.domain.entity.actors.impl.models.*

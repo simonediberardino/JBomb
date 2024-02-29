@@ -11,7 +11,6 @@ import game.engine.world.domain.entity.actors.impl.bomber_entity.base.logic.Bomb
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.logic.IBomberEntityLogic
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
 import game.engine.world.domain.entity.actors.impl.bomber_entity.player.graphics.PlayerImageModel
-import game.engine.world.domain.entity.actors.impl.bomber_entity.player.graphics.RemotePlayerImageModel
 
 class Player : BomberEntity {
     constructor() : super()
@@ -20,7 +19,7 @@ class Player : BomberEntity {
 
     override val logic: IBomberEntityLogic = BomberEntityLogic(entity = this)
     override val state: BomberEntityState = BomberEntityState(entity = this)
-    override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(character = this)
+    override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val image: PlayerImageModel = PlayerImageModel(entity = this)
     override val info: EntityInfo = EntityInfo()
     override val properties: CharacterEntityProperties = CharacterEntityProperties(types = EntityTypes.BomberEntity)

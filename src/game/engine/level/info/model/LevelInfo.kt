@@ -1,6 +1,6 @@
 package game.engine.level.info.model
 
-import game.engine.world.domain.entity.actors.impl.enemies.boss.Boss
+import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.level.levels.Level

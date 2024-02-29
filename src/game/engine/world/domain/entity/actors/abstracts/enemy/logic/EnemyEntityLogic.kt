@@ -25,4 +25,8 @@ abstract class EnemyEntityLogic(override val entity: Enemy) : CharacterEntityLog
         (match.gameTickerObservable ?: return).unregister(entity)
         EnemyDespawnedGameEvent().invoke(null)
     }
+
+    override fun observerUpdate(arg: Any?) {
+
+    }
 }

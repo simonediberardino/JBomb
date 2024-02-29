@@ -24,7 +24,7 @@ abstract class BomberEntity : Character, Explosive {
 
     override val logic: IBomberEntityLogic = BomberEntityLogic(entity = this)
     override val state: BomberEntityState = BomberEntityState(entity = this)
-    override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(character = this)
+    override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val info: EntityInfo = EntityInfo()
 
     init {

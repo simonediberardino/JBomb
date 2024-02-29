@@ -59,5 +59,6 @@ abstract class Character : MovingEntity {
         val DEATH_SOUND = SoundModel.ENTITY_DEATH
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
         val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_2
+        val HITBOX_SIZE_TO_HEIGHT_RATIO: Float = 0.733f
     }
 }

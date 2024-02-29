@@ -1,33 +1,25 @@
-package game.engine.world.domain.entity.actors.impl.enemies.npcs
+package game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.logic
 
 import game.Bomberman
-import game.engine.world.domain.entity.actors.impl.models.*
-import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.events.game.KilledEnemyEvent
 import game.engine.events.game.ScoreGameEvent
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
-import game.engine.world.domain.entity.geo.Coordinates
+import game.engine.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
+import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.AiEnemy
 import game.engine.world.domain.entity.geo.Direction
 import game.utils.XMLUtils
 import java.util.stream.Collectors
 
-abstract class IntelligentEnemy : Enemy, CPU {
+open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = entity), IAiEnemyLogic {
     private val CHANGE_DIRECTION_RATE = 10 // percentage
 
-    constructor() : super()
-    constructor(id: Long) : super(id)
-    constructor(coordinates: Coordinates?) : super(coordinates)
-
-    init {
-        hitboxSizeToHeightRatio = 0.733f
-    }
-
     override fun doInteract(e: Entity?) {
-        if (e is BomberEntity) {
-            super.doInteract(e)
-        } else if (isObstacle(e) || e == null) {
+        if (isObstacle(e) || e == null) {
             changeDirection()
+        } else {
+            super.doInteract(e)
         }
     }
 
@@ -42,24 +34,24 @@ abstract class IntelligentEnemy : Enemy, CPU {
         // Get the current time in milliseconds
         val currentTime = System.currentTimeMillis()
         // If it hasn't been long enough since the last direction update, keep moving in the same direction, unless last move was blocked
-        if (currentTime - lastDirectionUpdate < DIRECTION_REFRESH_RATE && !forceChange) {
-            return currDirection
+        if (currentTime - entity.state.lastDirectionUpdate < AiEnemy.DIRECTION_REFRESH_RATE && !forceChange) {
+            return entity.state.direction
         }
 
         // Get a list of all the available directions the agent can move in
-        val availableDirections = availableDirections
+        val availableDirections = entity.logic.availableDirections()
                 .stream()
-                .filter { e: Direction? -> supportedDirections.contains(e) }
+                .filter { e: Direction? -> entity.properties.supportedDirections.contains(e) }
                 .collect(Collectors.toList())
 
         // If forceChange is true, remove the current direction from the list of available directions
         if (availableDirections.isEmpty()) {
-            return currDirection
+            return entity.state.direction
         }
         // Choose a new direction randomly, or keep the current direction with a certain probability
         var newDirection: Direction? = null
         if (Math.random() * 100 > CHANGE_DIRECTION_RATE && availableDirections.size != 1) {
-            newDirection = currDirection
+            newDirection = entity.state.direction
         }
 
         // If a new direction hasn't been chosen, choose one randomly from the available options
@@ -75,26 +67,26 @@ abstract class IntelligentEnemy : Enemy, CPU {
         updateMovementDirection(chooseDirection(true))
     }
 
-    override fun doUpdate(gameState: Boolean) {
-        if (!canMove || !gameState) {
+    override fun onEliminated() {
+        super.onEliminated()
+        KilledEnemyEvent().invoke(entity)
+        ScoreGameEvent().invoke(entity.state.maxHp)
+    }
+
+    override fun observerUpdate(arg: Any?) {
+        super.observerUpdate(arg)
+
+        val gameState = arg as Boolean
+
+        if (!entity.state.canMove || !gameState) {
             return
         }
 
         if ("true" == XMLUtils.readConfig("bots_move")) {
             if (Bomberman.getMatch().isServer) {
-                commandQueue.add(chooseDirection(false).toCommand())
+                entity.state.commandQueue.add(chooseDirection(false).toCommand())
                 executeCommandQueue()
             }
         }
-    }
-
-    override fun onEliminated() {
-        super.onEliminated()
-        KilledEnemyEvent().invoke(this)
-        ScoreGameEvent().invoke(maxHp)
-    }
-
-    companion object {
-        const val DIRECTION_REFRESH_RATE = 500
     }
 }

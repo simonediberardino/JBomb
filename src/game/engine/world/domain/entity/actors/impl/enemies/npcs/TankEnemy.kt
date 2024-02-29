@@ -12,10 +12,11 @@ import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.impl.models.Explosive
 import game.engine.sound.AudioManager
 import game.engine.sound.SoundModel
+import game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.AiEnemy
 import game.utils.Paths.enemiesFolder
 import game.utils.Utility.timePassed
 
-class TankEnemy : IntelligentEnemy, Explosive {
+class TankEnemy : AiEnemy, Explosive {
     private var canShoot = false
     private var _lastUpdate: Long = 0
 

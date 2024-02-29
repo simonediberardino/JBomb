@@ -1,6 +1,6 @@
 package game.engine.level.levels.world2
 
-import game.engine.world.domain.entity.actors.impl.enemies.boss.Boss
+import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.Clown
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.Eagle
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.FastEnemy

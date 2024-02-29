@@ -2,13 +2,14 @@ package game.engine.world.domain.entity.actors.abstracts.character.graphics
 
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.base.EntityImageModel
+import game.engine.world.domain.entity.actors.abstracts.character.Character
 import java.awt.image.BufferedImage
 
 abstract class CharacterImageModel(
         entity: Entity,
         entitiesAssetsPath: String = Entity.DEFAULT.ENTITIES_ASSETS_PATH,
         hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
-        hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO,
+        hitboxSizeToHeightRatio: Float = Character.DEFAULT.HITBOX_SIZE_TO_HEIGHT_RATIO,
         paddingTop: Int = Entity.DEFAULT.PADDING_TOP,
         paddingWidth: Int = Entity.DEFAULT.PADDING_WIDTH,
         imageRefreshRate: Int = Entity.DEFAULT.IMAGE_REFRESH_RATE,
