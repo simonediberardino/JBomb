@@ -1,7 +1,7 @@
 package game.engine.level.levels.world2
 
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.FastEnemy
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.TankEnemy
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.tank.TankEnemy
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.level.levels.Level
 import game.engine.level.levels.StoryLevel

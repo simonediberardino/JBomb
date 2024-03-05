@@ -32,7 +32,6 @@ abstract class CharacterEntityState(
         var previousDirection: Direction? = Character.DEFAULT.PREVIOUS_DIRECTION,
         var canMove: Boolean = Character.DEFAULT.CAN_MOVE,
         var maxHp: Int = Character.DEFAULT.MAX_HP,
-        var hp: Int = maxHp,
         var speed: Float = Character.DEFAULT.SPEED,
         var imageDirection: Direction? = Character.DEFAULT.IMAGE_DIRECTION
 ) : MovingEntityState(
@@ -52,6 +51,7 @@ abstract class CharacterEntityState(
         direction = direction
 ) {
     val delayObserverUpdate = DEFAULT_OBSERVER_UPDATE / speed
+    var hp: Int = maxHp
     val hpPercentage: Int
         get() = (hp.toFloat() / maxHp.toFloat() * 100).toInt()
 }

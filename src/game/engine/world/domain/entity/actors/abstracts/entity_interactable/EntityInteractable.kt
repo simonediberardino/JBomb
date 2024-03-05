@@ -28,7 +28,7 @@ abstract class EntityInteractable : Entity {
 
     internal object DEFAULT {
         val WHITELIST_OBSTACLES: MutableSet<Class<out Entity>> = hashSetOf()
-        val OBSTACLES: Set<Class<out Entity>> = mutableSetOf(Bomb::class.java, Character::class.java, Block::class.java)
+        val OBSTACLES: MutableSet<Class<out Entity>> = mutableSetOf(Bomb::class.java, Character::class.java, Block::class.java)
         val LAST_INTERACTION_TIME: Long = 0L
         val LAST_DAMAGE_TIME: Long = 0L
         val ATTACK_DAMAGE = 100

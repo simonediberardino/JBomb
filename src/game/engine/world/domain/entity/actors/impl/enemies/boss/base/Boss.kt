@@ -2,7 +2,7 @@ package game.engine.world.domain.entity.actors.impl.enemies.boss.base
 
 import game.Bomberman
 import game.engine.level.behavior.GameBehavior
-import game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.AiEnemy
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.sound.SoundModel

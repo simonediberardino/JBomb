@@ -16,6 +16,8 @@ import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.logic.IBomberEntityLogic
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
+import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
+import game.engine.world.domain.entity.pickups.powerups.PowerUp
 
 abstract class BomberEntity : Character, Explosive {
     constructor() : super()
@@ -28,6 +30,7 @@ abstract class BomberEntity : Character, Explosive {
     override val info: EntityInfo = EntityInfo()
 
     init {
+        // TODO
         state.entitiesClassListMouseClick.add(MysteryBoxPerk::class.java)
         image.hitboxSizeToHeightRatio = 0.733f
     }
@@ -52,5 +55,13 @@ abstract class BomberEntity : Character, Explosive {
     companion object {
         const val MAX_BOMB_CAN_HOLD = 10
         val SPAWN_OFFSET = Coordinates((PitchPanel.GRID_SIZE - Character.DEFAULT.SIZE) / 2, PitchPanel.GRID_SIZE - size)
+    }
+
+    internal object DEFAULT {
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf(
+                AbstractExplosion::class.java,
+                Enemy::class.java,
+                PowerUp::class.java
+        )
     }
 }

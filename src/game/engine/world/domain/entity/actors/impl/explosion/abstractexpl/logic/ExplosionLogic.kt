@@ -18,8 +18,9 @@ class ExplosionLogic(override val entity: AbstractExplosion) : MovingEntityLogic
 
     override fun observerUpdate(arg: Any?) {}
 
-    override fun explode() {
+    override fun explode(): AbstractExplosion {
         spawn(forceSpawn = true, forceCentering = false)
+        return entity
     }
 
     override fun canExpand(): Boolean {

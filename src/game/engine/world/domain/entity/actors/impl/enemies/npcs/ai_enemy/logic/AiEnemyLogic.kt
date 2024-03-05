@@ -1,4 +1,4 @@
-package game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.logic
+package game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic
 
 import game.Bomberman
 import game.engine.events.game.KilledEnemyEvent
@@ -6,8 +6,7 @@ import game.engine.events.game.ScoreGameEvent
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
-import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.AiEnemy
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.engine.world.domain.entity.geo.Direction
 import game.utils.XMLUtils
 import java.util.stream.Collectors
@@ -75,13 +74,15 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
 
     override fun observerUpdate(arg: Any?) {
         super.observerUpdate(arg)
-
         val gameState = arg as Boolean
 
         if (!entity.state.canMove || !gameState) {
             return
         }
+        process()
+    }
 
+    override fun process() {
         if ("true" == XMLUtils.readConfig("bots_move")) {
             if (Bomberman.getMatch().isServer) {
                 entity.state.commandQueue.add(chooseDirection(false).toCommand())

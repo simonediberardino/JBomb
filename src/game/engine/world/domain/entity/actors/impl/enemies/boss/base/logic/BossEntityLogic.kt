@@ -3,14 +3,11 @@ package game.engine.world.domain.entity.actors.impl.enemies.boss.base.logic
 import game.engine.level.behavior.GameBehavior
 import game.engine.sound.AudioManager
 import game.engine.sound.SoundModel
-import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
-import game.engine.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
-import game.engine.world.domain.entity.actors.impl.enemies.ai_enemy.logic.AiEnemyLogic
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
 import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.pickups.portals.EndLevelPortal
 import game.engine.world.domain.entity.pickups.powerups.PowerUp
-import game.network.events.forward.AttackEntityEventForwarder
 
 class BossEntityLogic(override val entity: Boss) : AiEnemyLogic(entity = entity), IBossEntityLogic {
     override fun onDespawn() {

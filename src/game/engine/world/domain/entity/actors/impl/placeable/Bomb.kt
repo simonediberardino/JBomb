@@ -15,6 +15,7 @@ import game.engine.sound.SoundModel
 import game.engine.ui.panels.game.PitchPanel
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.Character
+import game.engine.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.utils.Paths
 import game.utils.Utility
 import java.awt.image.BufferedImage
@@ -89,9 +90,12 @@ open class Bomb : PlaceableEntity, Explosive {
         despawnAndNotify()
         AudioManager.getInstance().play(SoundModel.EXPLOSION)
 
-        // Trigger explosions in all directions
-        Direction.values().forEach {
-            FireExplosion(caller, info.position, it, this).explode()
+        // TODO CHANGED
+        ExplosionHandler.instance.process {
+            // Trigger explosions in all directions
+            Direction.values().map {
+                FireExplosion(caller, info.position, it, this).logic.explode()
+            }
         }
 
         // Invoke the explosion callback if set

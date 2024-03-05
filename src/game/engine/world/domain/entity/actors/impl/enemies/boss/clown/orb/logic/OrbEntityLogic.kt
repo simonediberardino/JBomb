@@ -15,6 +15,7 @@ open class OrbEntityLogic(override val entity: Orb) : EnemyEntityLogic(entity = 
     }
 
     override fun isObstacle(e: Entity?): Boolean = e == null
+
     override fun observerUpdate(arg: Any?) {
         val gameState = arg as Boolean
         if (gameState) moveOrb()

@@ -2,10 +2,7 @@ package game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.prope
 
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.Character
-import game.engine.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
-import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
-import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.world.domain.entity.geo.EnhancedDirection
 
 open class OrbEntityState(

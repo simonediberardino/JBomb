@@ -2,10 +2,10 @@ package game.engine.level.levels.world1
 
 import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.engine.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.Helicopter
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.TankEnemy
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.YellowBall
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.Zombie
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.helicopter.Helicopter
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.tank.TankEnemy
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.yellow_ball.YellowBall
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.zombie.Zombie
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.level.levels.ArenaLevel
 import game.engine.level.levels.Level

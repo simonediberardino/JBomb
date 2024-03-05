@@ -1,6 +1,6 @@
 package game.engine.level.levels.world1
 
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.YellowBall
+import game.engine.world.domain.entity.actors.impl.enemies.npcs.yellow_ball.YellowBall
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.level.levels.Level
 import game.engine.level.levels.StoryLevel
