@@ -2,8 +2,8 @@ package game.network.dispatch
 
 import game.network.events.process.*
 import game.network.models.HttpMessageTypes
-import game.utils.Extensions.getOrTrim
-import game.utils.Log
+import game.utils.dev.Extensions.getOrTrim
+import game.utils.dev.Log
 
 class HttpMessageReceiverHandler private constructor() {
     // Handles the behavior of each http message;

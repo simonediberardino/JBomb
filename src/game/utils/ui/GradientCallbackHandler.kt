@@ -1,4 +1,4 @@
-package game.utils
+package game.utils.ui
 
 import game.engine.events.models.RunnablePar
 import java.awt.event.ActionEvent

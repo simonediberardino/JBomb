@@ -10,8 +10,9 @@ import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.types.EntityTypes
 import game.values.DrawPriority
+import java.util.TreeMap
 
-class BossEntityProperties(
+open class BossEntityProperties(
         drawPriority: DrawPriority = Boss.DEFAULT.DRAW_PRIORITY,
         obstacles: Set<Class<out Entity?>?> = Boss.DEFAULT.OBSTACLES,
         types: EntityTypes,
@@ -19,7 +20,7 @@ class BossEntityProperties(
         stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
         imageDirections: List<Direction> = Character.DEFAULT.IMAGE_DIRECTIONS,
         deathSound: SoundModel = Boss.DEFAULT.DEATH_SOUND,
-        val healthStatusMap: Map<Int, Int>? = Boss.DEFAULT.HEALTH_STATUS_MAP
+        val healthStatusMap: TreeMap<Int, Int>? = Boss.DEFAULT.HEALTH_STATUS_MAP
 ): CharacterEntityProperties(
         drawPriority = drawPriority,
         obstacles = obstacles,

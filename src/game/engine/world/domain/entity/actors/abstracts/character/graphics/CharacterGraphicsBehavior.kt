@@ -25,7 +25,7 @@ open class CharacterGraphicsBehavior(open val entity: Character) : DefaultEntity
         // If the previousDirection and current direction are different, reset the image index and last direction update time.
         if (previousDirection !== currDirection) {
             entity.image.lastImageIndex = (0)
-            entity.state.lastDirectionUpdate = System.currentTimeMillis()
+            entity.state.lastDirectionUpdate = now()
         } else if (Utility.timePassed(entity.state.lastImageUpdate) > entity.image.imageRefreshRate) {
             // If it's time to refresh the image, increment the image index.
             entity.image.lastImageIndex++

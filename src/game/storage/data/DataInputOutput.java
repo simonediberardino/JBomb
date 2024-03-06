@@ -2,7 +2,7 @@ package game.storage.data;
 
 import game.Bomberman;
 import game.engine.level.levels.Level;
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 import kotlin.UninitializedPropertyAccessException;
 
 import java.awt.event.KeyEvent;

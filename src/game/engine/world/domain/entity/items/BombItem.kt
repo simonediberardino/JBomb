@@ -3,8 +3,9 @@ package game.engine.world.domain.entity.items
 import game.Bomberman
 import game.engine.world.domain.entity.actors.impl.placeable.Bomb
 import game.engine.events.game.UpdateCurrentAvailableItemsEvent
-import game.utils.Paths.entitiesFolder
+import game.utils.file_system.Paths.entitiesFolder
 import game.utils.Utility.timePassed
+import game.utils.time.now
 
 class BombItem : UsableItem() {
     private lateinit var bombEntity: Bomb
@@ -22,7 +23,7 @@ class BombItem : UsableItem() {
             return
         }
 
-        owner.lastPlacedBombTime = System.currentTimeMillis()
+        owner.lastPlacedBombTime = now()
         owner.placedBombs++
         owner.setBombsSolid(false)
 

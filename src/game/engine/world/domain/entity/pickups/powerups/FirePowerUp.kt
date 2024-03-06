@@ -5,7 +5,7 @@ import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.events.game.ExplosionLengthPowerUpEvent
-import game.utils.Paths.powerUpsFolder
+import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
 class FirePowerUp

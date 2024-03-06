@@ -6,7 +6,7 @@ import game.engine.world.domain.entity.actors.abstracts.character.graphics.Chara
 import game.engine.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 
-class BossEntityGraphicsBehavior(override val entity: Boss) : CharacterGraphicsBehavior(entity = entity), IBossEntityGraphicsBehavior {
+open class BossEntityGraphicsBehavior(override val entity: Boss) : CharacterGraphicsBehavior(entity = entity), IBossEntityGraphicsBehavior {
     override fun getImageFromRageStatus(): String {
         return entity.image.imagePath
     }

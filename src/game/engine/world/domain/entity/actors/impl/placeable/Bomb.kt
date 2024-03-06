@@ -16,7 +16,7 @@ import game.engine.ui.panels.game.PitchPanel
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
-import game.utils.Paths
+import game.utils.file_system.Paths
 import game.utils.Utility
 import java.awt.image.BufferedImage
 import java.util.*

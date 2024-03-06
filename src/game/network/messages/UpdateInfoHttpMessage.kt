@@ -4,8 +4,8 @@ import game.network.entity.EntityNetwork
 import game.network.models.HttpActor
 import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes
-import game.utils.Extensions.toMap
-import game.utils.Log
+import game.utils.dev.Extensions.toMap
+import game.utils.dev.Log
 
 class UpdateInfoHttpMessage(private val entityNetwork: EntityNetwork) : HttpMessage {
     override fun serialize(): String {

@@ -7,8 +7,8 @@ import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.engine.world.domain.entity.actors.impl.models.State
 import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
-import game.utils.Extensions.toMap
-import game.utils.Log
+import game.utils.dev.Extensions.toMap
+import game.utils.dev.Log
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.util.*
@@ -67,8 +67,6 @@ open class EntityProperties(
 open class EntityImageModel(
         val entity: Entity,
         val entitiesAssetsPath: String = Entity.DEFAULT.ENTITIES_ASSETS_PATH,
-        var hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
-        var hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO,
         var paddingTop: Int = Entity.DEFAULT.PADDING_TOP,
         var paddingWidth: Int = Entity.DEFAULT.PADDING_WIDTH,
         val imageRefreshRate: Int = Entity.DEFAULT.IMAGE_REFRESH_RATE,
@@ -77,6 +75,9 @@ open class EntityImageModel(
         var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
         var imagePath: String = Entity.DEFAULT.IMAGE_PATH
 ) {
+    open var hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
+    open var hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO,
+
     private val defaultPaddingTopFunction : RunnablePar = object : RunnablePar {
         override fun <T> execute(par: T): Any {
             val temp: Int = (entity.state.size.toDouble() / par as Double - entity.state.size).toInt()

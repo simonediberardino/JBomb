@@ -5,7 +5,7 @@ import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.items.PistolItem
-import game.utils.Paths.itemsPath
+import game.utils.file_system.Paths.itemsPath
 import java.awt.image.BufferedImage
 
 class PistolPowerUp : PowerUp {

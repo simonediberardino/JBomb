@@ -76,14 +76,14 @@ public class ToastHandler {
         if (toastEndY < toastY && animStoppedTime == 0) {
             toastY -= TOAST_ANIM_STEP_SIZE;  // Move the toast up
         } else if (animStoppedTime == 0) {
-            animStoppedTime = System.currentTimeMillis();  // Record the stop time
+            animStoppedTime = now();  // Record the stop time
         }
 
         if (animStoppedTime == 0 || permanent) {
             return;
         }
 
-        long currentTime = System.currentTimeMillis();
+        long currentTime = now();
 
         if (currentTime - animStoppedTime > TOAST_DURATION) {
             toastY += TOAST_ANIM_STEP_SIZE;  // Move the toast down

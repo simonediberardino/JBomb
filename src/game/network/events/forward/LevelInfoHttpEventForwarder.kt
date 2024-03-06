@@ -3,7 +3,7 @@ package game.network.events.forward
 import game.engine.events.models.HttpEvent
 import game.network.dispatch.HttpMessageDispatcher
 import game.network.messages.LevelInfoHttpMessage
-import game.utils.Extensions.getOrTrim
+import game.utils.dev.Extensions.getOrTrim
 
 class LevelInfoHttpEventForwarder : HttpEvent {
     override fun invoke(vararg extras: Any) {

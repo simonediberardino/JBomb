@@ -12,7 +12,7 @@ import game.engine.world.domain.entity.actors.impl.models.State
 import game.engine.world.domain.entity.geo.Direction
 import java.util.concurrent.atomic.AtomicReference
 
-class BossEntityState(
+open class BossEntityState(
         entity: Entity,
         size: Int = Boss.DEFAULT.SIZE,
         interactionEntities: MutableSet<Class<out Entity>> = Enemy.DEFAULT.INTERACTION_ENTITIES,

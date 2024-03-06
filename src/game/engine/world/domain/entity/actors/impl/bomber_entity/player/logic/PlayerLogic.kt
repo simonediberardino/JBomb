@@ -10,7 +10,7 @@ import game.engine.world.domain.entity.actors.abstracts.entity_interactable.Enti
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.storage.data.DataInputOutput
-import game.utils.Log
+import game.utils.dev.Log
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 

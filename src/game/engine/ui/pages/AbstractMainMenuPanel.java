@@ -5,8 +5,8 @@ import game.engine.events.models.RunnablePar;
 import game.engine.ui.frames.BombermanFrame;
 import game.engine.ui.panels.menu.AvatarMenuPanel;
 import game.engine.ui.panels.menu.UsernameProfilePanel;
-import game.utils.Paths;
-import game.utils.XMLUtils;
+import game.utils.file_system.Paths;
+import game.utils.dev.XMLUtils;
 
 import javax.swing.*;
 import java.awt.*;

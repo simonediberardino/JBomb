@@ -12,7 +12,7 @@ import game.engine.world.domain.entity.actors.impl.models.Explosive
 import game.engine.events.game.UpdateCurrentAvailableItemsEvent
 import game.engine.sound.AudioManager
 import game.engine.sound.SoundModel
-import game.utils.Paths.itemsPath
+import game.utils.file_system.Paths.itemsPath
 import game.utils.Utility.timePassed
 
 class PistolItem : UsableItem(), Explosive {
@@ -53,7 +53,7 @@ class PistolItem : UsableItem(), Explosive {
             return
         }
 
-        owner.lastPlacedBombTime = System.currentTimeMillis()
+        owner.lastPlacedBombTime = now()
         addBullets(-1)
 
         val explosion = PistolExplosion(

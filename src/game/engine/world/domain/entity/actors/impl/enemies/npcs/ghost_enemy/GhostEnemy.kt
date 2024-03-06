@@ -11,17 +11,18 @@ import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.properties.GhostEnemyProperties
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.properties.GhostEnemyState
-import game.utils.Paths.enemiesFolder
+import game.utils.file_system.Paths.enemiesFolder
 
 class GhostEnemy : AiEnemy {
     constructor() : super()
     constructor(id: Long) : super(id)
 
     override val image: CharacterImageModel = object : CharacterImageModel(
-            entity = this,
-            hitboxSizeToHeightRatio = GhostEnemy.DEFAULT.HITBOX_SIZE_TO_HEIGHT_RATIO,
-            hitboxSizeToWidthRatio = GhostEnemy.DEFAULT.HITBOX_SIZE_TO_WIDTH_RATIO
+            entity = this
     ) {
+        override var hitboxSizeToHeightRatio = GhostEnemy.DEFAULT.HITBOX_SIZE_TO_HEIGHT_RATIO
+        override var hitboxSizeToWidthRatio = GhostEnemy.DEFAULT.HITBOX_SIZE_TO_WIDTH_RATIO
+
         override fun characterOrientedImages(): Array<String> {
             return arrayOf("$enemiesFolder/mini_ghost/ghost_${state.imageDirection.toString().lowercase()}.png")
         }

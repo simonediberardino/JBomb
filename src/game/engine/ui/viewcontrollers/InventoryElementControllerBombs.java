@@ -1,6 +1,6 @@
 package game.engine.ui.viewcontrollers;
 
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 
 public class InventoryElementControllerBombs extends InventoryElementController {
     public InventoryElementControllerBombs() {

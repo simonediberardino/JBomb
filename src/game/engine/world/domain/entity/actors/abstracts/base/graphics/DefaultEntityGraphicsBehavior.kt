@@ -4,6 +4,7 @@ import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.utils.Utility.fileExists
 import game.utils.Utility.loadImage
+import game.utils.time.now
 import java.awt.image.BufferedImage
 import java.util.*
 import java.util.regex.Pattern
@@ -22,7 +23,7 @@ abstract class DefaultEntityGraphicsBehavior : IEntityGraphicsBehavior {
     }
 
     private fun doLoadAndSetImage(entity: Entity, imagePath: String): BufferedImage {
-        entity.state.lastImageUpdate = System.currentTimeMillis()
+        entity.state.lastImageUpdate = now()
         entity.image._image = loadImage(imagePath)
         entity.image.imagePath = imagePath
         return entity.image._image!!

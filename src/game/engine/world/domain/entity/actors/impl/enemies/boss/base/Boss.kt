@@ -12,6 +12,7 @@ import game.engine.world.domain.entity.actors.impl.enemies.boss.base.logic.BossE
 import game.engine.world.domain.entity.actors.impl.enemies.boss.base.properties.BossEntityProperties
 import game.engine.world.domain.entity.actors.impl.enemies.boss.base.properties.BossEntityState
 import game.values.DrawPriority
+import java.util.TreeMap
 
 /**
  * An abstract class for enemy bosses;
@@ -50,7 +51,7 @@ abstract class Boss : AiEnemy {
         }
         val OBSTACLES: Set<Class<out Entity?>?> = emptySet()
         val DEATH_SOUND = SoundModel.BOSS_DEATH
-        val HEALTH_STATUS_MAP = hashMapOf<Int, Int>()
+        val HEALTH_STATUS_MAP = TreeMap<Int, Int>()
         val START_RAGE_STATUS = 0
     }
 }

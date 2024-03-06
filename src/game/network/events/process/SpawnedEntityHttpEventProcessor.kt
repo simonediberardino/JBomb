@@ -7,8 +7,8 @@ import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.events.models.HttpEvent
 import game.engine.level.online.ClientGameHandler
 import game.engine.ui.pages.LoadingPanel.LOADING_TIMER
-import game.utils.Extensions.getOrTrim
-import game.utils.Log
+import game.utils.dev.Extensions.getOrTrim
+import game.utils.dev.Log
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 

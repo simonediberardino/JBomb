@@ -10,7 +10,8 @@ import game.engine.level.levels.Level
 import game.localization.Localization
 import game.engine.ui.panels.game.PitchPanel
 import game.engine.ui.viewelements.misc.ToastHandler
-import game.utils.Paths
+import game.utils.file_system.Paths
+import game.utils.time.now
 import java.awt.event.ActionEvent
 import java.awt.image.BufferedImage
 import javax.swing.Timer
@@ -49,7 +50,7 @@ abstract class MysteryBox(
         }
 
         if (isConfirmDelayExpired) {
-            lastClickInteraction = System.currentTimeMillis()
+            lastClickInteraction = now()
             showConfirmMessage()
             return
         }
@@ -68,7 +69,7 @@ abstract class MysteryBox(
     }
 
     private val isConfirmDelayExpired: Boolean
-        get() = System.currentTimeMillis() - lastClickInteraction > CONFIRM_DELAY_MS
+        get() = now() - lastClickInteraction > CONFIRM_DELAY_MS
 
     private fun buy() {
         val currentPoints = DataInputOutput.getInstance().score

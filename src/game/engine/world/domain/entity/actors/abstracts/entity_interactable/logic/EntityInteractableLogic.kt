@@ -65,7 +65,7 @@ abstract class EntityInteractableLogic(
 
     private fun updateLastInteract(e: Entity?) {
         if (e == null) return
-        entity.state.lastInteractionTime = System.currentTimeMillis()
+        entity.state.lastInteractionTime = now()
     }
 
 

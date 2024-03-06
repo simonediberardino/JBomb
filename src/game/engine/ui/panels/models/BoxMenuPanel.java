@@ -2,7 +2,7 @@ package game.engine.ui.panels.models;
 
 import game.engine.ui.frames.BombermanFrame;
 import game.engine.ui.panels.game.PagePanel;
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 
 import javax.swing.*;
 import java.awt.*;

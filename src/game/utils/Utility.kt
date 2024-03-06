@@ -2,6 +2,7 @@ package game.utils
 
 import game.Bomberman
 import game.storage.cache.Cache.Companion.instance
+import game.utils.time.now
 import game.values.Dimensions
 import java.awt.Dimension
 import java.awt.Toolkit
@@ -21,7 +22,7 @@ object Utility {
 
     
     fun timePassed(time: Long): Long {
-        return System.currentTimeMillis() - time
+        return now() - time
     }
 
     fun isValueInRange(value: Int, min: Int, max: Int): Boolean {

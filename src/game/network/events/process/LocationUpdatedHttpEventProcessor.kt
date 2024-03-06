@@ -5,8 +5,8 @@ import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.events.models.HttpEvent
-import game.utils.Extensions.getOrTrim
-import game.utils.Log
+import game.utils.dev.Extensions.getOrTrim
+import game.utils.dev.Log
 
 class LocationUpdatedHttpEventProcessor : HttpEvent {
     override fun invoke(vararg extras: Any) {

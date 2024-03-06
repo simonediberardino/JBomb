@@ -8,9 +8,9 @@ import game.engine.ui.pages.SettingsPanel;
 import game.engine.ui.panels.game.MatchPanel;
 import game.engine.ui.panels.game.PitchPanel;
 import game.engine.ui.viewelements.misc.ToastHandler;
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 import game.utils.Utility;
-import game.utils.XMLUtils;
+import game.utils.dev.XMLUtils;
 
 import javax.swing.*;
 import java.awt.*;

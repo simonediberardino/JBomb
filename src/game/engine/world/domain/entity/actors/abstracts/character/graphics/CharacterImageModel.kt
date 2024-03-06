@@ -8,8 +8,6 @@ import java.awt.image.BufferedImage
 abstract class CharacterImageModel(
         entity: Entity,
         entitiesAssetsPath: String = Entity.DEFAULT.ENTITIES_ASSETS_PATH,
-        hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
-        hitboxSizeToHeightRatio: Float = Character.DEFAULT.HITBOX_SIZE_TO_HEIGHT_RATIO,
         paddingTop: Int = Entity.DEFAULT.PADDING_TOP,
         paddingWidth: Int = Entity.DEFAULT.PADDING_WIDTH,
         imageRefreshRate: Int = Entity.DEFAULT.IMAGE_REFRESH_RATE,
@@ -20,8 +18,6 @@ abstract class CharacterImageModel(
 ) : EntityImageModel(
         entity,
         entitiesAssetsPath,
-        hitboxSizeToWidthRatio,
-        hitboxSizeToHeightRatio,
         paddingTop,
         paddingWidth,
         imageRefreshRate,
@@ -31,4 +27,5 @@ abstract class CharacterImageModel(
         imagePath
 ) {
     abstract fun characterOrientedImages(): Array<String>
+    override var hitboxSizeToHeightRatio: Float = Character.DEFAULT.HITBOX_SIZE_TO_HEIGHT_RATIO
 }

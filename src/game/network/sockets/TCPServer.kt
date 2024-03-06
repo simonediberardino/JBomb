@@ -1,7 +1,7 @@
 package game.network.sockets
 
 import game.network.callbacks.TCPServerCallback
-import game.utils.Log
+import game.utils.dev.Log
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.IOException

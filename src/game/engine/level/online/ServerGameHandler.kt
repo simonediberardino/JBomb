@@ -6,7 +6,7 @@ import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.events.forward.LevelInfoHttpEventForwarder
 import game.network.serializing.HttpParserSerializer
 import game.network.sockets.TCPServer
-import game.utils.Log
+import game.utils.dev.Log
 
 /**
  * Handles communication with clients from the server-side using TCP.

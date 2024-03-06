@@ -5,13 +5,11 @@ import game.engine.world.domain.entity.actors.abstracts.character.graphics.Chara
 import game.engine.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.engine.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.engine.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
-import game.engine.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.properties.GhostEnemyState
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.yellow_ball.properties.YellowBallProperties
 import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
-import game.utils.Paths.enemiesFolder
+import game.utils.file_system.Paths.enemiesFolder
 
 class Zombie : AiEnemy {
     constructor() : super()

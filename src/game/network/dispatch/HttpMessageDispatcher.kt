@@ -4,7 +4,7 @@ import game.Bomberman
 import game.network.models.HttpMessage
 import game.network.models.HttpActor
 import game.network.serializing.HttpParserSerializer
-import game.utils.Log
+import game.utils.dev.Log
 
 /**
  * A class responsible for dispatching HTTP messages within the Bomberman game.

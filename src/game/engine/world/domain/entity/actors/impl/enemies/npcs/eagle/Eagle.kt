@@ -8,7 +8,7 @@ import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.proper
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.flying_enemy.FlyingEnemy
 import game.engine.world.types.EntityTypes
 import game.engine.world.domain.entity.geo.Coordinates
-import game.utils.Paths.enemiesFolder
+import game.utils.file_system.Paths.enemiesFolder
 
 class Eagle : FlyingEnemy {
     constructor(id: Long) : super(id)

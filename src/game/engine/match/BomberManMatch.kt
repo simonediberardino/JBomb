@@ -22,15 +22,16 @@ import game.engine.tasks.GamePausedObserver
 import game.engine.tasks.GameTickerObservable
 import game.engine.ui.pages.PausePanel
 import game.engine.ui.panels.game.MatchPanel
-import game.utils.Log
+import game.utils.dev.Log
 import game.utils.Utility.timePassed
 import game.engine.ui.viewcontrollers.*
+import game.utils.time.now
 import java.util.*
 import kotlin.collections.HashMap
 
 class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGameHandler?) {
     // Timestamp of the last game pause state
-    private var lastGamePauseStateTime = System.currentTimeMillis()
+    private var lastGamePauseStateTime = now()
 
     // List of entities sorted by a linked list
     private val _entitiesList: SortedLinkedList<Entity> = SortedLinkedList()
@@ -258,7 +259,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
             return
         }
 
-        lastGamePauseStateTime = System.currentTimeMillis()
+        lastGamePauseStateTime = now()
 
         if (gameState) {
             pauseGame()

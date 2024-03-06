@@ -14,7 +14,7 @@ import game.engine.world.domain.entity.actors.abstracts.character.properties.Cha
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.tank.logic.TankEnemyLogic
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.tank.properties.TankEnemyState
-import game.utils.Paths.enemiesFolder
+import game.utils.file_system.Paths.enemiesFolder
 
 class TankEnemy : AiEnemy, Explosive {
     constructor() : super()

@@ -70,7 +70,7 @@ class ExplosionState(
 
             if (Utility.timePassed(lastRefresh) >= entity.image.imageRefreshRate) {
                 explosionState += appearingConstant
-                lastRefresh = System.currentTimeMillis()
+                lastRefresh = now()
             }
 
             return prevState

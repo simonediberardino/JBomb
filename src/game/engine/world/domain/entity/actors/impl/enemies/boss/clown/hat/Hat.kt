@@ -14,7 +14,7 @@ import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.Clown
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.hat.logic.HatEntityLogic
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.hat.properties.HatEntityState
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.properties.OrbEntityProperties
-import game.utils.Paths
+import game.utils.file_system.Paths
 
 open class Hat : Orb {
     constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates, enhancedDirection) {}

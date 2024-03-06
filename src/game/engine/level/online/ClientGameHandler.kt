@@ -4,7 +4,7 @@ import game.network.callbacks.TCPClientCallback
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.serializing.HttpParserSerializer
 import game.network.sockets.TCPClient
-import game.utils.Log
+import game.utils.dev.Log
 
 /**
  * Handles communication with the game server from the client-side using TCP.

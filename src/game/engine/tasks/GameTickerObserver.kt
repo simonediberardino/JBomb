@@ -1,13 +1,14 @@
 package game.engine.tasks
 
 import game.engine.tasks.observer.Observer2
+import game.utils.time.now
 
 abstract class GameTickerObserver : Observer2 {
     var lastUpdate = 0L
         protected set
 
     override fun update(arg: Any?) {
-        lastUpdate = System.currentTimeMillis()
+        lastUpdate = now()
     }
 
     open val delayObserverUpdate: Float

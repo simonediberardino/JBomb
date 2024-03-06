@@ -1,4 +1,4 @@
-package game.utils
+package game.utils.dev
 
 object Log {
     private val baseLogsEnabled = XMLUtils.readConfig("logs_base").toBoolean()

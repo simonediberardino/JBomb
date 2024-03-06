@@ -6,7 +6,7 @@ import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.level.levels.Level
 import game.engine.level.levels.world1.World1Level1
-import game.utils.Paths.getWorldSelectorPortalPath
+import game.utils.file_system.Paths.getWorldSelectorPortalPath
 import game.utils.Utility.loadImage
 import java.awt.image.BufferedImage
 import java.lang.reflect.InvocationTargetException

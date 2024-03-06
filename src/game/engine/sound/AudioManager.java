@@ -2,7 +2,7 @@ package game.engine.sound;
 
 
 import game.storage.data.DataInputOutput;
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

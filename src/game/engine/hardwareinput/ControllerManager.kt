@@ -6,6 +6,7 @@ import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.engine.tasks.observer.Observable2
 import game.engine.tasks.PeriodicTask
 import game.utils.Utility.timePassed
+import game.utils.time.now
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
@@ -60,7 +61,7 @@ class ControllerManager : Observable2(), KeyListener {
     fun onKeyPressed(action: Command){
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
         if (player != null) {
-            commandEventsTime[action] = System.currentTimeMillis()
+            commandEventsTime[action] = now()
             player!!.commandQueue.add(action)
         }
 

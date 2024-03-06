@@ -1,7 +1,7 @@
 package game.network.sockets
 
 import game.network.callbacks.TCPClientCallback
-import game.utils.Log
+import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

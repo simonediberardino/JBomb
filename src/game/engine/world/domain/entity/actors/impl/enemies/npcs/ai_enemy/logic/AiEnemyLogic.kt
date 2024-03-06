@@ -8,7 +8,7 @@ import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.engine.world.domain.entity.geo.Direction
-import game.utils.XMLUtils
+import game.utils.dev.XMLUtils
 import java.util.stream.Collectors
 
 open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = entity), IAiEnemyLogic {
@@ -31,7 +31,7 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
      */
     override fun chooseDirection(forceChange: Boolean): Direction {
         // Get the current time in milliseconds
-        val currentTime = System.currentTimeMillis()
+        val currentTime = now()
         // If it hasn't been long enough since the last direction update, keep moving in the same direction, unless last move was blocked
         if (currentTime - entity.state.lastDirectionUpdate < AiEnemy.DIRECTION_REFRESH_RATE && !forceChange) {
             return entity.state.direction

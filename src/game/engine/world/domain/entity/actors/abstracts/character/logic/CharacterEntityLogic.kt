@@ -92,7 +92,7 @@ abstract class CharacterEntityLogic(
             if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
                 return
 
-            entity.state.lastDamageTime = System.currentTimeMillis()
+            entity.state.lastDamageTime = now()
 
             // Reduce the health points by the specified amount
             entity.state.hp -= damage

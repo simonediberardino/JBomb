@@ -3,8 +3,8 @@ package game.network.events.process
 import game.Bomberman
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.events.models.HttpEvent
-import game.utils.Extensions.getOrTrim
-import game.utils.Log
+import game.utils.dev.Extensions.getOrTrim
+import game.utils.dev.Log
 
 class AttackEntityEventProcessor : HttpEvent {
     override fun invoke(vararg extras: Any) {

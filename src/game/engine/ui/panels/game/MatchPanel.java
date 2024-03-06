@@ -5,7 +5,7 @@ import game.engine.world.domain.entity.geo.Coordinates;
 import game.engine.world.domain.entity.pickups.powerups.EmptyPowerup;
 import game.engine.world.domain.entity.pickups.powerups.PowerUp;
 import game.engine.ui.frames.BombermanFrame;
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 import game.utils.Utility;
 import game.values.Dimensions;
 

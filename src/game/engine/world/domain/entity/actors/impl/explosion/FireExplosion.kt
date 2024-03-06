@@ -8,7 +8,7 @@ import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.graphics.ExplosionImageModel
 import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.state.ExplosionProperties
 import game.engine.world.domain.entity.actors.impl.models.Explosive
-import game.utils.Paths
+import game.utils.file_system.Paths
 
 class FireExplosion : AbstractExplosion {
     constructor(

@@ -4,7 +4,7 @@ import game.Bomberman;
 import game.engine.ui.frames.BombermanFrame;
 import game.engine.ui.panels.game.PagePanel;
 import game.engine.ui.viewelements.misc.Space;
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 
 import javax.swing.*;
 import java.awt.*;

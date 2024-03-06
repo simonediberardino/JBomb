@@ -13,7 +13,7 @@ import game.engine.ui.viewelements.settings.SettingsElementView;
 import game.engine.ui.viewelements.settings.SlideElementView;
 import game.engine.ui.viewelements.settings.JBombTextFieldTagged;
 import game.utils.Utility;
-import game.utils.Utils2D;
+import game.utils.ui.Utils2D;
 import game.values.Dimensions;
 
 import javax.swing.*;

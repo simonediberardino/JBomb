@@ -1,4 +1,4 @@
-package game.utils
+package game.utils.dev
 
 import kotlin.reflect.full.memberProperties
 

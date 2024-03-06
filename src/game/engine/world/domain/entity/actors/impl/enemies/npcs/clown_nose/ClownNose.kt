@@ -11,7 +11,7 @@ import game.engine.world.domain.entity.actors.abstracts.character.graphics.Chara
 import game.engine.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
 import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.orb.properties.OrbEntityProperties
-import game.utils.Paths.enemiesFolder
+import game.utils.file_system.Paths.enemiesFolder
 
 class ClownNose : Orb {
     constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates, enhancedDirection)

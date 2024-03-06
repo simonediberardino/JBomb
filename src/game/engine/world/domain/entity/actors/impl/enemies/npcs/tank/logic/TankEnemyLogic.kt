@@ -11,7 +11,7 @@ import game.utils.Utility
 
 class TankEnemyLogic(override val entity: TankEnemy) : AiEnemyLogic(entity = entity) {
     override fun process() {
-        val currentTime = System.currentTimeMillis()
+        val currentTime = now()
 
         // Check if it's time to update the shooting behavior
         if (Utility.timePassed(entity.state.lastFire) <= TankEnemy.DEFAULT.SHOOTING_REFRESH_RATE) return

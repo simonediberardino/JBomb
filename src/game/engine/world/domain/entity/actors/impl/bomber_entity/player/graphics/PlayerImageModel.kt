@@ -3,7 +3,7 @@ package game.engine.world.domain.entity.actors.impl.bomber_entity.player.graphic
 import game.engine.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.storage.data.DataInputOutput
-import game.utils.Paths
+import game.utils.file_system.Paths
 
 class PlayerImageModel(
         entity: Player

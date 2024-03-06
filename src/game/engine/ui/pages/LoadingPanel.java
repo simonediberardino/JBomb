@@ -6,7 +6,7 @@ import game.localization.Localization;
 import game.engine.sound.SoundModel;
 import game.engine.ui.frames.BombermanFrame;
 import game.engine.ui.panels.game.PagePanel;
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 import game.utils.Utility;
 
 import javax.swing.*;

@@ -10,7 +10,7 @@ import game.engine.world.domain.entity.actors.abstracts.character.graphics.Chara
 import game.engine.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.yellow_ball.properties.YellowBallProperties
-import game.utils.Paths.enemiesFolder
+import game.utils.file_system.Paths.enemiesFolder
 
 class YellowBall : AiEnemy {
     constructor() : super()

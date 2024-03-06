@@ -8,7 +8,7 @@ import game.localization.Localization;
 import game.engine.ui.frames.BombermanFrame;
 import game.engine.ui.viewelements.bombermanbutton.RedButton;
 import game.engine.ui.viewelements.misc.ToastHandler;
-import game.utils.Paths;
+import game.utils.file_system.Paths;
 
 import javax.swing.*;
 import java.awt.*;

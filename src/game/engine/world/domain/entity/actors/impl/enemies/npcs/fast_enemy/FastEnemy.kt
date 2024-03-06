@@ -10,7 +10,7 @@ import game.engine.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.prope
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.geo.Direction
 import game.engine.world.types.EntityTypes
-import game.utils.Paths.enemiesFolder
+import game.utils.file_system.Paths.enemiesFolder
 
 /**
  * An enemy with increased speed multiplier;
@@ -22,9 +22,10 @@ class FastEnemy : AiEnemy {
 
     override val image: CharacterImageModel = object : CharacterImageModel(
             entity = this,
-            entitiesAssetsPath = "$enemiesFolder/fast_enemy/fast_enemy",
-            hitboxSizeToHeightRatio = FastEnemy.DEFAULT.HITBOX_SIZE_TO_HEIGHT_RATIO
+            entitiesAssetsPath = "$enemiesFolder/fast_enemy/fast_enemy"
     ) {
+        override var hitboxSizeToHeightRatio = FastEnemy.DEFAULT.HITBOX_SIZE_TO_HEIGHT_RATIO
+
         override fun characterOrientedImages(): Array<String> = Array(4) { index ->
             "${entitiesAssetsPath}_${state.imageDirection.toString().lowercase()}_$index.png"
         }

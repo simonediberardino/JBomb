@@ -1,4 +1,4 @@
-package game.utils
+package game.utils.ui
 
 import java.awt.Component
 import java.awt.Container

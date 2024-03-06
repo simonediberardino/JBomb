@@ -1,6 +1,6 @@
 package game.engine.sound
 
-import game.utils.Paths.soundsPath
+import game.utils.file_system.Paths.soundsPath
 import java.util.*
 
 enum class SoundModel {

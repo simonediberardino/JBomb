@@ -7,7 +7,7 @@ import game.engine.world.domain.entity.actors.abstracts.character.graphics.IChar
 import game.engine.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
 import game.engine.world.domain.entity.actors.impl.enemies.npcs.flying_enemy.FlyingEnemy
 import game.engine.world.types.EntityTypes
-import game.utils.Paths.enemiesFolder
+import game.utils.file_system.Paths.enemiesFolder
 
 class Helicopter : FlyingEnemy {
     constructor() : super()

@@ -1,6 +1,6 @@
 package game.engine.level.filesystem
 
-import game.utils.Paths
+import game.utils.file_system.Paths
 
 class LevelFileSystemHandler {
     fun getImageForCurrentLevel(path: String?): String = getFileForCurrentLevel("images/$path")
