@@ -7,6 +7,7 @@ import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.Character
 import game.engine.world.domain.entity.geo.Direction
 import game.utils.Utility
+import game.utils.time.now
 import java.awt.image.BufferedImage
 
 open class CharacterGraphicsBehavior(open val entity: Character) : DefaultEntityGraphicsBehavior(), ICharacterGraphicsBehavior {

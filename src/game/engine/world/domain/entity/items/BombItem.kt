@@ -15,34 +15,34 @@ class BombItem : UsableItem() {
 
         val isLocalPlayer = owner == match.player
         val isBombPlacementValid = isLocalPlayer &&
-                (owner.currExplosionLength == 0 || owner.placedBombs >= owner.maxBombs || owner.currentBombs <= 0)
+                (owner.state.currExplosionLength == 0 || owner.state.placedBombs >= owner.state.maxBombs || owner.state.currentBombs <= 0)
 
-        val isBombPlacementIntervalValid = timePassed(owner.lastPlacedBombTime) < Bomb.PLACE_INTERVAL
+        val isBombPlacementIntervalValid = timePassed(owner.state.lastPlacedBombTime) < Bomb.PLACE_INTERVAL
 
         if (isBombPlacementValid || isBombPlacementIntervalValid) {
             return
         }
 
-        owner.lastPlacedBombTime = now()
-        owner.placedBombs++
-        owner.setBombsSolid(false)
+        owner.state.lastPlacedBombTime = now()
+        owner.state.placedBombs++
+        owner.state.bombsSolid = (false)
 
         if (isLocalPlayer)
-            UpdateCurrentAvailableItemsEvent().invoke(owner.currentBombs - 1)
+            UpdateCurrentAvailableItemsEvent().invoke(owner.state.currentBombs - 1)
 
         bombEntity = Bomb(owner)
 
         match.addBomb(bombEntity)
 
         bombEntity.onExplodeCallback = {
-            owner.placedBombs--
+            owner.state.placedBombs--
             match.removeBomb(bombEntity)
 
             if (isLocalPlayer)
-                UpdateCurrentAvailableItemsEvent().invoke(owner.currentBombs + 1)
+                UpdateCurrentAvailableItemsEvent().invoke(owner.state.currentBombs + 1)
         }
 
-        bombEntity.spawn(true)
+        bombEntity.logic.spawn(true)
         bombEntity.trigger()
     }
 
@@ -53,7 +53,7 @@ class BombItem : UsableItem() {
     override val imagePath: String = "$entitiesFolder/bomb/bomb_0.png"
 
     override val count: Int
-        get() = owner.currentBombs
+        get() = owner.state.currentBombs
 
     override val type: ItemsTypes = ItemsTypes.BombItem
 }

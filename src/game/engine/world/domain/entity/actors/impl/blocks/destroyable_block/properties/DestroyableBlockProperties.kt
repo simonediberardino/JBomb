@@ -5,6 +5,5 @@ import game.engine.world.types.EntityTypes
 import game.values.DrawPriority
 
 class DestroyableBlockProperties : EntityProperties(
-        priority = DrawPriority.DRAW_PRIORITY_1,
         type = EntityTypes.DestroyableBlock
 )

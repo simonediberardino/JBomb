@@ -3,7 +3,7 @@ package game.engine.ui.panels.game;
 import game.Bomberman;
 import game.engine.world.domain.entity.geo.Coordinates;
 import game.engine.world.domain.entity.pickups.powerups.EmptyPowerup;
-import game.engine.world.domain.entity.pickups.powerups.PowerUp;
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp;
 import game.engine.ui.frames.BombermanFrame;
 import game.utils.file_system.Paths;
 import game.utils.Utility;

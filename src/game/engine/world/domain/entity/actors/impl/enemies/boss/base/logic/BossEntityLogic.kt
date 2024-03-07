@@ -7,7 +7,7 @@ import game.engine.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.A
 import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.pickups.portals.EndLevelPortal
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 
 open class BossEntityLogic(override val entity: Boss) : AiEnemyLogic(entity = entity), IBossEntityLogic {
     override fun onDespawn() {

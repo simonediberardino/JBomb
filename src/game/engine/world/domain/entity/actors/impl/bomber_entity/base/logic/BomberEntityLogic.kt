@@ -7,7 +7,7 @@ import game.engine.world.domain.entity.actors.abstracts.character.logic.Characte
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.items.BombItem
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 
 open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity), IBomberEntityLogic {
     override fun doInteract(e: Entity?) {}

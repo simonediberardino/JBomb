@@ -60,7 +60,7 @@ data class EntityInfo(
 )
 
 open class EntityProperties(
-        val priority: DrawPriority,
+        val priority: DrawPriority = DrawPriority.DRAW_PRIORITY_1,
         val type: EntityTypes
 )
 
@@ -75,8 +75,8 @@ open class EntityImageModel(
         var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
         var imagePath: String = Entity.DEFAULT.IMAGE_PATH
 ) {
-    open var hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
-    open var hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO,
+    open var hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO
+    open var hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO
 
     private val defaultPaddingTopFunction : RunnablePar = object : RunnablePar {
         override fun <T> execute(par: T): Any {

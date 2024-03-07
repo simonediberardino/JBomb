@@ -3,7 +3,7 @@ package game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.pro
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.impl.blocks.base_block.properties.BlockEntityState
 import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 
 class DestroyableBlockState(
         entity: Entity,

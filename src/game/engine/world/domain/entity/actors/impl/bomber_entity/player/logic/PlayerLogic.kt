@@ -46,7 +46,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
 
     private fun updateBombs() {
         val maxBombs = DataInputOutput.getInstance().obtainedBombs
-        Log.i(maxBombs)
         UpdateCurrentAvailableItemsEvent().invoke(maxBombs)
         UpdateCurrentBombsLengthEvent().invoke(DataInputOutput.getInstance().explosionLength)
     }

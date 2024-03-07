@@ -5,5 +5,5 @@ import game.engine.world.types.EntityTypes
 import game.values.DrawPriority
 
 class BlockEntityProperties(type: EntityTypes) : EntityProperties(
-        priority = DrawPriority.DRAW_PRIORITY_1, type
+        type = type
 )

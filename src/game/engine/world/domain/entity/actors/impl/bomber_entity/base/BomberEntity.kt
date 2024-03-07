@@ -17,7 +17,7 @@ import game.engine.world.domain.entity.actors.impl.bomber_entity.base.logic.Bomb
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.logic.IBomberEntityLogic
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
 import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 
 abstract class BomberEntity : Character, Explosive {
     constructor() : super()

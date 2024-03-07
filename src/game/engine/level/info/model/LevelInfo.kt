@@ -4,7 +4,7 @@ import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.engine.level.levels.Level
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 
 /**
  * Abstract base class that is used to represent all the info of a Level instance;

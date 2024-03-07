@@ -2,7 +2,7 @@ package game.engine.world.domain.entity.actors.impl.bomber_entity.base.logic
 
 import game.engine.world.domain.entity.actors.abstracts.base.Entity
 import game.engine.world.domain.entity.actors.abstracts.character.logic.ICharacterEntityLogic
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 
 interface IBomberEntityLogic : ICharacterEntityLogic {
     fun isMouseDragInteractable(cls: Class<out Entity>): Boolean

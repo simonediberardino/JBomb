@@ -12,8 +12,10 @@ import game.engine.world.domain.entity.actors.impl.models.Explosive
 import game.engine.events.game.UpdateCurrentAvailableItemsEvent
 import game.engine.sound.AudioManager
 import game.engine.sound.SoundModel
+import game.engine.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.utils.file_system.Paths.itemsPath
 import game.utils.Utility.timePassed
+import game.utils.time.now
 
 class PistolItem : UsableItem(), Explosive {
     private var bullets = 5
@@ -49,23 +51,25 @@ class PistolItem : UsableItem(), Explosive {
     private fun addBullets(i: Int) = setBullets(bullets + i)
 
     override fun use() {
-        if (timePassed(owner.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
+        if (timePassed(owner.state.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
             return
         }
 
-        owner.lastPlacedBombTime = now()
+        owner.state.lastPlacedBombTime = now()
         addBullets(-1)
 
-        val explosion = PistolExplosion(
-                owner,
-                Coordinates.nextCoords(owner.info.position, owner.currDirection, SIZE),
-                owner.currDirection,
-                1,
-                this
-        )
+        ExplosionHandler.instance.process {
+            val explosion = PistolExplosion(
+                    owner,
+                    Coordinates.nextCoords(owner.info.position, owner.state.direction, SIZE),
+                    owner.state.direction,
+                    1,
+                    this
+            ).logic.explode()
 
-        AudioManager.getInstance().play(SoundModel.EXPLOSION)
-        explosion.explode()
+            listOf(explosion)
+        }
+
         if (bullets == 0) {
             remove()
         }

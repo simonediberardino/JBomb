@@ -10,7 +10,7 @@ import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.logi
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.properties.DestroyableBlockProperties
 import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.properties.DestroyableBlockState
 import game.engine.world.domain.entity.geo.Coordinates
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 
 class DestroyableBlock : MovableBlock {
     constructor(coordinates: Coordinates?, powerUpClass: Class<out PowerUp>? = null) : super(coordinates) {

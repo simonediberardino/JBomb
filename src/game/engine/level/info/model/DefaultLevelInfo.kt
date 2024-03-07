@@ -3,7 +3,7 @@ package game.engine.level.info.model
 import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.level.levels.Level
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 import game.engine.ui.panels.game.PitchPanel
 
 abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {

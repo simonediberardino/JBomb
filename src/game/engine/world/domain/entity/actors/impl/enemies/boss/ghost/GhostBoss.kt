@@ -2,7 +2,6 @@ package game.engine.world.domain.entity.actors.impl.enemies.boss.ghost
 
 import game.engine.world.domain.entity.actors.abstracts.base.EntityInfo
 import game.engine.world.domain.entity.actors.impl.enemies.boss.base.Boss
-import game.engine.world.domain.entity.actors.impl.enemies.boss.base.graphics.BossEntityGraphicsBehavior
 import game.engine.world.domain.entity.actors.impl.enemies.boss.base.properties.BossEntityProperties
 import game.engine.world.domain.entity.actors.impl.enemies.boss.ghost.graphics.GhostBossGraphicsBehavior
 import game.engine.world.domain.entity.actors.impl.enemies.boss.ghost.graphics.GhostBossImageModel

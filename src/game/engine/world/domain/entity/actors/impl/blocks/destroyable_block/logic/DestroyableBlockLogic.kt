@@ -5,7 +5,7 @@ import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.Dest
 import game.engine.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.engine.world.domain.entity.geo.Coordinates
 import game.engine.world.domain.entity.pickups.portals.EndLevelPortal
-import game.engine.world.domain.entity.pickups.powerups.PowerUp
+import game.engine.world.domain.entity.pickups.powerups.base.PowerUp
 import game.utils.Utility
 import java.lang.Exception
 
