@@ -1,7 +1,7 @@
 package game.network.callbacks
 
 import game.network.sockets.TCPServer
-import game.engine.level.online.OnlineGameHandler
+import game.network.gamehandler.OnlineGameHandler
 
 interface TCPServerCallback : OnlineGameHandler {
     fun onCloseServer()

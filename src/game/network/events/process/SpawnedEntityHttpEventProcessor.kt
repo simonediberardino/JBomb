@@ -1,12 +1,12 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.world.types.EntityTypes
-import game.engine.world.domain.entity.geo.Coordinates
-import game.engine.world.domain.entity.actors.abstracts.base.Entity
-import game.engine.events.models.HttpEvent
-import game.engine.level.online.ClientGameHandler
-import game.engine.ui.pages.LoadingPanel.LOADING_TIMER
+import game.domain.world.types.EntityTypes
+import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.events.models.HttpEvent
+import game.network.gamehandler.ClientGameHandler
+import game.presentation.ui.pages.LoadingPanel.LOADING_TIMER
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 import java.awt.event.ActionEvent

@@ -1,6 +1,6 @@
 package game.network.entity
 
-import game.engine.world.domain.entity.geo.Coordinates
+import game.domain.world.domain.entity.geo.Coordinates
 
 class BomberEntityNetwork(
         entityId: Long,

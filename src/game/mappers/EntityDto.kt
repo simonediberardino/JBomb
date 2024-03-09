@@ -1,10 +1,10 @@
 package game.mappers
 
-import game.engine.world.domain.entity.actors.abstracts.base.Entity
-import game.engine.world.domain.entity.actors.abstracts.character.Character
-import game.engine.world.domain.entity.actors.impl.placeable.PlaceableEntity
-import game.engine.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.engine.world.types.EntityTypes
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.abstracts.character.Character
+import game.domain.world.domain.entity.actors.impl.placeable.PlaceableEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.types.EntityTypes
 import game.network.entity.BomberEntityNetwork
 import game.network.entity.CharacterNetwork
 import game.network.entity.EntityNetwork

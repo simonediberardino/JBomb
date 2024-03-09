@@ -1,6 +1,6 @@
 package game.network.callbacks
 
-import game.engine.level.online.OnlineGameHandler
+import game.network.gamehandler.OnlineGameHandler
 
 interface TCPClientCallback : OnlineGameHandler {
     fun onError()

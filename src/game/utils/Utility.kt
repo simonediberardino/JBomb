@@ -1,7 +1,8 @@
 package game.utils
 
 import game.Bomberman
-import game.storage.cache.Cache.Companion.instance
+import game.data.cache.Cache
+import game.data.cache.Cache.Companion.instance
 import game.utils.time.now
 import game.values.Dimensions
 import java.awt.Dimension
@@ -69,7 +70,7 @@ object Utility {
     
     fun loadImage(fileName: String): BufferedImage {
         var fileName = fileName
-        val cache = game.storage.cache.Cache.instance
+        val cache = Cache.instance
 
         if (cache.hasInCache(fileName)) {
             return cache.queryCache<BufferedImage>(fileName) ?: throw RuntimeException()

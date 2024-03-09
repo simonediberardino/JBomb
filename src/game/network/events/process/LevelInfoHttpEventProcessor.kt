@@ -1,11 +1,11 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.events.models.HttpEvent
+import game.domain.events.models.HttpEvent
 import game.network.dispatch.HttpMessageDispatcher
 import game.network.messages.PlayerJoinRequestHttpMessage
-import game.engine.level.levels.Level
-import game.engine.level.online.ClientGameHandler
+import game.domain.level.levels.Level
+import game.network.gamehandler.ClientGameHandler
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 import java.lang.RuntimeException

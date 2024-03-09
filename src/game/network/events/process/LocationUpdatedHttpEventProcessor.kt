@@ -1,10 +1,10 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.world.domain.entity.actors.abstracts.character.Character
-import game.engine.world.domain.entity.geo.Coordinates
-import game.engine.world.domain.entity.geo.Direction
-import game.engine.events.models.HttpEvent
+import game.domain.world.domain.entity.actors.abstracts.character.Character
+import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.domain.entity.geo.Direction
+import game.domain.events.models.HttpEvent
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 

@@ -1,8 +1,8 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.engine.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
-import game.engine.events.models.HttpEvent
+import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
+import game.domain.events.models.HttpEvent
 import game.network.events.forward.SpawnEntityEventForwarder
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log

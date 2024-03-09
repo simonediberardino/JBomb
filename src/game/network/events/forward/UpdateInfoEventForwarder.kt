@@ -1,7 +1,7 @@
 package game.network.events.forward
 
 import game.network.entity.EntityNetwork
-import game.engine.events.models.HttpEvent
+import game.domain.events.models.HttpEvent
 import game.network.dispatch.HttpMessageDispatcher
 import game.network.messages.UpdateInfoHttpMessage
 

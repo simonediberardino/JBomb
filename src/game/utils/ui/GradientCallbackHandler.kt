@@ -1,6 +1,6 @@
 package game.utils.ui
 
-import game.engine.events.models.RunnablePar
+import game.domain.events.models.RunnablePar
 import java.awt.event.ActionEvent
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.Timer

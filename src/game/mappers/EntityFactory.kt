@@ -1,30 +1,30 @@
 package game.mappers
 
 import game.Bomberman
-import game.engine.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
-import game.engine.world.domain.entity.actors.impl.blocks.invisible_block.InvisibleBlock
-import game.engine.world.domain.entity.actors.impl.blocks.stone_block.StoneBlock
-import game.engine.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
-import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.Clown
-import game.engine.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
-import game.engine.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
-import game.engine.world.domain.entity.actors.abstracts.base.Entity
-import game.engine.world.domain.entity.actors.impl.bomber_entity.player.Player
-import game.engine.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
-import game.engine.level.online.ClientGameHandler
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.clown_nose.ClownNose
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.eagle.Eagle
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.GhostEnemy
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.helicopter.Helicopter
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.tank.TankEnemy
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.yellow_ball.YellowBall
-import game.engine.world.domain.entity.actors.impl.enemies.npcs.zombie.Zombie
-import game.engine.world.domain.entity.pickups.portals.EndLevelPortal
-import game.engine.world.domain.entity.pickups.portals.World1Portal
-import game.engine.world.domain.entity.pickups.portals.World2Portal
-import game.engine.world.domain.entity.pickups.powerups.*
-import game.engine.world.types.EntityTypes
+import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
+import game.domain.world.domain.entity.actors.impl.blocks.invisible_block.InvisibleBlock
+import game.domain.world.domain.entity.actors.impl.blocks.stone_block.StoneBlock
+import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
+import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.Clown
+import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
+import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
+import game.network.gamehandler.ClientGameHandler
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.clown_nose.ClownNose
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.eagle.Eagle
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.GhostEnemy
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.helicopter.Helicopter
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.tank.TankEnemy
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.yellow_ball.YellowBall
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.zombie.Zombie
+import game.domain.world.domain.entity.pickups.portals.EndLevelPortal
+import game.domain.world.domain.entity.pickups.portals.World1Portal
+import game.domain.world.domain.entity.pickups.portals.World2Portal
+import game.domain.world.domain.entity.pickups.powerups.*
+import game.domain.world.types.EntityTypes
 
 class EntityFactory {
     fun toEntity(entityTypes: EntityTypes, id: Long): Entity? {
