@@ -25,6 +25,6 @@ class DestroyableBlock : MovableBlock {
     override val properties: DestroyableBlockProperties = DestroyableBlockProperties()
     override val image: EntityImageModel = EntityImageModel(entity = this)
     override val state: DestroyableBlockState = DestroyableBlockState(entity = this)
-    override val info: EntityInfo = EntityInfo()
+    
     override val graphicsBehavior: IEntityGraphicsBehavior = DestroyableBlockGraphics()
 }

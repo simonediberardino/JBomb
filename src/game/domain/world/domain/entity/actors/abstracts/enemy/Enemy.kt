@@ -23,11 +23,6 @@ abstract class Enemy : Character {
     override val state: EnemyEntityState = EnemyEntityState(entity = this)
     abstract override val logic: EnemyEntityLogic
 
-    override fun update(arg: Any?) {
-        super.update(arg)
-        if (arg as Boolean) logic.observerUpdate(arg)
-    }
-
     internal object DEFAULT {
         val SIZE = PitchPanel.GRID_SIZE
         val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = hashSetOf(BomberEntity::class.java, AbstractExplosion::class.java) // Or player?

@@ -14,6 +14,8 @@ import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.Movi
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
+import game.utils.dev.Log
+import game.utils.time.now
 import java.awt.event.ActionEvent
 import java.util.*
 
@@ -172,11 +174,12 @@ abstract class CharacterEntityLogic(
 
     override fun onHit(damage: Int) {}
 
-    override fun onExplosion(explosion: AbstractExplosion) {
-        explosion.logic.attack(entity)
+    override fun onExplosion(explosion: AbstractExplosion?) {
+        explosion?.logic?.attack(entity)
     }
 
     override fun handleCommand(command: Command) {
+        Log.i("HandleCommand $command")
         if (!Bomberman.getMatch().gameState) {
             return
         }
@@ -236,9 +239,10 @@ abstract class CharacterEntityLogic(
     }
 
     override fun executeCommandQueue() {
-        for (c in entity.state.commandQueue) {
+        entity.state.commandQueue.forEach { c ->
             handleCommand(c)
         }
+
         entity.state.commandQueue.clear()
     }
 

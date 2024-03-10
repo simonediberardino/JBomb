@@ -53,7 +53,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         val player = match.player
 
         // Check if there is a player and the player is alive
-        if (player == null || !player.aliveState) {
+        if (player == null || !player.logic.isAlive()) {
             return@Runnable // If not, exit the task
         }
 
@@ -62,9 +62,9 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         val entityToInteract = entity
 
         // Check if there is an entity to interact with and it's clickable
-        if (entityToInteract != null && player.isMouseClickInteractable(entityToInteract.javaClass)) {
+        if (entityToInteract != null && player.logic.isMouseClickInteractable(entityToInteract.javaClass)) {
             // Perform mouse interactions on the entity
-            entityToInteract.mouseInteractions()
+            entityToInteract.logic.mouseInteractions()
             onMovementPeriodicTaskEnd()
             nextCommandInQueue()
             return@Runnable // Exit the task
@@ -139,7 +139,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
         isMouseClicked = true
 
         val player = Bomberman.getMatch().player ?: return
-        if (!player.aliveState) {
+        if (!player.logic.isAlive()) {
             return
         }
 
@@ -176,11 +176,13 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
     }
 
     override fun mouseDragged(event: MouseEvent) {
-        if (isMouseClicked) return
+        if (isMouseClicked)
+            return
+
         isMouseDragged = true
         mouseCoords = Coordinates(event.x, event.y)
-        if (entity == null) return
-        entity!!.mouseInteractions()
+
+        entity?.logic?.mouseInteractions()
     }
 
     private fun startMouseTasks() {

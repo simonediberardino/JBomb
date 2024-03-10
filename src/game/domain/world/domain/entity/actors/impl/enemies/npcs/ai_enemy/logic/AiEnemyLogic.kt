@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityL
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.dev.XMLUtils
+import game.utils.time.now
 import java.util.stream.Collectors
 
 open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = entity), IAiEnemyLogic {

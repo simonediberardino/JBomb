@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
+import game.utils.time.now
 import java.util.concurrent.atomic.AtomicReference
 
 class ExplosionState(

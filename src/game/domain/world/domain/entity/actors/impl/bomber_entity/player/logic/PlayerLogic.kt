@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.actors.abstracts.entity_interactable.Enti
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.data.data.DataInputOutput
+import game.utils.dev.Log
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 
@@ -17,7 +18,7 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun onSpawn() {
         super.onSpawn()
         updateBombs()
-        Bomberman.getMatch().controllerManager?.register(entity)
+        Bomberman.getMatch().controllerManager!!.register(entity)
         Bomberman.getBombermanFrame().matchPanel.refreshPowerUps(entity.state.activePowerUps)
     }
 
@@ -50,6 +51,8 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     }
 
     override fun observerUpdate(arg: Any?) {
+        Log.i("onUpdate Player $arg")
+
         super.observerUpdate(arg)
         handleCommand(arg as Command)
     }

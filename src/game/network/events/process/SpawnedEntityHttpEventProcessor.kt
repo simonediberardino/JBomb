@@ -5,6 +5,7 @@ import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.events.models.HttpEvent
+import game.mappers.toEntity
 import game.network.gamehandler.ClientGameHandler
 import game.presentation.ui.pages.LoadingPanel.LOADING_TIMER
 import game.utils.dev.Extensions.getOrTrim
@@ -31,7 +32,7 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         val delay = if (!Bomberman.isInGame()) LOADING_TIMER + 1000 else 0
 
         val timer = Timer(delay) { _: ActionEvent? ->
-            entity.logic.spawn(true)
+            entity.logic.spawn(forceSpawn = true)
         }
 
         timer.isRepeats = false

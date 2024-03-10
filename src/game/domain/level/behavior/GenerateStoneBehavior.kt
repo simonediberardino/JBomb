@@ -26,7 +26,7 @@ class GenerateStoneBehavior(private val field: JPanel) : GameBehavior() {
                 currX += PitchPanel.GRID_SIZE
 
                 // Create a new stone block at the current coordinates and spawn it on the game board.
-                StoneBlock(Coordinates(currX, currY)).spawn()
+                StoneBlock(Coordinates(currX, currY)).logic.spawn()
 
                 // Move the current x coordinate to the next grid position.
                 currX += PitchPanel.GRID_SIZE

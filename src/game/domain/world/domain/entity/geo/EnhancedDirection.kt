@@ -45,7 +45,7 @@ enum class EnhancedDirection {
         fun randomDirectionTowardsCenter(entity: Entity): EnhancedDirection? {
             val coords = entity.info.position
 
-            val centerEntityCoords = Coordinates(coords.x + entity.size / 2, coords.y + entity.size / 2)
+            val centerEntityCoords = Coordinates(coords.x + entity.state.size / 2, coords.y + entity.state.size / 2)
             val newHorizontalDirection: Direction = if (centerEntityCoords.x > PitchPanel.DIMENSION.getWidth() / 2) Direction.LEFT else Direction.RIGHT
             val newVerticalDirection: Direction = if (centerEntityCoords.y < PitchPanel.DIMENSION.getHeight() / 2) Direction.DOWN else Direction.UP
             return toEnhancedDirection(arrayOf(newHorizontalDirection, newVerticalDirection))

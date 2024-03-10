@@ -66,13 +66,13 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun onUpdateBombsLengthEvent(entity: BomberEntity, arg: Int) {
-                entity.currExplosionLength = arg
+                entity.state.currExplosionLength = arg
             }
 
             override fun onAllEnemiesEliminated() {
                 val t = Timer(ARENA_ROUND_LOADING_TIMER) { _: ActionEvent? ->
                     val player: Entity = Bomberman.getMatch().player ?: return@Timer
-                    if (player.isSpawned)
+                    if (player.state.isSpawned)
                         gameHandler.startLevel()
                 }
 

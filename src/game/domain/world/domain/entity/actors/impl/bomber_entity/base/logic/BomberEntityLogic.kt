@@ -10,7 +10,9 @@ import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 
 open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity), IBomberEntityLogic {
-    override fun doInteract(e: Entity?) {}
+    override fun doInteract(e: Entity?) {
+        e?.logic?.interact(entity)
+    }
 
     override fun onSpawn() {
         super.onSpawn()

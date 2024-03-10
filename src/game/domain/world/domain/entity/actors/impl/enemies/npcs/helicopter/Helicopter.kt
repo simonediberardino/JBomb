@@ -24,7 +24,7 @@ class Helicopter : FlyingEnemy {
         }
     }
 
-    override val info: EntityInfo = EntityInfo()
+    
     override val properties: CharacterEntityProperties = CharacterEntityProperties(types = EntityTypes.Helicopter)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
 }

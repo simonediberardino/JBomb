@@ -23,6 +23,6 @@ class SpawnMysteryBoxBehavior(val level: Level): GameBehavior() {
         val c = Coordinates.generateCoordinatesAwayFrom(player.info.position, PitchPanel.GRID_SIZE * 2)
         val mysteryBox: Entity = MysteryBoxPerk(level, player)
         mysteryBox.info.position = c
-        mysteryBox.spawn()
+        mysteryBox.logic.spawn()
     }
 }

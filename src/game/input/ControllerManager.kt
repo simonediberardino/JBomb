@@ -6,6 +6,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.tasks.observer.Observable2
 import game.domain.tasks.PeriodicTask
 import game.utils.Utility.timePassed
+import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -16,7 +17,7 @@ import java.awt.event.KeyListener
  */
 class ControllerManager : Observable2(), KeyListener {
     // Stores the time of the last key event for each command
-    private val commandEventsTime: MutableMap<Command?, Long> = hashMapOf()
+    private val commandEventsTime: MutableMap<Command?, Long> = mutableMapOf()
     var player: Player? = null
 
     // Key-Command mapping
@@ -50,19 +51,19 @@ class ControllerManager : Observable2(), KeyListener {
         )
     }
 
-    private fun pressKey(action: Command?) {
+    private fun pressKey(action: Command) {
         // if a button is pressed, mouse movement gets interrupted
-        if(action?.isMovementKey()!!) {
+        if (action.isMovementKey()) {
             Bomberman.getMatch().mouseControllerManager.stopMovementTask()
         }
         onKeyPressed(action)
     }
 
-    fun onKeyPressed(action: Command){
+    fun onKeyPressed(action: Command) {
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
-        if (player != null) {
+        player?.let {
             commandEventsTime[action] = now()
-            player!!.commandQueue.add(action)
+            it.state.commandQueue.add(action)
         }
 
         resume()
@@ -88,18 +89,22 @@ class ControllerManager : Observable2(), KeyListener {
     }
 
     fun onKeyReleased(action: Command?) {
-        player?.commandQueue?.remove(action)
+        player?.let {
+            it.state.commandQueue.remove(action)
 
-        if (player?.commandQueue?.isEmpty() == true)
-            stop()
+            if (it.state.commandQueue.isEmpty())
+                stop()
+        }
     }
 
     private fun setupTask() {
-        task = PeriodicTask(Runnable {
-            player ?: return@Runnable
-
-            for (command in HashSet(player!!.commandQueue)) {
-                notifyObservers(command)
+        task = PeriodicTask({
+            player?.let { p ->
+                Log.i("Executing")
+                p.state.commandQueue.forEach { command ->
+                    Log.i("Executing $command")
+                    notifyObservers(command)
+                }
             }
         }, KEY_DELAY_MS)
 
@@ -109,17 +114,19 @@ class ControllerManager : Observable2(), KeyListener {
     private fun resume() {
         try {
             task.resume()
-        } catch (ignored: Exception) { }
+        } catch (ignored: Exception) {
+        }
     }
 
     private fun stop() {
         try {
             task.stop()
-        } catch (ignored: Exception) { }
+        } catch (ignored: Exception) {
+        }
     }
 
     fun isCommandPressed(c: Command): Boolean {
-        return player!!.commandQueue.contains(c)
+        return player!!.state.commandQueue.contains(c)
     }
 
     private fun updateDelay() {
@@ -141,7 +148,7 @@ class ControllerManager : Observable2(), KeyListener {
             return KEY_DELAY_MS
         }
 
-        
+
         fun setDefaultCommandDelay(): Int {
             KEY_DELAY_MS = 30
             if (instance != null) {

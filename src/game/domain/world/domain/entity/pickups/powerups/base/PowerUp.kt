@@ -19,7 +19,7 @@ abstract class PowerUp : EntityInteractable {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val state: PowerUpState = PowerUpState(entity = this)
-    override val info: EntityInfo = EntityInfo()
+    
     override val image: EntityImageModel = EntityImageModel(entity = this)
     abstract override val logic: PowerUpLogic
 

@@ -20,7 +20,7 @@ class EndLevelPortal : Portal {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage? {
+        override fun getImage(entity: Entity): BufferedImage {
             return loadAndSetImage(entity = entity, imagePath = "$powerUpsFolder/end_game.gif")
         }
     }

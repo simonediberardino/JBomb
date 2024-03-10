@@ -15,7 +15,7 @@ class GhostBoss : Boss {
     constructor() : super()
     constructor(id: Long) : super(id)
 
-    override val info: EntityInfo = EntityInfo()
+    
     override val state: GhostBossState = GhostBossState(entity = this)
     override val logic: GhostBossLogic = GhostBossLogic(entity = this)
     override val image: GhostBossImageModel = GhostBossImageModel(entity = this)

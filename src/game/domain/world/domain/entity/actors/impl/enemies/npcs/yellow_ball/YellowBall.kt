@@ -28,7 +28,7 @@ class YellowBall : AiEnemy {
         }
     }
 
-    override val info: EntityInfo = EntityInfo()
+    
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val properties: YellowBallProperties = YellowBallProperties(types = EntityTypes.YellowBall)
 

@@ -20,7 +20,7 @@ class DespawnDestroyableBlocksBehavior : GameBehavior() {
                 .getEntities()
                 .stream()
                 .filter { entity: Entity? -> entity is DestroyableBlock }
-                .forEach { obj: Entity -> obj.despawnAndNotify() }
+                .forEach { obj: Entity -> obj.logic.eliminated() }
     }
 
 }

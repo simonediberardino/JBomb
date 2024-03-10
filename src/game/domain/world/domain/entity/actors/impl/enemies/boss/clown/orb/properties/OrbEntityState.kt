@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.prope
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
+import game.domain.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
 import game.domain.world.domain.entity.geo.EnhancedDirection
 

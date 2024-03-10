@@ -28,7 +28,7 @@ class GhostEnemy : AiEnemy {
         }
     }
 
-    override val info: EntityInfo = EntityInfo()
+    
     override val properties: GhostEnemyProperties = GhostEnemyProperties(types = EntityTypes.GhostEnemy)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val state: GhostEnemyState = GhostEnemyState(entity = this)

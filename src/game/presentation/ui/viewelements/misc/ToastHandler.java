@@ -6,6 +6,8 @@ import game.utils.Utility;
 
 import java.awt.*;
 
+import static game.utils.time.TimeUtilsKt.now;
+
 public class ToastHandler {
     private static final int TOAST_DURATION = 3500;
     private static final int TOAST_START_Y = (int) Bomberman.getBombermanFrame().getPreferredSize().getHeight();

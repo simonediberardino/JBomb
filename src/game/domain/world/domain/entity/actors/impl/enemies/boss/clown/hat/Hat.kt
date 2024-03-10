@@ -27,7 +27,7 @@ open class Hat : Orb {
     override val properties: OrbEntityProperties = OrbEntityProperties(types = EntityTypes.Hat)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val state: HatEntityState = HatEntityState(entity = this)
-    override val info: EntityInfo = EntityInfo()
+    
     override val image: CharacterImageModel = object : CharacterImageModel(
             entity = this,
             entitiesAssetsPath = "${Paths.enemiesFolder}/clown/hat") {

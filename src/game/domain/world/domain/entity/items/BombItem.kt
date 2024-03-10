@@ -1,7 +1,7 @@
 package game.domain.world.domain.entity.items
 
 import game.Bomberman
-import game.domain.world.domain.entity.actors.impl.placeable.Bomb
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.utils.file_system.Paths.entitiesFolder
 import game.utils.Utility.timePassed
@@ -34,7 +34,7 @@ class BombItem : UsableItem() {
 
         match.addBomb(bombEntity)
 
-        bombEntity.onExplodeCallback = {
+        bombEntity.logic.onExplodeCallback = {
             owner.state.placedBombs--
             match.removeBomb(bombEntity)
 
@@ -42,8 +42,8 @@ class BombItem : UsableItem() {
                 UpdateCurrentAvailableItemsEvent().invoke(owner.state.currentBombs + 1)
         }
 
-        bombEntity.logic.spawn(true)
-        bombEntity.trigger()
+        bombEntity.logic.spawn(forceSpawn = true)
+        bombEntity.logic.trigger()
     }
 
     override fun combineItems(item: UsableItem) {

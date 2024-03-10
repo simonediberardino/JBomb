@@ -8,6 +8,7 @@ import game.domain.tasks.observer.Observer2;
 import game.domain.events.models.RunnablePar;
 import game.audio.AudioManager;
 import game.utils.Utility;
+import game.utils.dev.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -113,26 +114,25 @@ public class PitchPanel extends JPanel implements Observer2 {
      * @param e   the entity to draw
      */
     private void drawEntity(Graphics2D g2d, Entity e) {
-
-
         // Draw entity's image at entity's coordinates and size
-        if (e.isInvisible()) return;
+        if (e.getState().isInvisible())
+            return;
 
-        String path = e.getImagePath();
-        float widthRatio = e.getHitboxSizeToWidthRatio(path);
-        float heightRatio = e.getHitboxSizeToHeightRatio(path);
-        int paddingWidth = e.calculateAndGetPaddingWidth(widthRatio);
-        int paddingHeight = e.calculateAndGetPaddingTop(heightRatio);
+        String path = e.getImage().getImagePath();
+        float widthRatio = e.getGraphicsBehavior().getHitboxSizeToWidthRatio(e, path);
+        float heightRatio = e.getGraphicsBehavior().getHitboxSizeToHeightRatio(e, path);
+        int paddingWidth = e.getGraphicsBehavior().calculateAndGetPaddingWidth(e, widthRatio);
+        int paddingHeight = e.getGraphicsBehavior().calculateAndGetPaddingTop(e, heightRatio);
 
-        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, e.getAlpha());
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, e.getState().getAlpha());
         g2d.setComposite(ac);
 
         g2d.drawImage(
-                e.getImage(),
+                e.getGraphicsBehavior().getImage(e),
                 e.getInfo().getPosition().getX() - paddingWidth,
                 e.getInfo().getPosition().getY() - paddingHeight,
-                (int) Math.ceil(e.getSize() / widthRatio),
-                (int) Math.ceil(e.getSize() / heightRatio),
+                (int) Math.ceil(e.getState().getSize() / widthRatio),
+                (int) Math.ceil(e.getState().getSize() / heightRatio),
                 this
         );
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));

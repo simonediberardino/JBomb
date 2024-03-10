@@ -25,7 +25,7 @@ class WorldSelectorLevel : IslandLevel() {
                     }
                 }
 
-        worldPortals.forEach { it.spawn(true, false) }
+        worldPortals.forEach { it.logic.spawn(forceSpawn = true, forceCentering = false) }
     }
 
     override fun toString(): String {

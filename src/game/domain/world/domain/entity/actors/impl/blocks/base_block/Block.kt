@@ -15,8 +15,8 @@ abstract class Block : Entity {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val logic: IBlockEntityLogic = BlockEntityLogic(entity = this)
-    override val state: EntityState = BlockEntityState(entity = this)
-    override val info: EntityInfo = EntityInfo()
+    override val state: BlockEntityState = BlockEntityState(entity = this)
+    
     override val image: EntityImageModel = EntityImageModel(entity = this)
 
     companion object {

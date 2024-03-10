@@ -27,7 +27,7 @@ abstract class CharacterEntityState(
         attackDamage: Int = EntityInteractable.DEFAULT.ATTACK_DAMAGE,
         direction: Direction = MovingEntity.DEFAULT.DIRECTION,
         var lastDirectionUpdate: Long = Character.DEFAULT.LAST_DIRECTION_UPDATE,
-        var commandQueue: MutableSet<Command> = Character.DEFAULT.COMMAND_QUEUE,
+        val commandQueue: MutableSet<Command> = Character.DEFAULT.COMMAND_QUEUE,
         var previousDirection: Direction? = Character.DEFAULT.PREVIOUS_DIRECTION,
         var canMove: Boolean = Character.DEFAULT.CAN_MOVE,
         var maxHp: Int = Character.DEFAULT.MAX_HP,

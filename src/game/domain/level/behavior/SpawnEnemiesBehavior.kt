@@ -26,7 +26,7 @@ class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Arr
                 enemy = enemyClass.getConstructor().newInstance()
 
                 // Spawn the enemy on the game board.
-                enemy.spawn(false, false)
+                enemy.logic.spawn(forceSpawn = false, forceCentering = false)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -3,7 +3,7 @@ package game.domain.world.domain.entity.items
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion.Companion.SIZE
-import game.domain.world.domain.entity.actors.impl.placeable.Bomb
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.actors.impl.explosion.PistolExplosion
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy

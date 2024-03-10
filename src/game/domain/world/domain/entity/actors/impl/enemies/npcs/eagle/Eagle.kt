@@ -15,7 +15,7 @@ class Eagle : FlyingEnemy {
     constructor(coordinates: Coordinates?) : super(coordinates)
     constructor() : super()
 
-    override val info: EntityInfo = EntityInfo()
+    
 
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
 

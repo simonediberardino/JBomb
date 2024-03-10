@@ -8,12 +8,14 @@ import game.domain.world.domain.entity.actors.abstracts.entity_interactable.logi
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
+import game.utils.dev.Log
 import java.util.*
 
 abstract class PowerUpLogic(
         override val entity: PowerUp
 ) : EntityInteractableLogic(entity = entity), IPowerUpLogic {
     override fun doInteract(e: Entity?) {
+        Log.i("PowerUp doInteract $e")
         apply(e as BomberEntity)
     }
 

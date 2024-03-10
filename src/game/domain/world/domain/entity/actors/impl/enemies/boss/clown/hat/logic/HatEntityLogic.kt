@@ -10,7 +10,7 @@ class HatEntityLogic(override val entity: Hat) : OrbEntityLogic(entity = entity)
         e ?: return
 
         if (e is Clown) {
-            e.hasHat = true
+            e.state.hasHat = true
             eliminated()
         } else {
             attack(e)

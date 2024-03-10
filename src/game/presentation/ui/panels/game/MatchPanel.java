@@ -1,6 +1,7 @@
 package game.presentation.ui.panels.game;
 
 import game.Bomberman;
+import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.domain.world.domain.entity.geo.Coordinates;
 import game.domain.world.domain.entity.pickups.powerups.EmptyPowerup;
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp;
@@ -300,7 +301,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
                      NoSuchMethodException e) {
                 return null;
             }
-        }).filter(p -> p != null && p.isDisplayable()).collect(Collectors.toList());
+        }).filter(p -> p != null && p.getState().isDisplayable()).collect(Collectors.toList());
 
         // Define the dimension of each power-up image
         final int powerUpImageDimension = Dimensions.DEFAULT_INVENTORY_ICON_SIZE;
@@ -320,13 +321,24 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
 
         // Iterate over each power-up class
         for (PowerUp p : powerUpsToShow) {
-            if (!p.isDisplayable()) continue;
+            if (!p.getState().isDisplayable())
+                continue;
 
             // Scale the power-up image to the desired dimensions
-            Image img = p.getImage().getScaledInstance(powerUpImageDimension, powerUpImageDimension, 0);
+            Image img = p.getGraphicsBehavior().getImage(p).getScaledInstance(
+                    powerUpImageDimension,
+                    powerUpImageDimension,
+                    0
+            );
 
             JLabel powerupLabel = new JLabel(new ImageIcon(img));
-            powerupLabel.setBorder(BorderFactory.createEmptyBorder(Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING));
+
+            powerupLabel.setBorder(BorderFactory.createEmptyBorder(
+                    Dimensions.DEFAULT_Y_PADDING,
+                    Dimensions.DEFAULT_Y_PADDING,
+                    Dimensions.DEFAULT_Y_PADDING,
+                    Dimensions.DEFAULT_Y_PADDING
+            ));
 
             // Create a JLabel with the scaled image and add it to the power-up panel
             powerUpsPanel.add(powerupLabel);
@@ -342,7 +354,5 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
     }
 
     @Override
-    public void onShowCallback() {
-
-    }
+    public void onShowCallback() {}
 }

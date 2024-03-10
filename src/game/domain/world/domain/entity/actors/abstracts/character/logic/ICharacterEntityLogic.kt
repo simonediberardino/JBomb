@@ -15,7 +15,6 @@ interface ICharacterEntityLogic : IMovingEntityLogic {
     fun damageAnimation()
     fun onEliminated()
     fun onHit(damage: Int)
-    fun onExplosion(explosion: AbstractExplosion)
     fun handleCommand(command: Command)
     fun doAttack()
     fun handleMoveCommand(command: Command, oppositeDirection1: Direction, oppositeDirection2: Direction)

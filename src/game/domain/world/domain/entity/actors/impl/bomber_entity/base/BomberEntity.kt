@@ -2,7 +2,7 @@ package game.domain.world.domain.entity.actors.impl.bomber_entity.base
 
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
-import game.domain.world.domain.entity.actors.impl.placeable.Bomb
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
 import game.domain.world.domain.entity.actors.impl.models.*
 import game.domain.world.domain.entity.geo.Coordinates
@@ -27,12 +27,12 @@ abstract class BomberEntity : Character, Explosive {
     override val logic: IBomberEntityLogic = BomberEntityLogic(entity = this)
     override val state: BomberEntityState = BomberEntityState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
-    override val info: EntityInfo = EntityInfo()
+    
 
     init {
         // TODO
-        state.entitiesClassListMouseClick.add(MysteryBoxPerk::class.java)
-        image.hitboxSizeToHeightRatio = 0.733f
+        //state.entitiesClassListMouseClick.add(MysteryBoxPerk::class.java)
+        //image.hitboxSizeToHeightRatio = 0.733f
     }
 
     // Defines the set of obstacle entities that block the propagation of explosions.

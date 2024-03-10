@@ -14,4 +14,5 @@ interface IEntityInteractableLogic : IEntityLogic {
     fun attack(e: Entity?)
     fun isObstacle(e: Entity?): Boolean
     fun canInteractWith(e: Entity?): Boolean
+    fun interactAndUpdateLastInteract(e: Entity?)
 }

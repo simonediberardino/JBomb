@@ -103,7 +103,7 @@ abstract class EntityLogic(open val entity: Entity) : IEntityLogic {
         val player = match.player ?: return false
 
         // Check if the player can interact with mouse click and if the mouse is being clicked
-        return player.isMouseClickInteractable(entity.javaClass) && match.mouseControllerManager.isMouseClicked
+        return player.logic.isMouseClickInteractable(entity.javaClass) && match.mouseControllerManager.isMouseClicked
     }
 
     override fun canEntityInteractWithMouseDrag(): Boolean {
@@ -112,7 +112,7 @@ abstract class EntityLogic(open val entity: Entity) : IEntityLogic {
 
         // Check if the player can interact with mouse drag and if the mouse is being dragged
         // TODO CHANGED!!
-        return player.isMouseDragInteractable(entity.javaClass) && match.mouseControllerManager.isMouseDragged
+        return player.logic.isMouseDragInteractable(entity.javaClass) && match.mouseControllerManager.isMouseDragged
     }
 
     override fun onMouseClickInteraction() {

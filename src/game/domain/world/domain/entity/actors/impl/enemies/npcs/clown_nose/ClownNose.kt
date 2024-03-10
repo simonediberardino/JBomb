@@ -19,7 +19,7 @@ class ClownNose : Orb {
     constructor() : this(null, null as Direction?)
     constructor(id: Long) : super(id)
 
-    override val info: EntityInfo = EntityInfo()
+    
 
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
 

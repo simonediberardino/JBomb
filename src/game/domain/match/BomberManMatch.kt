@@ -4,7 +4,7 @@ import game.Bomberman
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
-import game.domain.world.domain.entity.actors.impl.placeable.Bomb
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.input.ControllerManager
@@ -146,20 +146,20 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * @param combineSameItem Flag indicating whether to combine items of the same type.
      */
     fun give(owner: BomberEntity, item: UsableItem, combineSameItem: Boolean = false) {
-        if (combineSameItem && owner.weapon.javaClass == item.javaClass) {
+        if (combineSameItem && owner.state.weapon.javaClass == item.javaClass) {
             // Combine items if requested and owner already has the same type of item
-            owner.weapon.combineItems(item)
+            owner.state.weapon.combineItems(item)
         } else {
             // Set the new item as the owner's weapon and update related components
-            owner.weapon = item
-            owner.weapon.owner = owner
+            owner.state.weapon = item
+            owner.state.weapon.owner = owner
             updateInventoryWeaponController()
         }
     }
 
     fun useItem(owner: BomberEntity) {
-        owner.weapon.use()
-        UseItemHttpEventForwarder().invoke(owner.toDto(), owner.weapon.type)
+        owner.state.weapon.use()
+        UseItemHttpEventForwarder().invoke(owner.toDto(), owner.state.weapon.type)
     }
 
 
@@ -170,8 +170,8 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      */
     fun removeItem(owner: BomberEntity) {
         // Replace the current item with a BombItem and update related components
-        owner.weapon = BombItem()
-        owner.weapon.owner = owner
+        owner.state.weapon = BombItem()
+        owner.state.weapon.owner = owner
         updateInventoryWeaponController()
     }
 
@@ -181,7 +181,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      */
     fun updateInventoryWeaponController() {
         player ?: return
-        val playerItem = player!!.weapon ?: return
+        val playerItem = player!!.state.weapon
         inventoryElementControllerBombs.setImagePath(playerItem.imagePath)
         inventoryElementControllerBombs.setNumItems(playerItem.count)
     }
@@ -228,6 +228,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
     fun getEntityById(entityId: Long): Entity? = _entitiesMap[entityId]
 
     fun addEntity(entity: Entity) {
+        Log.i("Adding entity, ${entity.info.type}")
         synchronized(_entitiesList) {
             _entitiesList.add(entity)
         }
@@ -324,7 +325,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         pauseGame()
 
         // Destroy all _entities in the game
-        destroy_entities()
+        destroyEntities()
 
         // Clear graphics callback in the Bomberman frame's pitch panel
         clearGraphicsCallback()
@@ -348,8 +349,8 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
     /**
      * Destroys all _entities in the game by despawning them.
      */
-    private fun destroy_entities() {
-        getEntities().forEach { it.despawnAndNotify() }
+    private fun destroyEntities() {
+        getEntities().forEach { it.logic.eliminated() }
     }
 
     /**

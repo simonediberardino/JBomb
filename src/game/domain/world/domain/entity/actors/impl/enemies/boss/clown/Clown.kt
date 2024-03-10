@@ -13,7 +13,7 @@ import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.logic.Clow
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.properties.ClownProperties
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.properties.ClownState
 import game.domain.world.domain.entity.actors.impl.models.*
-import game.domain.world.domain.entity.actors.impl.placeable.Bomb
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.types.EntityTypes
@@ -50,7 +50,6 @@ class Clown : Boss, Explosive {
 
     override val state: ClownState = ClownState(entity = this)
     override val logic: ClownLogic = ClownLogic(entity = this)
-    override val info: EntityInfo = EntityInfo()
     override val image: ClownImageModel = ClownImageModel(entity = this)
     override val graphicsBehavior: ClownGraphicsBehavior = ClownGraphicsBehavior(entity = this)
     override val properties: ClownProperties = ClownProperties(types = EntityTypes.Clown)

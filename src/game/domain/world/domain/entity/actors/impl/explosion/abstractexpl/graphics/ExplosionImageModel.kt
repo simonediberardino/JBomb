@@ -8,8 +8,6 @@ import java.awt.image.BufferedImage
 class ExplosionImageModel(
         entity: Entity,
         entitiesAssetsPath: String = Entity.DEFAULT.ENTITIES_ASSETS_PATH,
-        hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO,
-        hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO,
         paddingTop: Int = Entity.DEFAULT.PADDING_TOP,
         paddingWidth: Int = Entity.DEFAULT.PADDING_WIDTH,
         imageRefreshRate: Int = AbstractExplosion.DEFAULT.IMAGE_REFRESH_RATE,
@@ -20,8 +18,6 @@ class ExplosionImageModel(
 ) : EntityImageModel(
         entity = entity,
         entitiesAssetsPath = entitiesAssetsPath,
-        hitboxSizeToWidthRatio = hitboxSizeToWidthRatio,
-        hitboxSizeToHeightRatio = hitboxSizeToHeightRatio,
         paddingTop = paddingTop,
         paddingWidth = paddingWidth,
         imageRefreshRate = imageRefreshRate,

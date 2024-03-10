@@ -1,15 +1,17 @@
 package game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic
 
 import game.domain.level.behavior.GameBehavior
-import game.presentation.ui.panels.game.PitchPanel
-import game.domain.world.domain.entity.actors.abstracts.base.logic.EntityLogic
-import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.abstracts.base.logic.EntityLogic
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
+import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.AttackEntityEventForwarder
+import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility.timePassed
+import game.utils.dev.Log
+import game.utils.time.now
 import java.util.*
 
 abstract class EntityInteractableLogic(
@@ -36,36 +38,45 @@ abstract class EntityInteractableLogic(
     }
 
     override fun move(coordinates: Coordinates) {
+        Log.i("Move $coordinates")
         entity.info.position = coordinates
         onMove(coordinates)
     }
 
-    override fun interact(e: Entity?) {
+    final override fun interact(e: Entity?) {
         if (e == null) {
             interactAndUpdateLastInteract(null)
             return
         }
 
-        if (canInteractWith(e) && e.logic.canBeInteractedBy(entity)) {
+        /*if (canInteractWith(e) && e.logic.canBeInteractedBy(entity)) {
             interactAndUpdateLastInteract(e)
-        } else if (e is EntityInteractable && e.logic.canInteractWith(entity) && entity.logic.canBeInteractedBy(e)) {
-            // TODO Changed
-            e.logic.interact(entity)
+        } else if (e is EntityInteractable && e.logic.canInteractWith(entity) && canBeInteractedBy(e)) {
+            e.logic.interactAndUpdateLastInteract(entity)
+        }*/
+        // SUPER TODO CHECK THIS!
+        if (canInteractWith(e) && e.logic.canBeInteractedBy(entity)) {
+            entity.logic.interactAndUpdateLastInteract(e)
+
+            if (e is EntityInteractable) {
+                e.logic.interactAndUpdateLastInteract(entity)
+            }
         }
     }
 
     @Synchronized
-    fun interactAndUpdateLastInteract(e: Entity?) {
+    override fun interactAndUpdateLastInteract(e: Entity?) {
         if (timePassed(entity.state.lastInteractionTime) < EntityInteractable.INTERACTION_DELAY_MS) {
             return
         }
         doInteract(e) // Interact with the entity.
-        updateLastInteract(e) // Update the last interaction for this entity.
+        if (e is EntityInteractable) {
+            updateLastInteract(e) // Update the last interaction for this entity.
+        }
     }
 
-    private fun updateLastInteract(e: Entity?) {
-        if (e == null) return
-        entity.state.lastInteractionTime = now()
+    private fun updateLastInteract(e: EntityInteractable) {
+        e.state.lastInteractionTime = now()
     }
 
 
@@ -86,7 +97,7 @@ abstract class EntityInteractableLogic(
      * @param stepSize the step size to use
      */
     override fun moveOrInteract(d: Direction?, stepSize: Int, ignoreMapBorders: Boolean): Boolean {
-        if (d == null) return false
+        d ?: return false
 
         val nextTopLeftCoords = Coordinates.nextCoords(entity.info.position, d, stepSize)
 

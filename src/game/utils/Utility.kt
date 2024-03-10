@@ -3,6 +3,7 @@ package game.utils
 import game.Bomberman
 import game.data.cache.Cache
 import game.data.cache.Cache.Companion.instance
+import game.utils.dev.Log
 import game.utils.time.now
 import game.values.Dimensions
 import java.awt.Dimension
@@ -78,6 +79,7 @@ object Utility {
 
         // Use ClassLoader to load the image from the JAR file
         fileName = fileName.replace("/src", "")
+        Log.i("Loading $fileName")
         val inputStream = Utility::class.java.getResourceAsStream("/$fileName") ?: throw RuntimeException()
 
         val image = ImageIO.read(inputStream) ?: throw RuntimeException()

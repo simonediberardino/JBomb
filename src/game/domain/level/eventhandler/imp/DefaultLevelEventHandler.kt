@@ -39,7 +39,7 @@ open class DefaultLevelEventHandler : LevelEventHandler {
     }
 
     override fun onUpdateCurrentAvailableBombsEvent(arg: Int) {
-        Bomberman.getMatch().player?.currentBombs = arg
+        Bomberman.getMatch().player?.state?.currentBombs = arg
     }
 
     override fun onUpdateMaxBombsGameEvent(arg: Int) {
@@ -49,7 +49,7 @@ open class DefaultLevelEventHandler : LevelEventHandler {
     }
 
     override fun onUpdateBombsLengthEvent(entity: BomberEntity, arg: Int) {
-        entity.currExplosionLength = arg
+        entity.state.currExplosionLength = arg
         DataInputOutput.getInstance().explosionLength = arg
     }
 

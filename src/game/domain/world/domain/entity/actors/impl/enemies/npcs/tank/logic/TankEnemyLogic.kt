@@ -8,6 +8,7 @@ import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHa
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
+import game.utils.time.now
 
 class TankEnemyLogic(override val entity: TankEnemy) : AiEnemyLogic(entity = entity) {
     override fun process() {

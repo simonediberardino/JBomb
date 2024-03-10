@@ -40,7 +40,7 @@ abstract class AbstractExplosion(owner: Entity,
     abstract override val properties: ExplosionProperties
     abstract override val image: ExplosionImageModel
     override val logic: IExplosionLogic = ExplosionLogic(this)
-    override val info: EntityInfo = EntityInfo()
+    
     override val graphicsBehavior: IEntityGraphicsBehavior = ExplosionGraphicsBehavior()
 
     override val state: ExplosionState = ExplosionState(

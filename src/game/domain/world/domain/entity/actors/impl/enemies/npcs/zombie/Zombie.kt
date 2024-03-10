@@ -25,7 +25,7 @@ class Zombie : AiEnemy {
         }
     }
 
-    override val info: EntityInfo = EntityInfo()
+    
     override val state: GhostEnemyState = GhostEnemyState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val properties: CharacterEntityProperties = CharacterEntityProperties(

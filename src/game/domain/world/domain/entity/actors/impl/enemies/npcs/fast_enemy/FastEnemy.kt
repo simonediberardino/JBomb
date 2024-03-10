@@ -32,7 +32,7 @@ class FastEnemy : AiEnemy {
     }
 
     override val properties: FastEnemyProperties = FastEnemyProperties(types = EntityTypes.FastEnemy)
-    override val info: EntityInfo = EntityInfo()
+    
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
 
     internal object DEFAULT {

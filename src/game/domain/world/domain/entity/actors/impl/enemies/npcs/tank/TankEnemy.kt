@@ -2,7 +2,7 @@ package game.domain.world.domain.entity.actors.impl.enemies.npcs.tank
 
 import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
-import game.domain.world.domain.entity.actors.impl.placeable.Bomb
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
@@ -24,7 +24,7 @@ class TankEnemy : AiEnemy, Explosive {
     override val logic: TankEnemyLogic = TankEnemyLogic(entity = this)
     override val state: TankEnemyState = TankEnemyState(entity = this)
     override val properties: CharacterEntityProperties = CharacterEntityProperties(types = EntityTypes.TankEnemy)
-    override val info: EntityInfo = EntityInfo()
+    
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val image: CharacterImageModel = object : CharacterImageModel(entity = this) {
         override fun characterOrientedImages(): Array<String> =

@@ -23,7 +23,7 @@ class GameTickerObservable : Observable2() {
 
         // loop through each observer in the observerSet
         for (observer in array) {
-            if (observer is Entity && !observer.isSpawned) unregister(observer)
+            if (observer is Entity && !observer.state.isSpawned) unregister(observer)
             var delayPassed = true
             if (observer is GameTickerObserver) { // check if the observer is of type GameTickerObserver
                 // cast the observer to GameTickerObserver

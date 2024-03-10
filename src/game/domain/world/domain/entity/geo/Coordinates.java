@@ -43,7 +43,7 @@ public class Coordinates implements Comparable<Coordinates> {
      * @return true if valid, false otherwise;
      */
     public boolean validate(Entity e) {
-        return validate(e.getSize());
+        return validate(e.getState().getSize());
     }
 
     public boolean validate(int size) {
@@ -168,11 +168,11 @@ public class Coordinates implements Comparable<Coordinates> {
             case LEFTUP ->
                     new Coordinates(entity.getInfo().getPosition().getX(), entity.getInfo().getPosition().getY());
             case LEFTDOWN ->
-                    new Coordinates(entity.getInfo().getPosition().getX(), entity.getInfo().getPosition().getY() + entity.getSize() - symmetricOffset);
+                    new Coordinates(entity.getInfo().getPosition().getX(), entity.getInfo().getPosition().getY() + entity.getState().getSize() - symmetricOffset);
             case RIGHTUP ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getSize() - symmetricOffset, entity.getInfo().getPosition().getY());
+                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() - symmetricOffset, entity.getInfo().getPosition().getY());
             case RIGHTDOWN ->
-                    new Coordinates(entity.getSize() + entity.getInfo().getPosition().getX() - symmetricOffset, entity.getInfo().getPosition().getY() + entity.getSize() - symmetricOffset);
+                    new Coordinates(entity.getState().getSize() + entity.getInfo().getPosition().getX() - symmetricOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() - symmetricOffset);
         };
     }
 
@@ -185,13 +185,13 @@ public class Coordinates implements Comparable<Coordinates> {
     public static Coordinates fromDirectionToCoordinateOnEntity(Entity entity, Direction direction, int inwardOffset, int parallelOffset, int symmetricOffset) {
         return switch (direction) {
             case LEFT ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + inwardOffset, entity.getInfo().getPosition().getY() + entity.getSize() / 2 + parallelOffset);
+                    new Coordinates(entity.getInfo().getPosition().getX() + inwardOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() / 2 + parallelOffset);
             case RIGHT ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getSize() - inwardOffset - symmetricOffset, entity.getInfo().getPosition().getY() + entity.getSize() / 2 + parallelOffset);
+                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() - inwardOffset - symmetricOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() / 2 + parallelOffset);
             case UP ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getSize() / 2 + parallelOffset, entity.getInfo().getPosition().getY() + inwardOffset);
+                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() / 2 + parallelOffset, entity.getInfo().getPosition().getY() + inwardOffset);
             case DOWN ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getSize() / 2 + parallelOffset, entity.getInfo().getPosition().getY() + entity.getSize() - inwardOffset - symmetricOffset);
+                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() / 2 + parallelOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() - inwardOffset - symmetricOffset);
         };
     }
 
@@ -228,7 +228,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static Coordinates getCenterCoordinatesOfEntity(Entity e) {
-        return new Coordinates(e.getInfo().getPosition().getX() + e.getSize() / 2, e.getInfo().getPosition().getY() + e.getSize() / 2);
+        return new Coordinates(e.getInfo().getPosition().getX() + e.getState().getSize() / 2, e.getInfo().getPosition().getY() + e.getState().getSize() / 2);
     }
 
     public static Entity getEntityOnCoordinates(Coordinates desiredCoords) {
@@ -245,8 +245,8 @@ public class Coordinates implements Comparable<Coordinates> {
 
         entities.parallelStream().forEach(e -> {
             for (Coordinates coord : desiredCoords) {
-                int entityBottomRightX = e.getInfo().getPosition().getX() + e.getSize() - 1;
-                int entityBottomRightY = e.getInfo().getPosition().getY() + e.getSize() - 1;
+                int entityBottomRightX = e.getInfo().getPosition().getX() + e.getState().getSize() - 1;
+                int entityBottomRightY = e.getInfo().getPosition().getY() + e.getState().getSize() - 1;
 
                 if (coord.getX() >= e.getInfo().getPosition().getX() && coord.getX() <= entityBottomRightX && coord.getY() >= e.getInfo().getPosition().getY() && coord.getY() <= entityBottomRightY) {
                     entityLinkedList.add(e);
@@ -352,7 +352,7 @@ public class Coordinates implements Comparable<Coordinates> {
      * @return true if the given coordinates collide with the given entity, false otherwise
      */
     public static boolean doesCollideWith(Coordinates nextOccupiedCoords, Entity e) {
-        return doesCollideWith(nextOccupiedCoords, e.getInfo().getPosition(), e.getSize());
+        return doesCollideWith(nextOccupiedCoords, e.getInfo().getPosition(), e.getState().getSize());
     }
 
     private static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords, int size) {
@@ -426,13 +426,13 @@ public class Coordinates implements Comparable<Coordinates> {
     public static List<Coordinates> getAllBlocksInAreaFromDirection(Entity e, Direction d, int depth) {
         return switch (d) {
             case LEFT ->
-                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(-GRID_SIZE * depth + 1, 0)), e.getInfo().getPosition().plus(new Coordinates(1, e.getSize() - 1)));
+                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(-GRID_SIZE * depth + 1, 0)), e.getInfo().getPosition().plus(new Coordinates(1, e.getState().getSize() - 1)));
             case DOWN ->
-                    Coordinates.getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(0, e.getSize())), e.getInfo().getPosition().plus(new Coordinates(e.getSize() - 1, e.getSize() + PitchPanel.GRID_SIZE * depth - 1)));
+                    Coordinates.getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(0, e.getState().getSize())), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() - 1, e.getState().getSize() + PitchPanel.GRID_SIZE * depth - 1)));
             case UP ->
-                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(-1, -(PitchPanel.GRID_SIZE * depth - 1))), e.getInfo().getPosition().plus(new Coordinates(e.getSize() - 1, -1)));
+                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(-1, -(PitchPanel.GRID_SIZE * depth - 1))), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() - 1, -1)));
             case RIGHT ->
-                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(e.getSize(), 0)), e.getInfo().getPosition().plus(new Coordinates(e.getSize() + GRID_SIZE * depth - 1, e.getSize() - 1)));
+                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize(), 0)), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() + GRID_SIZE * depth - 1, e.getState().getSize() - 1)));
         };
     }
 

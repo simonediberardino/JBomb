@@ -53,11 +53,15 @@ open class EntityState(
         open var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE
 )
 
-data class EntityInfo(
-        var id: Long = -1,
-        var position: Coordinates = Coordinates(-1, -1),
-        var type: EntityTypes = EntityTypes.Entity
-)
+data class EntityInfo(val entity: Entity) {
+    var id: Long = UUID.randomUUID().mostSignificantBits
+    var type: EntityTypes = EntityTypes.Entity
+        get() {
+            return entity.properties.type
+        }
+
+    var position: Coordinates = Coordinates(0, 0)
+}
 
 open class EntityProperties(
         val priority: DrawPriority = DrawPriority.DRAW_PRIORITY_1,
@@ -78,7 +82,7 @@ open class EntityImageModel(
     open var hitboxSizeToWidthRatio: Float = Entity.DEFAULT.HITBOX_WIDTH_RATIO
     open var hitboxSizeToHeightRatio: Float = Entity.DEFAULT.HITBOX_HEIGHT_RATIO
 
-    private val defaultPaddingTopFunction : RunnablePar = object : RunnablePar {
+    private val defaultPaddingTopFunction: RunnablePar = object : RunnablePar {
         override fun <T> execute(par: T): Any {
             val temp: Int = (entity.state.size.toDouble() / par as Double - entity.state.size).toInt()
             entity.image.paddingTop = temp
@@ -86,7 +90,7 @@ open class EntityImageModel(
         }
     }
 
-    private val defaultPaddingWidthFunction : RunnablePar = object : RunnablePar {
+    private val defaultPaddingWidthFunction: RunnablePar = object : RunnablePar {
         override fun <T> execute(par: T): Any {
             val temp: Int = ((entity.state.size.toDouble() / par as Double - entity.state.size) / 2).toInt()
             entity.image.paddingWidth = temp
@@ -122,15 +126,18 @@ interface IEntityGraphicsBehavior {
 // Main Entity class implementing EntityBehavior
 abstract class Entity : GameTickerObserver, Comparable<Entity> {
     abstract val logic: IEntityLogic
-    abstract val info: EntityInfo
-    abstract val properties: EntityProperties
-    abstract val state: EntityState
+    open val info: EntityInfo = EntityInfo(entity = this)
+    open val properties: EntityProperties = EntityProperties(type = EntityTypes.Entity)
+    open val state: EntityState = EntityState(entity = this, size = 0)
     abstract val image: EntityImageModel
     abstract val graphicsBehavior: IEntityGraphicsBehavior
 
     constructor(coordinates: Coordinates? = Coordinates(-1, -1)) {
+        if (coordinates != null) {
+            info.position = coordinates
+        }
         // MEGA WORKAROUND! Remove.
-        while (true) {
+        /*while (true) {
             try {
                 info.id = UUID.randomUUID().mostSignificantBits
 
@@ -142,12 +149,13 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
             } catch (exception: Exception) {
                 Log.e(exception.message.toString())
             }
-        }
+        }*/
     }
 
     constructor(id: Long) {
+        info.id = id
         // MEGA WORKAROUND! Remove.
-        while (true) {
+        /*while (true) {
             try {
                 info.id = id
                 break
@@ -155,12 +163,12 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
             } catch (exception: Exception) {
                 Log.e(exception.message.toString())
             }
-        }
+        }*/
     }
 
     constructor() : this(null)
 
-    init {
+    /*init {
         // MEGA WORKAROUND! Remove.
         while (true) {
             try {
@@ -171,7 +179,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
                 Log.e(exception.message.toString())
             }
         }
-    }
+    }*/
 
     override fun compareTo(other: Entity): Int {
         return Comparator.comparing { obj: Entity ->
@@ -181,6 +189,11 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         }.thenComparingInt { e: Entity ->
             e.info.id.toInt()
         }.compare(this, other)
+    }
+
+    override fun update(arg: Any?) {
+        super.update(arg)
+        logic.observerUpdate(arg)
     }
 
     open fun toDto(): EntityNetwork {
@@ -203,9 +216,9 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
 
     override fun hashCode(): Int = Objects.hash(info.id)
 
-    override fun toString(): String {
+    /*override fun toString(): String {
         return "Entity{id=${info.id}, info= $info}"
-    }
+    }*/
 
     internal object DEFAULT {
         val ALPHA = 1f
@@ -224,7 +237,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         val LAST_IMAGE_INDEX = 0
         val IMAGE_PATH = ""
         val IMAGE = null
-        
+
         var imagePath: String = Entity.DEFAULT.IMAGE_PATH
     }
 }

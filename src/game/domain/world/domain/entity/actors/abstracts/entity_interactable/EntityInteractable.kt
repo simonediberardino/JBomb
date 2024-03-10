@@ -5,7 +5,7 @@ import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic.IEntityInteractableLogic
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.state.EntityInteractableState
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.Block
-import game.domain.world.domain.entity.actors.impl.placeable.Bomb
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 
 abstract class EntityInteractable : Entity {

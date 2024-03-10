@@ -2,7 +2,7 @@ package game.mappers
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
-import game.domain.world.domain.entity.actors.impl.placeable.PlaceableEntity
+import game.domain.world.domain.entity.actors.impl.placeable.base.PlaceableEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.types.EntityTypes
 import game.network.entity.BomberEntityNetwork
@@ -27,9 +27,9 @@ fun BomberEntity.toBomberEntityNetwork(): BomberEntityNetwork {
             entityId = info.id,
             entityLocation = info.position,
             entityType = info.type.ordinal,
-            direction = direction.ordinal,
-            currExplosionLength = currExplosionLength,
-            currentBombs = currentBombs
+            direction = state.direction.ordinal,
+            currExplosionLength = state.currExplosionLength,
+            currentBombs = state.currentBombs
     )
 }
 
@@ -38,7 +38,7 @@ fun Character.toCharacterNetwork(): CharacterNetwork {
             info.id,
             info.position,
             info.type.ordinal,
-            state.direction?.ordinal ?: 0
+            state.direction.ordinal
     )
 }
 
@@ -47,6 +47,6 @@ fun PlaceableEntity.toPlaceableEntityNetwork(): PlaceableEntityNetwork {
             info.id,
             info.position,
             info.type.ordinal,
-            caller.info.id
+            state.caller.info.id
     )
 }

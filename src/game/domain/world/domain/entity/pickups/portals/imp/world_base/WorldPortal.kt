@@ -22,11 +22,15 @@ import java.util.*
 abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) : Portal(coordinates) {
     constructor(worldId: Int) : this(null, worldId)
 
-    init {
-        info.position = state.defaultCoords!!
-    }
 
     override val logic: PortalLogic = object : PortalLogic(entity = this) {
+        override fun onSpawn() {
+            super.onSpawn()
+            state.defaultCoords?.let {
+                info.position = it
+            }
+        }
+
         override fun doApply(player: BomberEntity) {
             super.doApply(player)
             try {
@@ -81,12 +85,12 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
     abstract override val state: WorldPortalState
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage? {
+        override fun getImage(entity: Entity): BufferedImage {
             return loadImage(getWorldSelectorPortalPath(worldId))
         }
     }
 
-    companion object {
+    internal object DEFAULT {
         val SIZE = PowerUp.DEFAULT.SIZE * 3
     }
 }
