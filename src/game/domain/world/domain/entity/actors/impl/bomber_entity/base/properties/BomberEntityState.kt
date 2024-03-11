@@ -14,7 +14,7 @@ import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import java.util.concurrent.atomic.AtomicReference
 
-class BomberEntityState(
+open class BomberEntityState(
         entity: BomberEntity,
         isSpawned: Boolean = Entity.DEFAULT.SPAWNED,
         isImmune: Boolean = Entity.DEFAULT.IMMUNE,
@@ -30,12 +30,11 @@ class BomberEntityState(
         attackDamage: Int = EntityInteractable.DEFAULT.ATTACK_DAMAGE,
         direction: Direction = MovingEntity.DEFAULT.DIRECTION,
         lastDirectionUpdate: Long = Character.DEFAULT.LAST_DIRECTION_UPDATE,
-        commandQueue: MutableSet<Command> = Character.DEFAULT.COMMAND_QUEUE,
+        
         previousDirection: Direction? = Character.DEFAULT.PREVIOUS_DIRECTION,
         canMove: Boolean = Character.DEFAULT.CAN_MOVE,
         maxHp: Int = Character.DEFAULT.MAX_HP,
-        speed: Float = Character.DEFAULT.SPEED,
-        imageDirection: Direction? = Character.DEFAULT.IMAGE_DIRECTION
+        speed: Float = Character.DEFAULT.SPEED
 ) : CharacterEntityState(
         entity = entity,
         interactionEntities = interactionEntities,
@@ -52,11 +51,10 @@ class BomberEntityState(
         attackDamage = attackDamage,
         direction = direction,
         lastDirectionUpdate = lastDirectionUpdate,
-        commandQueue = commandQueue,
+        
         previousDirection = previousDirection,
         canMove = canMove,
         speed = speed,
-        imageDirection = imageDirection,
         maxHp = maxHp
 ) {
     lateinit var weapon: UsableItem

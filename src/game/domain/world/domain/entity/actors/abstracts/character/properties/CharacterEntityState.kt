@@ -27,12 +27,10 @@ abstract class CharacterEntityState(
         attackDamage: Int = EntityInteractable.DEFAULT.ATTACK_DAMAGE,
         direction: Direction = MovingEntity.DEFAULT.DIRECTION,
         var lastDirectionUpdate: Long = Character.DEFAULT.LAST_DIRECTION_UPDATE,
-        val commandQueue: MutableSet<Command> = Character.DEFAULT.COMMAND_QUEUE,
         var previousDirection: Direction? = Character.DEFAULT.PREVIOUS_DIRECTION,
         var canMove: Boolean = Character.DEFAULT.CAN_MOVE,
         var maxHp: Int = Character.DEFAULT.MAX_HP,
-        var speed: Float = Character.DEFAULT.SPEED,
-        var imageDirection: Direction? = Character.DEFAULT.IMAGE_DIRECTION
+        var speed: Float = Character.DEFAULT.SPEED
 ) : MovingEntityState(
         entity = entity,
         isSpawned = isSpawned,
@@ -53,4 +51,14 @@ abstract class CharacterEntityState(
     var hp: Int = maxHp
     val hpPercentage: Int
         get() = (hp.toFloat() / maxHp.toFloat() * 100).toInt()
+
+    var imageDirection: Direction? = null
+        get() {
+            val supportedDirections = (entity as Character).properties.imageDirections
+
+            return if (field == null || !supportedDirections.contains(field)) {
+                field = supportedDirections.first()
+                field
+            } else field
+        }
 }

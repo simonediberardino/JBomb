@@ -74,7 +74,6 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
     private constructor() : this(null, null)
 
     init {
-        controllerManager?.register(GamePausedObserver())
         setupViewControllers()
         setDefaultCommandDelay()
         Log.i("${javaClass.simpleName}, onlineGameHandler: $onlineGameHandler, ${onlineGameHandler?.isRunning()}")
@@ -82,10 +81,6 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         if (onlineGameHandler?.isRunning() != true) {
             onlineGameHandler?.onStart()
         }
-    }
-
-    fun assignPlayerToControllerManager() {
-        controllerManager!!.player = player
     }
 
     /**
@@ -391,7 +386,6 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         gameTickerObservable?.unregisterAll()
         gameTickerObservable = null
 
-        controllerManager?.unregisterAll()
         controllerManager = null
     }
 

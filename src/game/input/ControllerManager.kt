@@ -19,14 +19,15 @@ class ControllerManager : Observable2(), KeyListener {
     // Stores the time of the last key event for each command
     private val commandEventsTime: MutableMap<Command?, Long> = mutableMapOf()
     var player: Player? = null
+        get() {
+            return Bomberman.getMatch().player
+        }
 
     // Key-Command mapping
     private var keyAssignment: Map<Int, Command>? = null
-    private lateinit var task: PeriodicTask
 
     init {
         instance = this
-        setupTask()
         // If illegal keys are found, reset the key map;
         try {
             setKeyMap()
@@ -65,8 +66,6 @@ class ControllerManager : Observable2(), KeyListener {
             commandEventsTime[action] = now()
             it.state.commandQueue.add(action)
         }
-
-        resume()
     }
 
     /**
@@ -89,40 +88,7 @@ class ControllerManager : Observable2(), KeyListener {
     }
 
     fun onKeyReleased(action: Command?) {
-        player?.let {
-            it.state.commandQueue.remove(action)
-
-            if (it.state.commandQueue.isEmpty())
-                stop()
-        }
-    }
-
-    private fun setupTask() {
-        task = PeriodicTask({
-            player?.let { p ->
-                Log.i("Executing")
-                p.state.commandQueue.forEach { command ->
-                    Log.i("Executing $command")
-                    notifyObservers(command)
-                }
-            }
-        }, KEY_DELAY_MS)
-
-        task.start()
-    }
-
-    private fun resume() {
-        try {
-            task.resume()
-        } catch (ignored: Exception) {
-        }
-    }
-
-    private fun stop() {
-        try {
-            task.stop()
-        } catch (ignored: Exception) {
-        }
+        player?.state?.commandQueue?.remove(action)
     }
 
     fun isCommandPressed(c: Command): Boolean {
@@ -130,7 +96,7 @@ class ControllerManager : Observable2(), KeyListener {
     }
 
     private fun updateDelay() {
-        instance!!.task.setDelay(KEY_DELAY_MS)
+        //instance!!.task.setDelay(KEY_DELAY_MS)
     }
 
     override fun keyTyped(e: KeyEvent) {}

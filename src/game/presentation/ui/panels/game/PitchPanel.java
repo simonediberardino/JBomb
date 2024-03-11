@@ -2,6 +2,7 @@ package game.presentation.ui.panels.game;
 
 import game.domain.match.BomberManMatch;
 import game.Bomberman;
+import game.domain.tasks.observer.Observable2;
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.domain.tasks.observer.Observer2;

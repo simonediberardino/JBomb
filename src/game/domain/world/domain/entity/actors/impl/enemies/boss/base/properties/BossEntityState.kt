@@ -31,10 +31,9 @@ open class BossEntityState(
         attackDamage: Int = EntityInteractable.DEFAULT.ATTACK_DAMAGE,
         direction: Direction = MovingEntity.DEFAULT.DIRECTION,
         lastDirectionUpdate: Long = Character.DEFAULT.LAST_DIRECTION_UPDATE,
-        commandQueue: MutableSet<Command> = Character.DEFAULT.COMMAND_QUEUE,
+
         previousDirection: Direction? = Character.DEFAULT.PREVIOUS_DIRECTION,
-        canMove: Boolean = Character.DEFAULT.CAN_MOVE,
-        imageDirection: Direction? = Character.DEFAULT.IMAGE_DIRECTION
+        canMove: Boolean = Character.DEFAULT.CAN_MOVE
 ) : EnemyEntityState(
         entity = entity,
         size = size,
@@ -53,8 +52,8 @@ open class BossEntityState(
         attackDamage = attackDamage,
         direction = direction,
         lastDirectionUpdate = lastDirectionUpdate,
-        commandQueue = commandQueue,
+
         previousDirection = previousDirection,
         canMove = canMove,
-        imageDirection = imageDirection
-)
+
+        )

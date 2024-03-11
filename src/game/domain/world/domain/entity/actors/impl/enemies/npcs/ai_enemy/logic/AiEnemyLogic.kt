@@ -8,6 +8,7 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.geo.Direction
+import game.utils.dev.Log
 import game.utils.dev.XMLUtils
 import game.utils.time.now
 import java.util.stream.Collectors
@@ -73,6 +74,12 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
         ScoreGameEvent().invoke(entity.state.maxHp)
     }
 
+    override fun executeCommandQueue() {
+        entity.state.enemyCommandQueue.forEach { c ->
+            handleCommand(c)
+        }
+    }
+
     override fun observerUpdate(arg: Any?) {
         super.observerUpdate(arg)
         val gameState = arg as Boolean
@@ -86,8 +93,9 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
     override fun process() {
         if ("true" == XMLUtils.readConfig("bots_move")) {
             if (Bomberman.getMatch().isServer) {
-                entity.state.commandQueue.add(chooseDirection(false).toCommand())
-                executeCommandQueue()
+                move(chooseDirection(false))
+                //entity.state.enemyCommandQueue.add(chooseDirection(false).toCommand())
+                //executeCommandQueue()
             }
         }
     }

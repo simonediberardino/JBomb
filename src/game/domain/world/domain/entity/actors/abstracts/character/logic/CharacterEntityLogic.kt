@@ -7,6 +7,7 @@ import game.audio.AudioManager
 import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
+import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
@@ -34,7 +35,7 @@ abstract class CharacterEntityLogic(
         setAliveState(false)
     }
 
-    override fun isAlive() : Boolean {
+    override fun isAlive(): Boolean {
         return entity.state.state?.get() == State.SPAWNED
     }
 
@@ -117,6 +118,7 @@ abstract class CharacterEntityLogic(
         }
         onEliminated()
     }
+
     /**
      * Starts a damage animation that makes the entity invisible and visible
      * repeatedly for a certain number of iterations with a delay between each iteration.
@@ -179,7 +181,6 @@ abstract class CharacterEntityLogic(
     }
 
     override fun handleCommand(command: Command) {
-        Log.i("HandleCommand $command")
         if (!Bomberman.getMatch().gameState) {
             return
         }
@@ -220,9 +221,9 @@ abstract class CharacterEntityLogic(
     override fun overpassBlock(entitiesOpposite1: List<Entity>, entitiesOpposite2: List<Entity>, direction1: Direction, direction2: Direction) {
         val oppositeCommand1 = direction2.toCommand()
         val oppositeCommand2 = direction1.toCommand()
-        val controllerManager = Bomberman.getMatch().controllerManager
+        val controllerManager = Bomberman.getMatch().controllerManager ?: return
 
-        val doubleClick1 = controllerManager!!.isCommandPressed(oppositeCommand1)
+        val doubleClick1 = controllerManager.isCommandPressed(oppositeCommand1)
         val doubleClick2 = controllerManager.isCommandPressed(oppositeCommand2)
 
         if (doubleClick2 || doubleClick1)
@@ -236,14 +237,6 @@ abstract class CharacterEntityLogic(
         } else if (entitiesOpposite2.isNotEmpty() && (entitiesOpposite1.isEmpty() || entitiesOpposite1.stream().allMatch(this::canInteractWith))) {
             move(direction1)
         }
-    }
-
-    override fun executeCommandQueue() {
-        entity.state.commandQueue.forEach { c ->
-            handleCommand(c)
-        }
-
-        entity.state.commandQueue.clear()
     }
 
     override fun onMove(coordinates: Coordinates) {

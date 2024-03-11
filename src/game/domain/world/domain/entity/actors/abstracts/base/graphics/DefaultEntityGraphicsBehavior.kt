@@ -4,13 +4,14 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.utils.Utility.fileExists
 import game.utils.Utility.loadImage
+import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.image.BufferedImage
 import java.util.*
 import java.util.regex.Pattern
 
 abstract class DefaultEntityGraphicsBehavior : IEntityGraphicsBehavior {
-    override fun loadAndSetImage(entity: Entity, imagePath: String): BufferedImage {
+    override fun loadAndSetImage(entity: Entity, imagePath: String): BufferedImage? {
         if (entity.state.state == null)
             return doLoadAndSetImage(entity, imagePath)
 
@@ -22,10 +23,13 @@ abstract class DefaultEntityGraphicsBehavior : IEntityGraphicsBehavior {
         return if (hasImageWithStatus) doLoadAndSetImage(entity, imagePathWithStatus) else doLoadAndSetImage(entity, imagePath)
     }
 
-    private fun doLoadAndSetImage(entity: Entity, imagePath: String): BufferedImage {
+    private fun doLoadAndSetImage(entity: Entity, imagePath: String): BufferedImage? {
         entity.state.lastImageUpdate = now()
-        entity.image._image = loadImage(imagePath)
-        entity.image.imagePath = imagePath
-        return entity.image._image!!
+
+        return loadImage(imagePath)?.let {
+            entity.image._image = loadImage(imagePath)
+            entity.image.imagePath = imagePath
+            return entity.image._image
+        }
     }
 }

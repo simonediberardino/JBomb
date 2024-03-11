@@ -18,7 +18,7 @@ class SpeedPowerUp : PowerUp {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage = loadAndSetImage(entity, "$powerUpsFolder/speed_up.png")
+        override fun getImage(entity: Entity): BufferedImage? = loadAndSetImage(entity, "$powerUpsFolder/speed_up.png")
     }
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {

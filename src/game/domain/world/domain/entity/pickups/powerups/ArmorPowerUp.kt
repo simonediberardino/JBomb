@@ -28,7 +28,7 @@ class ArmorPowerUp : PowerUp {
     }
 
     override val graphicsBehavior : IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage = loadAndSetImage(entity, "$powerUpsFolder/armor_up.png")
+        override fun getImage(entity: Entity): BufferedImage? = loadAndSetImage(entity, "$powerUpsFolder/armor_up.png")
     }
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.ArmorPowerUp)

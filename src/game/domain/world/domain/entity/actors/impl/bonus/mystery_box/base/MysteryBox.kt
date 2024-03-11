@@ -27,7 +27,7 @@ abstract class MysteryBox(
     abstract override val logic: MysteryBoxLogic
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage {
+        override fun getImage(entity: Entity): BufferedImage? {
             return loadAndSetImage(entity, "${Paths.powerUpsFolder}/box_${state.status}.png")
         }
     }

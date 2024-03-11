@@ -53,7 +53,6 @@ abstract class Character : MovingEntity {
         val CAN_MOVE = true
         val MAX_HP = 100
         val SPEED = 1f
-        val IMAGE_DIRECTION = Direction.DOWN
         val STEP_SOUND = SoundModel.STEP_SOUND
         val IMAGE_DIRECTIONS = Direction.values().asList()
         val DEATH_SOUND = SoundModel.ENTITY_DEATH

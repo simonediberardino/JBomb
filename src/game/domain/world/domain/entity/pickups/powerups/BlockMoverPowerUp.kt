@@ -19,7 +19,7 @@ class BlockMoverPowerUp : PowerUp {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage = loadAndSetImage(entity, "$powerUpsFolder/hand.png")
+        override fun getImage(entity: Entity): BufferedImage? = loadAndSetImage(entity, "$powerUpsFolder/hand.png")
     }
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {

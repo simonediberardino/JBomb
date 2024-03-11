@@ -8,6 +8,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
+import game.domain.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.yellow_ball.properties.YellowBallProperties
 import game.utils.file_system.Paths.enemiesFolder
@@ -28,7 +29,7 @@ class YellowBall : AiEnemy {
         }
     }
 
-    
+    override val state: EnemyEntityState = EnemyEntityState(entity = this, size = DEFAULT.SIZE)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val properties: YellowBallProperties = YellowBallProperties(types = EntityTypes.YellowBall)
 

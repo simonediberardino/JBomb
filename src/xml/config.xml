@@ -2,7 +2,7 @@
 <resources>
     <config
             full_screen="false"
-            logs_base="true"
+            logs_base="false"
             logs_error="true"
             logs_warning="true"
             bots_move="true">

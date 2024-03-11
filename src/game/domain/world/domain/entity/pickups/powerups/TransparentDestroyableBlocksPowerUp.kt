@@ -19,7 +19,7 @@ class TransparentDestroyableBlocksPowerUp : PowerUp {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage = loadAndSetImage(entity, "$powerUpsFolder/blocks_up.gif")
+        override fun getImage(entity: Entity): BufferedImage? = loadAndSetImage(entity, "$powerUpsFolder/blocks_up.gif")
     }
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {

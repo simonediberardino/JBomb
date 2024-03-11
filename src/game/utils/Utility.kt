@@ -69,7 +69,7 @@ object Utility {
      * @return The loaded image, or null if the file could not be found or read.
      */
     
-    fun loadImage(fileName: String): BufferedImage {
+    fun loadImage(fileName: String): BufferedImage? {
         var fileName = fileName
         val cache = Cache.instance
 

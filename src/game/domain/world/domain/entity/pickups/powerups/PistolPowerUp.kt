@@ -19,7 +19,7 @@ class PistolPowerUp : PowerUp {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage = loadAndSetImage(entity, "$itemsPath/pistol.png")
+        override fun getImage(entity: Entity): BufferedImage? = loadAndSetImage(entity, "$itemsPath/pistol.png")
     }
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {

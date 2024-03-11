@@ -103,7 +103,7 @@ open class EntityImageModel(
 }
 
 interface IEntityGraphicsBehavior {
-    fun loadAndSetImage(entity: Entity, imagePath: String): BufferedImage
+    fun loadAndSetImage(entity: Entity, imagePath: String): BufferedImage?
     fun getImage(entity: Entity): BufferedImage?
 
     fun getHitboxSizeToHeightRatio(entity: Entity, path: String): Float {

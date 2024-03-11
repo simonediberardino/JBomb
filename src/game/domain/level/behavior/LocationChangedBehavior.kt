@@ -21,7 +21,6 @@ class LocationChangedBehavior(private val entityNetwork: EntityNetwork) : GameBe
                     val player = Bomberman.getMatch().getEntityById(entityNetwork.entityId) as Player?
                     if (player != null) {
                         Bomberman.getMatch().player = player
-                        Bomberman.getMatch().assignPlayerToControllerManager()
                     }
                 }
 

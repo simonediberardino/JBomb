@@ -85,7 +85,7 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
     abstract override val state: WorldPortalState
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage {
+        override fun getImage(entity: Entity): BufferedImage? {
             return loadImage(getWorldSelectorPortalPath(worldId))
         }
     }

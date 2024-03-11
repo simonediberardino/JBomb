@@ -18,7 +18,7 @@ class StoneBlock : HardBlock {
     override val properties: EntityProperties = BlockEntityProperties(type = EntityTypes.StoneBlock)
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage {
+        override fun getImage(entity: Entity): BufferedImage? {
             return loadAndSetImage(
                     entity = entity,
                     imagePath = Bomberman.getMatch().currentLevel!!.info.stoneBlockImagePath

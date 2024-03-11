@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import javax.swing.Timer
 
-class PeriodicTask(private val callback: Runnable, private val delay: Int) {
+class PeriodicTask(
+        private val callback: Runnable,
+        private val delay: Int
+) {
     private val timer: Timer
     private val actionListener: ActionListener = ActionListener { e: ActionEvent? -> callback.run() }
 

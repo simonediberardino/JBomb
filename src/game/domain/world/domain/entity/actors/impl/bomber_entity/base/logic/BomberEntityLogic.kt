@@ -83,5 +83,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         return Bomberman.getMatch().currentLevel?.info?.maxBombs ?: 0
     }
 
+    override fun executeCommandQueue() {}
+
     override fun observerUpdate(arg: Any?) {}
 }

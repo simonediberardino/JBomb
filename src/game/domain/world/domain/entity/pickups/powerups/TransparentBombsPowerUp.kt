@@ -17,7 +17,7 @@ class TransparentBombsPowerUp : PowerUp {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage = loadAndSetImage(entity, "$powerUpsFolder/transparent_bomb_powerup.png")
+        override fun getImage(entity: Entity): BufferedImage? = loadAndSetImage(entity, "$powerUpsFolder/transparent_bomb_powerup.png")
     }
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {

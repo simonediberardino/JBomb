@@ -80,9 +80,6 @@ public class Bomberman {
         bombermanFrame.initGamePanel();
         bomberManMatch.getCurrentLevel().start(bombermanFrame.getPitchPanel());
 
-        if (bomberManMatch.getPlayer() != null)
-            bomberManMatch.assignPlayerToControllerManager();
-
         Bomberman.getBombermanFrame().addKeyListener(Bomberman.getMatch().getControllerManager());
         Bomberman.getBombermanFrame().getPitchPanel().addMouseListener(Bomberman.getMatch().getMouseControllerManager());
         Bomberman.getBombermanFrame().getPitchPanel().addMouseMotionListener(Bomberman.getMatch().getMouseControllerManager());
