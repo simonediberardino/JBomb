@@ -9,8 +9,13 @@ class GamePausedObserver : Observer2 {
         if (arg !is Command) {
             return
         }
+
         if (arg === Command.PAUSE) {
             Bomberman.getMatch().toggleGameState()
         }
+    }
+
+    override fun isValid(): Boolean {
+        return true
     }
 }

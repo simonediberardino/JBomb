@@ -1,22 +1,26 @@
 package game.domain.tasks
 
 import game.domain.tasks.observer.Observer2
+import game.utils.Utility
 import game.utils.time.now
 
 abstract class GameTickerObserver : Observer2 {
-    var lastUpdate = 0L
-        protected set
+    private var lastUpdate = 0L
 
     override fun update(arg: Any?) {
         lastUpdate = now()
     }
 
-    open val delayObserverUpdate: Float
+    override fun isValid(): Boolean {
+        return Utility.timePassed(lastUpdate) >= delayObserverUpdate // check if the delay has passed since the last update
+    }
+
+    open val delayObserverUpdate: Int
         get() {
             return DEFAULT_OBSERVER_UPDATE
         }
 
     companion object {
-        val DEFAULT_OBSERVER_UPDATE = 30f
+        const val DEFAULT_OBSERVER_UPDATE = 30
     }
 }

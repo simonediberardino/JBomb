@@ -1,15 +1,9 @@
 
 high priorities:
-- Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException: Cannot read field "next" because "this.next" is null
-  	at java.base/java.util.LinkedList$ListItr.next(LinkedList.java:897)
-  	at game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic.EntityInteractableLogic.moveOrInteract(EntityInteractableLogic.kt:188)
-  	at game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic.EntityInteractableLogic.moveOrInteract(EntityInteractableLogic.kt:90)
-  	at game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic.IEntityInteractableLogic$DefaultImpls.moveOrInteract$default(IEntityInteractableLogic.kt:11)
-  	at game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic.move(CharacterEntityLogic.kt:76)
-  	at game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic.process(AiEnemyLogic.kt:97)
 
-- Entity damage
+- Speed
 - Bomb
+- Review game ticker observable
 - Handle specific aspect of entity independentely (image, info, logic, etc.)
 - handle perks/status, bombs length
 - implement auto convert to map

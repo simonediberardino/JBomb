@@ -5,6 +5,7 @@ import game.utils.dev.Log
 open class Observable2 {
     @JvmField
     protected var observers: MutableSet<Observer2> = HashSet()
+
     fun notifyObservers(arg: Any?) {
         Log.i("notifyObservers $arg, $observers")
         for (o in observers) o.update(arg)

@@ -1,9 +1,12 @@
 package game.domain.tasks
 
 import game.Bomberman
+import game.domain.tasks.GameTickerObserver.Companion.DEFAULT_OBSERVER_UPDATE
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.tasks.observer.Observable2
 import game.utils.Utility.timePassed
+import game.utils.dev.Log
+import game.utils.time.now
 
 /**
  * The GameTickerObservable class is an observable that notifies its observers periodically with a fixed delay
@@ -11,7 +14,7 @@ import game.utils.Utility.timePassed
  */
 class GameTickerObservable : Observable2() {
     private val periodicTask: PeriodicTask
-    private val DELAY_MS = 20
+    private val DELAY_MS: Int = DEFAULT_OBSERVER_UPDATE / 2
 
     /**
      * This ActionListener updates observers of the GameTickerObservable periodically based on the specified delay. It loops through
@@ -19,19 +22,8 @@ class GameTickerObservable : Observable2() {
      * update method of the observer with the current GameState object.
      */
     private val task = Runnable {
-        val array = observers.toTypedArray()
-
-        // loop through each observer in the observerSet
-        for (observer in array) {
-            if (observer is Entity && !observer.state.isSpawned) unregister(observer)
-            var delayPassed = true
-            if (observer is GameTickerObserver) { // check if the observer is of type GameTickerObserver
-                // cast the observer to GameTickerObserver
-                val lastUpdate: Long = observer.lastUpdate // get the last update time of the observer
-                val delayObserverUpdate: Long = observer.delayObserverUpdate.toLong() // get the delay time of the observer
-                delayPassed = timePassed(lastUpdate) >= delayObserverUpdate // check if the delay has passed since the last update
-            }
-            if (delayPassed) { // if the delay has passed
+        observers.toTypedArray().forEach { observer ->
+            if (observer.isValid()) {
                 notify(observer, Bomberman.getMatch().gameState)
             }
         }

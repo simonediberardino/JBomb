@@ -17,9 +17,9 @@ class BombItem : UsableItem() {
         val isBombPlacementValid = isLocalPlayer &&
                 (owner.state.currExplosionLength == 0 || owner.state.placedBombs >= owner.state.maxBombs || owner.state.currentBombs <= 0)
 
-        val isBombPlacementIntervalValid = timePassed(owner.state.lastPlacedBombTime) < Bomb.PLACE_INTERVAL
+        val isBombPlacementIntervalValid = timePassed(owner.state.lastPlacedBombTime) >= Bomb.PLACE_INTERVAL
 
-        if (isBombPlacementValid || isBombPlacementIntervalValid) {
+        if (!isBombPlacementValid || !isBombPlacementIntervalValid) {
             return
         }
 
