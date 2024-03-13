@@ -5,6 +5,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.logic.EntityLogic
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
+import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.AttackEntityEventForwarder
@@ -21,7 +22,7 @@ abstract class EntityInteractableLogic(
         val gameBehavior: GameBehavior = object : GameBehavior() {
             override fun hostBehavior(): () -> Unit {
                 return {
-                    if (!(e == null || e.state.isImmune)) {
+                    if (!(e == null || e.state.isImmune || e.state.state == State.DIED)) {
                         val attackDamage: Int = entity.state.attackDamage
                         e.logic.onAttackReceived(attackDamage)
                         AttackEntityEventForwarder().invoke(e.toDto(), attackDamage)
@@ -113,9 +114,10 @@ abstract class EntityInteractableLogic(
                     stepSize
             )
 
-            val allEntitiesCanBeInteractedWith = coordinatesInArea.all {
-                c: Coordinates? -> Coordinates.getEntitiesOnBlock(c).none { e: Entity ->
-                    entity.logic.canBeInteractedBy(e) || canInteractWith(e) || isObstacle(e) && e !== entity
+            val allEntitiesCanBeInteractedWith = coordinatesInArea.all { c: Coordinates? ->
+                val entitiesOnBlock = Coordinates.getEntitiesOnBlock(c)
+                entitiesOnBlock.isEmpty() || entitiesOnBlock.all { e: Entity ->
+                    !entity.logic.canBeInteractedBy(e) && !canInteractWith(e) && !(isObstacle(e) && e !== entity)
                 }
             }
 
@@ -127,7 +129,12 @@ abstract class EntityInteractableLogic(
 
         // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
         // with a given step size
-        val nextOccupiedCoords = Coordinates.getNewCoordinatesOnDirection(entity.info.position, d, stepSize, PitchPanel.GRID_SIZE / 3 / 2, entity.state.size)
+        val nextOccupiedCoords = Coordinates.getNewCoordinatesOnDirection(
+                entity.info.position,
+                d, stepSize,
+                PitchPanel.GRID_SIZE / 3 / 2,
+                entity.state.size
+        )
 
         // Get a list of entities that are present in the next occupied coordinates
         val interactedEntities = Coordinates.getEntitiesOnCoordinates(nextOccupiedCoords)
@@ -141,19 +148,19 @@ abstract class EntityInteractableLogic(
         // Initialize a flag to indicate whether the entity can move
         var canMove = true
 
-        // Check if any of the entities in the 'interactedEntities' list is an obstacle
-        if (interactedEntities.stream().anyMatch { e: Entity? -> isObstacle(e) }) {
-            // Filter and collect the obstacle entities into a temporary list
-            val obstacleEntities = interactedEntities.filter { e: Entity? -> isObstacle(e) }
+        var encounteredObstacle = false
 
-            // Interact with each obstacle entity in the temporary list
-            for (e in obstacleEntities) {
+        for (e in interactedEntities) {
+            if (isObstacle(e)) {
                 interact(e)
+                encounteredObstacle = true
             }
             canMove = false
-        } else {
+        }
+
+        if (!encounteredObstacle) {
             // Interact with non-null entities in the 'interactedEntities' list
-            interactedEntities.stream().filter { obj: Entity? -> Objects.nonNull(obj) }.forEach { e: Entity? -> interact(e) }
+            interactedEntities.stream().forEach { e: Entity? -> interact(e ?: return@forEach) }
         }
 
         // If the entity can move or it is immune to bombs, update the entity's position

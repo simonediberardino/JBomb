@@ -45,7 +45,7 @@ open class EntityState(
         open var entity: Entity,
         open var isSpawned: Boolean = Entity.DEFAULT.SPAWNED,
         open var isImmune: Boolean = Entity.DEFAULT.IMMUNE,
-        open var state: AtomicReference<State>? = Entity.DEFAULT.STATE,
+        open var state: State? = Entity.DEFAULT.STATE,
         open var isInvisible: Boolean = Entity.DEFAULT.IS_INVISIBLE,
         open val size: Int,
         open var alpha: Float = Entity.DEFAULT.ALPHA,
@@ -224,7 +224,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         val ALPHA = 1f
         val LAST_IMAGE_UPDATE = 0L
         val IS_INVISIBLE = false
-        val STATE = AtomicReference<State>()
+        val STATE = null
         val SPAWNED: Boolean = false
         val IMMUNE: Boolean = false
         val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf()

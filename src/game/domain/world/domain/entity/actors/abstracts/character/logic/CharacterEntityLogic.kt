@@ -31,16 +31,17 @@ abstract class CharacterEntityLogic(
     }
 
     override fun onDespawn() {
+        Log.e("onDespawn $entity")
         super.onDespawn()
         setAliveState(false)
     }
 
     override fun isAlive(): Boolean {
-        return entity.state.state?.get() == State.SPAWNED
+        return entity.state.state == State.SPAWNED
     }
 
     override fun setAliveState(alive: Boolean) {
-        entity.state.state!!.set(if (alive) State.SPAWNED else State.DIED)
+        entity.state.state = (if (alive) State.SPAWNED else State.DIED)
     }
 
     override fun updateMovementDirection(direction: Direction) {
@@ -69,8 +70,9 @@ abstract class CharacterEntityLogic(
      */
     override fun move(direction: Direction): Boolean {
         // If the entity is not alive, return true.
-        if (entity.state.state?.get() == State.DIED)
+        if (entity.state.state == State.DIED) {
             return true
+        }
 
         // Try to move or interact with the entity in the specified direction.
         if (moveOrInteract(direction)) {
@@ -112,8 +114,7 @@ abstract class CharacterEntityLogic(
     }
 
     override fun eliminated() {
-        super.eliminated() // TODO Changed
-        if (entity.state.state?.get() == State.DIED) {
+        if (entity.state.state == State.DIED) {
             return
         }
         onEliminated()
@@ -137,7 +138,7 @@ abstract class CharacterEntityLogic(
             var count = 0
             override fun run() {
                 // If the number of iterations has been reached, cancel the timer and return
-                if ((count >= iterations) || (entity.state.state?.get() != State.SPAWNED)) {
+                if ((count >= iterations) || (entity.state.state != State.SPAWNED)) {
                     timer.cancel()
                     return
                 }
@@ -162,7 +163,7 @@ abstract class CharacterEntityLogic(
         AudioManager.getInstance().play(entity.properties.deathSound)
 
         // Create a Timer object to schedule the animation iterations
-        val timer = javax.swing.Timer(EntityInteractable.INTERACTION_DELAY_MS.toInt()) { e: ActionEvent? ->
+        val timer = javax.swing.Timer(EntityInteractable.INTERACTION_DELAY_MS.toInt()) { _: ActionEvent? ->
             onEndedDeathAnimation()
             entity.logic.despawn()
             entity.logic.notifyDespawn()

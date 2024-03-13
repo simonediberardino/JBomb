@@ -13,7 +13,7 @@ abstract class WorldPortalState(
         entity: Entity,
         isSpawned: Boolean = Entity.DEFAULT.SPAWNED,
         isImmune: Boolean = Entity.DEFAULT.IMMUNE,
-        state: AtomicReference<State>? = Entity.DEFAULT.STATE,
+        state: State? = Entity.DEFAULT.STATE,
         isInvisible: Boolean = Entity.DEFAULT.IS_INVISIBLE,
         size: Int = WorldPortal.DEFAULT.SIZE,
         alpha: Float = Entity.DEFAULT.ALPHA,

@@ -244,6 +244,8 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
             _entitiesMap.remove(entity.info.id)
         }
 
+        gameTickerObservable?.unregister(entity)
+
         System.gc()
     }
 
@@ -345,7 +347,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * Destroys all _entities in the game by despawning them.
      */
     private fun destroyEntities() {
-        getEntities().forEach { it.logic.eliminated() }
+        getEntities().forEach { it.logic.despawn() }
     }
 
     /**

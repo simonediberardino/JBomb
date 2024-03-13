@@ -11,12 +11,10 @@ class BombState(
         entity: Entity,
         isSpawned: Boolean = Entity.DEFAULT.SPAWNED,
         isImmune: Boolean = Entity.DEFAULT.IMMUNE,
-        state: AtomicReference<State>? = Entity.DEFAULT.STATE,
+        state: State? = Entity.DEFAULT.STATE,
         isInvisible: Boolean = Entity.DEFAULT.IS_INVISIBLE,
         size: Int = Bomb.DEFAULT.SIZE,
         alpha: Float = Entity.DEFAULT.ALPHA,
         interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
         lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE
-) : PlaceableEntityState(entity, isSpawned, isImmune, state, isInvisible, size, alpha, interactionEntities, lastImageUpdate) {
-
-}
+) : PlaceableEntityState(entity, isSpawned, isImmune, state, isInvisible, size, alpha, interactionEntities, lastImageUpdate) 

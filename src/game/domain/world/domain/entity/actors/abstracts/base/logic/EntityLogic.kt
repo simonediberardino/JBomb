@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.network.events.forward.DespawnEntityEventForwarder
 import game.network.events.forward.SpawnEntityEventForwarder
+import game.utils.dev.Log
 
 abstract class EntityLogic(open val entity: Entity) : IEntityLogic {
     override fun eliminated() {
@@ -55,18 +56,18 @@ abstract class EntityLogic(open val entity: Entity) : IEntityLogic {
     }
 
     override fun onSpawn() {
-        entity.state.state!!.set(State.SPAWNED)
+        entity.state.state = (State.SPAWNED)
         notifySpawn()
     }
 
     override fun onDespawn() {
-        entity.state.state!!.set(State.DIED)
+        entity.state.state = (State.DIED)
     }
 
     override fun onExplosion(explosion: AbstractExplosion?) {}
 
     override fun onImmuneChangedState() {
-        entity.state.state!!.set(if (entity.state.isImmune) State.IMMUNE else State.SPAWNED)
+        entity.state.state = (if (entity.state.isImmune) State.IMMUNE else State.SPAWNED)
     }
 
     override fun spawnOffset(): Coordinates {

@@ -9,7 +9,9 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 
 abstract class EnemyEntityLogic(override val entity: Enemy) : CharacterEntityLogic(entity) {
     override fun doInteract(e: Entity?) {
-        (e as? BomberEntity)?.let { attack(it) }
+        (e as? BomberEntity)?.let {
+            attack(it)
+        }
     }
 
     override fun onSpawn() {

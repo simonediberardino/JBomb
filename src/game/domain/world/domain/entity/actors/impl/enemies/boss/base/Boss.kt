@@ -49,7 +49,7 @@ abstract class Boss : AiEnemy {
         val MAX_HP: Int by lazy {
             Bomberman.getMatch().currentLevel!!.info.bossMaxHealth
         }
-        val OBSTACLES: Set<Class<out Entity?>?> = emptySet()
+        val OBSTACLES: Set<Class<out Entity>> = emptySet()
         val DEATH_SOUND = SoundModel.BOSS_DEATH
         val HEALTH_STATUS_MAP = TreeMap<Int, Int>()
         val START_RAGE_STATUS = 0

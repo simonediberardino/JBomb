@@ -8,6 +8,7 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.geo.Direction
+import game.utils.Utility
 import game.utils.dev.Log
 import game.utils.dev.XMLUtils
 import game.utils.time.now
@@ -32,36 +33,24 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
      * @return new direction
      */
     override fun chooseDirection(forceChange: Boolean): Direction {
-        // Get the current time in milliseconds
-        val currentTime = now()
         // If it hasn't been long enough since the last direction update, keep moving in the same direction, unless last move was blocked
-        if (currentTime - entity.state.lastDirectionUpdate < AiEnemy.DIRECTION_REFRESH_RATE && !forceChange) {
+        if (Utility.timePassed(entity.state.lastDirectionUpdate) < AiEnemy.DIRECTION_REFRESH_RATE && !forceChange) {
             return entity.state.direction
         }
 
         // Get a list of all the available directions the agent can move in
         val availableDirections = entity.logic.availableDirections()
-                .stream()
                 .filter { e: Direction? -> entity.properties.supportedDirections.contains(e) }
-                .collect(Collectors.toList())
+                .ifEmpty {
+                    return entity.state.direction
+                }
 
-        // If forceChange is true, remove the current direction from the list of available directions
-        if (availableDirections.isEmpty()) {
-            return entity.state.direction
-        }
         // Choose a new direction randomly, or keep the current direction with a certain probability
-        var newDirection: Direction? = null
-        if (Math.random() * 100 > CHANGE_DIRECTION_RATE && availableDirections.size != 1) {
-            newDirection = entity.state.direction
+        return if (Math.random() * 100 > CHANGE_DIRECTION_RATE && availableDirections.size != 1) {
+            entity.state.direction
+        } else {
+            availableDirections[(Math.random() * availableDirections.size).toInt()]
         }
-
-        // If a new direction hasn't been chosen, choose one randomly from the available options
-        if (newDirection == null) {
-            newDirection = availableDirections[(Math.random() * availableDirections.size).toInt()]
-        }
-
-        // Send the command corresponding to the new direction to the game engine
-        return newDirection!!
     }
 
     override fun changeDirection() {
@@ -87,6 +76,7 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
         if (!entity.state.canMove || !gameState) {
             return
         }
+
         process()
     }
 

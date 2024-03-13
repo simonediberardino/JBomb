@@ -58,7 +58,7 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     }
 
     override fun executeCommandQueue() {
-        entity.state.commandQueue.forEach { c ->
+        entity.state.commandQueue.parallelStream().forEach { c ->
             handleCommand(c)
         }
     }
