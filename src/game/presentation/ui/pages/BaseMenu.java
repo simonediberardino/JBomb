@@ -44,8 +44,8 @@ public abstract class BaseMenu extends PagePanel {
             panel = new JPanel();
 
         int centerPanelWidth = (int) listButtonsPanel.getPreferredSize().getWidth();
-        int height = (int) (Bomberman.getBombermanFrame().getPreferredSize().getHeight());
-        int width = (int) (Bomberman.getBombermanFrame().getPreferredSize().getWidth() - centerPanelWidth) / 2;
+        int height = (int) (Bomberman.bombermanFrame.getPreferredSize().getHeight());
+        int width = (int) (Bomberman.bombermanFrame.getPreferredSize().getWidth() - centerPanelWidth) / 2;
 
         panel.setPreferredSize(new Dimension(width, height));
         panel.setOpaque(false);

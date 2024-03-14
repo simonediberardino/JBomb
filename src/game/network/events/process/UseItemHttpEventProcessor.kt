@@ -17,9 +17,9 @@ class UseItemHttpEventProcessor : HttpEvent {
         val itemType = info.getOrTrim("itemType")?.toInt() ?: return
         Log.i("UseItemHttpEventProcessor data $entityId, $itemType")
 
-        val entity: Entity = Bomberman.getMatch().getEntityById(entityId) ?: return
+        val entity: Entity = Bomberman.match.getEntityById(entityId) ?: return
         val item = ItemsTypes.values()[itemType].toItem()
-        Bomberman.getMatch().give(entity as BomberEntity, item)
+        Bomberman.match.give(entity as BomberEntity, item)
 
         item.use()
     }

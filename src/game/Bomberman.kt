@@ -1,97 +1,95 @@
-package game;
+package game
 
-import game.data.data.DataInputOutput;
-import game.domain.level.levels.Level;
-import game.network.gamehandler.OnlineGameHandler;
-import game.localization.Localization;
-import game.domain.match.BomberManMatch;
-import game.audio.AudioManager;
-import game.domain.tasks.GarbageCollectorTask;
-import game.presentation.ui.frames.BombermanFrame;
-import game.presentation.ui.panels.game.PagePanel;
-import game.presentation.ui.panels.game.CustomSoundMode;
-import game.presentation.ui.panels.game.MatchPanel;
-import game.presentation.ui.pages.LoadingPanel;
-import game.presentation.ui.pages.MainMenuPanel;
-import game.presentation.ui.viewelements.misc.ToastHandler;
+import game.audio.AudioManager
+import game.data.data.DataInputOutput
+import game.domain.level.levels.Level
+import game.domain.match.BomberManMatch
+import game.domain.tasks.GarbageCollectorTask
+import game.localization.Localization
+import game.network.gamehandler.OnlineGameHandler
+import game.presentation.ui.frames.BombermanFrame
+import game.presentation.ui.pages.LoadingPanel
+import game.presentation.ui.pages.MainMenuPanel
+import game.presentation.ui.panels.game.CustomSoundMode
+import game.presentation.ui.panels.game.MatchPanel
+import game.presentation.ui.panels.game.PagePanel
+import game.presentation.ui.viewelements.misc.ToastHandler
+import kotlinx.coroutines.launch
+import java.awt.Component
+import java.util.*
 
-import java.awt.*;
-import java.util.Arrays;
-import java.util.Optional;
+object Bomberman {
+    lateinit var match: BomberManMatch
 
-import static game.localization.Localization.WELCOME_TEXT;
-
-public class Bomberman {
-    private static BomberManMatch bomberManMatch;
-    private static BombermanFrame bombermanFrame;
+    @JvmStatic
+    lateinit var bombermanFrame: BombermanFrame
 
     /**
      * Starts the Java Application;
      */
-    public static void main(String[] args) {
-        retrievePlayerData();
-        startGarbageCollectorTask();
-        start();
+    @JvmStatic
+    fun main(args: Array<String>) {
+        retrievePlayerData()
+        startGarbageCollectorTask()
+        start()
     }
 
-    private static void start() {
-        bombermanFrame = new BombermanFrame();
-        bombermanFrame.create();
-        showActivity(MainMenuPanel.class);
-        ToastHandler.getInstance().show(Localization.get(WELCOME_TEXT).replace("%user%", DataInputOutput.getInstance().getUsername()));
+    private fun start() {
+        bombermanFrame = BombermanFrame()
+        bombermanFrame.create()
+        showActivity(MainMenuPanel::class.java)
+        ToastHandler.getInstance().show(Localization.get(Localization.WELCOME_TEXT).replace("%user%", DataInputOutput.getInstance().username))
     }
 
-    public static void startGarbageCollectorTask() {
-        new GarbageCollectorTask().start();
+    private fun startGarbageCollectorTask() {
+        GarbageCollectorTask().start()
     }
 
-    public static void retrievePlayerData() {
-        DataInputOutput.getInstance().retrieveData();
+    private fun retrievePlayerData() {
+        DataInputOutput.getInstance().retrieveData()
     }
 
-    public static BombermanFrame getBombermanFrame() {
-        return bombermanFrame;
+    @JvmStatic
+    fun quitMatch() {
+        destroyLevel()
+        showActivity(MainMenuPanel::class.java)
     }
 
-    public static BomberManMatch getMatch() {
-        return bomberManMatch;
-    }
-
-    public static void quitMatch() {
-        destroyLevel();
-        showActivity(MainMenuPanel.class);
-    }
-
-    public static void destroyLevel() {
-        if (bomberManMatch == null) {
-            return;
-        }
-        Bomberman.getBombermanFrame().removeKeyListener(bomberManMatch.getControllerManager());
-        bomberManMatch.destroy();
+    fun destroyLevel() {
+        bombermanFrame.removeKeyListener(match.controllerManager)
+        match.destroy()
     }
 
     /**
      * Starts a new level and destroys the previous one;
      *
      */
-    private static void doStartLevel(Level level, OnlineGameHandler onlineGameHandler) {
-        destroyLevel();
-        bomberManMatch = new BomberManMatch(level, onlineGameHandler);
-        bombermanFrame.initGamePanel();
-        bomberManMatch.getCurrentLevel().start(bombermanFrame.getPitchPanel());
+    private fun doStartLevel(level: Level, onlineGameHandler: OnlineGameHandler?) {
+        if (this::match.isInitialized) {
+            destroyLevel()
+        }
 
-        Bomberman.getBombermanFrame().addKeyListener(Bomberman.getMatch().getControllerManager());
-        Bomberman.getBombermanFrame().getPitchPanel().addMouseListener(Bomberman.getMatch().getMouseControllerManager());
-        Bomberman.getBombermanFrame().getPitchPanel().addMouseMotionListener(Bomberman.getMatch().getMouseControllerManager());
-        showActivity(MatchPanel.class);
+        match = BomberManMatch(level, onlineGameHandler)
+
+        match.scope.launch {
+            bombermanFrame.initGamePanel()
+            match.currentLevel.start(bombermanFrame.pitchPanel)
+            bombermanFrame.addKeyListener(match.controllerManager)
+            bombermanFrame.pitchPanel.addMouseListener(match.mouseControllerManager)
+            bombermanFrame.pitchPanel.addMouseMotionListener(match.mouseControllerManager)
+            showActivity(MatchPanel::class.java)
+        }
     }
 
-    public static void startLevel(Level level, OnlineGameHandler onlineGameHandler) {
-        bombermanFrame.getLoadingPanel().initialize();
-        bombermanFrame.getLoadingPanel().updateText(level);
-        bombermanFrame.getLoadingPanel().setCallback(() -> doStartLevel(level, onlineGameHandler));
-        showActivity(LoadingPanel.class);
-        Bomberman.showActivity(LoadingPanel.class);
+    @JvmStatic
+    fun startLevel(level: Level, onlineGameHandler: OnlineGameHandler?) {
+        bombermanFrame.loadingPanel.initialize()
+        bombermanFrame.loadingPanel.updateText(level)
+        bombermanFrame.loadingPanel.setCallback {
+            doStartLevel(level, onlineGameHandler)
+        }
+
+        showActivity(LoadingPanel::class.java)
     }
 
     /**
@@ -99,37 +97,34 @@ public class Bomberman {
      *
      * @param page
      */
-    public static void showActivity(Class<? extends PagePanel> page) {
-        bombermanFrame.getCardLayout().show(bombermanFrame.getParentPanel(), page.getSimpleName());
+    @JvmStatic
+    fun showActivity(page: Class<out PagePanel?>) {
+        bombermanFrame.cardLayout.show(bombermanFrame.parentPanel, page.simpleName)
 
         // Gets the component with the passed class and fires its onShowCallback;
-        Optional<Component> shownComponentOpt = Arrays.stream(
-                bombermanFrame.getParentPanel().getComponents()
-        ).filter(c -> c.getClass() == page).findFirst();
+        val shownComponentOpt = Arrays.stream(
+                bombermanFrame.parentPanel.components
+        ).filter {
+            c: Component? -> c!!.javaClass == page
+        }.findFirst()
 
-        Component shownComponent = shownComponentOpt.orElse(null);
-        if (shownComponent instanceof PagePanel)
-            ((PagePanel) (shownComponent)).onShowCallback();
+        val shownComponent = shownComponentOpt.orElse(null)
 
-        if (!(shownComponent instanceof CustomSoundMode)) {
-            AudioManager.getInstance().playBackgroundSong();
+        if (shownComponent is PagePanel)
+            shownComponent.onShowCallback()
+
+        if (shownComponent !is CustomSoundMode) {
+            AudioManager.getInstance().playBackgroundSong()
         }
     }
 
-    public static boolean isGameEnded() {
-        return getMatch() == null || !getMatch().getGameState();
-    }
+    val isGameEnded: Boolean
+        get() = !match.gameState
 
-    public static boolean isInGame() {
-        BomberManMatch match = getMatch();
-        Level currentLevel = match != null ? match.getCurrentLevel() : null;
-
-        if (currentLevel == null) {
-            // Handle the case when getCurrentLevel() is null
-            return false;
+    val isInGame: Boolean
+        get() {
+            val match = match
+            val currentLevel = match.currentLevel
+            return match.gameState && currentLevel.info.worldId > 0
         }
-
-        return match.getGameState() && currentLevel.getInfo().getWorldId() > 0;
-    }
-
 }

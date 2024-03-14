@@ -21,7 +21,7 @@ class StoneBlock : HardBlock {
         override fun getImage(entity: Entity): BufferedImage? {
             return loadAndSetImage(
                     entity = entity,
-                    imagePath = Bomberman.getMatch().currentLevel!!.info.stoneBlockImagePath
+                    imagePath = Bomberman.match.currentLevel!!.info.stoneBlockImagePath
             )
         }
     }

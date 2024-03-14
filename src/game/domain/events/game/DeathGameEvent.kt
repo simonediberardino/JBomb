@@ -5,6 +5,6 @@ import game.domain.events.models.GameEvent
 
 class DeathGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getMatch().currentLevel!!.eventHandler.onDeathGameEvent()
+        Bomberman.match.currentLevel!!.eventHandler.onDeathGameEvent()
     }
 }

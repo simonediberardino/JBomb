@@ -9,10 +9,7 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityL
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
-import game.utils.dev.Log
 import game.utils.dev.XMLUtils
-import game.utils.time.now
-import java.util.stream.Collectors
 
 open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = entity), IAiEnemyLogic {
     private val CHANGE_DIRECTION_RATE = 10 // percentage
@@ -71,7 +68,7 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
 
     override fun observerUpdate(arg: Any?) {
         super.observerUpdate(arg)
-        val gameState = arg as Boolean
+        val gameState = Bomberman.isInGame
 
         if (!entity.state.canMove || !gameState) {
             return
@@ -82,7 +79,7 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
 
     override fun process() {
         if ("true" == XMLUtils.readConfig("bots_move")) {
-            if (Bomberman.getMatch().isServer) {
+            if (Bomberman.match.isServer) {
                 move(chooseDirection(false))
                 //entity.state.enemyCommandQueue.add(chooseDirection(false).toCommand())
                 //executeCommandQueue()

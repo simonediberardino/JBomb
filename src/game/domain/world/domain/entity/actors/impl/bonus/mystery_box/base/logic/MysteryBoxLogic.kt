@@ -14,7 +14,7 @@ import javax.swing.Timer
 abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLogic(entity = entity) {
     override fun onMouseClickInteraction() {
         if (entity.state.buyer == null)
-            entity.state.buyer = Bomberman.getMatch().player
+            entity.state.buyer = Bomberman.match.player
 
         if (entity.state.status == MysteryBox.Status.OPEN) {
             return
@@ -65,7 +65,7 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
             return
         }
         onPurchaseConfirm()
-        Bomberman.getMatch().currentLevel!!.eventHandler.onPurchaseItem(entity.state.price)
+        Bomberman.match.currentLevel!!.eventHandler.onPurchaseItem(entity.state.price)
         openBox()
     }
 

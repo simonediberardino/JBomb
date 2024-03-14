@@ -18,7 +18,7 @@ class LevelInfoHttpEventProcessor : HttpEvent {
         val levelId = info.getOrTrim("levelId")?.toIntOrNull() ?: return
         val worldId = info.getOrTrim("worldId")?.toIntOrNull() ?: return
 
-        val onlineGameHandler = Bomberman.getMatch().onlineGameHandler as? ClientGameHandler
+        val onlineGameHandler = Bomberman.match.onlineGameHandler as? ClientGameHandler
         onlineGameHandler?.id = id.toLong()
 
         val levelClassOpt = Level.findLevel(worldId, levelId)

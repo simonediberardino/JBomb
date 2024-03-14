@@ -11,7 +11,7 @@ class GamePausedObserver : Observer2 {
         }
 
         if (arg === Command.PAUSE) {
-            Bomberman.getMatch().toggleGameState()
+            Bomberman.match.toggleGameState()
         }
     }
 

@@ -46,7 +46,7 @@ public class LoadingPanel extends PagePanel {
 
     public void initialize() {
         this.text = "";
-        this.textCurrX = (int) Bomberman.getBombermanFrame().getPreferredSize().getWidth();
+        this.textCurrX = (int) Bomberman.bombermanFrame.getPreferredSize().getWidth();
         this.finished = false;
         this.onLoadingCallback = null;
     }

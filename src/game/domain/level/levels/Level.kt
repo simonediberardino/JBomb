@@ -2,7 +2,8 @@ package game.domain.level.levels
 
 import game.Bomberman
 import game.data.data.DataInputOutput
-import game.domain.level.behavior.*
+import game.domain.level.behavior.PlayLevelSoundBehavior
+import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
 import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.filesystem.LevelFileSystemHandler
@@ -37,11 +38,11 @@ abstract class Level {
     abstract fun onStartLevel()
 
     open fun start(field: JPanel) {
-        Bomberman.getMatch().gameState = true
-        this.field = field
+        Bomberman.match.gameState = true
+        this@Level.field = field
         updateLastLevel()
-        PlayLevelSoundTrackBehavior(this).invoke()
-        PlayLevelSoundBehavior(this).invoke()
+        PlayLevelSoundTrackBehavior(this@Level).invoke()
+        PlayLevelSoundBehavior(this@Level).invoke()
         DataInputOutput.getInstance().resetLivesIfNecessary()
         gameHandler.generate()
     }

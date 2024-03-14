@@ -76,7 +76,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         int borderSize = Utility.INSTANCE.px(90);
 
         // get the images of the border panels from the current level of the game
-        Image[] borderImages = Bomberman.getMatch().getCurrentLevel().getGameHandler().getBorderImages();
+        Image[] borderImages = Bomberman.match.getCurrentLevel().getGameHandler().getBorderImages();
 
         // create left panel and set the dimensions and the image
         leftPanel = createLeftPanel(
@@ -183,13 +183,13 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         inventoryPanel.setOpaque(false);
         inventoryPanel.setLayout(new GridLayout(0, 1));
 
-        inventoryPanel.add(Bomberman.getMatch().getInventoryElementControllerPoints().getView());
-        inventoryPanel.add(Bomberman.getMatch().getInventoryElementControllerBombs().getView());
+        inventoryPanel.add(Bomberman.match.getInventoryElementControllerPoints().getView());
+        inventoryPanel.add(Bomberman.match.getInventoryElementControllerBombs().getView());
 
-        if (Bomberman.getMatch().getCurrentLevel().getInfo().isArenaLevel()) {
-            inventoryPanel.add(Bomberman.getMatch().getInventoryElementControllerRounds().getView());
+        if (Bomberman.match.getCurrentLevel().getInfo().isArenaLevel()) {
+            inventoryPanel.add(Bomberman.match.getInventoryElementControllerRounds().getView());
         } else {
-            inventoryPanel.add(Bomberman.getMatch().getInventoryElementControllerLives().getView());
+            inventoryPanel.add(Bomberman.match.getInventoryElementControllerLives().getView());
         }
         leftPanel.setLayout(new GridBagLayout());
         leftPanel.add(inventoryPanel, new GridBagConstraints());

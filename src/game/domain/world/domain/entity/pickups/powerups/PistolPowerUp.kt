@@ -24,11 +24,11 @@ class PistolPowerUp : PowerUp {
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            Bomberman.getMatch().give(player, PistolItem(), true)
+            Bomberman.match.give(player, PistolItem(), true)
         }
 
         override fun cancel(player: BomberEntity) {
-            Bomberman.getMatch().removeItem(player)
+            Bomberman.match.removeItem(player)
         }
 
         override fun canPickUp(bomberEntity: BomberEntity): Boolean = true

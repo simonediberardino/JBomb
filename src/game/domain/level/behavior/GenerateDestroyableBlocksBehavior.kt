@@ -25,7 +25,7 @@ class GenerateDestroyableBlocksBehavior(val level: Level): GameBehavior() {
         var i = 0
 
         val levelInfo = level.info;
-        val player = Bomberman.getMatch().player ?: return
+        val player = Bomberman.match.player ?: return
 
         // Loop until the maximum number of destroyable blocks has been spawned.
         while (i < levelInfo.maxDestroyableBlocks) {

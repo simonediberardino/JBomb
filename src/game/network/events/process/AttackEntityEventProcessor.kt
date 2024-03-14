@@ -14,7 +14,7 @@ class AttackEntityEventProcessor : HttpEvent {
 
         Log.i("AttackEntityEventProcessor received $victimId")
 
-        val entity: Entity = Bomberman.getMatch().getEntityById(victimId) ?: return
+        val entity: Entity = Bomberman.match.getEntityById(victimId) ?: return
         entity.logic.onAttackReceived(damage)
     }
 }

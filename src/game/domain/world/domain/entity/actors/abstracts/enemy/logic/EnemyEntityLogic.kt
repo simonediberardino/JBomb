@@ -16,13 +16,13 @@ abstract class EnemyEntityLogic(override val entity: Enemy) : CharacterEntityLog
 
     override fun onSpawn() {
         super.onSpawn()
-        Bomberman.getMatch().increaseEnemiesAlive()
-        Bomberman.getMatch().gameTickerObservable?.register(entity)
+        Bomberman.match.increaseEnemiesAlive()
+        Bomberman.match.gameTickerObservable?.register(entity)
     }
 
     override fun onDespawn() {
         super.onDespawn()
-        val match = Bomberman.getMatch() ?: return
+        val match = Bomberman.match ?: return
         match.decreaseEnemiesAlive()
         (match.gameTickerObservable ?: return).unregister(entity)
         EnemyDespawnedGameEvent().invoke(null)

@@ -1,10 +1,10 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.domain.world.types.EntityTypes
-import game.domain.world.domain.entity.geo.Coordinates
-import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.events.models.HttpEvent
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.types.EntityTypes
 import game.mappers.toEntity
 import game.network.gamehandler.ClientGameHandler
 import game.presentation.ui.pages.LoadingPanel.LOADING_TIMER
@@ -29,7 +29,7 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         val entity = createEntity(entityId, entityType) ?: return
         entity.info.position = location
 
-        val delay = if (!Bomberman.isInGame()) LOADING_TIMER + 1000 else 0
+        val delay = if (!Bomberman.isInGame) LOADING_TIMER + 1000 else 0
 
         val timer = Timer(delay) { _: ActionEvent? ->
             entity.logic.spawn(forceSpawn = true)
@@ -43,7 +43,7 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
             entityId: Long,
             entityType: Int
     ): Entity? {
-        return if (entityId == (Bomberman.getMatch().onlineGameHandler as ClientGameHandler?)?.id) {
+        return if (entityId == (Bomberman.match.onlineGameHandler as ClientGameHandler?)?.id) {
             EntityTypes.Player.toEntity(entityId)
         } else {
             EntityTypes.values().getOrElse(entityType) { return null }.toEntity(entityId)

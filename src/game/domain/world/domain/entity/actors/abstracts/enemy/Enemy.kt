@@ -17,7 +17,7 @@ abstract class Enemy : Character {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     constructor() : this(null) {
-        if (Bomberman.getMatch().player != null) {
+        if (Bomberman.match.player != null) {
             info.position = Coordinates.randomCoordinatesFromPlayer(Character.DEFAULT.SIZE)
         }
     }

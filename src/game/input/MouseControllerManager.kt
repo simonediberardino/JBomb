@@ -49,7 +49,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
     }
 
     private val movementTask = Runnable {
-        val match = Bomberman.getMatch()
+        val match = Bomberman.match
         val player = match.player
 
         // Check if there is a player and the player is alive
@@ -138,7 +138,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
 
         isMouseClicked = true
 
-        val player = Bomberman.getMatch().player ?: return
+        val player = Bomberman.match.player ?: return
         if (!player.logic.isAlive()) {
             return
         }
@@ -155,7 +155,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
     // Directions are refreshed and will be replaced in task
     private fun onCooldown() {
         for (d in firstDirectionsFromPlayer) {
-            Bomberman.getMatch().controllerManager?.onKeyReleased(d.toCommand())
+            Bomberman.match.controllerManager?.onKeyReleased(d.toCommand())
         }
     }
 

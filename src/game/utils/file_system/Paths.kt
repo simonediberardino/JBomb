@@ -22,12 +22,12 @@ object Paths {
     @JvmStatic
     val currentLevelFolder: String
         get() {
-            val level = Bomberman.getMatch().currentLevel!!
+            val level = Bomberman.match.currentLevel!!
             return "$worldsFolder/${level.info.worldId}/level/${level.info.levelId}"
         }
 
     @JvmStatic
-    val currentWorldCommonFolder: String get() = "$worldsFolder/${Bomberman.getMatch().currentLevel!!.info.worldId}/common"
+    val currentWorldCommonFolder: String get() = "$worldsFolder/${Bomberman.match.currentLevel!!.info.worldId}/common"
 
     @JvmStatic
     val powerUpsFolder: String get() = "$assetsFolder/powerups"

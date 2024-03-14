@@ -6,6 +6,6 @@ import game.domain.events.models.GameEvent
 
 class DefeatGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getMatch().currentLevel!!.eventHandler.onDefeatGameEvent()
+        Bomberman.match.currentLevel!!.eventHandler.onDefeatGameEvent()
     }
 }

@@ -20,8 +20,8 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun onSpawn() {
         super.onSpawn()
         updateBombs()
-        Bomberman.getMatch().gameTickerObservable?.register(entity)
-        Bomberman.getBombermanFrame().matchPanel.refreshPowerUps(entity.state.activePowerUps)
+        Bomberman.match.gameTickerObservable?.register(entity)
+        Bomberman.bombermanFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
     }
 
     override fun onEliminated() {
@@ -30,8 +30,8 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     }
 
     override fun doAttack() {
-        Bomberman.getMatch().useItem(entity)
-        Bomberman.getMatch().updateInventoryWeaponController()
+        Bomberman.match.useItem(entity)
+        Bomberman.match.updateInventoryWeaponController()
     }
 
     // TODO!!!

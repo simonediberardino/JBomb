@@ -17,7 +17,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     override fun onSpawn() {
         super.onSpawn()
         // Give the current entity a BombItem when it is spawned in the match.
-        Bomberman.getMatch().give(entity, BombItem())
+        Bomberman.match.give(entity, BombItem())
     }
 
     override fun onMove(coordinates: Coordinates) {
@@ -31,7 +31,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     }
 
     // Calculates the minimum distance to any bomb from the current entity. If there are no bombs, returns 0.0.
-    private val minDistanceToBomb: Double = Bomberman.getMatch().bombs.minOfOrNull {
+    private val minDistanceToBomb: Double = Bomberman.match.bombs.minOfOrNull {
         bomb -> bomb.info.position.distanceTo(entity.info.position)
     } ?: 0.0
 
@@ -80,7 +80,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     }
 
     override fun getMaxBombs(): Int {
-        return Bomberman.getMatch().currentLevel?.info?.maxBombs ?: 0
+        return Bomberman.match.currentLevel?.info?.maxBombs ?: 0
     }
 
     override fun executeCommandQueue() {}

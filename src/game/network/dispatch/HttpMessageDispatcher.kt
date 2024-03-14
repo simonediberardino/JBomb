@@ -63,18 +63,18 @@ class HttpMessageDispatcher private constructor() {
               "message": "dispatch",
               "data": "$data",
               "actor": "$httpActor",
-              "server": ${Bomberman.getMatch().isServer},
+              "server": ${Bomberman.match.isServer},
               "receiverId": ${receiverId},
               "ignore:" $ignore,"
-              "client": ${Bomberman.getMatch().isClient}
+              "client": ${Bomberman.match.isClient}
             }
         """)
 
-        if (httpActor == HttpActor.SERVER && Bomberman.getMatch().isServer) {
-            Bomberman.getMatch().onlineGameHandler?.sendData(data, receiverId, ignore)
+        if (httpActor == HttpActor.SERVER && Bomberman.match.isServer) {
+            Bomberman.match.onlineGameHandler?.sendData(data, receiverId, ignore)
             return true
-        } else if (httpActor == HttpActor.CLIENT && Bomberman.getMatch().isClient) {
-            Bomberman.getMatch().onlineGameHandler?.sendData(data, receiverId, ignore)
+        } else if (httpActor == HttpActor.CLIENT && Bomberman.match.isClient) {
+            Bomberman.match.onlineGameHandler?.sendData(data, receiverId, ignore)
             return true
         }
 

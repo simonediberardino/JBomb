@@ -29,7 +29,7 @@ abstract class PowerUpLogic(
 
         doApply(player)
 
-        val matchPanel = Bomberman.getBombermanFrame().matchPanel
+        val matchPanel = Bomberman.bombermanFrame.matchPanel
         AudioManager.getInstance().play(SoundModel.POWERUP)
 
         player.state.activePowerUps.add(entity.javaClass)
@@ -45,7 +45,7 @@ abstract class PowerUpLogic(
 
         val task = object : TimerTask() {
             override fun run() {
-                val match = Bomberman.getMatch() ?: return
+                val match = Bomberman.match ?: return
                 if (!match.gameState) return
 
                 player.state.activePowerUps.remove(entity.javaClass)

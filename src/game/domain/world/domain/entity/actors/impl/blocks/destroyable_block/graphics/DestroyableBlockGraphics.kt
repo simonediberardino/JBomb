@@ -9,7 +9,7 @@ class DestroyableBlockGraphics : DefaultEntityGraphicsBehavior() {
     override fun getImage(entity: Entity): BufferedImage? {
         return loadAndSetImage(
                 entity = entity,
-                imagePath = Bomberman.getMatch().currentLevel!!.info.destroyableBlockImagePath
+                imagePath = Bomberman.match.currentLevel!!.info.destroyableBlockImagePath
         )
     }
 }

@@ -7,8 +7,8 @@ import game.domain.world.domain.entity.geo.Coordinates
 class GeneratePlayerBehavior(val coordinates: Coordinates): GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
-            Bomberman.getMatch().player = Player(coordinates)
-            Bomberman.getMatch().player!!.logic.spawn(forceSpawn = false, forceCentering = false)
+            Bomberman.match.player = Player(coordinates)
+            Bomberman.match.player!!.logic.spawn(forceSpawn = false, forceCentering = false)
         }
     }
 

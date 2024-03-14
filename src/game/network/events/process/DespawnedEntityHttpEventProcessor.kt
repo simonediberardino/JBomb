@@ -13,7 +13,7 @@ class DespawnedEntityHttpEventProcessor : HttpEvent {
 
         Log.i("DespawnedEntityHttpEventProcessor received $entityId")
 
-        val entity: Entity = Bomberman.getMatch().getEntityById(entityId) ?: return
+        val entity: Entity = Bomberman.match.getEntityById(entityId) ?: return
         entity.logic.despawn()
     }
 }

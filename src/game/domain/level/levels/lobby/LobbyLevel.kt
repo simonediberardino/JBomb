@@ -11,8 +11,8 @@ abstract class LobbyLevel : StoryLevel() {
         get() = object : DefaultGameHandler(this) {
             override fun generate() {
                 generateLevel()
-                Bomberman.getMatch().player = Player(info.playerSpawnCoordinates)
-                Bomberman.getMatch().player!!.logic.spawn(forceSpawn = false, forceCentering = false)
+                Bomberman.match.player = Player(info.playerSpawnCoordinates)
+                Bomberman.match.player!!.logic.spawn(forceSpawn = false, forceCentering = false)
             }
         }
 

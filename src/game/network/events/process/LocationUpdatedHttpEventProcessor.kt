@@ -19,7 +19,7 @@ class LocationUpdatedHttpEventProcessor : HttpEvent {
 
         Log.i("LocationUpdatedHttpEventProcessor received $entityId, $locationString")
 
-        val entity: Character = Bomberman.getMatch().getEntityById(entityId) as Character? ?: return
+        val entity: Character = Bomberman.match.getEntityById(entityId) as Character? ?: return
         entity.info.position = location
         entity.logic.updateMovementDirection(Direction.values()[direction])
     }

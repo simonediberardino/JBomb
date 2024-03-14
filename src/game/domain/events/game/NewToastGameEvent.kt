@@ -7,7 +7,7 @@ import game.audio.SoundModel
 
 class NewToastGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getBombermanFrame().parentPanel.repaint()
+        Bomberman.bombermanFrame.parentPanel.repaint()
         if (arg as Boolean) {
             AudioManager.getInstance().play(SoundModel.BONUS_ALERT)
         }

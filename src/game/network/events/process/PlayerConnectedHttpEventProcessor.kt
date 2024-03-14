@@ -14,7 +14,7 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         val clientId = info.getOrTrim("id")?.toLong() ?: return
         Log.i("PlayerConnectedHttpEventProcessor: $clientId")
 
-        val match = Bomberman.getMatch()
+        val match = Bomberman.match
         val coordinates = (match.currentLevel ?: return).info.playerSpawnCoordinates
 
         match.getEntities().forEach { e ->

@@ -47,7 +47,7 @@ object Utility {
         get() = Toolkit.getDefaultToolkit().screenSize
 
     fun px(dim: Double): Double {
-        val frame = Bomberman.getBombermanFrame()
+        val frame = Bomberman.bombermanFrame
         val screenSize = if (frame == null ) Toolkit.getDefaultToolkit().screenSize else frame.preferredSize
         return dim * (screenSize.getWidth() / Dimensions.DEFAULT_SCREEN_SIZE.getWidth())
     }

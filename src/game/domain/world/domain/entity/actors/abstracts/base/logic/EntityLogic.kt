@@ -21,7 +21,7 @@ abstract class EntityLogic(
     override fun despawn() {
         entity.state.isSpawned = false
         onDespawn()
-        Bomberman.getMatch().removeEntity(entity)
+        Bomberman.match.removeEntity(entity)
     }
 
     override fun spawn() {
@@ -43,7 +43,7 @@ abstract class EntityLogic(
 
         if (forceSpawn || !Coordinates.isBlockOccupied(entity.info.position)) {
             entity.state.isSpawned = true
-            Bomberman.getMatch().addEntity(entity)
+            Bomberman.match.addEntity(entity)
             onSpawn()
         }
     }
@@ -77,7 +77,7 @@ abstract class EntityLogic(
 
 
     override fun mouseInteractions() {
-        val mouseControllerManager = Bomberman.getMatch().mouseControllerManager
+        val mouseControllerManager = Bomberman.match.mouseControllerManager
         mouseControllerManager.entity ?: return
 
         if (canEntityInteractWithMouseClick()) {
@@ -101,7 +101,7 @@ abstract class EntityLogic(
     }
 
     override fun canEntityInteractWithMouseClick(): Boolean {
-        val match = Bomberman.getMatch()
+        val match = Bomberman.match
         val player = match.player ?: return false
 
         // Check if the player can interact with mouse click and if the mouse is being clicked
@@ -109,7 +109,7 @@ abstract class EntityLogic(
     }
 
     override fun canEntityInteractWithMouseDrag(): Boolean {
-        val match = Bomberman.getMatch()
+        val match = Bomberman.match
         val player = match.player ?: return false
 
         // Check if the player can interact with mouse drag and if the mouse is being dragged
@@ -118,7 +118,7 @@ abstract class EntityLogic(
     }
 
     override fun onMouseClickInteraction() {
-        val match = Bomberman.getMatch()
+        val match = Bomberman.match
         val player = match.player
 
         val centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player))
@@ -129,7 +129,7 @@ abstract class EntityLogic(
     }
 
     override fun onMouseDragInteraction() {
-        val match = Bomberman.getMatch()
+        val match = Bomberman.match
         val mouseControllerManager = match.mouseControllerManager
         val player: Entity? = match.player
 

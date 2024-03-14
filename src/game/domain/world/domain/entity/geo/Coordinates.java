@@ -47,7 +47,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public boolean validate(int size) {
-        Dimension gamePanelDimensions = Bomberman.getBombermanFrame().getPitchPanel().getPanelDimensions();
+        Dimension gamePanelDimensions = Bomberman.bombermanFrame.getPitchPanel().getPanelDimensions();
 
 
         ValueRange rangeY = ValueRange.of(0, gamePanelDimensions.height - size);
@@ -57,7 +57,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static Coordinates roundedRandomCoords(Coordinates offset) {
-        Dimension dimensions = Bomberman.getBombermanFrame().getPitchPanel().getPanelDimensions();
+        Dimension dimensions = Bomberman.bombermanFrame.getPitchPanel().getPanelDimensions();
 
         return roundCoordinates(new Coordinates(((int) (Math.random() * dimensions.getWidth())), ((int) (Math.random() * dimensions.getHeight()))), offset);
     }
@@ -75,7 +75,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static Coordinates generateCoordinatesAwayFromPlayer() {
-        return generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getInfo().getPosition(), GRID_SIZE * 3);
+        return generateCoordinatesAwayFrom(Bomberman.match.getPlayer().getInfo().getPosition(), GRID_SIZE * 3);
     }
 
     public static Coordinates generateCoordinatesAwayFrom(Coordinates other, int offset) {
@@ -92,7 +92,7 @@ public class Coordinates implements Comparable<Coordinates> {
     public static Coordinates randomCoordinatesFromPlayer(int entitySize, int distance) {
         Coordinates c;
         while (true) {
-            c = Coordinates.generateCoordinatesAwayFrom(Bomberman.getMatch().getPlayer().getInfo().getPosition(), distance);
+            c = Coordinates.generateCoordinatesAwayFrom(Bomberman.match.getPlayer().getInfo().getPosition(), distance);
             if (c.validate(entitySize)) return c;
         }
     }
@@ -241,7 +241,7 @@ public class Coordinates implements Comparable<Coordinates> {
     public static List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords) {
         List<Entity> entityLinkedList = new LinkedList<>();
         // Check for each entity if it occupies the specified coordinates
-        Collection<Entity> entities = Bomberman.getMatch().getEntities();
+        Collection<Entity> entities = Bomberman.match.getEntities();
 
         entities.parallelStream().forEach(e -> {
             for (Coordinates coord : desiredCoords) {
@@ -340,7 +340,7 @@ public class Coordinates implements Comparable<Coordinates> {
 
         ArrayList<Coordinates> arrayCoordinates = getAllCoordinates(Coordinates.roundCoordinates(nextOccupiedCoords), GRID_SIZE);
         // Get all the blocks and entities in the game
-        var entities = Bomberman.getMatch().getEntities();
+        var entities = Bomberman.match.getEntities();
         return entities.parallelStream().filter(e -> arrayCoordinates.stream().anyMatch(coords -> doesCollideWith(coords, e))).collect(Collectors.toList());
     }
 

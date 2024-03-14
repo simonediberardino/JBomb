@@ -14,7 +14,7 @@ open class DefaultLevelEventHandler : LevelEventHandler {
     }
 
     override fun onEnemyDespawned() {
-        if (Bomberman.getMatch().enemiesAlive == 0) {
+        if (Bomberman.match.enemiesAlive == 0) {
             AllEnemiesEliminatedGameEvent().invoke(null)
         }
     }
@@ -29,22 +29,22 @@ open class DefaultLevelEventHandler : LevelEventHandler {
 
     override fun onScoreGameEvent(arg: Int) {
         DataInputOutput.getInstance().increaseScore(arg)
-        Bomberman.getMatch().inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
+        Bomberman.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
 
     override fun onPurchaseItem(price: Int) {
         AudioManager.getInstance().play(SoundModel.BONUS_ALERT)
         DataInputOutput.getInstance().decreaseScore(price)
-        Bomberman.getMatch().inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
+        Bomberman.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
 
     override fun onUpdateCurrentAvailableBombsEvent(arg: Int) {
-        Bomberman.getMatch().player?.state?.currentBombs = arg
+        Bomberman.match.player?.state?.currentBombs = arg
     }
 
     override fun onUpdateMaxBombsGameEvent(arg: Int) {
         DataInputOutput.getInstance().increaseObtainedBombs()
-        Bomberman.getMatch().player?.state?.maxBombs = arg
+        Bomberman.match.player?.state?.maxBombs = arg
         //UpdateCurrentAvailableItemsEvent().invoke(arg)
     }
 

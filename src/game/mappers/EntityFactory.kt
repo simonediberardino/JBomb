@@ -66,12 +66,12 @@ class EntityFactory {
     }
 
     private fun createPlayerEntity(id: Long): Entity {
-        val isServer = Bomberman.getMatch().isServer
-        val isClient = Bomberman.getMatch().isClient
+        val isServer = Bomberman.match.isServer
+        val isClient = Bomberman.match.isClient
 
         return when {
-            isServer && Bomberman.getMatch().player == null -> Player(id)
-            isClient && id == (Bomberman.getMatch().onlineGameHandler as ClientGameHandler?)?.id -> Player(id)
+            isServer && Bomberman.match.player == null -> Player(id)
+            isClient && id == (Bomberman.match.onlineGameHandler as ClientGameHandler?)?.id -> Player(id)
             else -> RemotePlayer(id)
         }
     }

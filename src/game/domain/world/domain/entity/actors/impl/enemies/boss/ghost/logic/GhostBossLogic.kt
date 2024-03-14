@@ -1,16 +1,16 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.logic
 
 import game.Bomberman
-import game.domain.events.models.RunnablePar
 import game.audio.AudioManager
 import game.audio.SoundModel
-import game.presentation.ui.panels.game.PitchPanel
+import game.domain.events.models.RunnablePar
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.logic.BossEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.GhostEnemy
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
 import game.utils.time.now
 import game.utils.ui.GradientCallbackHandler
@@ -103,7 +103,7 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
         entity.state.lastGhostSpawnTime = now()
 
         for (i in 0 until n) {
-            if (Bomberman.getMatch().enemiesAlive >= MAX_GHOSTS_ALIVE) return
+            if (Bomberman.match.enemiesAlive >= MAX_GHOSTS_ALIVE) return
             val ghostEnemy = GhostEnemy()
             val randomCoordinates = Coordinates.randomCoordinatesFromPlayer(ghostEnemy.state.size)
             ghostEnemy.logic.move(randomCoordinates)
@@ -163,13 +163,13 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
                         1, 3 -> PitchPanel.turnOnLights()
                     }
                     timer.setDelay(rand)
-                    if (count >= 5 || Bomberman.isGameEnded()) {
+                    if (count >= 5 || Bomberman.isGameEnded) {
                         PitchPanel.turnOnLights()
                         timer.stop()
                     }
                     count++
                 }
-                timer.setInitialDelay(0)
+                timer.initialDelay = 0
                 timer.start()
             }
         }

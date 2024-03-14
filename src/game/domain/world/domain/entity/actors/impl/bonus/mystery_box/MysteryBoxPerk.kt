@@ -12,7 +12,7 @@ import java.lang.Exception
 
 class MysteryBoxPerk(level: Level, entity: Entity?) : MysteryBox(level, entity) {
     // TODO Refactor
-    constructor(id: Long) : this(Bomberman.getMatch().currentLevel!!, null) {
+    constructor(id: Long) : this(Bomberman.match.currentLevel!!, null) {
         this.info.id = id
     }
 
@@ -25,7 +25,7 @@ class MysteryBoxPerk(level: Level, entity: Entity?) : MysteryBox(level, entity) 
                 throw RuntimeException(e)
             }
 
-            powerUpInstance.logic.apply(Bomberman.getMatch().player ?: return)
+            powerUpInstance.logic.apply(Bomberman.match.player ?: return)
         }
     }
 

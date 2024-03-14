@@ -7,9 +7,9 @@ abstract class GameBehavior {
     abstract fun clientBehavior(): (() -> Unit)
 
     fun invoke() {
-        if (Bomberman.getMatch().isServer) {
+        if (Bomberman.match.isServer) {
             hostBehavior().invoke()
-        } else if (Bomberman.getMatch().isClient) {
+        } else if (Bomberman.match.isClient) {
             clientBehavior().invoke()
         }
     }

@@ -2,7 +2,6 @@ package game.domain.world.domain.entity.actors.impl.enemies.boss.clown
 
 import game.Bomberman
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
@@ -12,7 +11,7 @@ import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.image.Clow
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.logic.ClownLogic
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.properties.ClownProperties
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.properties.ClownState
-import game.domain.world.domain.entity.actors.impl.models.*
+import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
@@ -36,9 +35,9 @@ class Clown : Boss, Explosive {
     constructor() : super(null) {
         state.hasHat = true
 
-        if (Bomberman.getMatch().isServer) {
+        if (Bomberman.match.isServer) {
             val panelSize = Bomberman
-                    .getBombermanFrame()
+                    .bombermanFrame
                     .pitchPanel
                     .preferredSize
 

@@ -29,13 +29,13 @@ class EndLevelPortal : Portal {
 
     override val logic: PortalLogic = object : PortalLogic(entity = this) {
         override fun canPickUp(bomberEntity: BomberEntity): Boolean {
-            return Bomberman.getMatch().enemiesAlive <= 0
+            return Bomberman.match.enemiesAlive <= 0
         }
 
         override fun doApply(player: BomberEntity) {
             super.doApply(player)
 
-            val match = Bomberman.getMatch()
+            val match = Bomberman.match
             val currentLevel = match.currentLevel ?: return
 
             currentLevel.endLevel()

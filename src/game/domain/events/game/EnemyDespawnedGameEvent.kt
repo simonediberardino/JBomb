@@ -5,8 +5,8 @@ import game.domain.events.models.GameEvent
 
 class EnemyDespawnedGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        if (!Bomberman.getMatch().gameState)
+        if (!Bomberman.match.gameState)
             return
-        Bomberman.getMatch().currentLevel!!.eventHandler.onEnemyDespawned()
+        Bomberman.match.currentLevel!!.eventHandler.onEnemyDespawned()
     }
 }

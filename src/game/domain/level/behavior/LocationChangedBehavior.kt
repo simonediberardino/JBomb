@@ -15,12 +15,12 @@ class LocationChangedBehavior(private val entityNetwork: EntityNetwork) : GameBe
 
     override fun clientBehavior(): () -> Unit {
         return {
-            if (entityNetwork.entityId == (Bomberman.getMatch().onlineGameHandler as ClientGameHandler).id) {
+            if (entityNetwork.entityId == (Bomberman.match.onlineGameHandler as ClientGameHandler).id) {
                 // If player is not stored yet
-                if (Bomberman.getMatch().player == null) {
-                    val player = Bomberman.getMatch().getEntityById(entityNetwork.entityId) as Player?
+                if (Bomberman.match.player == null) {
+                    val player = Bomberman.match.getEntityById(entityNetwork.entityId) as Player?
                     if (player != null) {
-                        Bomberman.getMatch().player = player
+                        Bomberman.match.player = player
                     }
                 }
 

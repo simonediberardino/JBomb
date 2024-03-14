@@ -20,7 +20,7 @@ class ControllerManager : Observable2(), KeyListener {
     private val commandEventsTime: MutableMap<Command?, Long> = mutableMapOf()
     var player: Player? = null
         get() {
-            return Bomberman.getMatch().player
+            return Bomberman.match.player
         }
 
     // Key-Command mapping
@@ -55,7 +55,7 @@ class ControllerManager : Observable2(), KeyListener {
     private fun pressKey(action: Command) {
         // if a button is pressed, mouse movement gets interrupted
         if (action.isMovementKey()) {
-            Bomberman.getMatch().mouseControllerManager.stopMovementTask()
+            Bomberman.match.mouseControllerManager.stopMovementTask()
         }
         onKeyPressed(action)
     }

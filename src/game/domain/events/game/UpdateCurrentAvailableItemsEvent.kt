@@ -7,9 +7,9 @@ import game.network.events.forward.UpdateInfoEventForwarder
 
 class UpdateCurrentAvailableItemsEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getMatch().player ?: return
-        Bomberman.getMatch().currentLevel!!.eventHandler.onUpdateCurrentAvailableBombsEvent(arg as Int)
-        Bomberman.getMatch().updateInventoryWeaponController()
-        UpdateInfoEventForwarder().invoke(Bomberman.getMatch().player!!.toEntityNetwork())
+        Bomberman.match.player ?: return
+        Bomberman.match.currentLevel!!.eventHandler.onUpdateCurrentAvailableBombsEvent(arg as Int)
+        Bomberman.match.updateInventoryWeaponController()
+        UpdateInfoEventForwarder().invoke(Bomberman.match.player!!.toEntityNetwork())
     }
 }

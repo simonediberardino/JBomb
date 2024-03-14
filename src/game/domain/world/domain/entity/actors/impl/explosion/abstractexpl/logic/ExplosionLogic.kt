@@ -7,7 +7,6 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
-import java.lang.Exception
 
 class ExplosionLogic(override val entity: AbstractExplosion) : MovingEntityLogic(entity), IExplosionLogic {
     override fun onAttackReceived(damage: Int) {}
@@ -55,9 +54,7 @@ class ExplosionLogic(override val entity: AbstractExplosion) : MovingEntityLogic
         }
     }
 
-    override fun isObstacle(e: Entity?): Boolean {
-        return e == null || entity.state.explosive.isObstacleOfExplosion(e)
-    }
+    override fun isObstacle(e: Entity?): Boolean = e == null || entity.state.explosive.isObstacleOfExplosion(e)
 
     override fun onMove(coordinates: Coordinates) {}
 
@@ -65,7 +62,7 @@ class ExplosionLogic(override val entity: AbstractExplosion) : MovingEntityLogic
         // On first (center) explosion
         if (entity.state.distanceFromExplosive == 0) {
             val desiredCoords = Coordinates.getAllCoordinates(entity.info.position, entity.state.size)
-            Bomberman.getMatch().getEntities()
+            Bomberman.match.getEntities()
                     .parallelStream()
                     .filter { e: Entity -> desiredCoords.any { coord: Coordinates? -> Coordinates.doesCollideWith(coord, e) } }
                     .forEach { e: Entity -> entity.logic.interact(e) }

@@ -44,26 +44,26 @@ public class PitchPanel extends JPanel implements Observer2 {
         setMinimumSize(DIMENSION);
 
         // Set this GamePanel as observer for the game ticker observable
-        Bomberman.getMatch().getGameTickerObservable().unregisterAll();
-        Bomberman.getMatch().getGameTickerObservable().register(this);
+        Bomberman.match.getGameTickerObservable().unregisterAll();
+        Bomberman.match.getGameTickerObservable().register(this);
 
         repaint();
     }
 
     public static void turnOffLights() {
-        BomberManMatch match = Bomberman.getMatch();
+        BomberManMatch match = Bomberman.match;
         if (match == null || !match.getGameState()) return;
 
-        PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
+        PitchPanel pitchPanel = Bomberman.bombermanFrame.getPitchPanel();
         AudioManager.getInstance().play(LIGHT_GLITCH);
 
         pitchPanel.addGraphicsCallback(
                 GhostBoss.class.getSimpleName(), new RunnablePar() {
                     @Override
                     public <T> Object execute(T par) {
-                        Graphics2D g2d = Bomberman.getBombermanFrame().getPitchPanel().g2d;
+                        Graphics2D g2d = Bomberman.bombermanFrame.getPitchPanel().g2d;
                         g2d.setColor(new Color(0, 0, 0, 0.9f));
-                        g2d.fillRect(0, 0, Bomberman.getBombermanFrame().getHeight(), Bomberman.getBombermanFrame().getWidth());
+                        g2d.fillRect(0, 0, Bomberman.bombermanFrame.getHeight(), Bomberman.bombermanFrame.getWidth());
                         return null;
                     }
                 }
@@ -71,11 +71,11 @@ public class PitchPanel extends JPanel implements Observer2 {
     }
 
     public static void turnOnLights() {
-        BomberManMatch match = Bomberman.getMatch();
+        BomberManMatch match = Bomberman.match;
         if (match == null || !match.getGameState()) return;
 
         AudioManager.getInstance().play(LIGHT_GLITCH);
-        PitchPanel pitchPanel = Bomberman.getBombermanFrame().getPitchPanel();
+        PitchPanel pitchPanel = Bomberman.bombermanFrame.getPitchPanel();
         pitchPanel.removeGraphicsCallback(GhostBoss.class.getSimpleName());
     }
 
@@ -92,10 +92,10 @@ public class PitchPanel extends JPanel implements Observer2 {
         super.paint(g);
         this.g2d = (Graphics2D) g;
 
-        Image img = Utility.INSTANCE.loadImage(Bomberman.getMatch().getCurrentLevel().getInfo().getPitchImagePath());
+        Image img = Utility.INSTANCE.loadImage(Bomberman.match.getCurrentLevel().getInfo().getPitchImagePath());
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(), 1), 0, 0, null);
 
-        List<? extends Entity> setEntities = Bomberman.getMatch().getEntities();
+        List<? extends Entity> setEntities = Bomberman.match.getEntities();
 
         setEntities.forEach(e -> {
             try {

@@ -1,11 +1,10 @@
 package game.domain.world.domain.entity.actors.impl.placeable.bomb.state
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.actors.impl.placeable.base.state.PlaceableEntityState
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
-import game.presentation.ui.panels.game.PitchPanel
-import java.util.concurrent.atomic.AtomicReference
 
 class BombState(
         entity: Entity,
@@ -16,5 +15,6 @@ class BombState(
         size: Int = Bomb.DEFAULT.SIZE,
         alpha: Float = Entity.DEFAULT.ALPHA,
         interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
-        lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE
+        lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
+        override var caller: Character
 ) : PlaceableEntityState(entity, isSpawned, isImmune, state, isInvisible, size, alpha, interactionEntities, lastImageUpdate) 

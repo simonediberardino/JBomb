@@ -146,7 +146,7 @@ public class DataInputOutput {
 
     private void setLives(int nextLives) {
         try {
-            Bomberman.getMatch().getInventoryElementControllerLives().setNumItems(nextLives);
+            Bomberman.match.getInventoryElementControllerLives().setNumItems(nextLives);
         } catch (UninitializedPropertyAccessException ignored) {}
         playerDataObject.lives = nextLives;
         updateStoredPlayerData();

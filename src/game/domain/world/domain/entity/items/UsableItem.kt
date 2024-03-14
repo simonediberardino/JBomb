@@ -12,10 +12,10 @@ abstract class UsableItem {
     abstract val type: ItemsTypes
 
     fun give() {
-        Bomberman.getMatch().give(owner, this)
+        Bomberman.match.give(owner, this)
     }
 
     fun remove() {
-        Bomberman.getMatch().removeItem(owner)
+        Bomberman.match.removeItem(owner)
     }
 }

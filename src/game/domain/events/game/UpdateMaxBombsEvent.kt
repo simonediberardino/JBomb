@@ -6,6 +6,6 @@ import game.domain.events.models.GameEvent
 
 class UpdateMaxBombsEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.getMatch().currentLevel!!.eventHandler.onUpdateMaxBombsGameEvent(arg as Int)
+        Bomberman.match.currentLevel!!.eventHandler.onUpdateMaxBombsGameEvent(arg as Int)
     }
 }

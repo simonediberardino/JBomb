@@ -2,14 +2,11 @@ package game.domain.world.domain.entity.actors.impl.placeable.base.state
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
-import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.BlockEntityLogic
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.properties.BlockEntityState
-import game.domain.world.domain.entity.actors.impl.blocks.movable_block.MovableBlock
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.presentation.ui.panels.game.PitchPanel
-import java.util.concurrent.atomic.AtomicReference
 
-open class PlaceableEntityState(
+abstract class PlaceableEntityState(
         entity: Entity,
         isSpawned: Boolean = Entity.DEFAULT.SPAWNED,
         isImmune: Boolean = Entity.DEFAULT.IMMUNE,
@@ -28,5 +25,5 @@ open class PlaceableEntityState(
         alpha = alpha,
         interactionEntities = interactionEntities,
         lastImageUpdate = lastImageUpdate) {
-    open var caller: Character? = null
+    abstract var caller: Character
 }

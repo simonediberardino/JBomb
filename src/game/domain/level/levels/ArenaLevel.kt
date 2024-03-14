@@ -52,7 +52,7 @@ abstract class ArenaLevel : Level() {
                     super.onRoundPassedGameEvent()
                 }
                 ToastHandler.getInstance().show(Localization.get(Localization.STARTING_ROUND).replace("%round%", currentRound.get().toString()))
-                Bomberman.getMatch().inventoryElementControllerRounds?.setNumItems(currentRound.get())
+                Bomberman.match.inventoryElementControllerRounds?.setNumItems(currentRound.get())
             }
 
             override fun onDeathGameEvent() {
@@ -71,7 +71,7 @@ abstract class ArenaLevel : Level() {
 
             override fun onAllEnemiesEliminated() {
                 val t = Timer(ARENA_ROUND_LOADING_TIMER) { _: ActionEvent? ->
-                    val player: Entity = Bomberman.getMatch().player ?: return@Timer
+                    val player: Entity = Bomberman.match.player ?: return@Timer
                     if (player.state.isSpawned)
                         gameHandler.startLevel()
                 }

@@ -181,7 +181,7 @@ abstract class CharacterEntityLogic(
     }
 
     override fun handleCommand(command: Command) {
-        if (!Bomberman.getMatch().gameState) {
+        if (!Bomberman.match.gameState) {
             return
         }
 
@@ -221,7 +221,7 @@ abstract class CharacterEntityLogic(
     override fun overpassBlock(entitiesOpposite1: List<Entity>, entitiesOpposite2: List<Entity>, direction1: Direction, direction2: Direction) {
         val oppositeCommand1 = direction2.toCommand()
         val oppositeCommand2 = direction1.toCommand()
-        val controllerManager = Bomberman.getMatch().controllerManager ?: return
+        val controllerManager = Bomberman.match.controllerManager ?: return
 
         val doubleClick1 = controllerManager.isCommandPressed(oppositeCommand1)
         val doubleClick2 = controllerManager.isCommandPressed(oppositeCommand2)

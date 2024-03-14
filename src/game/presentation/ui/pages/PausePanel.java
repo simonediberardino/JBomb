@@ -38,7 +38,7 @@ public class PausePanel extends BaseMenu {
 
     private JButton createResumeButton() {
         JButton profileButton = new YellowButton(get(RESUME_GAME));
-        profileButton.addActionListener(l -> Bomberman.getMatch().toggleGameState());
+        profileButton.addActionListener(l -> Bomberman.match.toggleGameState());
         return profileButton;
     }
 

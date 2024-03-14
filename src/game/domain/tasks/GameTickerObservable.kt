@@ -1,6 +1,5 @@
 package game.domain.tasks
 
-import game.Bomberman
 import game.domain.tasks.GameTickerObserver.Companion.DEFAULT_OBSERVER_UPDATE
 import game.domain.tasks.observer.Observable2
 
@@ -21,7 +20,7 @@ class GameTickerObservable : Observable2() {
         synchronized(observers) {
             for (observer in observers.toTypedArray()) {
                 if (observer.isValid()) {
-                    notify(observer, Bomberman.getMatch().gameState)
+                    notify(observer)
                 }
             }
         }

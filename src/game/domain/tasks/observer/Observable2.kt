@@ -23,7 +23,7 @@ open class Observable2 {
         observers.clear()
     }
 
-    fun notify(o: Observer2, arg: Any?) {
+    fun notify(o: Observer2, arg: Any? = null) {
         o.update(arg)
     }
 }

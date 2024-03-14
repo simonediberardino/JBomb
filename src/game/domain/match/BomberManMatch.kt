@@ -25,9 +25,17 @@ import game.presentation.ui.viewcontrollers.*
 import game.utils.Utility.timePassed
 import game.utils.dev.Log
 import game.utils.time.now
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import java.util.*
 
-class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGameHandler?) {
+class BomberManMatch(
+        var currentLevel: Level,
+        val onlineGameHandler: OnlineGameHandler?
+) {
+    val scope = CoroutineScope(Dispatchers.IO)
+
     // Timestamp of the last game pause state
     private var lastGamePauseStateTime = now()
 
@@ -69,12 +77,9 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
     var enemiesAlive = 0
         private set
 
-    private constructor() : this(null, null)
-
     init {
         setupViewControllers()
         setDefaultCommandDelay()
-        Log.i("${javaClass.simpleName}, onlineGameHandler: $onlineGameHandler, ${onlineGameHandler?.isRunning()}")
 
         if (onlineGameHandler?.isRunning() != true) {
             onlineGameHandler?.onStart()
@@ -90,7 +95,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         setupBombsController()
 
         // Set up rounds or lives controller based on the game level type
-        if (currentLevel!!.info.isArenaLevel) {
+        if (currentLevel.info.isArenaLevel) {
             setupRoundsController()
         } else {
             setupLivesController()
@@ -319,6 +324,9 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         // Pause the game to ensure safe destruction
         pauseGame()
 
+        // Cancel job
+        cancelCoroutineJob()
+
         // Destroy all _entities in the game
         destroyEntities()
 
@@ -341,6 +349,10 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
         performGarbageCollection()
     }
 
+    private fun cancelCoroutineJob() {
+        scope.cancel()
+    }
+
     /**
      * Destroys all _entities in the game by despawning them.
      */
@@ -352,14 +364,14 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      * Clears the graphics callback in the Bomberman frame's pitch panel.
      */
     private fun clearGraphicsCallback() {
-        Bomberman.getBombermanFrame().pitchPanel.clearGraphicsCallback()
+        Bomberman.bombermanFrame.pitchPanel.clearGraphicsCallback()
     }
 
     /**
      * Stops the sound associated with the current game level.
      */
     private fun stopLevelSound() {
-        currentLevel?.currentLevelSound?.stop()
+        currentLevel.currentLevelSound?.stop()
     }
 
     /**
@@ -367,7 +379,6 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
      */
     private fun resetState() {
         player = null
-        currentLevel = null
         enemiesAlive = 0
         _entitiesList.clear()
     }

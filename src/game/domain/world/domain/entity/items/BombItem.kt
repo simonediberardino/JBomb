@@ -5,6 +5,7 @@ import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.network.events.forward.UpdateInfoEventForwarder
 import game.utils.Utility.timePassed
+import game.utils.dev.Log
 import game.utils.file_system.Paths.entitiesFolder
 import game.utils.time.now
 
@@ -12,7 +13,7 @@ class BombItem : UsableItem() {
     private lateinit var bombEntity: Bomb
 
     override fun use() {
-        val match = Bomberman.getMatch() ?: return
+        val match = Bomberman.match ?: return
 
         val isLocalPlayer = owner == match.player
         val isBombPlacementValid = isLocalPlayer &&
@@ -33,6 +34,7 @@ class BombItem : UsableItem() {
 
         bombEntity = Bomb(owner)
 
+        Log.e("Confirmation caller ${bombEntity.state.caller}")
         match.addBomb(bombEntity)
         UpdateInfoEventForwarder().invoke((bombEntity as game.domain.world.domain.entity.actors.abstracts.base.Entity).toEntityNetwork())
 
