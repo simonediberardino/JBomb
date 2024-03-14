@@ -14,7 +14,7 @@ fun EntityTypes.toEntity(id: Long) : Entity? {
     return EntityFactory.instance.toEntity(this, id)
 }
 
-fun Entity.toEntityNetwork(): EntityNetwork {
+fun Entity.dtoToEntityNetwork(): EntityNetwork {
     return EntityNetwork(
             info.id,
             info.position,
@@ -22,7 +22,7 @@ fun Entity.toEntityNetwork(): EntityNetwork {
     )
 }
 
-fun BomberEntity.toEntityNetwork(): BomberEntityNetwork {
+fun BomberEntity.dtoToEntityNetwork(): BomberEntityNetwork {
     return BomberEntityNetwork(
             entityId = info.id,
             entityLocation = info.position,
@@ -33,7 +33,7 @@ fun BomberEntity.toEntityNetwork(): BomberEntityNetwork {
     )
 }
 
-fun Character.toEntityNetwork(): CharacterNetwork {
+fun Character.dtoToEntityNetwork(): CharacterNetwork {
     return CharacterNetwork(
             info.id,
             info.position,
@@ -42,7 +42,7 @@ fun Character.toEntityNetwork(): CharacterNetwork {
     )
 }
 
-fun PlaceableEntity.toEntityNetwork(): PlaceableEntityNetwork {
+fun PlaceableEntity.dtoToEntityNetwork(): PlaceableEntityNetwork {
     return PlaceableEntityNetwork(
             info.id,
             info.position,

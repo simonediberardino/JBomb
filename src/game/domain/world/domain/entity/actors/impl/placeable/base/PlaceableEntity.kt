@@ -1,13 +1,11 @@
 package game.domain.world.domain.entity.actors.impl.placeable.base
 
-import game.domain.world.domain.entity.actors.abstracts.base.EntityState
-import game.domain.world.domain.entity.actors.impl.blocks.movable_block.MovableBlock
-import game.network.entity.EntityNetwork
-import game.network.entity.PlaceableEntityNetwork
 import game.domain.world.domain.entity.actors.abstracts.character.Character
-import game.domain.world.domain.entity.actors.impl.blocks.base_block.properties.BlockEntityState
+import game.domain.world.domain.entity.actors.impl.blocks.movable_block.MovableBlock
 import game.domain.world.domain.entity.actors.impl.placeable.base.state.PlaceableEntityState
 import game.domain.world.domain.entity.geo.Coordinates
+import game.mappers.dtoToEntityNetwork
+import game.network.entity.PlaceableEntityNetwork
 
 abstract class PlaceableEntity : MovableBlock {
     abstract override var state: PlaceableEntityState
@@ -25,5 +23,9 @@ abstract class PlaceableEntity : MovableBlock {
     constructor(coordinates: Coordinates?, caller: Character) : super(coordinates) {
         this.state = PlaceableEntityState(entity = this)
         this.state.caller = caller
+    }
+
+    override fun toEntityNetwork(): PlaceableEntityNetwork {
+        return this.dtoToEntityNetwork()
     }
 }

@@ -2,7 +2,6 @@ package game.domain.events.game
 
 import game.Bomberman
 import game.domain.events.models.GameEvent
-import game.mappers.toEntityNetwork
 import game.network.events.forward.UpdateInfoEventForwarder
 
 class UpdateCurrentBombsLengthEvent : GameEvent {

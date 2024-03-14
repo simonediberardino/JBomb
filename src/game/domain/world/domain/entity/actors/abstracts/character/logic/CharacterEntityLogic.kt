@@ -12,7 +12,6 @@ import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.input.Command
-import game.mappers.toEntityNetwork
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
 import game.utils.dev.Log

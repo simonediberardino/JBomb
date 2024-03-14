@@ -1,17 +1,18 @@
 package game.domain.world.domain.entity.actors.abstracts.character
 
-import game.input.Command
 import game.audio.SoundModel
-import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.logic.ICharacterEntityLogic
 import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
 import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityState
-import game.network.entity.CharacterNetwork
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.input.Command
+import game.mappers.dtoToEntityNetwork
+import game.network.entity.EntityNetwork
+import game.presentation.ui.panels.game.PitchPanel
 import game.values.DrawPriority
 
 /**
@@ -33,10 +34,14 @@ abstract class Character : MovingEntity {
     constructor(id: Long) : super(id)
     constructor() : super()
 
+    override fun toEntityNetwork(): EntityNetwork {
+        return dtoToEntityNetwork()
+    }
+
     companion object {
         val size = PitchPanel.PIXEL_UNIT * 4 * 2
     }
-    
+
     internal object DEFAULT {
         val LAST_DIRECTION_UPDATE = 0L
         val COMMAND_QUEUE: MutableSet<Command> = hashSetOf()

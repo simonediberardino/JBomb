@@ -15,7 +15,6 @@ import game.domain.world.domain.entity.items.UsableItem
 import game.input.ControllerManager
 import game.input.ControllerManager.Companion.setDefaultCommandDelay
 import game.input.MouseControllerManager
-import game.mappers.toEntityNetwork
 import game.network.events.forward.UseItemHttpEventForwarder
 import game.network.gamehandler.ClientGameHandler
 import game.network.gamehandler.OnlineGameHandler

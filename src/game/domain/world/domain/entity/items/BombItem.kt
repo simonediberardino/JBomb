@@ -1,10 +1,11 @@
 package game.domain.world.domain.entity.items
 
 import game.Bomberman
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
-import game.utils.file_system.Paths.entitiesFolder
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.network.events.forward.UpdateInfoEventForwarder
 import game.utils.Utility.timePassed
+import game.utils.file_system.Paths.entitiesFolder
 import game.utils.time.now
 
 class BombItem : UsableItem() {
@@ -33,6 +34,7 @@ class BombItem : UsableItem() {
         bombEntity = Bomb(owner)
 
         match.addBomb(bombEntity)
+        UpdateInfoEventForwarder().invoke((bombEntity as game.domain.world.domain.entity.actors.abstracts.base.Entity).toEntityNetwork())
 
         bombEntity.logic.onExplodeCallback = {
             owner.state.placedBombs--

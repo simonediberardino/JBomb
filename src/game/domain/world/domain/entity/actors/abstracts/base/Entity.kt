@@ -2,11 +2,12 @@ package game.domain.world.domain.entity.actors.abstracts.base
 
 import game.domain.events.models.RunnablePar
 import game.domain.tasks.GameTickerObserver
-import game.network.entity.EntityNetwork
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
-import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.types.EntityTypes
+import game.mappers.dtoToEntityNetwork
+import game.network.entity.EntityNetwork
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.util.*
@@ -197,6 +198,10 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         if (this === other) return true
         if (other !is Entity) return false
         return info.id == other.info.id
+    }
+
+    open fun toEntityNetwork() : EntityNetwork {
+        return this.dtoToEntityNetwork()
     }
 
     override fun hashCode(): Int = Objects.hash(info.id)

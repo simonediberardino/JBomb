@@ -1,23 +1,23 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.base
 
-import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
-import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
-import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
-import game.domain.world.domain.entity.actors.impl.models.*
-import game.domain.world.domain.entity.geo.Coordinates
-import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
+import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
+import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.IBomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
+import game.domain.world.domain.entity.actors.impl.models.Explosive
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
+import game.mappers.dtoToEntityNetwork
+import game.network.entity.EntityNetwork
+import game.presentation.ui.panels.game.PitchPanel
 
 abstract class BomberEntity : Character, Explosive {
     constructor() : super()
@@ -27,7 +27,10 @@ abstract class BomberEntity : Character, Explosive {
     override val logic: IBomberEntityLogic = BomberEntityLogic(entity = this)
     override val state: BomberEntityState = BomberEntityState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
-    
+
+    override fun toEntityNetwork(): EntityNetwork {
+        return dtoToEntityNetwork()
+    }
 
     init {
         // TODO

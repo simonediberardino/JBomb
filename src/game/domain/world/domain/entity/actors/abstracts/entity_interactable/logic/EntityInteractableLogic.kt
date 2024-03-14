@@ -8,7 +8,6 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
-import game.mappers.toEntityNetwork
 import game.network.events.forward.AttackEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility.timePassed
