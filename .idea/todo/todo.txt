@@ -1,10 +1,10 @@
 
 high priorities:
 
+- Optimize command controller
 - Speed
 - Bomb
 - Review game ticker observable
-- Handle specific aspect of entity independentely (image, info, logic, etc.)
 - handle perks/status, bombs length
 - implement auto convert to map
 - forward client message to all clients;

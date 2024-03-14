@@ -7,12 +7,9 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.geo.Coordinates
-import game.utils.dev.Extensions.toMap
-import game.utils.dev.Log
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.util.*
-import java.util.concurrent.atomic.AtomicReference
 
 // Interface defining common behavior for entities
 interface IEntityLogic {
@@ -194,18 +191,6 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
     override fun update(arg: Any?) {
         super.update(arg)
         logic.observerUpdate(arg)
-    }
-
-    open fun toDto(): EntityNetwork {
-        return EntityNetwork(
-                info.id,
-                info.position,
-                info.type.ordinal
-        )
-    }
-
-    fun toMap(): Map<String, String> {
-        return toDto().toMap()
     }
 
     override fun equals(other: Any?): Boolean {

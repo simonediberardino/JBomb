@@ -2,11 +2,7 @@ package game.domain.tasks
 
 import game.Bomberman
 import game.domain.tasks.GameTickerObserver.Companion.DEFAULT_OBSERVER_UPDATE
-import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.tasks.observer.Observable2
-import game.utils.Utility.timePassed
-import game.utils.dev.Log
-import game.utils.time.now
 
 /**
  * The GameTickerObservable class is an observable that notifies its observers periodically with a fixed delay
@@ -22,9 +18,11 @@ class GameTickerObservable : Observable2() {
      * update method of the observer with the current GameState object.
      */
     private val task = Runnable {
-        observers.toTypedArray().forEach { observer ->
-            if (observer.isValid()) {
-                notify(observer, Bomberman.getMatch().gameState)
+        synchronized(observers) {
+            for (observer in observers.toTypedArray()) {
+                if (observer.isValid()) {
+                    notify(observer, Bomberman.getMatch().gameState)
+                }
             }
         }
     }

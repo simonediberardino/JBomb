@@ -2,8 +2,8 @@ package game.mappers
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
-import game.domain.world.domain.entity.actors.impl.placeable.base.PlaceableEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.actors.impl.placeable.base.PlaceableEntity
 import game.domain.world.types.EntityTypes
 import game.network.entity.BomberEntityNetwork
 import game.network.entity.CharacterNetwork
@@ -22,7 +22,7 @@ fun Entity.toEntityNetwork(): EntityNetwork {
     )
 }
 
-fun BomberEntity.toBomberEntityNetwork(): BomberEntityNetwork {
+fun BomberEntity.toEntityNetwork(): BomberEntityNetwork {
     return BomberEntityNetwork(
             entityId = info.id,
             entityLocation = info.position,
@@ -33,7 +33,7 @@ fun BomberEntity.toBomberEntityNetwork(): BomberEntityNetwork {
     )
 }
 
-fun Character.toCharacterNetwork(): CharacterNetwork {
+fun Character.toEntityNetwork(): CharacterNetwork {
     return CharacterNetwork(
             info.id,
             info.position,
@@ -42,11 +42,11 @@ fun Character.toCharacterNetwork(): CharacterNetwork {
     )
 }
 
-fun PlaceableEntity.toPlaceableEntityNetwork(): PlaceableEntityNetwork {
+fun PlaceableEntity.toEntityNetwork(): PlaceableEntityNetwork {
     return PlaceableEntityNetwork(
             info.id,
             info.position,
             info.type.ordinal,
-            state.caller.info.id
+            state.caller?.info?.id ?: -1
     )
 }

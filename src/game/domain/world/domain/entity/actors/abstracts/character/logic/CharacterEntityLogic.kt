@@ -1,19 +1,19 @@
 package game.domain.world.domain.entity.actors.abstracts.character.logic
 
 import game.Bomberman
-import game.input.Command
-import game.domain.level.behavior.LocationChangedBehavior
 import game.audio.AudioManager
-import game.presentation.ui.panels.game.PitchPanel
+import game.domain.level.behavior.LocationChangedBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
-import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
+import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
-import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.input.Command
+import game.mappers.toEntityNetwork
+import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
 import game.utils.dev.Log
 import game.utils.time.now
@@ -25,7 +25,7 @@ abstract class CharacterEntityLogic(
 ) : MovingEntityLogic(entity), ICharacterEntityLogic {
     override fun onSpawn() {
         super.onSpawn()
-        LocationChangedBehavior(entity.toDto()).invoke()
+        LocationChangedBehavior(entity.toEntityNetwork()).invoke()
         setAliveState(true)
         entity.state.hp = entity.state.maxHp
     }
@@ -241,6 +241,6 @@ abstract class CharacterEntityLogic(
     }
 
     override fun onMove(coordinates: Coordinates) {
-        LocationChangedBehavior(entity.toDto()).invoke()
+        LocationChangedBehavior(entity.toEntityNetwork()).invoke()
     }
 }

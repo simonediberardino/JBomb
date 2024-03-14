@@ -1,15 +1,15 @@
 package game.domain.world.domain.entity.actors.abstracts.base.logic
 
 import game.Bomberman
-import game.presentation.ui.panels.game.PitchPanel
-import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityLogic
+import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
+import game.mappers.toEntityNetwork
 import game.network.events.forward.DespawnEntityEventForwarder
 import game.network.events.forward.SpawnEntityEventForwarder
-import game.utils.dev.Log
+import game.presentation.ui.panels.game.PitchPanel
 
 abstract class EntityLogic(open val entity: Entity) : IEntityLogic {
     override fun eliminated() {
@@ -48,11 +48,11 @@ abstract class EntityLogic(open val entity: Entity) : IEntityLogic {
     }
 
     override fun notifySpawn() {
-        SpawnEntityEventForwarder(-1).invoke(entity.toDto())
+        SpawnEntityEventForwarder(-1).invoke(entity.toEntityNetwork())
     }
 
     override fun notifyDespawn() {
-        DespawnEntityEventForwarder().invoke(entity.toDto())
+        DespawnEntityEventForwarder().invoke(entity.toEntityNetwork())
     }
 
     override fun onSpawn() {

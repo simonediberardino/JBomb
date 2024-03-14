@@ -2,6 +2,7 @@ package game.domain.events.game
 
 import game.Bomberman
 import game.domain.events.models.GameEvent
+import game.mappers.toEntityNetwork
 import game.network.events.forward.UpdateInfoEventForwarder
 
 
@@ -10,6 +11,6 @@ class UpdateCurrentAvailableItemsEvent : GameEvent {
         Bomberman.getMatch().player ?: return
         Bomberman.getMatch().currentLevel!!.eventHandler.onUpdateCurrentAvailableBombsEvent(arg as Int)
         Bomberman.getMatch().updateInventoryWeaponController()
-        UpdateInfoEventForwarder().invoke(Bomberman.getMatch().player!!.toDto())
+        UpdateInfoEventForwarder().invoke(Bomberman.getMatch().player!!.toEntityNetwork())
     }
 }

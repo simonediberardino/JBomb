@@ -8,12 +8,12 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.mappers.toEntityNetwork
 import game.network.events.forward.AttackEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility.timePassed
 import game.utils.dev.Log
 import game.utils.time.now
-import java.util.*
 
 abstract class EntityInteractableLogic(
         override val entity: EntityInteractable
@@ -25,7 +25,7 @@ abstract class EntityInteractableLogic(
                     if (!(e == null || e.state.isImmune || e.state.state == State.DIED)) {
                         val attackDamage: Int = entity.state.attackDamage
                         e.logic.onAttackReceived(attackDamage)
-                        AttackEntityEventForwarder().invoke(e.toDto(), attackDamage)
+                        AttackEntityEventForwarder().invoke(e.toEntityNetwork(), attackDamage)
                     }
                 }
             }
@@ -150,12 +150,16 @@ abstract class EntityInteractableLogic(
 
         var encounteredObstacle = false
 
-        for (e in interactedEntities) {
-            if (isObstacle(e)) {
-                interact(e)
-                encounteredObstacle = true
+        try {
+            for (e in interactedEntities) {
+                if (isObstacle(e)) {
+                    interact(e)
+                    encounteredObstacle = true
+                }
+                canMove = false
             }
-            canMove = false
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         }
 
         if (!encounteredObstacle) {

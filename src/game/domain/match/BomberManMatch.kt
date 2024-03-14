@@ -3,31 +3,30 @@ package game.domain.match
 import game.Bomberman
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
+import game.domain.level.behavior.PlayLevelSoundTrackBehavior
+import game.domain.level.levels.Level
+import game.domain.tasks.GameTickerObservable
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.items.BombItem
+import game.domain.world.domain.entity.items.UsableItem
 import game.input.ControllerManager
 import game.input.ControllerManager.Companion.setDefaultCommandDelay
 import game.input.MouseControllerManager
-import game.domain.world.domain.entity.items.BombItem
-import game.domain.world.domain.entity.items.UsableItem
-import game.domain.level.levels.Level
-import game.domain.level.behavior.PlayLevelSoundTrackBehavior
+import game.mappers.toEntityNetwork
 import game.network.events.forward.UseItemHttpEventForwarder
 import game.network.gamehandler.ClientGameHandler
 import game.network.gamehandler.OnlineGameHandler
 import game.network.gamehandler.ServerGameHandler
-import game.domain.tasks.GamePausedObserver
-import game.domain.tasks.GameTickerObservable
 import game.presentation.ui.pages.PausePanel
 import game.presentation.ui.panels.game.MatchPanel
-import game.utils.dev.Log
-import game.utils.Utility.timePassed
 import game.presentation.ui.viewcontrollers.*
+import game.utils.Utility.timePassed
+import game.utils.dev.Log
 import game.utils.time.now
 import java.util.*
-import kotlin.collections.HashMap
 
 class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGameHandler?) {
     // Timestamp of the last game pause state
@@ -154,7 +153,7 @@ class BomberManMatch(var currentLevel: Level?, val onlineGameHandler: OnlineGame
 
     fun useItem(owner: BomberEntity) {
         owner.state.weapon.use()
-        UseItemHttpEventForwarder().invoke(owner.toDto(), owner.state.weapon.type)
+        UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), owner.state.weapon.type)
     }
 
 

@@ -10,26 +10,20 @@ import game.domain.world.domain.entity.actors.impl.placeable.base.state.Placeabl
 import game.domain.world.domain.entity.geo.Coordinates
 
 abstract class PlaceableEntity : MovableBlock {
+    abstract override var state: PlaceableEntityState
+
     constructor(caller: Character) : super(Coordinates.getCenterCoordinatesOfEntity(caller)) {
+        this.state = PlaceableEntityState(entity = this)
         this.state.caller = caller
     }
 
     constructor(id: Long, caller: Character) : super(id) {
+        this.state = PlaceableEntityState(entity = this)
         this.state.caller = caller
     }
 
     constructor(coordinates: Coordinates?, caller: Character) : super(coordinates) {
+        this.state = PlaceableEntityState(entity = this)
         this.state.caller = caller
-    }
-
-    override val state: PlaceableEntityState = PlaceableEntityState(entity = this)
-
-    override fun toDto(): EntityNetwork {
-        return PlaceableEntityNetwork(
-                info.id,
-                info.position,
-                info.type.ordinal,
-                state.caller.info.id
-        )
     }
 }

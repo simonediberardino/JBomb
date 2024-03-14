@@ -33,15 +33,6 @@ abstract class Character : MovingEntity {
     constructor(id: Long) : super(id)
     constructor() : super()
 
-    override fun toDto(): CharacterNetwork {
-        return CharacterNetwork(
-                info.id,
-                info.position,
-                info.type.ordinal,
-                state.direction?.ordinal ?: 0
-        )
-    }
-
     companion object {
         val size = PitchPanel.PIXEL_UNIT * 4 * 2
     }

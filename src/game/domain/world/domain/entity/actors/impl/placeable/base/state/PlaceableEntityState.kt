@@ -28,5 +28,5 @@ open class PlaceableEntityState(
         alpha = alpha,
         interactionEntities = interactionEntities,
         lastImageUpdate = lastImageUpdate) {
-    open lateinit var caller: Character
+    open var caller: Character? = null
 }

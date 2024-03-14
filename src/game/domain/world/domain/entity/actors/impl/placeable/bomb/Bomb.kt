@@ -20,6 +20,7 @@ import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.Block
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.IBlockEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.placeable.base.PlaceableEntity
+import game.domain.world.domain.entity.actors.impl.placeable.base.state.PlaceableEntityState
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.logic.BombLogic
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.logic.IBombLogic
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.state.BombState
@@ -72,7 +73,7 @@ open class Bomb : PlaceableEntity, Explosive {
     override val properties: EntityProperties = EntityProperties(
             type = EntityTypes.Bomb
     )
-    override val state: BombState = BombState(entity = this)
+    override var state: PlaceableEntityState = BombState(entity = this)
 
     /**
      * Gets the maximum explosion distance for the bomb.

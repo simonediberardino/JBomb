@@ -1,8 +1,9 @@
 package game.network.events.process
 
 import game.Bomberman
-import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
 import game.domain.events.models.HttpEvent
+import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
+import game.mappers.toEntityNetwork
 import game.network.events.forward.SpawnEntityEventForwarder
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
@@ -19,7 +20,7 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
 
         match.getEntities().forEach { e ->
             Log.i("Sending entity $e to $clientId")
-            SpawnEntityEventForwarder(clientId).invoke(e.toDto())
+            SpawnEntityEventForwarder(clientId).invoke(e.toEntityNetwork())
         }
 
         val player = RemotePlayer(coordinates, clientId, 1)

@@ -1,7 +1,5 @@
 package game.domain.world.domain.entity.actors.impl.placeable.bomb.logic
 
-import game.audio.AudioManager
-import game.audio.SoundModel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.BlockEntityLogic
 import game.domain.world.domain.entity.actors.impl.explosion.FireExplosion
@@ -36,7 +34,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
         ExplosionHandler.instance.process {
             // Trigger explosions in all directions
             Direction.values().map {
-                FireExplosion(entity.state.caller, entity.info.position, it, entity).logic.explode()
+                FireExplosion(entity.state.caller!!, entity.info.position, it, entity).logic.explode()
             }
         }
 
