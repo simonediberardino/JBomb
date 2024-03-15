@@ -1,18 +1,16 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties
 
-import game.input.Command
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityState
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
-import java.util.concurrent.atomic.AtomicReference
 
 open class BomberEntityState(
         entity: BomberEntity,
@@ -72,9 +70,9 @@ open class BomberEntityState(
 
             // Adjust the whitelist of obstacles based on the bombs' solidity.
             if (!field) {
-                whitelistObstacles.add(Bomb::class.java)
-            } else if (!forceBombsSolid) {
                 whitelistObstacles.remove(Bomb::class.java)
+            } else if (!forceBombsSolid) {
+                whitelistObstacles.add(Bomb::class.java)
             }
         }
 

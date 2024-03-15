@@ -88,7 +88,7 @@ open class Bomb(caller: BomberEntity) : PlaceableEntity(), Explosive {
      * @return The maximum explosion distance.
      */
     override val maxExplosionDistance: Int
-        get() = (state.caller as BomberEntity).state.currExplosionLength ?: 0
+        get() = (state.caller as BomberEntity).state.currExplosionLength
 
 
     override val explosionInteractionEntities: Set<Class<out Entity>> = Bomb.DEFAULT.EXPLOSION_INTERACTION_ENTITIES
@@ -104,10 +104,13 @@ open class Bomb(caller: BomberEntity) : PlaceableEntity(), Explosive {
 
     internal object DEFAULT {
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
+
         val EXPLOSION_OBSTACLES: Set<Class<out Entity>> =
-                setOf(HardBlock::class.java, DestroyableBlock::class.java)
+                setOf(HardBlock::class.java)
+
         val EXPLOSION_INTERACTION_ENTITIES: Set<Class<out Entity>> =
                 setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)
+
         val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = hashSetOf(FireExplosion::class.java, AbstractExplosion::class.java)
     }
 }

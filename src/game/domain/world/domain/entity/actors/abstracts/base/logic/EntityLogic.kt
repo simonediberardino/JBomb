@@ -41,6 +41,11 @@ abstract class EntityLogic(
         if (forceCentering)
             entity.info.position = Coordinates.roundCoordinates(entity.info.position, spawnOffset())
 
+
+        Coordinates.getEntitiesOnBlock(entity.info.position).forEach {
+            entity.logic.interact(it)
+        }
+
         if (forceSpawn || !Coordinates.isBlockOccupied(entity.info.position)) {
             entity.state.isSpawned = true
             Bomberman.match.addEntity(entity)

@@ -10,7 +10,7 @@ import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
 import game.utils.time.now
-import java.util.concurrent.atomic.AtomicReference
+import kotlin.math.max
 
 class ExplosionState(
         entity: AbstractExplosion,
@@ -29,7 +29,8 @@ class ExplosionState(
         var owner: Entity,
         var explosive: Explosive,
         var distanceFromExplosive: Int = AbstractExplosion.DEFAULT.DISTANCE_FROM_EXPLOSIVE,
-        var canExpand: Boolean = AbstractExplosion.DEFAULT.CAN_EXPAND
+        var canExpand: Boolean = AbstractExplosion.DEFAULT.CAN_EXPAND,
+        var isCenterVisible: Boolean = AbstractExplosion.DEFAULT.CENTER_VISIBLE
 ) : MovingEntityState(
         entity = entity,
         isSpawned = isSpawned,
@@ -74,6 +75,6 @@ class ExplosionState(
                 lastRefresh = now()
             }
 
-            return prevState
+            return max(0, prevState)
         }
 }

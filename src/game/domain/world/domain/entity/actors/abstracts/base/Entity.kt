@@ -36,6 +36,7 @@ interface IEntityLogic {
     fun onMouseClickInteraction()
     fun onMouseDragInteraction()
     fun observerUpdate(arg: Any?)
+    fun onStateReady() {}
 }
 
 // Class representing the state of an entity

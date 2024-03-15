@@ -274,15 +274,17 @@ class BomberManMatch(
      * Pauses the game by stopping the game ticker, setting the game state to false,
      * and displaying the pause panel.
      */
-    private fun pauseGame() {
+    private fun pauseGame(showUi: Boolean = true) {
         // Stop the game ticker to pause game events
         gameTickerObservable?.stop()
 
         // Update the game state to indicate it is paused
         gameState = false
 
-        // Show the pause panel to the player
-        Bomberman.showActivity(PausePanel::class.java)
+        if (showUi){
+            // Show the pause panel to the player
+            Bomberman.showActivity(PausePanel::class.java)
+        }
     }
 
     /**
@@ -322,7 +324,7 @@ class BomberManMatch(
      */
     fun destroy() {
         // Pause the game to ensure safe destruction
-        pauseGame()
+        pauseGame(showUi = false)
 
         // Cancel job
         cancelCoroutineJob()

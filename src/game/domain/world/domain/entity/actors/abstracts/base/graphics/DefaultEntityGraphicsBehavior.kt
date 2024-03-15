@@ -4,7 +4,6 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.utils.Utility.fileExists
 import game.utils.Utility.loadImage
-import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.image.BufferedImage
 import java.util.*

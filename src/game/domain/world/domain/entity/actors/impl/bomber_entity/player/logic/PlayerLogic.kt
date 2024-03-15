@@ -1,18 +1,14 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.player.logic
 
 import game.Bomberman
+import game.data.data.DataInputOutput
 import game.domain.events.game.DeathGameEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
-import game.input.Command
-import game.presentation.ui.pages.GameOverPanel
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
-import game.data.data.DataInputOutput
-import game.domain.tasks.observer.Observable2
-import game.domain.tasks.observer.Observer2
-import game.utils.dev.Log
+import game.presentation.ui.pages.GameOverPanel
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 
@@ -58,7 +54,7 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     }
 
     override fun executeCommandQueue() {
-        entity.state.commandQueue.parallelStream().forEach { c ->
+        entity.state.commandQueue.forEach { c ->
             handleCommand(c)
         }
     }

@@ -9,7 +9,9 @@ import game.domain.tasks.observer.Observable2
  */
 class GameTickerObservable : Observable2() {
     private val periodicTask: PeriodicTask
-    private val DELAY_MS: Int = DEFAULT_OBSERVER_UPDATE / 2
+    companion object {
+        val DELAY_MS: Int = DEFAULT_OBSERVER_UPDATE / 2
+    }
 
     /**
      * This ActionListener updates observers of the GameTickerObservable periodically based on the specified delay. It loops through

@@ -34,7 +34,12 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
         ExplosionHandler.instance.process {
             // Trigger explosions in all directions
             Direction.values().map {
-                FireExplosion(entity.state.caller!!, entity.info.position, it, entity).logic.explode()
+                FireExplosion(
+                        entity.state.caller,
+                        entity.info.position,
+                        it,
+                        entity
+                ).logic.explode()
             }
         }
 

@@ -14,7 +14,6 @@ import game.domain.world.domain.entity.geo.Direction
 import game.input.Command
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
-import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.ActionEvent
 import java.util.*
@@ -30,7 +29,6 @@ abstract class CharacterEntityLogic(
     }
 
     override fun onDespawn() {
-        Log.e("onDespawn $entity")
         super.onDespawn()
         setAliveState(false)
     }
@@ -92,23 +90,24 @@ abstract class CharacterEntityLogic(
      * @param damage The amount of damage to remove from the entity's health points.
      */
     override fun onAttackReceived(damage: Int) {
-        synchronized((entity.state.lastDamageTime as Any?)!!) {
-            if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
-                return
+        if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
+            return
 
-            entity.state.lastDamageTime = now()
+        if (entity.state.isImmune)
+            return
 
-            // Reduce the health points by the specified amount
-            entity.state.hp -= damage
-            damageAnimation()
+        entity.state.lastDamageTime = now()
 
-            // If the health points reach 0 or below, despawn the entity
-            if (entity.state.hp <= 0) {
-                entity.state.hp = 0
-                eliminated()
-            } else {
-                onHit(damage)
-            }
+        // Reduce the health points by the specified amount
+        entity.state.hp -= damage
+        damageAnimation()
+
+        // If the health points reach 0 or below, despawn the entity
+        if (entity.state.hp <= 0) {
+            entity.state.hp = 0
+            eliminated()
+        } else {
+            onHit(damage)
         }
     }
 

@@ -1,11 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.explosion.abstractexpl
 
-import game.domain.world.domain.entity.actors.impl.models.*
-import game.domain.world.domain.entity.geo.Coordinates
-import game.domain.world.domain.entity.geo.Direction
-import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.graphics.ExplosionGraphicsBehavior
@@ -14,6 +9,10 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic.
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic.IExplosionLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.state.ExplosionProperties
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.state.ExplosionState
+import game.domain.world.domain.entity.actors.impl.models.Explosive
+import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.domain.entity.geo.Direction
+import game.presentation.ui.panels.game.PitchPanel
 import game.values.DrawPriority
 
 /**
@@ -65,10 +64,11 @@ abstract class AbstractExplosion(owner: Entity,
     }
 
     internal object DEFAULT {
-        val IGNORE_CENTER = true
+        const val IGNORE_CENTER = true
         val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_4
-        val DISTANCE_FROM_EXPLOSIVE = -1
-        val CAN_EXPAND = false
-        val IMAGE_REFRESH_RATE = 100
+        const val DISTANCE_FROM_EXPLOSIVE = 0
+        const val CAN_EXPAND = false
+        const val IMAGE_REFRESH_RATE = 100
+        const val CENTER_VISIBLE = true
     }
 }

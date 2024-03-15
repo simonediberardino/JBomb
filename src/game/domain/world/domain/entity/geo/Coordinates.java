@@ -341,6 +341,7 @@ public class Coordinates implements Comparable<Coordinates> {
         ArrayList<Coordinates> arrayCoordinates = getAllCoordinates(Coordinates.roundCoordinates(nextOccupiedCoords), GRID_SIZE);
         // Get all the blocks and entities in the game
         var entities = Bomberman.match.getEntities();
+
         return entities.parallelStream().filter(e -> arrayCoordinates.stream().anyMatch(coords -> doesCollideWith(coords, e))).collect(Collectors.toList());
     }
 
@@ -356,14 +357,15 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     private static boolean doesCollideWith(Coordinates nextOccupiedCoords, Coordinates entityCoords, int size) {
-
-
         // Get the coordinates of the bottom-right corner of the entity
         int entityBottomRightX = entityCoords.getX() + size - 1;
         int entityBottomRightY = entityCoords.getY() + size - 1;
 
         // Check if the given coordinates collide with the entity
-        return nextOccupiedCoords.getX() >= entityCoords.getX() && nextOccupiedCoords.getX() <= entityBottomRightX && nextOccupiedCoords.getY() >= entityCoords.getY() && nextOccupiedCoords.getY() <= entityBottomRightY;
+        return nextOccupiedCoords.getX() >= entityCoords.getX()
+                && nextOccupiedCoords.getX() <= entityBottomRightX
+                && nextOccupiedCoords.getY() >= entityCoords.getY()
+                && nextOccupiedCoords.getY() <= entityBottomRightY;
     }
 
     // calculates the coordinates of a point a certain distance away from the entity's top-left corner in a given direction
