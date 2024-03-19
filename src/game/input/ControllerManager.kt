@@ -2,11 +2,8 @@ package game.input
 
 import game.Bomberman
 import game.data.data.DataInputOutput
-import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.tasks.observer.Observable2
-import game.domain.tasks.PeriodicTask
 import game.utils.Utility.timePassed
-import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -16,13 +13,10 @@ import java.awt.event.KeyListener
  * corresponding command that should be executed based on the key that was pressed.
  */
 class ControllerManager : Observable2(), KeyListener {
+    private val commandQueue: HashSet<Command> = hashSetOf()
+
     // Stores the time of the last key event for each command
     private val commandEventsTime: MutableMap<Command?, Long> = mutableMapOf()
-    var player: Player? = null
-        get() {
-            return Bomberman.match.player
-        }
-
     // Key-Command mapping
     private var keyAssignment: Map<Int, Command>? = null
 
@@ -38,6 +32,7 @@ class ControllerManager : Observable2(), KeyListener {
             e.printStackTrace()
         }
     }
+
 
     private fun setKeyMap() {
         val dataInputOutput = DataInputOutput.getInstance()
@@ -57,15 +52,14 @@ class ControllerManager : Observable2(), KeyListener {
         if (action.isMovementKey()) {
             Bomberman.match.mouseControllerManager.stopMovementTask()
         }
+
         onKeyPressed(action)
     }
 
     fun onKeyPressed(action: Command) {
         // Ignore the event if the time elapsed since the last event is less than KEY_DELAY_MS
-        player?.let {
-            commandEventsTime[action] = now()
-            it.state.commandQueue.add(action)
-        }
+        commandEventsTime[action] = now()
+        notifyObservers(ObserverParam(ObserverParamIdentifier.INPUT_COMMAND, action))
     }
 
     /**
@@ -88,11 +82,12 @@ class ControllerManager : Observable2(), KeyListener {
     }
 
     fun onKeyReleased(action: Command?) {
-        player?.state?.commandQueue?.remove(action)
+        notifyObservers(ObserverParam(ObserverParamIdentifier.DELETE_COMMAND, action))
+        commandQueue.remove(action)
     }
 
     fun isCommandPressed(c: Command): Boolean {
-        return player!!.state.commandQueue.contains(c)
+        return commandQueue.contains(c)
     }
 
     private fun updateDelay() {

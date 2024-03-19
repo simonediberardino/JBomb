@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic
 
+import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
@@ -16,7 +17,7 @@ class ExplosionLogic(
         e?.logic?.onExplosion(entity)
     }
 
-    override fun observerUpdate(arg: Any?) {}
+    override fun observerUpdate(arg: Observable2.ObserverParam) {}
 
     override fun explode(): AbstractExplosion {
         val allCoordinates = Coordinates.getAllCoordinates(

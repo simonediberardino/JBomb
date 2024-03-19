@@ -1,10 +1,9 @@
 package game.domain.world.domain.entity.actors.abstracts.character.logic
 
-import game.input.Command
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.IMovingEntityLogic
 import game.domain.world.domain.entity.geo.Direction
+import game.input.Command
 
 interface ICharacterEntityLogic : IMovingEntityLogic {
     fun isAlive() : Boolean
@@ -20,5 +19,7 @@ interface ICharacterEntityLogic : IMovingEntityLogic {
     fun handleMoveCommand(command: Command, oppositeDirection1: Direction, oppositeDirection2: Direction)
     fun overpassBlock(entitiesOpposite1: List<Entity>, entitiesOpposite2: List<Entity>, direction1: Direction, direction2: Direction)
     fun executeCommandQueue()
+    fun addCommand(command: Command)
+    fun removeCommand(command: Command)
     fun onEndedDeathAnimation()
 }

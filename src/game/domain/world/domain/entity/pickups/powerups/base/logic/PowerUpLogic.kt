@@ -3,6 +3,7 @@ package game.domain.world.domain.entity.pickups.powerups.base.logic
 import game.Bomberman
 import game.audio.AudioManager
 import game.audio.SoundModel
+import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic.EntityInteractableLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
@@ -67,7 +68,7 @@ abstract class PowerUpLogic(
 
     override fun onAttackReceived(damage: Int) {}
 
-    override fun observerUpdate(arg: Any?) {}
+    override fun observerUpdate(arg: Observable2.ObserverParam) {}
 
     override fun onMove(coordinates: Coordinates) {}
 

@@ -1,13 +1,15 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic
 
 import game.Bomberman
-import game.presentation.ui.panels.game.PitchPanel
+import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
+import game.input.Command
+import game.presentation.ui.panels.game.PitchPanel
 
 open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity), IBomberEntityLogic {
     override fun doInteract(e: Entity?) {
@@ -80,10 +82,12 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     }
 
     override fun getMaxBombs(): Int {
-        return Bomberman.match.currentLevel?.info?.maxBombs ?: 0
+        return Bomberman.match.currentLevel.info.maxBombs ?: 0
     }
 
     override fun executeCommandQueue() {}
+    override fun addCommand(command: Command) {}
+    override fun removeCommand(command: Command) {}
 
-    override fun observerUpdate(arg: Any?) {}
+    override fun observerUpdate(arg: Observable2.ObserverParam) {}
 }

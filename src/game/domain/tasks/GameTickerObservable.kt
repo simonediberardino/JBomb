@@ -22,7 +22,7 @@ class GameTickerObservable : Observable2() {
         synchronized(observers) {
             for (observer in observers.toTypedArray()) {
                 if (observer.isValid()) {
-                    notify(observer)
+                    notify(observer, ObserverParam(ObserverParamIdentifier.GAME_TICK, null))
                 }
             }
         }

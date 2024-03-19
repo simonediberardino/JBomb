@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.actors.abstracts.enemy.logic
 
 import game.Bomberman
 import game.domain.events.game.EnemyDespawnedGameEvent
+import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
@@ -17,7 +18,6 @@ abstract class EnemyEntityLogic(override val entity: Enemy) : CharacterEntityLog
     override fun onSpawn() {
         super.onSpawn()
         Bomberman.match.increaseEnemiesAlive()
-        Bomberman.match.gameTickerObservable?.register(entity)
     }
 
     override fun onDespawn() {
@@ -28,7 +28,5 @@ abstract class EnemyEntityLogic(override val entity: Enemy) : CharacterEntityLog
         EnemyDespawnedGameEvent().invoke(null)
     }
 
-    override fun observerUpdate(arg: Any?) {
-
-    }
+    override fun observerUpdate(arg: Observable2.ObserverParam) {}
 }

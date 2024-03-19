@@ -1,10 +1,10 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.logic
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
 
-open class OrbEntityLogic(override val entity: Orb) : EnemyEntityLogic(entity = entity), IOrbEntityLogic {
+open class OrbEntityLogic(override val entity: Orb) : AiEnemyLogic(entity = entity), IOrbEntityLogic {
     override fun doInteract(e: Entity?) {
         if (canInteractWith(e)) {
             attack(e)
@@ -14,12 +14,8 @@ open class OrbEntityLogic(override val entity: Orb) : EnemyEntityLogic(entity = 
         }
     }
 
-    override fun isObstacle(e: Entity?): Boolean = e == null
-    override fun executeCommandQueue() {}
-
-    override fun observerUpdate(arg: Any?) {
-        val gameState = arg as Boolean
-        if (gameState) moveOrb()
+    override fun process() {
+        moveOrb()
     }
 
     override fun moveOrb() {
@@ -38,4 +34,5 @@ open class OrbEntityLogic(override val entity: Orb) : EnemyEntityLogic(entity = 
         }
     }
 
+    override fun isObstacle(e: Entity?): Boolean = e == null
 }

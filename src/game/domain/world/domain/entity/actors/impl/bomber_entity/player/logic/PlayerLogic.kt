@@ -5,9 +5,11 @@ import game.data.data.DataInputOutput
 import game.domain.events.game.DeathGameEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
+import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.input.Command
 import game.presentation.ui.pages.GameOverPanel
 import java.awt.event.ActionEvent
 import javax.swing.Timer
@@ -17,6 +19,7 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         super.onSpawn()
         updateBombs()
         Bomberman.match.gameTickerObservable?.register(entity)
+        Bomberman.match.controllerManager?.register(entity)
         Bomberman.bombermanFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
     }
 
@@ -48,14 +51,35 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         UpdateCurrentBombsLengthEvent().invoke(DataInputOutput.getInstance().explosionLength)
     }
 
-    override fun observerUpdate(arg: Any?) {
+    override fun observerUpdate(arg: Observable2.ObserverParam) {
         super.observerUpdate(arg)
-        executeCommandQueue()
+
+        when(arg.identifier) {
+            Observable2.ObserverParamIdentifier.GAME_TICK -> executeCommandQueue()
+            Observable2.ObserverParamIdentifier.INPUT_COMMAND -> {
+                addCommand(command = arg.value as Command)
+                executeCommandQueue()
+            }
+            Observable2.ObserverParamIdentifier.DELETE_COMMAND -> {
+                removeCommand(command = arg.value as Command)
+                executeCommandQueue()
+            }
+        }
     }
 
     override fun executeCommandQueue() {
         entity.state.commandQueue.forEach { c ->
             handleCommand(c)
         }
+    }
+
+    override fun addCommand(command: Command) {
+        super.addCommand(command)
+        entity.state.commandQueue.add(command)
+    }
+
+    override fun removeCommand(command: Command) {
+        super.removeCommand(command)
+        entity.state.commandQueue.remove(command)
     }
 }

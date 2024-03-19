@@ -397,8 +397,8 @@ class BomberManMatch(
      */
     private fun unregisterAllObservablesAndControllers() {
         gameTickerObservable?.unregisterAll()
+        controllerManager?.unregisterAll()
         gameTickerObservable = null
-
         controllerManager = null
     }
 

@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.actors.abstracts.base
 
 import game.domain.events.models.RunnablePar
 import game.domain.tasks.GameTickerObserver
+import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
@@ -35,7 +36,7 @@ interface IEntityLogic {
     fun mouseInteractions()
     fun onMouseClickInteraction()
     fun onMouseDragInteraction()
-    fun observerUpdate(arg: Any?)
+    fun observerUpdate(arg: Observable2.ObserverParam)
     fun onStateReady() {}
 }
 
@@ -190,7 +191,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         }.compare(this, other)
     }
 
-    override fun update(arg: Any?) {
+    override fun update(arg: Observable2.ObserverParam) {
         super.update(arg)
         logic.observerUpdate(arg)
     }

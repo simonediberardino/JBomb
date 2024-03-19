@@ -3,16 +3,23 @@ package game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic
 import game.Bomberman
 import game.domain.events.game.KilledEnemyEvent
 import game.domain.events.game.ScoreGameEvent
+import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.geo.Direction
+import game.input.Command
 import game.utils.Utility
 import game.utils.dev.XMLUtils
 
 open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = entity), IAiEnemyLogic {
     private val CHANGE_DIRECTION_RATE = 10 // percentage
+
+    override fun onSpawn() {
+        super.onSpawn()
+        Bomberman.match.gameTickerObservable?.register(entity)
+    }
 
     override fun doInteract(e: Entity?) {
         if (isObstacle(e) || e == null) {
@@ -66,15 +73,29 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
         }
     }
 
-    override fun observerUpdate(arg: Any?) {
+    override fun addCommand(command: Command) {
+        entity.state.enemyCommandQueue.add(command)
+    }
+
+    override fun removeCommand(command: Command) {
+        entity.state.enemyCommandQueue.remove(command)
+    }
+
+    override fun observerUpdate(arg: Observable2.ObserverParam) {
         super.observerUpdate(arg)
-        val gameState = Bomberman.isInGame
 
-        if (!entity.state.canMove || !gameState) {
-            return
+        when (arg.identifier) {
+            Observable2.ObserverParamIdentifier.GAME_TICK -> {
+                val gameState = Bomberman.isInGame
+
+                if (!entity.state.canMove || !gameState) {
+                    return
+                }
+
+                process()
+            }
+            else -> {}
         }
-
-        process()
     }
 
     override fun process() {
