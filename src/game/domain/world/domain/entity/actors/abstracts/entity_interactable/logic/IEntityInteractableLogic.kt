@@ -7,8 +7,8 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 
 interface IEntityInteractableLogic : IEntityLogic {
-    fun moveOrInteract(d: Direction?, stepSize: Int, ignoreMapBorders: Boolean): Boolean
-    fun moveOrInteract(d: Direction?, stepSize: Int = PitchPanel.PIXEL_UNIT): Boolean
+    fun moveOrInteract(direction: Direction, stepSize: Int, ignoreMapBorders: Boolean): Boolean
+    fun moveOrInteract(direction: Direction, stepSize: Int = PitchPanel.PIXEL_UNIT): Boolean
     fun move(coordinates: Coordinates)
     fun onMove(coordinates: Coordinates)
     fun attack(e: Entity?)

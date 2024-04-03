@@ -11,6 +11,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.Bomb
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.input.Command
 import game.presentation.ui.pages.GameOverPanel
+import game.utils.dev.Log
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 
@@ -56,14 +57,8 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
 
         when(arg.identifier) {
             Observable2.ObserverParamIdentifier.GAME_TICK -> executeCommandQueue()
-            Observable2.ObserverParamIdentifier.INPUT_COMMAND -> {
-                addCommand(command = arg.value as Command)
-                executeCommandQueue()
-            }
-            Observable2.ObserverParamIdentifier.DELETE_COMMAND -> {
-                removeCommand(command = arg.value as Command)
-                executeCommandQueue()
-            }
+            Observable2.ObserverParamIdentifier.INPUT_COMMAND -> addCommand(command = arg.value as Command)
+            Observable2.ObserverParamIdentifier.DELETE_COMMAND -> removeCommand(command = arg.value as Command)
         }
     }
 

@@ -1,8 +1,8 @@
 
 high priorities:
 
-- Optimize command controller
-- Speed
+- Interaction miss error
+- Speed REVIEW
 - Bomb
 - Review game ticker observable
 - handle perks/status, bombs length

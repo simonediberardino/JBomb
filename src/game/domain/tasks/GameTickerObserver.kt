@@ -22,6 +22,6 @@ abstract class GameTickerObserver : Observer2 {
         }
 
     companion object {
-        const val DEFAULT_OBSERVER_UPDATE = 30
+        const val DEFAULT_OBSERVER_UPDATE = 18
     }
 }

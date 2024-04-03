@@ -6,6 +6,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.logic.EntityLogic
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.domain.entity.geo.Coordinates.getNewCoordinatesOnDirection
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.AttackEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
@@ -82,23 +83,21 @@ abstract class EntityInteractableLogic(
     /**
      * Moves or interacts with other entities in the given direction and with the default step size and offset.
      *
-     * @param d the direction to move or interact in
+     * @param direction the direction to move or interact in
      * @return true if the entity can move in the given direction, false otherwise
      */
-    override fun moveOrInteract(d: Direction?, stepSize: Int): Boolean {
-        return moveOrInteract(d, stepSize, false)
+    override fun moveOrInteract(direction: Direction, stepSize: Int): Boolean {
+        return moveOrInteract(direction, stepSize, false)
     }
 
     /**
      * Moves or interacts with other entities in the given direction and with the given step size and default offset.
      *
-     * @param d        the direction to move or interact in
+     * @param direction        the direction to move or interact in
      * @param stepSize the step size to use
      */
-    override fun moveOrInteract(d: Direction?, stepSize: Int, ignoreMapBorders: Boolean): Boolean {
-        d ?: return false
-
-        val nextTopLeftCoords = Coordinates.nextCoords(entity.info.position, d, stepSize)
+    override fun moveOrInteract(direction: Direction, stepSize: Int, ignoreMapBorders: Boolean): Boolean {
+        val nextTopLeftCoords = Coordinates.nextCoords(entity.info.position, direction, stepSize)
 
         if (!nextTopLeftCoords.validate(entity)) {
             if (!ignoreMapBorders) {
@@ -108,7 +107,7 @@ abstract class EntityInteractableLogic(
         } else {
             val coordinatesInArea = Coordinates.getAllBlocksInAreaFromDirection(
                     entity,
-                    d,
+                    direction,
                     stepSize
             )
 
@@ -125,11 +124,11 @@ abstract class EntityInteractableLogic(
             }
         }
 
-        // Get the coordinates of the next positions that will be occupied if the entity moves in a certain direction
-        // with a given step size
-        val nextOccupiedCoords = Coordinates.getNewCoordinatesOnDirection(
+        // Get the coordinates of the next positions that will be occupied if
+        // the entity moves in a certain direction with a given step size
+        val nextOccupiedCoords = getNewCoordinatesOnDirection(
                 entity.info.position,
-                d, stepSize,
+                direction, stepSize,
                 PitchPanel.GRID_SIZE / 3 / 2,
                 entity.state.size
         )
@@ -143,34 +142,11 @@ abstract class EntityInteractableLogic(
             return true
         }
 
-        // Initialize a flag to indicate whether the entity can move
-        var canMove = true
-
-        var encounteredObstacle = false
-
-        try {
-            for (e in interactedEntities) {
-                if (isObstacle(e)) {
-                    interact(e)
-                    encounteredObstacle = true
-                }
-                canMove = false
-            }
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-        }
-
-        if (!encounteredObstacle) {
-            // Interact with non-null entities in the 'interactedEntities' list
-            interactedEntities.stream().forEach { e: Entity? -> interact(e ?: return@forEach) }
-        }
-
-        if (canMove) {
-            move(nextTopLeftCoords)
-        }
+        interactedEntities.parallelStream()
+                .forEach { interact(it) }
 
         // Return whether the entity can move or not
-        return canMove
+        return false
     }
 
     override fun isObstacle(e: Entity?): Boolean {

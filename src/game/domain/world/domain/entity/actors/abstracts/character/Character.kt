@@ -38,13 +38,17 @@ abstract class Character : MovingEntity {
         return dtoToEntityNetwork()
     }
 
+    override val delayObserverUpdate: Int
+        get() {
+            return (DEFAULT_OBSERVER_UPDATE / state.speed).toInt()
+        }
+
     companion object {
         val size = PitchPanel.PIXEL_UNIT * 4 * 2
     }
 
     internal object DEFAULT {
         val LAST_DIRECTION_UPDATE = 0L
-        val COMMAND_QUEUE: MutableSet<Command> = hashSetOf()
         val PREVIOUS_DIRECTION: Direction? = null
         val CAN_MOVE = true
         val MAX_HP = 100

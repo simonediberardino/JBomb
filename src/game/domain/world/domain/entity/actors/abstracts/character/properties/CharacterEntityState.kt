@@ -47,7 +47,6 @@ abstract class CharacterEntityState(
         attackDamage = attackDamage,
         direction = direction
 ) {
-    val delayObserverUpdate = DEFAULT_OBSERVER_UPDATE / speed
     var hp: Int = maxHp
     val hpPercentage: Int
         get() = (hp.toFloat() / maxHp.toFloat() * 100).toInt()
