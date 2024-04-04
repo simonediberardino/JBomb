@@ -25,9 +25,7 @@ import game.presentation.ui.viewcontrollers.*
 import game.utils.Utility.timePassed
 import game.utils.dev.Log
 import game.utils.time.now
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import java.util.*
 
 class BomberManMatch(
@@ -235,7 +233,7 @@ class BomberManMatch(
             _entitiesMap.put(entity.info.id, entity)
         }
 
-        System.gc()
+        performGarbageCollection()
     }
 
     fun removeEntity(entity: Entity) {
@@ -249,7 +247,10 @@ class BomberManMatch(
 
         gameTickerObservable?.unregister(entity)
 
-        System.gc()
+        scope.launch {
+            delay(500)
+            performGarbageCollection()
+        }
     }
 
     /**
@@ -405,7 +406,7 @@ class BomberManMatch(
     /**
      * Initiates the garbage collection process to release unused memory.
      */
-    private fun performGarbageCollection() {
+    fun performGarbageCollection() {
         System.gc()
     }
 }

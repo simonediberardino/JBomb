@@ -13,7 +13,7 @@ class BombItem : UsableItem() {
     private lateinit var bombEntity: Bomb
 
     override fun use() {
-        val match = Bomberman.match ?: return
+        val match = Bomberman.match
 
         val isLocalPlayer = owner == match.player
         val isBombPlacementValid = isLocalPlayer &&
@@ -34,7 +34,6 @@ class BombItem : UsableItem() {
 
         bombEntity = Bomb(owner)
 
-        Log.e("Confirmation caller ${bombEntity.state.caller}")
         match.addBomb(bombEntity)
         UpdateInfoEventForwarder().invoke((bombEntity as game.domain.world.domain.entity.actors.abstracts.base.Entity).toEntityNetwork())
 

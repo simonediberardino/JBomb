@@ -27,10 +27,14 @@ class ExplosionLogic(
 
         val collidedEntities = Coordinates.getEntitiesOnCoordinates(allCoordinates)
 
-        if (!collidedEntities.any {
-            entity.logic.isObstacle(it)
-        }) {
+        if (collidedEntities.all { !entity.logic.isObstacle(it) }) {
             spawn()
+        }
+
+        collidedEntities.forEach {
+            if (entity.logic.canInteractWith(it)) {
+                entity.logic.interact(it)
+            }
         }
 
         return entity
@@ -96,35 +100,4 @@ class ExplosionLogic(
     override fun isObstacle(e: Entity?): Boolean = e == null || entity.state.explosive.isObstacleOfExplosion(e)
 
     override fun onMove(coordinates: Coordinates) {}
-
-    init {
-        /* Bomberman.match.scope.launch {
-             waittillframeend()
-
-             // On first (center) explosion
-             if (entity.state.distanceFromExplosive == 0) {
-
-                 val desiredCoords = Coordinates.getAllCoordinates(
-                         entity.info.position,
-                         entity.state.size
-                 )
-
-                 Bomberman.match.getEntities()
-                         .parallelStream()
-                         .forEach { e: Entity ->
-                             val doesCollide = desiredCoords.any { coord ->
-                                 Coordinates.doesCollideWith(coord, e)
-                             }
-
-                             if (doesCollide) {
-                                 entity.logic.interact(e)
-                             }
-                         }
-             }
-
-             if (canExpand()) {
-                 expandBomb(entity.state.direction, entity.state.size)
-             }
-         }*/
-    }
 }

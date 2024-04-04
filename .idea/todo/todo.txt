@@ -1,7 +1,7 @@
 
 high priorities:
 
-- Interaction miss error
+- Fix error AI move error
 - Speed REVIEW
 - Bomb
 - Review game ticker observable

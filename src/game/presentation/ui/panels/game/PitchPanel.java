@@ -9,6 +9,7 @@ import game.domain.tasks.observer.Observer2;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
 import game.utils.Utility;
+import game.utils.dev.Log;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -125,8 +126,13 @@ public class PitchPanel extends JPanel implements Observer2 {
         int paddingWidth = e.getGraphicsBehavior().calculateAndGetPaddingWidth(e, widthRatio);
         int paddingHeight = e.getGraphicsBehavior().calculateAndGetPaddingTop(e, heightRatio);
 
-        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, e.getState().getAlpha());
-        g2d.setComposite(ac);
+        try {
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, e.getState().getAlpha());
+            g2d.setComposite(ac);
+        } catch (Exception exception) {
+            Log.INSTANCE.e("Alpha value error " + e.getState().getAlpha());
+            exception.printStackTrace();
+        }
 
         g2d.drawImage(
                 e.getGraphicsBehavior().getImage(e),

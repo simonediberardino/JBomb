@@ -4,6 +4,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.utils.Utility.fileExists
 import game.utils.Utility.loadImage
+import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.image.BufferedImage
 import java.util.*
@@ -25,10 +26,15 @@ abstract class DefaultEntityGraphicsBehavior : IEntityGraphicsBehavior {
     private fun doLoadAndSetImage(entity: Entity, imagePath: String): BufferedImage? {
         entity.state.lastImageUpdate = now()
 
-        return loadImage(imagePath)?.let {
-            entity.image._image = loadImage(imagePath)
-            entity.image.imagePath = imagePath
-            return entity.image._image
+        return try {
+            loadImage(imagePath)?.let {
+                entity.image._image = loadImage(imagePath)
+                entity.image.imagePath = imagePath
+                return entity.image._image
+            }
+        } catch (exception: Exception) {
+            Log.e("Could not load image $imagePath")
+            throw exception
         }
     }
 }

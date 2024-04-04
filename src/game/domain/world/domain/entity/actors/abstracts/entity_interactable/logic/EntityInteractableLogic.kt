@@ -55,12 +55,12 @@ abstract class EntityInteractableLogic(
             e.logic.interactAndUpdateLastInteract(entity)
         }*/
         // SUPER TODO CHECK THIS!
-        if (canInteractWith(e) && e.logic.canBeInteractedBy(entity)) {
-            entity.logic.interactAndUpdateLastInteract(e)
+        if (!canInteractWith(e) || !e.logic.canBeInteractedBy(entity)) return
 
-            if (e is EntityInteractable) {
-                e.logic.interactAndUpdateLastInteract(entity)
-            }
+        entity.logic.interactAndUpdateLastInteract(e)
+
+        if (e is EntityInteractable) {
+            e.logic.interactAndUpdateLastInteract(entity)
         }
     }
 

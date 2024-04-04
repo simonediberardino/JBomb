@@ -12,6 +12,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
+import game.utils.dev.Log
 import game.utils.time.now
 import game.utils.ui.GradientCallbackHandler
 import java.awt.event.ActionEvent
@@ -27,8 +28,8 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
         AudioManager.getInstance().play(SoundModel.AXE_HIT)
         updateRageStatus(1)
 
-        val t = Timer(ATTACK_RESET_DELAY) {
-            _: ActionEvent? -> updateRageStatus(0)
+        val t = Timer(ATTACK_RESET_DELAY) { _: ActionEvent? ->
+            updateRageStatus(0)
         }
 
         t.isRepeats = false
@@ -40,6 +41,7 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
      */
     override fun disappearAndReappear() {
         synchronized((lock2 as Any)) {
+            Log.e("Running disappear = ${!entity.state.isInvisibleTaskRunning}")
             if (entity.state.isInvisibleTaskRunning) {
                 // If an invisible task is already running, exit the method.
                 return
@@ -50,8 +52,6 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
                 return
             }
 
-            // Record the current time as the last invisibility time.
-            entity.state.lastInvisibleTime = now()
             // Set the flag to indicate that an invisible task is running.
             entity.state.isInvisibleTaskRunning = true
 
@@ -61,35 +61,33 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
             val step = 0.01f
 
             // Create a callback handler for the task of gradually showing the object.
-            val showTask = GradientCallbackHandler(object : RunnablePar {
-                override fun <T> execute(par: T): Any? {
-                    // Set the alpha value of the object to the given parameter value.
-                    entity.state.alpha = (par as Float)
-                    if (par as Float >= startAlpha) {
-                        // If the alpha value has reached or exceeded the start alpha, mark the invisible task as finished.
-                        entity.state.isInvisibleTaskRunning = false
-                    }
-                    return null
+            val showTask = GradientCallbackHandler(endAlpha, startAlpha, step) {
+                // Set the alpha value of the object to the given parameter value.
+                entity.state.alpha = it
+                if (it + step >= startAlpha) {
+                    // Record the current time as the last invisibility time.
+                    entity.state.lastInvisibleTime = now()
+
+                    // If the alpha value has reached or exceeded the start alpha, mark the invisible task as finished.
+                    entity.state.isInvisibleTaskRunning = false
                 }
-            }, endAlpha, startAlpha, -step)
+            }
 
             // Create a callback handler for the task of gradually hiding the object.
-            val hideTask = GradientCallbackHandler(object : RunnablePar {
-                override fun <T> execute(par: T): Any? {
-                    // Set the alpha value of the object to the given parameter value.
-                    entity.state.alpha = (par as Float)
-                    if (!(par as Float <= endAlpha)) {
-                        // If the alpha value is not yet less than or equal to the end alpha, exit the method.
-                        return null
-                    }
+            val hideTask = GradientCallbackHandler(startAlpha, endAlpha, step) {
+                // Set the alpha value of the object to the given parameter value.
+                entity.state.alpha = it
 
-                    // Create a timer to delay the execution of the show task after the object is hidden.
-                    val t = Timer(INVISIBLE_DURATION) { l: ActionEvent? -> showTask.execute() }
-                    t.isRepeats = false
-                    t.start()
-                    return null
+                if (it > endAlpha + step) {
+                    // If the alpha value is not yet less than or equal to the end alpha, exit the method.
+                    return@GradientCallbackHandler
                 }
-            }, startAlpha, endAlpha, step)
+
+                // Create a timer to delay the execution of the show task after the object is hidden.
+                val t = Timer(INVISIBLE_DURATION) { _: ActionEvent? -> showTask.execute() }
+                t.isRepeats = false
+                t.start()
+            }
 
             // Start the task of gradually hiding the object.
             hideTask.execute()
@@ -118,7 +116,6 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
 
     override fun process() {
         Utility.runPercentage(ACTION_CHANCE) { this.attack() }
-
         Utility.runPercentage(ACTION_CHANCE) { disappearAndReappear() }
 
         Utility.runPercentage(ACTION_CHANCE) {

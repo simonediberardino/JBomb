@@ -27,7 +27,23 @@ open class BossEntityLogic(override val entity: Boss) : AiEnemyLogic(entity = en
         }
 
         gameBehavior.invoke()
+    }
 
+    override fun onSpawn() {
+        super.onSpawn()
+        val gameBehavior: GameBehavior = object : GameBehavior() {
+            override fun hostBehavior(): () -> Unit {
+                return {
+                    move((Coordinates.randomCoordinatesFromPlayer(entity.state.size, entity.state.size * 2)))
+                }
+            }
+
+            override fun clientBehavior(): () -> Unit {
+                return {}
+            }
+
+        }
+        gameBehavior.invoke()
     }
 
     override fun onEliminated() {

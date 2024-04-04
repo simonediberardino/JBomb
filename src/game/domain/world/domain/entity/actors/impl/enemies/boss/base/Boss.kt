@@ -21,21 +21,7 @@ abstract class Boss : AiEnemy {
     constructor(id: Long) : super(id)
     constructor(coordinates: Coordinates?) : super(coordinates)
 
-    constructor() : this(null) {
-        val gameBehavior: GameBehavior = object : GameBehavior() {
-            override fun hostBehavior(): () -> Unit {
-                return {
-                    logic.move((Coordinates.randomCoordinatesFromPlayer(state.size, state.size * 2)))
-                }
-            }
-
-            override fun clientBehavior(): () -> Unit {
-                return {}
-            }
-
-        }
-        gameBehavior.invoke()
-    }
+    constructor() : this(null) {}
 
     abstract override val logic: BossEntityLogic
     abstract override val state: BossEntityState
