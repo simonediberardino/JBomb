@@ -90,32 +90,11 @@ class ControllerManager : Observable2(), KeyListener {
         return commandQueue.contains(c)
     }
 
-    private fun updateDelay() {
-        //instance!!.task.setDelay(KEY_DELAY_MS)
-    }
-
     override fun keyTyped(e: KeyEvent) {}
 
     companion object {
         private const val KEY_ESC = KeyEvent.VK_ESCAPE
         private var instance: ControllerManager? = null
-        private var KEY_DELAY_MS = setDefaultCommandDelay()
-
-        fun decreaseCommandDelay(): Int {
-            KEY_DELAY_MS = 15
-            if (instance != null) {
-                instance!!.updateDelay()
-            }
-            return KEY_DELAY_MS
-        }
-
-
-        fun setDefaultCommandDelay(): Int {
-            KEY_DELAY_MS = 30
-            if (instance != null) {
-                instance!!.updateDelay()
-            }
-            return KEY_DELAY_MS
-        }
+        private var KEY_DELAY_MS = 30
     }
 }

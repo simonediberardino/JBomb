@@ -18,7 +18,7 @@ class GhostBossState(
         size: Int = Boss.DEFAULT.SIZE,
         interactionEntities: MutableSet<Class<out Entity>> = Enemy.DEFAULT.INTERACTION_ENTITIES,
         speed: Float = Character.DEFAULT.SPEED,
-        maxHp: Int = Character.DEFAULT.MAX_HP,
+        maxHp: Int = Boss.DEFAULT.MAX_HP,
         currRageStatus: Int = Boss.DEFAULT.START_RAGE_STATUS,
         isSpawned: Boolean = Entity.DEFAULT.SPAWNED,
         isImmune: Boolean = Entity.DEFAULT.IMMUNE,

@@ -1,10 +1,14 @@
 
 high priorities:
 
-- Fix error AI move error
-- Speed REVIEW
+- Bombe terminate
+- interagire con ghost enemy
+- Bomb length
+- Transparent bombs
+- Isola
+- Pause
+- Elicotteri blocchi
 - Bomb
-- Review game ticker observable
 - handle perks/status, bombs length
 - implement auto convert to map
 - forward client message to all clients;

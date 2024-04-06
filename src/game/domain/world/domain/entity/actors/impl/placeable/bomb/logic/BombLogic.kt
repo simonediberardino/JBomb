@@ -59,7 +59,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
      * Handles mouse click interaction with the bomb.
      */
     override fun onMouseClickInteraction() {
-        eliminated()
+        explode()
     }
 
     /**

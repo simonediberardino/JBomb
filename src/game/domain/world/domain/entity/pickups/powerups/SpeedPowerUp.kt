@@ -23,11 +23,11 @@ class SpeedPowerUp : PowerUp {
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            ControllerManager.decreaseCommandDelay()
+            player.state.speed = 2f
         }
 
         override fun cancel(player: BomberEntity) {
-            ControllerManager.setDefaultCommandDelay()
+            player.state.speed = 1f
         }
 
         override fun canPickUp(bomberEntity: BomberEntity): Boolean = true

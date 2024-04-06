@@ -21,7 +21,7 @@ abstract class MovingEntityLogic(
     override fun availableDirections(): List<Direction> {
         val result: MutableList<Direction> = LinkedList()
 
-        // Iterate over each direction
+       /* // Iterate over each direction
         for (d in Direction.values()) {
             val areCoordinatesValid = Coordinates.getEntitiesOnBlock(
                     Coordinates.nextCoords(entity.info.position, d, entity.state.size)
@@ -31,12 +31,16 @@ abstract class MovingEntityLogic(
                 result.add(d)
                 return result
             }
+        }*/
+
+        if (entity.state.obstacles.isEmpty()) {
+            return Direction.values().asList()
         }
 
-        for (d in Direction.values()) {
+        for (direction in Direction.values()) {
             val newCoordinates = Coordinates.getNewCoordinatesOnDirection(
                     entity.info.position,
-                    d,
+                    direction,
                     PitchPanel.PIXEL_UNIT,
                     entity.state.size / 2,
                     entity.state.size
@@ -51,7 +55,7 @@ abstract class MovingEntityLogic(
 
             // If all the next coordinates are valid, add this direction to the list of available directions
             if (areCoordinatesValid) {
-                result.add(d)
+                result.add(direction)
             }
         }
 

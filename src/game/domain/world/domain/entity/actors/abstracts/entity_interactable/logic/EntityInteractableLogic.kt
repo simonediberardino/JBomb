@@ -114,7 +114,7 @@ abstract class EntityInteractableLogic(
             val allEntitiesCanBeInteractedWith = coordinatesInArea.all { c: Coordinates? ->
                 val entitiesOnBlock = Coordinates.getEntitiesOnBlock(c)
                 entitiesOnBlock.isEmpty() || entitiesOnBlock.all { e: Entity ->
-                    !entity.logic.canBeInteractedBy(e) && !canInteractWith(e) && !(isObstacle(e) && e !== entity)
+                    !entity.logic.canBeInteractedBy(e) && !canInteractWith(e) && !(isObstacle(e) && e.info.id != entity.info.id)
                 }
             }
 
@@ -150,8 +150,8 @@ abstract class EntityInteractableLogic(
     }
 
     override fun isObstacle(e: Entity?): Boolean {
-        return e == null || entity.state.obstacles.any { c: Class<out Entity> -> c.isInstance(e) }
-                && entity.state.whitelistObstacles.none { c: Class<out Entity> -> c.isInstance(e) }
+        return e == null || (entity.state.obstacles.any { c: Class<out Entity> -> c.isInstance(e) }
+                && entity.state.whitelistObstacles.none { c: Class<out Entity> -> c.isInstance(e) })
     }
 
     override fun canInteractWith(e: Entity?): Boolean {

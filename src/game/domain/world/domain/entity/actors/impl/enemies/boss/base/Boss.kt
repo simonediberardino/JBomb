@@ -33,7 +33,7 @@ abstract class Boss : AiEnemy {
         val ATTACK_DAMAGE = 1000
         val SIZE = PitchPanel.GRID_SIZE * 4
         val MAX_HP: Int by lazy {
-            Bomberman.match.currentLevel!!.info.bossMaxHealth
+            Bomberman.match.currentLevel.info.bossMaxHealth
         }
         val OBSTACLES: Set<Class<out Entity>> = emptySet()
         val DEATH_SOUND = SoundModel.BOSS_DEATH

@@ -3,11 +3,13 @@ package game.domain.world.domain.entity.geo;
 import game.Bomberman;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.presentation.ui.panels.game.PitchPanel;
+import game.utils.dev.Log;
 
 import java.awt.*;
 import java.time.temporal.ValueRange;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import static game.presentation.ui.panels.game.PitchPanel.GRID_SIZE;
@@ -239,24 +241,26 @@ public class Coordinates implements Comparable<Coordinates> {
 
 
     public static List<Entity> getEntitiesOnCoordinates(List<Coordinates> desiredCoords) {
-        List<Entity> entityLinkedList = new LinkedList<>();
-        // Check for each entity if it occupies the specified coordinates
+        List<Entity> entityList = new CopyOnWriteArrayList<>();
         Collection<Entity> entities = Bomberman.match.getEntities();
 
         entities.parallelStream().forEach(e -> {
-            for (Coordinates coord : desiredCoords) {
-                int entityBottomRightX = e.getInfo().getPosition().getX() + e.getState().getSize() - 1;
-                int entityBottomRightY = e.getInfo().getPosition().getY() + e.getState().getSize() - 1;
+            Coordinates position = e.getInfo().getPosition();
 
-                if (coord.getX() >= e.getInfo().getPosition().getX() && coord.getX() <= entityBottomRightX && coord.getY() >= e.getInfo().getPosition().getY() && coord.getY() <= entityBottomRightY) {
-                    entityLinkedList.add(e);
+            for (Coordinates coord : desiredCoords) {
+                int entityBottomRightX = position.getX() + e.getState().getSize() - 1;
+                int entityBottomRightY = position.getY() + e.getState().getSize() - 1;
+
+                if (coord.getX() >= position.getX() && coord.getX() <= entityBottomRightX &&
+                        coord.getY() >= position.getY() && coord.getY() <= entityBottomRightY) {
+                    entityList.add(e);
+                    break; // No need to check other coordinates for this entity
                 }
             }
         });
 
-        return entityLinkedList;
+        return new LinkedList<>(entityList);
     }
-
 
     // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
     public static List<Coordinates> getNewCoordinatesOnDirection(Coordinates position, Direction d, int steps, int offset, int size) {

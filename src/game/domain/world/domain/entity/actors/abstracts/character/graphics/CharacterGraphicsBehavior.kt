@@ -30,7 +30,7 @@ open class CharacterGraphicsBehavior(open val entity: Character) : DefaultEntity
         } else if (Utility.timePassed(entity.state.lastImageUpdate) > entity.image.imageRefreshRate) {
             // If it's time to refresh the image, increment the image index.
             entity.image.lastImageIndex++
-            playStepSound()
+            entity.logic.onStep()
         } else {
             // Otherwise, don't update the image yet.
             return
@@ -50,9 +50,5 @@ open class CharacterGraphicsBehavior(open val entity: Character) : DefaultEntity
             entity.state.imageDirection = direction
         else if (entity.state.imageDirection == null)
             entity.state.imageDirection = imageDirections[0]
-    }
-
-    override fun playStepSound() {
-        AudioManager.getInstance().play(SoundModel.STEP_SOUND)
     }
 }

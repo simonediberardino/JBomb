@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.base
 
+import game.audio.SoundModel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
@@ -61,6 +62,8 @@ abstract class BomberEntity : Character, Explosive {
     }
 
     internal object DEFAULT {
+        val STEP_SOUND = SoundModel.STEP_SOUND
+
         val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf(
                 AbstractExplosion::class.java,
                 Enemy::class.java,
