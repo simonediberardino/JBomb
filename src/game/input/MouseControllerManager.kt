@@ -1,10 +1,11 @@
 package game.input
 
 import game.Bomberman
+import game.domain.tasks.PeriodicTask
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
-import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.tasks.PeriodicTask
+import kotlinx.coroutines.CoroutineScope
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
@@ -13,8 +14,10 @@ import java.util.*
 /**
  * The MouseControllerManager class handles mouse interactions and controls player movement based on mouse input.
  */
-class MouseControllerManager : MouseAdapter(), MouseMotionListener {
-    private val DELAY = 300
+class MouseControllerManager(
+        private val scope: CoroutineScope
+) : MouseAdapter(), MouseMotionListener {
+    private val DELAY = 300L
     private var mouseDraggedInteractionOccured = false
     var isMouseDraggedInteractionInterrupted = false
     var isMouseDragInteractionEntered = false
@@ -48,13 +51,13 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
             onMouseClicked(mouseClickQueue.peekFirst())
     }
 
-    private val movementTask = Runnable {
+    private fun movementTask() {
         val match = Bomberman.match
         val player = match.player
 
         // Check if there is a player and the player is alive
         if (player == null || !player.logic.isAlive()) {
-            return@Runnable // If not, exit the task
+            return // If not, exit the task
         }
 
         onCooldown()
@@ -67,7 +70,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
             entityToInteract.logic.mouseInteractions()
             onMovementPeriodicTaskEnd()
             nextCommandInQueue()
-            return@Runnable // Exit the task
+            return // Exit the task
         }
 
         // Calculate directions based on mouse coordinates
@@ -80,7 +83,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
 
         // Check if first directions are not empty and all are in the latest directions
         if (firstDirectionsFromPlayer.isNotEmpty() && firstDirectionsFromPlayer.all { it in latestDirectionsFromPlayer }) {
-            return@Runnable // Exit the task
+            return // Exit the task
         }
 
         // Perform end-of-movement task operations
@@ -150,7 +153,7 @@ class MouseControllerManager : MouseAdapter(), MouseMotionListener {
     }
 
 
-    private val playerMovementTask = PeriodicTask(movementTask, DELAY)
+    private val playerMovementTask = PeriodicTask({ movementTask() }, DELAY, scope)
 
     // Directions are refreshed and will be replaced in task
     private fun onCooldown() {

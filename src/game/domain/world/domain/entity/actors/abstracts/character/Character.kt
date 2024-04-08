@@ -9,7 +9,6 @@ import game.domain.world.domain.entity.actors.abstracts.character.properties.Cha
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
-import game.input.Command
 import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
 import game.presentation.ui.panels.game.PitchPanel
@@ -38,9 +37,9 @@ abstract class Character : MovingEntity {
         return dtoToEntityNetwork()
     }
 
-    override val delayObserverUpdate: Int
+    override val delayObserverUpdate: Long
         get() {
-            return (DEFAULT_OBSERVER_UPDATE / state.speed).toInt()
+            return (DEFAULT_OBSERVER_UPDATE / state.speed).toLong()
         }
 
     companion object {

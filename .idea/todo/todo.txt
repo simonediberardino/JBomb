@@ -1,6 +1,7 @@
 
 high priorities:
 
+- Fix command interrupted
 - Bombe terminate
 - interagire con ghost enemy
 - Bomb length

@@ -41,14 +41,14 @@ class BomberManMatch(
     private val _entitiesMap: HashMap<Long, Entity> = HashMap()
 
     // Manager for mouse controllers
-    val mouseControllerManager: MouseControllerManager = MouseControllerManager()
+    val mouseControllerManager: MouseControllerManager = MouseControllerManager(scope)
 
     // Manager for general controllers (nullable)
     var controllerManager: ControllerManager? = ControllerManager()
         private set
 
     // Observable for game tick events (nullable)
-    var gameTickerObservable: GameTickerObservable? = GameTickerObservable()
+    var gameTickerObservable: GameTickerObservable? = GameTickerObservable(scope)
         private set
 
     // Controllers for inventory elements (lateinit and nullable)

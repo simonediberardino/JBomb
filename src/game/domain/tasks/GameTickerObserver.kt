@@ -4,6 +4,7 @@ import game.domain.tasks.observer.Observable2
 import game.domain.tasks.observer.Observer2
 import game.utils.Utility
 import game.utils.time.now
+import game.utils.time.timeunit
 
 abstract class GameTickerObserver : Observer2 {
     private var lastUpdate = 0L
@@ -16,12 +17,12 @@ abstract class GameTickerObserver : Observer2 {
         return Utility.timePassed(lastUpdate) >= delayObserverUpdate // check if the delay has passed since the last update
     }
 
-    open val delayObserverUpdate: Int
+    open val delayObserverUpdate: Long
         get() {
             return DEFAULT_OBSERVER_UPDATE
         }
 
     companion object {
-        const val DEFAULT_OBSERVER_UPDATE = 18
+        val DEFAULT_OBSERVER_UPDATE = timeunit() * 6
     }
 }

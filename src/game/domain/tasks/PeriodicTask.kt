@@ -1,37 +1,31 @@
 package game.domain.tasks
 
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
-import javax.swing.Timer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PeriodicTask(
-        private val callback: Runnable,
-        private val delay: Int
+        private val callback: () -> Unit,
+        var delay: Long,
+        private val scope: CoroutineScope
 ) {
-    private val timer: Timer
-    private val actionListener: ActionListener = ActionListener { e: ActionEvent? -> callback.run() }
-
-    init {
-        timer = Timer(delay, actionListener)
-        timer.isRepeats = true
-    }
+    private var job: Job? = null
 
     fun start() {
-        timer.start()
-    }
-
-    fun setDelay(delay: Int) {
-        timer.delay = delay
-    }
-
-    fun resume() {
-        try {
-            timer.start()
-        } catch (ignored: Exception) {
+        job = scope.launch {
+            while (true) {
+                callback()
+                delay(delay)
+            }
         }
     }
 
+    fun resume() {
+        start()
+    }
+
     fun stop() {
-        timer.stop()
+        job?.cancel()
     }
 }
