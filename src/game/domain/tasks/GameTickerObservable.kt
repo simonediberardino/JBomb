@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
     private val periodicTask: PeriodicTask
     companion object {
-        val DELAY_MS: Long = DEFAULT_OBSERVER_UPDATE / 2L
+        val DELAY_MS: Long = DEFAULT_OBSERVER_UPDATE
     }
 
     /**

@@ -1,18 +1,17 @@
 package game.domain.world.domain.entity.actors.impl.bonus.mystery_box
 
 import game.Bomberman
-import game.domain.world.domain.entity.geo.Coordinates
-import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.level.levels.Level
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.logic.MysteryBoxLogic
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.state.MysteryBoxState
+import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
-import java.lang.Exception
 
 class MysteryBoxPerk(level: Level, entity: Entity?) : MysteryBox(level, entity) {
     // TODO Refactor
-    constructor(id: Long) : this(Bomberman.match.currentLevel!!, null) {
+    constructor(id: Long) : this(Bomberman.match.currentLevel, null) {
         this.info.id = id
     }
 

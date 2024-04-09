@@ -1,10 +1,10 @@
 package game.domain.world.domain.entity.actors.abstracts.moving_entity.logic
 
-import game.presentation.ui.panels.game.PitchPanel
-import game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic.EntityInteractableLogic
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
+import game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic.EntityInteractableLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.presentation.ui.panels.game.PitchPanel
 import java.util.*
 
 abstract class MovingEntityLogic(
@@ -20,18 +20,6 @@ abstract class MovingEntityLogic(
      */
     override fun availableDirections(): List<Direction> {
         val result: MutableList<Direction> = LinkedList()
-
-       /* // Iterate over each direction
-        for (d in Direction.values()) {
-            val areCoordinatesValid = Coordinates.getEntitiesOnBlock(
-                    Coordinates.nextCoords(entity.info.position, d, entity.state.size)
-            ).any { entity.logic.canInteractWith(it) }
-
-            if (areCoordinatesValid) {
-                result.add(d)
-                return result
-            }
-        }*/
 
         if (entity.state.obstacles.isEmpty()) {
             return Direction.values().asList()
@@ -61,5 +49,4 @@ abstract class MovingEntityLogic(
 
         return result
     }
-
 }

@@ -5,7 +5,6 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.properties.BlockEntityState
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
 import game.domain.world.domain.entity.actors.impl.models.State
-import java.util.concurrent.atomic.AtomicReference
 
 abstract class MysteryBoxState(
         entity: Entity,
@@ -16,7 +15,9 @@ abstract class MysteryBoxState(
         size: Int = MysteryBox.DEFAULT.SIZE,
         alpha: Float = Entity.DEFAULT.ALPHA,
         interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
-        lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE
+        lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
+        var level: Level? = null,
+        var buyer: Entity? = null
 ) : BlockEntityState(entity = entity,
         isSpawned = isSpawned,
         isImmune = isImmune,
@@ -28,7 +29,5 @@ abstract class MysteryBoxState(
         lastImageUpdate = lastImageUpdate) {
     var status = MysteryBox.Status.CLOSED
     var lastClickInteraction: Long = 0
-    var level: Level? = null
-    var buyer: Entity? = null
     abstract val price: Int
 }

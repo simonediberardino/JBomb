@@ -38,9 +38,7 @@ abstract class Character : MovingEntity {
     }
 
     override val delayObserverUpdate: Long
-        get() {
-            return (DEFAULT_OBSERVER_UPDATE / state.speed).toLong()
-        }
+        get() = (super.delayObserverUpdate / state.speed).toLong()
 
     companion object {
         val size = PitchPanel.PIXEL_UNIT * 4 * 2
@@ -58,5 +56,6 @@ abstract class Character : MovingEntity {
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
         val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_2
         val HITBOX_SIZE_TO_HEIGHT_RATIO: Float = 0.733f
+        val STEP_SIZE = PitchPanel.PIXEL_UNIT
     }
 }

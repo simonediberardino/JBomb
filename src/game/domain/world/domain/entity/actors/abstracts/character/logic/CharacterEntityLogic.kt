@@ -83,6 +83,16 @@ abstract class CharacterEntityLogic(
     }
 
     /**
+     * Moves or interacts with other entities in the given direction and with the default step size and offset.
+     *
+     * @param direction the direction to move or interact in
+     * @return true if the entity can move in the given direction, false otherwise
+     */
+    override fun moveOrInteract(direction: Direction): Boolean {
+        return moveOrInteract(direction, (Character.DEFAULT.STEP_SIZE * entity.state.speed).toInt(), false)
+    }
+
+    /**
      * Removes the specified amount of damage from the entity's health points.
      * If the health points reach 0 or below, the entity is despawned.
      * Otherwise, a damage animation is started.
@@ -186,8 +196,11 @@ abstract class CharacterEntityLogic(
 
         if (entity.state.canMove) {
             when (command) {
-                Command.MOVE_UP, Command.MOVE_DOWN -> handleMoveCommand(command, Direction.LEFT, Direction.RIGHT)
-                Command.MOVE_LEFT, Command.MOVE_RIGHT -> handleMoveCommand(command, Direction.UP, Direction.DOWN)
+                Command.MOVE_UP, Command.MOVE_DOWN ->
+                    handleMoveCommand(command, Direction.LEFT, Direction.RIGHT)
+
+                Command.MOVE_LEFT, Command.MOVE_RIGHT ->
+                    handleMoveCommand(command, Direction.UP, Direction.DOWN)
                 else -> {}
             }
         }

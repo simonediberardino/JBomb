@@ -73,7 +73,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         } catch (exception: ConcurrentModificationException) {
             exception.printStackTrace()
         }
-
     }
 
     override fun addCommand(command: Command) {

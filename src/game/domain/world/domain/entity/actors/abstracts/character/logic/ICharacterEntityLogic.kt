@@ -22,4 +22,5 @@ interface ICharacterEntityLogic : IMovingEntityLogic {
     fun addCommand(command: Command)
     fun removeCommand(command: Command)
     fun onEndedDeathAnimation()
+    fun moveOrInteract(direction: Direction): Boolean
 }
