@@ -1,8 +1,6 @@
 
 high priorities:
 
-- Adjust player step size based on framerate
-- interagire con ghost enemy
 - Bomb length
 - Transparent bombs
 - Isola
@@ -15,8 +13,7 @@ high priorities:
 - handle you message and skin;
 - disable mp;
 - Update info network -> domain
-
-
+- Adjust player step size based on framerate
 
 - Images;
 - database

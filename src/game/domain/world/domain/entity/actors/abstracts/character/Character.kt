@@ -37,9 +37,6 @@ abstract class Character : MovingEntity {
         return dtoToEntityNetwork()
     }
 
-    override val delayObserverUpdate: Long
-        get() = (super.delayObserverUpdate / state.speed).toLong()
-
     companion object {
         val size = PitchPanel.PIXEL_UNIT * 4 * 2
     }

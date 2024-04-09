@@ -89,7 +89,8 @@ abstract class CharacterEntityLogic(
      * @return true if the entity can move in the given direction, false otherwise
      */
     override fun moveOrInteract(direction: Direction): Boolean {
-        return moveOrInteract(direction, (Character.DEFAULT.STEP_SIZE * entity.state.speed).toInt(), false)
+        val speed = Character.DEFAULT.STEP_SIZE * entity.state.speed
+        return moveOrInteract(direction, (speed).toInt(), false)
     }
 
     /**

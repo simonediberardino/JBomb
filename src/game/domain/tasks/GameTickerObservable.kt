@@ -22,9 +22,7 @@ class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
     private val task = {
         synchronized(observers) {
             for (observer in observers.toTypedArray()) {
-                if (observer.isValid()) {
-                    notify(observer, ObserverParam(ObserverParamIdentifier.GAME_TICK, null))
-                }
+                notify(observer, ObserverParam(ObserverParamIdentifier.GAME_TICK, null))
             }
         }
     }

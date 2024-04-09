@@ -6,23 +6,14 @@ import game.utils.time.now
 import game.utils.time.timeunit
 
 abstract class GameTickerObserver : Observer2 {
-    private var lastUpdate = 0L
-    var currOffset = 0L
+    var lastUpdate = 0L
+        private set
 
     override fun update(arg: Observable2.ObserverParam) {
         lastUpdate = now()
     }
 
-    override fun isValid(): Boolean {
-        return true
-    }
-
-    open val delayObserverUpdate: Long
-        get() {
-            return DEFAULT_OBSERVER_UPDATE
-        }
-
     companion object {
-        val DEFAULT_OBSERVER_UPDATE = timeunit() * 6
+        val DEFAULT_OBSERVER_UPDATE = timeunit() * 8
     }
 }

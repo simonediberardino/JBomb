@@ -4,7 +4,6 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityState
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.models.State
-import java.util.concurrent.atomic.AtomicReference
 
 open class EntityInteractableState(
         entity: Entity,
@@ -29,4 +28,6 @@ open class EntityInteractableState(
         size = size,
         alpha = alpha,
         interactionEntities = interactionEntities
-)
+) {
+    var previousObserverUpdate: Long = 0L
+}
