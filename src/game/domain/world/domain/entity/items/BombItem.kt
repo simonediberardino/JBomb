@@ -14,7 +14,6 @@ class BombItem : UsableItem() {
 
     override fun use() {
         val match = Bomberman.match
-
         val isLocalPlayer = owner == match.player
 
         val isBombPlacementIntervalValid = Utility.timePassed(owner.state.lastPlacedBombTime) >= Bomb.PLACE_INTERVAL

@@ -38,7 +38,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     }
 
     // Calculates the minimum distance to any bomb from the current entity. If there are no bombs, returns 0.0.
-    private val minDistanceToBomb: Double = Bomberman.match.bombs.minOfOrNull {
+    private fun minDistanceToBomb(): Double = Bomberman.match.bombs.minOfOrNull {
         bomb -> bomb.info.position.distanceTo(entity.info.position)
     } ?: 0.0
 
@@ -50,7 +50,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         }
 
         // If the minimum distance to a bomb is greater than half the grid size, make bombs solid.
-        if (minDistanceToBomb > PitchPanel.GRID_SIZE / 2f) {
+        if (minDistanceToBomb() > PitchPanel.GRID_SIZE / 2f) {
             entity.state.bombsSolid = true
         }
     }

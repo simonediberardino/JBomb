@@ -1,12 +1,9 @@
 
 high priorities:
 
-- Bomb length
-- Transparent bombs
-- Isola
 - Pause
 - Elicotteri blocchi
-- Bomb
+- Bomb mp
 - handle perks/status, bombs length
 - implement auto convert to map
 - forward client message to all clients;

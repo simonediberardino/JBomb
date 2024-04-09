@@ -34,7 +34,7 @@ class IncreaseMaxBombsPowerUp
         override fun cancel(player: BomberEntity) {}
 
         override fun canPickUp(bomberEntity: BomberEntity): Boolean =
-                DataInputOutput.getInstance().obtainedBombs < Bomberman.match.currentLevel!!.info.maxBombs
+                DataInputOutput.getInstance().obtainedBombs < Bomberman.match.currentLevel.info.maxBombs
     }
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {

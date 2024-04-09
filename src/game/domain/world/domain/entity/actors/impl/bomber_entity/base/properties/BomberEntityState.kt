@@ -68,11 +68,10 @@ open class BomberEntityState(
         set(value) {
             field = value
 
-            // Adjust the whitelist of obstacles based on the bombs' solidity.
-            if (!field) {
-                whitelistObstacles.remove(Bomb::class.java)
-            } else if (!forceBombsSolid) {
+            if (!value) {
                 whitelistObstacles.add(Bomb::class.java)
+            } else if (!forceBombsSolid) {
+                whitelistObstacles.remove(Bomb::class.java)
             }
         }
 
