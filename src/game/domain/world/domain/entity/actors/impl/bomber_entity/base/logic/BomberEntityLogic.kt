@@ -20,6 +20,11 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         super.onSpawn()
         // Give the current entity a BombItem when it is spawned in the match.
         Bomberman.match.give(entity, BombItem())
+        initBombVariables()
+    }
+
+    override fun initBombVariables() {
+        entity.state.maxBombs = Bomberman.match.currentLevel.info.maxBombs
     }
 
     override fun onMove(coordinates: Coordinates) {
@@ -79,10 +84,6 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     // Removes an active power-up from the list of active power-ups.
     override fun removeActivePowerUp(p: PowerUp?) {
         entity.state.activePowerUps.removeIf { e: Class<out PowerUp> -> e.isInstance(p) }
-    }
-
-    override fun getMaxBombs(): Int {
-        return Bomberman.match.currentLevel.info.maxBombs ?: 0
     }
 
     override fun executeCommandQueue() {}

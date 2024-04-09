@@ -1,7 +1,7 @@
 
 high priorities:
 
-- Bombe terminate
+- Adjust player step size based on framerate
 - interagire con ghost enemy
 - Bomb length
 - Transparent bombs

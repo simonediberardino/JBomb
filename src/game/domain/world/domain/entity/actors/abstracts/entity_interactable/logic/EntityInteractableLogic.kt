@@ -108,7 +108,7 @@ abstract class EntityInteractableLogic(
             val coordinatesInArea = Coordinates.getAllBlocksInAreaFromDirection(
                     entity,
                     direction,
-                    stepSize
+                    PitchPanel.PIXEL_UNIT
             )
 
             val allEntitiesCanBeInteractedWith = coordinatesInArea.all { c: Coordinates? ->
@@ -128,7 +128,8 @@ abstract class EntityInteractableLogic(
         // the entity moves in a certain direction with a given step size
         val nextOccupiedCoords = getNewCoordinatesOnDirection(
                 entity.info.position,
-                direction, stepSize,
+                direction,
+                stepSize,
                 PitchPanel.GRID_SIZE / 3 / 2,
                 entity.state.size
         )

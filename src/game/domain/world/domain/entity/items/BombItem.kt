@@ -4,7 +4,7 @@ import game.Bomberman
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.network.events.forward.UpdateInfoEventForwarder
-import game.utils.Utility.timePassed
+import game.utils.Utility
 import game.utils.dev.Log
 import game.utils.file_system.Paths.entitiesFolder
 import game.utils.time.now
@@ -16,12 +16,30 @@ class BombItem : UsableItem() {
         val match = Bomberman.match
 
         val isLocalPlayer = owner == match.player
-        val isBombPlacementValid = isLocalPlayer &&
-                (owner.state.currExplosionLength == 0 || owner.state.placedBombs >= owner.state.maxBombs || owner.state.currentBombs <= 0)
 
-        val isBombPlacementIntervalValid = timePassed(owner.state.lastPlacedBombTime) >= Bomb.PLACE_INTERVAL
+        val isBombPlacementIntervalValid = Utility.timePassed(owner.state.lastPlacedBombTime) >= Bomb.PLACE_INTERVAL
 
-        if (!isBombPlacementValid || !isBombPlacementIntervalValid) {
+        if (!isBombPlacementIntervalValid) {
+            Log.e("Cannot place bomb, too early")
+            return
+        }
+
+        if (isLocalPlayer && owner.state.placedBombs >= owner.state.maxBombs) {
+            Log.e("owner.state.placedBombs: ${owner.state.placedBombs}")
+            Log.e("owner.state.maxBombs: ${owner.state.maxBombs}")
+            Log.e("Cannot place bomb, placedBombs >= maxBombs")
+            return
+        }
+
+        if (isLocalPlayer && owner.state.currentBombs <= 0) {
+            Log.e("owner.state.currentBombs: ${owner.state.currentBombs}")
+            Log.e("Cannot place bomb, currentBombs <= 0")
+            return
+        }
+
+        if (isLocalPlayer && owner.state.currExplosionLength <= 0) {
+            Log.e("owner.state.currExplosionLength: ${owner.state.currExplosionLength}")
+            Log.e("Cannot place bomb, currExplosionLength <= 0")
             return
         }
 
