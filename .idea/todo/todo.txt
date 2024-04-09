@@ -1,8 +1,6 @@
 
 high priorities:
 
-- Pause
-- Elicotteri blocchi
 - Bomb mp
 - handle perks/status, bombs length
 - implement auto convert to map

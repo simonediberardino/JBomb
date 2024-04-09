@@ -280,7 +280,7 @@ class BomberManMatch(
         // Update the game state to indicate it is paused
         gameState = false
 
-        if (showUi){
+        if (showUi) {
             // Show the pause panel to the player
             Bomberman.showActivity(PausePanel::class.java)
         }

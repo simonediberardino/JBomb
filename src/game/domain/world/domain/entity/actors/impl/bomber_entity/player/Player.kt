@@ -26,4 +26,8 @@ class Player : BomberEntity {
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val image: PlayerImageModel = PlayerImageModel(entity = this)
     override val properties: BomberEntityProperties = BomberEntityProperties(types = EntityTypes.BomberEntity)
+
+    internal object DEFAULT {
+        val DEATH_SOUND = SoundModel.PLAYER_DEATH
+    }
 }

@@ -16,7 +16,6 @@ class PeriodicTask(
     private var lastUpdate: Long = 0L
     private var currDelay: Long = delay
 
-
     fun start() {
         job = scope.launch {
             while (true) {
@@ -40,6 +39,8 @@ class PeriodicTask(
     }
 
     fun resume() {
+        lastUpdate = 0L
+        currDelay = delay
         start()
     }
 

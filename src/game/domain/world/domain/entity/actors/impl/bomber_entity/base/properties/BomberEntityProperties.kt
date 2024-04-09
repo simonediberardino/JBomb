@@ -7,6 +7,7 @@ import game.domain.world.domain.entity.actors.abstracts.character.properties.Cha
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.types.EntityTypes
 import game.values.DrawPriority
@@ -18,7 +19,7 @@ open class BomberEntityProperties(
         stepSound: SoundModel? = BomberEntity.DEFAULT.STEP_SOUND,
         obstacles: Set<Class<out Entity?>?> = EntityInteractable.DEFAULT.OBSTACLES,
         imageDirections: List<Direction> = Character.DEFAULT.IMAGE_DIRECTIONS,
-        deathSound: SoundModel = Character.DEFAULT.DEATH_SOUND
+        deathSound: SoundModel = Player.DEFAULT.DEATH_SOUND
 ): CharacterEntityProperties(
         drawPriority = drawPriority,
         types = types,

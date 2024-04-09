@@ -55,13 +55,27 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun observerUpdate(arg: Observable2.ObserverParam) {
         super.observerUpdate(arg)
 
-        when(arg.identifier) {
+        when (arg.identifier) {
             Observable2.ObserverParamIdentifier.GAME_TICK -> executeCommandQueue()
             Observable2.ObserverParamIdentifier.INPUT_COMMAND -> addCommand(command = arg.value as Command)
             Observable2.ObserverParamIdentifier.DELETE_COMMAND -> removeCommand(command = arg.value as Command)
         }
 
         entity.state.previousObserverUpdate = now()
+    }
+
+    override fun handleCommand(command: Command) {
+        when (command) {
+            Command.PAUSE -> {
+                Bomberman.match.toggleGameState()
+                removeCommand(command)
+            }
+
+            Command.INTERACT -> {}
+            else -> {}
+        }
+
+        super.handleCommand(command)
     }
 
     override fun executeCommandQueue() {

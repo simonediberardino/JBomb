@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.abstracts.base
 
+import game.Bomberman
 import game.domain.events.models.RunnablePar
 import game.domain.tasks.GameTickerObserver
 import game.domain.tasks.observer.Observable2
@@ -9,6 +10,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.types.EntityTypes
 import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
+import game.utils.dev.Log
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.util.*
@@ -193,6 +195,11 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
 
     override fun update(arg: Observable2.ObserverParam) {
         super.update(arg)
+
+        if (!Bomberman.match.gameState) {
+            return
+        }
+
         logic.observerUpdate(arg)
     }
 
