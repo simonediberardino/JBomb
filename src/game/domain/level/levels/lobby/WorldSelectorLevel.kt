@@ -7,6 +7,7 @@ import game.domain.world.domain.entity.pickups.portals.World2Portal
 
 class WorldSelectorLevel : IslandLevel() {
     override fun generateLevel() {
+        super.generateLevel()
         generatePortals()
     }
 

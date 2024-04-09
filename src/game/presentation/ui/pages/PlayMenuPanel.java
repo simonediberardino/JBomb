@@ -2,6 +2,7 @@ package game.presentation.ui.pages;
 
 import game.Bomberman;
 import game.domain.level.levels.lobby.WaitingRoomLevel;
+import game.domain.level.levels.lobby.WorldSelectorLevel;
 import game.domain.level.levels.world1.World1Level5;
 import game.network.gamehandler.ClientGameHandler;
 import game.network.gamehandler.ServerGameHandler;
@@ -37,7 +38,7 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY_CAMPAIGN));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new World1Level5(), new ServerGameHandler(28960)));
+        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel(), new ServerGameHandler(28960)));
         return startLevelButton;
     }
 
