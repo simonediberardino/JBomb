@@ -11,7 +11,6 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.Bomb
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.input.Command
 import game.presentation.ui.pages.GameOverPanel
-import game.utils.dev.Log
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 
@@ -63,9 +62,18 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     }
 
     override fun executeCommandQueue() {
-        entity.state.commandQueue.forEach { c ->
-            handleCommand(c)
+        val commandQueue = entity.state.commandQueue
+
+        try {
+            synchronized(commandQueue) {
+                commandQueue.forEach { c ->
+                    handleCommand(c)
+                }
+            }
+        } catch (exception: ConcurrentModificationException) {
+            exception.printStackTrace()
         }
+
     }
 
     override fun addCommand(command: Command) {

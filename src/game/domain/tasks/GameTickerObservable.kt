@@ -34,11 +34,7 @@ class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
         periodicTask.start()
     }
 
-    fun resume() {
-        periodicTask.resume()
-    }
+    fun resume() = periodicTask.resume()
 
-    fun stop() {
-        periodicTask.stop()
-    }
+    fun stop() = periodicTask.stop()
 }
