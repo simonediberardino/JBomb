@@ -1,10 +1,10 @@
 package game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic
 
-import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.presentation.ui.panels.game.PitchPanel
 
 interface IEntityInteractableLogic : IEntityLogic {
     fun moveOrInteract(direction: Direction, stepSize: Int, ignoreMapBorders: Boolean): Boolean
@@ -15,4 +15,6 @@ interface IEntityInteractableLogic : IEntityLogic {
     fun isObstacle(e: Entity?): Boolean
     fun canInteractWith(e: Entity?): Boolean
     fun interactAndUpdateLastInteract(e: Entity?)
+    fun onCollision(e: Entity)
+    fun onExitCollision(e: Entity)
 }

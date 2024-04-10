@@ -1,9 +1,9 @@
 package game.domain.level.gamehandler.imp
 
-import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
-import game.domain.level.levels.Level
 import game.domain.level.behavior.*
 import game.domain.level.gamehandler.model.GameHandler
+import game.domain.level.levels.Level
+import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.utils.Utility
 import java.awt.Image
 
@@ -22,6 +22,10 @@ open class DefaultGameHandler(level: Level): GameHandler(level) {
     override fun generateStone() = GenerateStoneBehavior(level.field).invoke()
 
     override fun generatePlayer() = GeneratePlayerBehavior(level.info.playerSpawnCoordinates).invoke()
+
+    override fun spawnMysteryBox() {
+        SpawnMysteryBoxBehavior(level).invoke()
+    }
 
     override fun generateDestroyableBlock() {
         DespawnDestroyableBlocksBehavior().invoke()

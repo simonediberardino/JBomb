@@ -11,5 +11,6 @@
     <orderEntry type="library" name="google.guava" level="project" />
     <orderEntry type="library" name="jetbrains.kotlin.reflect" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:Latest" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:Release" level="project" />
   </component>
 </module>

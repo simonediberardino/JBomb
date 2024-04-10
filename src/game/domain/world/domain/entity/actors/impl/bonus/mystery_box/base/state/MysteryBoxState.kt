@@ -16,8 +16,8 @@ abstract class MysteryBoxState(
         alpha: Float = Entity.DEFAULT.ALPHA,
         interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
         lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
-        var level: Level? = null,
-        var buyer: Entity? = null
+        var level: Level?,
+        var buyer: Entity?
 ) : BlockEntityState(entity = entity,
         isSpawned = isSpawned,
         isImmune = isImmune,

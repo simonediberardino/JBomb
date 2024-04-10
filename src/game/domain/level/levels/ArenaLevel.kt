@@ -2,18 +2,17 @@ package game.domain.level.levels
 
 import game.Bomberman
 import game.data.data.DataInputOutput
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.events.game.RoundPassedGameEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
 import game.domain.events.game.UpdateMaxBombsEvent
-import game.domain.level.behavior.SpawnMysteryBoxBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
 import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.gamehandler.imp.DefaultGameHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.DefaultArenaLevelInfo
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.localization.Localization
 import game.presentation.ui.viewelements.misc.ToastHandler
 import java.awt.event.ActionEvent
@@ -24,11 +23,19 @@ import javax.swing.Timer
 abstract class ArenaLevel : Level() {
     override val gameHandler: GameHandler
         get() = object : DefaultGameHandler(this) {
+            override fun spawnMysteryBox() {
+                if (currentRound.get() != 0) {
+                    return
+                }
+
+               super.spawnMysteryBox()
+            }
+
             override fun generateDestroyableBlock() {
                 if (currentRound.get() != 0) {
                     return
                 }
-                SpawnMysteryBoxBehavior(this@ArenaLevel).invoke()
+
                 super.generateDestroyableBlock()
             }
 

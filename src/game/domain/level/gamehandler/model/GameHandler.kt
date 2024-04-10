@@ -1,7 +1,7 @@
 package game.domain.level.gamehandler.model
 
-import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.level.levels.Level
+import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import java.awt.Image
 
 abstract class GameHandler(protected val level: Level) {
@@ -13,6 +13,7 @@ abstract class GameHandler(protected val level: Level) {
 
     fun startLevel() {
         generateDestroyableBlock()
+        spawnMysteryBox()
         spawnBoss()
         spawnEnemies()
         level.onStartLevel()
@@ -25,4 +26,5 @@ abstract class GameHandler(protected val level: Level) {
     abstract fun spawnEnemies()
     abstract fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>)
     abstract val borderImages: Array<Image?>
+    abstract fun spawnMysteryBox()
 }

@@ -9,7 +9,10 @@ import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.state.
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 
-class MysteryBoxPerk(level: Level, entity: Entity?) : MysteryBox(level, entity) {
+class MysteryBoxPerk(
+        level: Level,
+        entity: Entity?
+) : MysteryBox() {
     // TODO Refactor
     constructor(id: Long) : this(Bomberman.match.currentLevel, null) {
         this.info.id = id
@@ -28,7 +31,11 @@ class MysteryBoxPerk(level: Level, entity: Entity?) : MysteryBox(level, entity) 
         }
     }
 
-    override val state: MysteryBoxState = object : MysteryBoxState(entity = this) {
+    override val state: MysteryBoxState = object : MysteryBoxState(
+            entity = this,
+            buyer = entity,
+            level = level
+    ) {
         override val price: Int = 200
     }
 }

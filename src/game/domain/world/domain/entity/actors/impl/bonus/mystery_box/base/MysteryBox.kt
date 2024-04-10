@@ -1,6 +1,5 @@
 package game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base
 
-import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
@@ -14,17 +13,9 @@ import game.presentation.ui.panels.game.PitchPanel
 import game.utils.file_system.Paths
 import java.awt.image.BufferedImage
 
-abstract class MysteryBox(
-        level: Level,
-        buyer: Entity?
-) : HardBlock(Coordinates(0, 0)) {
+abstract class MysteryBox : HardBlock(Coordinates(0, 0)) {
     abstract override val state: MysteryBoxState
     abstract override val logic: MysteryBoxLogic
-
-    init {
-        state.level = level
-        state.buyer = buyer
-    }
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
         override fun getImage(entity: Entity): BufferedImage? {
