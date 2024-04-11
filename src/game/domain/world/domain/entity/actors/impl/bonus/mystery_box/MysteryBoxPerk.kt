@@ -11,10 +11,10 @@ import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 
 class MysteryBoxPerk(
         level: Level,
-        entity: Entity?
+        entity: Entity
 ) : MysteryBox() {
     // TODO Refactor
-    constructor(id: Long) : this(Bomberman.match.currentLevel, null) {
+    constructor(id: Long) : this(Bomberman.match.currentLevel, Bomberman.match.player!!) {
         this.info.id = id
     }
 

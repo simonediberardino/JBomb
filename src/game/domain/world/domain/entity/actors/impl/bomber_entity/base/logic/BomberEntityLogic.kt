@@ -33,13 +33,11 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         handleInteractionWithBombs()
     }
 
-    override fun spawnOffset(): Coordinates {
-        return BomberEntity.SPAWN_OFFSET
-    }
+    override fun spawnOffset(): Coordinates = BomberEntity.SPAWN_OFFSET
 
     // Calculates the minimum distance to any bomb from the current entity. If there are no bombs, returns 0.0.
-    private fun minDistanceToBomb(): Double = Bomberman.match.bombs.minOfOrNull {
-        bomb -> bomb.info.position.distanceTo(entity.info.position)
+    private fun minDistanceToBomb(): Double = Bomberman.match.bombs.minOfOrNull { bomb ->
+        bomb.info.position.distanceTo(entity.info.position)
     } ?: 0.0
 
     // Handles the interaction of the entity with bombs, determining whether it should be solid based on bomb proximity.
@@ -56,29 +54,33 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     }
 
     // Checks if the entity is interactable with a mouse click based on the entity's class.
-    override fun isMouseClickInteractable(cls: Class<out Entity>): Boolean = entity.state.entitiesClassListMouseClick.contains(cls)
+    override fun isMouseClickInteractable(e: Entity): Boolean = entity.state.entitiesClassesMouseClick.any {
+        it.isInstance(e)
+    }
 
     // Checks if the entity is interactable with a mouse drag based on the entity's class.
-    override fun isMouseDragInteractable(cls: Class<out Entity>): Boolean = entity.state.entitiesClassListMouseDrag.contains(cls)
+    override fun isMouseDragInteractable(e: Entity): Boolean = entity.state.entitiesClassesMouseDrag.any {
+        it.isInstance(e)
+    }
 
     // Adds the specified class to the list of entities interactable with a mouse click.
     override fun addClassInteractWithMouseClick(cls: Class<out Entity>) {
-        entity.state.entitiesClassListMouseClick.add(cls)
+        entity.state.entitiesClassesMouseClick.add(cls)
     }
 
     // Adds the specified class to the list of entities interactable with a mouse drag.
     override fun addClassInteractWithMouseDrag(cls: Class<out Entity>) {
-        entity.state.entitiesClassListMouseDrag.add(cls)
+        entity.state.entitiesClassesMouseDrag.add(cls)
     }
 
     // Removes the specified class from the list of entities interactable with a mouse click.
     override fun removeClassInteractWithMouseClick(cls: Class<out Entity>) {
-        entity.state.entitiesClassListMouseClick.remove(cls)
+        entity.state.entitiesClassesMouseClick.remove(cls)
     }
 
     // Removes the specified class from the list of entities interactable with a mouse drag.
     override fun removeClassInteractWithDrag(cls: Class<out Entity>) {
-        entity.state.entitiesClassListMouseDrag.remove(cls)
+        entity.state.entitiesClassesMouseDrag.remove(cls)
     }
 
     // Removes an active power-up from the list of active power-ups.

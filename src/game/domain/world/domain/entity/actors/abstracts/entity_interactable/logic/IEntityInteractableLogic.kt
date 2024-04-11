@@ -15,6 +15,4 @@ interface IEntityInteractableLogic : IEntityLogic {
     fun isObstacle(e: Entity?): Boolean
     fun canInteractWith(e: Entity?): Boolean
     fun interactAndUpdateLastInteract(e: Entity?)
-    fun onCollision(e: Entity)
-    fun onExitCollision(e: Entity)
 }

@@ -2,6 +2,7 @@
 high priorities:
 
 - Bomb mp
+- Immune
 - handle perks/status, bombs length
 - implement auto convert to map
 - forward client message to all clients;

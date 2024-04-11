@@ -54,6 +54,8 @@ abstract class EntityInteractableLogic(
         } else if (e is EntityInteractable && e.logic.canInteractWith(entity) && canBeInteractedBy(e)) {
             e.logic.interactAndUpdateLastInteract(entity)
         }*/
+
+        Log.e("Checking $e")
         // SUPER TODO CHECK THIS!
         if (!canInteractWith(e) || !e.logic.canBeInteractedBy(entity)) return
 
@@ -103,19 +105,17 @@ abstract class EntityInteractableLogic(
                 stepSize
         )
 
-        if (!nextTopLeftCoords.validate(entity)) {
-            if (!ignoreMapBorders) {
-                interact(null)
-                return false
-            }
+        if (!nextTopLeftCoords.validate(entity) && !ignoreMapBorders) {
+            interact(null)
+            return false
         } else {
-            val coordinatesInArea = Coordinates.getAllBlocksInAreaFromDirection(
+            /*val coordinatesInArea = Coordinates.getAllBlocksInAreaFromDirection(
                     entity,
                     direction,
                     PitchPanel.PIXEL_UNIT
             )
 
-       /*     // Check if all entities in the given area can be interacted with
+            // Check if all entities in the given area can be interacted with
             val allEntitiesCanBeInteractedWith = coordinatesInArea.all { coordinates: Coordinates? ->
                 // Get entities on the current block
                 val entitiesOnBlock = Coordinates.getEntitiesOnBlock(coordinates)
@@ -146,24 +146,34 @@ abstract class EntityInteractableLogic(
         )
 
         // Get a list of entities that are present in the next occupied coordinates
-        val interactedEntities = Coordinates.getEntitiesOnCoordinates(
+        val collidedEntities = Coordinates.getEntitiesOnCoordinates(
                 nextOccupiedCoords
         )
 
+        try {
+            entity.state.collidedEntities.toTypedArray().forEach { e ->
+                if (!collidedEntities.contains(e)) {
+                    unCollide(e)
+                }
+            }
+        } catch (_: Exception) {}
+
         // If there are no entities present in the next occupied coordinates, update the entity's position
-        if (interactedEntities.isEmpty()) {
+        if (collidedEntities.isEmpty()) {
             move(nextTopLeftCoords)
             return true
         }
 
-        interactedEntities.parallelStream()
+        collidedEntities.parallelStream()
                 .forEach {
-                    val canInteract = (entity.logic.canBeInteractedBy(entity)
+                    val canInteract = !(entity.logic.canBeInteractedBy(entity)
                             || canInteractWith(entity)
                             || (isObstacle(entity
-                            ) && entity.info.id != entity.info.id))
+                    ) && entity.info.id != entity.info.id))
 
-                    if (!canInteract){
+                    collide(it)
+
+                    if (canInteract) {
                         interact(it)
                     }
                 }
@@ -172,20 +182,10 @@ abstract class EntityInteractableLogic(
         return false
     }
 
-    override fun isObstacle(e: Entity?): Boolean {
-        return e == null || (entity.state.obstacles.any { c: Class<out Entity> -> c.isInstance(e) }
-                && entity.state.whitelistObstacles.none { c: Class<out Entity> -> c.isInstance(e) })
-    }
+    override fun isObstacle(e: Entity?): Boolean =
+            e == null || (entity.state.obstacles.any { c -> c.isInstance(e) }
+                    && entity.state.whitelistObstacles.none { c -> c.isInstance(e) })
 
-    override fun canInteractWith(e: Entity?): Boolean {
-        return e == null || entity.state.interactionEntities.any { c: Class<out Entity?> -> c.isInstance(e) }
-    }
-
-    override fun onCollision(e: Entity) {
-
-    }
-
-    override fun onExitCollision(e: Entity) {
-
-    }
+    override fun canInteractWith(e: Entity?): Boolean =
+            e == null || entity.state.interactionEntities.any { c -> c.isInstance(e) }
 }

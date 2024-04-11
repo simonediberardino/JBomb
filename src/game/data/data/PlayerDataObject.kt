@@ -5,7 +5,7 @@ import game.localization.Localization
 import java.awt.event.KeyEvent
 import java.io.Serializable
 
-internal class PlayerDataObject(
+data class PlayerDataObject(
         @JvmField var name: String,
         @JvmField var lostGames: Int,
         @JvmField var kills: Int,
@@ -22,6 +22,7 @@ internal class PlayerDataObject(
         @JvmField var leftKey: Int,
         @JvmField var rightKey: Int,
         @JvmField var bombKey: Int,
+        @JvmField var interactKey: Int,
         @JvmField var volume: Int,
         @JvmField var skin: String
 ) : Serializable {
@@ -44,6 +45,7 @@ internal class PlayerDataObject(
             0,
             0,
             0,
+            0,
             ""
     ) {
         resetKeys()
@@ -55,6 +57,7 @@ internal class PlayerDataObject(
         leftKey = KeyEvent.VK_A
         rightKey = KeyEvent.VK_D
         bombKey = KeyEvent.VK_SPACE
+        interactKey = KeyEvent.VK_F
     }
 
     fun setLastLevel(lastLevel: Level) {
@@ -62,28 +65,7 @@ internal class PlayerDataObject(
         lastWorldId = lastLevel.info.worldId
     }
 
-    override fun toString(): String {
-        return "PlayerDataObject{" +
-                "name='" + name + '\'' +
-                ", lostGames=" + lostGames +
-                ", kills=" + kills +
-                ", deaths=" + deaths +
-                ", rounds=" + rounds +
-                ", points=" + points +
-                ", lastLevelId=" + lastLevelId +
-                ", lastWorldId=" + lastWorldId +
-                ", explosionLength=" + explosionLength +
-                ", obtainedBombs=" + obtainedBombs +
-                ", lives=" + lives +
-                ", forwardKey=" + forwardKey +
-                ", backKey=" + backKey +
-                ", leftKey=" + leftKey +
-                ", rightKey=" + rightKey +
-                ", bombKey=" + bombKey +
-                ", volume=" + volume +
-                ", skin='" + skin + '\'' +
-                '}'
-    }
+
 
     fun checkData(): Boolean {
         var changed = false

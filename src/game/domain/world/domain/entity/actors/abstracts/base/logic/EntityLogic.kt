@@ -9,6 +9,9 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.network.events.forward.DespawnEntityEventForwarder
 import game.network.events.forward.SpawnEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
+import game.utils.Utility
+import game.utils.dev.Log
+import game.utils.time.now
 
 abstract class EntityLogic(
         open val entity: Entity
@@ -95,6 +98,18 @@ abstract class EntityLogic(
         }
     }
 
+    override fun onTalk(entity: Entity) {
+        Log.e("onTalk $entity")
+    }
+
+    final override fun talk(entity: Entity) {
+        if (Utility.timePassed(entity.state.lastTalkTime) < 500)
+            return
+
+        entity.state.lastTalkTime = now()
+        onTalk(entity)
+    }
+
     /**
      * Checks if this entity can be interacted with by another entity.
      *
@@ -110,7 +125,7 @@ abstract class EntityLogic(
         val player = match.player ?: return false
 
         // Check if the player can interact with mouse click and if the mouse is being clicked
-        return player.logic.isMouseClickInteractable(entity.javaClass) && match.mouseControllerManager.isMouseClicked
+        return player.logic.isMouseClickInteractable(entity) && match.mouseControllerManager.isMouseClicked
     }
 
     override fun canEntityInteractWithMouseDrag(): Boolean {
@@ -119,7 +134,7 @@ abstract class EntityLogic(
 
         // Check if the player can interact with mouse drag and if the mouse is being dragged
         // TODO CHANGED!!
-        return player.logic.isMouseDragInteractable(entity.javaClass) && match.mouseControllerManager.isMouseDragged
+        return player.logic.isMouseDragInteractable(entity) && match.mouseControllerManager.isMouseDragged
     }
 
     override fun onMouseClickInteraction() {
@@ -131,6 +146,46 @@ abstract class EntityLogic(
         if (entity.info.position.distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE) {
             eliminated()
         }
+    }
+
+
+    final override fun collide(e: Entity) {
+        if (entity.state.collidedEntities.contains(e)) {
+            return
+        }
+
+        if (e == entity) {
+            return
+        }
+
+        entity.state.collidedEntities.add(e)
+        onCollision(e)
+
+        e.logic.collide(entity)
+    }
+
+    override fun onCollision(e: Entity) {
+
+    }
+
+    final override fun unCollide(e: Entity) {
+        if (!entity.state.collidedEntities.contains(e)) {
+            return
+        }
+
+        if (e == entity) {
+            return
+        }
+
+        Log.e("unCollide $e")
+        entity.state.collidedEntities.remove(e)
+        onExitCollision(e)
+
+        e.logic.unCollide(entity)
+    }
+
+    override fun onExitCollision(e: Entity) {
+
     }
 
     override fun onMouseDragInteraction() {

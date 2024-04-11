@@ -77,6 +77,12 @@ public class SettingsPanel extends BoxMenuPanel {
                 createKeyRunnable(integer -> DataInputOutput.getInstance().setBombKey(integer))
         );
 
+        SettingsElementView interactKey = createTextFieldElementView(
+                Localization.get(KEY_INTERACT),
+                DataInputOutput.getInstance().getInteractKeyChar(),
+                createKeyRunnable(integer -> DataInputOutput.getInstance().setInteractKey(integer))
+        );
+
         SettingsElementView audio = createSlideElementView(Localization.get(AUDIO_VOLUME),
                 DataInputOutput.getInstance().getVolume(), new RunnablePar() {
                     @Override

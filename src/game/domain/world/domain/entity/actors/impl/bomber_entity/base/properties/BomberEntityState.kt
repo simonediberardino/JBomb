@@ -56,8 +56,8 @@ open class BomberEntityState(
         maxHp = maxHp
 ) {
     lateinit var weapon: UsableItem
-    val entitiesClassListMouseClick: MutableList<Class<out Entity>> = mutableListOf()
-    val entitiesClassListMouseDrag: MutableList<Class<out Entity>> = mutableListOf()
+    val entitiesClassesMouseClick: MutableSet<Class<out Entity>> = BomberEntity.DEFAULT.MOUSE_CLICK_INTERACTION_ENTITIES
+    val entitiesClassesMouseDrag: MutableSet<Class<out Entity>> = BomberEntity.DEFAULT.MOUSE_DRAG_INTERACTION_ENTITIES
     var currExplosionLength = 0
     var placedBombs = 0
     var lastPlacedBombTime: Long = 0

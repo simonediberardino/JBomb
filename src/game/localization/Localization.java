@@ -1,7 +1,5 @@
 package game.localization;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -36,6 +34,11 @@ public class Localization {
     public static final HashMap<Locale, String> KEY_BOMB = new HashMap<>() {{
         put(Locale.ENGLISH, "BOMB");
         put(Locale.ITALY, "BOMBA");
+    }};
+
+    public static final HashMap<Locale, String> KEY_INTERACT = new HashMap<>() {{
+        put(Locale.ENGLISH, "INTERACT");
+        put(Locale.ITALY, "INTERAGISCI");
     }};
 
     public static final HashMap<Locale, String> DEATHS = new HashMap<>() {{
@@ -85,8 +88,8 @@ public class Localization {
 
 
     public static final HashMap<Locale, String> MYSTERY_BOX_CONFIRM = new HashMap<>() {{
-        put(Locale.ENGLISH, "CLICK AGAIN TO CONFIRM YOUR PURCHASE [%price%]");
-        put(Locale.ITALY, "PREMI DI NUOVO PER CONFERMARE [%price%]");
+        put(Locale.ENGLISH, "INTERACT TO PURCHASE [%price%]");
+        put(Locale.ITALY, "INTERAGISCI PER COMPRARE [%price%]");
     }};
 
 

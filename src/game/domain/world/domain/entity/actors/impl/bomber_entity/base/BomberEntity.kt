@@ -11,6 +11,7 @@ import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.IBomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
+import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
@@ -69,5 +70,8 @@ abstract class BomberEntity : Character, Explosive {
                 Enemy::class.java,
                 PowerUp::class.java
         )
+
+        val MOUSE_CLICK_INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf(MysteryBox::class.java)
+        val MOUSE_DRAG_INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf()
     }
 }

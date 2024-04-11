@@ -5,8 +5,8 @@ import game.domain.world.domain.entity.actors.abstracts.character.logic.ICharact
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 
 interface IBomberEntityLogic : ICharacterEntityLogic {
-    fun isMouseDragInteractable(cls: Class<out Entity>): Boolean
-    fun isMouseClickInteractable(cls: Class<out Entity>): Boolean
+    fun isMouseDragInteractable(entity: Entity): Boolean
+    fun isMouseClickInteractable(e: Entity): Boolean
     fun addClassInteractWithMouseClick(cls: Class<out Entity>)
     fun addClassInteractWithMouseDrag(cls: Class<out Entity>)
     fun removeClassInteractWithMouseClick(cls: Class<out Entity>)

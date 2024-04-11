@@ -212,6 +212,13 @@ abstract class CharacterEntityLogic(
         }
     }
 
+    override fun interactionCommand() {
+        entity.state.collidedEntities.toTypedArray().forEach {
+            talk(it)
+            it.logic.talk(entity)
+        }
+    }
+
     override fun doAttack() {}
 
     override fun handleMoveCommand(command: Command, oppositeDirection1: Direction, oppositeDirection2: Direction) {

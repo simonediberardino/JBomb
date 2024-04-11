@@ -65,7 +65,7 @@ class MouseControllerManager(
         val entityToInteract = entity
 
         // Check if there is an entity to interact with and it's clickable
-        if (entityToInteract != null && player.logic.isMouseClickInteractable(entityToInteract.javaClass)) {
+        if (entityToInteract != null && player.logic.isMouseClickInteractable(entityToInteract)) {
             // Perform mouse interactions on the entity
             entityToInteract.logic.mouseInteractions()
             onMovementPeriodicTaskEnd()

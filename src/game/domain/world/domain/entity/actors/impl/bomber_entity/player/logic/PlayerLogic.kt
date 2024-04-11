@@ -71,7 +71,7 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
                 removeCommand(command)
             }
 
-            Command.INTERACT -> {}
+            Command.INTERACT -> interactionCommand()
             else -> {}
         }
 

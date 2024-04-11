@@ -4,13 +4,13 @@ import game.Bomberman
 import game.domain.events.models.RunnablePar
 import game.domain.tasks.GameTickerObserver
 import game.domain.tasks.observer.Observable2
+import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.types.EntityTypes
 import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
-import game.utils.dev.Log
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.util.*
@@ -40,6 +40,12 @@ interface IEntityLogic {
     fun onMouseDragInteraction()
     fun observerUpdate(arg: Observable2.ObserverParam)
     fun onStateReady() {}
+    fun collide(e: Entity)
+    fun unCollide(e: Entity)
+    fun onExitCollision(e: Entity)
+    fun onCollision(e: Entity)
+    fun onTalk(entity: Entity)
+    fun talk(entity: Entity)
 }
 
 // Class representing the state of an entity
@@ -52,7 +58,9 @@ open class EntityState(
         open val size: Int,
         open var alpha: Float = Entity.DEFAULT.ALPHA,
         open val interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
-        open var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE
+        open var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
+        open var lastTalkTime: Long = Entity.DEFAULT.LAST_TALK_TIME,
+        val collidedEntities: MutableSet<Entity> = EntityInteractable.DEFAULT.COLLIDED_ENTITIES
 )
 
 data class EntityInfo(val entity: Entity) {
@@ -222,6 +230,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
     internal object DEFAULT {
         val ALPHA = 1f
         val LAST_IMAGE_UPDATE = 0L
+        val LAST_TALK_TIME = 0L
         val IS_INVISIBLE = false
         val STATE = null
         val SPAWNED: Boolean = false

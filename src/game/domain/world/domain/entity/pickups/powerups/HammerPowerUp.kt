@@ -4,13 +4,13 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
-import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
+import game.domain.world.types.EntityTypes
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -20,11 +20,11 @@ class HammerPowerUp : PowerUp {
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            player.state.entitiesClassListMouseClick.add(DestroyableBlock::class.java)
+            player.logic.addClassInteractWithMouseClick(DestroyableBlock::class.java)
         }
 
         override fun cancel(player: BomberEntity) {
-            player.state.entitiesClassListMouseClick.remove(DestroyableBlock::class.java)
+            player.logic.removeClassInteractWithMouseClick(DestroyableBlock::class.java)
         }
     }
 

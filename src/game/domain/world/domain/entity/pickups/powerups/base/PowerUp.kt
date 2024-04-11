@@ -1,15 +1,14 @@
 package game.domain.world.domain.entity.pickups.powerups.base
 
-import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.abstracts.base.EntityImageModel
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
-import game.presentation.ui.panels.game.PitchPanel
-import game.domain.world.domain.entity.actors.abstracts.base.EntityImageModel
-import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
+import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.*
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
+import game.presentation.ui.panels.game.PitchPanel
 
 /**
  * The abstract PowerUp class is a superclass for all power-ups in the game.
@@ -26,7 +25,17 @@ abstract class PowerUp : EntityInteractable {
     companion object {
         // A static array of power-up classes
         val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
+                PistolPowerUp::class.java,
+                ArmorPowerUp::class.java,
                 FirePowerUp::class.java,
+                SpeedPowerUp::class.java,
+                TransparentDestroyableBlocksPowerUp::class.java,
+                LivesPowerUp::class.java,
+                RemoteControlPowerUp::class.java,
+                HammerPowerUp::class.java,
+                BlockMoverPowerUp::class.java,
+                IncreaseMaxBombsPowerUp::class.java,
+                TransparentBombsPowerUp::class.java
 
         )
     }

@@ -43,6 +43,7 @@ class ControllerManager : Observable2(), KeyListener {
                 dataInputOutput.backKey to Command.MOVE_DOWN,
                 dataInputOutput.rightKey to Command.MOVE_RIGHT,
                 dataInputOutput.bombKey to Command.ATTACK,
+                dataInputOutput.interactKey to Command.INTERACT,
                 KEY_ESC to Command.PAUSE
         )
     }
