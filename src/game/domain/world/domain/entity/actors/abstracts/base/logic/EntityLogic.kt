@@ -76,12 +76,15 @@ abstract class EntityLogic(
     override fun onExplosion(explosion: AbstractExplosion?) {}
 
     override fun onImmuneChangedState() {
-        entity.state.state = (if (entity.state.isImmune) State.IMMUNE else State.SPAWNED)
+        entity.state.state = (if (entity.state.isImmune)
+            State.IMMUNE
+        else if (entity.state.isSpawned)
+            State.SPAWNED
+        else State.DIED)
     }
 
-    override fun spawnOffset(): Coordinates {
-        return Coordinates((PitchPanel.GRID_SIZE - entity.state.size) / 2, (PitchPanel.GRID_SIZE - entity.state.size) / 2)
-    }
+    override fun spawnOffset(): Coordinates =
+            Coordinates((PitchPanel.GRID_SIZE - entity.state.size) / 2, (PitchPanel.GRID_SIZE - entity.state.size) / 2)
 
 
     override fun mouseInteractions() {
@@ -99,7 +102,6 @@ abstract class EntityLogic(
     }
 
     override fun onTalk(entity: Entity) {
-        Log.e("onTalk $entity")
     }
 
     final override fun talk(entity: Entity) {
@@ -177,7 +179,6 @@ abstract class EntityLogic(
             return
         }
 
-        Log.e("unCollide $e")
         entity.state.collidedEntities.remove(e)
         onExitCollision(e)
 

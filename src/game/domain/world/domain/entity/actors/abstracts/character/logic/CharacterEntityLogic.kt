@@ -14,6 +14,7 @@ import game.domain.world.domain.entity.geo.Direction
 import game.input.Command
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
+import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.ActionEvent
 import java.util.*
@@ -103,6 +104,8 @@ abstract class CharacterEntityLogic(
     override fun onAttackReceived(damage: Int) {
         if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
             return
+
+        Log.e("Isimmune ${entity.state.isImmune}")
 
         if (entity.state.isImmune)
             return
@@ -213,9 +216,13 @@ abstract class CharacterEntityLogic(
     }
 
     override fun interactionCommand() {
-        entity.state.collidedEntities.toTypedArray().forEach {
-            talk(it)
-            it.logic.talk(entity)
+        try {
+            entity.state.collidedEntities.toTypedArray().forEach {
+                talk(it)
+                it.logic.talk(entity)
+            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         }
     }
 

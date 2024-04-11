@@ -7,7 +7,6 @@ import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 
 abstract class PortalLogic(override val entity: Portal) : PowerUpLogic(entity = entity) {
     override fun doApply(player: BomberEntity) {
-        Bomberman.match.toggleGameState()
     }
 
     override fun cancel(player: BomberEntity) {}

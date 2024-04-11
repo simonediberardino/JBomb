@@ -38,7 +38,7 @@ class EndLevelPortal : Portal {
             val match = Bomberman.match
             val currentLevel = match.currentLevel ?: return
 
-            currentLevel.endLevel()
+            Bomberman.destroyLevel()
             DataInputOutput.getInstance().increaseLives()
 
             try {

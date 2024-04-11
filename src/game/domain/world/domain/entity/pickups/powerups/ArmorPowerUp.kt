@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
+import game.utils.dev.Log
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -18,12 +19,13 @@ class ArmorPowerUp : PowerUp {
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            entity.state.isImmune = true
-            entity.logic.onImmuneChangedState()
+            player.state.isImmune = true
+            player.logic.onImmuneChangedState()
         }
 
         override fun cancel(player: BomberEntity) {
-            if (player.state.isSpawned) entity.state.isImmune = false
+            if (player.state.isSpawned)
+                player.state.isImmune = false
         }
     }
 

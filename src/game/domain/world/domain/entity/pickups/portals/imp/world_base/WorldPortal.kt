@@ -9,6 +9,7 @@ import game.domain.level.levels.world1.World1Level1
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.pickups.portals.base.Portal
 import game.domain.world.domain.entity.pickups.portals.base.logic.PortalLogic
 import game.domain.world.domain.entity.pickups.portals.imp.world_base.state.WorldPortalState
@@ -56,8 +57,9 @@ abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) 
                     firstLevelOfCurrWorld.getConstructor().newInstance()
                 }
 
+                Bomberman.destroyLevel()
                 // Start the level with the obtained level instance
-                Bomberman.startLevel(levelToStart,Bomberman.match.onlineGameHandler)
+                Bomberman.startLevel(levelToStart, Bomberman.match.onlineGameHandler)
             } catch (e: InstantiationException) {
                 // Print the stack trace if there is an exception
                 e.printStackTrace()

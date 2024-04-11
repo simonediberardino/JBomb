@@ -55,7 +55,6 @@ abstract class EntityInteractableLogic(
             e.logic.interactAndUpdateLastInteract(entity)
         }*/
 
-        Log.e("Checking $e")
         // SUPER TODO CHECK THIS!
         if (!canInteractWith(e) || !e.logic.canBeInteractedBy(entity)) return
 
