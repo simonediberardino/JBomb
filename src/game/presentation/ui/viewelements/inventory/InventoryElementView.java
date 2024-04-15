@@ -3,6 +3,7 @@ package game.presentation.ui.viewelements.inventory;
 import game.values.Dimensions;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class InventoryElementView extends JPanel {
@@ -10,12 +11,19 @@ public class InventoryElementView extends JPanel {
     private final int fontSize = Dimensions.FONT_SIZE_MID;
     private final JLabel icon;
     private final JLabel occurrents;
+    private final Border border = BorderFactory.createEmptyBorder(
+            Dimensions.DEFAULT_Y_PADDING,
+            Dimensions.DEFAULT_Y_PADDING,
+            Dimensions.DEFAULT_Y_PADDING,
+            Dimensions.DEFAULT_Y_PADDING
+    );
 
     public InventoryElementView() {
         icon = new JLabel();
         occurrents = new JLabel("", SwingConstants.CENTER);
         occurrents.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
-        setBorder(BorderFactory.createEmptyBorder(Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING, Dimensions.DEFAULT_Y_PADDING));
+        occurrents.setBorder(border);
+        setBorder(border);
         setLayout(new GridLayout(1, 2));
         add(icon);
         add(occurrents);

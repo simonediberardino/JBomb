@@ -4,7 +4,6 @@ import game.Bomberman
 import game.domain.events.models.RunnablePar
 import game.domain.tasks.GameTickerObserver
 import game.domain.tasks.observer.Observable2
-import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
@@ -42,10 +41,13 @@ interface IEntityLogic {
     fun onStateReady() {}
     fun collide(e: Entity)
     fun unCollide(e: Entity)
+    fun passiveCollide(e: Entity)
+    fun unPassivecollide(e: Entity)
     fun onExitCollision(e: Entity)
     fun onCollision(e: Entity)
     fun onTalk(entity: Entity)
     fun talk(entity: Entity)
+    fun unCollideAll()
 }
 
 // Class representing the state of an entity
@@ -60,7 +62,8 @@ open class EntityState(
         open val interactionEntities: MutableSet<Class<out Entity>> = Entity.DEFAULT.INTERACTION_ENTITIES,
         open var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
         open var lastTalkTime: Long = Entity.DEFAULT.LAST_TALK_TIME,
-        val collidedEntities: MutableSet<Entity> = EntityInteractable.DEFAULT.COLLIDED_ENTITIES
+        val collidedEntities: MutableSet<Entity> = mutableSetOf(),
+        val passiveCollidedEntities: MutableSet<Entity> = mutableSetOf()
 )
 
 data class EntityInfo(val entity: Entity) {

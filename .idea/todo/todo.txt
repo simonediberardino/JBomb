@@ -1,8 +1,6 @@
 
 high priorities:
 
-- Fix interact indexoutofbounds
-- Change direction on collide
 - Traduzione livelli
 - fix toast end game showing twice
 - Bomb mp

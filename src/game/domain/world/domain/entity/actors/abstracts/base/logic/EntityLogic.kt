@@ -10,7 +10,6 @@ import game.network.events.forward.DespawnEntityEventForwarder
 import game.network.events.forward.SpawnEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
-import game.utils.dev.Log
 import game.utils.time.now
 
 abstract class EntityLogic(
@@ -150,20 +149,38 @@ abstract class EntityLogic(
         }
     }
 
-
     final override fun collide(e: Entity) {
-        if (entity.state.collidedEntities.contains(e)) {
-            return
-        }
-
-        if (e == entity) {
+        if (entity == e || entity.state.collidedEntities.contains(e)) {
             return
         }
 
         entity.state.collidedEntities.add(e)
-        onCollision(e)
 
-        e.logic.collide(entity)
+        e.logic.passiveCollide(entity)
+        onCollision(e)
+    }
+
+    final override fun passiveCollide(e: Entity) {
+        if (entity == e || entity.state.passiveCollidedEntities.contains(e)) {
+            return
+        }
+
+        entity.state.passiveCollidedEntities.add(e)
+        onCollision(e)
+    }
+
+    final override fun unCollideAll() {
+        try {
+            entity.state.collidedEntities.forEach {
+                entity.logic.unCollide(it)
+                it.logic.unPassivecollide(entity)
+            }
+
+            entity.state.passiveCollidedEntities.forEach {
+                entity.logic.unPassivecollide(it)
+                it.logic.unCollide(entity)
+            }
+        } catch (_: Exception) {}
     }
 
     override fun onCollision(e: Entity) {
@@ -171,11 +188,7 @@ abstract class EntityLogic(
     }
 
     final override fun unCollide(e: Entity) {
-        if (!entity.state.collidedEntities.contains(e)) {
-            return
-        }
-
-        if (e == entity) {
+        if (entity == e || !entity.state.collidedEntities.contains(e)) {
             return
         }
 
@@ -183,6 +196,15 @@ abstract class EntityLogic(
         onExitCollision(e)
 
         e.logic.unCollide(entity)
+    }
+
+    final override fun unPassivecollide(e: Entity) {
+        if (entity == e || !entity.state.passiveCollidedEntities.contains(e)) {
+            return
+        }
+
+        entity.state.passiveCollidedEntities.remove(e)
+        onExitCollision(e)
     }
 
     override fun onExitCollision(e: Entity) {

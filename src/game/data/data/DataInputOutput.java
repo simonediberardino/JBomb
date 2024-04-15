@@ -1,9 +1,7 @@
 package game.data.data;
 
-import game.Bomberman;
 import game.domain.level.levels.Level;
 import game.utils.file_system.Paths;
-import kotlin.UninitializedPropertyAccessException;
 
 import java.awt.event.KeyEvent;
 import java.io.*;
@@ -145,9 +143,6 @@ public class DataInputOutput {
     }
 
     private void setLives(int nextLives) {
-        try {
-            Bomberman.match.getInventoryElementControllerLives().setNumItems(nextLives);
-        } catch (UninitializedPropertyAccessException ignored) {}
         playerDataObject.lives = nextLives;
         updateStoredPlayerData();
     }

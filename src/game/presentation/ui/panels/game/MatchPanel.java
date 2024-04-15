@@ -1,7 +1,6 @@
 package game.presentation.ui.panels.game;
 
 import game.Bomberman;
-import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.domain.world.domain.entity.geo.Coordinates;
 import game.domain.world.domain.entity.pickups.powerups.EmptyPowerup;
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp;
@@ -183,14 +182,14 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         inventoryPanel.setOpaque(false);
         inventoryPanel.setLayout(new GridLayout(0, 1));
 
+        inventoryPanel.add(Bomberman.match.getInventoryElementControllerHp().getView());
         inventoryPanel.add(Bomberman.match.getInventoryElementControllerPoints().getView());
         inventoryPanel.add(Bomberman.match.getInventoryElementControllerBombs().getView());
 
         if (Bomberman.match.getCurrentLevel().getInfo().isArenaLevel()) {
             inventoryPanel.add(Bomberman.match.getInventoryElementControllerRounds().getView());
-        } else {
-            inventoryPanel.add(Bomberman.match.getInventoryElementControllerLives().getView());
         }
+
         leftPanel.setLayout(new GridBagLayout());
         leftPanel.add(inventoryPanel, new GridBagConstraints());
 

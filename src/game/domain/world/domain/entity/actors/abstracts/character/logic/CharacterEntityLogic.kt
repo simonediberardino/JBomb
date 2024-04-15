@@ -14,19 +14,20 @@ import game.domain.world.domain.entity.geo.Direction
 import game.input.Command
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
-import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.ActionEvent
 import java.util.*
+import kotlin.math.max
 
 abstract class CharacterEntityLogic(
         override val entity: Character
 ) : MovingEntityLogic(entity), ICharacterEntityLogic {
+
     override fun onSpawn() {
         super.onSpawn()
         LocationChangedBehavior(entity.toEntityNetwork()).invoke()
         setAliveState(true)
-        entity.state.hp = entity.state.maxHp
+        updateHealth(entity.state.maxHp)
     }
 
     override fun onDespawn() {
@@ -105,20 +106,17 @@ abstract class CharacterEntityLogic(
         if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
             return
 
-        Log.e("Isimmune ${entity.state.isImmune}")
-
         if (entity.state.isImmune)
             return
 
         entity.state.lastDamageTime = now()
 
         // Reduce the health points by the specified amount
-        entity.state.hp -= damage
+        updateHealth(max(entity.state.hp - damage, 0))
         damageAnimation()
 
         // If the health points reach 0 or below, despawn the entity
         if (entity.state.hp <= 0) {
-            entity.state.hp = 0
             eliminated()
         } else {
             onHit(damage)
@@ -269,4 +267,15 @@ abstract class CharacterEntityLogic(
     override fun onMove(coordinates: Coordinates) {
         LocationChangedBehavior(entity.toEntityNetwork()).invoke()
     }
+
+    final override fun restoreHealth() {
+        this.updateHealth(entity.state.maxHp)
+    }
+
+    final override fun updateHealth(health: Int) {
+        entity.state.hp = health
+        onUpdateHealth(health)
+    }
+
+    override fun onUpdateHealth(health: Int) {}
 }

@@ -71,6 +71,7 @@ abstract class BomberEntity : Character, Explosive {
                 PowerUp::class.java
         )
 
+        const val MAX_HP = 300
         val MOUSE_CLICK_INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf(MysteryBox::class.java)
         val MOUSE_DRAG_INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf()
     }

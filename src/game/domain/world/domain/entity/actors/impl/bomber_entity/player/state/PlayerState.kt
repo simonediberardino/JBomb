@@ -29,7 +29,7 @@ class PlayerState(
         lastDirectionUpdate: Long = Character.DEFAULT.LAST_DIRECTION_UPDATE,
         previousDirection: Direction? = Character.DEFAULT.PREVIOUS_DIRECTION,
         canMove: Boolean = Character.DEFAULT.CAN_MOVE,
-        maxHp: Int = Character.DEFAULT.MAX_HP,
+        maxHp: Int = BomberEntity.DEFAULT.MAX_HP,
         speed: Float = Character.DEFAULT.SPEED
 ) : BomberEntityState(entity = entity, isSpawned = isSpawned, isImmune = isImmune, state = state, isInvisible = isInvisible, size = size, alpha = alpha, interactionEntities = interactionEntities, whitelistObstacles = whitelistObstacles, obstacles = obstacles, lastInteractionTime = lastInteractionTime, lastDamageTime = lastDamageTime, attackDamage = attackDamage, direction = direction, lastDirectionUpdate = lastDirectionUpdate, previousDirection = previousDirection, canMove = canMove, maxHp = maxHp, speed = speed) {
     val commandQueue: MutableSet<Command> = mutableSetOf()

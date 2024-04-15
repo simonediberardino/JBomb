@@ -1,16 +1,16 @@
 package game.domain.world.domain.entity.pickups.powerups
 
+import game.data.data.DataInputOutput
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
-import game.data.data.DataInputOutput
-import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
+import game.domain.world.types.EntityTypes
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -24,6 +24,7 @@ class LivesPowerUp : PowerUp {
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
+            player.logic.restoreHealth()
             DataInputOutput.getInstance().increaseLives()
         }
 

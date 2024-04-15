@@ -24,4 +24,7 @@ interface ICharacterEntityLogic : IMovingEntityLogic {
     fun onEndedDeathAnimation()
     fun moveOrInteract(direction: Direction): Boolean
     fun interactionCommand()
+    fun restoreHealth()
+    fun updateHealth(health: Int)
+    fun onUpdateHealth(health: Int)
 }

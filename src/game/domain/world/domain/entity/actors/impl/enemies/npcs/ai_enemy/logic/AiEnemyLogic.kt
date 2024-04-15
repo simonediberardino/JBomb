@@ -94,6 +94,7 @@ open class AiEnemyLogic(override val entity: Enemy) : EnemyEntityLogic(entity = 
 
                 process()
             }
+
             else -> {}
         }
     }

@@ -56,7 +56,7 @@ class BomberManMatch(
         private set
     lateinit var inventoryElementControllerBombs: InventoryElementController
         private set
-    lateinit var inventoryElementControllerLives: InventoryElementController
+    lateinit var inventoryElementControllerHp: InventoryElementController
         private set
     var inventoryElementControllerRounds: InventoryElementController? = null
         private set
@@ -93,9 +93,9 @@ class BomberManMatch(
         // Set up rounds or lives controller based on the game level type
         if (currentLevel.info.isArenaLevel) {
             setupRoundsController()
-        } else {
-            setupLivesController()
         }
+
+        setupHpController()
 
         // Update the inventory weapon controller with the current player's weapon information
         updateInventoryWeaponController()
@@ -123,12 +123,9 @@ class BomberManMatch(
         inventoryElementControllerRounds = InventoryElementControllerRounds()
     }
 
-    /**
-     * Sets up the lives controller for non-arena levels.
-     */
-    private fun setupLivesController() {
-        inventoryElementControllerLives = InventoryElementControllerLives()
-        inventoryElementControllerLives.setNumItems(DataInputOutput.getInstance().lives)
+    private fun setupHpController() {
+        inventoryElementControllerHp = InventoryElementControllerHp()
+        inventoryElementControllerHp.setNumItems(BomberEntity.DEFAULT.MAX_HP)
     }
 
 

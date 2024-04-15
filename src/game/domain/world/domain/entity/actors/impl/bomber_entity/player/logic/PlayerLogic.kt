@@ -3,6 +3,7 @@ package game.domain.world.domain.entity.actors.impl.bomber_entity.player.logic
 import game.Bomberman
 import game.data.data.DataInputOutput
 import game.domain.events.game.DeathGameEvent
+import game.domain.events.game.HealthUpdatedEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
 import game.domain.tasks.observer.Observable2
@@ -98,5 +99,10 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun removeCommand(command: Command) {
         super.removeCommand(command)
         entity.state.commandQueue.remove(command)
+    }
+
+    override fun onUpdateHealth(health: Int) {
+        super.onUpdateHealth(health)
+        HealthUpdatedEvent().invoke(null)
     }
 }

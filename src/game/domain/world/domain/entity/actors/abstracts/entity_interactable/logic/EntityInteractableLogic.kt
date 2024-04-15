@@ -40,6 +40,7 @@ abstract class EntityInteractableLogic(
     override fun move(coordinates: Coordinates) {
         Log.i("Move $coordinates")
         entity.info.position = coordinates
+        entity.logic.unCollideAll()
         onMove(coordinates)
     }
 
@@ -149,13 +150,13 @@ abstract class EntityInteractableLogic(
                 nextOccupiedCoords
         )
 
-        try {
+/*        try {
             entity.state.collidedEntities.toTypedArray().forEach { e ->
                 if (!collidedEntities.contains(e)) {
                     unCollide(e)
                 }
             }
-        } catch (_: Exception) {}
+        } catch (_: Exception) {}*/
 
         // If there are no entities present in the next occupied coordinates, update the entity's position
         if (collidedEntities.isEmpty()) {
