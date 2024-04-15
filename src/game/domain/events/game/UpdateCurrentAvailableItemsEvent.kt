@@ -7,9 +7,15 @@ import game.network.events.forward.UpdateInfoEventForwarder
 
 class UpdateCurrentAvailableItemsEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.match.player ?: return
-        Bomberman.match.currentLevel!!.eventHandler.onUpdateCurrentAvailableBombsEvent(arg as Int)
+        val player = Bomberman.match.player ?: return
+        val value = arg as Int
+
+        if (value > player.state.maxBombs) {
+            return
+        }
+
+        Bomberman.match.currentLevel.eventHandler.onUpdateCurrentAvailableBombsEvent(value)
         Bomberman.match.updateInventoryWeaponController()
-        UpdateInfoEventForwarder().invoke(Bomberman.match.player!!.toEntityNetwork())
+        UpdateInfoEventForwarder().invoke(player.toEntityNetwork())
     }
 }

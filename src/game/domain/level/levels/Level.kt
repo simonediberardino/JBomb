@@ -52,10 +52,6 @@ abstract class Level {
             currLevel = this
     }
 
-    override fun toString(): String {
-        return "Level ${info.levelId}, World ${info.worldId}"
-    }
-
     companion object {
         val ID_TO_FIRST_LEVEL_MAP: Map<Int, Class<out Level>> = mapOf(1 to World1Level1::class.java, 2 to World2Level1::class.java)
         val ID_TO_LEVEL: Map<Array<Int>, Class<out Level>> = mapOf(

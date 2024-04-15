@@ -1,6 +1,8 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic
 
 import game.Bomberman
+import game.data.data.DataInputOutput
+import game.domain.events.game.UpdateMaxBombsEvent
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
@@ -24,7 +26,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     }
 
     override fun initBombVariables() {
-        entity.state.maxBombs = Bomberman.match.currentLevel.info.maxBombs
+        UpdateMaxBombsEvent().invoke(DataInputOutput.getInstance().obtainedBombs)
     }
 
     override fun onMove(coordinates: Coordinates) {

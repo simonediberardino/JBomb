@@ -216,8 +216,10 @@ abstract class CharacterEntityLogic(
     override fun interactionCommand() {
         try {
             entity.state.collidedEntities.toTypedArray().forEach {
-                talk(it)
-                it.logic.talk(entity)
+                try {
+                    talk(it)
+                    it.logic.talk(entity)
+                } catch (_: Exception) {}
             }
         } catch (exception: Exception) {
             exception.printStackTrace()

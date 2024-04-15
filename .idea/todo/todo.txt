@@ -1,8 +1,9 @@
 
 high priorities:
 
-- Traduzione livelli
-- fix toast end game showing twice
+- bomb exploding each other
+- Move blocks power up
+- Transparent bombs
 - Bomb mp
 - Screen when starting game
 - handle perks/status, bombs length

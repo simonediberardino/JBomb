@@ -69,6 +69,7 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun onUpdateMaxBombsGameEvent(arg: Int) {
+                Bomberman.match.player?.state?.maxBombs = arg
                 UpdateCurrentAvailableItemsEvent().invoke(arg)
             }
 
@@ -117,7 +118,9 @@ abstract class ArenaLevel : Level() {
     }
 
     override fun toString(): String {
-        return "Arena World ${info.worldId}"
+        val formattedString = Localization.get(Localization.ARENA_NAME)
+        return formattedString
+                .replace("%world_id%", info.worldId.toString())
     }
 
     companion object {

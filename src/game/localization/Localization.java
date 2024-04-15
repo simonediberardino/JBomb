@@ -103,6 +103,16 @@ public class Localization {
         put(Locale.ITALY, "%level% INIZIATO!");
     }};
 
+    public static final HashMap<Locale, String> WORLD_NAME = new HashMap<>() {{
+        put(Locale.ENGLISH, "WORLD %world_id% LEVEL %level_id%");
+        put(Locale.ITALY, "MONDO %world_id% LIVELLO %level_id%");
+    }};
+
+    public static final HashMap<Locale, String> ARENA_NAME = new HashMap<>() {{
+        put(Locale.ENGLISH, "ARENA WORLD %world_id%");
+        put(Locale.ITALY, "ARENA MONDO %world_id%");
+    }};
+
     public static final HashMap<Locale, String> ISLAND = new HashMap<>() {{
         put(Locale.ENGLISH, "ISLAND");
         put(Locale.ITALY, "ISOLA");

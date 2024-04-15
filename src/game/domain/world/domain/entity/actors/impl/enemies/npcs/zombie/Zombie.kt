@@ -1,14 +1,13 @@
 package game.domain.world.domain.entity.actors.impl.enemies.npcs.zombie
 
-import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.properties.GhostEnemyState
-import game.domain.world.types.EntityTypes
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.zombie.properties.ZombieState
 import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.types.EntityTypes
 import game.utils.file_system.Paths.enemiesFolder
 
 class Zombie : AiEnemy {
@@ -24,9 +23,8 @@ class Zombie : AiEnemy {
             "$entitiesAssetsPath/zombie_${state.imageDirection.toString().lowercase()}_$it.png"
         }
     }
-
     
-    override val state: GhostEnemyState = GhostEnemyState(entity = this)
+    override val state: ZombieState = ZombieState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val properties: CharacterEntityProperties = CharacterEntityProperties(
             types = EntityTypes.Zombie
