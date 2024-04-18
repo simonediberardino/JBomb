@@ -16,7 +16,9 @@ class BombItem : UsableItem() {
         val match = Bomberman.match
         val isLocalPlayer = owner == match.player
 
-        val isBombPlacementIntervalValid = Utility.timePassed(owner.state.lastPlacedBombTime) >= Bomb.PLACE_INTERVAL
+        val isBombPlacementIntervalValid = Utility.timePassed(
+                owner.state.lastPlacedBombTime
+        ) >= Bomb.PLACE_INTERVAL
 
         if (!isBombPlacementIntervalValid) {
             Log.e("Cannot place bomb, too early")

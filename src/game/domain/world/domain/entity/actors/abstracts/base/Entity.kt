@@ -31,10 +31,8 @@ interface IEntityLogic {
     fun onExplosion(explosion: AbstractExplosion?)
     fun onImmuneChangedState()
     fun spawnOffset(): Coordinates
-    fun canEntityInteractWithMouseDrag(): Boolean
     fun canBeInteractedBy(e: Entity?): Boolean
-    fun canEntityInteractWithMouseClick(): Boolean
-    fun mouseInteractions()
+    fun mouseClickedInteraction()
     fun onMouseClickInteraction()
     fun onMouseDragInteraction()
     fun observerUpdate(arg: Observable2.ObserverParam)
@@ -48,6 +46,7 @@ interface IEntityLogic {
     fun onTalk(entity: Entity)
     fun talk(entity: Entity)
     fun unCollideAll()
+    fun mouseDraggedInteraction()
 }
 
 // Class representing the state of an entity

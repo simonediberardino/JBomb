@@ -11,7 +11,6 @@ import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.actors.impl.explosion.FireExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.world.domain.entity.actors.impl.placeable.base.PlaceableEntity
@@ -111,7 +110,7 @@ open class Bomb(caller: BomberEntity) : PlaceableEntity(), Explosive {
         val EXPLOSION_INTERACTION_ENTITIES: Set<Class<out Entity>> =
                 setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)
 
-        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = hashSetOf(FireExplosion::class.java, AbstractExplosion::class.java)
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = hashSetOf(AbstractExplosion::class.java)
     }
 }
 

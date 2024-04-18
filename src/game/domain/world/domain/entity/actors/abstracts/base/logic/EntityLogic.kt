@@ -1,6 +1,7 @@
 package game.domain.world.domain.entity.actors.abstracts.base.logic
 
 import game.Bomberman
+import game.Bomberman.match
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
@@ -86,16 +87,24 @@ abstract class EntityLogic(
             Coordinates((PitchPanel.GRID_SIZE - entity.state.size) / 2, (PitchPanel.GRID_SIZE - entity.state.size) / 2)
 
 
-    override fun mouseInteractions() {
-        val mouseControllerManager = Bomberman.match.mouseControllerManager
-        mouseControllerManager.entity ?: return
+    final override fun mouseClickedInteraction() {
+        val player = match.player ?: return
 
-        if (canEntityInteractWithMouseClick()) {
-            onMouseClickInteraction()
+        if (!player.logic.isAlive())
             return
-        }
 
-        if (canEntityInteractWithMouseDrag()) {
+        if (player.logic.isMouseClickInteractable(entity)) {
+            onMouseClickInteraction()
+        }
+    }
+
+    final override fun mouseDraggedInteraction() {
+        val player = match.player ?: return
+
+        if (!player.logic.isAlive())
+            return
+
+        if (player.logic.isMouseDragInteractable(entity)) {
             onMouseDragInteraction()
         }
     }
@@ -119,23 +128,6 @@ abstract class EntityLogic(
      */
     override fun canBeInteractedBy(e: Entity?): Boolean {
         return e == null || entity.state.interactionEntities.any { c: Class<out Entity> -> c.isInstance(e) }
-    }
-
-    override fun canEntityInteractWithMouseClick(): Boolean {
-        val match = Bomberman.match
-        val player = match.player ?: return false
-
-        // Check if the player can interact with mouse click and if the mouse is being clicked
-        return player.logic.isMouseClickInteractable(entity) && match.mouseControllerManager.isMouseClicked
-    }
-
-    override fun canEntityInteractWithMouseDrag(): Boolean {
-        val match = Bomberman.match
-        val player = match.player ?: return false
-
-        // Check if the player can interact with mouse drag and if the mouse is being dragged
-        // TODO CHANGED!!
-        return player.logic.isMouseDragInteractable(entity) && match.mouseControllerManager.isMouseDragged
     }
 
     override fun onMouseClickInteraction() {
@@ -212,42 +204,23 @@ abstract class EntityLogic(
     }
 
     override fun onMouseDragInteraction() {
-        val match = Bomberman.match
+        val player = match.player ?: return
+
         val mouseControllerManager = match.mouseControllerManager
-        val player: Entity? = match.player
-
-        val playerCenter = Coordinates.getCenterCoordinatesOfEntity(player)
-        val roundedEntityCoords = Coordinates.roundCoordinates(entity.info.position)
-        val centerCoordinatesOfEntity = Coordinates.roundCoordinates(playerCenter)
         val mouseCoordinates = Coordinates.roundCoordinates(mouseControllerManager.mouseCoords)
-
-        val isDragInterrupted = mouseControllerManager.isMouseDraggedInteractionInterrupted
-        if (isDragInterrupted) {
-            return
-        }
-
-        val isEntityWithinGrid = roundedEntityCoords.distanceTo(centerCoordinatesOfEntity) <= PitchPanel.GRID_SIZE
-        val isDragEntered = mouseControllerManager.isMouseDragInteractionEntered
-
-        if (!isEntityWithinGrid && !isDragEntered) {
-            return
-        }
-
-        val entitiesOnOccupiedBlock = Coordinates.getEntitiesOnBlock(mouseCoordinates)
         val isBlockOccupied = Coordinates.isBlockOccupied(mouseCoordinates)
-        val areEntitiesOnBlock = entitiesOnOccupiedBlock.isNotEmpty() && entitiesOnOccupiedBlock.any { e: Entity ->
-            e !== this && e !== player
-        }
+        val roundedEntityCoords = Coordinates.roundCoordinates(entity.info.position)
+        val playerCenter = Coordinates.getCenterCoordinatesOfEntity(player)
+        val roundedPlayerCoords = Coordinates.roundCoordinates(playerCenter)
 
-        if (areEntitiesOnBlock) {
-            mouseControllerManager.isMouseDraggedInteractionInterrupted = true
+        if (isBlockOccupied)
             return
-        }
 
-        if (!isBlockOccupied && mouseCoordinates.validate(entity.state.size)) {
-            mouseControllerManager.isMouseDragInteractionEntered = true
-            mouseControllerManager.setMouseDraggedInteractionOccured(true)
-            entity.info.position = Coordinates.roundCoordinates(mouseCoordinates, spawnOffset())
-        }
+        val isPlayerNear = roundedEntityCoords.distanceTo(roundedPlayerCoords) <= PitchPanel.GRID_SIZE
+
+        if (!isPlayerNear)
+            return
+
+        entity.info.position = Coordinates.roundCoordinates(mouseCoordinates, spawnOffset())
     }
 }

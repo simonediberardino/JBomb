@@ -5,7 +5,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.EntityImageModel
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.geo.Coordinates
-import game.domain.world.domain.entity.pickups.powerups.IncreaseMaxBombsPowerUp
+import game.domain.world.domain.entity.pickups.powerups.*
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
 import game.presentation.ui.panels.game.PitchPanel
@@ -25,7 +25,7 @@ abstract class PowerUp : EntityInteractable {
     companion object {
         // A static array of power-up classes
         val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
-/*                PistolPowerUp::class.java,
+                PistolPowerUp::class.java,
                 ArmorPowerUp::class.java,
                 FirePowerUp::class.java,
                 SpeedPowerUp::class.java,
@@ -33,11 +33,10 @@ abstract class PowerUp : EntityInteractable {
                 LivesPowerUp::class.java,
                 RemoteControlPowerUp::class.java,
                 HammerPowerUp::class.java,
-                BlockMoverPowerUp::class.java,*/
+                BlockMoverPowerUp::class.java,
                 IncreaseMaxBombsPowerUp::class.java,
-/*
                 TransparentBombsPowerUp::class.java
-*/
+
         )
     }
 

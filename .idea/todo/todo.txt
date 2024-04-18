@@ -1,7 +1,6 @@
 
 high priorities:
 
-- bomb exploding each other
 - Move blocks power up
 - Transparent bombs
 - Bomb mp
