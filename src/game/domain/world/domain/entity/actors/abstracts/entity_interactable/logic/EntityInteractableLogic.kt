@@ -150,29 +150,33 @@ abstract class EntityInteractableLogic(
                 nextOccupiedCoords
         )
 
-/*        try {
-            entity.state.collidedEntities.toTypedArray().forEach { e ->
-                if (!collidedEntities.contains(e)) {
-                    unCollide(e)
-                }
-            }
-        } catch (_: Exception) {}*/
+        /*        try {
+                    entity.state.collidedEntities.toTypedArray().forEach { e ->
+                        if (!collidedEntities.contains(e)) {
+                            unCollide(e)
+                        }
+                    }
+                } catch (_: Exception) {}*/
 
-        // If there are no entities present in the next occupied coordinates, update the entity's position
-        if (collidedEntities.isEmpty()) {
+        val isObstacleOrCanInteract = collidedEntities.any {
+            entity.logic.isObstacle(it) || entity.logic.canBeInteractedBy(it) || canInteractWith(it)
+        }
+
+        // move only if there is not a interactable or obstacle entity in the next position
+        if (!isObstacleOrCanInteract) {
             move(nextTopLeftCoords)
             return true
         }
 
         collidedEntities.parallelStream()
                 .forEach {
-                    val canInteract = !(entity.logic.canBeInteractedBy(entity)
-                            || canInteractWith(entity)
-                            || (isObstacle(entity
-                    ) && entity.info.id != entity.info.id))
+                    val canInteract = entity.logic.canBeInteractedBy(it) || canInteractWith(it)
 
-                    collide(it)
+                    // if can interact or the given entity is an obstacle, collide with it
+                    if (canInteract || isObstacle(it))
+                        collide(it)
 
+                    // if can interact, interacft
                     if (canInteract) {
                         interact(it)
                     }
@@ -182,9 +186,15 @@ abstract class EntityInteractableLogic(
         return false
     }
 
-    override fun isObstacle(e: Entity?): Boolean =
-            e == null || (entity.state.obstacles.any { c -> c.isInstance(e) }
-                    && entity.state.whitelistObstacles.none { c -> c.isInstance(e) })
+    override fun isObstacle(e: Entity?): Boolean {
+        if (e == null)
+            return true
+
+        if (entity.state.whitelistObstacles.any { c -> c.isInstance(e) })
+            return false
+
+        return entity.state.obstacles.any { c -> c.isInstance(e) }
+    }
 
     override fun canInteractWith(e: Entity?): Boolean =
             e == null || entity.state.interactionEntities.any { c -> c.isInstance(e) }

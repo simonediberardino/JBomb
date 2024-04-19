@@ -1,8 +1,6 @@
 
 high priorities:
 
-- Move blocks power up
-- Transparent bombs
 - Bomb mp
 - Screen when starting game
 - handle perks/status, bombs length
