@@ -28,5 +28,5 @@ class RemotePlayerProperties(
         imageDirections = imageDirections,
         deathSound = deathSound
 ) {
-    val skinId: Int = 0
+    var skinId: Int = 0
 }

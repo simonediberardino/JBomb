@@ -56,7 +56,7 @@ class TCPServer(private var port: Int) : TCPSocket {
                     break
                 }
 
-                Log.i("Received from client: $clientData")
+                Log.e("Received from client: $clientData")
                 for (listener in listeners) {
                     listener.onDataReceived(clientData)
                 }

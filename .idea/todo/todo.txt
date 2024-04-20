@@ -1,15 +1,19 @@
 
 high priorities:
 
-- Bomb mp
+- Bomb interact mp
+- Update player info
+- Bomb length mp
+- Location updated of host player on client side when starting game
+- Mystery box interact on client side
+- Round passed only server side
+- End game mp
 - Screen when starting game
 - handle perks/status, bombs length
-- implement auto convert to map
 - forward client message to all clients;
 - handle you message and skin;
 - disable mp;
 - Update info network -> domain
-- Adjust player step size based on framerate
 
 - Images;
 - database

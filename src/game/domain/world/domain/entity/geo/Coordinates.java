@@ -150,7 +150,7 @@ public class Coordinates implements Comparable<Coordinates> {
 
     @Override
     public String toString() {
-        return "Coordinates{" + "x=" + x + ", y=" + y + '}';
+        return x + " " + y;
     }
 
     @Override
