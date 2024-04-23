@@ -100,7 +100,8 @@ class ClientGameHandler(
      */
     override fun sendData(data: String) {
         Log.i("${javaClass.simpleName} sendData")
-        client.sendData(data)
+        if (connected)
+            client.sendData(data)
     }
 
     /**

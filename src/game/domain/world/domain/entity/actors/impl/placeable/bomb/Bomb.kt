@@ -89,7 +89,6 @@ open class Bomb(caller: BomberEntity) : PlaceableEntity(), Explosive {
     override val maxExplosionDistance: Int
         get() = (state.caller as BomberEntity).state.currExplosionLength
 
-
     override val explosionInteractionEntities: Set<Class<out Entity>> = Bomb.DEFAULT.EXPLOSION_INTERACTION_ENTITIES
     override val explosionObstacles: Set<Class<out Entity>> = Bomb.DEFAULT.EXPLOSION_OBSTACLES
 

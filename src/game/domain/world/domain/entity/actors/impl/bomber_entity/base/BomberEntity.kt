@@ -20,6 +20,8 @@ import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
 import game.presentation.ui.panels.game.PitchPanel
+import game.utils.dev.Extensions.getOrTrim
+import game.utils.dev.Log
 
 abstract class BomberEntity : Character, Explosive {
     constructor() : super()
@@ -32,6 +34,18 @@ abstract class BomberEntity : Character, Explosive {
 
     override fun toEntityNetwork(): EntityNetwork {
         return dtoToEntityNetwork()
+    }
+
+    override fun updateInfo(info: Map<String, String>) {
+        super.updateInfo(info)
+
+        Log.i("Updating info ${this.info.id} $info")
+
+        val currExplosionLength = info.getOrTrim("currExplosionLength")?.toInt()
+        val currentBombs = info.getOrTrim("currentBombs")?.toInt()
+
+        currExplosionLength?.let { state.currExplosionLength = it }
+        currentBombs?.let { state.currentBombs = it }
     }
 
     init {

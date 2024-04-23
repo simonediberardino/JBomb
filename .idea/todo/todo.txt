@@ -1,9 +1,8 @@
 
 high priorities:
 
-- Bomb interact mp
+- Messages only server side?
 - Update player info
-- Bomb length mp
 - Location updated of host player on client side when starting game
 - Mystery box interact on client side
 - Round passed only server side

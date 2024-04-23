@@ -2,11 +2,13 @@ package game.domain.world.domain.entity.actors.impl.placeable.bomb.logic
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.BlockEntityLogic
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.explosion.FireExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Direction
+import game.utils.dev.Log
 import java.util.*
 
 class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), IBombLogic {
@@ -32,6 +34,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
 
         eliminated()
 
+        Log.e("${entity.state.caller}, ${(entity.state.caller as BomberEntity).state.currExplosionLength}")
         // TODO CHANGED
         ExplosionHandler.instance.process {
             // Trigger explosions in all directions

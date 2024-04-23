@@ -2,7 +2,10 @@ package game.network.sockets
 
 import game.network.callbacks.TCPServerCallback
 import game.utils.dev.Log
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -56,7 +59,7 @@ class TCPServer(private var port: Int) : TCPSocket {
                     break
                 }
 
-                Log.e("Received from client: $clientData")
+                Log.i("Received from client: $clientData")
                 for (listener in listeners) {
                     listener.onDataReceived(clientData)
                 }

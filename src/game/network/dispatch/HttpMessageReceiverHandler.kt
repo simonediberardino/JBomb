@@ -20,6 +20,7 @@ class HttpMessageReceiverHandler private constructor() {
             HttpMessageTypes.ENTITY_ATTACKED -> AttackEntityEventProcessor()
             HttpMessageTypes.LOCATION -> LocationUpdatedHttpEventProcessor()
             HttpMessageTypes.USE_ITEM -> UseItemHttpEventProcessor()
+            HttpMessageTypes.UPDATE_INFO -> UpdateInfoEventProcessor()
             else -> null
         }
 

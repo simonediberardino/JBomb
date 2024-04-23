@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.items
 
 import game.Bomberman
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.network.events.forward.UpdateInfoEventForwarder
 import game.utils.Utility
@@ -54,7 +55,7 @@ class BombItem : UsableItem() {
         bombEntity = Bomb(owner)
 
         match.addBomb(bombEntity)
-        UpdateInfoEventForwarder().invoke((bombEntity as game.domain.world.domain.entity.actors.abstracts.base.Entity).toEntityNetwork())
+        UpdateInfoEventForwarder().invoke((bombEntity as Entity).toEntityNetwork())
 
         bombEntity.logic.onExplodeCallback = {
             owner.state.placedBombs--

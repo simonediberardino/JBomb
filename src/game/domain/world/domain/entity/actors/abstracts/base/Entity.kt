@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.types.EntityTypes
 import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
+import game.utils.dev.Extensions.getOrTrim
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.util.*
@@ -219,15 +220,28 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         return info.id == other.info.id
     }
 
-    open fun toEntityNetwork() : EntityNetwork {
+    open fun toEntityNetwork(): EntityNetwork {
         return this.dtoToEntityNetwork()
     }
 
     override fun hashCode(): Int = Objects.hash(info.id)
 
-    /*override fun toString(): String {
-        return "Entity{id=${info.id}, info= $info}"
-    }*/
+    open fun updateInfo(info: Map<String, String>) {
+        val isInvisible = info.getOrTrim("isInvisible")
+        isInvisible?.let {
+            state.isInvisible = it.toBoolean()
+        }
+
+        val isImmune = info.getOrTrim("isImmune")
+        isImmune?.let {
+            state.isImmune = it.toBoolean()
+        }
+
+        val state = info.getOrTrim("state")
+        state?.let {
+            this.state.state = State.valueOf(it)
+        }
+    }
 
     internal object DEFAULT {
         val ALPHA = 1f
