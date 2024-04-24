@@ -21,7 +21,7 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         val entityType = info.getOrTrim("entityType")?.toInt() ?: return
         val locationString = info.getOrTrim("location") ?: return
         val locTokens = locationString.split(" ").map { it.toInt() }
-        val location = Coordinates(locTokens[0], locTokens[1])
+        val location = Coordinates(locTokens[0], locTokens[1]).fromAbsolute()
 
         Log.i("SpawnedEntityHttpEventProcessor received $entityId, $entityType, $locationString")
         Log.i("Type $entityType $entityId")

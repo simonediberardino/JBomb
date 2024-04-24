@@ -13,6 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import static game.presentation.ui.panels.game.PitchPanel.GRID_SIZE;
+import static game.presentation.ui.panels.game.PitchPanel.PIXEL_UNIT;
 
 public class Coordinates implements Comparable<Coordinates> {
     private final int x;
@@ -48,9 +49,22 @@ public class Coordinates implements Comparable<Coordinates> {
         return validate(e.getState().getSize());
     }
 
+    public Coordinates toAbsolute() {
+        return new Coordinates(
+                x / PIXEL_UNIT,
+                y / PIXEL_UNIT
+        );
+    }
+
+    public Coordinates fromAbsolute() {
+        return new Coordinates(
+                x * PIXEL_UNIT,
+                y * PIXEL_UNIT
+        );
+    }
+
     public boolean validate(int size) {
         Dimension gamePanelDimensions = Bomberman.bombermanFrame.getPitchPanel().getPanelDimensions();
-
 
         ValueRange rangeY = ValueRange.of(0, gamePanelDimensions.height - size);
         ValueRange rangeX = ValueRange.of(0, gamePanelDimensions.width - size);
@@ -279,7 +293,7 @@ public class Coordinates implements Comparable<Coordinates> {
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= size / offset; i++) {
-                if (i == size / offset) last = PitchPanel.PIXEL_UNIT;
+                if (i == size / offset) last = PIXEL_UNIT;
 
                 coordinates.add(new Coordinates(position.getX() + size + step * offset, position.getY() + i * offset - last));
             }
@@ -293,7 +307,7 @@ public class Coordinates implements Comparable<Coordinates> {
         int last = 0;
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= size / offset; i++) {
-                if (i == size / offset) last = PitchPanel.PIXEL_UNIT;
+                if (i == size / offset) last = PIXEL_UNIT;
                 coordinates.add(new Coordinates(position.getX() - first - step * offset, position.getY() + i * offset - last));
             }
             first = 0;
@@ -307,7 +321,7 @@ public class Coordinates implements Comparable<Coordinates> {
 
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= size / offset; i++) {
-                if (i == size / offset) last = PitchPanel.PIXEL_UNIT;
+                if (i == size / offset) last = PIXEL_UNIT;
                 coordinates.add(new Coordinates(position.getX() + i * offset - last, position.getY() - first - step * offset));
             }
             first = 0;
@@ -322,7 +336,7 @@ public class Coordinates implements Comparable<Coordinates> {
 
         for (int step = 0; step <= steps / offset; step++) {
             for (int i = 0; i <= size / offset; i++) {
-                if (i == size / offset) last = PitchPanel.PIXEL_UNIT;
+                if (i == size / offset) last = PIXEL_UNIT;
 
                 coordinates.add(new Coordinates(position.getX() + i * offset - last, position.getY() + size - 1 + first + step * offset));
             }
@@ -397,10 +411,10 @@ public class Coordinates implements Comparable<Coordinates> {
             for (int y = 0; y <= size / PitchPanel.COMMON_DIVISOR; y++) {
                 lastX = lastY = 0;
                 if (x == size / PitchPanel.COMMON_DIVISOR)
-                    lastX = PitchPanel.PIXEL_UNIT;
+                    lastX = PIXEL_UNIT;
 
                 if (y == size / PitchPanel.COMMON_DIVISOR)
-                    lastY = PitchPanel.PIXEL_UNIT;
+                    lastY = PIXEL_UNIT;
                 arrayCoordinates.add(new Coordinates(coords.getX() + x * PitchPanel.COMMON_DIVISOR - lastX, coords.getY() + y * PitchPanel.COMMON_DIVISOR - lastY));
             }
         }

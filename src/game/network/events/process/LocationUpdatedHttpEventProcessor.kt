@@ -15,7 +15,7 @@ class LocationUpdatedHttpEventProcessor : HttpEvent {
         val locationString = info.getOrTrim("location") ?: return
         val direction = info.getOrTrim("direction")?.toInt() ?: return
         val locTokens = locationString.split(" ").map { it.toInt() }
-        val location = Coordinates(locTokens[0], locTokens[1])
+        val location = Coordinates(locTokens[0], locTokens[1]).fromAbsolute()
 
         Log.i("LocationUpdatedHttpEventProcessor received $entityId, $locationString")
 

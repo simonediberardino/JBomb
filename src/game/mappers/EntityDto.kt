@@ -17,7 +17,7 @@ fun EntityTypes.toEntity(id: Long) : Entity? {
 fun Entity.dtoToEntityNetwork(): EntityNetwork {
     return EntityNetwork(
             info.id,
-            info.position,
+            info.position.toAbsolute(),
             info.type.ordinal
     )
 }
@@ -25,7 +25,7 @@ fun Entity.dtoToEntityNetwork(): EntityNetwork {
 fun BomberEntity.dtoToEntityNetwork(): BomberEntityNetwork {
     return BomberEntityNetwork(
             entityId = info.id,
-            entityLocation = info.position,
+            entityLocation = info.position.toAbsolute(),
             entityType = info.type.ordinal,
             direction = state.direction.ordinal,
             currExplosionLength = state.currExplosionLength,
@@ -36,7 +36,7 @@ fun BomberEntity.dtoToEntityNetwork(): BomberEntityNetwork {
 fun Character.dtoToEntityNetwork(): CharacterNetwork {
     return CharacterNetwork(
             info.id,
-            info.position,
+            info.position.toAbsolute(),
             info.type.ordinal,
             state.direction.ordinal
     )
@@ -45,7 +45,7 @@ fun Character.dtoToEntityNetwork(): CharacterNetwork {
 fun PlaceableEntity.dtoToEntityNetwork(): PlaceableEntityNetwork {
     return PlaceableEntityNetwork(
             info.id,
-            info.position,
+            info.position.toAbsolute(),
             info.type.ordinal,
             state.caller?.info?.id ?: -1
     )

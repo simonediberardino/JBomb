@@ -10,8 +10,10 @@ import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.domain.world.domain.entity.geo.Coordinates
 import game.input.Command
 import game.presentation.ui.pages.GameOverPanel
+import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.ActionEvent
 import javax.swing.Timer
@@ -45,6 +47,11 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     private fun showDeathPage() {
         Bomberman.destroyLevel()
         Bomberman.showActivity(GameOverPanel::class.java)
+    }
+
+    override fun onMove(coordinates: Coordinates) {
+        super.onMove(coordinates)
+        Log.e("Move: ${coordinates.toAbsolute()}")
     }
 
     private fun updateBombs() {
