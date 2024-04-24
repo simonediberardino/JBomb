@@ -48,6 +48,8 @@ interface IEntityLogic {
     fun talk(entity: Entity)
     fun unCollideAll()
     fun mouseDraggedInteraction()
+    fun onAdded()
+    fun onRemoved()
 }
 
 // Class representing the state of an entity

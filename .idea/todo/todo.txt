@@ -1,14 +1,14 @@
 
 high priorities:
 
-- Messages only server side?
-- Update player info
+
+- bombs placed multiple times
+- UI mp
+-
 - Location updated of host player on client side when starting game
 - Mystery box interact on client side
-- Round passed only server side
 - End game mp
 - Screen when starting game
-- handle perks/status, bombs length
 - forward client message to all clients;
 - handle you message and skin;
 - disable mp;

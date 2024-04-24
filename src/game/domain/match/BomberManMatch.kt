@@ -22,7 +22,6 @@ import game.presentation.ui.pages.PausePanel
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.viewcontrollers.*
 import game.utils.Utility.timePassed
-import game.utils.dev.Log
 import game.utils.time.now
 import kotlinx.coroutines.*
 import java.util.*
@@ -219,7 +218,6 @@ class BomberManMatch(
     fun getEntityById(entityId: Long): Entity? = _entitiesMap[entityId]
 
     fun addEntity(entity: Entity) {
-        Log.i("Adding entity, ${entity.info.type}")
         synchronized(_entitiesList) {
             _entitiesList.add(entity)
         }
@@ -228,6 +226,7 @@ class BomberManMatch(
             _entitiesMap.put(entity.info.id, entity)
         }
 
+        entity.logic.onAdded()
         performGarbageCollection()
     }
 
@@ -242,6 +241,7 @@ class BomberManMatch(
 
         gameTickerObservable?.unregister(entity)
 
+        entity.logic.onRemoved()
         scope.launch {
             delay(500)
             performGarbageCollection()
@@ -301,18 +301,8 @@ class BomberManMatch(
         PlayLevelSoundTrackBehavior(currentLevel ?: return).invoke()
     }
 
-    /**
-     * Decreases the count of enemies currently alive in the game.
-     */
-    fun decreaseEnemiesAlive() {
-        enemiesAlive--
-    }
-
-    /**
-     * Increases the count of enemies currently alive in the game.
-     */
-    fun increaseEnemiesAlive() {
-        enemiesAlive++
+    fun updateEnemiesAliveCount(count: Int) {
+        enemiesAlive = count
     }
 
     /**

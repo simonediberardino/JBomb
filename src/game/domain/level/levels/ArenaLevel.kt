@@ -6,6 +6,7 @@ import game.domain.events.game.RoundPassedGameEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
 import game.domain.events.game.UpdateMaxBombsEvent
+import game.domain.level.behavior.GameBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
 import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.gamehandler.imp.DefaultGameHandler
@@ -28,7 +29,7 @@ abstract class ArenaLevel : Level() {
                     return
                 }
 
-               super.spawnMysteryBox()
+                super.spawnMysteryBox()
             }
 
             override fun generateDestroyableBlock() {
@@ -78,14 +79,31 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun onAllEnemiesEliminated() {
-                val t = Timer(ARENA_ROUND_LOADING_TIMER) { _: ActionEvent? ->
-                    val player: Entity = Bomberman.match.player ?: return@Timer
-                    if (player.state.isSpawned)
-                        gameHandler.startLevel()
+                val gameBehavior: GameBehavior = object : GameBehavior() {
+                    override fun hostBehavior(): () -> Unit {
+                        return {
+                            // if host, waits before notifying a new round
+                            val t = Timer(ARENA_ROUND_LOADING_TIMER) { _: ActionEvent? ->
+                                val player: Entity = Bomberman.match.player ?: return@Timer
+                                if (player.state.isSpawned)
+                                    gameHandler.startLevel()
+                            }
+
+                            t.isRepeats = false
+                            t.start()
+                        }
+                    }
+
+                    override fun clientBehavior(): () -> Unit {
+                        return {
+                            // if client, onAllEnemiesEliminated is fired when host notifies round completion,
+                            // so no need to wait
+                            gameHandler.startLevel()
+                        }
+                    }
                 }
 
-                t.isRepeats = false
-                t.start()
+                gameBehavior.invoke()
             }
         }
 

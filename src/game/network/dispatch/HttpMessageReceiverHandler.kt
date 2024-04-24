@@ -21,6 +21,7 @@ class HttpMessageReceiverHandler private constructor() {
             HttpMessageTypes.LOCATION -> LocationUpdatedHttpEventProcessor()
             HttpMessageTypes.USE_ITEM -> UseItemHttpEventProcessor()
             HttpMessageTypes.UPDATE_INFO -> UpdateInfoEventProcessor()
+            HttpMessageTypes.ENEMIES_COUNT -> UpdateEnemiesCountEventProcessor()
             else -> null
         }
 

@@ -51,10 +51,13 @@ abstract class EntityLogic(
 
         if (forceSpawn || !Coordinates.isBlockOccupied(entity.info.position)) {
             entity.state.isSpawned = true
-            Bomberman.match.addEntity(entity)
+            match.addEntity(entity)
             onSpawn()
         }
     }
+
+    override fun onAdded() {}
+    override fun onRemoved() {}
 
     override fun notifySpawn() {
         SpawnEntityEventForwarder(-1).invoke(entity.toEntityNetwork())

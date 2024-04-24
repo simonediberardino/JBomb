@@ -4,7 +4,6 @@ import game.Bomberman
 import game.audio.AudioManager
 import game.audio.SoundModel
 import game.data.data.DataInputOutput
-import game.domain.events.game.AllEnemiesEliminatedGameEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
@@ -14,11 +13,7 @@ open class DefaultLevelEventHandler : LevelEventHandler {
         DataInputOutput.getInstance().increaseLost()
     }
 
-    override fun onEnemyDespawned() {
-        if (Bomberman.match.enemiesAlive == 0) {
-            AllEnemiesEliminatedGameEvent().invoke(null)
-        }
-    }
+    override fun onEnemyDespawned() {}
 
     override fun onKilledEnemy() {
         DataInputOutput.getInstance().increaseKills()
