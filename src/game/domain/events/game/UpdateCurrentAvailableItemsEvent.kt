@@ -15,7 +15,6 @@ class UpdateCurrentAvailableItemsEvent : GameEvent {
         }
 
         Bomberman.match.currentLevel.eventHandler.onUpdateCurrentAvailableBombsEvent(value)
-        Bomberman.match.updateInventoryWeaponController()
         UpdateInfoEventForwarder().invoke(player.toEntityNetwork())
     }
 }
