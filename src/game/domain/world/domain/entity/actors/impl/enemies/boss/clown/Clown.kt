@@ -3,6 +3,7 @@ package game.domain.world.domain.entity.actors.impl.enemies.boss.clown
 import game.Bomberman
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
@@ -68,7 +69,7 @@ class Clown : Boss, Explosive {
      * @return a list of entity classes that can interact with explosions.
      */
     override val explosionInteractionEntities: Set<Class<out Entity>> = setOf(
-            Player::class.java,
+            BomberEntity::class.java,
             Bomb::class.java
     )
 

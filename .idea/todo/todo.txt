@@ -1,8 +1,6 @@
 
 high priorities:
 
-- coordinates mp full screen
-- health arena
 - bombs placed multiple times
 - UI mp
 -

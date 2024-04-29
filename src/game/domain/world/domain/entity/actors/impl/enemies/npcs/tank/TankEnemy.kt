@@ -11,6 +11,7 @@ import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.tank.logic.TankEnemyLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.tank.properties.TankEnemyState
@@ -33,7 +34,7 @@ class TankEnemy : AiEnemy, Explosive {
 
     override val explosionObstacles: Set<Class<out Entity>> = emptySet()
     override val explosionInteractionEntities: Set<Class<out Entity>> = setOf(
-            Player::class.java,
+            BomberEntity::class.java,
             Bomb::class.java
     )
     override val maxExplosionDistance: Int = 4

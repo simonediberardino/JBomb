@@ -4,13 +4,16 @@ import game.Bomberman
 import game.Bomberman.match
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityLogic
+import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
+import game.network.events.forward.CollideEventForwarder
 import game.network.events.forward.DespawnEntityEventForwarder
 import game.network.events.forward.SpawnEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
+import game.utils.dev.Log
 import game.utils.time.now
 
 abstract class EntityLogic(
@@ -22,6 +25,9 @@ abstract class EntityLogic(
     }
 
     override fun despawn() {
+        if (entity is Player) {
+            Log.e("Despawning $entity")
+        }
         entity.state.isSpawned = false
         onDespawn()
         Bomberman.match.removeEntity(entity)
@@ -149,6 +155,7 @@ abstract class EntityLogic(
             return
         }
 
+        CollideEventForwarder().invoke(e.toEntityNetwork(), entity.toEntityNetwork())
         entity.state.collidedEntities.add(e)
 
         e.logic.passiveCollide(entity)
@@ -175,7 +182,8 @@ abstract class EntityLogic(
                 entity.logic.unPassivecollide(it)
                 it.logic.unCollide(entity)
             }
-        } catch (_: Exception) {}
+        } catch (_: Exception) {
+        }
     }
 
     override fun onCollision(e: Entity) {

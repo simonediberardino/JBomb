@@ -51,7 +51,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
 
     override fun onMove(coordinates: Coordinates) {
         super.onMove(coordinates)
-        Log.e("Move: ${coordinates.toAbsolute()}")
     }
 
     private fun updateBombs() {
