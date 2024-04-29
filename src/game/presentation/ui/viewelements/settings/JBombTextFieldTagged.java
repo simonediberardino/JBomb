@@ -16,13 +16,19 @@ public class JBombTextFieldTagged extends SettingsElementView {
     private final Color defaultColor = Color.WHITE;
     private final Color mouseHoverColor = BomberColors.RED;
 
-    public JBombTextFieldTagged(JPanel gridPanel, String title, String startText, RunnablePar callback, int charLimit) {
+    public JBombTextFieldTagged(
+            JPanel gridPanel,
+            String title,
+            String startText,
+            RunnablePar callback,
+            int charLimit
+    ) {
         super(gridPanel); // Call the constructor of the superclass and pass gridPanel as a parameter.
         name = new JLabel(title, SwingConstants.CENTER); // Create a new JLabel named "name" with the specified title and center alignment.
         value = new JTextField(1);
 
+        value.setHorizontalAlignment(JTextField.CENTER);
         value.setOpaque(false); // Set the opaque property of the "value" text field to false, allowing the background to be transparent.
-        value.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT); // Set the component orientation of the "value" text field to right-to-left.
         value.setText(startText.toUpperCase());
 
         value.addCaretListener(e -> callback.execute(value.getText())); // Add a caret listener to the "value" text field that executes the "callback" function with the current text of the field when the caret position changes.

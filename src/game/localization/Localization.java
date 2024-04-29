@@ -153,6 +153,11 @@ public class Localization {
         put(Locale.ITALY, "INDIETRO");
     }};
 
+    public static final HashMap<Locale, String> CONNECT = new HashMap<>() {{
+        put(Locale.ENGLISH, "CONNECT");
+        put(Locale.ITALY, "CONNETTITI");
+    }};
+
 
     public static final HashMap<Locale, String> PLAY = new HashMap<>() {{
         put(Locale.ENGLISH, "PLAY");
@@ -169,6 +174,16 @@ public class Localization {
         put(Locale.ITALY, "CREA PARTITA ARENA");
     }};
 
+    public static final HashMap<Locale, String> SERVERS_LIST_INPUT = new HashMap<>() {{
+        put(Locale.ENGLISH, "IP ADDRESS");
+        put(Locale.ITALY, "INDIRIZZO IP");
+    }};
+
+    public static final HashMap<Locale, String> INSERT = new HashMap<>() {{
+        put(Locale.ENGLISH, "INSERT...");
+        put(Locale.ITALY, "INSERISCI...");
+    }};
+
     public static final HashMap<Locale, String> PLAY_ONLINE = new HashMap<>() {{
         put(Locale.ENGLISH, "JOIN AN ONLINE GAME");
         put(Locale.ITALY, "PARTECIPA ONLINE");
@@ -181,6 +196,11 @@ public class Localization {
     public static final HashMap<Locale, String> QUIT = new HashMap<>() {{
         put(Locale.ENGLISH, "EXIT THE GAME");
         put(Locale.ITALY, "ESCI DAL GIOCO");
+    }};
+
+    public static final HashMap<Locale, String> SERVERS_LIST_TITLE = new HashMap<>() {{
+        put(Locale.ENGLISH, "CONNECT TO A GAME");
+        put(Locale.ITALY, "PARTECIPA A UNA PARTITA");
     }};
 
     public static final HashMap<Locale, String> RESUME_GAME = new HashMap<>() {{

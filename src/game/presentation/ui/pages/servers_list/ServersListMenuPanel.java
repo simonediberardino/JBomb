@@ -1,42 +1,79 @@
 package game.presentation.ui.pages.servers_list;
 
 import game.Bomberman;
+import game.domain.events.models.RunnablePar;
+import game.domain.level.levels.lobby.WaitingRoomLevel;
+import game.localization.Localization;
+import game.network.gamehandler.ClientGameHandler;
 import game.presentation.ui.frames.BombermanFrame;
-import game.presentation.ui.pages.AbstractMainMenuPanel;
+import game.presentation.ui.helpers.Padding;
 import game.presentation.ui.pages.play.PlayMenuPanel;
+import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
+import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
+import game.presentation.ui.viewelements.settings.SettingsElementView;
+import game.utils.Utility;
+import game.utils.file_system.Paths;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
 
-import static game.localization.Localization.BACK;
-import static game.localization.Localization.get;
+import static game.localization.Localization.*;
+import static game.values.Dimensions.DEFAULT_X_PADDING;
+import static game.values.Dimensions.DEFAULT_Y_PADDING;
 
-public class ServersListMenuPanel extends AbstractMainMenuPanel {
+public class ServersListMenuPanel extends BoxMenuPanel {
+    protected String enteredIpAddress = "";
+
     public ServersListMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
-        super(cardLayout, parent, frame);
+        super(cardLayout, parent, frame, Localization.get(Localization.SERVERS_LIST_TITLE), Paths.getMainMenuWallpaper(), false);
     }
 
-    @Override
-    protected int getButtonsPadding() {
-        return 0;
-    }
-
-    @Override
-    protected List<JButton> getButtons() {
-        return Arrays.asList(createBackButton());
-    }
-
-    private JButton createBackButton() {
+    private void createBackButton() {
         JButton b = new RedButton(get(BACK));
         b.addActionListener(l -> Bomberman.showActivity(PlayMenuPanel.class));
-        return b;
+        boxComponentsPanel.addComponent(b);
+    }
+
+    private void addIpTextField() {
+        boxComponentsPanel.addTextFieldElementView(Localization.get(SERVERS_LIST_INPUT), Localization.get(INSERT), new RunnablePar() {
+            @Override
+            public <T> Object execute(T par) {
+                if (par.toString().isBlank()) return null;
+                enteredIpAddress = par.toString();
+                return null;
+            }
+        });
+    }
+
+    private void createConnectButton() {
+        JButton b = new YellowButton(get(CONNECT));
+        b.addActionListener(l -> connect());
+        boxComponentsPanel.addComponent(b);
+    }
+
+    private void connect() {
+        Bomberman.startLevel(new WaitingRoomLevel(), new ClientGameHandler(enteredIpAddress, 28960));
+    }
+
+    @Override
+    protected int getBoxPanelWidth() {
+        return Utility.INSTANCE.px(1000);
+    }
+
+    @Override
+    protected void addCustomElements() {
+        padding();
+        addIpTextField();
+        padding();
+        padding();
+        createConnectButton();
+        createBackButton();
     }
 
     @Override
     public void onShowCallback() {
         super.onShowCallback();
+        enteredIpAddress = "";
     }
 }

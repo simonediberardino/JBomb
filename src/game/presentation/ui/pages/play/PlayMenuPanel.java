@@ -9,6 +9,7 @@ import game.presentation.ui.frames.BombermanFrame;
 import game.presentation.ui.pages.AbstractMainMenuPanel;
 import game.presentation.ui.pages.arena.ArenaMenuPanel;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
+import game.presentation.ui.pages.servers_list.ServersListMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 
@@ -53,7 +54,9 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
     private JButton createServersList() {
         JButton startLevelButton = new YellowButton(get(PLAY_ONLINE));
         // TODO
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WaitingRoomLevel(), new ClientGameHandler("localhost", 28960)));
+
+        //startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WaitingRoomLevel(), new ClientGameHandler("localhost", 28960)));
+        startLevelButton.addActionListener((v) -> Bomberman.showActivity(ServersListMenuPanel.class));
         return startLevelButton;
     }
 
