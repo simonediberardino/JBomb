@@ -1,7 +1,8 @@
-package game.presentation.ui.pages;
+package game.presentation.ui.pages.pause;
 
 import game.Bomberman;
 import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.pages.BaseMenu;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 
 import javax.swing.*;

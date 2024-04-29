@@ -1,7 +1,9 @@
-package game.presentation.ui.pages;
+package game.presentation.ui.pages.servers_list;
 
 import game.Bomberman;
 import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.pages.AbstractMainMenuPanel;
+import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 
 import javax.swing.*;

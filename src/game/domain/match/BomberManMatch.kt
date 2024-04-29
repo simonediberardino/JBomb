@@ -18,7 +18,7 @@ import game.network.events.forward.UseItemHttpEventForwarder
 import game.network.gamehandler.ClientGameHandler
 import game.network.gamehandler.OnlineGameHandler
 import game.network.gamehandler.ServerGameHandler
-import game.presentation.ui.pages.PausePanel
+import game.presentation.ui.pages.pause.PausePanel
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.viewcontrollers.*
 import game.utils.Utility.timePassed

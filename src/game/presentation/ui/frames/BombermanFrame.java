@@ -2,9 +2,15 @@ package game.presentation.ui.frames;
 
 import game.domain.level.levels.world1.World1Level1;
 import game.localization.Localization;
-import game.presentation.ui.pages.*;
+import game.presentation.ui.pages.arena.ArenaMenuPanel;
+import game.presentation.ui.pages.game_over.GameOverPanel;
+import game.presentation.ui.pages.loading.LoadingPanel;
+import game.presentation.ui.pages.main_menu.MainMenuPanel;
+import game.presentation.ui.pages.pause.PausePanel;
+import game.presentation.ui.pages.play.PlayMenuPanel;
+import game.presentation.ui.pages.servers_list.ServersListMenuPanel;
 import game.presentation.ui.panels.menu.ProfilePanel;
-import game.presentation.ui.pages.SettingsPanel;
+import game.presentation.ui.pages.settings.SettingsPanel;
 import game.presentation.ui.panels.game.MatchPanel;
 import game.presentation.ui.panels.game.PitchPanel;
 import game.presentation.ui.viewelements.misc.ToastHandler;

@@ -165,13 +165,13 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> START_ARENA = new HashMap<>() {{
-        put(Locale.ENGLISH, "SELECT ARENA");
-        put(Locale.ITALY, "GIOCA ARENA");
+        put(Locale.ENGLISH, "CREATE ARENA GAME");
+        put(Locale.ITALY, "CREA PARTITA ARENA");
     }};
 
     public static final HashMap<Locale, String> PLAY_ONLINE = new HashMap<>() {{
         put(Locale.ENGLISH, "JOIN AN ONLINE GAME");
-        put(Locale.ITALY, "GIOCA ONLINE");
+        put(Locale.ITALY, "PARTECIPA ONLINE");
     }};
     public static final HashMap<Locale, String> PROFILE = new HashMap<>() {{
         put(Locale.ENGLISH, "SHOW PROFILE");

@@ -7,7 +7,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.types.EntityTypes
 import game.mappers.toEntity
 import game.network.gamehandler.ClientGameHandler
-import game.presentation.ui.pages.LoadingPanel.LOADING_TIMER
+import game.presentation.ui.pages.loading.LoadingPanel.LOADING_TIMER
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 import java.awt.event.ActionEvent

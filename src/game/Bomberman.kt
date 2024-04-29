@@ -8,8 +8,8 @@ import game.domain.tasks.GarbageCollectorTask
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
 import game.presentation.ui.frames.BombermanFrame
-import game.presentation.ui.pages.LoadingPanel
-import game.presentation.ui.pages.MainMenuPanel
+import game.presentation.ui.pages.loading.LoadingPanel
+import game.presentation.ui.pages.main_menu.MainMenuPanel
 import game.presentation.ui.panels.game.CustomSoundMode
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.panels.game.PagePanel

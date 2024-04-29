@@ -1,4 +1,4 @@
-package game.presentation.ui.pages;
+package game.presentation.ui.pages.loading;
 
 import game.Bomberman;
 import game.domain.level.levels.Level;

@@ -4,7 +4,7 @@ import game.Bomberman;
 import game.domain.events.models.RunnablePar;
 import game.localization.Localization;
 import game.presentation.ui.helpers.Padding;
-import game.presentation.ui.pages.MainMenuPanel;
+import game.presentation.ui.pages.main_menu.MainMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 import game.presentation.ui.viewelements.bombermanpanel.BombermanPanelYellow;

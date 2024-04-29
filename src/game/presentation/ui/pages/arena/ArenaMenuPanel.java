@@ -1,10 +1,12 @@
-package game.presentation.ui.pages;
+package game.presentation.ui.pages.arena;
 
 import game.Bomberman;
 import game.network.gamehandler.ServerGameHandler;
 import game.domain.level.levels.world1.World1Arena;
 import game.domain.level.levels.world2.World2Arena;
 import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.pages.AbstractMainMenuPanel;
+import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 

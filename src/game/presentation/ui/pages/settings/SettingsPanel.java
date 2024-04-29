@@ -1,4 +1,4 @@
-package game.presentation.ui.pages;
+package game.presentation.ui.pages.settings;
 
 import game.data.data.DataInputOutput;
 import game.domain.events.models.RunnablePar;

@@ -12,8 +12,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.Bomb
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.geo.Coordinates
 import game.input.Command
-import game.presentation.ui.pages.GameOverPanel
-import game.utils.dev.Log
+import game.presentation.ui.pages.game_over.GameOverPanel
 import game.utils.time.now
 import java.awt.event.ActionEvent
 import javax.swing.Timer
