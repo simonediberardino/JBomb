@@ -4,6 +4,7 @@ import game.network.callbacks.TCPClientCallback
 import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -18,8 +19,17 @@ class TCPClient(private val serverAddress: String,
     private lateinit var reader: BufferedReader
     private lateinit var writer: PrintWriter
     private val listeners: MutableSet<TCPClientCallback> = mutableSetOf()
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     fun connect() {
+        if (serverAddress.isBlank()) {
+            close()
+            onError("Unknown Host")
+            return
+        }
+
+        Log.e("Connecting to $serverAddress")
+
         try {
             socket = Socket(serverAddress, serverPort)
             reader = BufferedReader(InputStreamReader(socket.getInputStream()))
@@ -30,16 +40,15 @@ class TCPClient(private val serverAddress: String,
             }
 
             readStream()
-        } catch (exception: UnknownHostException) {
+        } catch (exception: Exception) {
             close()
-            onError()
-            exception.printStackTrace()
+            onError(exception.localizedMessage)
         }
     }
 
-    private fun onError() {
+    private fun onError(message: String?) {
         for (listener in listeners) {
-            listener.onError()
+            listener.onError(message)
         }
     }
 
@@ -54,9 +63,10 @@ class TCPClient(private val serverAddress: String,
     }
 
     private fun readStream() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             try {
                 while (true) {
+                    Log.e("Reading")
                     // Reads the stream from the server;
                     val serverData = reader.readLine()
 
@@ -71,19 +81,30 @@ class TCPClient(private val serverAddress: String,
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
-                socket.close()
+                close()
+                onError(null)
             }
         }
     }
 
-    private fun close() {
-        reader.close()
-        writer.close()
-        socket.close()
+    fun close() {
+        if (this::reader.isInitialized) {
+            reader.close()
+        }
+
+        if (this::writer.isInitialized) {
+            writer.close()
+        }
+
+        if (this::socket.isInitialized) {
+            socket.close()
+        }
 
         for (listener in listeners) {
             listener.onDisconnect()
         }
+
+        scope.cancel()
     }
 
     fun register(tcpClientCallback: TCPClientCallback) {

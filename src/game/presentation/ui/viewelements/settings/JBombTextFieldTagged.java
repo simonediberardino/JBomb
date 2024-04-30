@@ -1,6 +1,8 @@
 package game.presentation.ui.viewelements.settings;
 
 import game.domain.events.models.RunnablePar;
+import game.presentation.ui.elements.JBombLabel;
+import game.presentation.ui.elements.JBombLabelMultiLine;
 import game.presentation.ui.helpers.BombermanTextFieldFilter;
 import game.values.BomberColors;
 
@@ -11,7 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class JBombTextFieldTagged extends SettingsElementView {
-    private final JLabel name;
+    private final JBombLabel name;
     private final JTextField value;
     private final Color defaultColor = Color.WHITE;
     private final Color mouseHoverColor = BomberColors.RED;
@@ -24,7 +26,7 @@ public class JBombTextFieldTagged extends SettingsElementView {
             int charLimit
     ) {
         super(gridPanel); // Call the constructor of the superclass and pass gridPanel as a parameter.
-        name = new JLabel(title, SwingConstants.CENTER); // Create a new JLabel named "name" with the specified title and center alignment.
+        name = new JBombLabel(title); // Create a new JLabel named "name" with the specified title and center alignment.
         value = new JTextField(1);
 
         value.setHorizontalAlignment(JTextField.CENTER);
@@ -48,9 +50,7 @@ public class JBombTextFieldTagged extends SettingsElementView {
             }
         });
 
-        name.setForeground(Color.WHITE);
         value.setForeground(Color.WHITE);
-        name.setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
         value.setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
 
         add(name); // Add the "name" label to the SettingsElementView object.

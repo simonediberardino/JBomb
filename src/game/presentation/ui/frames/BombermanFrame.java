@@ -3,6 +3,7 @@ package game.presentation.ui.frames;
 import game.domain.level.levels.world1.World1Level1;
 import game.localization.Localization;
 import game.presentation.ui.pages.arena.ArenaMenuPanel;
+import game.presentation.ui.pages.error.NetworkErrorPage;
 import game.presentation.ui.pages.game_over.GameOverPanel;
 import game.presentation.ui.pages.loading.LoadingPanel;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
@@ -54,6 +55,8 @@ public class BombermanFrame extends JFrame {
     private SettingsPanel settingsPanel;
     private ArenaMenuPanel arenaMenuPanel;
 
+    private NetworkErrorPage networkErrorPage;
+
     /**
      * Creates the main frame and sets its properties.
      */
@@ -70,6 +73,7 @@ public class BombermanFrame extends JFrame {
         initProfilePanel();
         initSettingsPanel();
         initArenaMenuPanel();
+        initErrorMenuPanel();
         finalizeFrame();
         pack();
         setFrameCursor();
@@ -162,6 +166,11 @@ public class BombermanFrame extends JFrame {
     private void initArenaMenuPanel() {
         arenaMenuPanel = new ArenaMenuPanel(cardLayout, parentPanel, this);
         parentPanel.add(arenaMenuPanel, ArenaMenuPanel.class.getSimpleName());
+    }
+
+    private void initErrorMenuPanel()  {
+        networkErrorPage = new NetworkErrorPage(cardLayout, parentPanel, this);
+        parentPanel.add(networkErrorPage, NetworkErrorPage.class.getSimpleName());
     }
 
     /**

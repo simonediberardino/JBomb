@@ -21,7 +21,9 @@ import game.network.gamehandler.ServerGameHandler
 import game.presentation.ui.pages.pause.PausePanel
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.viewcontrollers.*
+import game.presentation.ui.viewelements.misc.ToastHandler
 import game.utils.Utility.timePassed
+import game.utils.dev.Log
 import game.utils.time.now
 import kotlinx.coroutines.*
 import java.util.*
@@ -75,7 +77,9 @@ class BomberManMatch(
 
     init {
         setupViewControllers()
+    }
 
+    fun connect() {
         if (onlineGameHandler?.isRunning() != true) {
             onlineGameHandler?.onStart()
         }
@@ -182,7 +186,7 @@ class BomberManMatch(
      * @return True if the client game handler is not null and connected, false otherwise.
      */
     val isClient: Boolean
-        get() = onlineGameHandler is ClientGameHandler /*&& onlineGameHandler.connected*/
+        get() = onlineGameHandler is ClientGameHandler
 
     /**
      * Checks if the game is running in server mode.
@@ -190,7 +194,7 @@ class BomberManMatch(
      * @return True if the server game handler is not null and running, false otherwise.
      */
     val isServer: Boolean
-        get() = onlineGameHandler is ServerGameHandler || onlineGameHandler == null /*&& onlineGameHandler.running*/
+        get() = onlineGameHandler is ServerGameHandler || !isClient && onlineGameHandler == null
 
     /**
      * Adds a bomb to the list of bombs in the game.
@@ -309,6 +313,10 @@ class BomberManMatch(
      * Performs cleanup operations and releases resources associated with the game.
      */
     fun destroy() {
+        Log.e("Isserver $isServer, $onlineGameHandler")
+        if (isServer) {
+            onlineGameHandler?.disconnect()
+        }
         // Pause the game to ensure safe destruction
         pauseGame(showUi = false)
 
@@ -335,6 +343,8 @@ class BomberManMatch(
 
         // Perform garbage collection to release memory
         performGarbageCollection()
+
+        ToastHandler.getInstance().cancel()
     }
 
     private fun cancelCoroutineJob() {

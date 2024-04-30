@@ -1,5 +1,6 @@
 package game.network.gamehandler
 
+import game.Bomberman
 import game.network.callbacks.TCPClientCallback
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.serializing.HttpParserSerializer
@@ -40,8 +41,9 @@ class ClientGameHandler(
     /**
      * Handles errors that may occur during the client-server communication.
      */
-    override fun onError() {
+    override fun onError(message: String?) {
         connected = false
+        Bomberman.networkError(message)
     }
 
     /**
@@ -127,5 +129,9 @@ class ClientGameHandler(
      */
     override fun isRunning(): Boolean {
         return connected
+    }
+
+    override fun disconnect() {
+        client.close()
     }
 }

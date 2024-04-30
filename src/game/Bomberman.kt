@@ -8,6 +8,7 @@ import game.domain.tasks.GarbageCollectorTask
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
 import game.presentation.ui.frames.BombermanFrame
+import game.presentation.ui.pages.error.NetworkErrorPage
 import game.presentation.ui.pages.loading.LoadingPanel
 import game.presentation.ui.pages.main_menu.MainMenuPanel
 import game.presentation.ui.panels.game.CustomSoundMode
@@ -17,12 +18,14 @@ import game.presentation.ui.viewelements.misc.ToastHandler
 import kotlinx.coroutines.launch
 import java.awt.Component
 import java.util.*
+import javax.swing.SwingUtilities
 
 object Bomberman {
     lateinit var match: BomberManMatch
 
     @JvmStatic
     lateinit var bombermanFrame: BombermanFrame
+    private var currentPage: Class<out PagePanel>? = null
 
     /**
      * Starts the Java Application;
@@ -78,6 +81,8 @@ object Bomberman {
             bombermanFrame.pitchPanel.addMouseListener(match.mouseControllerManager)
             bombermanFrame.pitchPanel.addMouseMotionListener(match.mouseControllerManager)
             showActivity(MatchPanel::class.java)
+
+            match.connect()
         }
     }
 
@@ -92,6 +97,20 @@ object Bomberman {
         showActivity(LoadingPanel::class.java)
     }
 
+    fun networkError(error: String?) {
+        destroyLevel()
+
+        val formattedError = error?.let {
+            Localization.get(Localization.ERROR).replace("%error%", error)
+        } ?: Localization.get(Localization.GAME_ENDED)
+
+        NetworkErrorPage.setError(formattedError)
+
+        SwingUtilities.invokeLater {
+            showActivity(NetworkErrorPage::class.java)
+        }
+    }
+
     /**
      * Shows a new page and starts its background sound;
      *
@@ -99,13 +118,17 @@ object Bomberman {
      */
     @JvmStatic
     fun showActivity(page: Class<out PagePanel?>) {
+        if (page == currentPage)
+            return
+
         bombermanFrame.cardLayout.show(bombermanFrame.parentPanel, page.simpleName)
+        currentPage = page
 
         // Gets the component with the passed class and fires its onShowCallback;
         val shownComponentOpt = Arrays.stream(
                 bombermanFrame.parentPanel.components
-        ).filter {
-            c: Component? -> c!!.javaClass == page
+        ).filter { c: Component? ->
+            c!!.javaClass == page
         }.findFirst()
 
         val shownComponent = shownComponentOpt.orElse(null)

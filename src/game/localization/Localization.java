@@ -229,6 +229,11 @@ public class Localization {
         put(Locale.ITALY, "GIOCATORE");
     }};
 
+    public static final HashMap<Locale, String> CONNECTING = new HashMap<>() {{
+        put(Locale.ENGLISH, "CONNECTING...");
+        put(Locale.ITALY, "CONNESSIONE...");
+    }};
+
     public static final HashMap<Locale, String> APP_NAME = new HashMap<>() {{
         put(Locale.ENGLISH, "JBOMB");
         put(Locale.ITALY, "JBOMB");
@@ -262,6 +267,16 @@ public class Localization {
     public static final HashMap<Locale, String> WAITING_ROOM = new HashMap<>() {{
         put(Locale.ENGLISH, "WAITING ROOM");
         put(Locale.ITALY, "SALA D'ATTESA");
+    }};
+
+    public static final HashMap<Locale, String> GAME_ENDED = new HashMap<>() {{
+        put(Locale.ENGLISH, "GAME ENDED");
+        put(Locale.ITALY, "PARTITA TERMINATA");
+    }};
+
+    public static final HashMap<Locale, String> ERROR = new HashMap<>() {{
+        put(Locale.ENGLISH, "YOU HAVE BEEN DISCONNECTED. ERROR: %error%");
+        put(Locale.ITALY, "SEI STATO DISCONNESSO. \nERRORE: %error%");
     }};
 
     public static Locale[] getSupportedLanguages() {

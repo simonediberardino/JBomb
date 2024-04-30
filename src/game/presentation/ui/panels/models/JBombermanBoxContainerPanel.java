@@ -136,8 +136,8 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
         return elementView;
     }
 
-    public void addComponent(JComponent jComponent) {
-        componentsPanel.add(jComponent);
+    public void addComponent(Component component) {
+        componentsPanel.add(component);
         refreshPanelSize();
     }
     
