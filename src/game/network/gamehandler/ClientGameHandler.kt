@@ -103,12 +103,8 @@ class ClientGameHandler(
     override fun sendData(data: String) {
         Log.i("${javaClass.simpleName} sendData")
 
-        if (connected)
-            try {
-                client.sendData(data)
-            } catch (exception: Exception) {
-                exception.printStackTrace()
-            }
+        if (connected && this::client.isInitialized)
+            client.sendData(data)
     }
 
     /**
