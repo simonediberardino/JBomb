@@ -26,7 +26,7 @@ abstract class PowerUp : EntityInteractable {
         // A static array of power-up classes
         val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
                 PistolPowerUp::class.java,
-                /*ArmorPowerUp::class.java,
+                ArmorPowerUp::class.java,
                 FirePowerUp::class.java,
                 SpeedPowerUp::class.java,
                 TransparentDestroyableBlocksPowerUp::class.java,
@@ -35,7 +35,7 @@ abstract class PowerUp : EntityInteractable {
                 HammerPowerUp::class.java,
                 BlockMoverPowerUp::class.java,
                 IncreaseMaxBombsPowerUp::class.java,
-                TransparentBombsPowerUp::class.java*/
+                TransparentBombsPowerUp::class.java
 
         )
     }
