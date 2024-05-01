@@ -13,4 +13,5 @@ interface IBomberEntityLogic : ICharacterEntityLogic {
     fun removeClassInteractWithDrag(cls: Class<out Entity>)
     fun removeActivePowerUp(p: PowerUp?)
     fun initBombVariables()
+    fun updateBombs()
 }

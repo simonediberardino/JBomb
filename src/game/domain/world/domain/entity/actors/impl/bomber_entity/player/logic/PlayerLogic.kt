@@ -52,12 +52,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         super.onMove(coordinates)
     }
 
-    private fun updateBombs() {
-        val maxBombs = DataInputOutput.getInstance().obtainedBombs
-        UpdateCurrentAvailableItemsEvent().invoke(maxBombs)
-        UpdateCurrentBombsLengthEvent().invoke(DataInputOutput.getInstance().explosionLength)
-    }
-
     override fun observerUpdate(arg: Observable2.ObserverParam) {
         super.observerUpdate(arg)
 

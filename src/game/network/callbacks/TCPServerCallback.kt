@@ -7,4 +7,5 @@ interface TCPServerCallback : OnlineGameHandler {
     fun onCloseServer()
     fun onStartServer()
     fun onClientConnected(indexedClient: TCPServer.IndexedClient)
+    fun onClientDisconnected(indexedClient: TCPServer.IndexedClient)
 }

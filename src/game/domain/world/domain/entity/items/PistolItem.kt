@@ -11,6 +11,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
+import game.domain.world.domain.entity.pickups.powerups.PistolPowerUp
 import game.utils.file_system.Paths.itemsPath
 import game.utils.Utility.timePassed
 import game.utils.time.now
@@ -48,9 +49,9 @@ class PistolItem : UsableItem(), Explosive {
 
     private fun addBullets(i: Int) = setBullets(bullets + i)
 
-    override fun use() {
+    override fun use(): Boolean {
         if (timePassed(owner.state.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
-            return
+            return false
         }
 
         owner.state.lastPlacedBombTime = now()
@@ -71,6 +72,13 @@ class PistolItem : UsableItem(), Explosive {
         if (bullets == 0) {
             remove()
         }
+
+        return true
+    }
+
+    override fun remove() {
+        super.remove()
+        owner.state.activePowerUps.remove(PistolPowerUp::class.java)
     }
 
     override fun combineItems(item: UsableItem) {

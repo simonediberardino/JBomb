@@ -15,6 +15,7 @@ import game.utils.dev.Log
  */
 class ServerGameHandler(private val port: Int) : TCPServerCallback {
     private lateinit var server: TCPServer
+
     /**
      * Indicates whether the server is currently running and accepting client connections.
      */
@@ -63,6 +64,11 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
         LevelInfoHttpEventForwarder().invoke(data)
     }
 
+    override fun onClientDisconnected(indexedClient: TCPServer.IndexedClient) {
+        val client = Bomberman.match.getEntityById(indexedClient.id) ?: return
+        client.logic.despawn()
+    }
+
     /**
      * Initiates the creation and opening of the server upon the start of the server game handler.
      */
@@ -81,7 +87,9 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
      * @param data The data to be sent to all clients.
      */
     override fun sendData(data: String) {
-        server.sendData(data)
+        if (this::server.isInitialized) {
+            server.sendData(data)
+        }
     }
 
     /**
@@ -97,7 +105,9 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
             return
         }
 
-        server.sendData(receiverId, data, ignore)
+        if (this::server.isInitialized) {
+            server.sendData(receiverId, data, ignore)
+        }
     }
 
     /**
@@ -116,4 +126,8 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
      * @return True if the server game handler is running, false otherwise.
      */
     override fun isRunning(): Boolean = running
+
+    override fun disconnect() {
+        server.close()
+    }
 }

@@ -5,7 +5,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 
 abstract class UsableItem {
     lateinit var owner: BomberEntity
-    abstract fun use()
+    abstract fun use(): Boolean
     abstract fun combineItems(item: UsableItem)
     abstract val imagePath: String?
     abstract val count: Int
@@ -15,7 +15,7 @@ abstract class UsableItem {
         Bomberman.match.give(owner, this)
     }
 
-    fun remove() {
+    open fun remove() {
         Bomberman.match.removeItem(owner)
     }
 }

@@ -1,11 +1,10 @@
 package game.network.sockets
 
+import game.Bomberman
+import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.network.callbacks.TCPServerCallback
 import game.utils.dev.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -18,6 +17,7 @@ class TCPServer(private var port: Int) : TCPSocket {
     private var clients: MutableMap<Long, IndexedClient> = mutableMapOf()
     private val listeners: MutableSet<TCPServerCallback> = mutableSetOf()
     private var progressiveId = 0L
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     fun open() {
         try {
@@ -25,13 +25,14 @@ class TCPServer(private var port: Int) : TCPSocket {
             onStart()
             start()
         } catch (ioException: IOException) {
-            onClose()
+            close()
         }
     }
 
     private fun onClose() {
         for (listener in listeners) {
             listener.onCloseServer()
+            unregister(listener)
         }
     }
 
@@ -67,13 +68,12 @@ class TCPServer(private var port: Int) : TCPSocket {
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
-            clientSocket.client.close()
-            clients.remove(clientSocket.id)
+            disconnectClient(clientSocket)
         }
     }
 
     fun start() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             while (true) {
                 val clientSocket = socket.accept()
                 val indexedClient = IndexedClient(progressiveId, clientSocket)
@@ -92,7 +92,7 @@ class TCPServer(private var port: Int) : TCPSocket {
     }
 
     override fun sendData(data: String) {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             clients.values.parallelStream().forEach {
                 sendData(it.client, data)
             }
@@ -123,6 +123,27 @@ class TCPServer(private var port: Int) : TCPSocket {
 
     fun unregister(tcpServerCallback: TCPServerCallback) {
         listeners.remove(tcpServerCallback)
+    }
+
+    fun close() {
+        clients.values.forEach {
+            disconnectClient(it)
+        }
+
+        socket.close()
+
+        onClose()
+
+        scope.cancel()
+    }
+
+    private fun disconnectClient(clientSocket: IndexedClient) {
+        clientSocket.client.close()
+        clients.remove(clientSocket.id)
+
+        for (listener in listeners) {
+            listener.onClientDisconnected(clientSocket)
+        }
     }
 
     class IndexedClient(val id: Long, val client: Socket)

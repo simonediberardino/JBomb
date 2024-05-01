@@ -3,6 +3,7 @@ package game.domain.match
 import game.Bomberman
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
+import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.levels.Level
 import game.domain.tasks.GameTickerObservable
@@ -152,8 +153,11 @@ class BomberManMatch(
     }
 
     fun useItem(owner: BomberEntity) {
-        owner.state.weapon.use()
-        UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), owner.state.weapon.type)
+        val currItem = owner.state.weapon
+
+        if (currItem.use()) {
+            UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), currItem.type)
+        }
     }
 
 
@@ -166,6 +170,7 @@ class BomberManMatch(
         // Replace the current item with a BombItem and update related components
         owner.state.weapon = BombItem()
         owner.state.weapon.owner = owner
+        owner.logic.updateBombs()
         updateInventoryWeaponController()
     }
 

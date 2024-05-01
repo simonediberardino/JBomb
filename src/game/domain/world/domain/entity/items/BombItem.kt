@@ -13,7 +13,7 @@ import game.utils.time.now
 class BombItem : UsableItem() {
     private lateinit var bombEntity: Bomb
 
-    override fun use() {
+    override fun use(): Boolean {
         val match = Bomberman.match
         val isLocalPlayer = owner == match.player
 
@@ -23,26 +23,26 @@ class BombItem : UsableItem() {
 
         if (!isBombPlacementIntervalValid) {
             Log.e("Cannot place bomb, too early")
-            return
+            return false
         }
 
         if (isLocalPlayer && owner.state.placedBombs >= owner.state.maxBombs) {
             Log.e("owner.state.placedBombs: ${owner.state.placedBombs}")
             Log.e("owner.state.maxBombs: ${owner.state.maxBombs}")
             Log.e("Cannot place bomb, placedBombs >= maxBombs")
-            return
+            return false
         }
 
         if (isLocalPlayer && owner.state.currentBombs <= 0) {
             Log.e("owner.state.currentBombs: ${owner.state.currentBombs}")
             Log.e("Cannot place bomb, currentBombs <= 0")
-            return
+            return false
         }
 
         if (isLocalPlayer && owner.state.currExplosionLength <= 0) {
             Log.e("owner.state.currExplosionLength: ${owner.state.currExplosionLength}")
             Log.e("Cannot place bomb, currExplosionLength <= 0")
-            return
+            return false
         }
 
         owner.state.lastPlacedBombTime = now()
@@ -67,6 +67,8 @@ class BombItem : UsableItem() {
 
         bombEntity.logic.spawn(forceSpawn = true)
         bombEntity.logic.trigger()
+
+        return true
     }
 
     override fun combineItems(item: UsableItem) {
