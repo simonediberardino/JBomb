@@ -1,7 +1,5 @@
 package game.network.sockets
 
-import game.Bomberman
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.network.callbacks.TCPServerCallback
 import game.utils.dev.Log
 import kotlinx.coroutines.*
@@ -75,17 +73,24 @@ class TCPServer(private var port: Int) : TCPSocket {
     fun start() {
         scope.launch {
             while (true) {
-                val clientSocket = socket.accept()
-                val indexedClient = IndexedClient(progressiveId, clientSocket)
+                try {
+                    if (socket.isClosed)
+                        break
 
-                clients[progressiveId] = indexedClient
-                progressiveId++
+                    val clientSocket = socket.accept()
+                    val indexedClient = IndexedClient(progressiveId, clientSocket)
 
-                Log.i("Client connected: ${clientSocket.inetAddress.hostAddress}")
+                    clients[progressiveId] = indexedClient
+                    progressiveId++
 
-                // Launch coroutine to handle the client
-                launch {
-                    handleClient(indexedClient)
+                    Log.i("Client connected: ${clientSocket.inetAddress.hostAddress}")
+
+                    // Launch coroutine to handle the client
+                    launch {
+                        handleClient(indexedClient)
+                    }
+                } catch (e: Exception) {
+                    break
                 }
             }
         }

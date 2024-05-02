@@ -1,6 +1,9 @@
 
 high priorities:
 
+- Clown position
+- Clown draw priority
+- Clown ball despawn
 - Location updated of host player on client side when starting game
 - Mystery box interact on client side
 - End game mp
