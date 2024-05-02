@@ -21,7 +21,7 @@ class World1Level5 : StoryLevel() {
             override val levelId: Int get() = 5
             override val boss: Boss get() = GhostBoss()
             override val startEnemiesCount: Int get() = 0
-            override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(YellowBall::class.java, Helicopter::class.java, Zombie::class.java)
+            override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(YellowBall::class.java, Zombie::class.java)
             override val isLastLevelOfWorld: Boolean get() = true
             override val nextLevel: Class<out Level?> get() = World2Level1::class.java
             override val playerSpawnCoordinates: Coordinates

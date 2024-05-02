@@ -17,6 +17,7 @@ import game.domain.world.domain.entity.actors.impl.enemies.npcs.eagle.Eagle
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.GhostEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.helicopter.Helicopter
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.skeleton.SkeletonEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.tank.TankEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.yellow_ball.YellowBall
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.zombie.Zombie
@@ -25,6 +26,7 @@ import game.domain.world.domain.entity.pickups.portals.World1Portal
 import game.domain.world.domain.entity.pickups.portals.World2Portal
 import game.domain.world.domain.entity.pickups.powerups.*
 import game.domain.world.types.EntityTypes
+import java.rmi.server.Skeleton
 
 class EntityFactory {
     fun toEntity(entityTypes: EntityTypes, id: Long): Entity? {
@@ -40,6 +42,7 @@ class EntityFactory {
             EntityTypes.Helicopter -> Helicopter(id)
             EntityTypes.TankEnemy -> TankEnemy(id)
             EntityTypes.YellowBall -> YellowBall(id)
+            EntityTypes.Skeleton -> SkeletonEnemy(id)
             EntityTypes.Zombie -> Zombie(id)
             EntityTypes.DestroyableBlock -> DestroyableBlock(id)
             EntityTypes.InvisibleBlock -> InvisibleBlock(id)

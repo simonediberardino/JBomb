@@ -26,6 +26,7 @@ enum class EntityTypes {
     ArmorPowerUp,
     BlockMoverPowerUp,
     EmptyPowerup,
+    Skeleton,
     HammerPowerUp,
     FirePowerUp,
     IncreaseMaxBombsPowerUp,

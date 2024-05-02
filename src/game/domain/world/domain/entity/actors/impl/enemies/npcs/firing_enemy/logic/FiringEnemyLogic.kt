@@ -1,29 +1,33 @@
-package game.domain.world.domain.entity.actors.impl.enemies.npcs.tank.logic
+package game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.logic
 
+import game.Bomberman
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.tank.TankEnemy
-import game.domain.world.domain.entity.actors.impl.explosion.FireExplosion
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.FiringEnemy
+import game.domain.world.domain.entity.actors.impl.explosion.PistolExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
 import game.utils.time.now
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class TankEnemyLogic(override val entity: TankEnemy) : AiEnemyLogic(entity = entity) {
+class FiringEnemyLogic(override val entity: FiringEnemy): AiEnemyLogic(entity = entity) {
     override fun process() {
+        super.process()
         val currentTime = now()
 
         // Check if it's time to update the shooting behavior
-        if (Utility.timePassed(entity.state.lastFire) <= TankEnemy.DEFAULT.SHOOTING_REFRESH_RATE) return
-
+        if (Utility.timePassed(entity.state.lastFire) <= entity.state.shootingRefreshRate)
+            return
 
         // Check if the entity can shoot and if a random probability allows shooting
         if (!entity.state.canShoot) {
             return
         }
 
-        Utility.runPercentage(TankEnemy.DEFAULT.PROBABILITY_OF_SHOOTING) {
+        Utility.runPercentage(entity.state.shootingChance) {
             entity.state.lastFire = currentTime
 
             val direction = entity.state.direction
@@ -40,15 +44,20 @@ class TankEnemyLogic(override val entity: TankEnemy) : AiEnemyLogic(entity = ent
             }
 
             ExplosionHandler.instance.process {
-                listOf(FireExplosion(
+                listOf(PistolExplosion(
                         owner = entity,
                         coordinates = newCoords,
                         direction = direction,
                         explosive = entity
-                ))
+                ).logic.explode())
             }
 
             entity.state.canMove = false
+
+            Bomberman.match.scope.launch {
+                delay(2000)
+                entity.state.canMove = true
+            }
         }
 
         entity.state.canShoot = true

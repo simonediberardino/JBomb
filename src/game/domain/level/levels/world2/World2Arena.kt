@@ -11,15 +11,20 @@ import game.domain.level.levels.ArenaLevel
 import game.domain.level.levels.Level
 import game.domain.level.info.model.DefaultArenaLevelInfo
 import game.domain.level.info.model.LevelInfo
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.skeleton.SkeletonEnemy
 
 class World2Arena : ArenaLevel() {
     override val info: LevelInfo
         get() = object : DefaultArenaLevelInfo(this) {
-            override val specialRoundEnemies: Array<Class<out Enemy?>> get() = arrayOf(TankEnemy::class.java, Zombie::class.java)
+            override val specialRoundEnemies: Array<Class<out Enemy?>> get() = arrayOf(TankEnemy::class.java, SkeletonEnemy::class.java)
             override val boss: Boss get() = Clown()
             override val maxDestroyableBlocks: Int get() = 10
             override val nextLevel: Class<out Level>? get() = null
-            override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(FastEnemy::class.java, TankEnemy::class.java, Eagle::class.java)
+            override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(
+                    FastEnemy::class.java,
+                    Eagle::class.java,
+                    SkeletonEnemy::class.java
+            )
             override val worldId: Int get() = 2
             override val levelId: Int get() = 0
         }
