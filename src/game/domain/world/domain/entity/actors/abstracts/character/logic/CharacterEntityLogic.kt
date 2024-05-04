@@ -31,6 +31,7 @@ abstract class CharacterEntityLogic(
         LocationChangedBehavior(entity.toEntityNetwork()).invoke()
         setAliveState(true)
         updateHealth(entity.state.maxHp)
+        restoreCanMove()
     }
 
     override fun onDespawn() {
@@ -280,6 +281,10 @@ abstract class CharacterEntityLogic(
     final override fun updateHealth(health: Int) {
         entity.state.hp = health
         onUpdateHealth(health)
+    }
+
+    final override fun restoreCanMove() {
+        entity.state.canMove = entity.state.startCanMove
     }
 
     override fun onUpdateHealth(health: Int) {}

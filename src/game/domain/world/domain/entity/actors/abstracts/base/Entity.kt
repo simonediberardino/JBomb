@@ -65,12 +65,14 @@ open class EntityState(
         open var lastImageUpdate: Long = Entity.DEFAULT.LAST_IMAGE_UPDATE,
         open var lastTalkTime: Long = Entity.DEFAULT.LAST_TALK_TIME,
         val collidedEntities: MutableSet<Entity> = mutableSetOf(),
-        val passiveCollidedEntities: MutableSet<Entity> = mutableSetOf()
-)
+        val passiveCollidedEntities: MutableSet<Entity> = mutableSetOf(),
+) {
+    open val canRespawn: Boolean = Entity.DEFAULT.CAN_RESPAWN
+}
 
 data class EntityInfo(val entity: Entity) {
     var id: Long = UUID.randomUUID().mostSignificantBits
-    var type: EntityTypes = EntityTypes.Entity
+    val type: EntityTypes
         get() {
             return entity.properties.type
         }
@@ -263,6 +265,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         val LAST_IMAGE_INDEX = 0
         val IMAGE_PATH = ""
         val IMAGE = null
+        val CAN_RESPAWN = false
 
         var imagePath: String = Entity.DEFAULT.IMAGE_PATH
     }

@@ -25,9 +25,6 @@ abstract class EntityLogic(
     }
 
     override fun despawn() {
-        if (entity is Player) {
-            Log.e("Despawning $entity")
-        }
         entity.state.isSpawned = false
         onDespawn()
         Bomberman.match.removeEntity(entity)

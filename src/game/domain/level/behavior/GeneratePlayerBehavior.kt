@@ -8,7 +8,6 @@ import game.utils.dev.Log
 class GeneratePlayerBehavior(val coordinates: Coordinates): GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
-            Log.e("Generating player ${Bomberman.match.isServer}")
             Bomberman.match.player = Player(coordinates)
             Bomberman.match.player!!.logic.spawn(forceSpawn = false, forceCentering = false)
         }

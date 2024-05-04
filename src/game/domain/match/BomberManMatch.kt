@@ -41,6 +41,8 @@ class BomberManMatch(
     // List of entities sorted by a linked list
     private val _entitiesList: SortedLinkedList<Entity> = SortedLinkedList()
     private val _entitiesMap: HashMap<Long, Entity> = HashMap()
+    private val _despawnedEntitiesMap: HashMap<Long, Entity> = HashMap()
+    private val _despawnedEntitiesList: SortedLinkedList<Entity> = SortedLinkedList()
 
     // Manager for mouse controllers
     val mouseControllerManager: MouseControllerManager = MouseControllerManager(scope)
@@ -224,6 +226,10 @@ class BomberManMatch(
      */
     fun getEntities(): List<Entity> = synchronized(_entitiesList) { LinkedList(_entitiesList) }
 
+    fun getDeadEntities(): List<Entity> = synchronized(_despawnedEntitiesMap) { LinkedList(_despawnedEntitiesList) }
+
+    fun getDeadEntityById(entityId: Long): Entity? = _despawnedEntitiesMap[entityId]
+
     fun getEntityById(entityId: Long): Entity? = _entitiesMap[entityId]
 
     fun addEntity(entity: Entity) {
@@ -233,6 +239,14 @@ class BomberManMatch(
 
         synchronized(_entitiesMap) {
             _entitiesMap.put(entity.info.id, entity)
+        }
+
+        synchronized(_despawnedEntitiesMap) {
+            _despawnedEntitiesMap.remove(entity.info.id)
+        }
+
+        synchronized(_despawnedEntitiesList) {
+            _despawnedEntitiesList.removeIf { it.info.id == entity.info.id }
         }
 
         entity.logic.onAdded()
@@ -248,9 +262,15 @@ class BomberManMatch(
             _entitiesMap.remove(entity.info.id)
         }
 
+        if (entity.state.canRespawn) {
+            _despawnedEntitiesList.add(entity)
+            _despawnedEntitiesMap[entity.info.id] = entity
+        }
+
         gameTickerObservable?.unregister(entity)
 
         entity.logic.onRemoved()
+
         scope.launch {
             delay(500)
             performGarbageCollection()
@@ -311,6 +331,7 @@ class BomberManMatch(
     }
 
     fun updateEnemiesAliveCount(count: Int) {
+        Log.e("Enemies alive count $count")
         enemiesAlive = count
     }
 
@@ -318,7 +339,6 @@ class BomberManMatch(
      * Performs cleanup operations and releases resources associated with the game.
      */
     fun destroy() {
-        Log.e("Isserver $isServer, $onlineGameHandler")
         if (isServer) {
             onlineGameHandler?.disconnect()
         }

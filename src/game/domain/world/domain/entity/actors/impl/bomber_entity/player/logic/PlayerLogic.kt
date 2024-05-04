@@ -36,18 +36,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         Bomberman.match.updateInventoryWeaponController()
     }
 
-    // TODO!!!
-    override fun onEndedDeathAnimation() {
-        val t = Timer(EntityInteractable.SHOW_DEATH_PAGE_DELAY_MS.toInt()) { _: ActionEvent? -> showDeathPage() }
-        t.isRepeats = false
-        t.start()
-    }
-
-    private fun showDeathPage() {
-        Bomberman.destroyLevel()
-        Bomberman.showActivity(GameOverPanel::class.java)
-    }
-
     override fun onMove(coordinates: Coordinates) {
         super.onMove(coordinates)
     }

@@ -47,6 +47,8 @@ abstract class CharacterEntityState(
         attackDamage = attackDamage,
         direction = direction
 ) {
+    val startCanMove = canMove
+
     var hp: Int = maxHp
     val hpPercentage: Int
         get() = (hp.toFloat() / maxHp.toFloat() * 100).toInt()

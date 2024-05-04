@@ -27,4 +27,5 @@ interface ICharacterEntityLogic : IMovingEntityLogic {
     fun restoreHealth()
     fun updateHealth(health: Int)
     fun onUpdateHealth(health: Int)
+    fun restoreCanMove()
 }

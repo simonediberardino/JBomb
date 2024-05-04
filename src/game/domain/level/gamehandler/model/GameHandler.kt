@@ -27,4 +27,6 @@ abstract class GameHandler(protected val level: Level) {
     abstract fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>)
     abstract val borderImages: Array<Image?>
     abstract fun spawnMysteryBox()
+    abstract fun onPlayerDeath()
+    abstract fun canGameBeEnded(): Boolean
 }

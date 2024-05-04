@@ -55,6 +55,9 @@ open class BomberEntityState(
         speed = speed,
         maxHp = maxHp
 ) {
+    override val canRespawn: Boolean
+        get() = true
+
     lateinit var weapon: UsableItem
     val entitiesClassesMouseClick: MutableSet<Class<out Entity>> = BomberEntity.DEFAULT.MOUSE_CLICK_INTERACTION_ENTITIES
     val entitiesClassesMouseDrag: MutableSet<Class<out Entity>> = BomberEntity.DEFAULT.MOUSE_DRAG_INTERACTION_ENTITIES

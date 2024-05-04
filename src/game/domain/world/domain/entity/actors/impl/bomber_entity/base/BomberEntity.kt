@@ -32,9 +32,7 @@ abstract class BomberEntity : Character, Explosive {
     override val state: BomberEntityState = BomberEntityState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
 
-    override fun toEntityNetwork(): EntityNetwork {
-        return dtoToEntityNetwork()
-    }
+    override fun toEntityNetwork(): EntityNetwork = dtoToEntityNetwork()
 
     override fun updateInfo(info: Map<String, String>) {
         super.updateInfo(info)

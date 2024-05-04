@@ -15,7 +15,7 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         Log.i("PlayerConnectedHttpEventProcessor: $clientId")
 
         val match = Bomberman.match
-        val coordinates = (match.currentLevel ?: return).info.playerSpawnCoordinates
+        val coordinates = match.currentLevel.info.playerSpawnCoordinates
 
         match.getEntities().forEach { e ->
             Log.i("Sending entity $e to $clientId")

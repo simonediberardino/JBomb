@@ -13,6 +13,7 @@ import game.domain.level.info.model.LevelInfo
 import game.domain.level.levels.lobby.WorldSelectorLevel
 import game.domain.level.levels.world1.*
 import game.domain.level.levels.world2.*
+import game.utils.dev.Log
 import java.util.*
 import javax.sound.sampled.Clip
 import javax.swing.JPanel
@@ -38,6 +39,7 @@ abstract class Level {
     abstract fun onStartLevel()
 
     open fun start(field: JPanel) {
+        Log.e("Starting $this")
         Bomberman.match.gameState = true
         this@Level.field = field
         updateLastLevel()

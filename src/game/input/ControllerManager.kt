@@ -4,6 +4,7 @@ import game.Bomberman
 import game.data.data.DataInputOutput
 import game.domain.tasks.observer.Observable2
 import game.utils.Utility.timePassed
+import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener

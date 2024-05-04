@@ -14,7 +14,7 @@ class DecreaseEnemiesAliveGameEvent : GameEvent {
                     val enemiesAlive = Bomberman.match.enemiesAlive
 
                     UpdateLocalEnemiesCountGameEvent().invoke(enemiesAlive - 1) // updates locally
-                    UpdateEnemiesCountEventForwarder().invoke(enemiesAlive) // notifies clients
+                    UpdateEnemiesCountEventForwarder().invoke(enemiesAlive - 1) // notifies clients
                 }
             }
 

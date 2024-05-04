@@ -1,6 +1,9 @@
 
 high priorities:
 
+- UPDATE!!!
+- Fix client not moving after respawning
+- Handle client disconnection
 - Clown position
 - Clown draw priority
 - Clown ball despawn

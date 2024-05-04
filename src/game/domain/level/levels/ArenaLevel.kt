@@ -7,6 +7,7 @@ import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
 import game.domain.events.game.UpdateMaxBombsEvent
 import game.domain.level.behavior.GameBehavior
+import game.domain.level.behavior.RespawnDeadPlayersBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
 import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.gamehandler.imp.DefaultGameHandler
@@ -16,6 +17,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.localization.Localization
 import game.presentation.ui.viewelements.misc.ToastHandler
+import game.utils.dev.Log
 import java.awt.event.ActionEvent
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.JPanel
@@ -25,6 +27,8 @@ abstract class ArenaLevel : Level() {
     override val gameHandler: GameHandler
         get() = object : DefaultGameHandler(this) {
             override fun spawnMysteryBox() {
+                Log.e("Destroyable blocks current round ${currentRound.get()}")
+
                 if (currentRound.get() != 0) {
                     return
                 }
@@ -33,6 +37,7 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun generateDestroyableBlock() {
+                Log.e("Destroyable blocks current round ${currentRound.get()}")
                 if (currentRound.get() != 0) {
                     return
                 }
@@ -64,7 +69,6 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun onDeathGameEvent() {
-                currentRound.set(0)
                 DataInputOutput.getInstance().increaseDeaths()
                 DataInputOutput.getInstance().decreaseScore(1000)
             }
@@ -80,30 +84,25 @@ abstract class ArenaLevel : Level() {
 
             override fun onAllEnemiesEliminated() {
                 val gameBehavior: GameBehavior = object : GameBehavior() {
-                    override fun hostBehavior(): () -> Unit {
-                        return {
-                            // if host, waits before notifying a new round
-                            val t = Timer(ARENA_ROUND_LOADING_TIMER) { _: ActionEvent? ->
-                                val player: Entity = Bomberman.match.player ?: return@Timer
-                                if (player.state.isSpawned)
-                                    gameHandler.startLevel()
-                            }
-
-                            t.isRepeats = false
-                            t.start()
+                    override fun hostBehavior(): () -> Unit = {
+                        if (!gameHandler.canGameBeEnded()) {
+                            RespawnDeadPlayersBehavior().invoke()
                         }
                     }
 
                     override fun clientBehavior(): () -> Unit {
-                        return {
-                            // if client, onAllEnemiesEliminated is fired when host notifies round completion,
-                            // so no need to wait
-                            gameHandler.startLevel()
-                        }
+                        return {}
                     }
                 }
 
                 gameBehavior.invoke()
+
+                val t = Timer(ARENA_ROUND_LOADING_TIMER) { _: ActionEvent? ->
+                    gameHandler.startLevel()
+                }
+
+                t.isRepeats = false
+                t.start()
             }
         }
 
