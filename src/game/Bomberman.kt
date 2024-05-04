@@ -142,7 +142,7 @@ object Bomberman {
     }
 
     val isGameEnded: Boolean
-        get() = !match.gameState
+        get() = !match.gameState || !Bomberman.isInGame
 
     val isInGame: Boolean
         get() {
