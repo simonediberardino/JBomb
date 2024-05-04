@@ -46,8 +46,8 @@ object Paths {
     val deathWallpaper: String get() = "$menuImagesPath/death.jpg"
 
     @JvmStatic
-    fun getWorldSelectorPortalPath(id: Int): String {
-        return "$assetsFolder/world_selector/world$id.png"
+    fun getWorldSelectorPortalPath(id: Int, optional: Int? = null): String {
+        return "$assetsFolder/world_selector/world$id/world$id${if (optional != null) "_$optional" else ""}.png"
     }
 
     @JvmStatic

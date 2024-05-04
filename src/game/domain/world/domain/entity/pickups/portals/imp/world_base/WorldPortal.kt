@@ -2,25 +2,24 @@ package game.domain.world.domain.entity.pickups.portals.imp.world_base
 
 import game.Bomberman
 import game.data.data.DataInputOutput
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.level.levels.Level
 import game.domain.level.levels.world1.World1Level1
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.portals.base.Portal
 import game.domain.world.domain.entity.pickups.portals.base.logic.PortalLogic
 import game.domain.world.domain.entity.pickups.portals.imp.world_base.state.WorldPortalState
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
-import game.utils.file_system.Paths.getWorldSelectorPortalPath
 import game.utils.Utility.loadImage
+import game.utils.file_system.Paths.getWorldSelectorPortalPath
 import java.awt.image.BufferedImage
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 
-abstract class WorldPortal(coordinates: Coordinates?, private val worldId: Int) : Portal(coordinates) {
+abstract class WorldPortal(coordinates: Coordinates?, val worldId: Int) : Portal(coordinates) {
     constructor(worldId: Int) : this(null, worldId)
 
 
