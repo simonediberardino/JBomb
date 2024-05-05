@@ -13,7 +13,9 @@ import game.domain.world.domain.entity.pickups.portals.base.Portal
 import game.domain.world.domain.entity.pickups.portals.base.logic.PortalLogic
 import game.domain.world.domain.entity.pickups.portals.imp.world_base.state.WorldPortalState
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
+import game.utils.Utility
 import game.utils.Utility.loadImage
+import game.utils.file_system.Paths
 import game.utils.file_system.Paths.getWorldSelectorPortalPath
 import java.awt.image.BufferedImage
 import java.lang.reflect.InvocationTargetException
@@ -85,9 +87,24 @@ abstract class WorldPortal(coordinates: Coordinates?, val worldId: Int) : Portal
 
     abstract override val state: WorldPortalState
 
+    abstract val imagesCount: Int
+
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
         override fun getImage(entity: Entity): BufferedImage? {
-            return loadImage(getWorldSelectorPortalPath(worldId))
+            val images = Array(imagesCount) { i ->
+                Paths.getWorldSelectorPortalPath(worldId, i)
+            }
+
+            // Check if enough time has passed for an image refresh
+            if (Utility.timePassed(state.lastImageUpdate) < image.imageRefreshRate) {
+                return image._image!!
+            }
+
+            // Load the next image in the sequence
+            val img = loadAndSetImage(entity = entity, imagePath = images[image.lastImageIndex])
+            image.lastImageIndex = (image.lastImageIndex + 1) % images.size
+
+            return img
         }
     }
 

@@ -26,24 +26,6 @@ class World1Portal() : WorldPortal(null, 1) {
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.World1Portal)
 
-    override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage? {
-            val imagesCount = 3
-            val images = Array(imagesCount) { i ->
-                Paths.getWorldSelectorPortalPath(worldId, i)
-            }
-
-            // Check if enough time has passed for an image refresh
-            if (Utility.timePassed(state.lastImageUpdate) < image.imageRefreshRate) {
-                return image._image!!
-            }
-
-            // Load the next image in the sequence
-            val img = loadAndSetImage(entity = entity, imagePath = images[image.lastImageIndex])
-            image.lastImageIndex = (image.lastImageIndex + 1) % images.size
-
-            return img
-        }
-    }
-
+    override val imagesCount: Int
+        get() = 3
 }

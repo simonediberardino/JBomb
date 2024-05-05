@@ -19,4 +19,7 @@ class World2Portal() : WorldPortal(2) {
     }
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.World2Portal)
+
+    override val imagesCount: Int
+        get() = 2
 }
