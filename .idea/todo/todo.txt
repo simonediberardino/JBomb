@@ -2,6 +2,8 @@
 high priorities:
 
 - Animated images
+- Villagers
+- Interact world
 - Animali
 - Fix client not moving after respawning
 - Handle client disconnection
