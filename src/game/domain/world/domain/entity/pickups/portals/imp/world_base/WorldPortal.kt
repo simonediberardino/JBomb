@@ -5,8 +5,10 @@ import game.data.data.DataInputOutput
 import game.domain.level.levels.Level
 import game.domain.level.levels.world1.World1Level1
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.abstracts.base.EntityImageModel
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
+import game.domain.world.domain.entity.actors.abstracts.base.graphics.PeriodicGraphicsBehavior
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.portals.base.Portal
@@ -87,26 +89,10 @@ abstract class WorldPortal(coordinates: Coordinates?, val worldId: Int) : Portal
 
     abstract override val state: WorldPortalState
 
-    abstract val imagesCount: Int
-
-    override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage? {
-            val images = Array(imagesCount) { i ->
-                Paths.getWorldSelectorPortalPath(worldId, i)
-            }
-
-            // Check if enough time has passed for an image refresh
-            if (Utility.timePassed(state.lastImageUpdate) < image.imageRefreshRate) {
-                return image._image!!
-            }
-
-            // Load the next image in the sequence
-            val img = loadAndSetImage(entity = entity, imagePath = images[image.lastImageIndex])
-            image.lastImageIndex = (image.lastImageIndex + 1) % images.size
-
-            return img
-        }
-    }
+    override val image: EntityImageModel = EntityImageModel(
+            entity = this,
+            entitiesAssetsPath = getWorldSelectorPortalPath(worldId),
+    )
 
     internal object DEFAULT {
         val SIZE = PowerUp.DEFAULT.SIZE * 3

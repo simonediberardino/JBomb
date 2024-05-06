@@ -4,6 +4,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
+import game.domain.world.domain.entity.actors.abstracts.base.graphics.PeriodicGraphicsBehavior
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.portals.imp.world_base.WorldPortal
 import game.domain.world.domain.entity.pickups.portals.imp.world_base.state.WorldPortalState
@@ -26,6 +27,10 @@ class World1Portal() : WorldPortal(null, 1) {
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.World1Portal)
 
-    override val imagesCount: Int
-        get() = 3
+    override val graphicsBehavior: IEntityGraphicsBehavior = object: PeriodicGraphicsBehavior() {
+        override val imagesCount: Int
+            get() = 3
+        override val allowUiState: Boolean
+            get() = false
+    }
 }

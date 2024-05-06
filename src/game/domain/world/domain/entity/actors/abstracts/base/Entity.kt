@@ -6,6 +6,7 @@ import game.domain.tasks.GameTickerObserver
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.impl.models.UiState
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.types.EntityTypes
 import game.mappers.dtoToEntityNetwork
@@ -68,6 +69,7 @@ open class EntityState(
         val passiveCollidedEntities: MutableSet<Entity> = mutableSetOf(),
 ) {
     open val canRespawn: Boolean = Entity.DEFAULT.CAN_RESPAWN
+    open var uiState: UiState = Entity.DEFAULT.UI_STATE
 }
 
 data class EntityInfo(val entity: Entity) {
@@ -266,7 +268,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         val IMAGE_PATH = ""
         val IMAGE = null
         val CAN_RESPAWN = false
-
+        val UI_STATE = UiState.IDLE
         var imagePath: String = Entity.DEFAULT.IMAGE_PATH
     }
 }

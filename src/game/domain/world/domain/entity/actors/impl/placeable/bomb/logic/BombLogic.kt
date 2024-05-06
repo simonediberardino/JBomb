@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.placeable.bomb.logic
 
+import game.Bomberman
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.BlockEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
@@ -21,6 +22,16 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
      */
     override fun doInteract(e: Entity?) {
         explode()
+    }
+
+    override fun onSpawn() {
+        super.onSpawn()
+        Bomberman.match.gameTickerObservable?.register(entity)
+    }
+
+    override fun onDespawn() {
+        super.onDespawn()
+        Bomberman.match.gameTickerObservable?.unregister(entity)
     }
 
     override fun onExplosion(explosion: AbstractExplosion?) {
