@@ -39,7 +39,8 @@ enum class EntityTypes {
     EndLevelPortal,
     World1Portal,
     World2Portal,
-    Entity;
+    Entity,
+    Fox;
 
     fun toInt(): Int {
         return ordinal

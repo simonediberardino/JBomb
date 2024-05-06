@@ -148,6 +148,6 @@ object Bomberman {
         get() {
             val match = match
             val currentLevel = match.currentLevel
-            return match.gameState && currentLevel.info.worldId > 0
+            return match.gameState && currentLevel.info.worldId >= 0
         }
 }

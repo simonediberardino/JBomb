@@ -1,13 +1,10 @@
 package game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
-import game.domain.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.logic.FiringEnemyLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.state.FiringEnemyState
 import game.domain.world.domain.entity.actors.impl.models.Explosive

@@ -17,6 +17,9 @@ object Paths {
     val enemiesFolder: String get() = String.format("%s/enemies", entitiesFolder)
 
     @JvmStatic
+    val animalsFolder: String get() = String.format("%s/animals", entitiesFolder)
+
+    @JvmStatic
     val worldsFolder: String get() = "$assetsFolder/worlds"
 
     @JvmStatic

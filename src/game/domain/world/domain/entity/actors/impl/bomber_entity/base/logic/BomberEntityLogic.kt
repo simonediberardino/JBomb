@@ -98,9 +98,5 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         entity.state.activePowerUps.removeIf { e: Class<out PowerUp> -> e.isInstance(p) }
     }
 
-    override fun executeCommandQueue() {}
-    override fun addCommand(command: Command) {}
-    override fun removeCommand(command: Command) {}
-
     override fun observerUpdate(arg: Observable2.ObserverParam) {}
 }

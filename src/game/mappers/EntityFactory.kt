@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.Clown
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.impl.animals.FoxAnimal
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
 import game.network.gamehandler.ClientGameHandler
@@ -56,6 +57,7 @@ class EntityFactory {
             EntityTypes.FirePowerUp -> FirePowerUp(id)
             EntityTypes.IncreaseMaxBombsPowerUp -> IncreaseMaxBombsPowerUp(id)
             EntityTypes.LivesPowerUp -> LivesPowerUp(id)
+            EntityTypes.Fox -> FoxAnimal(id)
             EntityTypes.PistolPowerUp -> PistolPowerUp(id)
             EntityTypes.RemoteControlPowerUp -> RemoteControlPowerUp(id)
             EntityTypes.SpeedPowerUp -> SpeedPowerUp(id)

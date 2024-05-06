@@ -25,7 +25,6 @@ abstract class Enemy : Character {
     }
 
     override val state: EnemyEntityState = EnemyEntityState(entity = this)
-    abstract override val logic: EnemyEntityLogic
 
     internal object DEFAULT {
         val SIZE = PitchPanel.GRID_SIZE

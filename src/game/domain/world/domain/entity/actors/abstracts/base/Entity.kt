@@ -140,6 +140,8 @@ interface IEntityGraphicsBehavior {
     fun calculateAndGetPaddingWidth(entity: Entity, ratio: Double = entity.image.hitboxSizeToWidthRatio.toDouble()): Int {
         return entity.image.paddingWidthFunction.execute(ratio) as Int
     }
+
+    fun resetGraphics(entity: Entity) {}
 }
 
 // Main Entity class implementing EntityBehavior

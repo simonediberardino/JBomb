@@ -1,10 +1,10 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.logic
 
+import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
 
-open class OrbEntityLogic(override val entity: Orb) : AiEnemyLogic(entity = entity), IOrbEntityLogic {
+open class OrbEntityLogic(override val entity: Orb) : AiLogic(entity = entity), IOrbEntityLogic {
     override fun doInteract(e: Entity?) {
         if (canInteractWith(e)) {
             attack(e)

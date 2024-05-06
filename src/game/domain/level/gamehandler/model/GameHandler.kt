@@ -1,7 +1,9 @@
 package game.domain.level.gamehandler.model
 
 import game.domain.level.levels.Level
+import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
+import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import java.awt.Image
 
 abstract class GameHandler(protected val level: Level) {
@@ -16,6 +18,7 @@ abstract class GameHandler(protected val level: Level) {
         spawnMysteryBox()
         spawnBoss()
         spawnEnemies()
+        spawnAnimals()
         level.onStartLevel()
     }
 
@@ -29,4 +32,6 @@ abstract class GameHandler(protected val level: Level) {
     abstract fun spawnMysteryBox()
     abstract fun onPlayerDeath()
     abstract fun canGameBeEnded(): Boolean
+    abstract fun spawnAnimals(availableAnimals: Array<Class<out AnimalEntity>>)
+    abstract fun spawnAnimals()
 }

@@ -33,6 +33,7 @@ class ClownLogic(
         // If there is an entry, update the rage status of the Boss.
         updateRageStatus(entry.value)
     }
+
     /**
      * Spawns orbs in all directions around entity.
      */
@@ -179,7 +180,7 @@ class ClownLogic(
         // Check and potentially throw a hat
         checkAndThrowHat()
     }
-    
+
     companion object {
         const val SHOOTING_CHANCE = 1
     }

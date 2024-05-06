@@ -3,8 +3,9 @@ package game.domain.world.domain.entity.actors.impl.enemies.boss.base.logic
 import game.domain.level.behavior.GameBehavior
 import game.audio.AudioManager
 import game.audio.SoundModel
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
+import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.portals.EndLevelPortal
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp

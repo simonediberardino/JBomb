@@ -13,6 +13,7 @@ abstract class LobbyLevel : StoryLevel() {
                 generateLevel()
                 Bomberman.match.player = Player(info.playerSpawnCoordinates)
                 Bomberman.match.player!!.logic.spawn(forceSpawn = false, forceCentering = false)
+                spawnAnimals()
             }
         }
 

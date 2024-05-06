@@ -19,6 +19,10 @@ open class CharacterGraphicsBehavior(open val entity: Character) : DefaultEntity
         }
     }
 
+    override fun resetGraphics(entity: Entity) {
+        this.entity.image._image = super.loadAndSetImage(entity, this.entity.image.characterOrientedImages()[0])
+    }
+
     override fun directionUpdateGraphics(previousDirection: Direction?, currDirection: Direction?) {
         setImageDirection(currDirection)
         val baseIcons = entity.image.characterOrientedImages()

@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy
 
+import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
 import game.domain.world.domain.entity.geo.Coordinates

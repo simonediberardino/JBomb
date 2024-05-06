@@ -287,5 +287,9 @@ abstract class CharacterEntityLogic(
         entity.state.canMove = entity.state.startCanMove
     }
 
+    override fun executeCommandQueue() {}
+    override fun addCommand(command: Command) {}
+    override fun removeCommand(command: Command) {}
+
     override fun onUpdateHealth(health: Int) {}
 }

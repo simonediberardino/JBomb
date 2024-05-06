@@ -4,6 +4,7 @@ import game.Bomberman
 import game.domain.level.behavior.*
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.levels.Level
+import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
@@ -44,6 +45,11 @@ open class DefaultGameHandler(level: Level) : GameHandler(level) {
 
     override fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>) =
             SpawnEnemiesBehavior(level.info.startEnemiesCount, availableEnemies).invoke()
+
+    override fun spawnAnimals() = spawnAnimals(level.info.availableAnimals)
+
+    override fun spawnAnimals(availableAnimals: Array<Class<out AnimalEntity>>) =
+            SpawnAnimalsBehavior(level.info.startAnimalsCount, availableAnimals).invoke()
 
     override fun canGameBeEnded(): Boolean = !Bomberman.match.getEntities().any { it is BomberEntity }
 

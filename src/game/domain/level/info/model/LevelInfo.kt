@@ -4,6 +4,7 @@ import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.level.levels.Level
+import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 
 /**
@@ -24,6 +25,7 @@ abstract class LevelInfo {
     abstract val destroyableBlockImagePath: String
     abstract val boss: Boss?
     abstract val startEnemiesCount: Int
+    abstract val startAnimalsCount: Int
     abstract val maxDestroyableBlocks: Int
     abstract val isArenaLevel: Boolean
     abstract val diedMessage: String?
@@ -36,4 +38,5 @@ abstract class LevelInfo {
     abstract val randomPowerUpClass: Class<out PowerUp>
     abstract val playerSpawnCoordinates: Coordinates
     abstract val isLastLevelOfWorld: Boolean
+    abstract val availableAnimals: Array<Class<out AnimalEntity>>
 }

@@ -3,6 +3,8 @@ package game.domain.level.info.model
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.level.levels.Level
+import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
+import game.domain.world.domain.entity.actors.impl.animals.FoxAnimal
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.presentation.ui.panels.game.PitchPanel
 
@@ -20,4 +22,8 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
     override val randomPowerUpClass: Class<out PowerUp> get() = allowedPerks.random()
     override val playerSpawnCoordinates: Coordinates get() = Coordinates.generateRandomCoordinates(BomberEntity.SPAWN_OFFSET, PitchPanel.GRID_SIZE)
     override val isLastLevelOfWorld: Boolean get() = false
+    override val startAnimalsCount: Int
+        get() = 0
+    override val availableAnimals: Array<Class<out AnimalEntity>>
+        get() = arrayOf(FoxAnimal::class.java)
 }
