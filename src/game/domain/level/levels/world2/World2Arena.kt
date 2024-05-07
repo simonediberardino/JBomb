@@ -3,9 +3,8 @@ package game.domain.level.levels.world2
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.Clown
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.eagle.Eagle
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastPurpleBall
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.tank.TankEnemy
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.zombie.Zombie
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.level.levels.ArenaLevel
 import game.domain.level.levels.Level
@@ -21,7 +20,7 @@ class World2Arena : ArenaLevel() {
             override val maxDestroyableBlocks: Int get() = 10
             override val nextLevel: Class<out Level>? get() = null
             override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(
-                    FastEnemy::class.java,
+                    FastPurpleBall::class.java,
                     Eagle::class.java,
                     SkeletonEnemy::class.java
             )

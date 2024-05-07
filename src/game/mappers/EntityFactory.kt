@@ -15,7 +15,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.R
 import game.network.gamehandler.ClientGameHandler
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.clown_nose.ClownNose
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.eagle.Eagle
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastPurpleBall
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.GhostEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.helicopter.Helicopter
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.skeleton.SkeletonEnemy
@@ -27,7 +27,6 @@ import game.domain.world.domain.entity.pickups.portals.World1Portal
 import game.domain.world.domain.entity.pickups.portals.World2Portal
 import game.domain.world.domain.entity.pickups.powerups.*
 import game.domain.world.types.EntityTypes
-import java.rmi.server.Skeleton
 
 class EntityFactory {
     fun toEntity(entityTypes: EntityTypes, id: Long): Entity? {
@@ -38,7 +37,7 @@ class EntityFactory {
             EntityTypes.GhostBoss -> GhostBoss(id)
             EntityTypes.ClownNose -> ClownNose(id)
             EntityTypes.Eagle -> Eagle(id)
-            EntityTypes.FastEnemy -> FastEnemy(id)
+            EntityTypes.FastEnemy -> FastPurpleBall(id)
             EntityTypes.GhostEnemy -> GhostEnemy(id)
             EntityTypes.Helicopter -> Helicopter(id)
             EntityTypes.TankEnemy -> TankEnemy(id)

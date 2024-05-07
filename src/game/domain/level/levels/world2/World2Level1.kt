@@ -1,7 +1,7 @@
 package game.domain.level.levels.world2
 
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.eagle.Eagle
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastPurpleBall
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.level.levels.Level
 import game.domain.level.levels.StoryLevel
@@ -25,7 +25,7 @@ class World2Level1 : StoryLevel() {
                 get() {
                     return arrayOf(
                             Eagle::class.java,
-                            FastEnemy::class.java
+                            FastPurpleBall::class.java
                     )
                 }
 

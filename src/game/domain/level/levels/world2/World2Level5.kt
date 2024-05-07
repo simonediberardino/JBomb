@@ -3,7 +3,7 @@ package game.domain.level.levels.world2
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.Clown
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.eagle.Eagle
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastPurpleBall
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
@@ -19,7 +19,7 @@ class World2Level5 : StoryLevel() {
             override val levelId: Int get() = 5
             override val boss: Boss get() = Clown()
             override val startEnemiesCount: Int get() = 7
-            override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(FastEnemy::class.java, Eagle::class.java)
+            override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(FastPurpleBall::class.java, Eagle::class.java)
             override val isLastLevelOfWorld: Boolean get() = true
             override val nextLevel: Class<out Level?> get() = WorldSelectorLevel::class.java
             override val playerSpawnCoordinates: Coordinates get() = Coordinates.roundCoordinates(Coordinates(0, 0), BomberEntity.SPAWN_OFFSET)

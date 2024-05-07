@@ -2,12 +2,10 @@
 high priorities:
 
 - Villagers
-- Interact world
 - fix game not ending sp
 - Fix client not moving after respawning
 - Handle client disconnection
-- Clown position
-- Clown draw priority
+- Clown level attack on spawn???
 - Clown ball despawn
 - Location updated of host player on client side when starting game
 - Mystery box interact on client side

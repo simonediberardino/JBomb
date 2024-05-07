@@ -9,8 +9,8 @@ class ExplosionHandler private constructor() {
         val instance: ExplosionHandler by lazy { ExplosionHandler() }
     }
 
-    fun process(explosions: () -> List<AbstractExplosion>) {
-        AudioManager.getInstance().play(SoundModel.EXPLOSION)
+    fun process(sound: SoundModel = SoundModel.EXPLOSION, explosions: () -> List<AbstractExplosion>) {
+        AudioManager.getInstance().play(sound)
 
         explosions.invoke()
     }

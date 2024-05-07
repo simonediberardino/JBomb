@@ -70,6 +70,7 @@ open class EntityState(
 ) {
     open val canRespawn: Boolean = Entity.DEFAULT.CAN_RESPAWN
     open var uiState: UiState = Entity.DEFAULT.UI_STATE
+    var spawnTime: Long = 0L
 }
 
 data class EntityInfo(val entity: Entity) {

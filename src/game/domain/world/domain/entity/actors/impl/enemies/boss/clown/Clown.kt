@@ -17,6 +17,7 @@ import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.types.EntityTypes
+import game.utils.dev.Log
 import java.util.*
 
 /**
@@ -35,17 +36,6 @@ class Clown : Boss, Explosive {
     // TODO REFACTOR
     constructor() : super(null) {
         state.hasHat = true
-
-        if (Bomberman.match.isServer) {
-            val panelSize = Bomberman
-                    .bombermanFrame
-                    .pitchPanel
-                    .preferredSize
-
-            val y = panelSize.getHeight().toInt() - size
-            val x = (panelSize.getWidth() / 2 - size / 2).toInt()
-            info.position = Coordinates(x, y)
-        }
     }
 
     override val state: ClownState = ClownState(entity = this)

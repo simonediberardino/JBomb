@@ -1,7 +1,9 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.clown.logic
 
+import game.Bomberman
 import game.audio.AudioManager
 import game.audio.SoundModel
+import game.domain.level.behavior.GameBehavior
 import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
@@ -12,16 +14,19 @@ import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.Orb
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.clown_nose.ClownNose
 import game.domain.world.domain.entity.actors.impl.explosion.ConfettiExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
+import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.geo.EnhancedDirection
 import game.utils.Utility
+import game.utils.dev.Log
 import game.utils.time.now
 import java.util.*
 
 class ClownLogic(
         override val entity: Clown
 ) : BossEntityLogic(entity = entity), IClownLogic {
+    val spawnTimeAttackDelay = 10_000L
 
     override fun onHit(damage: Int) {
         super.onHit(damage)
@@ -32,6 +37,28 @@ class ClownLogic(
 
         // If there is an entry, update the rage status of the Boss.
         updateRageStatus(entry.value)
+    }
+
+    override fun onSpawn() {
+        val gameBehavior: GameBehavior = object : GameBehavior() {
+            override fun hostBehavior(): () -> Unit = {
+                val panelSize = Bomberman
+                        .bombermanFrame
+                        .pitchPanel
+                        .preferredSize
+
+                val y = panelSize.getHeight().toInt() - entity.state.size
+                val x = (panelSize.getWidth() / 2 - entity.state.size / 2).toInt()
+
+                entity.logic.move(Coordinates(x, y))
+            }
+
+            override fun clientBehavior(): () -> Unit = {}
+
+        }
+        gameBehavior.invoke()
+
+        Bomberman.match.gameTickerObservable?.register(entity)
     }
 
     /**
@@ -86,14 +113,11 @@ class ClownLogic(
      * Spawns an explosion in a random direction.
      */
     override fun spawnExplosion() {
-        val dirs = Direction.values()
-        val directions = LinkedList(listOf(*dirs))
+        val directions = Direction.values().toMutableList()
         directions.remove(Direction.DOWN)
 
         val d = directions[(Math.random() * directions.size).toInt()]
         val offsets = calculateExplosionOffsets(d)
-
-        AudioManager.getInstance().play(SoundModel.EXPLOSION_CONFETTI)
 
         val explosionCoordinates = Coordinates.fromDirectionToCoordinateOnEntity(
                 entity,
@@ -103,12 +127,16 @@ class ClownLogic(
                 AbstractExplosion.SIZE
         )
 
-        ConfettiExplosion(
-                entity,
-                explosionCoordinates,
-                d,
-                entity
-        )
+        ExplosionHandler.instance.process(SoundModel.EXPLOSION_CONFETTI) {
+            listOf(
+                    ConfettiExplosion(
+                            owner = entity,
+                            coordinates = explosionCoordinates,
+                            direction = d,
+                            explosive = entity
+                    ).logic.explode()
+            )
+        }
     }
 
     /**
@@ -141,6 +169,7 @@ class ClownLogic(
      */
     override fun checkAndSpawnOrbs() {
         if (Utility.timePassed(entity.state.lastAttackTime) <= entity.state.attackDelay) return
+
         // Run a percentage-based chance for spawning enhanced and regular orbs
         Utility.runPercentage(SHOOTING_CHANCE) {
             entity.state.lastAttackTime = now()
@@ -171,6 +200,10 @@ class ClownLogic(
 
     override fun process() {
         super.process()
+
+        if (Utility.timePassed(entity.state.spawnTime) < spawnTimeAttackDelay)
+            return
+
         // Check and potentially spawn explosions
         checkAndSpawnExplosion()
 

@@ -39,7 +39,7 @@ abstract class EntityLogic(
         spawn()
     }
 
-    override fun spawn(forceSpawn: Boolean, forceCentering: Boolean) {
+    final override fun spawn(forceSpawn: Boolean, forceCentering: Boolean) {
         if (entity.state.isSpawned) {
             return
         }
@@ -55,6 +55,7 @@ abstract class EntityLogic(
         if (forceSpawn || !Coordinates.isBlockOccupied(entity.info.position)) {
             entity.state.isSpawned = true
             match.addEntity(entity)
+            entity.state.spawnTime = System.currentTimeMillis()
             onSpawn()
         }
     }

@@ -3,6 +3,7 @@ package game.presentation.ui.pages.play;
 import game.Bomberman;
 import game.domain.level.levels.lobby.WaitingRoomLevel;
 import game.domain.level.levels.lobby.WorldSelectorLevel;
+import game.domain.level.levels.world2.World2Level5;
 import game.network.gamehandler.ClientGameHandler;
 import game.network.gamehandler.ServerGameHandler;
 import game.presentation.ui.frames.BombermanFrame;

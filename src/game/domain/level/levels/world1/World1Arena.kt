@@ -11,7 +11,6 @@ import game.domain.level.levels.ArenaLevel
 import game.domain.level.levels.Level
 import game.domain.level.info.model.DefaultArenaLevelInfo
 import game.domain.level.info.model.LevelInfo
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.fast_enemy.FastEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.skeleton.SkeletonEnemy
 
 class World1Arena : ArenaLevel() {

@@ -29,7 +29,7 @@ abstract class Boss : AiEnemy {
     abstract override val graphicsBehavior: BossEntityGraphicsBehavior
 
     internal object DEFAULT {
-        val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_3
+        val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_4
         val ATTACK_DAMAGE = 1000
         val SIZE = PitchPanel.GRID_SIZE * 4
         val MAX_HP: Int by lazy {
