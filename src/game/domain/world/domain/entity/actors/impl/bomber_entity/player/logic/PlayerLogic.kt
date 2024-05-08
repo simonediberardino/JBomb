@@ -6,10 +6,12 @@ import game.domain.events.game.DeathGameEvent
 import game.domain.events.game.HealthUpdatedEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
+import game.domain.level.behavior.PlayerDeathBehavior
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.input.Command
 import game.presentation.ui.pages.game_over.GameOverPanel
@@ -24,6 +26,14 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         Bomberman.match.gameTickerObservable?.register(entity)
         Bomberman.match.controllerManager?.register(entity)
         Bomberman.bombermanFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
+    }
+
+    override fun onDespawn() {
+        super.onDespawn()
+
+        if (entity.state.eliminated) {
+            PlayerDeathBehavior().invoke()
+        }
     }
 
     override fun onEliminated() {

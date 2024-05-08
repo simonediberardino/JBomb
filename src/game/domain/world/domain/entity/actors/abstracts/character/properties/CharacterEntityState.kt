@@ -47,6 +47,7 @@ open class CharacterEntityState(
         attackDamage = attackDamage,
         direction = direction
 ) {
+    var eliminated: Boolean = false
     val startCanMove = canMove
 
     var hp: Int = maxHp

@@ -5,9 +5,11 @@ import game.domain.level.behavior.*
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
+import game.domain.world.domain.entity.actors.abstracts.base.EntityState
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.actors.impl.models.State
 import game.presentation.ui.pages.game_over.GameOverPanel
 import game.utils.Utility
 import java.awt.Image
@@ -51,7 +53,7 @@ open class DefaultGameHandler(level: Level) : GameHandler(level) {
     override fun spawnAnimals(availableAnimals: Array<Class<out AnimalEntity>>) =
             SpawnAnimalsBehavior(level.info.startAnimalsCount, availableAnimals).invoke()
 
-    override fun canGameBeEnded(): Boolean = !Bomberman.match.getEntities().any { it is BomberEntity }
+    override fun canGameBeEnded(): Boolean = !Bomberman.match.getEntities().any { it is BomberEntity && it.state.state != State.DIED }
 
     override fun onPlayerDeath() = PlayerDeathBehavior().invoke()
 }
