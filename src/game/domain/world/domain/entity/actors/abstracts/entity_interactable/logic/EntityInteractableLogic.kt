@@ -6,7 +6,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.logic.EntityLogic
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
-import game.domain.world.domain.entity.geo.Coordinates.getNewCoordinatesOnDirection
+import game.domain.world.domain.entity.geo.Coordinates.getNewCoordinatesListOnDirection
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.AttackEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
@@ -137,7 +137,7 @@ abstract class EntityInteractableLogic(
 
         // Get the coordinates of the next positions that will be occupied if
         // the entity moves in a certain direction with a given step size
-        val nextOccupiedCoords = getNewCoordinatesOnDirection(
+        val nextOccupiedCoords = getNewCoordinatesListOnDirection(
                 entity.info.position,
                 direction,
                 stepSize,

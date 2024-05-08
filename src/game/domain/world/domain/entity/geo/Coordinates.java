@@ -3,12 +3,11 @@ package game.domain.world.domain.entity.geo;
 import game.Bomberman;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.presentation.ui.panels.game.PitchPanel;
-import game.utils.dev.Log;
 
 import java.awt.*;
 import java.time.temporal.ValueRange;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -276,8 +275,33 @@ public class Coordinates implements Comparable<Coordinates> {
         return new LinkedList<>(entityList);
     }
 
-    // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
-    public static List<Coordinates> getNewCoordinatesOnDirection(Coordinates position, Direction d, int steps, int offset, int size) {
+    public static Coordinates getCoordinatesOnDirection(Direction d, Coordinates entityPosition, int entitySize) {
+        return switch (d) {
+            case RIGHT -> getCoordinatesOnRight(entityPosition,entitySize); // get coordinates to the right of entity
+            case LEFT -> getCoordinatesOnLeft(entityPosition,entitySize); // get coordinates to the left of entity
+            case UP -> getCoordinatesOnUp(entityPosition,entitySize); // get coordinates above entity
+            case DOWN -> getCoordinatesOnDown(entityPosition,entitySize); // get coordinates below entity
+        };
+    }
+    private static Coordinates getCoordinatesOnRight(Coordinates position, int entitySize) {
+        return new Coordinates(position.getX()+GRID_SIZE + entitySize, position.getY());
+
+    }
+    private static Coordinates getCoordinatesOnLeft(Coordinates position, int entitySize) {
+        return new Coordinates(position.getX()-GRID_SIZE, position.getY());
+
+    }
+    private static Coordinates getCoordinatesOnUp(Coordinates position, int entitySize) {
+        return new Coordinates(position.getX(), position.getY()- GRID_SIZE);
+
+    }
+    private static Coordinates getCoordinatesOnDown(Coordinates position, int entitySize) {
+        return new Coordinates(position.getX(), position.getY() + entitySize + GRID_SIZE);
+    }
+
+
+        // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
+    public static List<Coordinates> getNewCoordinatesListOnDirection(Coordinates position, Direction d, int steps, int offset, int size) {
         return switch (d) {
             case RIGHT ->
                     getNewCoordinatesOnRight(position, steps, offset, size); // get coordinates to the right of entity

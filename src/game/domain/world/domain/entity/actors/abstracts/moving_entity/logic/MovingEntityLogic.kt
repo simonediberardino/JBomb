@@ -26,7 +26,7 @@ abstract class MovingEntityLogic(
         }
 
         for (direction in Direction.values()) {
-            val newCoordinates = Coordinates.getNewCoordinatesOnDirection(
+            val newCoordinates = Coordinates.getNewCoordinatesListOnDirection(
                     entity.info.position,
                     direction,
                     PitchPanel.PIXEL_UNIT,

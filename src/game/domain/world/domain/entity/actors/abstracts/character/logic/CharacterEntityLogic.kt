@@ -7,8 +7,6 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
@@ -16,7 +14,6 @@ import game.domain.world.domain.entity.geo.Direction
 import game.input.Command
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
-import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.ActionEvent
 import java.util.*
@@ -237,7 +234,7 @@ abstract class CharacterEntityLogic(
         if (moveSuccessful) {
             return
         }
-        val oppositeBlocksCoordinates = Coordinates.getNewCoordinatesOnDirection(
+        val oppositeBlocksCoordinates = Coordinates.getNewCoordinatesListOnDirection(
                 /* position = */ entity.info.position,
                 /* d = */ command.commandToDirection(),
                 /* steps = */ PitchPanel.PIXEL_UNIT,
