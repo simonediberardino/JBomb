@@ -2,8 +2,6 @@
 high priorities:
 
 - Villagers
-- fix game not ending sp
-- Fix client not moving after respawning
 - Handle client disconnection
 - Clown level attack on spawn???
 - Clown ball despawn
