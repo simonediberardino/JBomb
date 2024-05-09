@@ -29,7 +29,9 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         val entity = createEntity(entityId, entityType) ?: return
         entity.info.position = location
 
-        val delay = if (!Bomberman.isInGame) LOADING_TIMER + 1000 else 0
+        val levelInfo = Bomberman.match.currentLevel.info
+        val isInWaitingRoom = levelInfo.worldId == 0 && levelInfo.levelId == 0
+        val delay = if (isInWaitingRoom) LOADING_TIMER + 1000 else 0
 
         val timer = Timer(delay) { _: ActionEvent? ->
             entity.logic.spawn(forceSpawn = true)

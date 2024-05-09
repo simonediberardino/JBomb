@@ -3,7 +3,6 @@ package game.domain.match
 import game.Bomberman
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
-import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.levels.Level
 import game.domain.tasks.GameTickerObservable
@@ -265,9 +264,10 @@ class BomberManMatch(
         if (entity.state.canRespawn) {
             _despawnedEntitiesList.add(entity)
             _despawnedEntitiesMap[entity.info.id] = entity
+        } else {
+            gameTickerObservable?.unregister(entity)
         }
 
-        gameTickerObservable?.unregister(entity)
 
         entity.logic.onRemoved()
 
