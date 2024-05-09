@@ -161,7 +161,7 @@ public class PitchPanel extends JPanel implements Observer2 {
     /**
      * Repaints the game panel when it is updated by the game ticker observable
      *
-     * @param arg the object argument
+     * @param arg  the object argument
      */
     @Override
     public void update(@NotNull Observable2.ObserverParam arg) {

@@ -40,8 +40,7 @@ class BomberManMatch(
     // List of entities sorted by a linked list
     private val _entitiesList: SortedLinkedList<Entity> = SortedLinkedList()
     private val _entitiesMap: HashMap<Long, Entity> = HashMap()
-    private val _despawnedEntitiesMap: HashMap<Long, Entity> = HashMap()
-    private val _despawnedEntitiesList: SortedLinkedList<Entity> = SortedLinkedList()
+    private val _despawnedEntitiesMap: HashMap<Long, Class<out Entity>> = HashMap()
 
     // Manager for mouse controllers
     val mouseControllerManager: MouseControllerManager = MouseControllerManager(scope)
@@ -225,9 +224,7 @@ class BomberManMatch(
      */
     fun getEntities(): List<Entity> = synchronized(_entitiesList) { LinkedList(_entitiesList) }
 
-    fun getDeadEntities(): List<Entity> = synchronized(_despawnedEntitiesMap) { LinkedList(_despawnedEntitiesList) }
-
-    fun getDeadEntityById(entityId: Long): Entity? = _despawnedEntitiesMap[entityId]
+    fun getDeadEntities(): HashMap<Long, Class<out Entity>> = synchronized(_despawnedEntitiesMap) { _despawnedEntitiesMap }
 
     fun getEntityById(entityId: Long): Entity? = _entitiesMap[entityId]
 
@@ -244,15 +241,15 @@ class BomberManMatch(
             _despawnedEntitiesMap.remove(entity.info.id)
         }
 
-        synchronized(_despawnedEntitiesList) {
-            _despawnedEntitiesList.removeIf { it.info.id == entity.info.id }
-        }
-
         entity.logic.onAdded()
         performGarbageCollection()
     }
 
     fun removeEntity(entity: Entity) {
+        if (entity.state.canRespawn) {
+            _despawnedEntitiesMap[entity.info.id] = entity.javaClass
+        }
+
         synchronized(_entitiesList) {
             _entitiesList.removeIf { it.info.id == entity.info.id }
         }
@@ -260,14 +257,6 @@ class BomberManMatch(
         synchronized(_entitiesMap) {
             _entitiesMap.remove(entity.info.id)
         }
-
-        if (entity.state.canRespawn) {
-            _despawnedEntitiesList.add(entity)
-            _despawnedEntitiesMap[entity.info.id] = entity
-        } else {
-            gameTickerObservable?.unregister(entity)
-        }
-
 
         entity.logic.onRemoved()
 

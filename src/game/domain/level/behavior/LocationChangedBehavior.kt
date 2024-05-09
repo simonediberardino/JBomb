@@ -17,10 +17,10 @@ class LocationChangedBehavior(private val entityNetwork: EntityNetwork) : GameBe
         return {
             if (entityNetwork.entityId == (Bomberman.match.onlineGameHandler as ClientGameHandler).id) {
                 // If player is not stored yet
-                if (Bomberman.match.player == null) {
-                    val player = Bomberman.match.getEntityById(entityNetwork.entityId) as Player?
-                    if (player != null) {
-                        Bomberman.match.player = player
+                val player = Bomberman.match.player
+                if (player == null || !player.state.isSpawned) {
+                    (Bomberman.match.getEntityById(entityNetwork.entityId) as Player?)?.let {
+                        Bomberman.match.player = it
                     }
                 }
 

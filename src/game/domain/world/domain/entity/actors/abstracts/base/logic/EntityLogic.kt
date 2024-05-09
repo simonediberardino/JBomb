@@ -4,7 +4,6 @@ import game.Bomberman
 import game.Bomberman.match
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityLogic
-import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
@@ -13,7 +12,6 @@ import game.network.events.forward.DespawnEntityEventForwarder
 import game.network.events.forward.SpawnEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
-import game.utils.dev.Log
 import game.utils.time.now
 
 abstract class EntityLogic(
@@ -27,7 +25,7 @@ abstract class EntityLogic(
     override fun despawn() {
         entity.state.isSpawned = false
         onDespawn()
-        Bomberman.match.removeEntity(entity)
+        match.removeEntity(entity)
     }
 
     override fun spawn() {
@@ -61,7 +59,9 @@ abstract class EntityLogic(
     }
 
     override fun onAdded() {}
-    override fun onRemoved() {}
+    override fun onRemoved() {
+        match.gameTickerObservable?.unregister(entity)
+    }
 
     override fun notifySpawn() {
         SpawnEntityEventForwarder(-1).invoke(entity.toEntityNetwork())

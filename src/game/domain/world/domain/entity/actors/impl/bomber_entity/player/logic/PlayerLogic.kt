@@ -1,28 +1,21 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.player.logic
 
 import game.Bomberman
-import game.data.data.DataInputOutput
 import game.domain.events.game.DeathGameEvent
 import game.domain.events.game.HealthUpdatedEvent
-import game.domain.events.game.UpdateCurrentAvailableItemsEvent
-import game.domain.events.game.UpdateCurrentBombsLengthEvent
 import game.domain.level.behavior.PlayerDeathBehavior
 import game.domain.tasks.observer.Observable2
-import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
-import game.domain.world.domain.entity.actors.impl.models.State
-import game.domain.world.domain.entity.geo.Coordinates
 import game.input.Command
-import game.presentation.ui.pages.game_over.GameOverPanel
+import game.utils.dev.Log
 import game.utils.time.now
-import java.awt.event.ActionEvent
-import javax.swing.Timer
 
 class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = entity) {
     override fun onSpawn() {
         super.onSpawn()
         updateBombs()
+        Log.e("Spawning $this")
         Bomberman.match.gameTickerObservable?.register(entity)
         Bomberman.match.controllerManager?.register(entity)
         Bomberman.bombermanFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
@@ -46,8 +39,9 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         Bomberman.match.updateInventoryWeaponController()
     }
 
-    override fun onMove(coordinates: Coordinates) {
-        super.onMove(coordinates)
+    override fun onRemoved() {
+        super.onRemoved()
+        Bomberman.match.controllerManager?.unregister(entity)
     }
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {
@@ -79,6 +73,8 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun executeCommandQueue() {
         val commandQueue = entity.state.commandQueue
 
+        if (commandQueue.isNotEmpty())
+            Log.e("Executing command queue $commandQueue")
         try {
             commandQueue.forEach { c ->
                 handleCommand(c)
