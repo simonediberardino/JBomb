@@ -6,12 +6,10 @@ import game.domain.level.levels.lobby.WaitingRoomLevel;
 import game.localization.Localization;
 import game.network.gamehandler.ClientGameHandler;
 import game.presentation.ui.frames.BombermanFrame;
-import game.presentation.ui.helpers.Padding;
 import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
-import game.presentation.ui.viewelements.settings.SettingsElementView;
 import game.utils.Utility;
 import game.utils.file_system.Paths;
 
@@ -19,8 +17,6 @@ import javax.swing.*;
 import java.awt.*;
 
 import static game.localization.Localization.*;
-import static game.values.Dimensions.DEFAULT_X_PADDING;
-import static game.values.Dimensions.DEFAULT_Y_PADDING;
 
 public class ServersListMenuPanel extends BoxMenuPanel {
     protected String enteredIpAddress = "";

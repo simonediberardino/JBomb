@@ -2,13 +2,12 @@ package game.network.events.process
 
 import game.Bomberman
 import game.domain.events.models.HttpEvent
-import game.network.dispatch.HttpMessageDispatcher
-import game.network.messages.PlayerJoinRequestHttpMessage
 import game.domain.level.levels.Level
+import game.network.dispatch.HttpMessageDispatcher
 import game.network.gamehandler.ClientGameHandler
+import game.network.messages.PlayerJoinRequestHttpMessage
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
-import java.lang.RuntimeException
 
 class LevelInfoHttpEventProcessor : HttpEvent {
     override fun invoke(vararg extras: Any) {
@@ -28,12 +27,16 @@ class LevelInfoHttpEventProcessor : HttpEvent {
         Thread.sleep(1500) // TODO
 
         if (levelClassOpt.isPresent) {
-            Bomberman.startLevel(levelClassOpt.get().getConstructor().newInstance(), onlineGameHandler)
+            Bomberman.startLevel(
+                    level = levelClassOpt.get().getConstructor().newInstance(),
+                    onlineGameHandler = onlineGameHandler,
+                    disconnect = false
+            ) {
+                // Client confirms joining the match after receiving the ID.
+                HttpMessageDispatcher.instance.dispatch(PlayerJoinRequestHttpMessage(id))
+            }
         } else {
             throw RuntimeException("Level $worldId, $levelId does not exist")
         }
-
-        // Client confirms joining the match after receiving the ID.
-        HttpMessageDispatcher.instance.dispatch(PlayerJoinRequestHttpMessage(id))
     }
 }

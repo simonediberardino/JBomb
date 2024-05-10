@@ -10,7 +10,6 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
-import java.net.UnknownHostException
 
 class TCPClient(private val serverAddress: String,
                 private val serverPort: Int
@@ -88,23 +87,27 @@ class TCPClient(private val serverAddress: String,
     }
 
     fun close() {
-        if (this::reader.isInitialized) {
-            reader.close()
-        }
+        scope.cancel()
 
         if (this::writer.isInitialized) {
-            writer.close()
+            try {
+                writer.close()
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
         }
 
         if (this::socket.isInitialized) {
-            socket.close()
+            try {
+                socket.close()
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
         }
 
         for (listener in listeners) {
             listener.onDisconnect()
         }
-
-        scope.cancel()
     }
 
     fun register(tcpClientCallback: TCPClientCallback) {

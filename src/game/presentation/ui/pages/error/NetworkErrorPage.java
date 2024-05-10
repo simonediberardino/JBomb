@@ -12,7 +12,6 @@ import java.awt.*;
 public class NetworkErrorPage extends BoxMenuPanel {
     private static String error = "";
 
-
     public NetworkErrorPage(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
         super(cardLayout,
                 parent, frame,

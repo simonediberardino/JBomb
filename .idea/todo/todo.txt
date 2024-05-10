@@ -3,15 +3,9 @@ high priorities:
 
 - Villagers
 - Handle client disconnection
-- Location updated of host player on client side when starting game
-- Mystery box interact on client side
-- End game mp
 - pause game mp
-- Screen when starting game
 - forward client message to all clients;
 - handle you message and skin;
-- disable mp;
-- Update info network -> domain
 
 - Images;
 - database

@@ -10,17 +10,18 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 
 class MysteryBoxPerk(
-        level: Level,
-        entity: Entity
+        level: () -> Level?,
+        entity: () -> Entity?
 ) : MysteryBox() {
     // TODO Refactor
-    constructor(id: Long) : this(Bomberman.match.currentLevel, Bomberman.match.player!!) {
+    constructor(id: Long) : this({ Bomberman.match.currentLevel }, { Bomberman.match.player }) {
         this.info.id = id
     }
 
     override val logic: MysteryBoxLogic = object : MysteryBoxLogic(entity = this) {
         override fun onPurchaseConfirm() {
-            val powerUpClass = level.info.randomPowerUpClass
+            val powerUpClass = level()?.info?.randomPowerUpClass ?: return
+
             val powerUpInstance: PowerUp = try {
                 powerUpClass.getConstructor(Coordinates::class.java).newInstance(Coordinates(0, 0))
             } catch (e: Exception) {

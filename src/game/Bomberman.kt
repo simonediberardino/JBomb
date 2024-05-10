@@ -54,22 +54,22 @@ object Bomberman {
 
     @JvmStatic
     fun quitMatch() {
-        destroyLevel()
+        destroyLevel(true)
         showActivity(MainMenuPanel::class.java)
     }
 
-    fun destroyLevel() {
+    fun destroyLevel(disconnect: Boolean) {
         bombermanFrame.removeKeyListener(match.controllerManager)
-        match.destroy()
+        match.destroy(disconnect)
     }
 
     /**
      * Starts a new level and destroys the previous one;
      *
      */
-    private fun doStartLevel(level: Level, onlineGameHandler: OnlineGameHandler?) {
+    private fun doStartLevel(level: Level, disconnect: Boolean, onlineGameHandler: OnlineGameHandler?) {
         if (this::match.isInitialized) {
-            destroyLevel()
+            destroyLevel(disconnect)
         }
 
         match = BomberManMatch(level, onlineGameHandler)
@@ -88,17 +88,30 @@ object Bomberman {
 
     @JvmStatic
     fun startLevel(level: Level, onlineGameHandler: OnlineGameHandler?) {
+        startLevel(level, onlineGameHandler, true) {}
+    }
+
+    @JvmStatic
+    fun startLevel(
+            level: Level,
+            onlineGameHandler: OnlineGameHandler?,
+            disconnect: Boolean = true,
+            callback: () -> Unit,
+    ) {
         bombermanFrame.loadingPanel.initialize()
         bombermanFrame.loadingPanel.updateText(level)
         bombermanFrame.loadingPanel.setCallback {
-            doStartLevel(level, onlineGameHandler)
+            doStartLevel(level, disconnect, onlineGameHandler)
+            callback()
         }
 
         showActivity(LoadingPanel::class.java)
     }
 
     fun networkError(error: String?) {
-        destroyLevel()
+        if (!isInGame) return
+
+        destroyLevel(true)
 
         val formattedError = error?.let {
             Localization.get(Localization.ERROR).replace("%error%", error)

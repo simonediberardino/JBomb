@@ -326,8 +326,8 @@ class BomberManMatch(
     /**
      * Performs cleanup operations and releases resources associated with the game.
      */
-    fun destroy() {
-        if (isServer) {
+    fun destroy(disconnect: Boolean = false) {
+        if (isServer || disconnect) {
             onlineGameHandler?.disconnect()
         }
         // Pause the game to ensure safe destruction

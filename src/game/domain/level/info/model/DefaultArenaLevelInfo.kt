@@ -11,7 +11,7 @@ abstract class DefaultArenaLevelInfo(level: ArenaLevel): DefaultLevelInfo(level)
     override val bossMaxHealth: Int get() = super.bossMaxHealth / 4
 
     override val startEnemiesCount: Int get() {
-            return 1
+            return ArenaLevel.MIN_ENEMIES_COUNT + (level as ArenaLevel).currentRound.get()
         }
 
     abstract val specialRoundEnemies: Array<Class<out Enemy>>

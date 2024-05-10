@@ -7,11 +7,8 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.types.EntityTypes
 import game.mappers.toEntity
 import game.network.gamehandler.ClientGameHandler
-import game.presentation.ui.pages.loading.LoadingPanel.LOADING_TIMER
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
-import java.awt.event.ActionEvent
-import javax.swing.Timer
 
 class SpawnedEntityHttpEventProcessor : HttpEvent {
     override fun invoke(vararg extras: Any) {
@@ -29,16 +26,7 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         val entity = createEntity(entityId, entityType) ?: return
         entity.info.position = location
 
-        val levelInfo = Bomberman.match.currentLevel.info
-        val isInWaitingRoom = levelInfo.worldId == 0 && levelInfo.levelId == 0
-        val delay = if (isInWaitingRoom) LOADING_TIMER + 1000 else 0
-
-        val timer = Timer(delay) { _: ActionEvent? ->
-            entity.logic.spawn(forceSpawn = true)
-        }
-
-        timer.isRepeats = false
-        timer.start()
+        entity.logic.spawn(forceSpawn = true)
     }
 
     private fun createEntity(

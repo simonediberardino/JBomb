@@ -2,16 +2,16 @@ package game.domain.world.domain.entity.pickups.portals
 
 import game.Bomberman
 import game.data.data.DataInputOutput
-import game.domain.world.types.EntityTypes
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.level.levels.lobby.WorldSelectorLevel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.portals.base.Portal
 import game.domain.world.domain.entity.pickups.portals.base.logic.PortalLogic
+import game.domain.world.types.EntityTypes
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -38,7 +38,7 @@ class EndLevelPortal : Portal {
             val match = Bomberman.match
             val currentLevel = match.currentLevel ?: return
 
-            Bomberman.destroyLevel()
+            Bomberman.destroyLevel(true)
             DataInputOutput.getInstance().increaseLives()
 
             try {

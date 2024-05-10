@@ -53,7 +53,7 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
         val data: MutableMap<String, String> = HashMap()
         data["id"] = indexedClient.id.toString()
 
-        val levelInfo = Bomberman.match.currentLevel?.info ?: return
+        val levelInfo = Bomberman.match.currentLevel.info
 
         data["levelId"] = levelInfo.levelId.toString()
         data["worldId"] = levelInfo.worldId.toString()

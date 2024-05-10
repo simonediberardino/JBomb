@@ -16,14 +16,14 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
     override fun onCollision(e: Entity) {
         super.onCollision(e)
 
-        if (e == entity.state.buyer && e == Bomberman.match.player)
+        if (e == entity.state.buyer() && e == Bomberman.match.player)
             showInteractMessage()
     }
 
     override fun onExitCollision(e: Entity) {
         super.onExitCollision(e)
 
-        if (e == entity.state.buyer && e == Bomberman.match.player)
+        if (e == entity.state.buyer() && e == Bomberman.match.player)
             ToastHandler.getInstance().cancel()
     }
 
@@ -34,7 +34,7 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
     }
 
     override fun onMouseClickInteraction() {
-        val distanceToUser = entity.info.position.distanceTo(entity.state.buyer!!.info.position)
+        val distanceToUser = entity.info.position.distanceTo(entity.state.buyer()!!.info.position)
         if (distanceToUser >= PitchPanel.GRID_SIZE * 1.5) {
             return
         }
@@ -48,7 +48,7 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
             return
         }
 
-        if (!entity.state.buyer!!.state.isSpawned) {
+        if (!entity.state.buyer()!!.state.isSpawned) {
             return
         }
 

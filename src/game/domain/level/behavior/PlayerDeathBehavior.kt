@@ -10,7 +10,7 @@ class PlayerDeathBehavior : GameBehavior() {
     override fun hostBehavior(): () -> Unit = {
         if (Bomberman.match.currentLevel.gameHandler.canGameBeEnded()) {
             val t = Timer(EntityInteractable.SHOW_DEATH_PAGE_DELAY_MS.toInt()) { _: ActionEvent? ->
-                Bomberman.destroyLevel()
+                Bomberman.destroyLevel(true)
                 Bomberman.showActivity(GameOverPanel::class.java)
             }
             t.isRepeats = false
