@@ -39,7 +39,7 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY_CAMPAIGN));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel(), new ServerGameHandler(28960)));
+        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel(), null));
         return startLevelButton;
     }
 
@@ -53,7 +53,6 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
         JButton startLevelButton = new YellowButton(get(PLAY_ONLINE));
         // TODO
 
-        //startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WaitingRoomLevel(), new ClientGameHandler("localhost", 28960)));
         startLevelButton.addActionListener((v) -> Bomberman.showActivity(ServersListMenuPanel.class));
         return startLevelButton;
     }

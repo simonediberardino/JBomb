@@ -36,7 +36,7 @@ public class ProfilePanel extends BoxMenuPanel {
         SettingsElementView userName = boxComponentsPanel.addTextFieldElementView(Localization.get(USERNAME), DataInputOutput.getInstance().getUsername(), new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
-                if (par.toString().isBlank()) return null;
+                if (par.toString().isEmpty()) return null;
                 DataInputOutput.getInstance().setUsername(par.toString().trim());
                 return null;
             }

@@ -73,7 +73,7 @@ data class PlayerDataObject(
             skin = "skin0"
             changed = true
         }
-        if (name.isBlank()) {
+        if (name.isEmpty()) {
             name = Localization.get(Localization.PLAYER)
             changed = true
         }

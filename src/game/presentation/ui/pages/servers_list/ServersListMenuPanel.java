@@ -35,7 +35,7 @@ public class ServersListMenuPanel extends BoxMenuPanel {
         boxComponentsPanel.addTextFieldElementView(Localization.get(SERVERS_LIST_INPUT), Localization.get(INSERT), new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
-                if (par.toString().isBlank()) return null;
+                if (par.toString().isEmpty()) return null;
                 enteredIpAddress = par.toString();
                 return null;
             }

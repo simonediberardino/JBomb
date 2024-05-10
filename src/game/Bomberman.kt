@@ -114,7 +114,7 @@ object Bomberman {
         destroyLevel(true)
 
         val formattedError = error?.let {
-            Localization.get(Localization.ERROR).replace("%error%", error)
+            Localization.get(Localization.ERROR_NETWORK_DEFAULT).replace("%error%", error)
         } ?: Localization.get(Localization.GAME_ENDED)
 
         NetworkErrorPage.setError(formattedError)

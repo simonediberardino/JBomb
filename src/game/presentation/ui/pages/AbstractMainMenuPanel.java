@@ -65,7 +65,7 @@ public abstract class AbstractMainMenuPanel extends BaseMenu {
 
         // Define a Consumer to handle the username change
         Consumer<String> usernameChangeConsumer = username -> {
-            if (username.isBlank()) return;
+            if (username.isEmpty()) return;
             DataInputOutput.getInstance().setUsername(username.trim());
         };
 

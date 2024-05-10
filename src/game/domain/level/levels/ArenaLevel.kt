@@ -123,7 +123,9 @@ abstract class ArenaLevel : Level() {
         RoundPassedGameEvent().invoke(null)
     }
 
-    override fun endLevel() {}
+    override fun endLevel() {
+        currentRound.set(0)
+    }
 
     private fun firstStart() {
         UpdateCurrentBombsLengthEvent().invoke(1)

@@ -1,282 +1,284 @@
 package game.localization;
 
+import game.Bomberman;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Optional;
 
 public class Localization {
-    public static final HashMap<Locale, String> MY_BOMBERMAN = new HashMap<>() {{
+    public static final HashMap<Locale, String> MY_BOMBERMAN = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "MY JBOMBER");
         put(Locale.ITALY, "IL MIO JBOMBER");
     }};
 
-    public static final HashMap<Locale, String> KEY_RIGHT = new HashMap<>() {{
+    public static final HashMap<Locale, String> KEY_RIGHT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "RIGHT");
         put(Locale.ITALY, "DESTRA");
     }};
 
-    public static final HashMap<Locale, String> KEY_LEFT = new HashMap<>() {{
+    public static final HashMap<Locale, String> KEY_LEFT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "LEFT");
         put(Locale.ITALY, "SINISTRA");
     }};
 
-    public static final HashMap<Locale, String> KEY_FORWARD = new HashMap<>() {{
+    public static final HashMap<Locale, String> KEY_FORWARD = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "FORWARD");
         put(Locale.ITALY, "AVANTI");
     }};
 
-    public static final HashMap<Locale, String> KEY_BACK = new HashMap<>() {{
+    public static final HashMap<Locale, String> KEY_BACK = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "BACK");
         put(Locale.ITALY, "INDIETRO");
     }};
 
-    public static final HashMap<Locale, String> KEY_BOMB = new HashMap<>() {{
+    public static final HashMap<Locale, String> KEY_BOMB = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "BOMB");
         put(Locale.ITALY, "BOMBA");
     }};
 
-    public static final HashMap<Locale, String> KEY_INTERACT = new HashMap<>() {{
+    public static final HashMap<Locale, String> KEY_INTERACT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "INTERACT");
         put(Locale.ITALY, "INTERAGISCI");
     }};
 
-    public static final HashMap<Locale, String> DEATHS = new HashMap<>() {{
+    public static final HashMap<Locale, String> DEATHS = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "DEATHS");
         put(Locale.ITALY, "MORTI");
     }};
 
-    public static final HashMap<Locale, String> PLAYER_STATS = new HashMap<>() {{
+    public static final HashMap<Locale, String> PLAYER_STATS = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "PLAYER STATS");
         put(Locale.ITALY, "STATISTICHE");
     }};
 
-    public static final HashMap<Locale, String> LOST_GAMES = new HashMap<>() {{
+    public static final HashMap<Locale, String> LOST_GAMES = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "LOST GAMES");
         put(Locale.ITALY, "PARTITE PERSE");
     }};
 
-    public static final HashMap<Locale, String> KILLS = new HashMap<>() {{
+    public static final HashMap<Locale, String> KILLS = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "KILLS");
         put(Locale.ITALY, "UCCISIONI");
     }};
 
-    public static final HashMap<Locale, String> ROUNDS = new HashMap<>() {{
+    public static final HashMap<Locale, String> ROUNDS = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "ROUNDS PASSED");
         put(Locale.ITALY, "ROUND VINTI");
     }};
 
-    public static final HashMap<Locale, String> POINTS = new HashMap<>() {{
+    public static final HashMap<Locale, String> POINTS = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "POINTS");
         put(Locale.ITALY, "PUNTI");
     }};
 
-    public static final HashMap<Locale, String> LIVES = new HashMap<>() {{
+    public static final HashMap<Locale, String> LIVES = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "LIVES");
         put(Locale.ITALY, "VITE");
     }};
 
-    public static final HashMap<Locale, String> WELCOME_TEXT = new HashMap<>() {{
+    public static final HashMap<Locale, String> WELCOME_TEXT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "Welcome %user% to JBOMB!");
         put(Locale.ITALY, "Benvenuto %user% su JBOMB!");
     }};
 
-    public static final HashMap<Locale, String> MYSTERY_BOX_ERROR_MONEY = new HashMap<>() {{
+    public static final HashMap<Locale, String> MYSTERY_BOX_ERROR_MONEY = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "YOU DON'T HAVE ENOUGH COINS [%price%]");
         put(Locale.ITALY, "NON HAI ABBASTANZA MONETE [%price%]");
     }};
 
 
-    public static final HashMap<Locale, String> MYSTERY_BOX_CONFIRM = new HashMap<>() {{
+    public static final HashMap<Locale, String> MYSTERY_BOX_CONFIRM = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "INTERACT TO PURCHASE [%price%]");
         put(Locale.ITALY, "INTERAGISCI PER COMPRARE [%price%]");
     }};
 
 
-    public static final HashMap<Locale, String> PRESS_ESC_CONTINUE = new HashMap<>() {{
+    public static final HashMap<Locale, String> PRESS_ESC_CONTINUE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "PRESS ESCAPE TO RESUME");
         put(Locale.ITALY, "PREMI ESCAPE PER CONTINUARE");
     }};
 
-    public static final HashMap<Locale, String> STARTING_LEVEL = new HashMap<>() {{
+    public static final HashMap<Locale, String> STARTING_LEVEL = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "STARTING %level%!");
         put(Locale.ITALY, "%level% INIZIATO!");
     }};
 
-    public static final HashMap<Locale, String> WORLD_NAME = new HashMap<>() {{
+    public static final HashMap<Locale, String> WORLD_NAME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "WORLD %world_id% LEVEL %level_id%");
         put(Locale.ITALY, "MONDO %world_id% LIVELLO %level_id%");
     }};
 
-    public static final HashMap<Locale, String> ARENA_NAME = new HashMap<>() {{
+    public static final HashMap<Locale, String> ARENA_NAME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "ARENA WORLD %world_id%");
         put(Locale.ITALY, "ARENA MONDO %world_id%");
     }};
 
-    public static final HashMap<Locale, String> ISLAND = new HashMap<>() {{
+    public static final HashMap<Locale, String> ISLAND = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "ISLAND");
         put(Locale.ITALY, "ISOLA");
     }};
 
-    public static final HashMap<Locale, String> YOU_DIED = new HashMap<>() {{
+    public static final HashMap<Locale, String> YOU_DIED = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "YOU DIED! YOU HAVE %lives% LIVES LEFT.");
         put(Locale.ITALY, "SEI MORTO! HAI %lives% VITE RIMANENTI.");
     }};
 
-    public static final HashMap<Locale, String> ARENA_DIED = new HashMap<>() {{
+    public static final HashMap<Locale, String> ARENA_DIED = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "YOU DIED! YOU SURVIVED %rounds% ROUNDS.");
         put(Locale.ITALY, "SEI MORTO! SEI SOPRAVVISSUTO %rounds% ROUND.");
     }};
 
-    public static final HashMap<Locale, String> RESET_WORLD = new HashMap<>() {{
+    public static final HashMap<Locale, String> RESET_WORLD = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "RESET WORLD");
         put(Locale.ITALY, "RESETTA MONDO");
     }};
 
-    public static final HashMap<Locale, String> LOADING = new HashMap<>() {{
+    public static final HashMap<Locale, String> LOADING = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "LOADING");
         put(Locale.ITALY, "CARICAMENTO");
     }};
 
-    public static final HashMap<Locale, String> PLAY_AGAIN = new HashMap<>() {{
+    public static final HashMap<Locale, String> PLAY_AGAIN = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "PLAY AGAIN");
         put(Locale.ITALY, "GIOCA DI NUOVO");
     }};
 
-    public static final HashMap<Locale, String> MAIN_MENU = new HashMap<>() {{
+    public static final HashMap<Locale, String> MAIN_MENU = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "MAIN MENU");
         put(Locale.ITALY, "MENU PRINCIPALE");
     }};
 
-    public static final HashMap<Locale, String> BACK = new HashMap<>() {{
+    public static final HashMap<Locale, String> BACK = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "BACK");
         put(Locale.ITALY, "INDIETRO");
     }};
 
-    public static final HashMap<Locale, String> CONNECT = new HashMap<>() {{
+    public static final HashMap<Locale, String> CONNECT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "CONNECT");
         put(Locale.ITALY, "CONNETTITI");
     }};
 
 
-    public static final HashMap<Locale, String> PLAY = new HashMap<>() {{
+    public static final HashMap<Locale, String> PLAY = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "PLAY");
         put(Locale.ITALY, "GIOCA");
     }};
 
-    public static final HashMap<Locale, String> PLAY_CAMPAIGN = new HashMap<>() {{
+    public static final HashMap<Locale, String> PLAY_CAMPAIGN = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "PLAY STORYMODE");
         put(Locale.ITALY, "GIOCA CAMPAGNA");
     }};
 
-    public static final HashMap<Locale, String> START_ARENA = new HashMap<>() {{
+    public static final HashMap<Locale, String> START_ARENA = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "CREATE ARENA GAME");
         put(Locale.ITALY, "CREA PARTITA ARENA");
     }};
 
-    public static final HashMap<Locale, String> SERVERS_LIST_INPUT = new HashMap<>() {{
+    public static final HashMap<Locale, String> SERVERS_LIST_INPUT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "IP ADDRESS");
         put(Locale.ITALY, "INDIRIZZO IP");
     }};
 
-    public static final HashMap<Locale, String> INSERT = new HashMap<>() {{
+    public static final HashMap<Locale, String> INSERT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "INSERT...");
         put(Locale.ITALY, "INSERISCI...");
     }};
 
-    public static final HashMap<Locale, String> PLAY_ONLINE = new HashMap<>() {{
+    public static final HashMap<Locale, String> PLAY_ONLINE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "JOIN AN ONLINE GAME");
         put(Locale.ITALY, "PARTECIPA ONLINE");
     }};
-    public static final HashMap<Locale, String> PROFILE = new HashMap<>() {{
+    public static final HashMap<Locale, String> PROFILE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "SHOW PROFILE");
         put(Locale.ITALY, "VISUALIZZA PROFILO");
     }};
 
-    public static final HashMap<Locale, String> QUIT = new HashMap<>() {{
+    public static final HashMap<Locale, String> QUIT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "EXIT THE GAME");
         put(Locale.ITALY, "ESCI DAL GIOCO");
     }};
 
-    public static final HashMap<Locale, String> SERVERS_LIST_TITLE = new HashMap<>() {{
+    public static final HashMap<Locale, String> SERVERS_LIST_TITLE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "CONNECT TO A GAME");
         put(Locale.ITALY, "PARTECIPA A UNA PARTITA");
     }};
 
-    public static final HashMap<Locale, String> RESUME_GAME = new HashMap<>() {{
+    public static final HashMap<Locale, String> RESUME_GAME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "RESUME GAME");
         put(Locale.ITALY, "CONTINUA LA PARTITA");
     }};
 
-    public static final HashMap<Locale, String> QUIT_GAME = new HashMap<>() {{
+    public static final HashMap<Locale, String> QUIT_GAME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "QUIT THE MATCH");
         put(Locale.ITALY, "ESCI DALLA PARTITA");
     }};
 
-    public static final HashMap<Locale, String> USERNAME = new HashMap<>() {{
+    public static final HashMap<Locale, String> USERNAME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "USERNAME");
         put(Locale.ITALY, "USERNAME");
     }};
 
-    public static final HashMap<Locale, String> SETTINGS = new HashMap<>() {{
+    public static final HashMap<Locale, String> SETTINGS = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "SETTINGS");
         put(Locale.ITALY, "IMPOSTAZIONI");
     }};
 
 
-    public static final HashMap<Locale, String> PLAYER = new HashMap<>() {{
+    public static final HashMap<Locale, String> PLAYER = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "PLAYER");
         put(Locale.ITALY, "GIOCATORE");
     }};
 
-    public static final HashMap<Locale, String> CONNECTING = new HashMap<>() {{
+    public static final HashMap<Locale, String> CONNECTING = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "CONNECTING...");
         put(Locale.ITALY, "CONNESSIONE...");
     }};
 
-    public static final HashMap<Locale, String> APP_NAME = new HashMap<>() {{
+    public static final HashMap<Locale, String> APP_NAME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "JBOMB");
         put(Locale.ITALY, "JBOMB");
     }};
 
-    public static final HashMap<Locale, String> STARTING_ROUND = new HashMap<>() {{
+    public static final HashMap<Locale, String> STARTING_ROUND = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "STARTING ROUND %round%");
         put(Locale.ITALY, "INIZIA IL ROUND %round%");
     }};
 
-    public static final HashMap<Locale, String> AUDIO_VOLUME = new HashMap<>() {{
+    public static final HashMap<Locale, String> AUDIO_VOLUME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "AUDIO");
         put(Locale.ITALY, "AUDIO");
     }};
 
-    public static final HashMap<Locale, String> ARENA_WORLD_1 = new HashMap<>() {{
+    public static final HashMap<Locale, String> ARENA_WORLD_1 = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "ARENA WORLD 1");
         put(Locale.ITALY, "ARENA MONDO 1");
     }};
 
-    public static final HashMap<Locale, String> ARENA_WORLD_2 = new HashMap<>() {{
+    public static final HashMap<Locale, String> ARENA_WORLD_2 = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "ARENA WORLD 2");
         put(Locale.ITALY, "ARENA MONDO 2");
     }};
 
-    public static final HashMap<Locale, String> AVATAR = new HashMap<>() {{
+    public static final HashMap<Locale, String> AVATAR = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "AVATAR");
         put(Locale.ITALY, "AVATAR");
     }};
 
-    public static final HashMap<Locale, String> WAITING_ROOM = new HashMap<>() {{
+    public static final HashMap<Locale, String> WAITING_ROOM = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "WAITING ROOM");
         put(Locale.ITALY, "SALA D'ATTESA");
     }};
 
-    public static final HashMap<Locale, String> GAME_ENDED = new HashMap<>() {{
+    public static final HashMap<Locale, String> GAME_ENDED = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "GAME ENDED");
         put(Locale.ITALY, "PARTITA TERMINATA");
     }};
 
-    public static final HashMap<Locale, String> ERROR = new HashMap<>() {{
-        put(Locale.ENGLISH, "YOU HAVE BEEN DISCONNECTED. ERROR: %error%");
-        put(Locale.ITALY, "SEI STATO DISCONNESSO. \nERRORE: %error%");
+    public static final HashMap<Locale, String> ERROR_NETWORK_DEFAULT = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "YOU HAVE BEEN DISCONNECTED.\n\nERROR: %error%.\n\nIF YOU CANNOT JOIN, MAKE SURE THAT THE GAME IS IN ARENA MODE AND THAT THE NETWORK IS OPEN AT PORT: " + Bomberman.match.Companion.getDefaultPort());
+        put(Locale.ITALY, "SEI STATO DISCONNESSO.\n\nERRORE: %error%.\n\nSE NON RIESCI A PARTECIPARE, ASSICURATI CHE LA PARTITA SIA ARENA E CHE LA RETE SIA APERTA ALLA PORTA: " + Bomberman.match.Companion.getDefaultPort());
     }};
 
     public static Locale[] getSupportedLanguages() {

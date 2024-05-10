@@ -18,10 +18,10 @@ object Utils2D {
         for ((index, c) in input.withIndex()) {
             string += c
 
-            if (currCharIndex >= chunkSize) {
+            if (currCharIndex >= chunkSize || c == '\n') {
                 if (newLineDelimiter && index < input.length - 1) {
                     val isWordNotComplete = input[index + 1].isLetterOrDigit()
-                    if (isWordNotComplete)
+                    if (isWordNotComplete && c != '\n' && c != ' ')
                         string += "-"
                 }
 

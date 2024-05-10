@@ -32,6 +32,10 @@ class BomberManMatch(
         var currentLevel: Level,
         val onlineGameHandler: OnlineGameHandler?
 ) {
+    companion object {
+        var defaultPort: Int = 28960
+    }
+
     val scope = CoroutineScope(Dispatchers.IO)
 
     // Timestamp of the last game pause state
@@ -79,7 +83,7 @@ class BomberManMatch(
         private set
 
     val isOnlyPlayer: Boolean
-        get() = !isClient && onlineGameHandler is ServerGameHandler && onlineGameHandler.clientsConnected == 0
+        get() = onlineGameHandler == null || (!isClient && onlineGameHandler is ServerGameHandler && onlineGameHandler.clientsConnected == 0)
 
     init {
         setupViewControllers()
@@ -199,7 +203,7 @@ class BomberManMatch(
      * @return True if the client game handler is not null and connected, false otherwise.
      */
     val isClient: Boolean
-        get() = onlineGameHandler is ClientGameHandler
+        get() = onlineGameHandler != null && onlineGameHandler is ClientGameHandler
 
     /**
      * Checks if the game is running in server mode.
@@ -345,6 +349,8 @@ class BomberManMatch(
      * Performs cleanup operations and releases resources associated with the game.
      */
     fun destroy(disconnect: Boolean = false) {
+        currentLevel.endLevel()
+
         if (isServer || disconnect) {
             onlineGameHandler?.disconnect()
         }

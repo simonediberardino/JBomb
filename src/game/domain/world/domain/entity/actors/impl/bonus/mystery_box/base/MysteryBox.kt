@@ -19,7 +19,7 @@ abstract class MysteryBox : HardBlock(Coordinates(0, 0)) {
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
         override fun getImage(entity: Entity): BufferedImage? {
-            return loadAndSetImage(entity, "${Paths.powerUpsFolder}/box_${state.status}.png")
+            return loadAndSetImage(entity, "${Paths.powerUpsFolder}/box_${state.status.toString().lowercase()}.png")
         }
     }
 

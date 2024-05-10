@@ -2,6 +2,7 @@ package game.domain.tasks
 
 import game.domain.tasks.GameTickerObserver.Companion.DEFAULT_OBSERVER_UPDATE
 import game.domain.tasks.observer.Observable2
+import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
 
 /**

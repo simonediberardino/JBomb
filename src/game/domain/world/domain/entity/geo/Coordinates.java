@@ -169,7 +169,8 @@ public class Coordinates implements Comparable<Coordinates> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Coordinates that)) return false;
+        if (!(o instanceof Coordinates)) return false;
+        Coordinates that = (Coordinates) o;
         return getX() == that.getX() && getY() == that.getY();
     }
 
@@ -179,16 +180,18 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static Coordinates fromDirectionToCoordinateOnEntity(Entity entity, EnhancedDirection direction, int symmetricOffset) {
-        return switch (direction) {
-            case LEFTUP ->
-                    new Coordinates(entity.getInfo().getPosition().getX(), entity.getInfo().getPosition().getY());
-            case LEFTDOWN ->
-                    new Coordinates(entity.getInfo().getPosition().getX(), entity.getInfo().getPosition().getY() + entity.getState().getSize() - symmetricOffset);
-            case RIGHTUP ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() - symmetricOffset, entity.getInfo().getPosition().getY());
-            case RIGHTDOWN ->
-                    new Coordinates(entity.getState().getSize() + entity.getInfo().getPosition().getX() - symmetricOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() - symmetricOffset);
-        };
+        switch (direction) {
+            case LEFTUP:
+                return new Coordinates(entity.getInfo().getPosition().getX(), entity.getInfo().getPosition().getY());
+            case LEFTDOWN:
+                return new Coordinates(entity.getInfo().getPosition().getX(), entity.getInfo().getPosition().getY() + entity.getState().getSize() - symmetricOffset);
+            case RIGHTUP:
+                return new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() - symmetricOffset, entity.getInfo().getPosition().getY());
+            case RIGHTDOWN:
+                return new Coordinates(entity.getState().getSize() + entity.getInfo().getPosition().getX() - symmetricOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() - symmetricOffset);
+            default:
+                return null;
+        }
     }
 
     public static Coordinates fromDirectionToCoordinateOnEntity(Entity entity, Direction direction, int classSize, int symmetricOffset) {
@@ -198,16 +201,18 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static Coordinates fromDirectionToCoordinateOnEntity(Entity entity, Direction direction, int inwardOffset, int parallelOffset, int symmetricOffset) {
-        return switch (direction) {
-            case LEFT ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + inwardOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() / 2 + parallelOffset);
-            case RIGHT ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() - inwardOffset - symmetricOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() / 2 + parallelOffset);
-            case UP ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() / 2 + parallelOffset, entity.getInfo().getPosition().getY() + inwardOffset);
-            case DOWN ->
-                    new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() / 2 + parallelOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() - inwardOffset - symmetricOffset);
-        };
+        switch (direction) {
+            case LEFT:
+                return new Coordinates(entity.getInfo().getPosition().getX() + inwardOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() / 2 + parallelOffset);
+            case RIGHT:
+                return new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() - inwardOffset - symmetricOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() / 2 + parallelOffset);
+            case UP:
+                return new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() / 2 + parallelOffset, entity.getInfo().getPosition().getY() + inwardOffset);
+            case DOWN:
+                return new Coordinates(entity.getInfo().getPosition().getX() + entity.getState().getSize() / 2 + parallelOffset, entity.getInfo().getPosition().getY() + entity.getState().getSize() - inwardOffset - symmetricOffset);
+            default:
+                return null;
+        }
     }
 
     public ArrayList<Direction> fromCoordinatesToDirection(Coordinates entityCoords) {
@@ -276,40 +281,54 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static Coordinates getCoordinatesOnDirection(Direction d, Coordinates entityPosition, int entitySize) {
-        return switch (d) {
-            case RIGHT -> getCoordinatesOnRight(entityPosition,entitySize); // get coordinates to the right of entity
-            case LEFT -> getCoordinatesOnLeft(entityPosition,entitySize); // get coordinates to the left of entity
-            case UP -> getCoordinatesOnUp(entityPosition,entitySize); // get coordinates above entity
-            case DOWN -> getCoordinatesOnDown(entityPosition,entitySize); // get coordinates below entity
-        };
+        switch (d) {
+            case RIGHT:
+                return getCoordinatesOnRight(entityPosition, entitySize); // get coordinates to the right of entity
+            case LEFT:
+                return getCoordinatesOnLeft(entityPosition, entitySize); // get coordinates to the left of entity
+            case UP:
+                return getCoordinatesOnUp(entityPosition, entitySize); // get coordinates above entity
+            case DOWN:
+                return getCoordinatesOnDown(entityPosition, entitySize); // get coordinates below entity
+            default:
+                return null;
+        }
     }
+
     private static Coordinates getCoordinatesOnRight(Coordinates position, int entitySize) {
-        return new Coordinates(position.getX()+GRID_SIZE + entitySize, position.getY());
+        return new Coordinates(position.getX() + GRID_SIZE + entitySize, position.getY());
 
     }
+
     private static Coordinates getCoordinatesOnLeft(Coordinates position, int entitySize) {
-        return new Coordinates(position.getX()-GRID_SIZE, position.getY());
+        return new Coordinates(position.getX() - GRID_SIZE, position.getY());
 
     }
+
     private static Coordinates getCoordinatesOnUp(Coordinates position, int entitySize) {
-        return new Coordinates(position.getX(), position.getY()- GRID_SIZE);
+        return new Coordinates(position.getX(), position.getY() - GRID_SIZE);
 
     }
+
     private static Coordinates getCoordinatesOnDown(Coordinates position, int entitySize) {
         return new Coordinates(position.getX(), position.getY() + entitySize + GRID_SIZE);
     }
 
 
-        // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
+    // returns a list of coordinates a certain number of steps away from the entity in a given direction, taking into account entity size
     public static List<Coordinates> getNewCoordinatesListOnDirection(Coordinates position, Direction d, int steps, int offset, int size) {
-        return switch (d) {
-            case RIGHT ->
-                    getNewCoordinatesOnRight(position, steps, offset, size); // get coordinates to the right of entity
-            case LEFT ->
-                    getNewCoordinatesOnLeft(position, steps, offset, size); // get coordinates to the left of entity
-            case UP -> getNewCoordinatesOnUp(position, steps, offset, size); // get coordinates above entity
-            case DOWN -> getNewCoordinatesOnDown(position, steps, offset, size); // get coordinates below entity
-        };
+        switch (d) {
+            case RIGHT:
+                return getNewCoordinatesOnRight(position, steps, offset, size); // get coordinates to the right of entity
+            case LEFT:
+                return getNewCoordinatesOnLeft(position, steps, offset, size); // get coordinates to the left of entity
+            case UP:
+                return getNewCoordinatesOnUp(position, steps, offset, size); // get coordinates above entity
+            case DOWN:
+                return getNewCoordinatesOnDown(position, steps, offset, size); // get coordinates below entity
+            default:
+                return null;
+        }
     }
 
     protected static List<Coordinates> getNewCoordinatesOnRight(Coordinates position, int steps, int offset, int size) {
@@ -382,7 +401,7 @@ public class Coordinates implements Comparable<Coordinates> {
 
         ArrayList<Coordinates> arrayCoordinates = getAllCoordinates(Coordinates.roundCoordinates(nextOccupiedCoords), GRID_SIZE);
         // Get all the blocks and entities in the game
-        var entities = Bomberman.match.getEntities();
+        List<Entity> entities = Bomberman.match.getEntities();
 
         return entities.parallelStream().filter(e -> arrayCoordinates.stream().anyMatch(coords -> doesCollideWith(coords, e))).collect(Collectors.toList());
     }
@@ -412,18 +431,29 @@ public class Coordinates implements Comparable<Coordinates> {
 
     // calculates the coordinates of a point a certain distance away from the entity's top-left corner in a given direction
     public static Coordinates getNewTopLeftCoordinatesOnDirection(Coordinates coordinates, Direction d, int distance) {
-        int sign = switch (d) {
-            case UP, LEFT -> -1; // if direction is up or left, sign is negative
-            case DOWN, RIGHT -> 1; // if direction is down or right, sign is positive
-        };
+        int sign = 0;
+        switch (d) {
+            case UP:
+            case LEFT:
+                sign = -1;
+                break; // if direction is up or left, sign is negative
+            case DOWN:
+            case RIGHT:
+                sign = 1;
+                break; // if direction is down or right, sign is positive
+        }
 
-        return switch (d) {
-            case LEFT, RIGHT ->
-                    new Coordinates(coordinates.getX() + distance * sign, coordinates.getY()); // calculate new x-coordinate based on direction and distance
+        switch (d) {
+            case LEFT:
+            case RIGHT:
+                return new Coordinates(coordinates.getX() + distance * sign, coordinates.getY()); // calculate new x-coordinate based on direction and distance
 
-            case DOWN, UP ->
-                    new Coordinates(coordinates.getX(), coordinates.getY() + distance * sign); // calculate new y-coordinate based on direction and distance
-        };
+            case DOWN:
+            case UP:
+                return new Coordinates(coordinates.getX(), coordinates.getY() + distance * sign); // calculate new y-coordinate based on direction and distance
+            default:
+                return null;
+        }
 
     }
 
@@ -468,16 +498,18 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static List<Coordinates> getAllBlocksInAreaFromDirection(Entity e, Direction d, int depth) {
-        return switch (d) {
-            case LEFT ->
-                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(-GRID_SIZE * depth + 1, 0)), e.getInfo().getPosition().plus(new Coordinates(1, e.getState().getSize() - 1)));
-            case DOWN ->
-                    Coordinates.getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(0, e.getState().getSize())), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() - 1, e.getState().getSize() + PitchPanel.GRID_SIZE * depth - 1)));
-            case UP ->
-                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(-1, -(PitchPanel.GRID_SIZE * depth - 1))), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() - 1, -1)));
-            case RIGHT ->
-                    getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize(), 0)), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() + GRID_SIZE * depth - 1, e.getState().getSize() - 1)));
-        };
+        switch (d) {
+            case LEFT:
+                return getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(-GRID_SIZE * depth + 1, 0)), e.getInfo().getPosition().plus(new Coordinates(1, e.getState().getSize() - 1)));
+            case DOWN:
+                return Coordinates.getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(0, e.getState().getSize())), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() - 1, e.getState().getSize() + PitchPanel.GRID_SIZE * depth - 1)));
+            case UP:
+                return getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(-1, -(PitchPanel.GRID_SIZE * depth - 1))), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() - 1, -1)));
+            case RIGHT:
+                return getAllBlocksInArea(e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize(), 0)), e.getInfo().getPosition().plus(new Coordinates(e.getState().getSize() + GRID_SIZE * depth - 1, e.getState().getSize() - 1)));
+            default:
+                return null;
+        }
     }
 
     public static int roundIntToGridSize(int p) {

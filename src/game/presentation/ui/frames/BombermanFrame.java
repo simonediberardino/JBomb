@@ -1,5 +1,6 @@
 package game.presentation.ui.frames;
 
+import com.google.common.io.ByteStreams;
 import game.domain.level.levels.world1.World1Level1;
 import game.localization.Localization;
 import game.presentation.ui.pages.arena.ArenaMenuPanel;
@@ -200,7 +201,8 @@ public class BombermanFrame extends JFrame {
         }
 
         try {
-            byte[] imageBytes = inputStream.readAllBytes();
+            byte[] imageBytes = ByteStreams.toByteArray(inputStream);
+
             Image image = toolkit.createImage(imageBytes);
             Cursor c = toolkit.createCustomCursor(image, new Point(getX(), getY()), "img");
             setCursor(c);

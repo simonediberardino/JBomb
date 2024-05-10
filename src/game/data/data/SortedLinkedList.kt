@@ -56,6 +56,4 @@ class SortedLinkedList<T : Comparable<T>?> : MutableList<T> {
 
     override fun iterator(): MutableIterator<T> = list.iterator()
 
-    override fun <T : Any?> toArray(generator: IntFunction<Array<T>>?): Array<T> = list.toArray(generator)
-
 }

@@ -38,7 +38,7 @@ public class SettingsPanel extends BoxMenuPanel {
         return new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
-                char c = par.toString().isBlank() ? ' ' : par.toString().charAt(0);
+                char c = par.toString().isEmpty() ? ' ' : par.toString().charAt(0);
                 keySetter.accept((int) c);
                 return null;
             }
@@ -87,7 +87,7 @@ public class SettingsPanel extends BoxMenuPanel {
                 DataInputOutput.getInstance().getVolume(), new RunnablePar() {
                     @Override
                     public <T> Object execute(T par) {
-                        DataInputOutput.getInstance().setVolume((int) par);
+                        DataInputOutput.getInstance().setVolume((Integer) par);
                         AudioManager.getInstance().stopBackgroundSong();
                         AudioManager.getInstance().playBackgroundSong();
                         return null;

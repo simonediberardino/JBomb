@@ -129,7 +129,7 @@ public class AudioManager {
     public void playBackgroundSong(String newSong) {
         if (currentBackgroundSong.equals(newSong)) return;
 
-        if (!currentBackgroundSong.isBlank()) {
+        if (!currentBackgroundSong.isEmpty()) {
             stopAllInstancesOfSound(currentBackgroundSong);
         }
 

@@ -42,7 +42,7 @@ public class ToastHandler {
 
         animateToast(toastEndY);
 
-        if (text == null || text.isBlank()) {
+        if (text == null || text.isEmpty()) {
             g2d.dispose();
             return;
         }
