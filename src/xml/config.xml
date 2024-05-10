@@ -5,6 +5,6 @@
             logs_base="false"
             logs_error="true"
             logs_warning="false"
-            bots_move="false">
+            bots_move="true">
     </config>
 </resources>

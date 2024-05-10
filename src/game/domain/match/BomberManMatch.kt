@@ -72,6 +72,8 @@ class BomberManMatch(
     // Current game state (default: false)
     var gameState = false
 
+    var pausePanelVisible = false
+
     // Number of enemies currently alive (read-only)
     var enemiesAlive = 0
         private set
@@ -273,10 +275,12 @@ class BomberManMatch(
             return
         }
 
+        val isOnlyPlayer = !isClient || onlineGameHandler is ServerGameHandler && onlineGameHandler.clientsConnected == 0
+
         lastGamePauseStateTime = now()
 
-        if (gameState) {
-            pauseGame()
+        if (!pausePanelVisible) {
+            pauseGame(freeze = isOnlyPlayer)
         } else {
             resumeGame()
         }
@@ -287,16 +291,25 @@ class BomberManMatch(
      * Pauses the game by stopping the game ticker, setting the game state to false,
      * and displaying the pause panel.
      */
-    private fun pauseGame(showUi: Boolean = true) {
-        // Stop the game ticker to pause game events
-        gameTickerObservable?.stop()
+    private fun pauseGame(showUi: Boolean = true, freeze: Boolean) {
+        if (freeze) {
+            // Stop the game ticker to pause game events
+            gameTickerObservable?.stop()
 
-        // Update the game state to indicate it is paused
-        gameState = false
+            // Update the game state to indicate it is paused
+            gameState = false
+        }
 
         if (showUi) {
+            pausePanelVisible = true
             // Show the pause panel to the player
             Bomberman.showActivity(PausePanel::class.java)
+        }
+    }
+
+    fun resumeIfPaused() {
+        if (pausePanelVisible) {
+            resumeGame()
         }
     }
 
@@ -308,6 +321,7 @@ class BomberManMatch(
         // Resume the game ticker to continue game events
         gameTickerObservable?.resume()
 
+        pausePanelVisible = false
         // Update the game state to indicate it is resumed
         gameState = true
 
@@ -330,8 +344,9 @@ class BomberManMatch(
         if (isServer || disconnect) {
             onlineGameHandler?.disconnect()
         }
+
         // Pause the game to ensure safe destruction
-        pauseGame(showUi = false)
+        pauseGame(showUi = false, freeze = true)
 
         // Cancel job
         cancelCoroutineJob()

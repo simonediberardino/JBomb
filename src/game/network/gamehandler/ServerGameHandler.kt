@@ -16,6 +16,9 @@ import game.utils.dev.Log
 class ServerGameHandler(private val port: Int) : TCPServerCallback {
     private lateinit var server: TCPServer
 
+    val clientsConnected: Int
+        get() = server.clients.size
+
     /**
      * Indicates whether the server is currently running and accepting client connections.
      */

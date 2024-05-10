@@ -2,14 +2,11 @@
 high priorities:
 
 - Villagers
-- pause game mp
 - forward client message to all clients;
 - handle you message and skin;
 
 - Images;
 - database
 - Update username on resume
-- dead enemies can kill you while disappearing
-- mystery box story mode
 - fix bomb after pistol
 -review interaction entities lists. Bomberentity can interact with enemies? enemies can interact with explosions? Fix in order to make AiLogic movement work 100%

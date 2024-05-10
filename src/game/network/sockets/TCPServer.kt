@@ -12,7 +12,7 @@ import java.net.Socket
 
 class TCPServer(private var port: Int) : TCPSocket {
     private lateinit var socket: ServerSocket
-    private var clients: MutableMap<Long, IndexedClient> = mutableMapOf()
+    internal var clients: MutableMap<Long, IndexedClient> = mutableMapOf()
     private val listeners: MutableSet<TCPServerCallback> = mutableSetOf()
     private var progressiveId = 0L
     private val scope = CoroutineScope(Dispatchers.IO)
@@ -135,7 +135,9 @@ class TCPServer(private var port: Int) : TCPSocket {
             disconnectClient(it)
         }
 
-        socket.close()
+        if (this::socket.isInitialized) {
+            socket.close()
+        }
 
         onClose()
 
