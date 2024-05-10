@@ -3,7 +3,6 @@ high priorities:
 
 - Villagers
 - forward client message to all clients;
-- skin;
 
 - Images;
 - database
