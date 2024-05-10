@@ -8,5 +8,6 @@ class BomberEntityNetwork(
         entityType: Int,
         direction: Int,
         val currExplosionLength: Int,
-        val currentBombs: Int
+        val currentBombs: Int,
+        val skinId: Int
 ) : CharacterNetwork(entityId, entityLocation, entityType, direction)

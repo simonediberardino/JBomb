@@ -4,6 +4,7 @@ import game.network.entity.EntityNetwork
 import game.network.models.HttpActor
 import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes
+import game.utils.dev.Extensions.toMap
 
 class SpawnedEntityHttpMessage(private val entity: EntityNetwork, private val extras: Map<String, String> = hashMapOf()): HttpMessage {
     override fun serialize(): String {
@@ -13,6 +14,7 @@ class SpawnedEntityHttpMessage(private val entity: EntityNetwork, private val ex
         data["entityType"] = entity.entityType.toString()
         data["location"] = "${entity.entityLocation!!.x} ${entity.entityLocation.y}"
         data.putAll(extras)
+        data.putAll(entity.toMap())
         return data.toString()
     }
 

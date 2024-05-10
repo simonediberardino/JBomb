@@ -78,6 +78,9 @@ class BomberManMatch(
     var enemiesAlive = 0
         private set
 
+    val isOnlyPlayer: Boolean
+        get() = !isClient && onlineGameHandler is ServerGameHandler && onlineGameHandler.clientsConnected == 0
+
     init {
         setupViewControllers()
     }
@@ -274,8 +277,6 @@ class BomberManMatch(
         if (timePassed(lastGamePauseStateTime) < 500) {
             return
         }
-
-        val isOnlyPlayer = !isClient || onlineGameHandler is ServerGameHandler && onlineGameHandler.clientsConnected == 0
 
         lastGamePauseStateTime = now()
 

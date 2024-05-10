@@ -19,7 +19,8 @@ open class BomberEntityProperties(
         stepSound: SoundModel? = BomberEntity.DEFAULT.STEP_SOUND,
         obstacles: Set<Class<out Entity?>?> = EntityInteractable.DEFAULT.OBSTACLES,
         imageDirections: List<Direction> = Character.DEFAULT.IMAGE_DIRECTIONS,
-        deathSound: SoundModel = Player.DEFAULT.DEATH_SOUND
+        deathSound: SoundModel = Player.DEFAULT.DEATH_SOUND,
+        var skinId: Int
 ): CharacterEntityProperties(
         drawPriority = drawPriority,
         types = types,

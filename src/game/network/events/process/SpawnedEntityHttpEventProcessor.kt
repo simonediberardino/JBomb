@@ -20,21 +20,22 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
         val locTokens = locationString.split(" ").map { it.toInt() }
         val location = Coordinates(locTokens[0], locTokens[1]).fromAbsolute()
 
-        Log.i("SpawnedEntityHttpEventProcessor received $entityId, $entityType, $locationString")
+        Log.i("SpawnedEntityHttpEventProcessor received $info")
         Log.i("Type $entityType $entityId")
 
-        val entity = createEntity(entityId, entityType) ?: return
+        val entity = createEntity(entityId, entityType, info) ?: return
         entity.info.position = location
-
+        entity.updateInfo(info)
         entity.logic.spawn(forceSpawn = true)
     }
 
     private fun createEntity(
             entityId: Long,
-            entityType: Int
+            entityType: Int,
+            extra: Map<String, String>? = null
     ): Entity? {
         return if (entityId == (Bomberman.match.onlineGameHandler as ClientGameHandler?)?.id) {
-            EntityTypes.Player.toEntity(entityId)
+            EntityTypes.Player.toEntity(entityId, extra)
         } else {
             EntityTypes.values().getOrElse(entityType) { return null }.toEntity(entityId)
         }

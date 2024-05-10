@@ -5,11 +5,13 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
+import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.IBomberEntityLogic
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityProperties
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
@@ -31,6 +33,7 @@ abstract class BomberEntity : Character, Explosive {
     override val logic: IBomberEntityLogic = BomberEntityLogic(entity = this)
     override val state: BomberEntityState = BomberEntityState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
+    abstract override val properties: BomberEntityProperties
 
     override fun toEntityNetwork(): EntityNetwork = dtoToEntityNetwork()
 
@@ -41,9 +44,11 @@ abstract class BomberEntity : Character, Explosive {
 
         val currExplosionLength = info.getOrTrim("currExplosionLength")?.toInt()
         val currentBombs = info.getOrTrim("currentBombs")?.toInt()
+        val skinId = info.getOrTrim("skinId")?.toInt()
 
         currExplosionLength?.let { state.currExplosionLength = it }
         currentBombs?.let { state.currentBombs = it }
+        skinId?.let { properties.skinId = it }
     }
 
     init {

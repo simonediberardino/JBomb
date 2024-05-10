@@ -10,8 +10,8 @@ import game.network.entity.CharacterNetwork
 import game.network.entity.EntityNetwork
 import game.network.entity.PlaceableEntityNetwork
 
-fun EntityTypes.toEntity(id: Long) : Entity? {
-    return EntityFactory.instance.toEntity(this, id)
+fun EntityTypes.toEntity(id: Long, extra:  Map<String, String>? = null) : Entity? {
+    return EntityFactory.instance.toEntity(this, id, extra)
 }
 
 fun Entity.dtoToEntityNetwork(): EntityNetwork {
@@ -29,7 +29,8 @@ fun BomberEntity.dtoToEntityNetwork(): BomberEntityNetwork {
             entityType = info.type.ordinal,
             direction = state.direction.ordinal,
             currExplosionLength = state.currExplosionLength,
-            currentBombs = state.currentBombs
+            currentBombs = state.currentBombs,
+            skinId = properties.skinId
     )
 }
 

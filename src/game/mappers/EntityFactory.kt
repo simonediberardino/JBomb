@@ -27,11 +27,12 @@ import game.domain.world.domain.entity.pickups.portals.World1Portal
 import game.domain.world.domain.entity.pickups.portals.World2Portal
 import game.domain.world.domain.entity.pickups.powerups.*
 import game.domain.world.types.EntityTypes
+import game.utils.dev.Extensions.getOrTrim
 
 class EntityFactory {
-    fun toEntity(entityTypes: EntityTypes, id: Long): Entity? {
+    fun toEntity(entityTypes: EntityTypes, id: Long, extra:  Map<String, String>? = null): Entity? {
         return when (entityTypes) {
-            EntityTypes.BomberEntity, EntityTypes.RemotePlayer, EntityTypes.Player -> createPlayerEntity(id)
+            EntityTypes.BomberEntity, EntityTypes.RemotePlayer, EntityTypes.Player -> createPlayerEntity(id, extra)
             EntityTypes.Clown -> Clown(null)
             EntityTypes.Hat -> Hat(id)
             EntityTypes.GhostBoss -> GhostBoss(id)
@@ -69,14 +70,14 @@ class EntityFactory {
         }
     }
 
-    private fun createPlayerEntity(id: Long): Entity {
+    private fun createPlayerEntity(id: Long, extra:  Map<String, String>? = null): Entity {
         val isServer = Bomberman.match.isServer
         val isClient = Bomberman.match.isClient
 
         return when {
             isServer && Bomberman.match.player == null -> Player(id)
             isClient && id == (Bomberman.match.onlineGameHandler as ClientGameHandler?)?.id -> Player(id)
-            else -> RemotePlayer(id)
+            else -> RemotePlayer(null, id, extra?.getOrTrim("skinId")?.toInt() ?: 0)
         }
     }
 

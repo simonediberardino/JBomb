@@ -16,6 +16,7 @@ class LevelInfoHttpEventProcessor : HttpEvent {
         val id = info.getOrTrim("id")?.toIntOrNull() ?: return
         val levelId = info.getOrTrim("levelId")?.toIntOrNull() ?: return
         val worldId = info.getOrTrim("worldId")?.toIntOrNull() ?: return
+        val skinId = Bomberman.match.player?.properties?.skinId ?: 0
 
         val onlineGameHandler = Bomberman.match.onlineGameHandler as? ClientGameHandler
         onlineGameHandler?.id = id.toLong()
@@ -33,7 +34,7 @@ class LevelInfoHttpEventProcessor : HttpEvent {
                     disconnect = false
             ) {
                 // Client confirms joining the match after receiving the ID.
-                HttpMessageDispatcher.instance.dispatch(PlayerJoinRequestHttpMessage(id))
+                HttpMessageDispatcher.instance.dispatch(PlayerJoinRequestHttpMessage(id, skinId))
             }
         } else {
             throw RuntimeException("Level $worldId, $levelId does not exist")

@@ -7,6 +7,7 @@ import game.domain.match.BomberManMatch;
 import game.domain.tasks.observer.Observable2;
 import game.domain.tasks.observer.Observer2;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
+import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player;
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
 import game.utils.Utility;
 import game.utils.dev.Log;
@@ -105,21 +106,26 @@ public class PitchPanel extends JPanel implements Observer2 {
                 ex.printStackTrace();
             }
         });
+
+
+        Player player = Bomberman.match.getPlayer();
+        if (player != null && !Bomberman.match.isOnlyPlayer() && player.getLogic().isAlive()) {
+            drawEntityArrowhead(g2d, player);
+        }
+
         // Runs custom callbacks;
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
     }
-
     /**
-     * Draws an entity on the game panel
+     * Draws an entity on the game panel.
      *
      * @param g2d the Graphics2D object to draw with
      * @param e   the entity to draw
      */
     private void drawEntity(Graphics2D g2d, Entity e) {
-        // Draw entity's image at entity's coordinates and size
-        if (e.getState().isInvisible())
+        if (e.getState().isInvisible()) {
             return;
-
+        }
         String path = e.getImage().getImagePath();
         float widthRatio = e.getGraphicsBehavior().getHitboxSizeToWidthRatio(e, path);
         float heightRatio = e.getGraphicsBehavior().getHitboxSizeToHeightRatio(e, path);
@@ -134,16 +140,51 @@ public class PitchPanel extends JPanel implements Observer2 {
             exception.printStackTrace();
         }
 
+        int x = e.getInfo().getPosition().getX();
+        int y = e.getInfo().getPosition().getY() - paddingHeight;
+
         g2d.drawImage(
                 e.getGraphicsBehavior().getImage(e),
-                e.getInfo().getPosition().getX() - paddingWidth,
-                e.getInfo().getPosition().getY() - paddingHeight,
+                x - paddingWidth,
+                y,
                 (int) Math.ceil(e.getState().getSize() / widthRatio),
                 (int) Math.ceil(e.getState().getSize() / heightRatio),
                 this
         );
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+    }
+
+    /**
+     * Draws the arrowhead of the entity on the game panel.
+     *
+     * @param g2d the Graphics2D object to draw with
+     * @param e   the entity to draw
+     */
+    private void drawEntityArrowhead(Graphics2D g2d, Entity e) {
+        String path = e.getImage().getImagePath();
+        float heightRatio = e.getGraphicsBehavior().getHitboxSizeToHeightRatio(e, path);
+        int paddingHeight = e.getGraphicsBehavior().calculateAndGetPaddingTop(e, heightRatio);
+        int x = e.getInfo().getPosition().getX();
+        int y = e.getInfo().getPosition().getY() - paddingHeight;
+        int size = (int) (double) e.getState().getSize();
+
+        Polygon arrowhead = new Polygon();
+        arrowhead.addPoint(x + size / 2, y);
+        arrowhead.addPoint(x + size / 3, y - size*3/4);
+        arrowhead.addPoint(x + size* 2 / 3, y - size * 3/4);
+
+        GradientPaint gradient = new GradientPaint(
+                x, y + (float) size / 4, Color.RED,
+                x + size, y + (float) size / 4, Color.ORANGE
+        );
+        g2d.setPaint(gradient);
+        g2d.fill(arrowhead);
+
+        g2d.setColor(new Color(0, 0, 0, 50)); // Transparent black
+        g2d.translate(2, 2); // Shift for shadow effect
+        g2d.fill(arrowhead); // Draw shadow
+        g2d.translate(-2, -2); // Reset translation
     }
 
     public void addGraphicsCallback(String tag, RunnablePar callback) {

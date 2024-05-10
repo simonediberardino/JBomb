@@ -12,6 +12,8 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         val info = extras[0] as Map<String, String>
 
         val clientId = info.getOrTrim("id")?.toLong() ?: return
+        val skinId = info.getOrTrim("extra")?.toInt() ?: return
+
         Log.i("PlayerConnectedHttpEventProcessor: $clientId")
 
         val match = Bomberman.match
@@ -24,7 +26,7 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
             SpawnEntityEventForwarder(clientId).invoke(e.toEntityNetwork())
         }
 
-        val player = RemotePlayer(coordinates, clientId, 1)
+        val player = RemotePlayer(coordinates, clientId, skinId)
         player.logic.spawn()
     }
 }
