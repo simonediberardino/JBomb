@@ -2,7 +2,6 @@
 high priorities:
 
 - Villagers
-- Handle client disconnection
 - pause game mp
 - forward client message to all clients;
 - handle you message and skin;
