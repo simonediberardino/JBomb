@@ -241,7 +241,6 @@ class BomberManMatch(
             _despawnedEntitiesMap.remove(entity.info.id)
         }
 
-        entity.logic.onAdded()
         performGarbageCollection()
     }
 

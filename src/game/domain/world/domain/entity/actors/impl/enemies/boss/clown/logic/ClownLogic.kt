@@ -1,10 +1,8 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.clown.logic
 
 import game.Bomberman
-import game.audio.AudioManager
 import game.audio.SoundModel
 import game.domain.level.behavior.GameBehavior
-import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.logic.BossEntityLogic
@@ -18,15 +16,14 @@ import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHa
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.geo.EnhancedDirection
+import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
-import game.utils.dev.Log
 import game.utils.time.now
-import java.util.*
 
 class ClownLogic(
         override val entity: Clown
 ) : BossEntityLogic(entity = entity), IClownLogic {
-    val spawnTimeAttackDelay = 10_000L
+    private val spawnTimeAttackDelay = 10_000L
 
     override fun onHit(damage: Int) {
         super.onHit(damage)
@@ -215,6 +212,6 @@ class ClownLogic(
     }
 
     companion object {
-        const val SHOOTING_CHANCE = 1
+        const val SHOOTING_CHANCE = 3
     }
 }

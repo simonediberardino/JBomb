@@ -73,8 +73,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun executeCommandQueue() {
         val commandQueue = entity.state.commandQueue
 
-        if (commandQueue.isNotEmpty())
-            Log.e("Executing command queue $commandQueue")
         try {
             commandQueue.forEach { c ->
                 handleCommand(c)

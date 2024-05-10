@@ -11,7 +11,6 @@ import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.AttackEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility.timePassed
-import game.utils.dev.Log
 import game.utils.time.now
 
 abstract class EntityInteractableLogic(
@@ -38,7 +37,6 @@ abstract class EntityInteractableLogic(
     }
 
     override fun move(coordinates: Coordinates) {
-        Log.i("Move $coordinates")
         entity.info.position = coordinates
         entity.logic.unCollideAll()
         onMove(coordinates)

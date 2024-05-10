@@ -45,16 +45,16 @@ abstract class EntityLogic(
         if (forceCentering)
             entity.info.position = Coordinates.roundCoordinates(entity.info.position, spawnOffset())
 
+        if (forceSpawn || !Coordinates.isBlockOccupied(entity.info.position)) {
+            match.addEntity(entity)
+            entity.logic.onAdded()
+            entity.state.spawnTime = System.currentTimeMillis()
+            entity.state.isSpawned = true
+            onSpawn()
+        }
 
         Coordinates.getEntitiesOnBlock(entity.info.position).forEach {
             entity.logic.interact(it)
-        }
-
-        if (forceSpawn || !Coordinates.isBlockOccupied(entity.info.position)) {
-            entity.state.isSpawned = true
-            match.addEntity(entity)
-            entity.state.spawnTime = System.currentTimeMillis()
-            onSpawn()
         }
     }
 
