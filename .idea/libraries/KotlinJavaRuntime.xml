@@ -2,22 +2,22 @@
   <library name="KotlinJavaRuntime" type="repository">
     <properties maven-id="org.jetbrains.kotlin:kotlin-stdlib-jdk8:LATEST" />
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/2.0.20-Beta2/kotlin-stdlib-jdk8-2.0.20-Beta2.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.0.20-Beta2/kotlin-stdlib-2.0.20-Beta2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/2.0.20-RC2/kotlin-stdlib-jdk8-2.0.20-RC2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.0.20-RC2/kotlin-stdlib-2.0.20-RC2.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/2.0.20-Beta2/kotlin-stdlib-jdk7-2.0.20-Beta2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/2.0.20-RC2/kotlin-stdlib-jdk7-2.0.20-RC2.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/2.0.20-Beta2/kotlin-stdlib-jdk8-2.0.20-Beta2-javadoc.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.0.20-Beta2/kotlin-stdlib-2.0.20-Beta2-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/2.0.20-RC2/kotlin-stdlib-jdk8-2.0.20-RC2-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.0.20-RC2/kotlin-stdlib-2.0.20-RC2-javadoc.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0-javadoc.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/2.0.20-Beta2/kotlin-stdlib-jdk7-2.0.20-Beta2-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/2.0.20-RC2/kotlin-stdlib-jdk7-2.0.20-RC2-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/2.0.20-Beta2/kotlin-stdlib-jdk8-2.0.20-Beta2-sources.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.0.20-Beta2/kotlin-stdlib-2.0.20-Beta2-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/2.0.20-RC2/kotlin-stdlib-jdk8-2.0.20-RC2-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.0.20-RC2/kotlin-stdlib-2.0.20-RC2-sources.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0-sources.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/2.0.20-Beta2/kotlin-stdlib-jdk7-2.0.20-Beta2-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/2.0.20-RC2/kotlin-stdlib-jdk7-2.0.20-RC2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
