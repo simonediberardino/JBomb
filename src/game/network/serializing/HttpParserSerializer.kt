@@ -18,8 +18,11 @@ class HttpParserSerializer private constructor() {
                 .split(httpData_)
     }
 
-    fun serialize(httpMessage: HttpMessage): String {
-        return httpMessage.serialize()
+    fun serialize(httpMessage: HttpMessage, private: Boolean, actorId: Long): String {
+        val map = httpMessage.serialize()
+        map["private"] = private.toString()
+        map["actorId"] = actorId.toString()
+        return map.toString()
     }
 
     companion object {

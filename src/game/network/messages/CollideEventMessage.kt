@@ -9,12 +9,12 @@ import game.network.models.HttpMessageTypes
  * Client sends a collide event to server: server will decide whether to interact, attack etc...
  */
 class CollideEventMessage(private val victim: EntityNetwork, private val self: EntityNetwork) : HttpMessage {
-    override fun serialize(): String {
+    override fun serialize(): MutableMap<String, String> {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.ENTITY_COLLIDED.ordinal.toString()
         data["victimId"] = victim.entityId.toString()
         data["selfId"] = self.entityId.toString()
-        return data.toString()
+        return data
     }
 
     override val senders: Array<HttpActor> = arrayOf(HttpActor.CLIENT)

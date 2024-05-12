@@ -2,8 +2,7 @@
 high priorities:
 
 - Villagers
-- forward client message to all clients;
-
+- make networking launch faster
 - Images;
 - database
 - Update username on resume

@@ -1,6 +1,6 @@
 package game.network.models
 
 interface HttpMessage {
-    fun serialize() : String
+    fun serialize() : MutableMap<String, String>
     val senders: Array<HttpActor>
 }

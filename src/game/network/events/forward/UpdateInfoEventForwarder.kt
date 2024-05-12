@@ -8,6 +8,6 @@ import game.network.messages.UpdateInfoHttpMessage
 class UpdateInfoEventForwarder : HttpEvent {
     override fun invoke(vararg extras: Any) {
         val entityNetwork = extras[0] as EntityNetwork
-        HttpMessageDispatcher.instance.dispatch(UpdateInfoHttpMessage(entityNetwork))
+        HttpMessageDispatcher.instance.dispatch(UpdateInfoHttpMessage(entityNetwork), private = false)
     }
 }

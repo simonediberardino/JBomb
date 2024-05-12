@@ -7,7 +7,7 @@ import game.network.models.HttpMessageTypes
 import game.utils.dev.Extensions.toMap
 
 class SpawnedEntityHttpMessage(private val entity: EntityNetwork, private val extras: Map<String, String> = hashMapOf()): HttpMessage {
-    override fun serialize(): String {
+    override fun serialize(): MutableMap<String, String> {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.SPAWNED_ENTITY.ordinal.toString()
         data["entityId"] = entity.entityId.toString()
@@ -15,7 +15,7 @@ class SpawnedEntityHttpMessage(private val entity: EntityNetwork, private val ex
         data["location"] = "${entity.entityLocation!!.x} ${entity.entityLocation.y}"
         data.putAll(extras)
         data.putAll(entity.toMap())
-        return data.toString()
+        return data
     }
 
     override val senders: Array<HttpActor>

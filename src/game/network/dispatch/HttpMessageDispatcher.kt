@@ -1,6 +1,7 @@
 package game.network.dispatch
 
 import game.Bomberman
+import game.network.gamehandler.ClientGameHandler
 import game.network.models.HttpMessage
 import game.network.models.HttpActor
 import game.network.serializing.HttpParserSerializer
@@ -10,14 +11,20 @@ import game.utils.dev.Log
  * A class responsible for dispatching HTTP messages within the Bomberman game.
  */
 class HttpMessageDispatcher private constructor() {
+    private val actorId: Long
+        get() = if (Bomberman.match.onlineGameHandler is ClientGameHandler) {
+            (Bomberman.match.onlineGameHandler as ClientGameHandler).id
+        } else {
+            Bomberman.match.player?.info?.id ?: -1L
+        }
 
     /**
      * Dispatches the given HTTP message to all clients.
      *
      * @param httpMessage The HTTP message to dispatch.
      */
-    fun dispatch(httpMessage: HttpMessage) {
-        dispatch(httpMessage, -1, false)
+    fun dispatch(httpMessage: HttpMessage, private: Boolean = true) {
+        dispatch(httpMessage, -1, false, private = private)
     }
 
     /**
@@ -26,8 +33,8 @@ class HttpMessageDispatcher private constructor() {
      * @param httpMessage The HTTP message to dispatch.
      * @param receiverId The ID of the intended receiver client.
      */
-    fun dispatch(httpMessage: HttpMessage, receiverId: Long) {
-        dispatch(httpMessage, receiverId, false)
+    fun dispatch(httpMessage: HttpMessage, receiverId: Long, private: Boolean = true) {
+        dispatch(httpMessage, receiverId, false, private = private)
     }
 
     /**
@@ -37,8 +44,13 @@ class HttpMessageDispatcher private constructor() {
      * @param receiverId The ID of the intended receiver client.
      * @param ignore If true, the message will be sent to all clients except the specified receiverId.
      */
-    fun dispatch(httpMessage: HttpMessage, receiverId: Long, ignore: Boolean) {
-        val data: String = HttpParserSerializer.instance.serialize(httpMessage)
+    fun dispatch(
+            httpMessage: HttpMessage,
+            receiverId: Long,
+            ignore: Boolean,
+            private: Boolean = false
+    ) {
+        val data: String = HttpParserSerializer.instance.serialize(httpMessage, private, actorId)
 
         Log.i("HttpMessageDispatcher: $httpMessage, $receiverId, $ignore")
 
@@ -57,7 +69,7 @@ class HttpMessageDispatcher private constructor() {
      * @param ignore If true, the message will be sent to all clients except the specified receiverId.
      * @return True if the message was successfully dispatched, false otherwise.
      */
-    private fun dispatch(data: String, httpActor: HttpActor, receiverId: Long, ignore: Boolean) : Boolean {
+    private fun dispatch(data: String, httpActor: HttpActor, receiverId: Long, ignore: Boolean): Boolean {
         Log.i("""
             {
               "message": "dispatch",
@@ -71,7 +83,11 @@ class HttpMessageDispatcher private constructor() {
         """)
 
         if (httpActor == HttpActor.SERVER && Bomberman.match.isServer) {
-            Bomberman.match.onlineGameHandler?.sendData(data, receiverId, ignore)
+            Bomberman.match.onlineGameHandler?.sendData(
+                    data,
+                    receiverId,
+                    ignore
+            )
             return true
         } else if (httpActor == HttpActor.CLIENT && Bomberman.match.isClient) {
             Bomberman.match.onlineGameHandler?.sendData(data, receiverId, ignore)

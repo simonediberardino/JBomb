@@ -6,11 +6,11 @@ import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes
 
 class DespawnedEntityHttpMessage(private val entity: EntityNetwork): HttpMessage {
-    override fun serialize(): String {
+    override fun serialize(): MutableMap<String, String> {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.DESPAWNED_ENTITY.ordinal.toString()
         data["entityId"] = entity.entityId.toString()
-        return data.toString()
+        return data
     }
 
     override val senders: Array<HttpActor>

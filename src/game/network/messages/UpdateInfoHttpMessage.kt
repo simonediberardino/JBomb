@@ -8,13 +8,13 @@ import game.utils.dev.Extensions.toMap
 import game.utils.dev.Log
 
 class UpdateInfoHttpMessage(private val entityNetwork: EntityNetwork) : HttpMessage {
-    override fun serialize(): String {
+    override fun serialize(): MutableMap<String, String> {
         val data: MutableMap<String, String> = HashMap()
         data["messageType"] = HttpMessageTypes.UPDATE_INFO.ordinal.toString()
         data.putAll(entityNetwork.toMap())
 
         Log.i("UpdateInfoHttpMessage $data")
-        return data.toString()
+        return data
     }
 
     override val senders: Array<HttpActor>

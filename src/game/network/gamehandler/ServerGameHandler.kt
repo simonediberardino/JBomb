@@ -6,6 +6,7 @@ import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.events.forward.LevelInfoHttpEventForwarder
 import game.network.serializing.HttpParserSerializer
 import game.network.sockets.TCPServer
+import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 
 /**
@@ -121,6 +122,13 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
     override fun onDataReceived(data: String) {
         val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
         HttpMessageReceiverHandler.instance.handle(formattedData)
+
+        Log.e("onDataReceived $formattedData")
+        // if message is not private, forward it to every other client
+        if (!formattedData["private"].toBoolean()) {
+            val senderId = formattedData.getOrTrim("actorId")?.toLong() ?: return
+            sendData(data, receiverId = senderId, ignore = true)
+        }
     }
 
     /**
