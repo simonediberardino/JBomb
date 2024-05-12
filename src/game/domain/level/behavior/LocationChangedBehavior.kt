@@ -9,7 +9,7 @@ import game.network.gamehandler.ClientGameHandler
 class LocationChangedBehavior(private val entityNetwork: EntityNetwork) : GameBehavior() {
     override fun hostBehavior(): () -> Unit {
         return {
-            LocationUpdatedHttpEventForwarder().invoke(entityNetwork)
+            LocationUpdatedHttpEventForwarder().invoke(entityNetwork, false)
         }
     }
 
@@ -24,7 +24,7 @@ class LocationChangedBehavior(private val entityNetwork: EntityNetwork) : GameBe
                     }
                 }
 
-                LocationUpdatedHttpEventForwarder().invoke(entityNetwork)
+                LocationUpdatedHttpEventForwarder().invoke(entityNetwork, true)
             }
         }
     }
