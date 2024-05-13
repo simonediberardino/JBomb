@@ -12,15 +12,15 @@ class UseItemHttpEventProcessor : HttpEvent {
     override fun invoke(vararg extras: Any) {
         val info = extras[0] as Map<String, String>
 
-        Log.i("UseItemHttpEventProcessor info $info")
+        Log.e("UseItemHttpEventProcessor info $info")
         val entityId = info.getOrTrim("entityId")?.toLong() ?: return
         val itemType = info.getOrTrim("itemType")?.toInt() ?: return
-        Log.i("UseItemHttpEventProcessor data $entityId, $itemType")
+        val itemId = info.getOrTrim("itemId")?.toLong()
 
         val entity: Entity = Bomberman.match.getEntityById(entityId) ?: return
         val item = ItemsTypes.values()[itemType].toItem()
         Bomberman.match.give(entity as BomberEntity, item)
 
-        item.use()
+        item.use(itemId)
     }
 }

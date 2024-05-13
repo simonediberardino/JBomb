@@ -4,15 +4,19 @@ import game.network.entity.EntityNetwork
 import game.network.models.HttpActor
 import game.network.models.HttpMessage
 import game.network.models.HttpMessageTypes
-import game.domain.world.domain.entity.items.ItemsTypes
+import game.utils.dev.Log
 
-class UseItemHttpMessage(private val userDao: EntityNetwork, private val itemType: ItemsTypes, private val itemId: Long) : HttpMessage {
+class BombExplodedHttpMessage(
+        private val caller: EntityNetwork,
+        private val bomb: EntityNetwork
+): HttpMessage {
     override fun serialize(): MutableMap<String, String> {
         val data: MutableMap<String, String> = HashMap()
-        data["messageType"] = HttpMessageTypes.USE_ITEM.ordinal.toString()
-        data["entityId"] = userDao.entityId.toString()
-        data["itemType"] = itemType.toInt().toString()
-        data["itemId"] = itemId.toString()
+        data["messageType"] = HttpMessageTypes.BOMB_EXPLODED.ordinal.toString()
+        data["entityId"] = caller.entityId.toString()
+        data["bombId"] = bomb.entityId.toString()
+
+        Log.e("BombExplodedHttpMessage Sending $data")
         return data
     }
 

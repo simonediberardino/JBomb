@@ -2,7 +2,6 @@
 high priorities:
 
 - Villagers
-- make networking launch faster
 - Images;
 - database
 - Update username on resume

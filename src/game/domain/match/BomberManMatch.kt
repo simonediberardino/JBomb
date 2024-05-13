@@ -160,8 +160,11 @@ class BomberManMatch(
     fun useItem(owner: BomberEntity) {
         val currItem = owner.state.weapon
 
-        if (currItem.use()) {
-            UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), currItem.type)
+        val id = currItem.use()
+
+        if (id != -1L) {
+            Log.e("Used item with id $id")
+            UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), currItem.type, id)
         }
     }
 

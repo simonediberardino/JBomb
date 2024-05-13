@@ -10,6 +10,7 @@ class UseItemHttpEventForwarder : HttpEvent {
     override fun invoke(vararg extras: Any) {
         val userDao = (extras[0] as EntityNetwork)
         val itemType = (extras[1] as ItemsTypes)
-        HttpMessageDispatcher.instance.dispatch(UseItemHttpMessage(userDao, itemType), private = false)
+        val itemId = (extras[2] as Long)
+        HttpMessageDispatcher.instance.dispatch(UseItemHttpMessage(userDao, itemType, itemId), private = false)
     }
 }

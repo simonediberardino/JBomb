@@ -49,9 +49,9 @@ class PistolItem : UsableItem(), Explosive {
 
     private fun addBullets(i: Int) = setBullets(bullets + i)
 
-    override fun use(): Boolean {
+    override fun use(itemId: Long?): Long {
         if (timePassed(owner.state.lastPlacedBombTime) < Bomb.PLACE_INTERVAL) {
-            return false
+            return -1
         }
 
         owner.state.lastPlacedBombTime = now()
@@ -73,7 +73,7 @@ class PistolItem : UsableItem(), Explosive {
             remove()
         }
 
-        return true
+        return 1
     }
 
     override fun remove() {

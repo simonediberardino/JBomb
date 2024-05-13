@@ -13,7 +13,7 @@ import game.utils.time.now
 class BombItem : UsableItem() {
     private lateinit var bombEntity: Bomb
 
-    override fun use(): Boolean {
+    override fun use(itemId: Long?): Long {
         val match = Bomberman.match
         val isLocalPlayer = owner == match.player
 
@@ -23,32 +23,32 @@ class BombItem : UsableItem() {
 
         if (!isBombPlacementIntervalValid) {
             Log.e("Cannot place bomb, too early")
-            return false
+            return -1
         }
 
         if (isLocalPlayer && owner.state.placedBombs >= owner.state.maxBombs) {
             Log.e("owner.state.placedBombs: ${owner.state.placedBombs}")
             Log.e("owner.state.maxBombs: ${owner.state.maxBombs}")
             Log.e("Cannot place bomb, placedBombs >= maxBombs")
-            return false
+            return -1
         }
 
         if (isLocalPlayer && owner.state.currentBombs <= 0) {
             Log.e("owner.state.currentBombs: ${owner.state.currentBombs}")
             Log.e("Cannot place bomb, currentBombs <= 0")
-            return false
+            return -1
         }
 
         if (isLocalPlayer && owner.state.currExplosionLength <= 0) {
             Log.e("owner.state.currExplosionLength: ${owner.state.currExplosionLength}")
             Log.e("Cannot place bomb, currExplosionLength <= 0")
-            return false
+            return -1
         }
 
         if (isLocalPlayer && owner.state.currentBombs >= match.currentLevel.info.maxBombs) {
             Log.e("owner.state.currentBombs: ${owner.state.currentBombs}")
             Log.e("Cannot place bomb, currentBombs >= maxBombs")
-            return false
+            return -1
         }
 
         owner.state.lastPlacedBombTime = now()
@@ -58,14 +58,16 @@ class BombItem : UsableItem() {
         if (isLocalPlayer)
             UpdateCurrentAvailableItemsEvent().invoke(owner.state.currentBombs - 1)
 
-        bombEntity = Bomb(owner)
+        bombEntity = itemId?.takeIf { it != -1L }?.run {
+            Bomb(this, owner)
+        } ?: Bomb(owner)
 
-        match.addBomb(bombEntity)
+        Log.e("Spawning bomb with id ${bombEntity.info.id}")
+
         UpdateInfoEventForwarder().invoke((bombEntity as Entity).toEntityNetwork())
 
         bombEntity.logic.onExplodeCallback = {
             owner.state.placedBombs--
-            match.removeBomb(bombEntity)
 
             if (isLocalPlayer)
                 UpdateCurrentAvailableItemsEvent().invoke(owner.state.currentBombs + 1)
@@ -74,7 +76,7 @@ class BombItem : UsableItem() {
         bombEntity.logic.spawn(forceSpawn = true)
         bombEntity.logic.trigger()
 
-        return true
+        return bombEntity.info.id
     }
 
     override fun combineItems(item: UsableItem) {

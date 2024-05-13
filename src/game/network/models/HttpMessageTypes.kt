@@ -12,5 +12,6 @@ enum class HttpMessageTypes {
     UPDATE_INFO,
     LEVEL_INFO,
     ENEMIES_COUNT,
-    ENTITY_COLLIDED
+    ENTITY_COLLIDED,
+    BOMB_EXPLODED
 }

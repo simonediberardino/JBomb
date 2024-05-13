@@ -9,10 +9,12 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Direction
+import game.network.events.forward.BombExplodedEventForwarder
 import game.utils.dev.Log
 import java.util.*
 
 class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), IBombLogic {
+    private var exploded: Boolean = false
     var onExplodeCallback: (() -> Unit)? = null
 
     /**
@@ -34,18 +36,31 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
         Bomberman.match.gameTickerObservable?.unregister(entity)
     }
 
+    override fun notifyDespawn() {}
+
+    override fun onAdded() {
+        super.onAdded()
+        Bomberman.match.addBomb(entity)
+    }
+
+    override fun onRemoved() {
+        super.onRemoved()
+        Bomberman.match.removeBomb(entity)
+    }
+
     override fun onExplosion(explosion: AbstractExplosion?) {
         super.onExplosion(explosion)
         explode()
     }
 
     override fun explode() {
-        if (!entity.state.isSpawned)
+        if (exploded) {
             return
-
+        }
+        
+        exploded = true
         eliminated()
 
-        Log.e("${entity.state.caller}, ${(entity.state.caller as BomberEntity).state.currExplosionLength}")
         // TODO CHANGED
         ExplosionHandler.instance.process {
             // Trigger explosions in all directions
@@ -76,6 +91,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
      */
     override fun onMouseClickInteraction() {
         explode()
+        BombExplodedEventForwarder().invoke(entity.state.caller.toEntityNetwork(), entity.toEntityNetwork())
     }
 
     /**
