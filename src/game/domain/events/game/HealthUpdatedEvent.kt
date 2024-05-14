@@ -1,13 +1,13 @@
 package game.domain.events.game
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.GameEvent
 
 class HealthUpdatedEvent : GameEvent {
     override fun invoke(arg: Any?) {
         try {
-            val playerHp = Bomberman.match.player?.state?.hp ?: 0
-            Bomberman.match.inventoryElementControllerHp.setNumItems(playerHp)
+            val playerHp = JBomb.match.player?.state?.hp ?: 0
+            JBomb.match.inventoryElementControllerHp.setNumItems(playerHp)
         } catch (ignored: UninitializedPropertyAccessException) {
         }
     }

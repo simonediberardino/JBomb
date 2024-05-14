@@ -30,7 +30,7 @@ import java.io.InputStream;
  * <p>
  * between the menu and match panels.
  */
-public class BombermanFrame extends JFrame {
+public class JBombFrame extends JFrame {
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel parentPanel = new JPanel() {
         @Override

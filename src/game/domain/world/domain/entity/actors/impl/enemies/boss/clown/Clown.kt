@@ -1,10 +1,8 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.clown
 
-import game.Bomberman
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.image.ClownGraphicsBehavior
@@ -17,7 +15,6 @@ import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.types.EntityTypes
-import game.utils.dev.Log
 import java.util.*
 
 /**

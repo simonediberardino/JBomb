@@ -1,8 +1,7 @@
 package game.network.events.process
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.HttpEvent
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 
@@ -14,9 +13,9 @@ class BombExplodedEventProcessor: HttpEvent {
 
         Log.e("BombExplodedEventProcessor received $info")
 
-        Log.e("BombExplodedEventProcessor alive entities ${Bomberman.match.bombs}")
+        Log.e("BombExplodedEventProcessor alive entities ${JBomb.match.bombs}")
 
-        val entity = Bomberman.match.bombs.find { it.info.id == bombId }
+        val entity = JBomb.match.bombs.find { it.info.id == bombId }
         entity?.logic?.explode()
     }
 }

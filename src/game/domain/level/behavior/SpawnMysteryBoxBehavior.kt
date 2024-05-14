@@ -1,6 +1,6 @@
 package game.domain.level.behavior
 
-import game.Bomberman
+import game.JBomb
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.MysteryBoxPerk
@@ -19,7 +19,7 @@ class SpawnMysteryBoxBehavior(val level: Level) : GameBehavior() {
     }
 
     private fun spawnMysteryBox() {
-        val player = Bomberman.match.player ?: return
+        val player = JBomb.match.player ?: return
         val c = Coordinates.generateCoordinatesAwayFrom(player.info.position, PitchPanel.GRID_SIZE * 2)
         val mysteryBox: Entity = MysteryBoxPerk({ level }, { player })
         mysteryBox.info.position = c

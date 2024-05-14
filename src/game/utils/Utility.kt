@@ -1,6 +1,6 @@
 package game.utils
 
-import game.Bomberman
+import game.JBomb
 import game.data.cache.Cache
 import game.data.cache.Cache.Companion.instance
 import game.utils.dev.Log
@@ -47,7 +47,7 @@ object Utility {
         get() = Toolkit.getDefaultToolkit().screenSize
 
     fun px(dim: Double): Double {
-        val frame = Bomberman.bombermanFrame
+        val frame = JBomb.JBombFrame
         val screenSize = if (frame == null ) Toolkit.getDefaultToolkit().screenSize else frame.preferredSize
         return dim * (screenSize.getWidth() / Dimensions.DEFAULT_SCREEN_SIZE.getWidth())
     }

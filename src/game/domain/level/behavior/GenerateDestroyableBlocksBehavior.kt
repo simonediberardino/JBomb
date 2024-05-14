@@ -1,6 +1,6 @@
 package game.domain.level.behavior
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.level.levels.Level
@@ -25,7 +25,7 @@ class GenerateDestroyableBlocksBehavior(val level: Level): GameBehavior() {
         var i = 0
 
         val levelInfo = level.info;
-        val player = Bomberman.match.player ?: return
+        val player = JBomb.match.player ?: return
 
         // Loop until the maximum number of destroyable blocks has been spawned.
         while (i < levelInfo.maxDestroyableBlocks) {

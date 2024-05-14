@@ -1,10 +1,10 @@
 package game.presentation.ui.pages.arena;
 
-import game.Bomberman;
+import game.JBomb;
 import game.network.gamehandler.ServerGameHandler;
 import game.domain.level.levels.world1.World1Arena;
 import game.domain.level.levels.world2.World2Arena;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.AbstractMainMenuPanel;
 import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
@@ -18,7 +18,7 @@ import java.util.List;
 import static game.localization.Localization.*;
 
 public class ArenaMenuPanel extends AbstractMainMenuPanel {
-    public ArenaMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public ArenaMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame);
     }
 
@@ -34,19 +34,19 @@ public class ArenaMenuPanel extends AbstractMainMenuPanel {
 
     private JButton createArenaWorld1Button() {
         JButton b = new YellowButton(get(ARENA_WORLD_1));
-        b.addActionListener(l -> Bomberman.startLevel(new World1Arena(), new ServerGameHandler(Bomberman.match.Companion.getDefaultPort())));
+        b.addActionListener(l -> JBomb.startLevel(new World1Arena(), new ServerGameHandler(JBomb.match.Companion.getDefaultPort())));
         return b;
     }
 
     private JButton createArenaWorld2Button() {
         JButton b = new YellowButton(get(ARENA_WORLD_2));
-        b.addActionListener(l -> Bomberman.startLevel(new World2Arena(), new ServerGameHandler(Bomberman.match.Companion.getDefaultPort())));
+        b.addActionListener(l -> JBomb.startLevel(new World2Arena(), new ServerGameHandler(JBomb.match.Companion.getDefaultPort())));
         return b;
     }
 
     private JButton createBackButton() {
         JButton b = new RedButton(get(BACK));
-        b.addActionListener(l -> Bomberman.showActivity(PlayMenuPanel.class));
+        b.addActionListener(l -> JBomb.showActivity(PlayMenuPanel.class));
         return b;
     }
 

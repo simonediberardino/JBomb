@@ -1,6 +1,6 @@
 package game.domain.level.levels
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.level.behavior.PlayLevelSoundBehavior
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
@@ -40,7 +40,7 @@ abstract class Level {
 
     open fun start(field: JPanel) {
         Log.e("Starting $this")
-        Bomberman.match.gameState = true
+        JBomb.match.gameState = true
         this@Level.field = field
         updateLastLevel()
         PlayLevelSoundTrackBehavior(this@Level).invoke()

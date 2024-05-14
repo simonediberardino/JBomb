@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.items
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
@@ -14,7 +14,7 @@ class BombItem : UsableItem() {
     private lateinit var bombEntity: Bomb
 
     override fun use(itemId: Long?): Long {
-        val match = Bomberman.match
+        val match = JBomb.match
         val isLocalPlayer = owner == match.player
 
         val isBombPlacementIntervalValid = Utility.timePassed(

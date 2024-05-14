@@ -1,6 +1,6 @@
 package game.network.events.process
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.events.models.HttpEvent
@@ -17,9 +17,9 @@ class UseItemHttpEventProcessor : HttpEvent {
         val itemType = info.getOrTrim("itemType")?.toInt() ?: return
         val itemId = info.getOrTrim("itemId")?.toLong()
 
-        val entity: Entity = Bomberman.match.getEntityById(entityId) ?: return
+        val entity: Entity = JBomb.match.getEntityById(entityId) ?: return
         val item = ItemsTypes.values()[itemType].toItem()
-        Bomberman.match.give(entity as BomberEntity, item)
+        JBomb.match.give(entity as BomberEntity, item)
 
         item.use(itemId)
     }

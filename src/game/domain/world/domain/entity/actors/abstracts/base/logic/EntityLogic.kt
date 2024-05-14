@@ -1,7 +1,7 @@
 package game.domain.world.domain.entity.actors.abstracts.base.logic
 
-import game.Bomberman
-import game.Bomberman.match
+import game.JBomb
+import game.JBomb.match
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
@@ -138,7 +138,7 @@ abstract class EntityLogic(
     }
 
     override fun onMouseClickInteraction() {
-        val match = Bomberman.match
+        val match = JBomb.match
         val player = match.player
 
         val centerCoordinatesOfEntity = Coordinates.roundCoordinates(Coordinates.getCenterCoordinatesOfEntity(player))

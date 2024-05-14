@@ -1,6 +1,6 @@
 package game.network.events.process
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.HttpEvent
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.geo.Coordinates
@@ -34,7 +34,7 @@ class SpawnedEntityHttpEventProcessor : HttpEvent {
             entityType: Int,
             extra: Map<String, String>? = null
     ): Entity? {
-        return if (entityId == (Bomberman.match.onlineGameHandler as ClientGameHandler?)?.id) {
+        return if (entityId == (JBomb.match.onlineGameHandler as ClientGameHandler?)?.id) {
             EntityTypes.Player.toEntity(entityId, extra)
         } else {
             EntityTypes.values().getOrElse(entityType) { return null }.toEntity(entityId)

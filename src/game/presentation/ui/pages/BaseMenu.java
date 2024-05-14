@@ -1,7 +1,7 @@
 package game.presentation.ui.pages;
 
-import game.Bomberman;
-import game.presentation.ui.frames.BombermanFrame;
+import game.JBomb;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.panels.game.PagePanel;
 import game.presentation.ui.viewelements.misc.Space;
 import game.utils.file_system.Paths;
@@ -13,12 +13,12 @@ import java.util.List;
 public abstract class BaseMenu extends PagePanel {
     protected JPanel listButtonsPanel;
 
-    public BaseMenu(CardLayout cardLayout, JPanel parent, BombermanFrame frame, String imagePath) {
+    public BaseMenu(CardLayout cardLayout, JPanel parent, JBombFrame frame, String imagePath) {
         super(cardLayout, parent, frame, imagePath);
         setupLayout();
     }
 
-    public BaseMenu(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public BaseMenu(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
         setupLayout();
     }
@@ -44,8 +44,8 @@ public abstract class BaseMenu extends PagePanel {
             panel = new JPanel();
 
         int centerPanelWidth = (int) listButtonsPanel.getPreferredSize().getWidth();
-        int height = (int) (Bomberman.bombermanFrame.getPreferredSize().getHeight());
-        int width = (int) (Bomberman.bombermanFrame.getPreferredSize().getWidth() - centerPanelWidth) / 2;
+        int height = (int) (JBomb.JBombFrame.getPreferredSize().getHeight());
+        int width = (int) (JBomb.JBombFrame.getPreferredSize().getWidth() - centerPanelWidth) / 2;
 
         panel.setPreferredSize(new Dimension(width, height));
         panel.setOpaque(false);

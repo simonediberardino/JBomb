@@ -3,11 +3,11 @@ package game
 import game.audio.AudioManager
 import game.data.data.DataInputOutput
 import game.domain.level.levels.Level
-import game.domain.match.BomberManMatch
+import game.domain.match.JBombMatch
 import game.domain.tasks.GarbageCollectorTask
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
-import game.presentation.ui.frames.BombermanFrame
+import game.presentation.ui.frames.JBombFrame
 import game.presentation.ui.pages.error.NetworkErrorPage
 import game.presentation.ui.pages.loading.LoadingPanel
 import game.presentation.ui.pages.main_menu.MainMenuPanel
@@ -20,11 +20,11 @@ import java.awt.Component
 import java.util.*
 import javax.swing.SwingUtilities
 
-object Bomberman {
-    lateinit var match: BomberManMatch
+object JBomb {
+    lateinit var match: JBombMatch
 
     @JvmStatic
-    lateinit var bombermanFrame: BombermanFrame
+    lateinit var JBombFrame: JBombFrame
     private var currentPage: Class<out PagePanel>? = null
 
     /**
@@ -38,8 +38,8 @@ object Bomberman {
     }
 
     private fun start() {
-        bombermanFrame = BombermanFrame()
-        bombermanFrame.create()
+        JBombFrame = JBombFrame()
+        JBombFrame.create()
         showActivity(MainMenuPanel::class.java)
         ToastHandler.getInstance().show(Localization.get(Localization.WELCOME_TEXT).replace("%user%", DataInputOutput.getInstance().username))
     }
@@ -59,7 +59,7 @@ object Bomberman {
     }
 
     fun destroyLevel(disconnect: Boolean) {
-        bombermanFrame.removeKeyListener(match.controllerManager)
+        JBombFrame.removeKeyListener(match.controllerManager)
         match.destroy(disconnect)
     }
 
@@ -72,14 +72,14 @@ object Bomberman {
             destroyLevel(disconnect)
         }
 
-        match = BomberManMatch(level, onlineGameHandler)
+        match = JBombMatch(level, onlineGameHandler)
 
         match.scope.launch {
-            bombermanFrame.initGamePanel()
-            match.currentLevel.start(bombermanFrame.pitchPanel)
-            bombermanFrame.addKeyListener(match.controllerManager)
-            bombermanFrame.pitchPanel.addMouseListener(match.mouseControllerManager)
-            bombermanFrame.pitchPanel.addMouseMotionListener(match.mouseControllerManager)
+            JBombFrame.initGamePanel()
+            match.currentLevel.start(JBombFrame.pitchPanel)
+            JBombFrame.addKeyListener(match.controllerManager)
+            JBombFrame.pitchPanel.addMouseListener(match.mouseControllerManager)
+            JBombFrame.pitchPanel.addMouseMotionListener(match.mouseControllerManager)
             showActivity(MatchPanel::class.java)
 
             match.connect()
@@ -98,9 +98,9 @@ object Bomberman {
             disconnect: Boolean = true,
             callback: () -> Unit,
     ) {
-        bombermanFrame.loadingPanel.initialize()
-        bombermanFrame.loadingPanel.updateText(level)
-        bombermanFrame.loadingPanel.setCallback {
+        JBombFrame.loadingPanel.initialize()
+        JBombFrame.loadingPanel.updateText(level)
+        JBombFrame.loadingPanel.setCallback {
             doStartLevel(level, disconnect, onlineGameHandler)
             callback()
         }
@@ -134,12 +134,12 @@ object Bomberman {
         if (page == currentPage)
             return
 
-        bombermanFrame.cardLayout.show(bombermanFrame.parentPanel, page.simpleName)
+        JBombFrame.cardLayout.show(JBombFrame.parentPanel, page.simpleName)
         currentPage = page
 
         // Gets the component with the passed class and fires its onShowCallback;
         val shownComponentOpt = Arrays.stream(
-                bombermanFrame.parentPanel.components
+                JBombFrame.parentPanel.components
         ).filter { c: Component? ->
             c!!.javaClass == page
         }.findFirst()
@@ -155,7 +155,7 @@ object Bomberman {
     }
 
     val isGameEnded: Boolean
-        get() = !match.gameState || !Bomberman.isInGame
+        get() = !match.gameState || !JBomb.isInGame
 
     val isInGame: Boolean
         get() {

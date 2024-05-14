@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.abstracts.base
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.RunnablePar
 import game.domain.tasks.GameTickerObserver
 import game.domain.tasks.observer.Observable2
@@ -216,7 +216,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
     override fun update(arg: Observable2.ObserverParam) {
         super.update(arg)
 
-        if (!Bomberman.match.gameState) {
+        if (!JBomb.match.gameState) {
             return
         }
 

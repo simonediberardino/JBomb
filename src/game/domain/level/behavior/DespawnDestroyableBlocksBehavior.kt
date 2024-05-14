@@ -1,6 +1,6 @@
 package game.domain.level.behavior
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 
@@ -16,7 +16,7 @@ class DespawnDestroyableBlocksBehavior : GameBehavior() {
     }
 
     private fun despawnDestroyableBlocks() {
-        Bomberman.match
+        JBomb.match
                 .getEntities()
                 .stream()
                 .filter { entity: Entity? -> entity is DestroyableBlock }

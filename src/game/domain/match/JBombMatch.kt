@@ -1,6 +1,6 @@
 package game.domain.match
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
@@ -28,7 +28,7 @@ import game.utils.time.now
 import kotlinx.coroutines.*
 import java.util.*
 
-class BomberManMatch(
+class JBombMatch(
         var currentLevel: Level,
         val onlineGameHandler: OnlineGameHandler?
 ) {
@@ -311,7 +311,7 @@ class BomberManMatch(
         if (showUi) {
             pausePanelVisible = true
             // Show the pause panel to the player
-            Bomberman.showActivity(PausePanel::class.java)
+            JBomb.showActivity(PausePanel::class.java)
         }
     }
 
@@ -334,7 +334,7 @@ class BomberManMatch(
         gameState = true
 
         // Show the match panel to the player
-        Bomberman.showActivity(MatchPanel::class.java)
+        JBomb.showActivity(MatchPanel::class.java)
 
         // Play the level soundtrack
         PlayLevelSoundTrackBehavior(currentLevel ?: return).invoke()
@@ -400,7 +400,7 @@ class BomberManMatch(
      * Clears the graphics callback in the Bomberman frame's pitch panel.
      */
     private fun clearGraphicsCallback() {
-        Bomberman.bombermanFrame.pitchPanel.clearGraphicsCallback()
+        JBomb.JBombFrame.pitchPanel.clearGraphicsCallback()
     }
 
     /**

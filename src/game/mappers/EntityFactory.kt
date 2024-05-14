@@ -1,6 +1,6 @@
 package game.mappers
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.invisible_block.InvisibleBlock
 import game.domain.world.domain.entity.actors.impl.blocks.stone_block.StoneBlock
@@ -71,12 +71,12 @@ class EntityFactory {
     }
 
     private fun createPlayerEntity(id: Long, extra:  Map<String, String>? = null): Entity {
-        val isServer = Bomberman.match.isServer
-        val isClient = Bomberman.match.isClient
+        val isServer = JBomb.match.isServer
+        val isClient = JBomb.match.isClient
 
         return when {
-            isServer && Bomberman.match.player == null -> Player(id)
-            isClient && id == (Bomberman.match.onlineGameHandler as ClientGameHandler?)?.id -> Player(id)
+            isServer && JBomb.match.player == null -> Player(id)
+            isClient && id == (JBomb.match.onlineGameHandler as ClientGameHandler?)?.id -> Player(id)
             else -> RemotePlayer(null, id, extra?.getOrTrim("skinId")?.toInt() ?: 0)
         }
     }

@@ -1,11 +1,11 @@
 package game.presentation.ui.pages.servers_list;
 
-import game.Bomberman;
+import game.JBomb;
 import game.domain.events.models.RunnablePar;
 import game.domain.level.levels.lobby.WaitingRoomLevel;
 import game.localization.Localization;
 import game.network.gamehandler.ClientGameHandler;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
@@ -21,13 +21,13 @@ import static game.localization.Localization.*;
 public class ServersListMenuPanel extends BoxMenuPanel {
     protected String enteredIpAddress = "";
 
-    public ServersListMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public ServersListMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame, Localization.get(Localization.SERVERS_LIST_TITLE), Paths.getMainMenuWallpaper(), false);
     }
 
     private void createBackButton() {
         JButton b = new RedButton(get(BACK));
-        b.addActionListener(l -> Bomberman.showActivity(PlayMenuPanel.class));
+        b.addActionListener(l -> JBomb.showActivity(PlayMenuPanel.class));
         boxComponentsPanel.addComponent(b);
     }
 
@@ -49,7 +49,7 @@ public class ServersListMenuPanel extends BoxMenuPanel {
     }
 
     private void connect() {
-        Bomberman.startLevel(new WaitingRoomLevel(), new ClientGameHandler(enteredIpAddress, 28960));
+        JBomb.startLevel(new WaitingRoomLevel(), new ClientGameHandler(enteredIpAddress, 28960));
     }
 
     @Override

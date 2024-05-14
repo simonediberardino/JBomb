@@ -1,10 +1,10 @@
 package game.presentation.ui.panels.game;
 
-import game.Bomberman;
+import game.JBomb;
 import game.domain.world.domain.entity.geo.Coordinates;
 import game.domain.world.domain.entity.pickups.powerups.EmptyPowerup;
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.utils.file_system.Paths;
 import game.utils.Utility;
 import game.values.Dimensions;
@@ -24,7 +24,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
     private JPanel powerUpsPanel;
     private JPanel inventoryPanel;
 
-    public MatchPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public MatchPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame, Paths.getBackgroundImage());
     }
 
@@ -75,7 +75,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         int borderSize = Utility.INSTANCE.px(90);
 
         // get the images of the border panels from the current level of the game
-        Image[] borderImages = Bomberman.match.getCurrentLevel().getGameHandler().getBorderImages();
+        Image[] borderImages = JBomb.match.getCurrentLevel().getGameHandler().getBorderImages();
 
         // create left panel and set the dimensions and the image
         leftPanel = createLeftPanel(
@@ -182,12 +182,12 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         inventoryPanel.setOpaque(false);
         inventoryPanel.setLayout(new GridLayout(0, 1));
 
-        inventoryPanel.add(Bomberman.match.getInventoryElementControllerHp().getView());
-        inventoryPanel.add(Bomberman.match.getInventoryElementControllerPoints().getView());
-        inventoryPanel.add(Bomberman.match.getInventoryElementControllerBombs().getView());
+        inventoryPanel.add(JBomb.match.getInventoryElementControllerHp().getView());
+        inventoryPanel.add(JBomb.match.getInventoryElementControllerPoints().getView());
+        inventoryPanel.add(JBomb.match.getInventoryElementControllerBombs().getView());
 
-        if (Bomberman.match.getCurrentLevel().getInfo().isArenaLevel()) {
-            inventoryPanel.add(Bomberman.match.getInventoryElementControllerRounds().getView());
+        if (JBomb.match.getCurrentLevel().getInfo().isArenaLevel()) {
+            inventoryPanel.add(JBomb.match.getInventoryElementControllerRounds().getView());
         }
 
         leftPanel.setLayout(new GridBagLayout());

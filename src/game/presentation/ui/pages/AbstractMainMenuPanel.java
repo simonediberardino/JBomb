@@ -2,7 +2,7 @@ package game.presentation.ui.pages;
 
 import game.data.data.DataInputOutput;
 import game.domain.events.models.RunnablePar;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.panels.menu.AvatarMenuPanel;
 import game.presentation.ui.panels.menu.UsernameProfilePanel;
 import game.utils.file_system.Paths;
@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.function.Consumer;
 
 public abstract class AbstractMainMenuPanel extends BaseMenu {
-    public AbstractMainMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public AbstractMainMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame);
     }
 

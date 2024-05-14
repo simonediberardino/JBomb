@@ -1,13 +1,11 @@
 package game.domain.world.domain.entity.actors.abstracts.enemy
 
-import game.Bomberman
+import game.JBomb
 import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.character.Character
-import game.domain.world.domain.entity.actors.abstracts.enemy.logic.EnemyEntityLogic
 import game.domain.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
-import game.domain.world.domain.entity.actors.impl.blocks.base_block.Block
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
@@ -19,7 +17,7 @@ abstract class Enemy : Character {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     constructor() : this(null) {
-        if (Bomberman.match.player != null) {
+        if (JBomb.match.player != null) {
             info.position = Coordinates.randomCoordinatesFromPlayer(Character.DEFAULT.SIZE)
         }
     }

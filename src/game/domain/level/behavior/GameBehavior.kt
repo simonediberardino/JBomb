@@ -1,15 +1,15 @@
 package game.domain.level.behavior
 
-import game.Bomberman
+import game.JBomb
 
 abstract class GameBehavior {
     abstract fun hostBehavior(): () -> Unit
     abstract fun clientBehavior(): (() -> Unit)
 
     fun invoke() {
-        if (Bomberman.match.isServer) {
+        if (JBomb.match.isServer) {
             hostBehavior().invoke()
-        } else if (Bomberman.match.isClient) {
+        } else if (JBomb.match.isClient) {
             clientBehavior().invoke()
         }
     }

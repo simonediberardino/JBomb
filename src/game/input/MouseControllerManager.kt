@@ -1,7 +1,7 @@
 package game.input
 
-import game.Bomberman
-import game.Bomberman.match
+import game.JBomb
+import game.JBomb.match
 import game.domain.tasks.PeriodicTask
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
@@ -141,7 +141,7 @@ class MouseControllerManager(
 
     // Directions are refreshed and will be replaced in task
     private fun onCooldown() {
-        val controllerManager = Bomberman.match.controllerManager ?: return
+        val controllerManager = JBomb.match.controllerManager ?: return
 
         for (direction in firstDirectionsFromPlayer) {
             controllerManager.onKeyReleased(direction.toCommand())

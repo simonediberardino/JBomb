@@ -1,6 +1,6 @@
 package game.network.events.process
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.HttpEvent
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
@@ -12,7 +12,7 @@ class UpdateInfoEventProcessor : HttpEvent {
 
         val clientId = info.getOrTrim("entityId")?.toLong() ?: return
 
-        val entity = Bomberman.match.getEntityById(clientId)
+        val entity = JBomb.match.getEntityById(clientId)
         entity?.updateInfo(info)
     }
 }

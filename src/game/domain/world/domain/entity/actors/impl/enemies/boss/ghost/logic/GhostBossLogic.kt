@@ -1,9 +1,8 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.logic
 
-import game.Bomberman
+import game.JBomb
 import game.audio.AudioManager
 import game.audio.SoundModel
-import game.domain.events.models.RunnablePar
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.logic.BossEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
@@ -101,7 +100,7 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
         entity.state.lastGhostSpawnTime = now()
 
         for (i in 0 until n) {
-            if (Bomberman.match.enemiesAlive >= MAX_GHOSTS_ALIVE) return
+            if (JBomb.match.enemiesAlive >= MAX_GHOSTS_ALIVE) return
             val ghostEnemy = GhostEnemy()
             val randomCoordinates = Coordinates.randomCoordinatesFromPlayer(ghostEnemy.state.size)
             ghostEnemy.logic.move(randomCoordinates)
@@ -160,7 +159,7 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
                         1, 3 -> PitchPanel.turnOnLights()
                     }
                     timer.setDelay(rand)
-                    if (count >= 5 || Bomberman.isGameEnded) {
+                    if (count >= 5 || JBomb.isGameEnded) {
                         PitchPanel.turnOnLights()
                         timer.stop()
                     }

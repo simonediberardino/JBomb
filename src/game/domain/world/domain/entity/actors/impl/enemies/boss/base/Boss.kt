@@ -1,7 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.base
 
-import game.Bomberman
-import game.domain.level.behavior.GameBehavior
+import game.JBomb
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -33,7 +32,7 @@ abstract class Boss : AiEnemy {
         val ATTACK_DAMAGE = 1000
         val SIZE = PitchPanel.GRID_SIZE * 4
         val MAX_HP: Int by lazy {
-            Bomberman.match.currentLevel.info.bossMaxHealth
+            JBomb.match.currentLevel.info.bossMaxHealth
         }
         val OBSTACLES: Set<Class<out Entity>> = emptySet()
         val DEATH_SOUND = SoundModel.BOSS_DEATH

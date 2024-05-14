@@ -1,6 +1,6 @@
 package game.presentation.ui.panels.game;
 
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.utils.Utility;
 
 import javax.swing.*;
@@ -9,10 +9,10 @@ import java.awt.*;
 public abstract class PagePanel extends JPanel {
     protected final JPanel parent;
     protected final CardLayout cardLayout;
-    protected final BombermanFrame frame;
+    protected final JBombFrame frame;
     private final String imagePath;
 
-    public PagePanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame, String imagePath) {
+    public PagePanel(CardLayout cardLayout, JPanel parent, JBombFrame frame, String imagePath) {
         this.parent = parent;
         this.cardLayout = cardLayout;
         this.frame = frame;

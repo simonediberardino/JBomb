@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.abstracts.animal
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.ai.AiEntity
 import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
 import game.domain.world.domain.entity.actors.abstracts.animal.state.AnimalEntityState
@@ -21,7 +21,7 @@ abstract class AnimalEntity: AiEntity {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     constructor() : this(null) {
-        if (Bomberman.match.player != null) {
+        if (JBomb.match.player != null) {
             info.position = Coordinates.randomCoordinatesFromPlayer(Character.DEFAULT.SIZE)
         }
     }

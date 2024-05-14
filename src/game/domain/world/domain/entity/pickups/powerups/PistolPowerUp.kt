@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.pickups.powerups
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
@@ -24,11 +24,11 @@ class PistolPowerUp : PowerUp {
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            Bomberman.match.give(player, PistolItem(), true)
+            JBomb.match.give(player, PistolItem(), true)
         }
 
         override fun cancel(player: BomberEntity) {
-            Bomberman.match.removeItem(player)
+            JBomb.match.removeItem(player)
         }
 
         override fun canPickUp(bomberEntity: BomberEntity): Boolean = true

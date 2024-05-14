@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.logic
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.BlockEntityLogic
@@ -16,14 +16,14 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
     override fun onCollision(e: Entity) {
         super.onCollision(e)
 
-        if (e == entity.state.buyer() && e == Bomberman.match.player)
+        if (e == entity.state.buyer() && e == JBomb.match.player)
             showInteractMessage()
     }
 
     override fun onExitCollision(e: Entity) {
         super.onExitCollision(e)
 
-        if (e == entity.state.buyer() && e == Bomberman.match.player)
+        if (e == entity.state.buyer() && e == JBomb.match.player)
             ToastHandler.getInstance().cancel()
     }
 
@@ -92,7 +92,7 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
         }
 
         onPurchaseConfirm()
-        Bomberman.match.currentLevel.eventHandler.onPurchaseItem(entity.state.price)
+        JBomb.match.currentLevel.eventHandler.onPurchaseItem(entity.state.price)
         openBox()
     }
 

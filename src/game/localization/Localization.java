@@ -1,6 +1,6 @@
 package game.localization;
 
-import game.Bomberman;
+import game.JBomb;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -277,8 +277,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> ERROR_NETWORK_DEFAULT = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "YOU HAVE BEEN DISCONNECTED.\n\nERROR: %error%.\n\nIF YOU CANNOT JOIN, MAKE SURE THAT THE GAME IS IN ARENA MODE AND THAT THE NETWORK IS OPEN AT PORT: " + Bomberman.match.Companion.getDefaultPort());
-        put(Locale.ITALY, "SEI STATO DISCONNESSO.\n\nERRORE: %error%.\n\nSE NON RIESCI A PARTECIPARE, ASSICURATI CHE LA PARTITA SIA ARENA E CHE LA RETE SIA APERTA ALLA PORTA: " + Bomberman.match.Companion.getDefaultPort());
+        put(Locale.ENGLISH, "YOU HAVE BEEN DISCONNECTED.\n\nERROR: %error%.\n\nIF YOU CANNOT JOIN, MAKE SURE THAT THE GAME IS IN ARENA MODE AND THAT THE NETWORK IS OPEN AT PORT: " + JBomb.match.Companion.getDefaultPort());
+        put(Locale.ITALY, "SEI STATO DISCONNESSO.\n\nERRORE: %error%.\n\nSE NON RIESCI A PARTECIPARE, ASSICURATI CHE LA PARTITA SIA ARENA E CHE LA RETE SIA APERTA ALLA PORTA: " + JBomb.match.Companion.getDefaultPort());
     }};
 
     public static Locale[] getSupportedLanguages() {

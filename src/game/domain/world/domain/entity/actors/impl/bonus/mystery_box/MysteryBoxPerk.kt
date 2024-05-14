@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.bonus.mystery_box
 
-import game.Bomberman
+import game.JBomb
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
@@ -14,7 +14,7 @@ class MysteryBoxPerk(
         entity: () -> Entity?
 ) : MysteryBox() {
     // TODO Refactor
-    constructor(id: Long) : this({ Bomberman.match.currentLevel }, { Bomberman.match.player }) {
+    constructor(id: Long) : this({ JBomb.match.currentLevel }, { JBomb.match.player }) {
         this.info.id = id
     }
 
@@ -28,7 +28,7 @@ class MysteryBoxPerk(
                 throw RuntimeException(e)
             }
 
-            powerUpInstance.logic.apply(Bomberman.match.player ?: return)
+            powerUpInstance.logic.apply(JBomb.match.player ?: return)
         }
     }
 

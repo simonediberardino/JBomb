@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.logic
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.AiEnemyLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.FiringEnemy
 import game.domain.world.domain.entity.actors.impl.explosion.PistolExplosion
@@ -54,7 +54,7 @@ class FiringEnemyLogic(override val entity: FiringEnemy): AiEnemyLogic(entity = 
 
             entity.state.canMove = false
 
-            Bomberman.match.scope.launch {
+            JBomb.match.scope.launch {
                 delay(2000)
                 entity.state.canMove = true
             }

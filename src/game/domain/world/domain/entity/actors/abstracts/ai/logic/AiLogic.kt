@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.abstracts.ai.logic
 
-import game.Bomberman
+import game.JBomb
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
@@ -17,12 +17,12 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
 
     override fun onSpawn() {
         super.onSpawn()
-        Bomberman.match.gameTickerObservable?.register(entity)
+        JBomb.match.gameTickerObservable?.register(entity)
     }
 
     override fun onDespawn() {
         super.onDespawn()
-        val match = Bomberman.match
+        val match = JBomb.match
         (match.gameTickerObservable ?: return).unregister(entity)
     }
 
@@ -71,7 +71,7 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
 
     override fun process() {
         if ("true" == XMLUtils.readConfig("bots_move")) {
-            if (Bomberman.match.isServer) {
+            if (JBomb.match.isServer) {
                 move(chooseDirection(false))
             }
         }
@@ -82,7 +82,7 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
     override fun observerUpdate(arg: Observable2.ObserverParam) {
         when (arg.identifier) {
             Observable2.ObserverParamIdentifier.GAME_TICK -> {
-                val gameState = Bomberman.isInGame
+                val gameState = JBomb.isInGame
 
                 if (!entity.state.canMove || !gameState) {
                     return

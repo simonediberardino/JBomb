@@ -1,6 +1,6 @@
 package game.network.events.process
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.events.models.HttpEvent
 import game.utils.dev.Extensions.getOrTrim
@@ -13,7 +13,7 @@ class DespawnedEntityHttpEventProcessor : HttpEvent {
 
         Log.i("DespawnedEntityHttpEventProcessor received $entityId")
 
-        val entity: Entity = Bomberman.match.getEntityById(entityId) ?: return
+        val entity: Entity = JBomb.match.getEntityById(entityId) ?: return
         entity.logic.despawn()
     }
 }

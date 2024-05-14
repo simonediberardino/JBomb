@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.player.logic
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.game.DeathGameEvent
 import game.domain.events.game.HealthUpdatedEvent
 import game.domain.level.behavior.PlayerDeathBehavior
@@ -16,9 +16,9 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         super.onSpawn()
         updateBombs()
         Log.e("Spawning $this")
-        Bomberman.match.gameTickerObservable?.register(entity)
-        Bomberman.match.controllerManager?.register(entity)
-        Bomberman.bombermanFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
+        JBomb.match.gameTickerObservable?.register(entity)
+        JBomb.match.controllerManager?.register(entity)
+        JBomb.JBombFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
     }
 
     override fun onDespawn() {
@@ -35,13 +35,13 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     }
 
     override fun doAttack() {
-        Bomberman.match.useItem(entity)
-        Bomberman.match.updateInventoryWeaponController()
+        JBomb.match.useItem(entity)
+        JBomb.match.updateInventoryWeaponController()
     }
 
     override fun onRemoved() {
         super.onRemoved()
-        Bomberman.match.controllerManager?.unregister(entity)
+        JBomb.match.controllerManager?.unregister(entity)
     }
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {
@@ -59,7 +59,7 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun handleCommand(command: Command) {
         when (command) {
             Command.PAUSE -> {
-                Bomberman.match.toggleGameState()
+                JBomb.match.toggleGameState()
                 removeCommand(command)
             }
 

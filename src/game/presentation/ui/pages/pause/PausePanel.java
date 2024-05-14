@@ -1,7 +1,7 @@
 package game.presentation.ui.pages.pause;
 
-import game.Bomberman;
-import game.presentation.ui.frames.BombermanFrame;
+import game.JBomb;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.BaseMenu;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 
@@ -13,7 +13,7 @@ import java.util.List;
 import static game.localization.Localization.*;
 
 public class PausePanel extends BaseMenu {
-    public PausePanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public PausePanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame);
     }
 
@@ -39,13 +39,13 @@ public class PausePanel extends BaseMenu {
 
     private JButton createResumeButton() {
         JButton profileButton = new YellowButton(get(RESUME_GAME));
-        profileButton.addActionListener(l -> Bomberman.match.toggleGameState());
+        profileButton.addActionListener(l -> JBomb.match.toggleGameState());
         return profileButton;
     }
 
     private JButton createQuitButton() {
         JButton exitButton = new YellowButton(get(QUIT_GAME));
-        exitButton.addActionListener(v -> Bomberman.quitMatch());
+        exitButton.addActionListener(v -> JBomb.quitMatch());
         return exitButton;
     }
 

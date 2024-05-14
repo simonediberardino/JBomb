@@ -1,7 +1,7 @@
 package game.presentation.ui.pages.main_menu;
 
-import game.Bomberman;
-import game.presentation.ui.frames.BombermanFrame;
+import game.JBomb;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.AbstractMainMenuPanel;
 import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.pages.settings.SettingsPanel;
@@ -27,7 +27,7 @@ public class MainMenuPanel extends AbstractMainMenuPanel {
      * @param parent     the parent JPanel
      * @param frame      the BombermanFrame
      */
-    public MainMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public MainMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame);
     }
 
@@ -46,7 +46,7 @@ public class MainMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createPlayButton() {
         JButton startLevelButton = new YellowButton(get(PLAY));
-        startLevelButton.addActionListener((v) -> Bomberman.showActivity(PlayMenuPanel.class));
+        startLevelButton.addActionListener((v) -> JBomb.showActivity(PlayMenuPanel.class));
         return startLevelButton;
     }
 
@@ -55,13 +55,13 @@ public class MainMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createProfileButton() {
         JButton profileButton = new YellowButton(get(PROFILE));
-        profileButton.addActionListener(l -> Bomberman.showActivity(ProfilePanel.class));
+        profileButton.addActionListener(l -> JBomb.showActivity(ProfilePanel.class));
         return profileButton;
     }
 
     private JButton createSettingsButton() {
         JButton settingsButton = new YellowButton(get(SETTINGS));
-        settingsButton.addActionListener(l -> Bomberman.showActivity(SettingsPanel.class));
+        settingsButton.addActionListener(l -> JBomb.showActivity(SettingsPanel.class));
         return settingsButton;
     }
 

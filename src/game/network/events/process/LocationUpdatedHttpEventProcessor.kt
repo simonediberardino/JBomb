@@ -1,6 +1,6 @@
 package game.network.events.process
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
@@ -23,7 +23,7 @@ class LocationUpdatedHttpEventProcessor : HttpEvent {
 
         Log.i("LocationUpdatedHttpEventProcessor received $entityId, $locationString")
 
-        val entity: Character = Bomberman.match.getEntityById(entityId) as Character? ?: return
+        val entity: Character = JBomb.match.getEntityById(entityId) as Character? ?: return
         entity.info.position = location
         entity.logic.updateMovementDirection(Direction.values()[direction])
 

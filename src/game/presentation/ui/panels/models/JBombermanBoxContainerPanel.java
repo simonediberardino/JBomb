@@ -1,6 +1,6 @@
 package game.presentation.ui.panels.models;
 
-import game.Bomberman;
+import game.JBomb;
 import game.domain.events.models.RunnablePar;
 import game.localization.Localization;
 import game.presentation.ui.helpers.Padding;
@@ -172,6 +172,6 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
 
     private void back() {
         componentsPanel.removeAll();
-        Bomberman.showActivity(MainMenuPanel.class);
+        JBomb.showActivity(MainMenuPanel.class);
     }
 }

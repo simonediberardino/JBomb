@@ -1,6 +1,6 @@
 package game.network.events.process
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.HttpEvent
 import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
 import game.network.events.forward.SpawnEntityEventForwarder
@@ -16,10 +16,10 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
 
         Log.i("PlayerConnectedHttpEventProcessor: $clientId")
 
-        val match = Bomberman.match
+        val match = JBomb.match
         val coordinates = match.currentLevel.info.playerSpawnCoordinates
 
-        Bomberman.match.resumeIfPaused()
+        JBomb.match.resumeIfPaused()
 
         match.getEntities().forEach { e ->
             Log.i("Sending entity $e to $clientId")

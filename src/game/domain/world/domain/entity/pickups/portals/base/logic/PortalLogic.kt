@@ -1,6 +1,5 @@
 package game.domain.world.domain.entity.pickups.portals.base.logic
 
-import game.Bomberman
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.pickups.portals.base.Portal
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic

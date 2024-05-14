@@ -1,6 +1,6 @@
 package game.network.events.process
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.HttpEvent
 import game.domain.level.levels.Level
 import game.network.dispatch.HttpMessageDispatcher
@@ -16,9 +16,9 @@ class LevelInfoHttpEventProcessor : HttpEvent {
         val id = info.getOrTrim("id")?.toIntOrNull() ?: return
         val levelId = info.getOrTrim("levelId")?.toIntOrNull() ?: return
         val worldId = info.getOrTrim("worldId")?.toIntOrNull() ?: return
-        val skinId = Bomberman.match.player?.properties?.skinId ?: 0
+        val skinId = JBomb.match.player?.properties?.skinId ?: 0
 
-        val onlineGameHandler = Bomberman.match.onlineGameHandler as? ClientGameHandler
+        val onlineGameHandler = JBomb.match.onlineGameHandler as? ClientGameHandler
         onlineGameHandler?.id = id.toLong()
 
         val levelClassOpt = Level.findLevel(worldId, levelId)
@@ -28,7 +28,7 @@ class LevelInfoHttpEventProcessor : HttpEvent {
         Thread.sleep(1500) // TODO
 
         if (levelClassOpt.isPresent) {
-            Bomberman.startLevel(
+            JBomb.startLevel(
                     level = levelClassOpt.get().getConstructor().newInstance(),
                     onlineGameHandler = onlineGameHandler,
                     disconnect = false

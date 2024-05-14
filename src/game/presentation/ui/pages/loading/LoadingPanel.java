@@ -1,10 +1,10 @@
 package game.presentation.ui.pages.loading;
 
-import game.Bomberman;
+import game.JBomb;
 import game.domain.level.levels.Level;
 import game.localization.Localization;
 import game.audio.SoundModel;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.panels.game.PagePanel;
 import game.utils.file_system.Paths;
 import game.utils.Utility;
@@ -27,13 +27,13 @@ public class LoadingPanel extends PagePanel {
     private Runnable onLoadingCallback;
     private boolean finished = false;
 
-    public LoadingPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame, Level level) {
+    public LoadingPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame, Level level) {
         this(cardLayout, parent, frame, "");
         updateText(level);
         repaint();
     }
 
-    public LoadingPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame, String text) {
+    public LoadingPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame, String text) {
         super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
         this.initialize();
         setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
@@ -46,7 +46,7 @@ public class LoadingPanel extends PagePanel {
 
     public void initialize() {
         this.text = "";
-        this.textCurrX = (int) Bomberman.bombermanFrame.getPreferredSize().getWidth();
+        this.textCurrX = (int) JBomb.JBombFrame.getPreferredSize().getWidth();
         this.finished = false;
         this.onLoadingCallback = null;
     }

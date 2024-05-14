@@ -4,7 +4,7 @@ import game.data.data.DataInputOutput;
 import game.domain.events.models.RunnablePar;
 import game.localization.Localization;
 import game.audio.AudioManager;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.presentation.ui.viewelements.settings.SettingsElementView;
 import game.presentation.ui.viewelements.settings.SlideElementView;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 import static game.localization.Localization.*;
 
 public class SettingsPanel extends BoxMenuPanel {
-    public SettingsPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public SettingsPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame, Localization.get(SETTINGS));
     }
 

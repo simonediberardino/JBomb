@@ -1,11 +1,11 @@
 package game.domain.events.game
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.GameEvent
 
 
 class KilledEnemyEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.match.currentLevel!!.eventHandler.onKilledEnemy()
+        JBomb.match.currentLevel!!.eventHandler.onKilledEnemy()
     }
 }

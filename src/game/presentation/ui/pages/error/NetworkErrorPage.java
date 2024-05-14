@@ -2,7 +2,7 @@ package game.presentation.ui.pages.error;
 
 import game.localization.Localization;
 import game.presentation.ui.elements.JBombLabelMultiLine;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.utils.file_system.Paths;
 
@@ -12,7 +12,7 @@ import java.awt.*;
 public class NetworkErrorPage extends BoxMenuPanel {
     private static String error = "";
 
-    public NetworkErrorPage(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public NetworkErrorPage(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout,
                 parent, frame,
                 Localization.get(Localization.GAME_ENDED),

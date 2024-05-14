@@ -3,7 +3,7 @@ package game.presentation.ui.panels.menu;
 import game.data.data.DataInputOutput;
 import game.domain.events.models.RunnablePar;
 import game.localization.Localization;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.presentation.ui.viewelements.settings.SettingsElementView;
 import game.utils.Utility;
@@ -22,7 +22,7 @@ public class ProfilePanel extends BoxMenuPanel {
      * @param parent     the parent container of this panel
      * @param frame      the BombermanFrame object
      */
-    public ProfilePanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public ProfilePanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame, Localization.get(MY_BOMBERMAN));
     }
 

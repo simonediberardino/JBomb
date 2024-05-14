@@ -1,10 +1,9 @@
 package game.input
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.tasks.observer.Observable2
 import game.utils.Utility.timePassed
-import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -52,7 +51,7 @@ class ControllerManager : Observable2(), KeyListener {
     private fun pressKey(action: Command) {
         // if a button is pressed, mouse movement gets interrupted
         if (action.isMovementKey()) {
-            Bomberman.match.mouseControllerManager.stopMovementTask()
+            JBomb.match.mouseControllerManager.stopMovementTask()
         }
 
         onKeyPressed(action)

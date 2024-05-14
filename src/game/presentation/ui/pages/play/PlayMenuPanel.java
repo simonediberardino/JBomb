@@ -1,9 +1,8 @@
 package game.presentation.ui.pages.play;
 
-import game.Bomberman;
+import game.JBomb;
 import game.domain.level.levels.lobby.WorldSelectorLevel;
-import game.network.gamehandler.ServerGameHandler;
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.AbstractMainMenuPanel;
 import game.presentation.ui.pages.arena.ArenaMenuPanel;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
@@ -19,7 +18,7 @@ import java.util.List;
 import static game.localization.Localization.*;
 
 public class PlayMenuPanel extends AbstractMainMenuPanel {
-    public PlayMenuPanel(CardLayout cardLayout, JPanel parent, BombermanFrame frame) {
+    public PlayMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame);
     }
 
@@ -39,13 +38,13 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY_CAMPAIGN));
-        startLevelButton.addActionListener((v) -> Bomberman.startLevel(new WorldSelectorLevel(), null));
+        startLevelButton.addActionListener((v) -> JBomb.startLevel(new WorldSelectorLevel(), null));
         return startLevelButton;
     }
 
     private JButton createStartArenaButton() {
         JButton startLevelButton = new YellowButton(get(START_ARENA));
-        startLevelButton.addActionListener((v) -> Bomberman.showActivity(ArenaMenuPanel.class));
+        startLevelButton.addActionListener((v) -> JBomb.showActivity(ArenaMenuPanel.class));
         return startLevelButton;
     }
 
@@ -53,13 +52,13 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
         JButton startLevelButton = new YellowButton(get(PLAY_ONLINE));
         // TODO
 
-        startLevelButton.addActionListener((v) -> Bomberman.showActivity(ServersListMenuPanel.class));
+        startLevelButton.addActionListener((v) -> JBomb.showActivity(ServersListMenuPanel.class));
         return startLevelButton;
     }
 
     private JButton createBackButton() {
         JButton b = new RedButton(get(BACK));
-        b.addActionListener(l -> Bomberman.showActivity(MainMenuPanel.class));
+        b.addActionListener(l -> JBomb.showActivity(MainMenuPanel.class));
         return b;
     }
 

@@ -1,6 +1,6 @@
 package game.network.gamehandler
 
-import game.Bomberman
+import game.JBomb
 import game.network.callbacks.TCPClientCallback
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.serializing.HttpParserSerializer
@@ -43,7 +43,7 @@ class ClientGameHandler(
      */
     override fun onError(message: String?) {
         connected = false
-        Bomberman.networkError(message)
+        JBomb.networkError(message)
     }
 
     /**

@@ -1,6 +1,6 @@
 package game.network.gamehandler
 
-import game.Bomberman
+import game.JBomb
 import game.network.callbacks.TCPServerCallback
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.events.forward.LevelInfoHttpEventForwarder
@@ -57,7 +57,7 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
         val data: MutableMap<String, String> = HashMap()
         data["id"] = indexedClient.id.toString()
 
-        val levelInfo = Bomberman.match.currentLevel.info
+        val levelInfo = JBomb.match.currentLevel.info
 
         data["levelId"] = levelInfo.levelId.toString()
         data["worldId"] = levelInfo.worldId.toString()
@@ -69,7 +69,7 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
     }
 
     override fun onClientDisconnected(indexedClient: TCPServer.IndexedClient) {
-        val client = Bomberman.match.getEntityById(indexedClient.id) ?: return
+        val client = JBomb.match.getEntityById(indexedClient.id) ?: return
         client.logic.despawn()
     }
 

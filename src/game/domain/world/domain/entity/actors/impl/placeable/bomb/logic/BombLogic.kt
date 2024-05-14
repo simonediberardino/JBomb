@@ -1,16 +1,14 @@
 package game.domain.world.domain.entity.actors.impl.placeable.bomb.logic
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.BlockEntityLogic
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.explosion.FireExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.BombExplodedEventForwarder
-import game.utils.dev.Log
 import java.util.*
 
 class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), IBombLogic {
@@ -28,24 +26,24 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
 
     override fun onSpawn() {
         super.onSpawn()
-        Bomberman.match.gameTickerObservable?.register(entity)
+        JBomb.match.gameTickerObservable?.register(entity)
     }
 
     override fun onDespawn() {
         super.onDespawn()
-        Bomberman.match.gameTickerObservable?.unregister(entity)
+        JBomb.match.gameTickerObservable?.unregister(entity)
     }
 
     override fun notifyDespawn() {}
 
     override fun onAdded() {
         super.onAdded()
-        Bomberman.match.addBomb(entity)
+        JBomb.match.addBomb(entity)
     }
 
     override fun onRemoved() {
         super.onRemoved()
-        Bomberman.match.removeBomb(entity)
+        JBomb.match.removeBomb(entity)
     }
 
     override fun onExplosion(explosion: AbstractExplosion?) {

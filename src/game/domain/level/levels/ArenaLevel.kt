@@ -1,6 +1,6 @@
 package game.domain.level.levels
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.events.game.RoundPassedGameEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
@@ -13,7 +13,6 @@ import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.gamehandler.imp.DefaultGameHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.DefaultArenaLevelInfo
-import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.localization.Localization
 import game.presentation.ui.viewelements.misc.ToastHandler
@@ -65,7 +64,7 @@ abstract class ArenaLevel : Level() {
                     super.onRoundPassedGameEvent()
                 }
                 ToastHandler.getInstance().show(Localization.get(Localization.STARTING_ROUND).replace("%round%", currentRound.get().toString()))
-                Bomberman.match.inventoryElementControllerRounds?.setNumItems(currentRound.get())
+                JBomb.match.inventoryElementControllerRounds?.setNumItems(currentRound.get())
             }
 
             override fun onDeathGameEvent() {
@@ -74,7 +73,7 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun onUpdateMaxBombsGameEvent(arg: Int) {
-                Bomberman.match.player?.state?.maxBombs = arg
+                JBomb.match.player?.state?.maxBombs = arg
                 UpdateCurrentAvailableItemsEvent().invoke(arg)
             }
 

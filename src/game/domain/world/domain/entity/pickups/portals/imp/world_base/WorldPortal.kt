@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.pickups.portals.imp.world_base
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.level.levels.Level
 import game.domain.level.levels.world1.World1Level1
@@ -52,9 +52,9 @@ abstract class WorldPortal(coordinates: Coordinates?, val worldId: Int) : Portal
                     firstLevelOfCurrWorld.getConstructor().newInstance()
                 }
 
-                Bomberman.destroyLevel(true)
+                JBomb.destroyLevel(true)
                 // Start the level with the obtained level instance
-                Bomberman.startLevel(levelToStart, Bomberman.match.onlineGameHandler)
+                JBomb.startLevel(levelToStart, JBomb.match.onlineGameHandler)
             } catch (e: InstantiationException) {
                 // Print the stack trace if there is an exception
                 e.printStackTrace()

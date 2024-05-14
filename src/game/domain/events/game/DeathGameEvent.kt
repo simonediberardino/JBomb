@@ -1,10 +1,10 @@
 package game.domain.events.game
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.GameEvent
 
 class DeathGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
-        Bomberman.match.currentLevel.eventHandler.onDeathGameEvent()
+        JBomb.match.currentLevel.eventHandler.onDeathGameEvent()
     }
 }

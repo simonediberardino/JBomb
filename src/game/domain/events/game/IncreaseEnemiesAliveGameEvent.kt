@@ -1,6 +1,6 @@
 package game.domain.events.game
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.models.GameEvent
 import game.domain.level.behavior.GameBehavior
 import game.network.events.forward.UpdateEnemiesCountEventForwarder
@@ -11,7 +11,7 @@ class IncreaseEnemiesAliveGameEvent: GameEvent {
         val gameBehavior: GameBehavior = object : GameBehavior() {
             override fun hostBehavior(): () -> Unit {
                 return {
-                    val enemiesAlive = Bomberman.match.enemiesAlive
+                    val enemiesAlive = JBomb.match.enemiesAlive
 
                     UpdateLocalEnemiesCountGameEvent().invoke(enemiesAlive + 1) // updates locally
                     UpdateEnemiesCountEventForwarder().invoke(enemiesAlive + 1) // notifies clients

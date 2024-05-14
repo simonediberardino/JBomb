@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.abstracts.character.logic
 
-import game.Bomberman
+import game.JBomb
 import game.audio.AudioManager
 import game.domain.level.behavior.LocationChangedBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -195,7 +195,7 @@ abstract class CharacterEntityLogic(
     }
 
     override fun handleCommand(command: Command) {
-        if (!Bomberman.match.gameState) {
+        if (!JBomb.match.gameState) {
             return
         }
 
@@ -251,7 +251,7 @@ abstract class CharacterEntityLogic(
     override fun overpassBlock(entitiesOpposite1: List<Entity>, entitiesOpposite2: List<Entity>, direction1: Direction, direction2: Direction) {
         val oppositeCommand1 = direction2.toCommand()
         val oppositeCommand2 = direction1.toCommand()
-        val controllerManager = Bomberman.match.controllerManager ?: return
+        val controllerManager = JBomb.match.controllerManager ?: return
 
         val doubleClick1 = controllerManager.isCommandPressed(oppositeCommand1)
         val doubleClick2 = controllerManager.isCommandPressed(oppositeCommand2)

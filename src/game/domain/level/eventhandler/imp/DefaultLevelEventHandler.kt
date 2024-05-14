@@ -1,6 +1,6 @@
 package game.domain.level.eventhandler.imp
 
-import game.Bomberman
+import game.JBomb
 import game.audio.AudioManager
 import game.audio.SoundModel
 import game.data.data.DataInputOutput
@@ -25,23 +25,23 @@ open class DefaultLevelEventHandler : LevelEventHandler {
 
     override fun onScoreGameEvent(arg: Int) {
         DataInputOutput.getInstance().increaseScore(arg)
-        Bomberman.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
+        JBomb.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
 
     override fun onPurchaseItem(price: Int) {
         AudioManager.getInstance().play(SoundModel.BONUS_ALERT)
         DataInputOutput.getInstance().decreaseScore(price)
-        Bomberman.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
+        JBomb.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
 
     override fun onUpdateCurrentAvailableBombsEvent(arg: Int) {
-        Bomberman.match.player?.state?.currentBombs = arg
-        Bomberman.match.updateInventoryWeaponController()
+        JBomb.match.player?.state?.currentBombs = arg
+        JBomb.match.updateInventoryWeaponController()
     }
 
     override fun onUpdateMaxBombsGameEvent(arg: Int) {
         DataInputOutput.getInstance().obtainedBombs = arg
-        Bomberman.match.player?.state?.maxBombs = arg
+        JBomb.match.player?.state?.maxBombs = arg
         UpdateCurrentAvailableItemsEvent().invoke(arg)
     }
 

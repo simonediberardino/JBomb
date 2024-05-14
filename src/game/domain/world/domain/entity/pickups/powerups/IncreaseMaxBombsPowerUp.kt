@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.pickups.powerups
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
@@ -34,7 +34,7 @@ class IncreaseMaxBombsPowerUp
         override fun cancel(player: BomberEntity) {}
 
         override fun canPickUp(bomberEntity: BomberEntity): Boolean =
-                DataInputOutput.getInstance().obtainedBombs < Bomberman.match.currentLevel.info.maxBombs
+                DataInputOutput.getInstance().obtainedBombs < JBomb.match.currentLevel.info.maxBombs
     }
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {

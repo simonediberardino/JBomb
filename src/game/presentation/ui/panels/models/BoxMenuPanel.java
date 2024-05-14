@@ -1,6 +1,6 @@
 package game.presentation.ui.panels.models;
 
-import game.presentation.ui.frames.BombermanFrame;
+import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.helpers.Padding;
 import game.presentation.ui.panels.game.PagePanel;
 import game.utils.file_system.Paths;
@@ -18,7 +18,7 @@ public abstract class BoxMenuPanel extends PagePanel {
     public BoxMenuPanel(
             CardLayout cardLayout,
             JPanel parent,
-            BombermanFrame frame,
+            JBombFrame frame,
             String title
     ) {
         this(cardLayout, parent, frame, title, true);
@@ -27,7 +27,7 @@ public abstract class BoxMenuPanel extends PagePanel {
     public BoxMenuPanel(
             CardLayout cardLayout,
             JPanel parent,
-            BombermanFrame frame,
+            JBombFrame frame,
             String title,
             boolean isBackEnabled
     ) {
@@ -40,7 +40,7 @@ public abstract class BoxMenuPanel extends PagePanel {
     public BoxMenuPanel(
             CardLayout cardLayout,
             JPanel parent,
-            BombermanFrame frame,
+            JBombFrame frame,
             String title,
             String background
     ) {
@@ -50,7 +50,7 @@ public abstract class BoxMenuPanel extends PagePanel {
     public BoxMenuPanel(
             CardLayout cardLayout,
             JPanel parent,
-            BombermanFrame frame,
+            JBombFrame frame,
             String title,
             String background,
             boolean isBackEnabled

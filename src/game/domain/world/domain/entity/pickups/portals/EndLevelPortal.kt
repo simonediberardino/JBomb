@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.pickups.portals
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.level.levels.lobby.WorldSelectorLevel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -29,16 +29,16 @@ class EndLevelPortal : Portal {
 
     override val logic: PortalLogic = object : PortalLogic(entity = this) {
         override fun canPickUp(bomberEntity: BomberEntity): Boolean {
-            return Bomberman.match.enemiesAlive <= 0
+            return JBomb.match.enemiesAlive <= 0
         }
 
         override fun doApply(player: BomberEntity) {
             super.doApply(player)
 
-            val match = Bomberman.match
+            val match = JBomb.match
             val currentLevel = match.currentLevel ?: return
 
-            Bomberman.destroyLevel(true)
+            JBomb.destroyLevel(true)
             DataInputOutput.getInstance().increaseLives()
 
             try {
@@ -46,7 +46,7 @@ class EndLevelPortal : Portal {
                     WorldSelectorLevel::class.java
                 else currentLevel.info.nextLevel
 
-                Bomberman.startLevel(nextLevelClass!!.getDeclaredConstructor().newInstance(), match.onlineGameHandler)
+                JBomb.startLevel(nextLevelClass!!.getDeclaredConstructor().newInstance(), match.onlineGameHandler)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

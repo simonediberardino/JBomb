@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.enemies.boss.clown.logic
 
-import game.Bomberman
+import game.JBomb
 import game.audio.SoundModel
 import game.domain.level.behavior.GameBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -39,8 +39,8 @@ class ClownLogic(
     override fun onSpawn() {
         val gameBehavior: GameBehavior = object : GameBehavior() {
             override fun hostBehavior(): () -> Unit = {
-                val panelSize = Bomberman
-                        .bombermanFrame
+                val panelSize = JBomb
+                        .JBombFrame
                         .pitchPanel
                         .preferredSize
 
@@ -55,7 +55,7 @@ class ClownLogic(
         }
         gameBehavior.invoke()
 
-        Bomberman.match.gameTickerObservable?.register(entity)
+        JBomb.match.gameTickerObservable?.register(entity)
     }
 
     /**

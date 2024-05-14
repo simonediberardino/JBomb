@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.blocks.stone_block
 
-import game.Bomberman
+import game.JBomb
 import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -21,7 +21,7 @@ class StoneBlock : HardBlock {
         override fun getImage(entity: Entity): BufferedImage? {
             return loadAndSetImage(
                     entity = entity,
-                    imagePath = Bomberman.match.currentLevel!!.info.stoneBlockImagePath
+                    imagePath = JBomb.match.currentLevel!!.info.stoneBlockImagePath
             )
         }
     }

@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic
 
-import game.Bomberman
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
@@ -12,7 +12,6 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
-import game.input.Command
 import game.presentation.ui.panels.game.PitchPanel
 
 open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity), IBomberEntityLogic {
@@ -23,7 +22,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     override fun onSpawn() {
         super.onSpawn()
         // Give the current entity a BombItem when it is spawned in the match.
-        Bomberman.match.give(entity, BombItem())
+        JBomb.match.give(entity, BombItem())
         initBombVariables()
     }
 
@@ -46,7 +45,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     override fun spawnOffset(): Coordinates = BomberEntity.SPAWN_OFFSET
 
     // Calculates the minimum distance to any bomb from the current entity. If there are no bombs, returns 0.0.
-    private fun minDistanceToBomb(): Double = Bomberman.match.bombs.minOfOrNull { bomb ->
+    private fun minDistanceToBomb(): Double = JBomb.match.bombs.minOfOrNull { bomb ->
         bomb.info.position.distanceTo(entity.info.position)
     } ?: 0.0
 

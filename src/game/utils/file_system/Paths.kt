@@ -1,6 +1,6 @@
 package game.utils.file_system
 
-import game.Bomberman
+import game.JBomb
 
 object Paths {
     @JvmStatic
@@ -25,12 +25,12 @@ object Paths {
     @JvmStatic
     val currentLevelFolder: String
         get() {
-            val level = Bomberman.match.currentLevel!!
+            val level = JBomb.match.currentLevel!!
             return "$worldsFolder/${level.info.worldId}/level/${level.info.levelId}"
         }
 
     @JvmStatic
-    val currentWorldCommonFolder: String get() = "$worldsFolder/${Bomberman.match.currentLevel!!.info.worldId}/common"
+    val currentWorldCommonFolder: String get() = "$worldsFolder/${JBomb.match.currentLevel!!.info.worldId}/common"
 
     @JvmStatic
     val powerUpsFolder: String get() = "$assetsFolder/powerups"

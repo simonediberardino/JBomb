@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.abstracts.enemy.logic
 
-import game.Bomberman
+import game.JBomb
 import game.domain.events.game.DecreaseEnemiesAliveGameEvent
 import game.domain.events.game.EnemyDespawnedGameEvent
 import game.domain.events.game.IncreaseEnemiesAliveGameEvent
@@ -30,7 +30,7 @@ abstract class EnemyEntityLogic(override val entity: Enemy) : CharacterEntityLog
 
     override fun onDespawn() {
         super.onDespawn()
-        val match = Bomberman.match
+        val match = JBomb.match
         (match.gameTickerObservable ?: return).unregister(entity)
         EnemyDespawnedGameEvent().invoke(null)
     }

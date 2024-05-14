@@ -1,6 +1,6 @@
 package game.network.dispatch
 
-import game.Bomberman
+import game.JBomb
 import game.network.gamehandler.ClientGameHandler
 import game.network.models.HttpMessage
 import game.network.models.HttpActor
@@ -12,10 +12,10 @@ import game.utils.dev.Log
  */
 class HttpMessageDispatcher private constructor() {
     private val actorId: Long
-        get() = if (Bomberman.match.onlineGameHandler is ClientGameHandler) {
-            (Bomberman.match.onlineGameHandler as ClientGameHandler).id
+        get() = if (JBomb.match.onlineGameHandler is ClientGameHandler) {
+            (JBomb.match.onlineGameHandler as ClientGameHandler).id
         } else {
-            Bomberman.match.player?.info?.id ?: -1L
+            JBomb.match.player?.info?.id ?: -1L
         }
 
     /**
@@ -75,22 +75,22 @@ class HttpMessageDispatcher private constructor() {
               "message": "dispatch",
               "data": "$data",
               "actor": "$httpActor",
-              "server": ${Bomberman.match.isServer},
+              "server": ${JBomb.match.isServer},
               "receiverId": ${receiverId},
               "ignore:" $ignore,"
-              "client": ${Bomberman.match.isClient}
+              "client": ${JBomb.match.isClient}
             }
         """)
 
-        if (httpActor == HttpActor.SERVER && Bomberman.match.isServer) {
-            Bomberman.match.onlineGameHandler?.sendData(
+        if (httpActor == HttpActor.SERVER && JBomb.match.isServer) {
+            JBomb.match.onlineGameHandler?.sendData(
                     data,
                     receiverId,
                     ignore
             )
             return true
-        } else if (httpActor == HttpActor.CLIENT && Bomberman.match.isClient) {
-            Bomberman.match.onlineGameHandler?.sendData(data, receiverId, ignore)
+        } else if (httpActor == HttpActor.CLIENT && JBomb.match.isClient) {
+            JBomb.match.onlineGameHandler?.sendData(data, receiverId, ignore)
             return true
         }
 
