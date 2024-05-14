@@ -1,6 +1,10 @@
-# JBomberman
+# JBomb
 
 JBomb is a 2D videogame where the objective is to strategically place bombs to eliminate opponents and obstacles. JBomb offers dynamic gameplay, challenging puzzles and different game modes, including multiplayer.
+
+## How to play
+Download the installer from GitHub releases and install your game. A website with more info about the game will be available soon.
+
 ## Gameplay
 
 The core gameplay of JBomberman revolves around strategically placing bombs to clear obstacles and defeat enemies within a maze-like environment. As you progress through the game, you'll have the opportunity to collect power-ups that enhance your abilities, such as increasing bomb range or speed. Your objective is to clear each level by taking down adversaries while ensuring your own self-preservation. Get ready for an adrenaline-pumping adventure filled with intense moments and strategic decision-making.
