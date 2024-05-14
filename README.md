@@ -19,5 +19,4 @@ JBomberman is developed using Kotlin, ensuring a seamless and enjoyable gaming e
 
 ## Contribute
 
-We welcome contributions from the community to make JBomb even better. If you have ideas, bug fixes, or new features to contribute, please submit a pull request. Together, we can make JBomberman an even more exciting and polished gaming experience.
-Thank you for choosing JBomberman. We hope you enjoy the game as much as we enjoyed creating it. Let's have a blast!
+We welcome contributions from the community to make JBomb even better. If you have ideas, bug fixes, or new features to contribute, please submit a pull request. 
