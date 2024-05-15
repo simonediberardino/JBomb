@@ -18,7 +18,8 @@ fun Entity.dtoToEntityNetwork(): EntityNetwork {
     return EntityNetwork(
             info.id,
             info.position.toAbsolute(),
-            info.type.ordinal
+            info.type.ordinal,
+            state.isImmune
     )
 }
 
@@ -30,24 +31,27 @@ fun BomberEntity.dtoToEntityNetwork(): BomberEntityNetwork {
             direction = state.direction.ordinal,
             currExplosionLength = state.currExplosionLength,
             currentBombs = state.currentBombs,
-            skinId = properties.skinId
+            skinId = properties.skinId,
+            isImmune = state.isImmune
     )
 }
 
 fun Character.dtoToEntityNetwork(): CharacterNetwork {
     return CharacterNetwork(
-            info.id,
-            info.position.toAbsolute(),
-            info.type.ordinal,
-            state.direction.ordinal
+            entityId = info.id,
+            entityLocation = info.position.toAbsolute(),
+            entityType = info.type.ordinal,
+            isImmune = state.isImmune,
+            direction = state.direction.ordinal,
     )
 }
 
 fun PlaceableEntity.dtoToEntityNetwork(): PlaceableEntityNetwork {
     return PlaceableEntityNetwork(
-            info.id,
-            info.position.toAbsolute(),
-            info.type.ordinal,
-            state.caller?.info?.id ?: -1
+            entityId = info.id,
+            entityLocation = info.position.toAbsolute(),
+            entityType = info.type.ordinal,
+            callerId = state.caller?.info?.id ?: -1,
+            isImmune = state.isImmune
     )
 }

@@ -24,8 +24,10 @@ class ArmorPowerUp : PowerUp {
         }
 
         override fun cancel(player: BomberEntity) {
-            if (player.state.isSpawned)
+            if (player.state.isSpawned) {
                 player.state.isImmune = false
+                player.logic.onImmuneChangedState()
+            }
         }
     }
 

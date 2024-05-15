@@ -2,8 +2,7 @@
 high priorities:
 
 - skin after death is not updated
-- immune client
-- game not ended
+- game not ended last client
 - handle update
 - Villagers
 - Images;

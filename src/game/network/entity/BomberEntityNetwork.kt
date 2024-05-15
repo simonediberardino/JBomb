@@ -7,7 +7,8 @@ class BomberEntityNetwork(
         entityLocation: Coordinates,
         entityType: Int,
         direction: Int,
+        isImmune: Boolean,
         val currExplosionLength: Int,
         val currentBombs: Int,
         val skinId: Int
-) : CharacterNetwork(entityId, entityLocation, entityType, direction)
+) : CharacterNetwork(entityId, entityLocation, entityType, isImmune, direction)

@@ -6,5 +6,6 @@ open class CharacterNetwork(
         entityId: Long,
         entityLocation: Coordinates?,
         entityType: Int,
+        isImmune: Boolean,
         val direction: Int)
-    : EntityNetwork(entityId, entityLocation, entityType)
+    : EntityNetwork(entityId, entityLocation, entityType, isImmune)

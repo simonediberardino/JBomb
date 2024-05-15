@@ -6,5 +6,6 @@ class PlaceableEntityNetwork(
         entityId: Long,
         entityLocation: Coordinates?,
         entityType: Int,
+        isImmune: Boolean,
         val callerId: Long)
-    : EntityNetwork(entityId, entityLocation, entityType)
+    : EntityNetwork(entityId, entityLocation, entityType, isImmune)

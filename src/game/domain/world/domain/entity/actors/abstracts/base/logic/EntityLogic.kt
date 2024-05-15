@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.network.events.forward.CollideEventForwarder
 import game.network.events.forward.DespawnEntityEventForwarder
 import game.network.events.forward.SpawnEntityEventForwarder
+import game.network.events.forward.UpdateInfoEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
 import game.utils.time.now
@@ -88,6 +89,8 @@ abstract class EntityLogic(
         else if (entity.state.isSpawned)
             State.SPAWNED
         else State.DIED)
+
+        UpdateInfoEventForwarder().invoke(entity.toEntityNetwork())
     }
 
     override fun spawnOffset(): Coordinates =

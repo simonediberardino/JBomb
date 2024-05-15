@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <config
-            full_screen="true"
+            full_screen="false"
             logs_base="false"
             logs_error="true"
             logs_warning="false"
-            bots_move="true">
+            bots_move="false">
     </config>
 </resources>
