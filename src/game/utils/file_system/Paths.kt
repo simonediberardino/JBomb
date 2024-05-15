@@ -1,10 +1,14 @@
 package game.utils.file_system
 
 import game.JBomb
+import javax.swing.JFileChooser
 
 object Paths {
     @JvmStatic
-    val playerDataPath: String get() = String.format("%s/data", dataFolder)
+    val playerDataPath: String get() = String.format("%s/JBomb", JFileChooser().fileSystemView.defaultDirectory.toString())
+
+    @JvmStatic
+    val playerDataObjectPath = String.format("%s/data", playerDataPath)
 
     @JvmStatic
     val dataFolder: String get() = "data"
