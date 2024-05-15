@@ -349,8 +349,6 @@ class JBombMatch(
      * Performs cleanup operations and releases resources associated with the game.
      */
     fun destroy(disconnect: Boolean = false) {
-        currentLevel.endLevel()
-
         if (isServer || disconnect) {
             onlineGameHandler?.disconnect()
         }

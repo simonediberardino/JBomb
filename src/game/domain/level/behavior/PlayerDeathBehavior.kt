@@ -10,6 +10,7 @@ class PlayerDeathBehavior : GameBehavior() {
     override fun hostBehavior(): () -> Unit = {
         if (JBomb.match.currentLevel.gameHandler.canGameBeEnded()) {
             val t = Timer(EntityInteractable.SHOW_DEATH_PAGE_DELAY_MS.toInt()) { _: ActionEvent? ->
+                JBomb.match.currentLevel.endLevel()
                 JBomb.destroyLevel(true)
                 JBomb.showActivity(GameOverPanel::class.java)
             }

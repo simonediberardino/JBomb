@@ -36,8 +36,9 @@ class EndLevelPortal : Portal {
             super.doApply(player)
 
             val match = JBomb.match
-            val currentLevel = match.currentLevel ?: return
+            val currentLevel = match.currentLevel
 
+            currentLevel.endLevel()
             JBomb.destroyLevel(true)
             DataInputOutput.getInstance().increaseLives()
 
