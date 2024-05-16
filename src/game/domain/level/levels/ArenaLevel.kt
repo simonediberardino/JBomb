@@ -59,6 +59,11 @@ abstract class ArenaLevel : Level() {
 
     override val eventHandler: LevelEventHandler
         get() = object : DefaultLevelEventHandler() {
+            override fun onDefeatGameEvent() {
+                super.onDefeatGameEvent()
+                currentRound.set(0)
+            }
+
             override fun onRoundPassedGameEvent() {
                 if (currentRound.get() > 1) {
                     super.onRoundPassedGameEvent()

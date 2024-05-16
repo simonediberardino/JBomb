@@ -52,7 +52,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
     }
 
     override fun explode() {
-        if (exploded) {
+        if (exploded || JBomb.isGameEnded) {
             return
         }
         

@@ -49,6 +49,4 @@ open class DefaultGameHandler(level: Level) : GameHandler(level) {
             SpawnAnimalsBehavior(level.info.startAnimalsCount, availableAnimals).invoke()
 
     override fun canGameBeEnded(): Boolean = !JBomb.match.getEntities().any { it is BomberEntity && it.state.state != State.DIED }
-
-    override fun onPlayerDeath() = PlayerDeathBehavior().invoke()
 }
