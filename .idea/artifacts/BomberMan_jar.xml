@@ -1,11 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="BomberMan:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/BomberMan_jar</output-path>
+  <artifact type="jar" build-on-make="true" name="BomberMan:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="archive" name="BomberMan.jar">
       <element id="module-output" name="BomberMan" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-reflect/2.0.0-RC3/kotlin-reflect-2.0.0-RC3.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.0.0-RC3/kotlin-stdlib-2.0.0-RC3.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/kotlinx-coroutines-core-1.7.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/kotlinx-coroutines-core-jvm-1.7.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/annotations-23.0.0.jar" path-in-jar="/" />
@@ -20,6 +17,9 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/checker-qual-3.37.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/error_prone_annotations-2.21.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/j2objc-annotations-2.8.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-reflect/2.0.0-RC3/kotlin-reflect-2.0.0-RC3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.0.0-RC3/kotlin-stdlib-2.0.0-RC3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

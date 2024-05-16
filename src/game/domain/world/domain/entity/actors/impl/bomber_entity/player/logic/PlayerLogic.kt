@@ -21,14 +21,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         JBomb.JBombFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
     }
 
-    override fun onDespawn() {
-        super.onDespawn()
-
-        if (entity.state.eliminated) {
-            PlayerDeathBehavior().invoke()
-        }
-    }
-
     override fun onEliminated() {
         super.onEliminated()
         DeathGameEvent().invoke(null)

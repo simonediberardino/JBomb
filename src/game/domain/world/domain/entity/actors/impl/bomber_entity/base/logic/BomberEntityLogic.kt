@@ -5,6 +5,7 @@ import game.data.data.DataInputOutput
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
 import game.domain.events.game.UpdateMaxBombsEvent
+import game.domain.level.behavior.PlayerDeathBehavior
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
@@ -24,6 +25,13 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         // Give the current entity a BombItem when it is spawned in the match.
         JBomb.match.give(entity, BombItem())
         initBombVariables()
+    }
+
+    override fun onDespawn() {
+        super.onDespawn()
+        if (entity.state.eliminated) {
+            PlayerDeathBehavior().invoke()
+        }
     }
 
     override fun initBombVariables() {
