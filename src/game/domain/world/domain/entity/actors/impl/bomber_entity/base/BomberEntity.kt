@@ -40,7 +40,7 @@ abstract class BomberEntity : Character, Explosive {
     override fun updateInfo(info: Map<String, String>) {
         super.updateInfo(info)
 
-        Log.i("Updating info ${this.info.id} $info")
+        Log.e("Updating info ${this.info.id} $info")
 
         val currExplosionLength = info.getOrTrim("currExplosionLength")?.toInt()
         val currentBombs = info.getOrTrim("currentBombs")?.toInt()

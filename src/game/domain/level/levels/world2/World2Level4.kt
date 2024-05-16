@@ -12,7 +12,7 @@ class World2Level4 : StoryLevel() {
     override val info: LevelInfo
         get() = object: World2levelInfo(this) {
             override val levelId: Int get() = 4
-            override val startEnemiesCount: Int get() = 15
+            override val startEnemiesCount: Int get() = 8
             override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(FastPurpleBall::class.java, TankEnemy::class.java)
             override val nextLevel: Class<out Level?> get() = World2Level5::class.java
         }

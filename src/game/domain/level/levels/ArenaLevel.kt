@@ -143,7 +143,7 @@ abstract class ArenaLevel : Level() {
 
     companion object {
         const val MIN_ENEMIES_COUNT = 3
-        private const val MAX_ENEMIES_COUNT = 20
+        const val MAX_ENEMIES_COUNT = 10
         private const val ARENA_ROUND_LOADING_TIMER = 5000
         var CURR_ROUND = 0
     }

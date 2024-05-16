@@ -11,7 +11,7 @@ class World1Level1 : StoryLevel() {
     override val info: LevelInfo
         get() = object : World1LevelInfo(this) {
             override val levelId: Int get() = 1
-            override val startEnemiesCount: Int get() = 7
+            override val startEnemiesCount: Int get() = 4
             override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(YellowBall::class.java)
             override val nextLevel: Class<out Level?> get() = World1Level2::class.java
         }

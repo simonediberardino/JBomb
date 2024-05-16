@@ -1,8 +1,6 @@
 
 high priorities:
 
-- skin after death is not updated
-- game not ended last client
 - handle update
 - Villagers
 - Images;

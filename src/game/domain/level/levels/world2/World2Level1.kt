@@ -18,7 +18,7 @@ class World2Level1 : StoryLevel() {
 
             override val startEnemiesCount: Int
                 get() {
-                    return 7
+                    return 5
                 }
 
             override val availableEnemies: Array<Class<out Enemy>>

@@ -18,7 +18,7 @@ class World2Level5 : StoryLevel() {
         get() = object: World2levelInfo(this) {
             override val levelId: Int get() = 5
             override val boss: Boss get() = Clown()
-            override val startEnemiesCount: Int get() = 7
+            override val startEnemiesCount: Int get() = 5
             override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf(FastPurpleBall::class.java, Eagle::class.java)
             override val isLastLevelOfWorld: Boolean get() = true
             override val nextLevel: Class<out Level?> get() = WorldSelectorLevel::class.java

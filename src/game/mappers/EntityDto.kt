@@ -16,10 +16,10 @@ fun EntityTypes.toEntity(id: Long, extra:  Map<String, String>? = null) : Entity
 
 fun Entity.dtoToEntityNetwork(): EntityNetwork {
     return EntityNetwork(
-            info.id,
-            info.position.toAbsolute(),
-            info.type.ordinal,
-            state.isImmune
+            entityId = info.id,
+            entityLocation = info.position.toAbsolute(),
+            entityType = info.type.ordinal,
+            isImmune = state.isImmune
     )
 }
 

@@ -12,6 +12,7 @@ import game.domain.world.types.EntityTypes
 import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
 import game.utils.dev.Extensions.getOrTrim
+import game.utils.dev.Extensions.toMap
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.util.*
@@ -248,7 +249,11 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
 
         val state = info.getOrTrim("state")
         state?.let {
-            this.state.state = State.valueOf(it)
+            try {
+                this.state.state = State.valueOf(it)
+            } catch (IllegalArgumentException: Exception) {
+                return@let
+            }
         }
     }
 

@@ -44,7 +44,7 @@ class JBombMatch(
     // List of entities sorted by a linked list
     private val _entitiesList: SortedLinkedList<Entity> = SortedLinkedList()
     private val _entitiesMap: HashMap<Long, Entity> = HashMap()
-    private val _despawnedEntitiesMap: HashMap<Long, Class<out Entity>> = HashMap()
+    private val _despawnedEntitiesMap: HashMap<Long, Pair<Class<out Entity>, Entity>> = HashMap()
 
     // Manager for mouse controllers
     val mouseControllerManager: MouseControllerManager = MouseControllerManager(scope)
@@ -236,7 +236,7 @@ class JBombMatch(
      */
     fun getEntities(): List<Entity> = synchronized(_entitiesList) { LinkedList(_entitiesList) }
 
-    fun getDeadEntities(): HashMap<Long, Class<out Entity>> = synchronized(_despawnedEntitiesMap) { _despawnedEntitiesMap }
+    fun getDeadEntities(): HashMap<Long, Pair<Class<out Entity>, Entity>> = synchronized(_despawnedEntitiesMap) { _despawnedEntitiesMap }
 
     fun getEntityById(entityId: Long): Entity? = _entitiesMap[entityId]
 
@@ -258,7 +258,7 @@ class JBombMatch(
 
     fun removeEntity(entity: Entity) {
         if (entity.state.canRespawn) {
-            _despawnedEntitiesMap[entity.info.id] = entity.javaClass
+            _despawnedEntitiesMap[entity.info.id] = Pair(entity.javaClass, entity)
         }
 
         synchronized(_entitiesList) {
