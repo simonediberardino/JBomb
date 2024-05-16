@@ -1,24 +1,27 @@
-# JBomberman
+# JBomb
 
-JBomberman is an exciting and captivating game that draws inspiration from the timeless classic, Bomberman. This project takes the essence of the beloved game and enhances it with added functionalities and innovative features. Whether you're a fan of the original Bomberman or a newcomer to the genre, JBomberman promises an immersive gaming experience filled with strategic gameplay, challenging puzzles, and thrilling explosions.
+JBomb is a 2D videogame where the objective is to strategically place bombs to eliminate opponents and obstacles. JBomb offers dynamic gameplay, challenging puzzles and different game modes, including multiplayer.
 
 ## Gameplay
 
 The core gameplay of JBomberman revolves around strategically placing bombs to clear obstacles and defeat enemies within a maze-like environment. As you progress through the game, you'll have the opportunity to collect power-ups that enhance your abilities, such as increasing bomb range or speed. Your objective is to clear each level by taking down adversaries while ensuring your own self-preservation. Get ready for an adrenaline-pumping adventure filled with intense moments and strategic decision-making.
 
-Gameplay: https://www.youtube.com/watch?v=PXWsGOkttKk
+Website: https://jbombthegame.github.io
 
-![Alt Text](https://i.postimg.cc/xTCLkhdK/Schermata-2023-09-08-alle-10-37-57.png)
+![Alt Text](https://jbombthegame.github.io/img/previews/1.png)
 
 ## Innovative Features
 
-JBomberman doesn't stop at recreating the classic Bomberman experience. Our development team, comprised of two dedicated individuals, is continuously working on expanding the game with various exciting modes. One highly anticipated addition is the multiplayer mode, which will allow players to engage in intense battles and strategic gameplay against friends or other online opponents. Get ready to challenge your friends and prove your skills in action-packed multiplayer matches.
+JBomb presents two game modes for players to explore.
+In Campaign mode, embark on an adventure across diverse worlds, each featuring five levels and a formidable boss showdown. Strategically deploy bombs to navigate intricate mazes and conquer a variety of enemies and obstacles along the way.
 
-## Seamless Gaming Experience
+Arena mode offers a cooperative experience. Join the arena with friends as you confront endless waves of adversaries in a dynamic online battleground. Work together to collect power-ups scattered throughout the arena, enhancing your abilities and ensuring your survival against increasingly challenging foes. Whether you're conquering levels solo or teaming up with friends, JBomb delivers thrilling strategic gameplay at every turn!
 
-JBomberman is developed using Java, ensuring a seamless and enjoyable gaming experience on a variety of platforms. Our project showcases our team's expertise in programming, game design, and meticulous attention to detail. We are committed to providing both nostalgia for long-time fans of Bomberman and fresh gaming experiences for newcomers.
 
-## Contribute
+## How to play
 
-We welcome contributions from the community to make JBomberman even better. If you have ideas, bug fixes, or new features to contribute, please submit a pull request. Together, we can make JBomberman an even more exciting and polished gaming experience.
-Thank you for choosing JBomberman. We hope you enjoy the game as much as we enjoyed creating it. Let's have a blast!
+Visit [our website](https://jbombthegame.github.io), then simply click on the download link. After downloading the installer, run it and follow the setup instructions. Once completed, you'll be all set to launch JBomb.
+
+## About the project
+
+JBomb is a game developed by Simone Di Berardino and Cristian Di Berardino in Kotlin and Java without using external libraries or game engines. The main objective of the project is enhancing programming skills and expertise in software development.
