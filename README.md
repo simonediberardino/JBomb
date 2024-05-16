@@ -8,7 +8,7 @@ The core gameplay of JBomberman revolves around strategically placing bombs to c
 
 Website: https://jbombthegame.github.io
 
-![Alt Text](https://i.postimg.cc/xTCLkhdK/Schermata-2023-09-08-alle-10-37-57.png)
+![Alt Text](https://jbombthegame.github.io/img/previews/1.png)
 
 ## Innovative Features
 
