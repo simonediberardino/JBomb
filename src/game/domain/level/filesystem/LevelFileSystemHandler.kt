@@ -16,8 +16,9 @@ class LevelFileSystemHandler {
         val classLoader = Thread.currentThread().contextClassLoader
 
         fun getResourcePath(folder: String): String? {
-            val stream = classLoader.getResourceAsStream("$folder/$path")
-            return stream?.let { "$folder/$path" }
+            return classLoader.getResourceAsStream("$folder/$path")?.use {
+                "$folder/$path"
+            }
         }
 
         return getResourcePath(Paths.currentLevelFolder)

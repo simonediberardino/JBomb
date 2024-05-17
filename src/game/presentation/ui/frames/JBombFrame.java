@@ -194,21 +194,21 @@ public class JBombFrame extends JFrame {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         // Use ClassLoader to load the image resource from the JAR file
-        InputStream inputStream = classLoader.getResourceAsStream(Paths.getCursorPath());
+        try (InputStream inputStream = classLoader.getResourceAsStream(Paths.getCursorPath())) {
+            if (inputStream == null) {
+                return;
+            }
 
-        if (inputStream == null) {
-            return;
-        }
-
-        try {
             byte[] imageBytes = ByteStreams.toByteArray(inputStream);
 
             Image image = toolkit.createImage(imageBytes);
             Cursor c = toolkit.createCustomCursor(image, new Point(getX(), getY()), "img");
             setCursor(c);
         } catch (Exception ignored) {
+            // Exception handling logic can be added here if needed
         }
     }
+
 
     /**
      * Gets the pitch panel from the match panel.
@@ -237,5 +237,9 @@ public class JBombFrame extends JFrame {
 
     public LoadingPanel getLoadingPanel() {
         return loadingPanel;
+    }
+
+    public void cleanGame() {
+        matchPanel.removeAll();
     }
 }

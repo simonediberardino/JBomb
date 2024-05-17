@@ -77,7 +77,7 @@ public class AudioManager {
             //if clip doesn't loop continuosly, it is removed automatically from hashmap when it stops
             clip.addLineListener(e -> {
                 if (e.getType() == LineEvent.Type.STOP) {
-                    removeSoundFromHashMap(sound);
+                    removeSoundFromHashMap(sound).close();
                 }
             });
             clip.start();
@@ -118,7 +118,7 @@ public class AudioManager {
     public void stopAllInstancesOfSound(String soundModelString) {
         Clip c;
         while ((c = removeSoundFromHashMap(soundModelString)) != null) {
-            c.stop();
+            c.close();
         }
     }
 

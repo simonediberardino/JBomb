@@ -68,7 +68,7 @@ object Utility {
      * @param fileName The file name of the image to be loaded.
      * @return The loaded image, or null if the file could not be found or read.
      */
-    
+
     fun loadImage(fileName: String): BufferedImage? {
         var fileName = fileName
         val cache = Cache.instance
@@ -80,12 +80,15 @@ object Utility {
         // Use ClassLoader to load the image from the JAR file
         fileName = fileName.replace("/src", "")
         Log.i("Loading $fileName")
-        val inputStream = Utility::class.java.getResourceAsStream("/$fileName") ?: throw RuntimeException()
 
-        val image = ImageIO.read(inputStream) ?: throw RuntimeException()
-        instance.saveInCache(fileName, image)
+        val image = Utility::class.java.getResourceAsStream("/$fileName")?.use { inputStream ->
+            ImageIO.read(inputStream) ?: throw RuntimeException()
+        } ?: throw RuntimeException()
+
+        cache.saveInCache(fileName, image)
         return image
     }
+
 
     private fun chooseRandom(chance: Int): Boolean {
         var chance = chance

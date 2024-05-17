@@ -380,7 +380,13 @@ class JBombMatch(
         // Perform garbage collection to release memory
         performGarbageCollection()
 
+        cleanLevelUi()
+
         ToastHandler.getInstance().cancel()
+    }
+
+    private fun cleanLevelUi() {
+        JBomb.JBombFrame.cleanGame()
     }
 
     private fun cancelCoroutineJob() {

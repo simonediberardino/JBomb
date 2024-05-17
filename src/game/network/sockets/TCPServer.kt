@@ -42,25 +42,25 @@ class TCPServer(private var port: Int) : TCPSocket {
 
     private suspend fun handleClient(clientSocket: IndexedClient) = withContext(Dispatchers.IO) {
         try {
-            val reader = BufferedReader(InputStreamReader(clientSocket.client.getInputStream()))
-
-            for (listener in listeners) {
-                listener.onClientConnected(clientSocket)
-            }
-
-            while (true) {
-                // Reads the stream from the client;
-                val clientData = reader.readLine()
-
-                if (clientData == null) {
-                    // Client disconnected
-                    Log.i("Client disconnected")
-                    break
+            clientSocket.reader.use { reader ->
+                for (listener in listeners) {
+                    listener.onClientConnected(clientSocket)
                 }
 
-                Log.i("Received from client: $clientData")
-                for (listener in listeners) {
-                    listener.onDataReceived(clientData)
+                while (true) {
+                    // Reads the stream from the client;
+                    val clientData = reader.readLine()
+
+                    if (clientData == null) {
+                        // Client disconnected
+                        Log.i("Client disconnected")
+                        break
+                    }
+
+                    Log.i("Received from client: $clientData")
+                    for (listener in listeners) {
+                        listener.onDataReceived(clientData)
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -78,7 +78,12 @@ class TCPServer(private var port: Int) : TCPSocket {
                         break
 
                     val clientSocket = socket.accept()
-                    val indexedClient = IndexedClient(progressiveId, clientSocket)
+                    val indexedClient = IndexedClient(
+                            id = progressiveId,
+                            client = clientSocket,
+                            writer = PrintWriter(clientSocket.getOutputStream(), true),
+                            reader = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
+                    )
 
                     clients[progressiveId] = indexedClient
                     progressiveId++
@@ -99,7 +104,7 @@ class TCPServer(private var port: Int) : TCPSocket {
     override fun sendData(data: String) {
         scope.launch {
             clients.values.parallelStream().forEach {
-                sendData(it.client, data)
+                sendData(it, data)
             }
         }
     }
@@ -108,18 +113,17 @@ class TCPServer(private var port: Int) : TCPSocket {
         if (ignore) {
             for (client in clients.values) {
                 if (client.id != clientId)
-                    sendData(client.client, data)
+                    sendData(client, data)
             }
             return
         }
 
-        sendData(clients[clientId]?.client ?: return, data)
+        sendData(clients[clientId] ?: return, data)
         Log.i("sendData: $clientId sent $data")
     }
 
-    private fun sendData(client: Socket, data: String) {
-        val writer = PrintWriter(client.getOutputStream(), true)
-        writer.println(data)
+    private fun sendData(client: IndexedClient, data: String) {
+        client.writer.println(data)
     }
 
     fun register(tcpServerCallback: TCPServerCallback) {
@@ -146,6 +150,9 @@ class TCPServer(private var port: Int) : TCPSocket {
 
     private fun disconnectClient(clientSocket: IndexedClient) {
         clientSocket.client.close()
+        clientSocket.writer.close()
+        clientSocket.reader.close()
+
         clients.remove(clientSocket.id)
 
         for (listener in listeners) {
@@ -153,5 +160,5 @@ class TCPServer(private var port: Int) : TCPSocket {
         }
     }
 
-    class IndexedClient(val id: Long, val client: Socket)
+    class IndexedClient(val id: Long, val client: Socket, val writer: PrintWriter, val reader: BufferedReader)
 }
