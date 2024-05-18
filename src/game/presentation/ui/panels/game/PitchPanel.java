@@ -109,11 +109,14 @@ public class PitchPanel extends JPanel implements Observer2 {
             } catch (ConcurrentModificationException ex) {
                 ex.printStackTrace();
             }
+        });
 
+        // consider only one for loop
+        for (Entity e : setEntities) {
             if (e != player && e instanceof Character) {
                 drawEntityLabel(g2d, (Character) e);
             }
-        });
+        }
 
         if (player != null && !JBomb.match.isOnlyPlayer() && player.getLogic().isAlive()) {
             drawEntityArrowhead(g2d, player);
@@ -130,7 +133,7 @@ public class PitchPanel extends JPanel implements Observer2 {
      * @param e   the entity to draw
      */
     private void drawEntityLabel(Graphics2D g2d, Character e) {
-        String entityName = "Player";
+        String entityName = e.getProperties().getName();
 
         if (entityName == null || entityName.isEmpty())
             return;

@@ -12,6 +12,8 @@ import game.domain.world.domain.entity.geo.Direction
 import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
 import game.presentation.ui.panels.game.PitchPanel
+import game.utils.dev.Extensions.getOrTrim
+import game.utils.dev.Log
 import game.values.DrawPriority
 
 /**
@@ -35,6 +37,17 @@ abstract class Character : MovingEntity {
 
     override fun toEntityNetwork(): EntityNetwork {
         return dtoToEntityNetwork()
+    }
+
+    override fun updateInfo(info: Map<String, String>) {
+        super.updateInfo(info)
+
+        Log.e("Updating info ${this.info.id} $info")
+
+        val name = info.getOrTrim("name")
+        name?.let {
+            properties.name = it
+        }
     }
 
     companion object {

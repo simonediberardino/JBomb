@@ -6,5 +6,6 @@ import game.domain.events.models.GameEvent
 class DeathGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
         JBomb.match.currentLevel.eventHandler.onDeathGameEvent()
+        JBomb.match.player = null
     }
 }

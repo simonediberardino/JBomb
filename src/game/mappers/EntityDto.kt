@@ -32,7 +32,8 @@ fun BomberEntity.dtoToEntityNetwork(): BomberEntityNetwork {
             currExplosionLength = state.currExplosionLength,
             currentBombs = state.currentBombs,
             skinId = properties.skinId,
-            isImmune = state.isImmune
+            isImmune = state.isImmune,
+            name = properties.name
     )
 }
 
@@ -43,6 +44,7 @@ fun Character.dtoToEntityNetwork(): CharacterNetwork {
             entityType = info.type.ordinal,
             isImmune = state.isImmune,
             direction = state.direction.ordinal,
+            name = properties.name
     )
 }
 

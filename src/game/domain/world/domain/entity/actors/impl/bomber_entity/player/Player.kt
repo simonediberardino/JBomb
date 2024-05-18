@@ -27,10 +27,12 @@ class Player : BomberEntity {
     override val state: PlayerState = PlayerState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val image: PlayerImageModel = PlayerImageModel(entity = this)
-    override val properties: BomberEntityProperties = BomberEntityProperties(
+    override val properties: BomberEntityProperties = object : BomberEntityProperties(
             types = EntityTypes.BomberEntity,
             skinId = SkinUtilities.getSkinId(DataInputOutput.getInstance().skin),
-    )
+    ) {
+        override var name: String? = DataInputOutput.getInstance().username
+    }
 
     internal object DEFAULT {
         val DEATH_SOUND = SoundModel.PLAYER_DEATH
