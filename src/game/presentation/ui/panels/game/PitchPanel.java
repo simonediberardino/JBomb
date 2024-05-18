@@ -7,8 +7,10 @@ import game.domain.match.JBombMatch;
 import game.domain.tasks.observer.Observable2;
 import game.domain.tasks.observer.Observer2;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
+import game.domain.world.domain.entity.actors.abstracts.character.Character;
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player;
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
+import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 import game.utils.Utility;
 import game.utils.dev.Log;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static game.audio.SoundModel.LIGHT_GLITCH;
+import static game.values.Dimensions.FONT_SIZE_LITTLE;
 
 /**
  * The GamePanel class represents the main game panel that displays the game world and entities
@@ -98,6 +101,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(), 1), 0, 0, null);
 
         List<? extends Entity> setEntities = JBomb.match.getEntities();
+        Player player = JBomb.match.getPlayer();
 
         setEntities.forEach(e -> {
             try {
@@ -105,10 +109,12 @@ public class PitchPanel extends JPanel implements Observer2 {
             } catch (ConcurrentModificationException ex) {
                 ex.printStackTrace();
             }
+
+            if (e != player && e instanceof Character) {
+                drawEntityLabel(g2d, (Character) e);
+            }
         });
 
-
-        Player player = JBomb.match.getPlayer();
         if (player != null && !JBomb.match.isOnlyPlayer() && player.getLogic().isAlive()) {
             drawEntityArrowhead(g2d, player);
         }
@@ -116,6 +122,37 @@ public class PitchPanel extends JPanel implements Observer2 {
         // Runs custom callbacks;
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
     }
+
+    /**
+     * Draws the "Player" label on the player's head inside a box.
+     *
+     * @param g2d the Graphics2D object to draw with
+     * @param e   the entity to draw
+     */
+    private void drawEntityLabel(Graphics2D g2d, Character e) {
+        String entityName = "Player";
+
+        if (entityName == null || entityName.isEmpty())
+            return;
+
+        int x = e.getInfo().getPosition().getX();
+        int y = e.getInfo().getPosition().getY();
+        int size = (int) (double) e.getState().getSize();
+
+        YellowButton playerButton = new YellowButton(entityName, FONT_SIZE_LITTLE);
+
+        // Set button size
+        Dimension buttonSize = playerButton.getPreferredSize();
+        playerButton.setSize(buttonSize);
+
+        // Position the button (slightly down from the head and centered)
+        int buttonX = x - buttonSize.width / 5;
+        int buttonY = y - size / 2 - buttonSize.height;
+
+        // Draw the button on the Graphics2D context
+        SwingUtilities.paintComponent(g2d, playerButton, this, buttonX, buttonY, buttonSize.width, buttonSize.height);
+    }
+
     /**
      * Draws an entity on the game panel.
      *

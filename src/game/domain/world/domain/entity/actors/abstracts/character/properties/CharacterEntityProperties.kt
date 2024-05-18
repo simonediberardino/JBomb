@@ -24,4 +24,6 @@ open class CharacterEntityProperties(
         types,
         supportedDirections,
         stepSound
-)
+) {
+    open var name: String? = null
+}

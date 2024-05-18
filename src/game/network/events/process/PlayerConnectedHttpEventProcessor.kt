@@ -12,7 +12,6 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         val info = extras[0] as Map<String, String>
 
         val clientId = info.getOrTrim("id")?.toLong() ?: return
-        val skinId = info.getOrTrim("extra")?.toInt() ?: return
 
         Log.i("PlayerConnectedHttpEventProcessor: $clientId")
 
@@ -26,7 +25,9 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
             SpawnEntityEventForwarder(clientId).invoke(e.toEntityNetwork())
         }
 
-        val player = RemotePlayer(coordinates, clientId, skinId)
+        val skinId = info.getOrTrim("skinId")
+        val player = RemotePlayer(coordinates, clientId, skinId?.toInt() ?: 0)
+        player.updateInfo(info)
         player.logic.spawn()
     }
 }

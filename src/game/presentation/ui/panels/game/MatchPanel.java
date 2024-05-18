@@ -308,6 +308,9 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         // Calculate the number of rows and columns for the power-up panel
         int rows = 0, cols = powerUpList.size() <= 1 ? 1 : 2;
 
+        if (powerUpsPanel == null)
+            return;
+
         // Set the layout of the power-up panel
         powerUpsPanel.setLayout(new GridLayout(rows, cols));
 

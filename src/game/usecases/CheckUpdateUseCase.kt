@@ -10,7 +10,7 @@ class CheckUpdateUseCase : UseCase<Boolean> {
         val currVersion = XMLUtils.readXmlKey(versionXml, "version").toInt()
         val result = JBombHttp.get<String>(HttpUrls.JBombVersionUrl)
 
-        val serverVersion = result.data.trim().toInt()
+        val serverVersion = result.data?.trim()?.toInt() ?: 0
         return result.statusCode == 200 && (currVersion < serverVersion)
     }
 }
