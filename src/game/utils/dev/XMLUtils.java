@@ -25,6 +25,17 @@ public class XMLUtils {
         return config.getAttribute(key);
     }
 
+    public static String readXmlKey(String path, String key) {
+        Document document = readXml(path);
+
+        if (document == null)
+            return null;
+
+        // Get the root element
+        Element root = document.getDocumentElement();
+        return root.getElementsByTagName(key).item(0).getTextContent();
+    }
+
     public static Document readXml(String path) {
         // Create a DocumentBuilderFactory
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

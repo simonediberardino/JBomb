@@ -4,10 +4,12 @@ import game.JBomb;
 import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.panels.game.PagePanel;
 import game.presentation.ui.viewelements.misc.Space;
+import game.utils.dev.Log;
 import game.utils.file_system.Paths;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseMenu extends PagePanel {
@@ -66,7 +68,7 @@ public abstract class BaseMenu extends PagePanel {
     private void addButtons() {
         List<JButton> buttons = getButtons();
 
-        for (JButton b : buttons) listButtonsPanel.add(b);
+        for (JButton b : buttons) if (b != null) listButtonsPanel.add(b);
     }
 
     /**
@@ -96,8 +98,36 @@ public abstract class BaseMenu extends PagePanel {
     protected abstract JPanel getRightPanel();
     protected abstract JPanel getLeftPanel();
 
+    public void refreshButtons() {
+        List<JButton> alreadyAddedButtons = new ArrayList<>();
+        Component[] components = listButtonsPanel.getComponents();
+
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                alreadyAddedButtons.add((JButton) component);
+            }
+        }
+
+        for (JButton toAddButton : getButtons()) {
+            if (toAddButton == null)
+                continue;
+
+            boolean isButtonAlreadyPresent = alreadyAddedButtons
+                    .stream()
+                    .anyMatch(e -> e.getText().trim().equalsIgnoreCase(toAddButton.getText().trim()));
+
+            if (!isButtonAlreadyPresent) {
+                Log.INSTANCE.e("adding " + toAddButton);
+                listButtonsPanel.add(toAddButton);
+            }
+        }
+
+        listButtonsPanel.repaint();
+        repaint();
+    }
+
     @Override
     public void onShowCallback() {
-
+        refreshButtons();
     }
 }

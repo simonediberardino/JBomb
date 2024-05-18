@@ -83,6 +83,16 @@ public class Localization {
         put(Locale.ITALY, "Benvenuto %user% su JBOMB!");
     }};
 
+    public static final HashMap<Locale, String> WELCOME_TEXT_ANONYMOUS = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "Welcome to JBOMB!");
+        put(Locale.ITALY, "Benvenuto su JBOMB!");
+    }};
+
+    public static final HashMap<Locale, String> NEEDS_UPDATE = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "JBomb needs an update!");
+        put(Locale.ITALY, "JBomb ha bisogno di un aggiornamento!");
+    }};
+
     public static final HashMap<Locale, String> MYSTERY_BOX_ERROR_MONEY = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "YOU DON'T HAVE ENOUGH COINS [%price%]");
         put(Locale.ITALY, "NON HAI ABBASTANZA MONETE [%price%]");
@@ -138,6 +148,11 @@ public class Localization {
     public static final HashMap<Locale, String> LOADING = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "LOADING");
         put(Locale.ITALY, "CARICAMENTO");
+    }};
+
+    public static final HashMap<Locale, String> LOADING_INIT = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "LOADING GAME...");
+        put(Locale.ITALY, "STO CARICANDO IL GIOCO...");
     }};
 
     public static final HashMap<Locale, String> PLAY_AGAIN = new HashMap<Locale, String>() {{
@@ -200,6 +215,11 @@ public class Localization {
         put(Locale.ITALY, "ESCI DAL GIOCO");
     }};
 
+    public static final HashMap<Locale, String> UPDATE_TUTORIAL = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "YOUR GAME IS NOT UP TO DATE. CLOSE JBOMB AND RUN THE JBOMB UPDATER PROGRAM.");
+        put(Locale.ITALY, "PER AGGIORNARE IL GIOCO, ESEGUI IL SOFTWARE DI AGGIORNAMENTO DI JBOMB.");
+    }};
+
     public static final HashMap<Locale, String> SERVERS_LIST_TITLE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "CONNECT TO A GAME");
         put(Locale.ITALY, "PARTECIPA A UNA PARTITA");
@@ -225,6 +245,10 @@ public class Localization {
         put(Locale.ITALY, "IMPOSTAZIONI");
     }};
 
+    public static final HashMap<Locale, String> UPDATE = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "UPDATE GAME");
+        put(Locale.ITALY, "AGGIORNA GIOCO");
+    }};
 
     public static final HashMap<Locale, String> PLAYER = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "PLAYER");

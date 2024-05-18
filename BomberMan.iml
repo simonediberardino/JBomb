@@ -12,5 +12,6 @@
     <orderEntry type="library" name="jetbrains.kotlin.reflect" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:Latest" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:Release" level="project" />
+    <orderEntry type="library" name="github.kittinunf.fuel" level="project" />
   </component>
 </module>

@@ -5,16 +5,21 @@ import game.data.data.DataInputOutput
 import game.domain.level.levels.Level
 import game.domain.match.JBombMatch
 import game.domain.tasks.GarbageCollectorTask
+import game.usecases.CheckUpdateUseCase
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
 import game.presentation.ui.frames.JBombFrame
 import game.presentation.ui.pages.error.NetworkErrorPage
+import game.presentation.ui.pages.init.InitPanel
 import game.presentation.ui.pages.loading.LoadingPanel
 import game.presentation.ui.pages.main_menu.MainMenuPanel
 import game.presentation.ui.panels.game.CustomSoundMode
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.panels.game.PagePanel
 import game.presentation.ui.viewelements.misc.ToastHandler
+import game.utils.dev.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.awt.Component
 import java.util.*
@@ -26,6 +31,9 @@ object JBomb {
     @JvmStatic
     lateinit var JBombFrame: JBombFrame
     private var currentPage: Class<out PagePanel>? = null
+    val scope = CoroutineScope(Dispatchers.IO)
+    var outOfDate = false
+        private set
 
     /**
      * Starts the Java Application;
@@ -40,8 +48,7 @@ object JBomb {
     private fun start() {
         JBombFrame = JBombFrame()
         JBombFrame.create()
-        showActivity(MainMenuPanel::class.java)
-        ToastHandler.getInstance().show(Localization.get(Localization.WELCOME_TEXT).replace("%user%", DataInputOutput.getInstance().username))
+        showActivity(InitPanel::class.java)
     }
 
     private fun startGarbageCollectorTask() {

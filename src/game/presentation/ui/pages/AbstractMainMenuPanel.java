@@ -71,9 +71,4 @@ public abstract class AbstractMainMenuPanel extends BaseMenu {
 
         return new UsernameProfilePanel(getUsernameRunnable, usernameChangeConsumer);
     }
-
-    @Override
-    public void onShowCallback() {
-
-    }
 }

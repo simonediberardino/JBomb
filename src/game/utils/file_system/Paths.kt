@@ -85,4 +85,7 @@ object Paths {
 
     @JvmStatic
     val configXml: String get() = "$xmlPath/config.xml"
+
+    @JvmStatic
+    val versionXml: String get() = "$xmlPath/version.xml"
 }

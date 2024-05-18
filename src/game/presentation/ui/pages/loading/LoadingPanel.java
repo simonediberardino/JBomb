@@ -24,8 +24,9 @@ public class LoadingPanel extends PagePanel {
     private javax.swing.Timer animationTimer;
     private int textCurrX;
     private String text;
-    private Runnable onLoadingCallback;
+    protected Runnable onLoadingCallback;
     private boolean finished = false;
+    protected boolean allowAnim = true;
 
     public LoadingPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame, Level level) {
         this(cardLayout, parent, frame, "");
@@ -83,30 +84,37 @@ public class LoadingPanel extends PagePanel {
         int textHeight = fontMetrics.getHeight();
         int textEndX = rectangleX + (rectangleWidth - textWidth) / 2;
 
-        if (textCurrX > textEndX + TEXT_ANIM_STEP_SIZE) {
-            textCurrX = textCurrX - TEXT_ANIM_STEP_SIZE;
+        if (allowAnim) {
+            if (textCurrX > textEndX + TEXT_ANIM_STEP_SIZE) {
+                textCurrX = textCurrX - TEXT_ANIM_STEP_SIZE;
+            } else {
+                textCurrX = textEndX;
+            }
+
+            boolean centered = textCurrX == textEndX;
+            int textY = rectangleY + (rectangleHeight - textHeight) / 2 + fontMetrics.getAscent();
+            int textX = textCurrX;
+
+            g.drawString(text, textX, textY);
+
+            if (!centered && animationTimer == null) {
+                startAnimation();
+                return;
+            }
+
+            if (!finished) {
+                finished = true;
+                Timer t = new Timer(LOADING_TIMER, e -> {
+                    if (onLoadingCallback != null) onLoadingCallback.run();
+                });
+                t.setRepeats(false);
+                t.start();
+            }
         } else {
             textCurrX = textEndX;
-        }
-
-        boolean centered = textCurrX == textEndX;
-        int textY = rectangleY + (rectangleHeight - textHeight) / 2 + fontMetrics.getAscent();
-        int textX = textCurrX;
-
-        g.drawString(text, textX, textY);
-
-        if (!centered && animationTimer == null) {
-            startAnimation();
-            return;
-        }
-
-        if (!finished) {
-            finished = true;
-            Timer t = new Timer(LOADING_TIMER, e -> {
-                if (onLoadingCallback != null) onLoadingCallback.run();
-            });
-            t.setRepeats(false);
-            t.start();
+            int textY = rectangleY + (rectangleHeight - textHeight) / 2 + fontMetrics.getAscent();
+            int textX = textCurrX;
+            g.drawString(text, textX, textY);
         }
     }
 

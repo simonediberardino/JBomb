@@ -6,6 +6,7 @@ import game.localization.Localization;
 import game.presentation.ui.pages.arena.ArenaMenuPanel;
 import game.presentation.ui.pages.error.NetworkErrorPage;
 import game.presentation.ui.pages.game_over.GameOverPanel;
+import game.presentation.ui.pages.init.InitPanel;
 import game.presentation.ui.pages.loading.LoadingPanel;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
 import game.presentation.ui.pages.pause.PausePanel;
@@ -15,11 +16,10 @@ import game.presentation.ui.panels.menu.ProfilePanel;
 import game.presentation.ui.pages.settings.SettingsPanel;
 import game.presentation.ui.panels.game.MatchPanel;
 import game.presentation.ui.panels.game.PitchPanel;
-import game.presentation.ui.viewelements.misc.ToastHandler;
 import game.utils.file_system.Paths;
 import game.utils.Utility;
 import game.utils.dev.XMLUtils;
-
+import game.presentation.ui.viewelements.misc.ToastHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
@@ -55,7 +55,7 @@ public class JBombFrame extends JFrame {
     private ProfilePanel profilePanel;
     private SettingsPanel settingsPanel;
     private ArenaMenuPanel arenaMenuPanel;
-
+    private InitPanel initPanel;
     private NetworkErrorPage networkErrorPage;
 
     /**
@@ -65,6 +65,7 @@ public class JBombFrame extends JFrame {
         setIconImage(Utility.INSTANCE.loadImage(Paths.getIconPath()));
         setTitle(Localization.get(Localization.APP_NAME));
         setFrameProperties();
+        initInitPanel();
         initMenuPanel();
         initPlayMenuPanel();
         initServersListMenuPanel();
@@ -106,6 +107,11 @@ public class JBombFrame extends JFrame {
     private void initMenuPanel() {
         mainMenuPanel = new MainMenuPanel(cardLayout, parentPanel, this);
         parentPanel.add(mainMenuPanel, MainMenuPanel.class.getSimpleName());
+    }
+
+    private void initInitPanel() {
+        initPanel = new InitPanel(cardLayout, parentPanel, this);
+        parentPanel.add(initPanel, InitPanel.class.getSimpleName());
     }
 
     private void initPlayMenuPanel () {
