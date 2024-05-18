@@ -1,7 +1,8 @@
 
 high priorities:
 
-- handle update
+- più bombe contemporaneamente mp
+- uscita client
 - Villagers
 - Images;
 - database
