@@ -32,11 +32,10 @@ open class FiringEnemyState(
         attackDamage: Int = EntityInteractable.DEFAULT.ATTACK_DAMAGE,
         direction: Direction = MovingEntity.DEFAULT.DIRECTION,
         lastDirectionUpdate: Long = Character.DEFAULT.LAST_DIRECTION_UPDATE,
-
         previousDirection: Direction? = Character.DEFAULT.PREVIOUS_DIRECTION,
-        canMove: Boolean = Character.DEFAULT.CAN_MOVE,
+        canMove: Boolean = Character.DEFAULT.CAN_MOVE
 
-        ) : EnemyEntityState(
+) : EnemyEntityState(
         entity = entity,
         size = size,
         interactionEntities = interactionEntities,
@@ -54,7 +53,6 @@ open class FiringEnemyState(
         attackDamage = attackDamage,
         direction = direction,
         lastDirectionUpdate = lastDirectionUpdate,
-
         previousDirection = previousDirection,
         canMove = canMove
 ) {
