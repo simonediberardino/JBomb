@@ -34,9 +34,11 @@ abstract class Boss : AiEnemy {
         val MAX_HP: Int by lazy {
             JBomb.match.currentLevel.info.bossMaxHealth
         }
-        val OBSTACLES: Set<Class<out Entity>> = emptySet()
+        val OBSTACLES: Set<Class<out Entity>>
+            get() = emptySet()
         val DEATH_SOUND = SoundModel.BOSS_DEATH
-        val HEALTH_STATUS_MAP = TreeMap<Int, Int>()
+        val HEALTH_STATUS_MAP: TreeMap<Int, Int>
+            get() = TreeMap<Int, Int>()
         val START_RAGE_STATUS = 0
     }
 }

@@ -36,7 +36,6 @@ abstract class PowerUp : EntityInteractable {
                 BlockMoverPowerUp::class.java,
                 IncreaseMaxBombsPowerUp::class.java,
                 TransparentBombsPowerUp::class.java
-
         )
     }
 

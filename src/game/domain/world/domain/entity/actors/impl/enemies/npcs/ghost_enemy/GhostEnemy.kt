@@ -32,9 +32,11 @@ class GhostEnemy : AiEnemy {
     override val state: GhostEnemyState = GhostEnemyState(entity = this)
 
     internal object DEFAULT {
-        val OBSTACLES = emptySet<Class<out Entity>>()
+        val OBSTACLES: Set<Class<out Entity>>
+            get() = emptySet<Class<out Entity>>()
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
-        val IMAGE_DIRECTIONS: List<Direction> = listOf(Direction.RIGHT, Direction.LEFT)
+        val IMAGE_DIRECTIONS: List<Direction>
+            get() = listOf(Direction.RIGHT, Direction.LEFT)
         val HITBOX_SIZE_TO_WIDTH_RATIO = 0.837f
         val HITBOX_SIZE_TO_HEIGHT_RATIO = 1f
     }

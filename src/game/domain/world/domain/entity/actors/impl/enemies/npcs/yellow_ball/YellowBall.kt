@@ -34,7 +34,8 @@ class YellowBall : AiEnemy {
     override val properties: YellowBallProperties = YellowBallProperties(types = EntityTypes.YellowBall)
 
     internal object DEFAULT {
-        val IMAGE_DIRECTIONS = listOf(Direction.RIGHT, Direction.LEFT)
+        val IMAGE_DIRECTIONS: List<Direction>
+            get() = listOf(Direction.RIGHT, Direction.LEFT)
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
     }
 }

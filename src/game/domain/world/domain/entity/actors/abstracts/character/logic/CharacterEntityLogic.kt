@@ -37,7 +37,7 @@ abstract class CharacterEntityLogic(
     }
 
     override fun isAlive(): Boolean {
-        return entity.state.state != State.DIED
+        return entity.state.state != State.DIED && entity.state.state != State.DESPAWNING
     }
 
     override fun setAliveState(alive: Boolean) {
@@ -125,10 +125,11 @@ abstract class CharacterEntityLogic(
     }
 
     override fun eliminated() {
-        if (entity.state.state == State.DIED) {
+        if (entity.state.state == State.DESPAWNING) {
             return
         }
 
+        entity.state.state = State.DESPAWNING
         entity.state.eliminated = true
         onEliminated()
     }

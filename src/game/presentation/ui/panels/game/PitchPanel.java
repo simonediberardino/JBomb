@@ -138,6 +138,10 @@ public class PitchPanel extends JPanel implements Observer2 {
         if (entityName == null || entityName.isEmpty())
             return;
 
+        if (!e.getLogic().isAlive()) {
+            return;
+        }
+
         int x = e.getInfo().getPosition().getX();
         int y = e.getInfo().getPosition().getY();
         int size = (int) (double) e.getState().getSize();
@@ -148,8 +152,9 @@ public class PitchPanel extends JPanel implements Observer2 {
         Dimension buttonSize = playerButton.getPreferredSize();
         playerButton.setSize(buttonSize);
 
+        int centerX = x + e.getState().getSize() / 2;
         // Position the button (slightly down from the head and centered)
-        int buttonX = x - buttonSize.width / 5;
+        int buttonX = centerX - buttonSize.width / 2;
         int buttonY = y - size / 2 - buttonSize.height;
 
         // Draw the button on the Graphics2D context

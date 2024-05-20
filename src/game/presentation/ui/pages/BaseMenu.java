@@ -14,6 +14,8 @@ import java.util.List;
 
 public abstract class BaseMenu extends PagePanel {
     protected JPanel listButtonsPanel;
+    private JPanel leftPanel = null;
+    private JPanel rightPanel = null;
 
     public BaseMenu(CardLayout cardLayout, JPanel parent, JBombFrame frame, String imagePath) {
         super(cardLayout, parent, frame, imagePath);
@@ -56,13 +58,13 @@ public abstract class BaseMenu extends PagePanel {
     }
 
     private void createRightPanel() {
-        JPanel p = getRightPanel();
-        createSidePanel(p, BorderLayout.EAST);
+        rightPanel = getRightPanel();
+        createSidePanel(rightPanel, BorderLayout.EAST);
     }
 
     private void createLeftPanel() {
-        JPanel p = getLeftPanel();
-        createSidePanel(p, BorderLayout.WEST);
+        leftPanel = getLeftPanel();
+        createSidePanel(leftPanel, BorderLayout.WEST);
     }
 
     private void addButtons() {
@@ -126,8 +128,16 @@ public abstract class BaseMenu extends PagePanel {
         repaint();
     }
 
+    private void refreshPanels() {
+        leftPanel.repaint();
+        rightPanel.repaint();
+    }
+
     @Override
     public void onShowCallback() {
         refreshButtons();
+        refreshPanels();
+        revalidate();
+        repaint();
     }
 }

@@ -49,9 +49,4 @@ public class ArenaMenuPanel extends AbstractMainMenuPanel {
         b.addActionListener(l -> JBomb.showActivity(PlayMenuPanel.class));
         return b;
     }
-
-    @Override
-    public void onShowCallback() {
-
-    }
 }

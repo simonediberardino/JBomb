@@ -5,6 +5,7 @@ import game.localization.Localization;
 import game.presentation.ui.panels.models.JBombermanBoxContainerPanel;
 import game.presentation.ui.viewelements.settings.JBombInputField;
 import game.utils.Utility;
+import game.utils.dev.Log;
 import game.values.Dimensions;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import static game.localization.Localization.USERNAME;
 public class UsernameProfilePanel extends JBombermanBoxContainerPanel {
     private final RunnablePar getUsernameRunnable;
     private final Consumer<String> callback;
+    private JBombInputField inputTextField = null;
 
     public UsernameProfilePanel(RunnablePar getUsernameRunnable, Consumer<String> callback) {
         super(Localization.get(USERNAME), false);
@@ -31,8 +33,16 @@ public class UsernameProfilePanel extends JBombermanBoxContainerPanel {
 
     @Override
     protected void addCustomElements() {
-        JTextField j = new JBombInputField((String) getUsernameRunnable.execute(null), callback);
-        j.setPreferredSize(new Dimension(calculateContainerWidth() - Dimensions.DEFAULT_X_PADDING, (int) j.getPreferredSize().getHeight()));
-        addComponent(j);
+        inputTextField = new JBombInputField((String) getUsernameRunnable.execute(null), callback);
+        inputTextField.setPreferredSize(new Dimension(calculateContainerWidth() - Dimensions.DEFAULT_X_PADDING, (int) inputTextField.getPreferredSize().getHeight()));
+        addComponent(inputTextField);
+    }
+
+    @Override
+    public void repaint() {
+        super.repaint();
+        if (inputTextField != null) {
+            inputTextField.setText((String) getUsernameRunnable.execute(null));
+        }
     }
 }

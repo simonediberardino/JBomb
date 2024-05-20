@@ -44,7 +44,7 @@ class InitPanel(
     }
 
     override fun onShowCallback() {
-        ToastHandler.getInstance().show(Localization.get(Localization.LOADING_INIT))
+        ToastHandler.getInstance().show(Localization.get(Localization.LOADING_INIT), true, true)
 
         JBomb.scope.launch {
             val needsUpdate = CheckUpdateUseCase().invoke()
@@ -56,6 +56,7 @@ class InitPanel(
 
     private fun proceedIfFinished() {
         if (loadingFinished && responseReceived) {
+            ToastHandler.getInstance().cancel()
             JBomb.showActivity(MainMenuPanel::class.java)
         }
     }

@@ -192,9 +192,11 @@ class JBombMatch(
      */
     fun updateInventoryWeaponController() {
         player ?: return
-        val playerItem = player!!.state.weapon
-        inventoryElementControllerBombs.setImagePath(playerItem.imagePath)
-        inventoryElementControllerBombs.setNumItems(playerItem.count)
+        try {
+            val playerItem = player!!.state.weapon
+            inventoryElementControllerBombs.setImagePath(playerItem.imagePath)
+            inventoryElementControllerBombs.setNumItems(playerItem.count)
+        } catch (_: UninitializedPropertyAccessException) {}
     }
 
     /**

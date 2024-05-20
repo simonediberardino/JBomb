@@ -10,6 +10,8 @@ import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
+import game.presentation.ui.viewelements.settings.JBombTextFieldTagged;
+import game.properties.RuntimeProperties;
 import game.utils.Utility;
 import game.utils.file_system.Paths;
 
@@ -19,6 +21,7 @@ import java.awt.*;
 import static game.localization.Localization.*;
 
 public class ServersListMenuPanel extends BoxMenuPanel {
+    private JBombTextFieldTagged input = null;
     protected String enteredIpAddress = "";
 
     public ServersListMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
@@ -32,7 +35,14 @@ public class ServersListMenuPanel extends BoxMenuPanel {
     }
 
     private void addIpTextField() {
-        boxComponentsPanel.addTextFieldElementView(Localization.get(SERVERS_LIST_INPUT), Localization.get(INSERT), new RunnablePar() {
+        String lastConnectedIp = RuntimeProperties.INSTANCE.getLastConnectedIp();
+        String ipAddressInputText = lastConnectedIp.isEmpty() ? Localization.get(INSERT) : lastConnectedIp;
+
+        if (!lastConnectedIp.isEmpty()) {
+            enteredIpAddress = lastConnectedIp;
+        }
+
+        input = boxComponentsPanel.addTextFieldElementView(Localization.get(SERVERS_LIST_INPUT), ipAddressInputText, new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
                 if (par.toString().isEmpty()) return null;
@@ -49,6 +59,7 @@ public class ServersListMenuPanel extends BoxMenuPanel {
     }
 
     private void connect() {
+        RuntimeProperties.INSTANCE.setLastConnectedIp(enteredIpAddress);
         JBomb.startLevel(new WaitingRoomLevel(), new ClientGameHandler(enteredIpAddress, 28960));
     }
 
@@ -70,6 +81,5 @@ public class ServersListMenuPanel extends BoxMenuPanel {
     @Override
     public void onShowCallback() {
         super.onShowCallback();
-        enteredIpAddress = "";
     }
 }

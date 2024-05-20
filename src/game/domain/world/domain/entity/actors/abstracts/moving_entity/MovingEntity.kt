@@ -15,8 +15,10 @@ abstract class MovingEntity : EntityInteractable {
     abstract override val properties: MovingEntityProperties
 
     internal object DEFAULT {
-        val SUPPORTED_DIRECTIONS = Direction.values().asList()
+        val SUPPORTED_DIRECTIONS: List<Direction>
+            get() = Direction.values().asList()
         val STEP_SOUND = null
-        val DIRECTION = Direction.DOWN
+        val DIRECTION: Direction
+            get() = Direction.DOWN
     }
 }

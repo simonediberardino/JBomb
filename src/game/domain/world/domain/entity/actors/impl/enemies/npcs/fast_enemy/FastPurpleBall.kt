@@ -40,6 +40,7 @@ class FastPurpleBall : AiEnemy {
         val SPEED = 1.5f
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
         const val HITBOX_SIZE_TO_HEIGHT_RATIO = 0.527f
-        val IMAGE_DIRECTIONS: List<Direction> = listOf(Direction.RIGHT, Direction.LEFT)
+        val IMAGE_DIRECTIONS: List<Direction>
+            get() = listOf(Direction.RIGHT, Direction.LEFT)
     }
 }

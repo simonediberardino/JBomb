@@ -20,6 +20,7 @@ abstract class FlyingEnemy : AiEnemy {
     override val state: EnemyEntityState = FlyingEnemyState(entity = this)
 
     internal object DEFAULT {
-        val WHITELIST_OBSTACLES: MutableSet<Class<out Entity>> = mutableSetOf(DestroyableBlock::class.java)
+        val WHITELIST_OBSTACLES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf(DestroyableBlock::class.java)
     }
 }

@@ -26,7 +26,9 @@ abstract class Enemy : Character {
 
     internal object DEFAULT {
         val SIZE = PitchPanel.GRID_SIZE
-        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = hashSetOf(BomberEntity::class.java, AbstractExplosion::class.java) // Or player?
-        val OBSTACLES = mutableSetOf(Bomb::class.java, Enemy::class.java, HardBlock::class.java, DestroyableBlock::class.java)
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>>  // Or player?
+            get() = hashSetOf(BomberEntity::class.java, AbstractExplosion::class.java)
+        val OBSTACLES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf(Bomb::class.java, Enemy::class.java, HardBlock::class.java, DestroyableBlock::class.java)
     }
 }

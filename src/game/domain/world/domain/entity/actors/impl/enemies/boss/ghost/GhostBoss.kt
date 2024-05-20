@@ -27,8 +27,10 @@ class GhostBoss : Boss {
     }
 
     internal object DEFAULT {
-        val IMAGE_DIRECTIONS = listOf(Direction.RIGHT, Direction.LEFT)
-        val HEALTH_STATUS_MAP = TreeMap<Int, Int>()
+        val IMAGE_DIRECTIONS: List<Direction>
+            get() = listOf(Direction.RIGHT, Direction.LEFT)
+        val HEALTH_STATUS_MAP: TreeMap<Int, Int>
+            get() = TreeMap<Int, Int>()
         val HITBOX_SIZE_TO_WIDTH_RATIO = 0.648f
         val HITBOX_SIZE_TO_HEIGHT_RATIO = 0.70f
     }

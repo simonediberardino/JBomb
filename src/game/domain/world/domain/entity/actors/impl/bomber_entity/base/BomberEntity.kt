@@ -82,14 +82,17 @@ abstract class BomberEntity : Character, Explosive {
     internal object DEFAULT {
         val STEP_SOUND = SoundModel.STEP_SOUND
 
-        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf(
-                AbstractExplosion::class.java,
-                Enemy::class.java,
-                PowerUp::class.java
-        )
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf(
+                    AbstractExplosion::class.java,
+                    Enemy::class.java,
+                    PowerUp::class.java
+            )
 
         const val MAX_HP = 300
-        val MOUSE_CLICK_INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf(MysteryBox::class.java)
-        val MOUSE_DRAG_INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf()
+        val MOUSE_CLICK_INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf(MysteryBox::class.java)
+        val MOUSE_DRAG_INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf()
     }
 }

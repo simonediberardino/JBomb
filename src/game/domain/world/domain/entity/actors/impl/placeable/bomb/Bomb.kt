@@ -92,13 +92,14 @@
         internal object DEFAULT {
             val SIZE = PitchPanel.COMMON_DIVISOR * 2
 
-            val EXPLOSION_OBSTACLES: Set<Class<out Entity>> =
-                    setOf(HardBlock::class.java)
+            val EXPLOSION_OBSTACLES: Set<Class<out Entity>>
+                get() = setOf(HardBlock::class.java)
 
-            val EXPLOSION_INTERACTION_ENTITIES: Set<Class<out Entity>> =
-                    setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)
+            val EXPLOSION_INTERACTION_ENTITIES: Set<Class<out Entity>>
+                get() = setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)
 
-            val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = hashSetOf(AbstractExplosion::class.java)
+            val INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
+                get() = hashSetOf(AbstractExplosion::class.java)
         }
     }
 

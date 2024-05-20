@@ -35,6 +35,7 @@ class Player : BomberEntity {
     }
 
     internal object DEFAULT {
-        val DEATH_SOUND = SoundModel.PLAYER_DEATH
+        val DEATH_SOUND: SoundModel
+            get() = SoundModel.PLAYER_DEATH
     }
 }

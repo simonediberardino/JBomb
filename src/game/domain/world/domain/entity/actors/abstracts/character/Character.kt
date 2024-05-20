@@ -61,11 +61,15 @@ abstract class Character : MovingEntity {
         val MAX_HP = 100
         val SPEED = 1f
         val STEP_SOUND = null
-        val IMAGE_DIRECTIONS = Direction.values().asList()
-        val DEATH_SOUND = SoundModel.ENTITY_DEATH
+        val IMAGE_DIRECTIONS: List<Direction>
+            get() = Direction.values().asList()
+        val DEATH_SOUND: SoundModel
+            get() = SoundModel.ENTITY_DEATH
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
-        val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_2
+        val DRAW_PRIORITY: DrawPriority
+            get() = DrawPriority.DRAW_PRIORITY_2
         val HITBOX_SIZE_TO_HEIGHT_RATIO: Float = 0.733f
-        val STEP_SIZE = PitchPanel.PIXEL_UNIT
+        val STEP_SIZE: Int
+            get() = PitchPanel.PIXEL_UNIT
     }
 }

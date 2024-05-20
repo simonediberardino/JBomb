@@ -265,7 +265,10 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         val STATE = null
         val SPAWNED: Boolean = false
         val IMMUNE: Boolean = false
-        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = mutableSetOf()
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
+            get() {
+                return mutableSetOf()
+            }
         val ENTITIES_ASSETS_PATH = ""
         val HITBOX_WIDTH_RATIO = 1f
         val HITBOX_HEIGHT_RATIO = 1f
@@ -276,7 +279,8 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         val IMAGE_PATH = ""
         val IMAGE = null
         val CAN_RESPAWN = false
-        val UI_STATE = UiState.IDLE
+        val UI_STATE: UiState
+            get() = UiState.IDLE
         var imagePath: String = Entity.DEFAULT.IMAGE_PATH
     }
 }
