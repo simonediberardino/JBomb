@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHa
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.BombExplodedEventForwarder
+import kotlinx.coroutines.launch
 import java.util.*
 
 class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), IBombLogic {
@@ -28,6 +29,8 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
         super.onSpawn()
         JBomb.match.gameTickerObservable?.register(entity)
     }
+
+    override fun notifySpawn() {}
 
     override fun onDespawn() {
         super.onDespawn()
@@ -59,21 +62,23 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
         exploded = true
         eliminated()
 
-        // TODO CHANGED
-        ExplosionHandler.instance.process {
-            // Trigger explosions in all directions
-            Direction.values().map {
-                FireExplosion(
-                        entity.state.caller,
-                        entity.info.position,
-                        it,
-                        entity
-                ).logic.explode()
+        JBomb.match.scope.launch {
+            // TODO CHANGED
+            ExplosionHandler.instance.process {
+                // Trigger explosions in all directions
+                Direction.values().map {
+                    FireExplosion(
+                            entity.state.caller,
+                            entity.info.position,
+                            it,
+                            entity
+                    ).logic.explode()
+                }
             }
-        }
 
-        // Invoke the explosion callback if set
-        onExplodeCallback?.invoke()
+            // Invoke the explosion callback if set
+            onExplodeCallback?.invoke()
+        }
     }
 
     override fun trigger() {

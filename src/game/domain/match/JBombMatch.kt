@@ -254,8 +254,6 @@ class JBombMatch(
         synchronized(_despawnedEntitiesMap) {
             _despawnedEntitiesMap.remove(entity.info.id)
         }
-
-        performGarbageCollection()
     }
 
     fun removeEntity(entity: Entity) {
@@ -272,11 +270,6 @@ class JBombMatch(
         }
 
         entity.logic.onRemoved()
-
-        scope.launch {
-            delay(500)
-            performGarbageCollection()
-        }
     }
 
     /**
