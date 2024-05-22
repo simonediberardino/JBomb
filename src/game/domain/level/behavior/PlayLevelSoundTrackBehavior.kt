@@ -17,7 +17,7 @@ class PlayLevelSoundTrackBehavior(private val level: Level) : GameBehavior() {
     }
 
     private fun playSoundTrack() {
-        AudioManager.getInstance().stopBackgroundSong()
-        AudioManager.getInstance().playBackgroundSong(level.info.levelSoundtrack)
+        AudioManager.instance.stopBackgroundSong()
+        AudioManager.instance.playBackgroundSong(level.info.levelSoundtrack)
     }
 }

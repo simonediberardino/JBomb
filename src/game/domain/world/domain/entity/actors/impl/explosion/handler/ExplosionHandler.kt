@@ -10,7 +10,7 @@ class ExplosionHandler private constructor() {
     }
 
     fun process(sound: SoundModel = SoundModel.EXPLOSION, explosions: () -> List<AbstractExplosion>) {
-        AudioManager.getInstance().play(sound)
+        AudioManager.instance.play(sound)
 
         explosions.invoke()
     }

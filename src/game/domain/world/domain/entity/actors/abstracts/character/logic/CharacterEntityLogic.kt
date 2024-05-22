@@ -59,7 +59,7 @@ abstract class CharacterEntityLogic(
     override fun onStep() {
         val stepSound = entity.properties.stepSound
         if (stepSound != null)
-            AudioManager.getInstance().play(stepSound, false)
+            AudioManager.instance.play(stepSound, false)
     }
 
     /**
@@ -174,7 +174,7 @@ abstract class CharacterEntityLogic(
 
     override fun onEliminated() {
         entity.state.canMove = false
-        AudioManager.getInstance().play(entity.properties.deathSound)
+        AudioManager.instance.play(entity.properties.deathSound)
 
         // Create a Timer object to schedule the animation iterations
         val timer = javax.swing.Timer(EntityInteractable.INTERACTION_DELAY_MS.toInt()) { _: ActionEvent? ->

@@ -24,7 +24,7 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
         if (entity.state.currRageStatus == 1)
             return
 
-        AudioManager.getInstance().play(SoundModel.AXE_HIT)
+        AudioManager.instance.play(SoundModel.AXE_HIT)
         updateRageStatus(1)
 
         val t = Timer(ATTACK_RESET_DELAY) { _: ActionEvent? ->

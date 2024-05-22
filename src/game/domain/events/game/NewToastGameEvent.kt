@@ -9,7 +9,7 @@ class NewToastGameEvent : GameEvent {
     override fun invoke(arg: Any?) {
         JBomb.JBombFrame.parentPanel.repaint()
         if (arg as Boolean) {
-            AudioManager.getInstance().play(SoundModel.BONUS_ALERT)
+            AudioManager.instance.play(SoundModel.BONUS_ALERT)
         }
     }
 }

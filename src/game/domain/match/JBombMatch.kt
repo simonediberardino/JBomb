@@ -1,6 +1,7 @@
 package game.domain.match
 
 import game.JBomb
+import game.audio.AudioManager
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
@@ -336,7 +337,6 @@ class JBombMatch(
     }
 
     fun updateEnemiesAliveCount(count: Int) {
-        Log.e("Enemies alive count $count")
         enemiesAlive = count
     }
 
@@ -406,7 +406,7 @@ class JBombMatch(
      * Stops the sound associated with the current game level.
      */
     private fun stopLevelSound() {
-        currentLevel.currentLevelSound?.stop()
+        AudioManager.instance.stop(currentLevel.currentLevelSound ?: return)
     }
 
     /**

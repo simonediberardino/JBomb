@@ -66,7 +66,7 @@
 
             override fun onImageChanged(entity: Entity) {
                 super.onImageChanged(entity)
-                AudioManager.getInstance().play(SoundModel.BOMB_CLOCK)
+                AudioManager.instance.play(SoundModel.BOMB_CLOCK)
             }
         }
 

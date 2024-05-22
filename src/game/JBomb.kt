@@ -27,11 +27,11 @@ import javax.swing.SwingUtilities
 
 object JBomb {
     lateinit var match: JBombMatch
-
     @JvmStatic
     lateinit var JBombFrame: JBombFrame
     private var currentPage: Class<out PagePanel>? = null
     val scope = CoroutineScope(Dispatchers.IO)
+
     var outOfDate = false
         private set
 
@@ -157,7 +157,7 @@ object JBomb {
             shownComponent.onShowCallback()
 
         if (shownComponent !is CustomSoundMode) {
-            AudioManager.getInstance().playBackgroundSong()
+            AudioManager.instance.playBackgroundSong()
         }
     }
 

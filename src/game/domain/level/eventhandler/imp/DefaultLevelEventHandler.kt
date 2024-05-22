@@ -29,7 +29,7 @@ open class DefaultLevelEventHandler : LevelEventHandler {
     }
 
     override fun onPurchaseItem(price: Int) {
-        AudioManager.getInstance().play(SoundModel.BONUS_ALERT)
+        AudioManager.instance.play(SoundModel.BONUS_ALERT)
         DataInputOutput.getInstance().decreaseScore(price)
         JBomb.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }

@@ -31,7 +31,7 @@ abstract class PowerUpLogic(
         doApply(player)
 
         val matchPanel = JBomb.JBombFrame.matchPanel
-        AudioManager.getInstance().play(SoundModel.POWERUP)
+        AudioManager.instance.play(SoundModel.POWERUP)
 
         player.state.activePowerUps.add(entity.javaClass)
 

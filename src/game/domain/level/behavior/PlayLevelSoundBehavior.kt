@@ -23,7 +23,8 @@ class PlayLevelSoundBehavior(private val level: Level): GameBehavior() {
         // Attempt to load the resource as an InputStream
         classLoader.getResourceAsStream(soundPath)?.use { soundStream ->
             // If the resource exists, play it using AudioManager
-            level.currentLevelSound = AudioManager.getInstance().play(soundPath, true)
+            AudioManager.instance.play(soundPath, true)
+            level.currentLevelSound = soundPath
         }
     }
 }

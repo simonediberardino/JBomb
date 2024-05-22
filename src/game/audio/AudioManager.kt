@@ -1,36 +1,26 @@
-package game.audio;
+package game.audio
+
+import com.sun.org.apache.xerces.internal.xinclude.XIncludeHandler.BUFFER_SIZE
+import game.JBomb
+import game.data.cache.Cache
+import game.data.data.DataInputOutput
+import game.utils.byte_utils.ByteUtils.readAllBytes
+import game.utils.dev.Log
+import game.utils.file_system.Paths.defaultSoundTrack
+import kotlinx.coroutines.launch
+import java.io.BufferedInputStream
+import java.io.ByteArrayInputStream
+import java.io.IOException
+import java.util.*
+import javax.sound.sampled.*
+import kotlin.math.abs
+import kotlin.math.max
 
 
-import game.data.data.DataInputOutput;
-import game.utils.file_system.Paths;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
-import javax.sound.sampled.*;
-
-public class AudioManager {
-    private static int MAX_VOLUME_MANAGER = 20;
-    private static float MAX_VOLUME = 5f;
-    private static float MIN_VOLUME = -5f;
-    private static AudioManager instance;
-    private final HashMap<String, LinkedList<Clip>> audioHashMap = new HashMap<>();
-    private String currentBackgroundSong = "";
-
-    private AudioManager() {
-    }
-
-    public static AudioManager getInstance() {
-        if (instance == null)
-            instance = new AudioManager();
-        return instance;
-    }
-
-    public Clip play(SoundModel soundModel) {
-        return play(soundModel, false);
-    }
+class AudioManager private constructor() {
+    // Hashmap containing data of current playing sounds
+    private val audioHashMap = HashMap<String, LinkedList<Pair<SourceDataLine, AudioInputStream>>>()
+    private var currentBackgroundSong = ""
 
     /**
      * Plays the specified sound model.
@@ -39,112 +29,160 @@ public class AudioManager {
      * @param loop       Determines whether the sound should be played in a loop.
      * @return
      */
-    public Clip play(SoundModel soundModel, boolean loop) {
-        return play(soundModel.toString(), loop, calculateVolumeFromStorage());
+    @JvmOverloads
+    fun play(soundModel: SoundModel, loop: Boolean = false) {
+        play(soundModel.toString(), loop, calculateVolumeFromStorage())
     }
 
-    public Clip play(String sound, boolean loop) {
-        return play(sound, loop, calculateVolumeFromStorage());
+    fun play(soundModel: SoundModel, loop: Boolean, volumePercentage: Int) {
+        play(soundModel.toString(), loop, volumePercentage)
     }
 
-    public Clip play(SoundModel soundModel, boolean loop, int volumePercentage) {
-        return play(soundModel.toString(), loop, volumePercentage);
-    }
+    @JvmOverloads
+    fun play(
+            sound: String,
+            loop: Boolean,
+            volumePercentage: Int = calculateVolumeFromStorage()
+    ) {
+        val cache = Cache.instance
 
+        JBomb.scope.launch {
+            try {
+                var audioData: ByteArray?
 
-    public Clip play(String sound, boolean loop, int volumePercentage) {
-        try {
-            InputStream in = new BufferedInputStream(getClass().getResourceAsStream(String.format("/%s", sound)));
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(in);
-            Clip clip = AudioSystem.getClip();
-
-            clip.open(audioIn);
-
-            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float maxVolume = volume.getMaximum();
-            float minVolume = volume.getMinimum();
-            float diffVolume = Math.abs(maxVolume - minVolume);
-            float volumeValue = minVolume + diffVolume * (volumePercentage / 100f);
-            volume.setValue(volumeValue);
-
-            addSoundToHashMap(sound, clip);
-
-            if (loop) {
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-                return clip;
-            }
-
-            //if clip doesn't loop continuosly, it is removed automatically from hashmap when it stops
-            clip.addLineListener(e -> {
-                if (e.getType() == LineEvent.Type.STOP) {
-                    removeSoundFromHashMap(sound).close();
+                // Check if the audio data is already in the cache
+                if (cache.hasInCache(sound)) {
+                    audioData = cache.queryCache<ByteArray>(sound)
+                } else {
+                    // If the audio data is not in the cache, load it from the resource stream
+                    BufferedInputStream(javaClass.getResourceAsStream(String.format("/%s", sound))).use { `in` ->
+                        audioData = readAllBytes(`in`)
+                        cache.saveInCache(sound, audioData)
+                    }
                 }
-            });
-            clip.start();
 
-            return clip;
-        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e1) {
-            e1.printStackTrace();
+                ByteArrayInputStream(audioData).use { byteArrayInputStream ->
+                    AudioSystem.getAudioInputStream(byteArrayInputStream).use { audioIn ->
+                        val format: AudioFormat = audioIn.format
+
+                        val info = DataLine.Info(SourceDataLine::class.java, format)
+
+                        val audioLine = AudioSystem.getLine(info) as SourceDataLine
+                        audioLine.open(format)
+
+                        // Set the volume
+                        val volumeControl = audioLine.getControl(FloatControl.Type.MASTER_GAIN) as FloatControl
+                        val maxVolume = volumeControl.maximum
+                        val minVolume = volumeControl.minimum
+                        val diffVolume = abs((maxVolume - minVolume).toDouble()).toFloat()
+                        val volumeValue = minVolume + diffVolume * (volumePercentage / 100f)
+                        volumeControl.setValue(volumeValue)
+
+                        addSoundToHashMap(sound, Pair(audioLine, audioIn))
+
+                        audioLine.start()
+
+                        val bytesBuffer = ByteArray(4096)
+                        var bytesRead = -1
+
+                        while (audioIn.read(bytesBuffer).also { bytesRead = it } != -1) {
+                            audioLine.write(bytesBuffer, 0, bytesRead)
+                        }
+
+                        // If looping, continuously write the audio data
+                        if (loop) {
+                            while (true) {
+                                audioIn.reset()
+                                while (audioIn.read(bytesBuffer).also { bytesRead = it } != -1) {
+                                    audioLine.write(bytesBuffer, 0, bytesRead)
+                                }
+                            }
+                        }
+
+                        audioLine.drain()
+                        audioLine.close()
+                        audioIn.close()
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } catch (e: UnsupportedAudioFileException) {
+                e.printStackTrace()
+            } catch (e: LineUnavailableException) {
+                e.printStackTrace()
+            } finally {
+                // Close the SourceDataLine when done
+                stop(sound)
+            }
+        }
+    }
+
+    private fun calculateVolumeFromStorage(): Int {
+        val storedVolume = DataInputOutput.getInstance().volume
+        val percentage = (storedVolume.toDouble() + 5) / 10.0 * 100.0
+        return max(percentage, 0.0).toInt() // Ensure the percentage is not less than 0%
+    }
+
+    private fun addSoundToHashMap(soundModelString: String, obj: Pair<SourceDataLine, AudioInputStream>) {
+        val tempList: MutableList<Pair<SourceDataLine, AudioInputStream>>? = audioHashMap[soundModelString]
+        if (tempList == null) {
+            audioHashMap[soundModelString] = LinkedList(linkedSetOf(obj))
+            return
         }
 
-        return null;
+        tempList.add(obj)
     }
 
-    public int calculateVolumeFromStorage() {
-        int storedVolume = DataInputOutput.getInstance().getVolume();
-
-        double percentage = ((double) storedVolume + 5) / 10.0 * 100.0;
-        return (int) Math.max(percentage, 0.0); // Ensure the percentage is not less than 0%
+    private fun removeSoundFromHashMap(soundModelString: String): Pair<SourceDataLine, AudioInputStream>? {
+        val map = audioHashMap[soundModelString] ?: return null
+        val dataLine = map.pop()
+        if (map.isEmpty()) audioHashMap.remove(soundModelString)
+        return dataLine
     }
 
-    public void addSoundToHashMap(String soundModelString, Clip obj) {
-        List<Clip> tempList = audioHashMap.get(soundModelString);
-        if (tempList == null) audioHashMap.put(soundModelString, new LinkedList<>(Collections.singletonList(obj)));
-        else tempList.add(obj);
-    }
+    private fun stopAllInstancesOfSound(soundModelString: String) {
+        val iterator = audioHashMap[soundModelString]?.iterator() ?: return
 
-    public Clip removeSoundFromHashMap(String soundModelString) {
-        LinkedList<Clip> map = audioHashMap.get(soundModelString);
-
-        if (map == null) {
-            return null;
-        }
-
-        Clip c = map.pop();
-        if (map.isEmpty()) audioHashMap.remove(soundModelString);
-        return c;
-    }
-
-    public void stopAllInstancesOfSound(String soundModelString) {
-        Clip c;
-        while ((c = removeSoundFromHashMap(soundModelString)) != null) {
-            c.close();
+        while (iterator.hasNext()) {
+            val pair = iterator.next()
+            stop(pair)
+            iterator.remove()
         }
     }
 
-    public void playBackgroundSong() {
-        playBackgroundSong(Paths.getDefaultSoundTrack());
-    }
+    @JvmOverloads
+    fun playBackgroundSong(newSong: String = defaultSoundTrack) {
+        if (currentBackgroundSong == newSong)
+            return
 
-    public void playBackgroundSong(String newSong) {
-        if (currentBackgroundSong.equals(newSong)) return;
-
-        if (!currentBackgroundSong.isEmpty()) {
-            stopAllInstancesOfSound(currentBackgroundSong);
+        if (currentBackgroundSong.isNotEmpty()) {
+            stopAllInstancesOfSound(currentBackgroundSong)
         }
 
-        currentBackgroundSong = newSong;
-        play(currentBackgroundSong, true);
+        currentBackgroundSong = newSong
+        play(currentBackgroundSong, true)
     }
 
-    public void stopBackgroundSong() {
-        stopAllInstancesOfSound(currentBackgroundSong);
-        currentBackgroundSong = "";
+    fun stopBackgroundSong() {
+        stopAllInstancesOfSound(currentBackgroundSong)
+        currentBackgroundSong = ""
     }
 
-    public void stop(String soundModelString) {
-        Clip c = removeSoundFromHashMap(soundModelString);
-        if (c != null) c.stop();
+    fun stop(soundModelString: String) {
+        stop(removeSoundFromHashMap(soundModelString) ?: return)
     }
 
+    private fun stop(data: Pair<SourceDataLine, AudioInputStream>) {
+        data.first.stop()
+        data.first.drain()
+        data.second.close()
+    }
+
+    companion object {
+        private const val MAX_VOLUME_MANAGER = 20
+        private const val MAX_VOLUME = 5f
+        private const val MIN_VOLUME = -5f
+        @JvmStatic
+        val instance: AudioManager by lazy { AudioManager() }
+    }
 }

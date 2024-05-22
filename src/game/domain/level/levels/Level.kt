@@ -33,7 +33,7 @@ abstract class Level {
     }
 
     lateinit var field: JPanel
-    var currentLevelSound: Clip? = null
+    var currentLevelSound: String? = null
 
     abstract fun endLevel()
     abstract fun onStartLevel()

@@ -49,7 +49,7 @@ open class BossEntityLogic(override val entity: Boss) : AiEnemyLogic(entity = en
 
     override fun onEliminated() {
         super.onEliminated()
-        AudioManager.getInstance().play(SoundModel.BOSS_DEATH)
+        AudioManager.instance.play(SoundModel.BOSS_DEATH)
     }
 
     /**
