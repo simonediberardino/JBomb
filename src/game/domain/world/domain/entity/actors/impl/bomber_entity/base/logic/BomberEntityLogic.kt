@@ -34,6 +34,16 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         }
     }
 
+    override fun onAdded() {
+        super.onAdded()
+        JBomb.match.players.add(entity)
+    }
+
+    override fun onRemoved() {
+        super.onRemoved()
+        JBomb.match.players.removeIf { e -> e.info.id == entity.info.id}
+    }
+
     override fun initBombVariables() {
         UpdateMaxBombsEvent().invoke(DataInputOutput.getInstance().obtainedBombs)
     }

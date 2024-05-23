@@ -64,14 +64,28 @@ abstract class EntityInteractableLogic(
         }
     }
 
+    /**
+     * This function is used to interact with an entity and update the last interaction time.
+     * It checks if enough time has passed since the last interaction, and if so, it interacts with the entity and updates the last interaction time.
+     *
+     * @param e The entity to interact with.
+     */
     @Synchronized
     override fun interactAndUpdateLastInteract(e: Entity?) {
+        // Check if enough time has passed since the last interaction
         if (timePassed(entity.state.lastInteractionTime) < EntityInteractable.INTERACTION_DELAY_MS) {
-            return
+            return // If not enough time has passed, exit the function
         }
-        doInteract(e) // Interact with the entity.
+
+        // Update the last interaction time to the current time
+        entity.state.lastInteractionTime = now()
+
+        // Interact with the entity
+        doInteract(e)
+
+        // If the entity is an instance of EntityInteractable, update the last interaction for this entity
         if (e is EntityInteractable) {
-            updateLastInteract(e) // Update the last interaction for this entity.
+            updateLastInteract(e)
         }
     }
 

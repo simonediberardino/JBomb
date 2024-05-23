@@ -71,6 +71,9 @@ class JBombMatch(
     // Player information (nullable)
     var player: Player? = null
 
+    var players: MutableList<BomberEntity> = mutableListOf()
+        private set
+
     // List of bombs in the game
     val bombs = ArrayList<Bomb>()
 

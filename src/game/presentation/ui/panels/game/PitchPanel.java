@@ -118,7 +118,7 @@ public class PitchPanel extends JPanel implements Observer2 {
             }
         }
 
-        if (player != null && !JBomb.match.isOnlyPlayer() && player.getLogic().isAlive()) {
+        if (player != null && !JBomb.match.isOnlyPlayer()) {
             drawEntityArrowhead(g2d, player);
         }
 
@@ -138,7 +138,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         if (entityName == null || entityName.isEmpty())
             return;
 
-        if (!e.getLogic().isAlive()) {
+        if (!e.getLogic().isAlive() || e.getState().getEliminated()) {
             return;
         }
 

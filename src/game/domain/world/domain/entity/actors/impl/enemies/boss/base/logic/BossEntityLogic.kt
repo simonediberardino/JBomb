@@ -17,7 +17,7 @@ open class BossEntityLogic(override val entity: Boss) : AiEnemyLogic(entity = en
         val gameBehavior: GameBehavior = object : GameBehavior() {
             override fun hostBehavior(): () -> Unit {
                 return {
-                    val endLevelPortal: PowerUp = EndLevelPortal(Coordinates.generateCoordinatesAwayFromPlayer())
+                    val endLevelPortal: PowerUp = EndLevelPortal(Coordinates.generateCoordinatesAwayFromPlayers())
                     endLevelPortal.logic.spawn(true)
                 }
             }

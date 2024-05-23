@@ -13,6 +13,10 @@ import game.utils.time.now
 
 class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = entity) {
     override fun onSpawn() {
+        if (JBomb.match.player == null) {
+            JBomb.match.player = entity
+        }
+
         super.onSpawn()
         updateBombs()
         Log.e("Spawning $this")

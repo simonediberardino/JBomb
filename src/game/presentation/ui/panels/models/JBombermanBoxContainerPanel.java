@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import static game.localization.Localization.MAIN_MENU;
 import static game.values.Dimensions.DEFAULT_Y_PADDING;
+import static javafx.scene.input.KeyCode.T;
 
 public abstract class JBombermanBoxContainerPanel extends JPanel {
     protected YellowButton titleButton;
@@ -152,18 +153,81 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
         return imageLabel;
     }
 
+    /**
+     * Adds a text field element view to the JBombermanBoxContainerPanel.
+     *
+     * @param  title       the title of the text field element view
+     * @param  startText   the initial text of the text field element view
+     * @param  callback    the callback function to be executed when the text field element view text changes
+     * @return             the created JBombTextFieldTagged object
+     */
     public JBombTextFieldTagged addTextFieldElementView(String title, String startText, RunnablePar callback) {
-        return addTextFieldElementView(title, startText, callback, -1);
+        return addTextFieldElementView(title, startText, callback, new RunnablePar() {
+            @Override
+            public <T> Object execute(T par) {
+                return null;
+            }
+        }, -1);
     }
 
-    public JBombTextFieldTagged addTextFieldElementView(String title, String startText, RunnablePar callback, int charLimit) {
-        JBombTextFieldTagged elementView = new JBombTextFieldTagged(boxPanel, title, startText, callback, charLimit);
+    /**
+     * Creates a new JBombTextFieldTagged with the given title, start text, textChangedCallback, onClickCallback, and no charLimit,
+     * adds it to the component, and returns the created JBombTextFieldTagged.
+     *
+     * @param  title              the title of the JBombTextFieldTagged
+     * @param  startText          the start text of the JBombTextFieldTagged
+     * @param  textChangedCallback the callback function to be executed when the JBombTextFieldTagged text changes
+     * @param  onClickCallback     the callback function to be executed when the JBombTextFieldTagged is clicked
+     * @return                    the created JBombTextFieldTagged
+     */
+    public JBombTextFieldTagged addTextFieldElementView(
+            String title,
+            String startText,
+            RunnablePar textChangedCallback,
+            RunnablePar onClickCallback
+    ) {
+        return addTextFieldElementView(title, startText, textChangedCallback, onClickCallback, -1);
+    }
+
+
+    /**
+     * Creates a new JBombTextFieldTagged with the given title, start text, callback, onClickCallback, and charLimit,
+     * adds it to the component, and returns the created JBombTextFieldTagged.
+     *
+     * @param  title           the title of the JBombTextFieldTagged
+     * @param  startText       the initial text of the JBombTextFieldTagged
+     * @param  callback        the callback function to be executed when the JBombTextFieldTagged value changes
+     * @param  onClickCallback  the callback function to be executed when the JBombTextFieldTagged is clicked
+     * @param  charLimit       the maximum number of characters allowed in the JBombTextFieldTagged
+     * @return                 the created JBombTextFieldTagged
+     */
+    public JBombTextFieldTagged addTextFieldElementView(
+            String title,
+            String startText,
+            RunnablePar callback,
+            RunnablePar onClickCallback,
+            int charLimit
+    ) {
+        JBombTextFieldTagged elementView = new JBombTextFieldTagged(boxPanel, title, startText, callback, charLimit, onClickCallback);
         addComponent(elementView);
 
         return elementView;
     }
 
-    public SlideElementView addSlideElementView(String title, int currValue, RunnablePar callback) {
+    /**
+     * Creates a new SlideElementView with the given title, current value, and callback,
+     * adds it to the component, and returns the created SlideElementView.
+     *
+     * @param  title       the title of the SlideElementView
+     * @param  currValue   the current value of the SlideElementView
+     * @param  callback    the callback function to be executed when the SlideElementView value changes
+     * @return             the created SlideElementView
+     */
+    public SlideElementView addSlideElementView(
+            String title,
+            int currValue,
+            RunnablePar callback
+    ) {
         SlideElementView elementView = new SlideElementView(boxPanel, title, currValue, callback);
         addComponent(elementView);
         return elementView;

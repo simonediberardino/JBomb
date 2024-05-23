@@ -9,6 +9,7 @@ import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.presentation.ui.viewelements.settings.SettingsElementView;
 import game.presentation.ui.viewelements.settings.SlideElementView;
 import game.utils.Utility;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +28,13 @@ public class SettingsPanel extends BoxMenuPanel {
     }
 
     private SettingsElementView createTextFieldElementView(String label, String keyChar, RunnablePar runnablePar) {
-        return boxComponentsPanel.addTextFieldElementView(label, keyChar, runnablePar, 1);
+        return boxComponentsPanel.addTextFieldElementView(label, keyChar, runnablePar, new RunnablePar() {
+            @Nullable
+            @Override
+            public <T> Object execute(T par) {
+                return null;
+            }
+        }, 1);
     }
 
     private SlideElementView createSlideElementView(String title, int currValue, RunnablePar callback) {

@@ -1,6 +1,10 @@
 package game.domain.level.behavior
 
+import game.JBomb
+import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
+import game.domain.world.domain.entity.geo.Coordinates
+import kotlinx.coroutines.launch
 import java.util.*
 
 class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Array<Class<out Enemy>>): GameBehavior() {
@@ -21,12 +25,14 @@ class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Arr
             val enemyClass = availableEnemies[Random().nextInt(availableEnemies.size)]
 
             // Create an instance of the enemy class using a constructor that takes a Coordinates object as an argument.
-            var enemy: Enemy
+            val enemy: Enemy
+            var maxAttempts = 5
             try {
                 enemy = enemyClass.getConstructor().newInstance()
-
+                val coordinate = Coordinates.generateCoordinatesAwayFromPlayers( maxAttempts)
+                enemy.logic.move(coordinate)
                 // Spawn the enemy on the game board.
-                enemy.logic.spawn(forceSpawn = false, forceCentering = false)
+                enemy.logic.spawn()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

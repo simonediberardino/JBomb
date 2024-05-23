@@ -89,14 +89,41 @@ public class Coordinates implements Comparable<Coordinates> {
         return generateRandomCoordinates(new Coordinates(0, 0));
     }
 
-    public static Coordinates generateCoordinatesAwayFromPlayer() {
-        return generateCoordinatesAwayFrom(JBomb.match.getPlayer().getInfo().getPosition(), GRID_SIZE * 3);
+    public static Coordinates generateCoordinatesAwayFromPlayers() {
+        return generateCoordinatesAwayFromPlayers(-1);
+    }
+
+    public static Coordinates generateCoordinatesAwayFromPlayers(int maxAttempts) {
+        List<Coordinates> coordinates = JBomb.match.getPlayers().stream().map(
+                e -> e.getInfo().getPosition()
+        ).collect(Collectors.toList());
+
+        return generateCoordinatesAwayFrom(coordinates, GRID_SIZE * 3, maxAttempts);
     }
 
     public static Coordinates generateCoordinatesAwayFrom(Coordinates other, int offset) {
+        return generateCoordinatesAwayFrom(Collections.singletonList(other), offset, -1);
+    }
+
+    public static Coordinates generateCoordinatesAwayFrom(List<Coordinates> other, int offset, int maxAttempts) {
         Coordinates coord;
-        while ((coord = Coordinates.generateRandomCoordinates()).distanceTo(other) < offset) ;
-        return coord;
+
+        int currAttempt = 0;
+
+        while (true) {
+            coord = Coordinates.generateRandomCoordinates();
+            Coordinates finalCoord = coord;
+            boolean isDistanceEnough = other.stream().allMatch(e -> finalCoord.distanceTo(e) > offset);
+
+            if (!isDistanceEnough) {
+                currAttempt++;
+            }
+
+            if (!Coordinates.isBlockOccupied(coord)) {
+                if (isDistanceEnough || currAttempt > maxAttempts && maxAttempts != -1)
+                    return coord;
+            }
+        }
     }
 
 
@@ -107,7 +134,7 @@ public class Coordinates implements Comparable<Coordinates> {
     public static Coordinates randomCoordinatesFromPlayer(int entitySize, int distance) {
         Coordinates c;
         while (true) {
-            c = Coordinates.generateCoordinatesAwayFrom(JBomb.match.getPlayer().getInfo().getPosition(), distance);
+            c = Coordinates.generateCoordinatesAwayFrom(Arrays.asList(JBomb.match.getPlayer().getInfo().getPosition()), distance, -1);
             if (c.validate(entitySize)) return c;
         }
     }

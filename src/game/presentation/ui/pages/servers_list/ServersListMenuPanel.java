@@ -17,6 +17,7 @@ import game.utils.file_system.Paths;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 import static game.localization.Localization.*;
 
@@ -38,18 +39,34 @@ public class ServersListMenuPanel extends BoxMenuPanel {
         String lastConnectedIp = RuntimeProperties.INSTANCE.getLastConnectedIp();
         String ipAddressInputText = lastConnectedIp.isEmpty() ? Localization.get(INSERT) : lastConnectedIp;
 
-        if (!lastConnectedIp.isEmpty()) {
-            enteredIpAddress = lastConnectedIp;
-        }
+        enteredIpAddress = lastConnectedIp;
 
-        input = boxComponentsPanel.addTextFieldElementView(Localization.get(SERVERS_LIST_INPUT), ipAddressInputText, new RunnablePar() {
+        RunnablePar textChangedCallback = new RunnablePar() {
             @Override
             public <T> Object execute(T par) {
                 if (par.toString().isEmpty()) return null;
                 enteredIpAddress = par.toString();
                 return null;
             }
-        });
+        };
+
+        RunnablePar onClickCallback = new RunnablePar() {
+            @Override
+            public <T> Object execute(T par) {
+                if (enteredIpAddress.isEmpty()) {
+                    JTextField source = (JTextField) (par);
+                    source.setText("");
+                }
+                return null;
+            }
+        };
+
+        input = boxComponentsPanel.addTextFieldElementView(
+                Localization.get(SERVERS_LIST_INPUT),
+                ipAddressInputText,
+                textChangedCallback,
+                onClickCallback
+        );
     }
 
     private void createConnectButton() {

@@ -37,11 +37,14 @@ abstract class CharacterEntityLogic(
     }
 
     override fun isAlive(): Boolean {
-        return entity.state.state != State.DIED && entity.state.state != State.DESPAWNING
+        return entity.state.state != State.DIED
     }
 
     override fun setAliveState(alive: Boolean) {
         entity.state.state = (if (alive) State.SPAWNED else State.DIED)
+        if (alive) {
+            entity.state.eliminated = false
+        }
     }
 
     override fun updateMovementDirection(direction: Direction) {
@@ -125,11 +128,10 @@ abstract class CharacterEntityLogic(
     }
 
     override fun eliminated() {
-        if (entity.state.state == State.DESPAWNING) {
+        if (entity.state.eliminated) {
             return
         }
 
-        entity.state.state = State.DESPAWNING
         entity.state.eliminated = true
         onEliminated()
     }

@@ -17,9 +17,6 @@ abstract class Enemy : Character {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     constructor() : this(null) {
-        if (JBomb.match.player != null) {
-            info.position = Coordinates.randomCoordinatesFromPlayer(Character.DEFAULT.SIZE)
-        }
     }
 
     override val state: EnemyEntityState = EnemyEntityState(entity = this)

@@ -18,6 +18,11 @@ class ExplosionLogic(
         e?.logic?.onExplosion(entity)
     }
 
+    override fun onCollision(e: Entity) {
+        super.onCollision(e)
+        e.logic.onExplosion(entity)
+    }
+
     override fun observerUpdate(arg: Observable2.ObserverParam) {}
 
     override fun explode(): AbstractExplosion {
