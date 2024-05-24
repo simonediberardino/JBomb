@@ -21,13 +21,7 @@ class SkeletonEnemy : FiringEnemy {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val logic: FiringEnemyLogic = FiringEnemyLogic(entity = this)
-    override val state: SkeletonEnemyState = object: SkeletonEnemyState(entity = this) {
-        override val shootingChance: Int
-            get() = 2
-
-        override val shootingRefreshRate: Int
-            get() = 10_000
-    }
+    override val state: SkeletonEnemyState = object: SkeletonEnemyState(entity = this) {}
 
     override val properties: CharacterEntityProperties = CharacterEntityProperties(types = EntityTypes.Skeleton)
 

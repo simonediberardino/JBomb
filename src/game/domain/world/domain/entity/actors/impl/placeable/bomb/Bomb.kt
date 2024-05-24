@@ -93,7 +93,7 @@
             val SIZE = PitchPanel.COMMON_DIVISOR * 2
 
             val EXPLOSION_OBSTACLES: Set<Class<out Entity>>
-                get() = setOf(HardBlock::class.java)
+                get() = setOf(HardBlock::class.java, )
 
             val EXPLOSION_INTERACTION_ENTITIES: Set<Class<out Entity>>
                 get() = setOf(DestroyableBlock::class.java, Character::class.java, Bomb::class.java)

@@ -12,7 +12,6 @@ import game.values.DrawPriority
 
 open class OrbEntityProperties(
         types: EntityTypes,
-        obstacles: Set<Class<out Entity?>?> = Orb.DEFAULT.OBSTACLES,
         drawPriority: DrawPriority = Orb.DEFAULT.DRAW_PRIORITY,
         supportedDirections: List<Direction> = MovingEntity.DEFAULT.SUPPORTED_DIRECTIONS,
         stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
@@ -21,7 +20,6 @@ open class OrbEntityProperties(
 ) : CharacterEntityProperties(
         drawPriority = drawPriority,
         types = types,
-        obstacles = obstacles,
         supportedDirections = supportedDirections,
         stepSound = stepSound,
         imageDirections = imageDirections,

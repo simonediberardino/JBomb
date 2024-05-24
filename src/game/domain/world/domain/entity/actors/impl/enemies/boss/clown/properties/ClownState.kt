@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference
 class ClownState(
         entity: Entity,
         size: Int = Boss.DEFAULT.SIZE,
-        interactionEntities: MutableSet<Class<out Entity>> = Enemy.DEFAULT.INTERACTION_ENTITIES,
+        interactionEntities: MutableSet<Class<out Entity>> = Clown.DEFAULT.INTERACTION_ENTITIES,
         speed: Float = Character.DEFAULT.SPEED,
         maxHp: Int = Character.DEFAULT.MAX_HP,
         currRageStatus: Int = Boss.DEFAULT.START_RAGE_STATUS,
@@ -62,4 +62,6 @@ class ClownState(
         speed = speed,
         currRageStatus = currRageStatus
 ) {
+    internal var hatThrowTime: Long = 0L
+    internal var hatPickupDelay: Long = 10_000L
 }

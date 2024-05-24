@@ -18,9 +18,20 @@ class ExplosionLogic(
         e?.logic?.onExplosion(entity)
     }
 
+    override fun canBeInteractedBy(e: Entity?): Boolean {
+        return e == null || entity.state.explosive.explosionInteractionEntities.any { c -> c.isInstance(e) }
+
+    }
+
+    override fun canInteractWith(e: Entity?): Boolean =
+            e == null || entity.state.explosive.explosionInteractionEntities.any { c -> c.isInstance(e) }
+
     override fun onCollision(e: Entity) {
         super.onCollision(e)
-        e.logic.onExplosion(entity)
+
+        if (canInteractWith(e) || canBeInteractedBy(e)) {
+            e.logic.onExplosion(entity)
+        }
     }
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {}

@@ -139,6 +139,7 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
     override fun isRunning(): Boolean = running
 
     override fun disconnect() {
-        server.close()
+        if (this::server.isInitialized)
+            server.close()
     }
 }

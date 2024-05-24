@@ -18,23 +18,32 @@ import game.values.DrawPriority
  * It can be instantiated with either an EnhancedDirection or a Direction, but not both.
  * The Orb class implements the Transparent and Particle interfaces.
  */
-abstract class Orb : Enemy {
-    constructor(coordinates: Coordinates?, enhancedDirection: EnhancedDirection?) : super(coordinates) {
-        enhancedDirection?.let {
-            this.state.enhancedDirection = it
+abstract class Orb(
+        coordinates: Coordinates?,
+        enhancedDirection: EnhancedDirection? = null,
+        direction: Direction? = null
+) : Enemy(coordinates) {
+    constructor(coordinates: Coordinates?, direction: Direction?) : this(
+            coordinates = coordinates,
+            enhancedDirection = null as EnhancedDirection?,
+            direction = direction)
+
+    constructor(id: Long) : this(null, null, null) {
+        info.id = id
+    }
+
+    constructor(coordinates: Coordinates?) : this(coordinates, null, null)
+
+
+    override val state: OrbEntityState = object : OrbEntityState(entity = this) {
+        init {
+            this.enhancedDirection = enhancedDirection
+            if (direction != null) {
+                this.direction = direction
+            }
         }
     }
 
-    constructor(coordinates: Coordinates?, direction: Direction?) : super(coordinates) {
-        direction?.let {
-            this.state.direction = it
-        }
-    }
-
-    constructor(id: Long) : super(id)
-    constructor(coordinates: Coordinates?) : super(coordinates)
-
-    override val state: OrbEntityState = OrbEntityState(entity = this)
     override val logic: OrbEntityLogic = OrbEntityLogic(entity = this)
     abstract override val properties: OrbEntityProperties
 
@@ -42,7 +51,10 @@ abstract class Orb : Enemy {
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
         const val SPEED = 1.5f
         val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_3
-        val OBSTACLES = mutableSetOf<Class<out Entity>>()
-        val INTERACTION_ENTITIES = mutableSetOf<Class<out Entity>>(BomberEntity::class.java, Bomb::class.java)
+        val OBSTACLES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf()
+
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf(BomberEntity::class.java, Bomb::class.java)
     }
 }

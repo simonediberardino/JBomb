@@ -11,13 +11,15 @@ open class OrbEntityState(
         interactionEntities: MutableSet<Class<out Entity>> = Orb.DEFAULT.INTERACTION_ENTITIES,
         speed: Float = Orb.DEFAULT.SPEED,
         size: Int = Orb.DEFAULT.SIZE,
-        maxHp: Int = Character.DEFAULT.MAX_HP
+        maxHp: Int = Character.DEFAULT.MAX_HP,
+        obstacles: MutableSet<Class<out Entity>> = Orb.DEFAULT.OBSTACLES
 ) : EnemyEntityState(
         entity = entity,
         size = size,
         speed = speed,
         interactionEntities = interactionEntities,
-        maxHp = maxHp
+        maxHp = maxHp,
+        obstacles = obstacles
 ) {
     /**
      * Only one field between enhancedDirection and direction can be instantiated at a time.

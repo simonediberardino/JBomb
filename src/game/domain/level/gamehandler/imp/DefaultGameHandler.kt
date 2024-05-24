@@ -38,10 +38,10 @@ open class DefaultGameHandler(level: Level) : GameHandler(level) {
         SpawnBossBehavior(level.info.boss ?: return).invoke()
     }
 
-    override fun spawnEnemies() = spawnEnemies(level.info.availableEnemies)
+    override fun spawnEnemies() = spawnEnemies(level.info.availableEnemies, level.info.startEnemiesCount)
 
-    override fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>) =
-            SpawnEnemiesBehavior(level.info.startEnemiesCount, availableEnemies).invoke()
+    override fun spawnEnemies(availableEnemies: Array<Class<out Enemy>>, count: Int) =
+            SpawnEnemiesBehavior(count, availableEnemies).invoke()
 
     override fun spawnAnimals() = spawnAnimals(level.info.availableAnimals)
 

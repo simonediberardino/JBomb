@@ -14,7 +14,6 @@ import java.util.*
 
 class GhostBossProperties(
         drawPriority: DrawPriority = Boss.DEFAULT.DRAW_PRIORITY,
-        obstacles: Set<Class<out Entity?>?> = Boss.DEFAULT.OBSTACLES,
         types: EntityTypes,
         supportedDirections: List<Direction> = MovingEntity.DEFAULT.SUPPORTED_DIRECTIONS,
         stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
@@ -23,7 +22,6 @@ class GhostBossProperties(
         healthStatusMap: TreeMap<Int, Int>? = GhostBoss.DEFAULT.HEALTH_STATUS_MAP
 ) : BossEntityProperties(
         drawPriority = drawPriority,
-        obstacles = obstacles,
         types = types,
         supportedDirections = supportedDirections,
         stepSound = stepSound,

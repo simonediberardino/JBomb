@@ -22,6 +22,9 @@ class FiringEnemyLogic(override val entity: FiringEnemy): AiEnemyLogic(entity = 
         if (Utility.timePassed(entity.state.lastFire) <= entity.state.shootingRefreshRate)
             return
 
+        if (Utility.timePassed(entity.state.spawnTime) <= entity.state.shootingRefreshRate)
+            return
+
         // Check if the entity can shoot and if a random probability allows shooting
         if (!entity.state.canShoot) {
             return

@@ -50,10 +50,16 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun spawnEnemies() {
-                if (isSpecialRound)
-                    super.spawnEnemies((info as DefaultArenaLevelInfo).specialRoundEnemies)
-                else
-                    super.spawnEnemies()
+                if (isSpecialRound) {
+                    val minSpecialEnemiesCount = 4
+                    super.spawnEnemies((info as DefaultArenaLevelInfo).specialRoundEnemies, minSpecialEnemiesCount + currentRound.get() / 5)
+                } else {
+                    val enemiesCount = if (shouldSpawnBoss()) {
+                        level.info.startEnemiesCount / 2
+                    } else level.info.startEnemiesCount
+
+                    super.spawnEnemies(level.info.availableEnemies, enemiesCount)
+                }
             }
         }
 

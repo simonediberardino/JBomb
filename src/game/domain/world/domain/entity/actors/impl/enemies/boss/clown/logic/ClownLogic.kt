@@ -18,12 +18,24 @@ import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.geo.EnhancedDirection
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
+import game.utils.Utility.timePassed
+import game.utils.dev.Log
 import game.utils.time.now
 
 class ClownLogic(
         override val entity: Clown
 ) : BossEntityLogic(entity = entity), IClownLogic {
     private val spawnTimeAttackDelay = 10_000L
+
+    override fun onCollision(e: Entity) {
+        super.onCollision(e)
+
+        if (e is Hat) {
+            if (timePassed(entity.state.hatThrowTime) > entity.state.hatPickupDelay) {
+                pickupHat(e)
+            }
+        }
+    }
 
     override fun onHit(damage: Int) {
         super.onHit(damage)
@@ -140,12 +152,16 @@ class ClownLogic(
      * Throws a hat in a random enhanced direction.
      */
     override fun throwHat() {
+        Log.e("throwing hat")
         val direction = EnhancedDirection.randomDirectionTowardsCenter(entity)
         val coordinates = Coordinates.fromDirectionToCoordinateOnEntity(entity, direction, 0)
-        val hat: Entity = Hat(coordinates, direction)
 
-        hat.logic.spawn(forceSpawn = true, forceCentering = false)
+        val hat: Entity = Hat(coordinates, direction)
+        Log.e("Spawning hat ")
+
+        entity.state.hatThrowTime = now()
         entity.state.hasHat = false
+        hat.logic.spawn(forceSpawn = true, forceCentering = false)
     }
 
 
@@ -179,12 +195,20 @@ class ClownLogic(
      * Checks if the clown boss should throw a hat and does so if the conditions are met.
      */
     override fun checkAndThrowHat() {
-        if (Utility.timePassed(entity.state.lastAttackTime) <= entity.state.attackDelay || !entity.state.hasHat) return
+        if (Utility.timePassed(entity.state.lastAttackTime) <= entity.state.attackDelay || !entity.state.hasHat)
+            return
+
         // Run a percentage-based chance for throwing a hat
         Utility.runPercentage(SHOOTING_CHANCE) {
             entity.state.lastAttackTime = now()
             throwHat()
         }
+    }
+
+    override fun pickupHat(hat: Hat) {
+        entity.state.lastAttackTime = now()
+        entity.state.hasHat = true
+        hat.logic.eliminated()
     }
 
     /**

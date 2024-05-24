@@ -16,7 +16,6 @@ class GhostEnemyProperties(
         types: EntityTypes,
         supportedDirections: List<Direction> = MovingEntity.DEFAULT.SUPPORTED_DIRECTIONS,
         stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
-        obstacles: Set<Class<out Entity?>?> = EntityInteractable.DEFAULT.OBSTACLES,
         imageDirections: List<Direction> = GhostEnemy.DEFAULT.IMAGE_DIRECTIONS,
         deathSound: SoundModel = Character.DEFAULT.DEATH_SOUND
 ) : CharacterEntityProperties(
@@ -24,7 +23,6 @@ class GhostEnemyProperties(
         types = types,
         supportedDirections = supportedDirections,
         stepSound = stepSound,
-        obstacles = obstacles,
         imageDirections = imageDirections,
         deathSound = deathSound
 ) {

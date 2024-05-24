@@ -13,7 +13,6 @@ import java.util.TreeMap
 
 open class BossEntityProperties(
         drawPriority: DrawPriority = Boss.DEFAULT.DRAW_PRIORITY,
-        obstacles: Set<Class<out Entity?>?> = Boss.DEFAULT.OBSTACLES,
         types: EntityTypes,
         supportedDirections: List<Direction> = MovingEntity.DEFAULT.SUPPORTED_DIRECTIONS,
         stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
@@ -22,7 +21,6 @@ open class BossEntityProperties(
         val healthStatusMap: TreeMap<Int, Int>? = Boss.DEFAULT.HEALTH_STATUS_MAP
 ): CharacterEntityProperties(
         drawPriority = drawPriority,
-        obstacles = obstacles,
         types = types,
         supportedDirections = supportedDirections,
         stepSound = stepSound,

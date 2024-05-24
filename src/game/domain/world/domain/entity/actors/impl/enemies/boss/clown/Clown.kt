@@ -74,12 +74,13 @@ class Clown : Boss, Explosive {
     internal object DEFAULT {
         const val ATTACK_DELAY = 5000
         const val LAST_ATTACK_TIME = 0L
-        const val HAS_HAT = false
+        const val HAS_HAT = true
         const val RATIO_HEIGHT_WITH_HAT = 0.7517f
         const val RATIO_HEIGHT = 0.87f
         const val RATIO_WIDTH = 0.8739f
         val SUPPORTED_DIRECTIONS: List<Direction>
             get() = listOf(Direction.LEFT, Direction.RIGHT)
+
         val HEALTH_STATUS_MAP: TreeMap<Int, Int>
             get() {
                 // Create a new TreeMap with reverse order.

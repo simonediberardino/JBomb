@@ -4,19 +4,9 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.Clown
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.logic.OrbEntityLogic
+import game.utils.Utility.timePassed
 
 class HatEntityLogic(override val entity: Hat) : OrbEntityLogic(entity = entity) {
-    override fun doInteract(e: Entity?) {
-        e ?: return
-
-        if (e is Clown) {
-            e.state.hasHat = true
-            eliminated()
-        } else {
-            attack(e)
-        }
-    }
-
     // Changed
     override fun moveOrb() {
         if (!entity.state.canMove || !entity.logic.isAlive())

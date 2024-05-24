@@ -16,7 +16,6 @@ open class CharacterEntityProperties(
         types: EntityTypes,
         supportedDirections: List<Direction> = MovingEntity.DEFAULT.SUPPORTED_DIRECTIONS,
         stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
-        val obstacles: Set<Class<out Entity?>?> = EntityInteractable.DEFAULT.OBSTACLES,
         val imageDirections: List<Direction> = Character.DEFAULT.IMAGE_DIRECTIONS,
         val deathSound: SoundModel = Character.DEFAULT.DEATH_SOUND
 ) : MovingEntityProperties(

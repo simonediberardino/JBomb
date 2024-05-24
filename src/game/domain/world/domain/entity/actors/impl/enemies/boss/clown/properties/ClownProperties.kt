@@ -13,7 +13,6 @@ import java.util.TreeMap
 
 class ClownProperties(
         drawPriority: DrawPriority = Boss.DEFAULT.DRAW_PRIORITY,
-        obstacles: Set<Class<out Entity?>?> = Boss.DEFAULT.OBSTACLES,
         types: EntityTypes,
         supportedDirections: List<Direction> = Clown.DEFAULT.SUPPORTED_DIRECTIONS,
         stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
@@ -22,7 +21,6 @@ class ClownProperties(
         healthStatusMap: TreeMap<Int, Int>? = Clown.DEFAULT.HEALTH_STATUS_MAP
 ) : BossEntityProperties(
         drawPriority = drawPriority,
-        obstacles = obstacles,
         types = types,
         supportedDirections = supportedDirections,
         stepSound = stepSound,

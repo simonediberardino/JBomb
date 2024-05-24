@@ -39,7 +39,14 @@ open class Hat : Orb {
     }
 
     internal object DEFAULT {
-        val INTERACTION_ENTITIES = mutableSetOf<Class<out Entity>>(BomberEntity::class.java, Clown::class.java)
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf(BomberEntity::class.java, Clown::class.java)
+
+        val OBSTACLES: MutableSet<Class<out Entity>>
+            get() {
+                return mutableSetOf(Clown::class.java)
+            }
+
         val SIZE = Orb.DEFAULT.SIZE * 3
         const val MAX_HP = 300
     }

@@ -22,10 +22,7 @@ class TankEnemy : FiringEnemy {
     override val logic: FiringEnemyLogic = FiringEnemyLogic(entity = this)
     override val state: FiringEnemyState = object : FiringEnemyState(entity = this) {
         override val shootingChance: Int
-            get() = 3
-
-        override val shootingRefreshRate: Int
-            get() = 5000
+            get() = 1
     }
 
     override val properties: CharacterEntityProperties = CharacterEntityProperties(types = EntityTypes.TankEnemy)

@@ -1,8 +1,6 @@
 package game.utils.time
 
-fun now(): Long {
-    return System.currentTimeMillis()
-}
+fun now(): Long = System.currentTimeMillis()
 
 fun timeunit(): Long {
     return 3

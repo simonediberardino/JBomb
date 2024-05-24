@@ -56,6 +56,6 @@ open class FiringEnemyState(
         previousDirection = previousDirection,
         canMove = canMove
 ) {
-    open val shootingRefreshRate: Int = 10_000
-    open val shootingChance: Int = 3
+    open val shootingRefreshRate: Int = 20_000
+    open val shootingChance: Int = 2
 }

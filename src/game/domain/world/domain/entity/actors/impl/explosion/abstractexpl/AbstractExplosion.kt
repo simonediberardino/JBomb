@@ -65,7 +65,7 @@ abstract class AbstractExplosion(owner: Entity,
 
     internal object DEFAULT {
         const val IGNORE_CENTER = true
-        val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_4
+        val DRAW_PRIORITY = DrawPriority.DRAW_PRIORITY_3
         const val DISTANCE_FROM_EXPLOSIVE = 0
         const val CAN_EXPAND = false
         const val IMAGE_REFRESH_RATE = 100

@@ -49,7 +49,7 @@ abstract class EntityLogic(
         if (forceSpawn || !Coordinates.isBlockOccupied(entity.info.position)) {
             match.addEntity(entity)
             entity.logic.onAdded()
-            entity.state.spawnTime = System.currentTimeMillis()
+            entity.state.spawnTime = now()
             entity.state.isSpawned = true
             onSpawn()
         }
