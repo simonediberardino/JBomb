@@ -3,6 +3,7 @@ package game.presentation.ui.pages.servers_list;
 import game.JBomb;
 import game.domain.events.models.RunnablePar;
 import game.domain.level.levels.lobby.WaitingRoomLevel;
+import game.domain.match.JBombMatch;
 import game.localization.Localization;
 import game.network.gamehandler.ClientGameHandler;
 import game.presentation.ui.frames.JBombFrame;
@@ -77,7 +78,7 @@ public class ServersListMenuPanel extends BoxMenuPanel {
 
     private void connect() {
         RuntimeProperties.INSTANCE.setLastConnectedIp(enteredIpAddress);
-        JBomb.startLevel(new WaitingRoomLevel(), new ClientGameHandler(enteredIpAddress, 28960));
+        JBomb.startLevel(new WaitingRoomLevel(), new ClientGameHandler(enteredIpAddress, JBombMatch.Companion.getDefaultPort()));
     }
 
     @Override

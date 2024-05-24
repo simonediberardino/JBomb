@@ -34,7 +34,7 @@ class JBombMatch(
         val onlineGameHandler: OnlineGameHandler?
 ) {
     companion object {
-        var defaultPort: Int = 28960
+        var defaultPort: Int = 30960
     }
 
     val scope = CoroutineScope(Dispatchers.IO)
