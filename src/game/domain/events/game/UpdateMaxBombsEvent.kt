@@ -5,7 +5,9 @@ import game.domain.events.models.GameEvent
 
 
 class UpdateMaxBombsEvent : GameEvent {
-    override fun invoke(arg: Any?) {
-        JBomb.match.currentLevel!!.eventHandler.onUpdateMaxBombsGameEvent(arg as Int)
+    override fun invoke(vararg arg: Any?) {
+        val count = arg[0] as Int
+        val save = arg[1] as Boolean
+        JBomb.match.currentLevel.eventHandler.onUpdateMaxBombsGameEvent(count, save)
     }
 }

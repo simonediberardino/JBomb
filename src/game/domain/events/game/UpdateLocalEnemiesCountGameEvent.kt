@@ -4,13 +4,13 @@ import game.JBomb
 import game.domain.events.models.GameEvent
 
 class UpdateLocalEnemiesCountGameEvent: GameEvent {
-    override fun invoke(arg: Any?) {
+    override fun invoke(vararg arg: Any?) {
         if (JBomb.isGameEnded)
             return
 
-        JBomb.match.updateEnemiesAliveCount(count = arg as Int)
+        JBomb.match.updateEnemiesAliveCount(count = arg[0] as Int)
 
-        if (arg == 0) {
+        if (arg[0] == 0) {
             AllEnemiesEliminatedGameEvent().invoke(null)
         }
     }

@@ -3,7 +3,7 @@ package game.domain.world.domain.entity.actors.impl.bomber_entity.player.logic
 import game.JBomb
 import game.domain.events.game.DeathGameEvent
 import game.domain.events.game.HealthUpdatedEvent
-import game.domain.level.behavior.PlayerDeathBehavior
+import game.domain.events.game.InitBombsVariablesGameEvent
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
@@ -18,7 +18,8 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         }
 
         super.onSpawn()
-        updateBombs()
+        InitBombsVariablesGameEvent().invoke()
+
         Log.e("Spawning $this")
         JBomb.match.gameTickerObservable?.register(entity)
         JBomb.match.controllerManager?.register(entity)

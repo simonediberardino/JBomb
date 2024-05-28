@@ -6,7 +6,14 @@ import game.domain.events.models.GameEvent
 
 
 class ExplosionLengthPowerUpEvent : GameEvent {
-    override fun invoke(arg: Any?) {
-        JBomb.match.currentLevel!!.eventHandler.onUpdateBombsLengthEvent(arg as BomberEntity, arg.state.currExplosionLength + 1)
+    override fun invoke(vararg arg: Any?) {
+        var bomberEntity = arg[0] as BomberEntity
+        JBomb.match
+                .currentLevel
+                .eventHandler
+                .onUpdateBombsLengthEvent(
+                        bomberEntity.state.currExplosionLength + 1,
+                        true
+                )
     }
 }

@@ -10,8 +10,10 @@ interface LevelEventHandler {
     fun onScoreGameEvent(arg: Int)
     fun onPurchaseItem(price: Int)
     fun onUpdateCurrentAvailableBombsEvent(arg: Int)
-    fun onUpdateMaxBombsGameEvent(arg: Int)
-    fun onUpdateBombsLengthEvent(entity: BomberEntity, arg: Int)
+    fun onUpdateBombsLengthEvent(arg: Int, save: Boolean)
     fun onAllEnemiesEliminated()
     fun onDeathGameEvent()
+    fun initBombsVariables()
+    fun onUpdateMaxBombsGameEvent(arg: Int, save: Boolean)
+    fun resetBombsVariables()
 }

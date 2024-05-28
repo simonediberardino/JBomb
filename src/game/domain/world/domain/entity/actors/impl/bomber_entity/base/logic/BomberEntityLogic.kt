@@ -2,8 +2,7 @@ package game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic
 
 import game.JBomb
 import game.data.data.DataInputOutput
-import game.domain.events.game.UpdateCurrentAvailableItemsEvent
-import game.domain.events.game.UpdateCurrentBombsLengthEvent
+import game.domain.events.game.InitBombsVariablesGameEvent
 import game.domain.events.game.UpdateMaxBombsEvent
 import game.domain.level.behavior.PlayerDeathBehavior
 import game.domain.tasks.observer.Observable2
@@ -24,7 +23,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         super.onSpawn()
         // Give the current entity a BombItem when it is spawned in the match.
         JBomb.match.give(entity, BombItem())
-        initBombVariables()
+        InitBombsVariablesGameEvent().invoke(null)
     }
 
     override fun onDespawn() {
@@ -42,16 +41,6 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     override fun onRemoved() {
         super.onRemoved()
         JBomb.match.players.removeIf { e -> e.info.id == entity.info.id}
-    }
-
-    override fun initBombVariables() {
-        UpdateMaxBombsEvent().invoke(DataInputOutput.getInstance().obtainedBombs)
-    }
-
-    override fun updateBombs() {
-        val maxBombs = DataInputOutput.getInstance().obtainedBombs
-        UpdateCurrentAvailableItemsEvent().invoke(maxBombs)
-        UpdateCurrentBombsLengthEvent().invoke(DataInputOutput.getInstance().explosionLength)
     }
 
     override fun onMove(coordinates: Coordinates) {

@@ -4,6 +4,8 @@ import game.JBomb
 import game.audio.AudioManager
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
+import game.domain.events.game.InitBombsVariablesGameEvent
+import game.domain.events.game.ResetBombsVariablesGameEvent
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.levels.Level
 import game.domain.tasks.GameTickerObservable
@@ -186,7 +188,8 @@ class JBombMatch(
         // Replace the current item with a BombItem and update related components
         owner.state.weapon = BombItem()
         owner.state.weapon.owner = owner
-        owner.logic.updateBombs()
+
+        ResetBombsVariablesGameEvent().invoke(null)
         updateInventoryWeaponController()
     }
 

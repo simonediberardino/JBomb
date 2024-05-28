@@ -7,7 +7,7 @@ import game.network.events.forward.UpdateEnemiesCountEventForwarder
 
 class DecreaseEnemiesAliveGameEvent : GameEvent {
     // Only for server, notifies all clients
-    override fun invoke(arg: Any?) {
+    override fun invoke(vararg arg: Any?) {
         val gameBehavior: GameBehavior = object : GameBehavior() {
             override fun hostBehavior(): () -> Unit {
                 return {

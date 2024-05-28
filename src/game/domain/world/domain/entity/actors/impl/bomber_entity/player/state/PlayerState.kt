@@ -15,5 +15,7 @@ class PlayerState(
         entity: BomberEntity,
 ) : BomberEntityState(entity = entity
 ) {
+    var maxBombsSaved: Int = 0
+    var bombsLengthSaved: Int = 0
     val commandQueue: MutableSet<Command> = mutableSetOf()
 }

@@ -28,7 +28,7 @@ class IncreaseMaxBombsPowerUp
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            UpdateMaxBombsEvent().invoke(player.state.maxBombs + 1)
+            UpdateMaxBombsEvent().invoke(player.state.maxBombs + 1, true)
         }
 
         override fun cancel(player: BomberEntity) {}

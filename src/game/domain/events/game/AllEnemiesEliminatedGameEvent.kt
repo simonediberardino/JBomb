@@ -4,7 +4,7 @@ import game.JBomb
 import game.domain.events.models.GameEvent
 
 class AllEnemiesEliminatedGameEvent : GameEvent {
-    override fun invoke(arg: Any?) {
+    override fun invoke(vararg arg: Any?) {
         if (JBomb.isGameEnded)
             return
 

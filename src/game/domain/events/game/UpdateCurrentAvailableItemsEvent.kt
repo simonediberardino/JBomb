@@ -6,9 +6,9 @@ import game.network.events.forward.UpdateInfoEventForwarder
 
 
 class UpdateCurrentAvailableItemsEvent : GameEvent {
-    override fun invoke(arg: Any?) {
+    override fun invoke(vararg arg: Any?) {
         val player = JBomb.match.player ?: return
-        val value = arg as Int
+        val value = arg[0] as Int
 
         if (value > player.state.maxBombs) {
             return

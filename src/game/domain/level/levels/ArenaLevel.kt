@@ -4,8 +4,6 @@ import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.events.game.RoundPassedGameEvent
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
-import game.domain.events.game.UpdateCurrentBombsLengthEvent
-import game.domain.events.game.UpdateMaxBombsEvent
 import game.domain.level.behavior.GameBehavior
 import game.domain.level.behavior.RespawnDeadPlayersBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
@@ -13,7 +11,6 @@ import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.gamehandler.imp.DefaultGameHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.DefaultArenaLevelInfo
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.localization.Localization
 import game.presentation.ui.viewelements.misc.ToastHandler
 import game.utils.dev.Log
@@ -65,6 +62,26 @@ abstract class ArenaLevel : Level() {
 
     override val eventHandler: LevelEventHandler
         get() = object : DefaultLevelEventHandler() {
+            override fun initBombsVariables() {
+                // force initial bomb states to 1, saves do not count on arena
+                val player = JBomb.match.player ?: return
+                player.state.bombsLengthSaved = 1
+                player.state.maxBombsSaved = 1
+
+                resetBombsVariables()
+            }
+
+            override fun onUpdateBombsLengthEvent(arg: Int, save: Boolean) {
+                JBomb.match.player?.state?.currExplosionLength = arg
+            }
+
+            override fun onUpdateMaxBombsGameEvent(arg: Int, save: Boolean) {
+                JBomb.match.player?.state?.maxBombs = arg
+                JBomb.match.player?.state?.maxBombsSaved = arg
+
+                UpdateCurrentAvailableItemsEvent().invoke(arg, false)
+            }
+
             override fun onDefeatGameEvent() {
                 super.onDefeatGameEvent()
                 currentRound.set(0)
@@ -81,15 +98,6 @@ abstract class ArenaLevel : Level() {
             override fun onDeathGameEvent() {
                 DataInputOutput.getInstance().increaseDeaths()
                 DataInputOutput.getInstance().decreaseScore(1000)
-            }
-
-            override fun onUpdateMaxBombsGameEvent(arg: Int) {
-                JBomb.match.player?.state?.maxBombs = arg
-                UpdateCurrentAvailableItemsEvent().invoke(arg)
-            }
-
-            override fun onUpdateBombsLengthEvent(entity: BomberEntity, arg: Int) {
-                entity.state.currExplosionLength = arg
             }
 
             override fun onAllEnemiesEliminated() {
@@ -138,8 +146,7 @@ abstract class ArenaLevel : Level() {
     }
 
     private fun firstStart() {
-        UpdateCurrentBombsLengthEvent().invoke(1)
-        UpdateMaxBombsEvent().invoke(1)
+
     }
 
     protected fun shouldSpawnBoss(): Boolean {

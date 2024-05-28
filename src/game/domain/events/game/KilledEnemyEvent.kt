@@ -5,7 +5,7 @@ import game.domain.events.models.GameEvent
 
 
 class KilledEnemyEvent : GameEvent {
-    override fun invoke(arg: Any?) {
+    override fun invoke(vararg arg: Any?) {
         JBomb.match.currentLevel!!.eventHandler.onKilledEnemy()
     }
 }

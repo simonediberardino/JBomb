@@ -5,8 +5,11 @@ import game.domain.events.models.GameEvent
 import game.network.events.forward.UpdateInfoEventForwarder
 
 class UpdateCurrentBombsLengthEvent : GameEvent {
-    override fun invoke(arg: Any?) {
-        JBomb.match.currentLevel.eventHandler.onUpdateBombsLengthEvent(JBomb.match.player ?: return, arg as Int)
+    override fun invoke(vararg arg: Any?) {
+        val count = arg[0] as Int
+        val save = arg[1] as Boolean
+
+        JBomb.match.currentLevel.eventHandler.onUpdateBombsLengthEvent(count, save)
         UpdateInfoEventForwarder().invoke(JBomb.match.player!!.toEntityNetwork())
     }
 }
