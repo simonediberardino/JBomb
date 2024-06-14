@@ -24,6 +24,7 @@ class HttpMessageReceiverHandler private constructor() {
             HttpMessageTypes.ENEMIES_COUNT -> UpdateEnemiesCountEventProcessor()
             HttpMessageTypes.ENTITY_COLLIDED -> CollideEventProcessor()
             HttpMessageTypes.BOMB_EXPLODED -> BombExplodedEventProcessor()
+            HttpMessageTypes.FIRE -> FireEventProcessor()
             else -> null
         }
 

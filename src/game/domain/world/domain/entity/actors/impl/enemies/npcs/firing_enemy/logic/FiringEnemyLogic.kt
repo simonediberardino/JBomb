@@ -8,15 +8,15 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.network.events.forward.FireEventForwarder
 import game.utils.Utility
 import game.utils.time.now
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class FiringEnemyLogic(override val entity: FiringEnemy): AiEnemyLogic(entity = entity) {
+class FiringEnemyLogic(override val entity: FiringEnemy) : AiEnemyLogic(entity = entity) {
     override fun process() {
         super.process()
-        val currentTime = now()
 
         // Check if it's time to update the shooting behavior
         if (Utility.timePassed(entity.state.lastFire) <= entity.state.shootingRefreshRate)
@@ -31,36 +31,45 @@ class FiringEnemyLogic(override val entity: FiringEnemy): AiEnemyLogic(entity = 
         }
 
         Utility.runPercentage(entity.state.shootingChance) {
-            entity.state.lastFire = currentTime
-
             val direction = entity.state.direction
-            // Calculate new coordinates with an explosion offset for vertical directions
-            var newCoords = Coordinates.getNewTopLeftCoordinatesOnDirection(
-                    entity.info.position,
-                    direction,
-                    AbstractExplosion.SIZE
-            )
+            fire(direction)
+        }
+    }
 
-            if (direction == Direction.UP || direction == Direction.DOWN) {
-                val x = newCoords.x + AbstractExplosion.SPAWN_OFFSET
-                newCoords = Coordinates(x, newCoords.y)
-            }
+    fun fire(direction: Direction) {
+        val currentTime = now()
+        entity.state.lastFire = currentTime
 
-            ExplosionHandler.instance.process {
-                listOf(PistolExplosion(
-                        owner = entity,
-                        coordinates = newCoords,
-                        direction = direction,
-                        explosive = entity
-                ).logic.explode())
-            }
+        // Calculate new coordinates with an explosion offset for vertical directions
+        var newCoords = Coordinates.getNewTopLeftCoordinatesOnDirection(
+                entity.info.position,
+                direction,
+                AbstractExplosion.SIZE
+        )
 
-            entity.state.canMove = false
+        if (direction == Direction.UP || direction == Direction.DOWN) {
+            val x = newCoords.x + AbstractExplosion.SPAWN_OFFSET
+            newCoords = Coordinates(x, newCoords.y)
+        }
 
-            JBomb.match.scope.launch {
-                delay(2000)
-                entity.state.canMove = true
-            }
+        ExplosionHandler.instance.process {
+            listOf(PistolExplosion(
+                    owner = entity,
+                    coordinates = newCoords,
+                    direction = direction,
+                    explosive = entity
+            ).logic.explode())
+        }
+
+        if (JBomb.match.isServer) {
+            FireEventForwarder().invoke(entity.toEntityNetwork(), direction)
+        }
+
+        entity.state.canMove = false
+
+        JBomb.match.scope.launch {
+            delay(2000)
+            entity.state.canMove = true
         }
 
         entity.state.canShoot = true

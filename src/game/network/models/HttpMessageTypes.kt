@@ -7,6 +7,7 @@ enum class HttpMessageTypes {
     DESPAWNED_ENTITY,
     NEW_LEVEL,
     ASSIGN_ID,
+    FIRE,
     USE_ITEM,
     ENTITY_ATTACKED,
     UPDATE_INFO,

@@ -71,9 +71,7 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
 
     override fun process() {
         if ("true" == XMLUtils.readConfig("bots_move")) {
-            if (JBomb.match.isServer) {
-                move(chooseDirection(false))
-            }
+            move(chooseDirection(false))
         }
     }
 
@@ -88,7 +86,9 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
                     return
                 }
 
-                process()
+                if (JBomb.match.isServer) {
+                    process()
+                }
             }
 
             else -> {}
