@@ -49,7 +49,6 @@ public class JBombTextFieldTagged extends SettingsElementView {
         value.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                System.out.println("Focus");
                 onClickCallback.execute(value);
             }
 

@@ -3,6 +3,8 @@ package game.presentation.ui.panels.models;
 import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.helpers.Padding;
 import game.presentation.ui.panels.game.PagePanel;
+import game.presentation.ui.viewelements.bombermanpanel.BombermanPanel;
+import game.presentation.ui.viewelements.bombermanpanel.BombermanPanelYellow;
 import game.utils.file_system.Paths;
 
 import javax.swing.*;
@@ -12,6 +14,7 @@ import static game.values.Dimensions.DEFAULT_Y_PADDING;
 
 public abstract class BoxMenuPanel extends PagePanel {
     protected JBombermanBoxContainerPanel boxComponentsPanel;
+    protected BombermanPanel bombermanPanel;
     protected final String title;
     protected boolean isBackEnabled;
 
@@ -21,19 +24,23 @@ public abstract class BoxMenuPanel extends PagePanel {
             JBombFrame frame,
             String title
     ) {
-        this(cardLayout, parent, frame, title, true);
+        this(cardLayout, parent, frame, title, Paths.getBackgroundImage(), true, new BombermanPanelYellow());
     }
+
 
     public BoxMenuPanel(
             CardLayout cardLayout,
             JPanel parent,
             JBombFrame frame,
             String title,
-            boolean isBackEnabled
+            String background,
+            boolean isBackEnabled,
+            BombermanPanel containerPanel
     ) {
-        super(cardLayout, parent, frame, Paths.getBackgroundImage());
+        super(cardLayout, parent, frame, background);
         this.title = title;
         this.isBackEnabled = isBackEnabled;
+        this.bombermanPanel = containerPanel;
         initializeLayout();
     }
 
@@ -66,7 +73,7 @@ public abstract class BoxMenuPanel extends PagePanel {
     private void initializeLayout() {
         setLayout(new GridBagLayout());
 
-        this.boxComponentsPanel = new JBombermanBoxContainerPanel(title, isBackEnabled) {
+        this.boxComponentsPanel = new JBombermanBoxContainerPanel(title, isBackEnabled, bombermanPanel) {
             @Override
             protected int getDefaultBoxPanelWidth() {
                 return BoxMenuPanel.this.getBoxPanelWidth();

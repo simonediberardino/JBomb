@@ -8,6 +8,6 @@ public class BombermanPanelYellow extends BombermanPanel {
 
     @Override
     public Color getBorderColor() {
-        return BomberColors.ORANGE;
+        return BomberColors.YELLOW;
     }
 }

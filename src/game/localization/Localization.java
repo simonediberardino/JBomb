@@ -88,6 +88,15 @@ public class Localization {
         put(Locale.ITALY, "Benvenuto su JBOMB!");
     }};
 
+    public static final HashMap<Locale, String> REGISTRATION_USERNAME = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "Choose your username");
+        put(Locale.ITALY, "Scegli il tuo nome");
+    }};
+
+    public static final HashMap<Locale, String> REGISTRATION_AVATAR = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "Choose your avatar");
+        put(Locale.ITALY, "Scegli il tuo avatar");
+    }};
     public static final HashMap<Locale, String> NEEDS_UPDATE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "JBomb needs an update!");
         put(Locale.ITALY, "JBomb ha bisogno di un aggiornamento!");
@@ -197,8 +206,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> INSERT = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "INSERT...");
-        put(Locale.ITALY, "INSERISCI...");
+        put(Locale.ENGLISH, "INSERT…");
+        put(Locale.ITALY, "INSERISCI…");
     }};
 
     public static final HashMap<Locale, String> PLAY_ONLINE = new HashMap<Locale, String>() {{
@@ -238,6 +247,11 @@ public class Localization {
     public static final HashMap<Locale, String> USERNAME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "USERNAME");
         put(Locale.ITALY, "USERNAME");
+    }};
+
+    public static final HashMap<Locale, String> CONTINUE = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "CONTINUE");
+        put(Locale.ITALY, "CONTINUA");
     }};
 
     public static final HashMap<Locale, String> SETTINGS = new HashMap<Locale, String>() {{

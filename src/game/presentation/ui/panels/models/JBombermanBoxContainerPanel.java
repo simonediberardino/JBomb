@@ -7,6 +7,7 @@ import game.presentation.ui.helpers.Padding;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
+import game.presentation.ui.viewelements.bombermanpanel.BombermanPanel;
 import game.presentation.ui.viewelements.bombermanpanel.BombermanPanelYellow;
 import game.presentation.ui.viewelements.settings.InfoElementView;
 import game.presentation.ui.viewelements.settings.SettingsElementView;
@@ -26,14 +27,24 @@ import static javafx.scene.input.KeyCode.T;
 
 public abstract class JBombermanBoxContainerPanel extends JPanel {
     protected YellowButton titleButton;
-    protected final JPanel boxPanel = new BombermanPanelYellow(); // Parent yellow box, containing title and stats;
+    protected final JPanel boxPanel;
     protected final JPanel componentsPanel = new CenteredPanel(); // Panel containing stats and title;
     private final boolean isBackEnabled;
     private final String title;
 
-    public JBombermanBoxContainerPanel(String title, boolean isBackEnabled) {
+    public JBombermanBoxContainerPanel(
+            String title,
+            boolean isBackEnabled,
+            BombermanPanel bombermanPanel
+    ) {
         this.title = title;
         this.isBackEnabled = isBackEnabled;
+
+        if (bombermanPanel == null) {
+            this.boxPanel = new BombermanPanelYellow();
+        } else {
+            this.boxPanel = bombermanPanel;
+        }
     }
 
     protected abstract int getDefaultBoxPanelWidth();
@@ -48,7 +59,8 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
     public void initializeLayout() {
         setupPanels();
         setLayout(new GridBagLayout());
-
+        setOpaque(false);
+        setBackground(new Color(Color.TRANSLUCENT));
         componentsPanel.setLayout(new BoxLayout(componentsPanel, BoxLayout.Y_AXIS));
 
         add(boxPanel);

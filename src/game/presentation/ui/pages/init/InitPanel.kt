@@ -1,8 +1,6 @@
 package game.presentation.ui.pages.init
 
 import game.JBomb
-import game.audio.AudioManager
-import game.audio.SoundModel
 import game.data.data.DataInputOutput
 import game.usecases.CheckUpdateUseCase
 import game.localization.Localization
@@ -10,6 +8,7 @@ import game.localization.Localization.*
 import game.presentation.ui.frames.JBombFrame
 import game.presentation.ui.pages.loading.LoadingPanel
 import game.presentation.ui.pages.main_menu.MainMenuPanel
+import game.presentation.ui.pages.registration.RegistrationUsername
 import game.presentation.ui.viewelements.misc.ToastHandler
 import game.properties.RuntimeProperties
 import kotlinx.coroutines.launch
@@ -20,16 +19,15 @@ class InitPanel(
         cardLayout: CardLayout,
         parent: JPanel,
         frame: JBombFrame
-) : LoadingPanel(cardLayout, parent, frame, getInitMessasge()) {
+) : LoadingPanel(cardLayout, parent, frame, getInitMessage()) {
     private var loadingFinished = false
     private var stepsExecuted = 0
 
     companion object {
-        private fun getInitMessasge(): String? {
-            val defaultUsername = Localization.get(PLAYER)
+        private fun getInitMessage(): String? {
             val currUsername = DataInputOutput.getInstance().username
 
-            val message = if (defaultUsername == currUsername) {
+            val message = if (currUsername.isEmpty()) {
                 Localization.get(WELCOME_TEXT_ANONYMOUS)
             } else {
                 Localization.get(WELCOME_TEXT).replace("%user%", currUsername)
@@ -77,7 +75,12 @@ class InitPanel(
     private fun proceedIfFinished() {
         if (stepsExecuted == stepsToLoad.size && loadingFinished) {
             ToastHandler.getInstance().cancel()
-            JBomb.showActivity(MainMenuPanel::class.java)
+
+            if (DataInputOutput.getInstance().username.isNotBlank()) {
+                JBomb.showActivity(MainMenuPanel::class.java)
+            } else {
+                JBomb.showActivity(RegistrationUsername::class.java)
+            }
         }
     }
 }

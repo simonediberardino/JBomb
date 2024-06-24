@@ -14,7 +14,7 @@ public class YellowButton extends BombermanButton {
     }
     @Override
     public Color getBorderColor() {
-        return BomberColors.ORANGE;
+        return BomberColors.YELLOW;
     }
 
     @Override

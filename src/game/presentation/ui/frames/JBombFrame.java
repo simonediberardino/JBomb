@@ -11,6 +11,8 @@ import game.presentation.ui.pages.loading.LoadingPanel;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
 import game.presentation.ui.pages.pause.PausePanel;
 import game.presentation.ui.pages.play.PlayMenuPanel;
+import game.presentation.ui.pages.registration.RegistrationAvatar;
+import game.presentation.ui.pages.registration.RegistrationUsername;
 import game.presentation.ui.pages.servers_list.ServersListMenuPanel;
 import game.presentation.ui.panels.menu.ProfilePanel;
 import game.presentation.ui.pages.settings.SettingsPanel;
@@ -57,6 +59,9 @@ public class JBombFrame extends JFrame {
     private ArenaMenuPanel arenaMenuPanel;
     private InitPanel initPanel;
     private NetworkErrorPage networkErrorPage;
+    private RegistrationUsername registrationUsername;
+    private RegistrationAvatar registrationAvatar;
+
 
     /**
      * Creates the main frame and sets its properties.
@@ -76,6 +81,7 @@ public class JBombFrame extends JFrame {
         initSettingsPanel();
         initArenaMenuPanel();
         initErrorMenuPanel();
+        initRegistrationPanel();
         finalizeFrame();
         pack();
         setFrameCursor();
@@ -178,6 +184,14 @@ public class JBombFrame extends JFrame {
     private void initErrorMenuPanel()  {
         networkErrorPage = new NetworkErrorPage(cardLayout, parentPanel, this);
         parentPanel.add(networkErrorPage, NetworkErrorPage.class.getSimpleName());
+    }
+
+    private void initRegistrationPanel() {
+        registrationUsername = new RegistrationUsername(cardLayout, parentPanel, this);
+        parentPanel.add(registrationUsername, RegistrationUsername.class.getSimpleName());
+
+        registrationAvatar = new RegistrationAvatar(cardLayout, parentPanel, this);
+        parentPanel.add(registrationAvatar, RegistrationAvatar.class.getSimpleName());
     }
 
     /**

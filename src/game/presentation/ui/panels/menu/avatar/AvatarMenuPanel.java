@@ -1,4 +1,4 @@
-package game.presentation.ui.panels.menu;
+package game.presentation.ui.panels.menu.avatar;
 
 import game.domain.world.domain.entity.geo.Direction;
 import game.domain.events.models.RunnablePar;
@@ -7,6 +7,7 @@ import game.presentation.ui.helpers.Padding;
 import game.presentation.ui.panels.models.JBombermanBoxContainerPanel;
 import game.presentation.ui.viewelements.bombermanbutton.BombermanButton;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
+import game.presentation.ui.viewelements.bombermanpanel.BombermanPanelYellow;
 import game.utils.Utility;
 import game.values.Dimensions;
 
@@ -30,7 +31,7 @@ public class AvatarMenuPanel extends JBombermanBoxContainerPanel {
     private int currDirectionIndex = 0;
 
     public AvatarMenuPanel(RunnablePar getSkinRunnable, Consumer<Integer> callback) {
-        super(Localization.get(AVATAR), false);
+        super(Localization.get(AVATAR), false, new BombermanPanelYellow());
         this.getSkinRunnable = getSkinRunnable;
         this.callback = callback;
         this.initializeLayout();
