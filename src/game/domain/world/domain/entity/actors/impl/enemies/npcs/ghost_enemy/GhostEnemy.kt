@@ -4,6 +4,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
+import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.properties.GhostEnemyProperties
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.properties.GhostEnemyState
@@ -32,8 +33,8 @@ class GhostEnemy : AiEnemy {
     override val state: GhostEnemyState = GhostEnemyState(entity = this)
 
     internal object DEFAULT {
-        val OBSTACLES: Set<Class<out Entity>>
-            get() = emptySet<Class<out Entity>>()
+        val WHITELIST_OBSTACLES: MutableSet<Class<out Entity>>
+            get() = mutableSetOf(DestroyableBlock::class.java)
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
         val IMAGE_DIRECTIONS: List<Direction>
             get() = listOf(Direction.RIGHT, Direction.LEFT)

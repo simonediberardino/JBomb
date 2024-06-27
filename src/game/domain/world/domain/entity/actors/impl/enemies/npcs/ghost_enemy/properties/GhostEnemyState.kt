@@ -7,6 +7,7 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.enemy.properties.EnemyEntityState
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
+import game.domain.world.domain.entity.actors.impl.enemies.npcs.flying_enemy.FlyingEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.GhostEnemy
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Direction
@@ -15,9 +16,9 @@ import java.util.concurrent.atomic.AtomicReference
 class GhostEnemyState(
         entity: Entity,
         size: Int = GhostEnemy.DEFAULT.SIZE,
-        obstacles: Set<Class<out Entity>> = GhostEnemy.DEFAULT.OBSTACLES
+        whitelistObstacles: MutableSet<Class<out Entity>> = GhostEnemy.DEFAULT.WHITELIST_OBSTACLES
 ) : EnemyEntityState(
         entity = entity,
         size = size,
-        obstacles = obstacles
+        whitelistObstacles = whitelistObstacles
 )
