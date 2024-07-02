@@ -41,9 +41,16 @@ object JBomb {
      */
     @JvmStatic
     fun main(args: Array<String>) {
+        initUiSettings()
         retrievePlayerData()
         startGarbageCollectorTask()
         start()
+    }
+
+    private fun initUiSettings() {
+        // disable DPI scaling
+        System.setProperty("sun.java2d.uiScale", "1");
+        System.setProperty("sun.java2d.dpiaware", "true");
     }
 
     private fun start() {
