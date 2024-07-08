@@ -23,7 +23,6 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         super.onSpawn()
         // Give the current entity a BombItem when it is spawned in the match.
         JBomb.match.give(entity, BombItem())
-        InitBombsVariablesGameEvent().invoke(null)
     }
 
     override fun onDespawn() {
@@ -31,6 +30,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         if (entity.state.eliminated) {
             PlayerDeathBehavior().invoke()
         }
+        entity.state.activePowerUps.clear()
     }
 
     override fun onAdded() {

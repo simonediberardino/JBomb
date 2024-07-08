@@ -20,9 +20,14 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         super.onSpawn()
         InitBombsVariablesGameEvent().invoke()
 
-        Log.e("Spawning $this")
         JBomb.match.gameTickerObservable?.register(entity)
         JBomb.match.controllerManager?.register(entity)
+        JBomb.JBombFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
+    }
+
+    override fun onDespawn() {
+        super.onDespawn()
+
         JBomb.JBombFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
     }
 
