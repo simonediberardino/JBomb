@@ -6,6 +6,7 @@ import game.utils.file_system.Paths;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Class that stores and retrieves player data from a file using Serialization;
@@ -46,20 +47,22 @@ public class DataInputOutput {
 
     public void updateStoredPlayerData(PlayerDataObject serObj) {
         try {
-            // Creates a data file if still does not exist;
-            Files.createDirectories(java.nio.file.Paths.get(Paths.getDataFolder()));
+            // Get the appropriate data folder path based on the OS
+            String dataFolderPath = Paths.getPlayerDataPath();
 
-            File dataPath = new File(Paths.getPlayerDataPath());
+            // Ensure the directories exist
+            Path dataPath = java.nio.file.Paths.get(dataFolderPath);
+            Files.createDirectories(dataPath);
 
-            Files.createDirectories(dataPath.toPath()); // Create directories if they do not exist
+            // Create the data file within the directory
+            File dataFile = new File(dataPath.toFile(), Paths.getDataFile());
+            dataFile.createNewFile(); // Create the data file if it does not exist
 
-            File dataFile = new File(dataPath, "data");
-            dataFile.createNewFile();
-
-            FileOutputStream fileOut = new FileOutputStream(dataFile, false);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(serObj);
-            objectOut.close();
+            // Write the serialized object to the file
+            try (FileOutputStream fileOut = new FileOutputStream(dataFile, false);
+                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+                objectOut.writeObject(serObj);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -67,7 +70,7 @@ public class DataInputOutput {
 
     public PlayerDataObject getStoredPlayerData() {
         try {
-            FileInputStream fileIn = new FileInputStream(Paths.getPlayerDataObjectPath());
+            FileInputStream fileIn = new FileInputStream(Paths.getPlayerDataPath() + File.separator + Paths.getDataFile());
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
             PlayerDataObject obj = (PlayerDataObject) objectIn.readObject();

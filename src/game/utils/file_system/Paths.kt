@@ -1,17 +1,32 @@
 package game.utils.file_system
 
 import game.JBomb
-import javax.swing.JFileChooser
+import java.io.File
+import java.util.*
+
 
 object Paths {
     @JvmStatic
-    val playerDataPath: String get() = String.format("%s/JBomb", JFileChooser().fileSystemView.defaultDirectory.toString())
+    val playerDataPath: String = let {
+        val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+        val userHome = System.getProperty("user.home")
+
+        val appname = "JBomb"
+
+        if (os.contains("win")) {
+            // Windows: Use AppData\Local
+            "${System.getenv("LOCALAPPDATA")}${File.separator}$appname${File.separator}PlayerData"
+        } else if (os.contains("mac")) {
+            // macOS: Use Library/Application Support
+            "$userHome${File.separator}Library${File.separator}Application Support${File.separator}$appname${File.separator}PlayerData"
+        } else {
+            // Linux/Unix: Use .config
+            "$userHome${File.separator}.config${File.separator}$appname${File.separator}PlayerData"
+        }
+    }
 
     @JvmStatic
-    val playerDataObjectPath = String.format("%s/data", playerDataPath)
-
-    @JvmStatic
-    val dataFolder: String get() = "data"
+    val dataFile: String get() = "data"
     private val assetsFolder: String get() = "assets"
 
     @JvmStatic
