@@ -34,9 +34,5 @@ class TransparentDestroyableBlocksPowerUp : PowerUp {
         override fun canPickUp(bomberEntity: BomberEntity): Boolean = true
     }
 
-    override val state: PowerUpState = object : PowerUpState(entity = this) {
-        override val duration: Int = 0
-    }
-
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.TransparentDestroyableBlocksPowerUp)
 }
