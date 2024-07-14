@@ -4,6 +4,7 @@ import game.JBomb
 import game.domain.events.models.GameEvent
 import game.domain.level.behavior.GameBehavior
 import game.network.events.forward.UpdateEnemiesCountEventForwarder
+import game.utils.dev.Log
 
 class IncreaseEnemiesAliveGameEvent: GameEvent {
     // Only for server, notifies all clients
@@ -15,6 +16,8 @@ class IncreaseEnemiesAliveGameEvent: GameEvent {
 
                     UpdateLocalEnemiesCountGameEvent().invoke(enemiesAlive + 1) // updates locally
                     UpdateEnemiesCountEventForwarder().invoke(enemiesAlive + 1) // notifies clients
+
+                    Log.e("Host is notifying new increased count ${enemiesAlive - 1}")
                 }
             }
 

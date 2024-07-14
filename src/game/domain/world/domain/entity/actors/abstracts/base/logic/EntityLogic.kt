@@ -24,9 +24,12 @@ abstract class EntityLogic(
     }
 
     override fun despawn() {
-        entity.state.isSpawned = false
-        onDespawn()
-        match.removeEntity(entity)
+        // do not despawn entity if not spawned
+        if (entity.state.isSpawned) {
+            entity.state.isSpawned = false
+            onDespawn()
+            match.removeEntity(entity)
+        }
     }
 
     override fun spawn() {

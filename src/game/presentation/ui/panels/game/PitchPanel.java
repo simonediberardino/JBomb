@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.domain.world.domain.entity.actors.abstracts.character.Character;
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player;
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
+import game.domain.world.domain.entity.actors.impl.models.State;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 import game.utils.Utility;
 import game.utils.dev.Log;
@@ -118,7 +119,7 @@ public class PitchPanel extends JPanel implements Observer2 {
             }
         }
 
-        if (player != null && !JBomb.match.isOnlyPlayer()) {
+        if (player != null && !JBomb.match.isOnlyPlayer() && player.getLogic().isAlive()) {
             drawEntityArrowhead(g2d, player);
         }
 

@@ -21,7 +21,7 @@ class SpawnMysteryBoxBehavior(val level: Level) : GameBehavior() {
     private fun spawnMysteryBox() {
         val player = JBomb.match.player ?: return
         val c = Coordinates.generateCoordinatesAwayFrom(player.info.position, PitchPanel.GRID_SIZE * 2)
-        val mysteryBox: Entity = MysteryBoxPerk({ level }, { player })
+        val mysteryBox: Entity = MysteryBoxPerk({ level }, { JBomb.match.player })
         mysteryBox.info.position = c
         mysteryBox.logic.spawn()
     }
