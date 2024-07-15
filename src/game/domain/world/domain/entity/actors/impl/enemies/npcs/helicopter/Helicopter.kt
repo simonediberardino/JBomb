@@ -19,7 +19,7 @@ class Helicopter : FlyingEnemy {
     ) {
         override fun characterOrientedImages(): Array<String> {
             return Array(3) { index ->
-                "$entitiesAssetsPath/heli_${state.imageDirection.toString().lowercase()}_$index.gif"
+                "$entitiesAssetsPath/heli_${state.imageDirection.toString().lowercase()}_$index.png"
             }
         }
     }
