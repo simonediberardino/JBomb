@@ -46,17 +46,6 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
                     return entity.state.direction
                 }
 
-        //return the first direction that leads to an entity that can be interacted with, or the opposite of the first direction that leads to an entity that can be interacted by. Basically the subject will
-        //follow entities it can interact with or escape from entities it can be interacted by.
-        availableDirections.forEach {
-            Coordinates.getEntitiesOnBlock(Coordinates.getCoordinatesOnDirection(it, entity.info.position, entity.state.size / 3 * 2)).forEach { e ->
-                if (canInteractWith(e)) return it else if (canBeInteractedBy(e)) return it.opposite()
-                // first check canInteractWith, THEN check canBeInteractedBy. If order is flipped and both conditions are true, entities will escape from entities they can
-                //interact with only because they can be interacted by them. Consider making sure only one condition is true at a time. Ex: at the moment bomberEntities can be interacted by enemies,
-                // and for some reason also can interact with them.
-            }
-        }
-
         // Choose a new direction randomly, or keep the current direction with a certain probability
         return if (Math.random() * 100 > CHANGE_DIRECTION_RATE && availableDirections.size != 1) {
             entity.state.direction

@@ -54,6 +54,7 @@ open class BossEntityState(
         lastDirectionUpdate = lastDirectionUpdate,
 
         previousDirection = previousDirection,
-        canMove = canMove,
-
-        )
+        canMove = canMove
+) {
+    override val followPlayers: Boolean = false
+}

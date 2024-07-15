@@ -53,5 +53,5 @@ open class EnemyEntityState(
         canMove = canMove,
 ) {
     val enemyCommandQueue: MutableSet<Command> = mutableSetOf()
-
+    open val followPlayers = true
 }
