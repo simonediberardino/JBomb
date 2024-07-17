@@ -40,7 +40,7 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY_CAMPAIGN));
-        startLevelButton.addActionListener((v) -> JBomb.startLevel(new World2Level3(), null));
+        startLevelButton.addActionListener((v) -> JBomb.startLevel(new WorldSelectorLevel(), null));
         return startLevelButton;
     }
 
