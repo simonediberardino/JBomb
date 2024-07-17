@@ -16,7 +16,6 @@ abstract class PowerUpLogic(
         override val entity: PowerUp
 ) : EntityInteractableLogic(entity = entity), IPowerUpLogic {
     override fun doInteract(e: Entity?) {
-        Log.i("PowerUp doInteract $e")
         apply(e as BomberEntity)
     }
 
@@ -33,6 +32,11 @@ abstract class PowerUpLogic(
         val matchPanel = JBomb.JBombFrame.matchPanel
         AudioManager.instance.play(SoundModel.POWERUP)
 
+        player.logic.onPowerupApply(entity)
+
+        if (!entity.state.isPermanent)
+            player.state.temporaryActivePowerUps.add(entity.javaClass)
+
         player.state.activePowerUps.add(entity.javaClass)
 
         if (entity.state.isDisplayable)
@@ -41,7 +45,7 @@ abstract class PowerUpLogic(
         val durationMillis: Long = entity.state.duration * 1000L
 
         // If the power-up has a duration, schedule a TimerTask to cancel it when the duration is up
-        if (durationMillis <= 0)
+        if (entity.state.isPermanent)
             return
 
         val task = object : TimerTask() {
@@ -50,6 +54,7 @@ abstract class PowerUpLogic(
                 if (!match.gameState) return
 
                 player.state.activePowerUps.remove(entity.javaClass)
+                player.state.temporaryActivePowerUps.remove(entity.javaClass)
 
                 if (entity.state.isDisplayable)
                     matchPanel.refreshPowerUps(player.state.activePowerUps)
@@ -61,10 +66,23 @@ abstract class PowerUpLogic(
         Timer().schedule(task, durationMillis)
     }
 
-    override fun canPickUp(bomberEntity: BomberEntity): Boolean =
-            !bomberEntity.state.activePowerUps.any { p: Class<out PowerUp> ->
-                p == this.javaClass || this.entity.state.incompatiblePowerUps.contains(p)
+    override fun canPickUp(bomberEntity: BomberEntity): Boolean {
+        Log.e("active power ups: ${bomberEntity.state.activePowerUps}")
+
+        return bomberEntity.state.activePowerUps.all {
+            Log.e("it class is ${it::class.java}, entity class is ${this.entity.javaClass}")
+
+            if (it == this.entity.javaClass && !entity.state.isPermanent) {
+                return@all false
             }
+
+            if (this.entity.state.incompatiblePowerUps.contains(it)) {
+                return@all false
+            }
+
+            true
+        }
+    }
 
     override fun onAttackReceived(damage: Int) {}
 

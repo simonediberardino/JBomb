@@ -319,6 +319,66 @@ public class Localization {
         put(Locale.ITALY, "SEI STATO DISCONNESSO.\n\nERRORE: %error%.\n\nSE NON RIESCI A PARTECIPARE, ASSICURATI CHE LA PARTITA SIA ARENA E CHE LA RETE SIA APERTA ALLA PORTA: " + JBomb.match.Companion.getDefaultPort());
     }};
 
+    public static final HashMap<Locale, String> ARMOR_POWER_UP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "invulnerability");
+        put(Locale.ITALY, "invincibilità");
+    }};
+
+    public static final HashMap<Locale, String> BLOCK_MOVER_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "block-mover");
+        put(Locale.ITALY, "spostablocchi");
+    }};
+
+    public static final HashMap<Locale, String> FIRE_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "fire power");
+        put(Locale.ITALY, "potere di fuoco");
+    }};
+
+    public static final HashMap<Locale, String> HAMMER_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "hammer");
+        put(Locale.ITALY, "martello");
+    }};
+
+    public static final HashMap<Locale, String> BOMBS_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "bomb");
+        put(Locale.ITALY, "bomba");
+    }};
+
+    public static final HashMap<Locale, String> HP_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "health");
+        put(Locale.ITALY, "salute");
+    }};
+
+    public static final HashMap<Locale, String> PISTOL_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "pistol");
+        put(Locale.ITALY, "pistola");
+    }};
+
+    public static final HashMap<Locale, String> RC_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "bomb remote control");
+        put(Locale.ITALY, "telecomando bombe");
+    }};
+
+    public static final HashMap<Locale, String> SPEED_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "speed");
+        put(Locale.ITALY, "velocità");
+    }};
+
+    public static final HashMap<Locale, String> TRANSPARENT_BOMBS_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "bomb passage");
+        put(Locale.ITALY, "passabomba");
+    }};
+
+    public static final HashMap<Locale, String> TRANSPARENT_BLOCKS_POWERUP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "block passage");
+        put(Locale.ITALY, "passablocchi");
+    }};
+
+    public static final HashMap<Locale, String> POWERUP_FOUND = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "New power up: %powerup%");
+        put(Locale.ITALY, "Nuovo power up: %powerup%");
+    }};
+
     public static Locale[] getSupportedLanguages() {
         return new Locale[]{
                 Locale.ENGLISH,

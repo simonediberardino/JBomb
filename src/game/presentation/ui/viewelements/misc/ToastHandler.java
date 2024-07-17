@@ -24,6 +24,7 @@ public class ToastHandler {
     private int toastY = TOAST_START_Y;
     private String text;
     private boolean permanent = false;
+    private double toastId = 0.0;
 
     public static ToastHandler getInstance() {
         return instance = instance == null ? new ToastHandler() : instance;
@@ -138,25 +139,32 @@ public class ToastHandler {
     }
 
     public void cancel() {
+        this.toastId = 0.0;
         animStoppedTime = 0;
         toastY = TOAST_START_Y;
         permanent = false;
         text = null;
     }
 
-    public void show(String text, boolean playSound) {
-        show(text, false, playSound);
+    public double show(String text, boolean playSound) {
+        return show(text, false, playSound);
     }
 
-    public void show(String text) {
-        show(text, false, true);
+    public double show(String text) {
+        return show(text, false, true);
     }
 
-    public void show(String text, boolean permanent, boolean playSound) {
+    public double show(String text, boolean permanent, boolean playSound) {
         cancel();
         this.text = text;
         this.permanent = permanent;
+        this.toastId = Math.random();
         new NewToastGameEvent().invoke(playSound);
+        return toastId;
+    }
+
+    public double getToastId() {
+        return toastId;
     }
 
     public String getText() {

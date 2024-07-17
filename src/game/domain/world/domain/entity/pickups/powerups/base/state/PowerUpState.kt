@@ -39,6 +39,10 @@ open class PowerUpState(
 ) {
     open val duration: Int = PowerUp.DEFAULT.DURATION_SEC
     open val isDisplayable: Boolean = PowerUp.DEFAULT.IS_DISPLAYABLE
+    open val isPermanent: Boolean
+        get() {
+            return duration == 0
+        }
 
     // Whether the power-up has already been applied or not
     var applied = false

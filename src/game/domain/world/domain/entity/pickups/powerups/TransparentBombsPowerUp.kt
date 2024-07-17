@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
+import game.localization.Localization
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -30,9 +31,10 @@ class TransparentBombsPowerUp : PowerUp {
             player.state.forceBombsSolid = (false)
             player.state.bombsSolid = (true)
         }
-
-        override fun canPickUp(bomberEntity: BomberEntity): Boolean = true
     }
+
+    override val tag: String
+        get() = Localization.get(Localization.TRANSPARENT_BOMBS_POWERUP)
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.TransparentBombsPowerUp)
 }

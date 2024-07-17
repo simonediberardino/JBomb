@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
+import game.localization.Localization
 import game.utils.dev.Log
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
@@ -36,4 +37,6 @@ class ArmorPowerUp : PowerUp {
     }
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.ArmorPowerUp)
+    override val tag: String
+        get() = Localization.get(Localization.ARMOR_POWER_UP)
 }

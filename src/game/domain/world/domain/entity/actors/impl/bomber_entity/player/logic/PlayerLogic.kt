@@ -7,8 +7,10 @@ import game.domain.events.game.InitBombsVariablesGameEvent
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.Command
-import game.utils.dev.Log
+import game.localization.Localization
+import game.presentation.ui.viewelements.misc.ToastHandler
 import game.utils.time.now
 
 class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = entity) {
@@ -18,6 +20,8 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         }
 
         super.onSpawn()
+
+        ToastHandler.getInstance().cancel();
         InitBombsVariablesGameEvent().invoke()
 
         JBomb.match.gameTickerObservable?.register(entity)
@@ -97,5 +101,12 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun onUpdateHealth(health: Int) {
         super.onUpdateHealth(health)
         HealthUpdatedEvent().invoke(null)
+    }
+
+    override fun onPowerupApply(powerUp: PowerUp) {
+        val baseMessage = Localization.get(Localization.POWERUP_FOUND)
+        val message = baseMessage.replace("%powerup%", powerUp.tag).uppercase()
+        ToastHandler.getInstance().cancel();
+        ToastHandler.getInstance().show(message)
     }
 }

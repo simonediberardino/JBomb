@@ -13,17 +13,19 @@ import java.awt.event.ActionEvent
 import javax.swing.Timer
 
 abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLogic(entity = entity) {
+    private var currMessageId: Double = 0.0
+
     override fun onCollision(e: Entity) {
         super.onCollision(e)
 
-        if (e == entity.state.buyer() && e == JBomb.match.player)
+        if (e == entity.state.buyer() && e == JBomb.match.player && ToastHandler.getInstance().getToastId() == 0.0)
             showInteractMessage()
     }
 
     override fun onExitCollision(e: Entity) {
         super.onExitCollision(e)
 
-        if (e == entity.state.buyer() && e == JBomb.match.player)
+        if (e == entity.state.buyer() && e == JBomb.match.player && currMessageId != 0.0 && currMessageId == ToastHandler.getInstance().getToastId())
             ToastHandler.getInstance().cancel()
     }
 
@@ -65,12 +67,12 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
 
     private fun showErrorMessage() {
         val errorMessage = Localization.get(Localization.MYSTERY_BOX_ERROR_MONEY).replace("%price%", entity.state.price.toString())
-        ToastHandler.getInstance().show(errorMessage)
+        currMessageId = ToastHandler.getInstance().show(errorMessage)
     }
 
     private fun showInteractMessage() {
         val confirmMessage = Localization.get(Localization.MYSTERY_BOX_CONFIRM).replace("%price%", entity.state.price.toString())
-        ToastHandler.getInstance().show(
+        currMessageId = ToastHandler.getInstance().show(
                 confirmMessage,
                 true,
                 false
@@ -79,7 +81,7 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
 
     private fun showConfirmMessage() {
         val confirmMessage = Localization.get(Localization.MYSTERY_BOX_CONFIRM).replace("%price%", entity.state.price.toString())
-        ToastHandler.getInstance().show(confirmMessage, false)
+        currMessageId = ToastHandler.getInstance().show(confirmMessage, false)
     }
 
     private val isConfirmDelayExpired: Boolean

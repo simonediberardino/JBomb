@@ -11,6 +11,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.items.PistolItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
+import game.localization.Localization
 import game.utils.file_system.Paths.itemsPath
 import java.awt.image.BufferedImage
 
@@ -31,9 +32,11 @@ class PistolPowerUp : PowerUp {
             JBomb.match.removeItem(player)
         }
 
-        override fun canPickUp(bomberEntity: BomberEntity): Boolean = true
+        
     }
 
+    override val tag: String
+        get() = Localization.get(Localization.PISTOL_POWERUP)
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.PistolPowerUp)
 }

@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBeha
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
+import game.localization.Localization
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -30,8 +31,11 @@ class SpeedPowerUp : PowerUp {
             player.state.speed = 1f
         }
 
-        override fun canPickUp(bomberEntity: BomberEntity): Boolean = true
+        
     }
+
+    override val tag: String
+        get() = Localization.get(Localization.SPEED_POWERUP)
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.SpeedPowerUp)
 }

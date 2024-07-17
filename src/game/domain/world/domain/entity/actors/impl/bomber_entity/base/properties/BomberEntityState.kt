@@ -80,4 +80,5 @@ open class BomberEntityState(
 
     var forceBombsSolid: Boolean = false
     var activePowerUps: MutableList<Class<out PowerUp>> = mutableListOf()
+    var temporaryActivePowerUps: MutableSet<Class<out PowerUp>> = mutableSetOf()
 }

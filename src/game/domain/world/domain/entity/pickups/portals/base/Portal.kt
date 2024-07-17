@@ -13,4 +13,5 @@ abstract class Portal : PowerUp {
     override val state: PortalState = PortalState(entity = this)
     override val image: EntityImageModel = EntityImageModel(entity = this)
     abstract override val logic: PortalLogic
+    override val tag: String = "portal"
 }

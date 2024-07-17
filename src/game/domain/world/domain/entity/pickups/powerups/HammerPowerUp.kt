@@ -11,6 +11,7 @@ import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
 import game.domain.world.types.EntityTypes
+import game.localization.Localization
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -40,6 +41,9 @@ class HammerPowerUp : PowerUp {
         override val duration: Int
             get() = 30
     }
+
+    override val tag: String
+        get() = Localization.get(Localization.HAMMER_POWERUP)
 
     init {
         state.incompatiblePowerUps += BlockMoverPowerUp::class.java

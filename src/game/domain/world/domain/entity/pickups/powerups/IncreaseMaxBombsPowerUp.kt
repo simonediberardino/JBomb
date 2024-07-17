@@ -13,6 +13,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEnt
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
+import game.localization.Localization
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -34,7 +35,7 @@ class IncreaseMaxBombsPowerUp
         override fun cancel(player: BomberEntity) {}
 
         override fun canPickUp(bomberEntity: BomberEntity): Boolean =
-                DataInputOutput.getInstance().obtainedBombs < JBomb.match.currentLevel.info.maxBombs
+                DataInputOutput.getInstance().obtainedBombs < JBomb.match.currentLevel.info.maxBombs && super.canPickUp(bomberEntity)
     }
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {
@@ -46,6 +47,9 @@ class IncreaseMaxBombsPowerUp
             return loadAndSetImage(entity, "$powerUpsFolder/increase_max_bombs_powerup.png")
         }
     }
+
+    override val tag: String
+        get() = Localization.get(Localization.BOMBS_POWERUP)
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.IncreaseMaxBombsPowerUp)
 }

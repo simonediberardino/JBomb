@@ -39,6 +39,8 @@ abstract class PowerUp : EntityInteractable {
         )
     }
 
+    abstract val tag: String
+
     internal object DEFAULT {
         // The default duration for a power-up, in seconds
         const val DURATION_SEC: Int = 15

@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
+import game.localization.Localization
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -36,8 +37,11 @@ class RemoteControlPowerUp
             player.logic.removeClassInteractWithMouseClick(Bomb::class.java)
         }
 
-        override fun canPickUp(bomberEntity: BomberEntity): Boolean = true
+        
     }
+
+    override val tag: String
+        get() = Localization.get(Localization.RC_POWERUP)
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.RemoteControlPowerUp)
 }

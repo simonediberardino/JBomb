@@ -21,13 +21,18 @@ class MysteryBoxPerk(
 
     override val logic: MysteryBoxLogic = object : MysteryBoxLogic(entity = this) {
         override fun onPurchaseConfirm() {
-            val allowedPowerUps = level()?.info?.allowedPerks.orEmpty().toMutableList()
-            allowedPowerUps.removeAll(state.buyer()?.state?.activePowerUps ?: emptyList())
+            val level = level() ?: return
 
-            if (allowedPowerUps.isEmpty())
+            // Retrieve the active power-ups of the buyer, if any.
+            val activePowerUps = state.buyer()?.state?.temporaryActivePowerUps
+            val allowedPerks = level.info.allowedPerks.copyOf()
+
+            allowedPerks.toMutableList().removeAll(activePowerUps ?: listOf())
+
+            if (allowedPerks.isEmpty())
                 return
 
-            val powerUpClass = allowedPowerUps.random()
+            val powerUpClass = allowedPerks.random()
 
             val powerUpInstance: PowerUp = try {
                 powerUpClass.getConstructor(Coordinates::class.java).newInstance(Coordinates(0, 0))

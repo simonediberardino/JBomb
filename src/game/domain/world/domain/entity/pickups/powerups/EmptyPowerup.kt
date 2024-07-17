@@ -37,4 +37,7 @@ class EmptyPowerup
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
         override fun getImage(entity: Entity): BufferedImage? = loadAndSetImage(entity, "$powerUpsFolder/no_powerup.png")
     }
+
+    override val tag: String
+        get() = "empty"
 }

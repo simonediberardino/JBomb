@@ -1,9 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic
 
 import game.JBomb
-import game.data.data.DataInputOutput
-import game.domain.events.game.InitBombsVariablesGameEvent
-import game.domain.events.game.UpdateMaxBombsEvent
 import game.domain.level.behavior.PlayerDeathBehavior
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -103,6 +100,8 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     override fun removeActivePowerUp(p: PowerUp?) {
         entity.state.activePowerUps.removeIf { e: Class<out PowerUp> -> e.isInstance(p) }
     }
+
+    override fun onPowerupApply(powerUp: PowerUp) {}
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {}
 }

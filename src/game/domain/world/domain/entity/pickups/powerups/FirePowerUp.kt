@@ -12,6 +12,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEnt
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
+import game.localization.Localization
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -30,12 +31,15 @@ class FirePowerUp : PowerUp {
 
         override fun cancel(player: BomberEntity) {}
 
-        override fun canPickUp(bomberEntity: BomberEntity): Boolean = bomberEntity.state.currExplosionLength <= MAX_EXPLOSION_LENGTH
+        override fun canPickUp(bomberEntity: BomberEntity): Boolean = bomberEntity.state.currExplosionLength <= MAX_EXPLOSION_LENGTH && super.canPickUp(bomberEntity)
     }
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {
         override val duration: Int = 0
     }
+
+    override val tag: String
+        get() = Localization.get(Localization.FIRE_POWERUP)
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.FirePowerUp)
 }

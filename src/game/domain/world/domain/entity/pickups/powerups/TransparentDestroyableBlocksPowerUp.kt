@@ -11,6 +11,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
+import game.localization.Localization
 import game.utils.file_system.Paths.powerUpsFolder
 import java.awt.image.BufferedImage
 
@@ -31,8 +32,11 @@ class TransparentDestroyableBlocksPowerUp : PowerUp {
             player.state.whitelistObstacles.remove(DestroyableBlock::class.java)
         }
 
-        override fun canPickUp(bomberEntity: BomberEntity): Boolean = true
+        
     }
+
+    override val tag: String
+        get() = Localization.get(Localization.TRANSPARENT_BLOCKS_POWERUP)
 
     override val properties: EntityProperties = EntityProperties(type = EntityTypes.TransparentDestroyableBlocksPowerUp)
 }
