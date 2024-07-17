@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.Command
 import game.localization.Localization
+import game.network.events.forward.UpdateInfoEventForwarder
 import game.presentation.ui.viewelements.misc.ToastHandler
 import game.utils.time.now
 
@@ -105,8 +106,11 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
 
     override fun onPowerupApply(powerUp: PowerUp) {
         val baseMessage = Localization.get(Localization.POWERUP_FOUND)
-        val message = baseMessage.replace("%powerup%", powerUp.tag).uppercase()
-        ToastHandler.getInstance().cancel();
-        ToastHandler.getInstance().show(message)
+        powerUp.tag?.let {
+            val message = baseMessage.replace("%powerup%", it).uppercase()
+            ToastHandler.getInstance().cancel();
+            ToastHandler.getInstance().show(message)
+        }
+
     }
 }

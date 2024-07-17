@@ -3,6 +3,7 @@ package game.presentation.ui.pages.play;
 import game.JBomb;
 import game.domain.level.levels.lobby.WorldSelectorLevel;
 import game.domain.level.levels.world1.World1Level5;
+import game.domain.level.levels.world2.World2Level3;
 import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.AbstractMainMenuPanel;
 import game.presentation.ui.pages.arena.ArenaMenuPanel;
@@ -39,7 +40,7 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
      */
     private JButton createStartLevelButton() {
         JButton startLevelButton = new YellowButton(get(PLAY_CAMPAIGN));
-        startLevelButton.addActionListener((v) -> JBomb.startLevel(new World1Level5(), null));
+        startLevelButton.addActionListener((v) -> JBomb.startLevel(new World2Level3(), null));
         return startLevelButton;
     }
 

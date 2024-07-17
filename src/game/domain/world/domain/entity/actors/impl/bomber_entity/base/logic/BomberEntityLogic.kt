@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
+import game.network.events.forward.UpdateInfoEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 
 open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity), IBomberEntityLogic {
@@ -102,6 +103,11 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     }
 
     override fun onPowerupApply(powerUp: PowerUp) {}
+
+    override fun onUpdateHealth(health: Int) {
+        super.onUpdateHealth(health)
+        UpdateInfoEventForwarder().invoke(entity.toEntityNetwork())
+    }
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {}
 }
