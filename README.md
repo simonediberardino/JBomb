@@ -8,6 +8,8 @@ The core gameplay of JBomb revolves around strategically placing bombs to clear 
 
 Website: http://jbombthegame.com
 
+## JBomb Trailer
+
 [![JBomb Gameplay](https://img.youtube.com/vi/PmlfRap1ni8/0.jpg)](https://www.youtube.com/watch?v=PmlfRap1ni8)
 
 ## Innovative Features
