@@ -72,7 +72,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
                             entity.info.position,
                             it,
                             entity
-                    ).logic.checkAndExplode()
+                    ).logic.explode()
                 }
             }
 

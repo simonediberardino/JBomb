@@ -30,7 +30,6 @@ class ExplosionState(
         var explosive: Explosive,
         var distanceFromExplosive: Int = AbstractExplosion.DEFAULT.DISTANCE_FROM_EXPLOSIVE,
         var canExpand: Boolean = AbstractExplosion.DEFAULT.CAN_EXPAND,
-        var blockedDirections : MutableList<Direction> = mutableListOf(),
         var isCenterVisible: Boolean = AbstractExplosion.DEFAULT.CENTER_VISIBLE
 ) : MovingEntityState(
         entity = entity,

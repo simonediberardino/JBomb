@@ -58,7 +58,7 @@ class FiringEnemyLogic(override val entity: FiringEnemy) : AiEnemyLogic(entity =
                     coordinates = newCoords,
                     direction = direction,
                     explosive = entity
-            ).logic.checkAndExplode())
+            ).logic.explode())
         }
 
         if (JBomb.match.isServer) {

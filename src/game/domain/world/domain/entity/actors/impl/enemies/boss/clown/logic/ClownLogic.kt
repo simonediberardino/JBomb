@@ -143,7 +143,7 @@ class ClownLogic(
                             coordinates = explosionCoordinates,
                             direction = d,
                             explosive = entity
-                    ).logic.checkAndExplode()
+                    ).logic.explode()
             )
         }
     }
