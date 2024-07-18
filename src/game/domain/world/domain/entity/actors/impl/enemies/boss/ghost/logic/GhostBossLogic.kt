@@ -3,12 +3,15 @@ package game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.logic
 import game.JBomb
 import game.audio.AudioManager
 import game.audio.SoundModel
+import game.domain.level.behavior.GameBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.logic.BossEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ghost_enemy.GhostEnemy
+import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.network.events.forward.AttackEntityEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
 import game.utils.dev.Log
@@ -109,7 +112,19 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
     }
 
     override fun attack(e: Entity?) {
-        attackAnimationAndSoundFX()
+        val gameBehavior: GameBehavior = object : GameBehavior() {
+            override fun hostBehavior(): () -> Unit {
+                return {
+                    attackAnimationAndSoundFX()
+                }
+            }
+
+            override fun clientBehavior(): () -> Unit {
+                return {}
+            }
+        }
+
+        gameBehavior.invoke()
         super.attack(e)
     }
 

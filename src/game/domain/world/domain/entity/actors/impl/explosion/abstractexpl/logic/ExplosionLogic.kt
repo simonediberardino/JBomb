@@ -26,6 +26,8 @@ class ExplosionLogic(
     override fun canInteractWith(e: Entity?): Boolean =
             e == null || entity.state.explosive.explosionInteractionEntities.any { c -> c.isInstance(e) }
 
+    override fun damageAnimation() {}
+
     override fun onCollision(e: Entity) {
         super.onCollision(e)
 

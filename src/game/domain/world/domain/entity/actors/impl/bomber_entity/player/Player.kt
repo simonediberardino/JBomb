@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.actors.impl.bomber_entity.player
 
 import game.audio.SoundModel
 import game.data.data.DataInputOutput
+import game.domain.events.game.HealthUpdatedEvent
 import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
@@ -16,6 +17,8 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.graphics.PlayerImageModel
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.logic.PlayerLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.state.PlayerState
+import game.utils.dev.Extensions.getOrTrim
+import game.utils.dev.Log
 import game.utils.skin.SkinUtilities
 
 class Player : BomberEntity {
@@ -37,5 +40,16 @@ class Player : BomberEntity {
     internal object DEFAULT {
         val DEATH_SOUND: SoundModel
             get() = SoundModel.PLAYER_DEATH
+    }
+
+    override fun updateInfo(info: Map<String, String>) {
+        super.updateInfo(info)
+
+        val hp = info.getOrTrim("hp")?.toInt()
+
+        hp?.let {
+            state.hp = it
+            HealthUpdatedEvent().invoke(null)
+        }
     }
 }

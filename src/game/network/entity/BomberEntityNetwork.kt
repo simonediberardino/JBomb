@@ -11,7 +11,8 @@ class BomberEntityNetwork(
         name: String? = null,
         val currExplosionLength: Int,
         val currentBombs: Int,
-        val skinId: Int
+        val skinId: Int,
+        val hp: Int
 ) : CharacterNetwork(
         entityId = entityId,
         entityLocation = entityLocation,

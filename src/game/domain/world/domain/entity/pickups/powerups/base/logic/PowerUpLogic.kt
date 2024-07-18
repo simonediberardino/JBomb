@@ -19,6 +19,8 @@ abstract class PowerUpLogic(
         apply(e as BomberEntity)
     }
 
+    override fun damageAnimation() {}
+
     final override fun apply(player: BomberEntity) {
         if (this.entity.state.applied || !canPickUp(player))
             return

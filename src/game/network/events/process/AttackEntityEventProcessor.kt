@@ -12,9 +12,9 @@ class AttackEntityEventProcessor : HttpEvent {
         val victimId = info.getOrTrim("entityId")?.toLong() ?: return
         val damage = info.getOrTrim("damage")?.toInt() ?: return
 
-        Log.i("AttackEntityEventProcessor received $victimId, $damage")
+        Log.e("AttackEntityEventProcessor received $victimId, $damage")
 
         val entity: Entity = JBomb.match.getEntityById(victimId) ?: return
-        entity.logic.onAttackReceived(damage)
+        entity.logic.damageAnimation()
     }
 }

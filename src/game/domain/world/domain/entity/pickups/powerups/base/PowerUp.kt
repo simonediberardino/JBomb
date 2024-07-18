@@ -25,17 +25,8 @@ abstract class PowerUp : EntityInteractable {
     companion object {
         // A static array of power-up classes
         val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
-                //LivesPowerUp::class.java,
-                PistolPowerUp::class.java,
-                ArmorPowerUp::class.java,
-                FirePowerUp::class.java,
-                SpeedPowerUp::class.java,
-                TransparentDestroyableBlocksPowerUp::class.java,
-                RemoteControlPowerUp::class.java,
-                HammerPowerUp::class.java,
-                BlockMoverPowerUp::class.java,
-                IncreaseMaxBombsPowerUp::class.java,
-                TransparentBombsPowerUp::class.java
+                LivesPowerUp::class.java,
+
         )
     }
 

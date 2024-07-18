@@ -102,7 +102,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun onUpdateHealth(health: Int) {
         super.onUpdateHealth(health)
         HealthUpdatedEvent().invoke(null)
-        UpdateInfoEventForwarder().invoke(entity.toEntityNetwork())
     }
 
     override fun onPowerupApply(powerUp: PowerUp) {

@@ -47,6 +47,7 @@ open class CharacterEntityState(
         attackDamage = attackDamage,
         direction = direction
 ) {
+    var takingDamage: Boolean = false
     var eliminated: Boolean = false
     val startCanMove = canMove
 

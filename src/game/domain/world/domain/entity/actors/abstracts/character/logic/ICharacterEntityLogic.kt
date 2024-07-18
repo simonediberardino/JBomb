@@ -11,7 +11,6 @@ interface ICharacterEntityLogic : IMovingEntityLogic {
     fun updateMovementDirection(direction: Direction)
     fun onStep()
     fun move(direction: Direction) : Boolean
-    fun damageAnimation()
     fun onEliminated()
     fun onHit(damage: Int)
     fun handleCommand(command: Command)

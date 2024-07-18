@@ -7,13 +7,17 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.input.Command
+import game.network.events.forward.CustomUpdateInfoEventForwarder
+import game.network.models.HttpMessageTypes
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
+import game.utils.dev.Log
 import game.utils.time.now
 import java.awt.event.ActionEvent
 import java.util.*
@@ -45,6 +49,7 @@ abstract class CharacterEntityLogic(
         if (alive) {
             entity.state.eliminated = false
         }
+        entity.state.takingDamage = false
     }
 
     override fun updateMovementDirection(direction: Direction) {
@@ -99,6 +104,8 @@ abstract class CharacterEntityLogic(
         return moveOrInteract(direction, (speed).toInt(), false)
     }
 
+    private val lock = Any()
+
     /**
      * Removes the specified amount of damage from the entity's health points.
      * If the health points reach 0 or below, the entity is despawned.
@@ -107,23 +114,32 @@ abstract class CharacterEntityLogic(
      * @param damage The amount of damage to remove from the entity's health points.
      */
     override fun onAttackReceived(damage: Int) {
-        if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
-            return
+        synchronized(lock) {
+            if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
+                return
 
-        if (entity.state.isImmune)
-            return
+            if (entity.state.isImmune)
+                return
 
-        entity.state.lastDamageTime = now()
+            if (entity.state.takingDamage)
+                return
 
-        // Reduce the health points by the specified amount
-        updateHealth(max(entity.state.hp - damage, 0))
-        damageAnimation()
+            Log.e("$entity attack received $damage, curr health: ${entity.state.hp}")
+            val currHealth = entity.state.hp - damage
+            entity.state.lastDamageTime = now()
 
-        // If the health points reach 0 or below, despawn the entity
-        if (entity.state.hp <= 0) {
-            eliminated()
-        } else {
-            onHit(damage)
+            // Reduce the health points by the specified amount
+            updateHealth(max(currHealth, 0))
+            damageAnimation()
+
+            Log.e("$entity new health: ${entity.state.hp}")
+
+            // If the health points reach 0 or below, despawn the entity
+            if (entity.state.hp <= 0) {
+                eliminated()
+            } else {
+                onHit(damage)
+            }
         }
     }
 
@@ -156,8 +172,12 @@ abstract class CharacterEntityLogic(
                 // If the number of iterations has been reached, cancel the timer and return
                 if ((count >= iterations) || (entity.state.state != State.SPAWNED)) {
                     timer.cancel()
+                    entity.state.takingDamage = false
                     return
                 }
+
+                entity.state.takingDamage = false
+
                 try {
                     // Make the entity invisible and wait for the specified duration
                     entity.state.isInvisible = (true)
@@ -293,5 +313,12 @@ abstract class CharacterEntityLogic(
     override fun addCommand(command: Command) {}
     override fun removeCommand(command: Command) {}
 
-    override fun onUpdateHealth(health: Int) {}
+    override fun onUpdateHealth(health: Int) {
+        val hashMap = HashMap<String, String>()
+
+        hashMap["messageType"] = HttpMessageTypes.UPDATE_INFO.ordinal.toString()
+        hashMap["hp"] = health.toString()
+
+        CustomUpdateInfoEventForwarder().invoke(entity.info.id, hashMap)
+    }
 }

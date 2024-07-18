@@ -9,6 +9,8 @@ open class BlockEntityLogic(entity: Entity) : EntityLogic(entity), IBlockEntityL
         entity.logic.eliminated()
     }
 
+    override fun damageAnimation() {}
+
     override fun onAttackReceived(damage: Int) {
         destroy()
     }

@@ -40,15 +40,18 @@ abstract class BomberEntity : Character, Explosive {
     override fun updateInfo(info: Map<String, String>) {
         super.updateInfo(info)
 
-        Log.e("Updating info ${this.info.id} $info")
-
         val currExplosionLength = info.getOrTrim("currExplosionLength")?.toInt()
         val currentBombs = info.getOrTrim("currentBombs")?.toInt()
         val skinId = info.getOrTrim("skinId")?.toInt()
+        val hp = info.getOrTrim("hp")?.toInt()
 
         currExplosionLength?.let { state.currExplosionLength = it }
         currentBombs?.let { state.currentBombs = it }
         skinId?.let { properties.skinId = it }
+        hp?.let {
+            Log.e("Updating health ${hp} $hp")
+            state.hp = it
+        }
     }
 
     init {

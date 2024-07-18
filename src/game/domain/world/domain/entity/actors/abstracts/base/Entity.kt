@@ -19,6 +19,7 @@ import java.util.*
 
 // Interface defining common behavior for entities
 interface IEntityLogic {
+    fun damageAnimation()
     fun onAttackReceived(damage: Int)
     fun interact(e: Entity?)
     fun doInteract(e: Entity?)
