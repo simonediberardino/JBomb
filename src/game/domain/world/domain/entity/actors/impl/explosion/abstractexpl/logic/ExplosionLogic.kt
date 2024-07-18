@@ -7,7 +7,6 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
-import game.utils.dev.Log
 
 class ExplosionLogic(
         override val entity: AbstractExplosion
@@ -35,25 +34,29 @@ class ExplosionLogic(
     }
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {}
-
-    override fun explode(): AbstractExplosion {
+    override fun explode() : AbstractExplosion{
+        return explode(null)
+        //se last explosion è null, l'esplosione non ha un centro (es. le esplosioni dei carri armati)
+    }
+    override fun explode(lastExplosion : AbstractExplosion? ): AbstractExplosion {
         val allCoordinates = Coordinates.getAllCoordinates(
                 entity.info.position,
                 entity.state.size
         )
-
         val collidedEntities = Coordinates.getEntitiesOnCoordinates(allCoordinates)
 
         if (collidedEntities.all { !entity.logic.isObstacle(it) }) {
             spawn()
-        }
-
-        collidedEntities.forEach {
-            if (entity.logic.canInteractWith(it)) {
-                entity.logic.interact(it)
+            //perché le interazioni venivano gestite al di fuori dell'if?
+            collidedEntities.forEach {
+                if (entity.logic.canInteractWith(it)) {
+                    entity.logic.interact(it)
+                }
             }
+        } else {
+            //non genero la nuova esplosione e aggiungo la direzione che è risultata essere ostacolata a l'ultima esplosione generata, in modo tale che possa cambiare la propria texture di conseguenza
+            lastExplosion?.let { explosion -> explosion.state.blockedDirections?.add(explosion.state.direction) }
         }
-
         return entity
     }
 
@@ -76,6 +79,19 @@ class ExplosionLogic(
         entity.state.canExpand = entity.state.distanceFromExplosive < maxExplosionDistance
         return entity.state.canExpand
     }
+    override fun isBlockedOnRight() : Boolean{
+        return entity.state.blockedDirections?.contains(Direction.RIGHT)?:false
+    }
+    override fun isBlockedOnLeft() : Boolean{
+        return entity.state.blockedDirections?.contains(Direction.LEFT)?:false
+    }
+    override fun isBlockedOnDown() : Boolean{
+        return entity.state.blockedDirections?.contains(Direction.DOWN)?:false
+    }
+    override fun isBlockedOnUp() : Boolean{
+        return entity.state.blockedDirections?.contains(Direction.UP)?:false
+    }
+
 
     override fun expandBomb(d: Direction, stepSize: Int) {
         try {
@@ -104,7 +120,7 @@ class ExplosionLogic(
                     entity.state.distanceFromExplosive + 1,
                     entity.state.explosive,
                     false
-            )!!.logic.explode()
+            )!!.logic.explode(entity)
         } catch (e: Exception) {
             e.printStackTrace()
         }

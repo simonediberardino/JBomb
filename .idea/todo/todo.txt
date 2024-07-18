@@ -7,3 +7,6 @@ high priorities:
 - Update username on resume
 - fix bomb after pistol
 -review interaction entities lists. Bomberentity can interact with enemies? enemies can interact with explosions? Fix in order to make AiLogic movement work 100%
+
+- WIP implementation for correct explosions' textures when blocked by an obstacle. Implementation is almost full, images are
+not ready yet and ExplosionGraphicsBehavior implementation is missing

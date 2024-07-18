@@ -6,9 +6,11 @@ JBomb is a 2D videogame where the objective is to strategically place bombs to e
 
 The core gameplay of JBomb revolves around strategically placing bombs to clear obstacles and defeat enemies within a maze-like environment. As you progress through the game, you'll have the opportunity to collect power-ups that enhance your abilities, such as increasing bomb range or speed. Your objective is to clear each level by taking down adversaries while ensuring your own self-preservation. Get ready for an adrenaline-pumping adventure filled with intense moments and strategic decision-making.
 
-Website: https://jbombthegame.github.io
+Website: http://jbombthegame.com
 
-![Alt Text](https://jbombthegame.github.io/img/previews/1.png)
+## JBomb Trailer
+
+[![JBomb Gameplay](https://img.youtube.com/vi/PmlfRap1ni8/0.jpg)](https://www.youtube.com/watch?v=PmlfRap1ni8)
 
 ## Innovative Features
 

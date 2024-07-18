@@ -7,6 +7,7 @@ import game.domain.world.domain.entity.actors.impl.explosion.FireExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.BombExplodedEventForwarder
 import kotlinx.coroutines.launch
@@ -65,14 +66,28 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
         JBomb.match.scope.launch {
             // TODO CHANGED
             ExplosionHandler.instance.process {
+                val currCoords = entity.info.position
+                //trigger central explosion (ONLY ONE unlike before)
+                val centralExplosion = FireExplosion(
+                        entity.state.caller,
+                        currCoords,
+                        Direction.DOWN,//default value, any can be
+                        entity
+                ).logic.explode()
                 // Trigger explosions in all directions
                 Direction.values().map {
+                    val newCoords = when (it) {
+                        Direction.DOWN -> currCoords.plus(Coordinates(0, entity.state.size))
+                        Direction.LEFT -> currCoords.plus(Coordinates(-entity.state.size, 0))
+                        Direction.UP -> currCoords.plus(Coordinates(0, -entity.state.size))
+                        Direction.RIGHT -> currCoords.plus(Coordinates(entity.state.size, 0))
+                    }
                     FireExplosion(
                             entity.state.caller,
-                            entity.info.position,
+                            newCoords,
                             it,
                             entity
-                    ).logic.explode()
+                    ).logic.explode(centralExplosion)
                 }
             }
 
