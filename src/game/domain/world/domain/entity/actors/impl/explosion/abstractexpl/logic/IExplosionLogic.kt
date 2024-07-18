@@ -7,11 +7,13 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 
 interface IExplosionLogic : IMovingEntityLogic {
-    fun checkAndExplode(): AbstractExplosion
-    fun explode(collidedEntities : List<Entity>)
-    fun collidedEntities() : MutableList<Entity>?
-
+    fun explode(lastExplosion : AbstractExplosion? ): AbstractExplosion
+    fun explode(): AbstractExplosion
     fun canExpand() : Boolean
+    fun isBlockedOnRight(): Boolean
+    fun isBlockedOnLeft(): Boolean
+    fun isBlockedOnDown(): Boolean
+    fun isBlockedOnUp(): Boolean
     fun expandBomb(d: Direction, stepSize: Int)
     fun onObstacle(coordinates: Coordinates)
 }

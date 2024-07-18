@@ -64,7 +64,7 @@ class PistolItem : UsableItem(), Explosive {
                     owner.state.direction,
                     1,
                     this
-            ).logic.checkAndExplode()
+            ).logic.explode()
 
             listOf(explosion)
         }

@@ -34,31 +34,28 @@ class ExplosionLogic(
     }
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {}
-    override fun collidedEntities() : MutableList<Entity> {
+    override fun explode() : AbstractExplosion{
+        return explode(null)
+        //se last explosion è null, l'esplosione non ha un centro (es. le esplosioni dei carri armati)
+    }
+    override fun explode(lastExplosion : AbstractExplosion? ): AbstractExplosion {
         val allCoordinates = Coordinates.getAllCoordinates(
                 entity.info.position,
                 entity.state.size
         )
-        return Coordinates.getEntitiesOnCoordinates(allCoordinates)
-    }
-    override fun explode(collidedEntities : List<Entity>){
-        collidedEntities.forEach {
-            if (entity.logic.canInteractWith(it)) {
-                entity.logic.interact(it)
-            }
-        }
-    }
-    override fun checkAndExplode(): AbstractExplosion {
-
-        val collidedEntities = collidedEntities()
+        val collidedEntities = Coordinates.getEntitiesOnCoordinates(allCoordinates)
 
         if (collidedEntities.all { !entity.logic.isObstacle(it) }) {
             spawn()
+            //perché le interazioni venivano gestite al di fuori dell'if?
             collidedEntities.forEach {
                 if (entity.logic.canInteractWith(it)) {
                     entity.logic.interact(it)
                 }
             }
+        } else {
+            //non genero la nuova esplosione e aggiungo la direzione che è risultata essere ostacolata a l'ultima esplosione generata, in modo tale che possa cambiare la propria texture di conseguenza
+            lastExplosion?.let { explosion -> explosion.state.blockedDirections?.add(explosion.state.direction) }
         }
         return entity
     }
@@ -82,6 +79,19 @@ class ExplosionLogic(
         entity.state.canExpand = entity.state.distanceFromExplosive < maxExplosionDistance
         return entity.state.canExpand
     }
+    override fun isBlockedOnRight() : Boolean{
+        return entity.state.blockedDirections?.contains(Direction.RIGHT)?:false
+    }
+    override fun isBlockedOnLeft() : Boolean{
+        return entity.state.blockedDirections?.contains(Direction.LEFT)?:false
+    }
+    override fun isBlockedOnDown() : Boolean{
+        return entity.state.blockedDirections?.contains(Direction.DOWN)?:false
+    }
+    override fun isBlockedOnUp() : Boolean{
+        return entity.state.blockedDirections?.contains(Direction.UP)?:false
+    }
+
 
     override fun expandBomb(d: Direction, stepSize: Int) {
         try {
@@ -103,23 +113,14 @@ class ExplosionLogic(
                 Direction.RIGHT -> currCoords.plus(Coordinates(stepSize, 0))
             }
 
-            //prepare new explosion but NOT spawn it, then check if it wouldn't encounter obstacles if spawned, else change its predecessors encountered obstacles.
-            // Basically what we did previously, but now we check BEFORE we enter the new explosion object, so we can still refer to the last explosion we generated easily
-            val newExplosion = constructor.newInstance(
+            constructor.newInstance(
                     entity.state.owner,
                     newCoords,
                     entity.state.direction,
                     entity.state.distanceFromExplosive + 1,
                     entity.state.explosive,
                     false
-            )!!
-            val collidedEntities = collidedEntities()
-            if (collidedEntities.all { !entity.logic.isObstacle(it) }){
-                newExplosion.logic.explode(collidedEntities)
-            }
-            else{
-
-            }
+            )!!.logic.explode(entity)
         } catch (e: Exception) {
             e.printStackTrace()
         }
