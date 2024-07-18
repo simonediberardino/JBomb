@@ -7,7 +7,6 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.models.Explosive
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
-import game.utils.dev.Log
 
 class ExplosionLogic(
         override val entity: AbstractExplosion
@@ -35,25 +34,32 @@ class ExplosionLogic(
     }
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {}
-
-    override fun explode(): AbstractExplosion {
+    override fun collidedEntities() : MutableList<Entity> {
         val allCoordinates = Coordinates.getAllCoordinates(
                 entity.info.position,
                 entity.state.size
         )
-
-        val collidedEntities = Coordinates.getEntitiesOnCoordinates(allCoordinates)
-
-        if (collidedEntities.all { !entity.logic.isObstacle(it) }) {
-            spawn()
-        }
-
+        return Coordinates.getEntitiesOnCoordinates(allCoordinates)
+    }
+    override fun explode(collidedEntities : List<Entity>){
         collidedEntities.forEach {
             if (entity.logic.canInteractWith(it)) {
                 entity.logic.interact(it)
             }
         }
+    }
+    override fun checkAndExplode(): AbstractExplosion {
 
+        val collidedEntities = collidedEntities()
+
+        if (collidedEntities.all { !entity.logic.isObstacle(it) }) {
+            spawn()
+            collidedEntities.forEach {
+                if (entity.logic.canInteractWith(it)) {
+                    entity.logic.interact(it)
+                }
+            }
+        }
         return entity
     }
 
@@ -97,14 +103,23 @@ class ExplosionLogic(
                 Direction.RIGHT -> currCoords.plus(Coordinates(stepSize, 0))
             }
 
-            constructor.newInstance(
+            //prepare new explosion but NOT spawn it, then check if it wouldn't encounter obstacles if spawned, else change its predecessors encountered obstacles.
+            // Basically what we did previously, but now we check BEFORE we enter the new explosion object, so we can still refer to the last explosion we generated easily
+            val newExplosion = constructor.newInstance(
                     entity.state.owner,
                     newCoords,
                     entity.state.direction,
                     entity.state.distanceFromExplosive + 1,
                     entity.state.explosive,
                     false
-            )!!.logic.explode()
+            )!!
+            val collidedEntities = collidedEntities()
+            if (collidedEntities.all { !entity.logic.isObstacle(it) }){
+                newExplosion.logic.explode(collidedEntities)
+            }
+            else{
+
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
