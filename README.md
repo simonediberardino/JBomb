@@ -22,7 +22,7 @@ Arena mode offers a cooperative experience. Join the arena with friends as you c
 
 ## How to play
 
-Visit [our website](https://jbombthegame.github.io), then simply click on the download link. After downloading the installer, run it and follow the setup instructions. Once completed, you'll be all set to launch JBomb.
+Visit [our website](http://jbombthegame.com), then simply click on the download link. After downloading the installer, run it and follow the setup instructions. Once completed, you'll be all set to launch JBomb.
 
 ## About the project
 
