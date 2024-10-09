@@ -11,6 +11,7 @@ import game.domain.world.domain.entity.actors.abstracts.character.Character;
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player;
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
 import game.domain.world.domain.entity.actors.impl.models.State;
+import game.domain.world.domain.entity.geo.Coordinates;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 import game.utils.Utility;
 import game.utils.dev.Log;
@@ -39,6 +40,8 @@ public class PitchPanel extends JPanel implements Observer2 {
     public static final Dimension DIMENSION = new Dimension(GRID_SIZE * 13, 11 * GRID_SIZE);
     private final HashMap<String, RunnablePar> graphicsCallbacks = new HashMap<>();
     public volatile Graphics2D g2d;
+    private static final int CAMERA_LAG_DISTANCE = 50; // Pixels before camera starts moving
+    private static final float CAMERA_SMOOTHING_FACTOR = 0.1f; // Smoothing factor (0 < x < 1)
 
     /**
      * Constructs a new GamePanel with the default dimensions and sets it as the observer for the game ticker observable
@@ -88,52 +91,77 @@ public class PitchPanel extends JPanel implements Observer2 {
     public Dimension getPanelDimensions() {
         return DIMENSION;
     }
-
-    /**
-     * Paints the graphics of the entities in the game world
-     */
-
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         this.g2d = (Graphics2D) g;
 
+        Dimension pitchPanelSize = new Dimension(getWidth(), getHeight());
+        Dimension mapDimensions = Coordinates.getMapDimensions();
+
+        // Load the background image
         Image img = Utility.INSTANCE.loadImage(JBomb.match.getCurrentLevel().getInfo().getPitchImagePath());
-        g.drawImage(img.getScaledInstance((int) getMaximumSize().getWidth(), (int) getMaximumSize().getHeight(), 1), 0, 0, null);
 
-        List<? extends Entity> setEntities = JBomb.match.getEntities();
+        // Calculate camera offset based on player position
         Player player = JBomb.match.getPlayer();
+        int cameraOffsetX = 0;
+        int cameraOffsetY = 0;
 
+        if (player != null) {
+            cameraOffsetX = player.getInfo().getPosition().getX() - (pitchPanelSize.width / 2);
+            cameraOffsetY = player.getInfo().getPosition().getY() - (pitchPanelSize.height / 2);
+
+            // Clamp the camera offsets to ensure they don't exceed the game world boundaries
+            cameraOffsetX = Math.max(0, Math.min(cameraOffsetX, mapDimensions.width - pitchPanelSize.width));
+            cameraOffsetY = Math.max(0, Math.min(cameraOffsetY, mapDimensions.height - pitchPanelSize.height));
+        }
+
+        // Calculate the dimensions of the background image
+        int imgWidth = pitchPanelSize.width;
+        int imgHeight = pitchPanelSize.height;
+
+        // Calculate the starting position for the background
+        int startX = -cameraOffsetX % imgWidth;
+        int startY = -cameraOffsetY % imgHeight;
+
+        // Draw the background tiles to fit the pitch panel dimensions
+        for (int x = startX; x < pitchPanelSize.width; x += imgWidth) {
+            for (int y = startY; y < pitchPanelSize.height; y += imgHeight) {
+                g.drawImage(img, x, y, pitchPanelSize.width, pitchPanelSize.height, null);
+            }
+        }
+
+        // Draw the entities
+        List<? extends Entity> setEntities = JBomb.match.getEntities();
+        int finalCameraOffsetX = cameraOffsetX;
+        int finalCameraOffsetY = cameraOffsetY;
         setEntities.forEach(e -> {
             try {
-                drawEntity(g2d, e);
+                drawEntity(g2d, e, finalCameraOffsetX, finalCameraOffsetY); // Pass offsets to drawEntity
             } catch (ConcurrentModificationException ex) {
                 ex.printStackTrace();
             }
         });
 
-        // consider only one for loop
+        // Draw labels for other entities
         for (Entity e : setEntities) {
             if (e != player && e instanceof Character) {
-                drawEntityLabel(g2d, (Character) e);
+                drawEntityLabel(g2d, (Character) e, cameraOffsetX, cameraOffsetY); // Pass offsets to drawEntityLabel
             }
         }
 
-        if (player != null && !JBomb.match.isOnlyPlayer() && player.getLogic().isAlive()) {
-            drawEntityArrowhead(g2d, player);
+        if (!JBomb.match.isOnlyPlayer() && player != null && player.getLogic().isAlive()) {
+            drawEntityArrowhead(g2d, player, cameraOffsetX, cameraOffsetY); // Pass offsets to drawEntityArrowhead
         }
 
         // Runs custom callbacks;
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
     }
 
-    /**
-     * Draws the "Player" label on the player's head inside a box.
-     *
-     * @param g2d the Graphics2D object to draw with
-     * @param e   the entity to draw
-     */
-    private void drawEntityLabel(Graphics2D g2d, Character e) {
+
+
+
+    private void drawEntityLabel(Graphics2D g2d, Character e, int cameraOffsetX, int cameraOffsetY) {
         String entityName = e.getProperties().getName();
 
         if (entityName == null || entityName.isEmpty())
@@ -143,7 +171,7 @@ public class PitchPanel extends JPanel implements Observer2 {
             return;
         }
 
-        int x = e.getInfo().getPosition().getX();
+        int x = e.getInfo().getPosition().getX() - cameraOffsetX; // Apply camera offset
         int y = e.getInfo().getPosition().getY();
         int size = (int) (double) e.getState().getSize();
 
@@ -162,13 +190,8 @@ public class PitchPanel extends JPanel implements Observer2 {
         SwingUtilities.paintComponent(g2d, playerButton, this, buttonX, buttonY, buttonSize.width, buttonSize.height);
     }
 
-    /**
-     * Draws an entity on the game panel.
-     *
-     * @param g2d the Graphics2D object to draw with
-     * @param e   the entity to draw
-     */
-    private void drawEntity(Graphics2D g2d, Entity e) {
+
+    private void drawEntity(Graphics2D g2d, Entity e, int cameraOffsetX, int cameraOffsetY) {
         if (e.getState().isInvisible()) {
             return;
         }
@@ -186,8 +209,8 @@ public class PitchPanel extends JPanel implements Observer2 {
             exception.printStackTrace();
         }
 
-        int x = e.getInfo().getPosition().getX();
-        int y = e.getInfo().getPosition().getY() - paddingHeight;
+        int x = e.getInfo().getPosition().getX() - cameraOffsetX; // Apply camera offset
+        int y = e.getInfo().getPosition().getY() - paddingHeight - cameraOffsetY; // Apply camera offset
 
         g2d.drawImage(
                 e.getGraphicsBehavior().getImage(e),
@@ -201,24 +224,19 @@ public class PitchPanel extends JPanel implements Observer2 {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
     }
 
-    /**
-     * Draws the arrowhead of the entity on the game panel.
-     *
-     * @param g2d the Graphics2D object to draw with
-     * @param e   the entity to draw
-     */
-    private void drawEntityArrowhead(Graphics2D g2d, Entity e) {
+
+    private void drawEntityArrowhead(Graphics2D g2d, Entity e, int cameraOffsetX, int cameraOffsetY) {
         String path = e.getImage().getImagePath();
         float heightRatio = e.getGraphicsBehavior().getHitboxSizeToHeightRatio(e, path);
         int paddingHeight = e.getGraphicsBehavior().calculateAndGetPaddingTop(e, heightRatio);
-        int x = e.getInfo().getPosition().getX();
-        int y = e.getInfo().getPosition().getY() - paddingHeight;
+        int x = e.getInfo().getPosition().getX() - cameraOffsetX; // Apply camera offset
+        int y = e.getInfo().getPosition().getY() - paddingHeight - cameraOffsetY; // Apply camera offset
         int size = (int) (double) e.getState().getSize();
 
         Polygon arrowhead = new Polygon();
         arrowhead.addPoint(x + size / 2, y);
-        arrowhead.addPoint(x + size / 3, y - size*3/4);
-        arrowhead.addPoint(x + size* 2 / 3, y - size * 3/4);
+        arrowhead.addPoint(x + size / 3, y - size * 3 / 4);
+        arrowhead.addPoint(x + size * 2 / 3, y - size * 3 / 4);
 
         GradientPaint gradient = new GradientPaint(
                 x, y + (float) size / 4, Color.RED,
@@ -232,6 +250,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         g2d.fill(arrowhead); // Draw shadow
         g2d.translate(-2, -2); // Reset translation
     }
+
 
     public void addGraphicsCallback(String tag, RunnablePar callback) {
         graphicsCallbacks.put(tag, callback);

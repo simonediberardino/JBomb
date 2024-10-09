@@ -8,7 +8,7 @@ import game.domain.level.behavior.GameBehavior
 import game.domain.level.behavior.RespawnDeadPlayersBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
 import game.domain.level.eventhandler.model.LevelEventHandler
-import game.domain.level.gamehandler.imp.DefaultGameHandler
+import game.domain.level.gamehandler.imp.DefaultStoryLevelHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.DefaultArenaLevelInfo
 import game.localization.Localization
@@ -21,7 +21,7 @@ import javax.swing.Timer
 
 abstract class ArenaLevel : Level() {
     override val gameHandler: GameHandler
-        get() = object : DefaultGameHandler(this) {
+        get() = object : DefaultStoryLevelHandler(this) {
             override fun spawnMysteryBox() {
                 Log.e("Destroyable blocks current round ${currentRound.get()}")
 

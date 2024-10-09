@@ -6,6 +6,8 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
+import game.values.Dimensions
+import java.awt.Dimension
 
 /**
  * Abstract base class that is used to represent all the info of a Level instance;
@@ -39,4 +41,5 @@ abstract class LevelInfo {
     abstract val playerSpawnCoordinates: Coordinates
     abstract val isLastLevelOfWorld: Boolean
     abstract val availableAnimals: Array<Class<out AnimalEntity>>
+    abstract val mapDimension: Dimension?
 }

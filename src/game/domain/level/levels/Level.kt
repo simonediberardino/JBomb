@@ -7,7 +7,7 @@ import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
 import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.filesystem.LevelFileSystemHandler
-import game.domain.level.gamehandler.imp.DefaultGameHandler
+import game.domain.level.gamehandler.imp.DefaultStoryLevelHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.LevelInfo
 import game.domain.level.levels.lobby.WorldSelectorLevel
@@ -15,7 +15,6 @@ import game.domain.level.levels.world1.*
 import game.domain.level.levels.world2.*
 import game.utils.dev.Log
 import java.util.*
-import javax.sound.sampled.Clip
 import javax.swing.JPanel
 
 /**
@@ -29,7 +28,7 @@ abstract class Level {
     open val eventHandler: LevelEventHandler = DefaultLevelEventHandler()
 
     init {
-        gameHandler = DefaultGameHandler(this)
+        gameHandler = DefaultStoryLevelHandler(this)
     }
 
     lateinit var field: JPanel

@@ -62,11 +62,23 @@ public class Coordinates implements Comparable<Coordinates> {
         );
     }
 
-    public boolean validate(int size) {
-        Dimension gamePanelDimensions = JBomb.JBombFrame.getPitchPanel().getPanelDimensions();
+    public static Dimension getMapDimensions() {
+        Dimension currMapDimension = JBomb.match.getCurrentLevel().getInfo().getMapDimension();
 
-        ValueRange rangeY = ValueRange.of(0, gamePanelDimensions.height - size);
-        ValueRange rangeX = ValueRange.of(0, gamePanelDimensions.width - size);
+        Dimension dimension;
+        if (currMapDimension != null) {
+            dimension = currMapDimension;
+        } else {
+            dimension = JBomb.JBombFrame.getPitchPanel().getPanelDimensions();
+        }
+
+        return dimension;
+    }
+
+    public boolean validate(int size) {
+        Dimension dimension = getMapDimensions();
+        ValueRange rangeY = ValueRange.of(0, dimension.height - size);
+        ValueRange rangeX = ValueRange.of(0, dimension.width - size);
 
         return (rangeY.isValidValue(getY()) && rangeX.isValidValue(getX()));
     }

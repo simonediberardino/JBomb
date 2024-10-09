@@ -7,6 +7,8 @@ import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.actors.impl.animals.FoxAnimal
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.presentation.ui.panels.game.PitchPanel
+import game.values.Dimensions
+import java.awt.Dimension
 
 abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
     override val bossMaxHealth: Int = 1000
@@ -26,4 +28,6 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
         get() = 0
     override val availableAnimals: Array<Class<out AnimalEntity>>
         get() = arrayOf(FoxAnimal::class.java)
+    override val mapDimension: Dimension?
+        get() = null
 }
