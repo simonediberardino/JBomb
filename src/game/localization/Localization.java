@@ -139,6 +139,16 @@ public class Localization {
         put(Locale.ITALY, "ISOLA");
     }};
 
+    public static final HashMap<Locale, String> MP_DRACULAS_CASTLE_UI_NAME = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "DRACULA'S CASTLE");
+        put(Locale.ITALY, "CASTELLO DI DRACULA");
+    }};
+
+    public static final HashMap<Locale, String> YOU_DIED_BASE = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "YOU DIED!");
+        put(Locale.ITALY, "SEI MORTO!");
+    }};
+
     public static final HashMap<Locale, String> YOU_DIED = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "YOU DIED! YOU HAVE %lives% LIVES LEFT.");
         put(Locale.ITALY, "SEI MORTO! HAI %lives% VITE RIMANENTI.");

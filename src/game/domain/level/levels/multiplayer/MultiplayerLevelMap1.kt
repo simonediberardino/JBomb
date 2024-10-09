@@ -1,6 +1,7 @@
 package game.domain.level.levels.multiplayer
 
 import game.domain.level.info.model.LevelInfo
+import game.localization.Localization
 import java.awt.Dimension
 
 class MultiplayerLevelMap1 : MultiplayerLevel() {
@@ -9,4 +10,8 @@ class MultiplayerLevelMap1 : MultiplayerLevel() {
             override val mapDimension: Dimension
                 get() = Dimension(2000, 2000)
         }
+
+    override fun toString(): String {
+        return Localization.get(Localization.MP_DRACULAS_CASTLE_UI_NAME)
+    }
 }

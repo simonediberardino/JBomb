@@ -103,9 +103,12 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
         entity.state.lastGhostSpawnTime = now()
 
         for (i in 0 until n) {
-            if (JBomb.match.enemiesAlive >= MAX_GHOSTS_ALIVE) return
+            if (JBomb.match.enemiesAlive >= MAX_GHOSTS_ALIVE)
+                return
+
             val ghostEnemy = GhostEnemy()
             val randomCoordinates = Coordinates.randomCoordinatesFromPlayer(ghostEnemy.state.size)
+
             ghostEnemy.logic.move(randomCoordinates)
             ghostEnemy.logic.spawn()
         }
