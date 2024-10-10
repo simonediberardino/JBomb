@@ -2,7 +2,7 @@ package game.domain.world.domain.entity.actors.impl.bomber_entity.player.state
 
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
-import game.input.Command
+import game.input.game.Command
 
 class PlayerState(
         entity: BomberEntity,

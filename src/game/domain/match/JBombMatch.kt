@@ -14,8 +14,8 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.items.UsableItem
-import game.input.ControllerManager
-import game.input.MouseControllerManager
+import game.input.game.ControllerManager
+import game.input.game.MouseControllerManager
 import game.network.events.forward.UseItemHttpEventForwarder
 import game.network.gamehandler.ClientGameHandler
 import game.network.gamehandler.OnlineGameHandler

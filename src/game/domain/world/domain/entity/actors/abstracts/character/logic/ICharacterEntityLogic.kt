@@ -3,7 +3,7 @@ package game.domain.world.domain.entity.actors.abstracts.character.logic
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.IMovingEntityLogic
 import game.domain.world.domain.entity.geo.Direction
-import game.input.Command
+import game.input.game.Command
 
 interface ICharacterEntityLogic : IMovingEntityLogic {
     fun isAlive() : Boolean

@@ -18,7 +18,7 @@ import game.domain.world.domain.entity.actors.impl.explosion.ConfettiExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.FireExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.PistolExplosion
 
-val ids: Map<String, Class<out Entity>> = mapOf(
+val EntityIds: Map<String, Class<out Entity>> = mapOf(
     // Enemies
     "enemy_confetti_explosion" to ConfettiExplosion::class.java,
     "enemy_fire_explosion" to FireExplosion::class.java,

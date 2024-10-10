@@ -8,9 +8,8 @@ import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
-import game.input.Command
+import game.input.game.Command
 import game.localization.Localization
-import game.network.events.forward.UpdateInfoEventForwarder
 import game.presentation.ui.viewelements.misc.ToastHandler
 import game.utils.time.now
 

@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.geo
 
-import game.input.Command
+import game.input.game.Command
 
 enum class Direction {
     DOWN, LEFT, UP, RIGHT;

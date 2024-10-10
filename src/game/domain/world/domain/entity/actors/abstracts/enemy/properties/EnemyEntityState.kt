@@ -1,6 +1,6 @@
 package game.domain.world.domain.entity.actors.abstracts.enemy.properties
 
-import game.input.Command
+import game.input.game.Command
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityState

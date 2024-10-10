@@ -13,7 +13,7 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.abstracts.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
-import game.input.Command
+import game.input.game.Command
 import game.network.events.forward.CustomUpdateInfoEventForwarder
 import game.network.models.HttpMessageTypes
 import game.presentation.ui.panels.game.PitchPanel

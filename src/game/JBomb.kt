@@ -5,6 +5,7 @@ import game.data.data.DataInputOutput
 import game.domain.level.levels.Level
 import game.domain.match.JBombMatch
 import game.domain.tasks.GarbageCollectorTask
+import game.input.terminal.Terminal
 import game.usecases.CheckUpdateUseCase
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
@@ -33,18 +34,22 @@ object JBomb {
     private var currentPage: Class<out PagePanel>? = null
     val scope = CoroutineScope(Dispatchers.IO)
 
-    var outOfDate = false
-        private set
-
     /**
      * Starts the Java Application;
      */
     @JvmStatic
     fun main(args: Array<String>) {
+        initTerminal()
         initUiSettings()
         retrievePlayerData()
         startGarbageCollectorTask()
         start()
+    }
+
+    private fun initTerminal() {
+        scope.launch {
+            Terminal.start()
+        }
     }
 
     private fun initUiSettings() {

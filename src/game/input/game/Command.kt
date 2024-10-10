@@ -1,4 +1,4 @@
-package game.input
+package game.input.game
 
 import game.domain.world.domain.entity.geo.Direction
 
