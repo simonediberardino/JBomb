@@ -11,6 +11,7 @@ import game.domain.level.gamehandler.imp.DefaultStoryLevelHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.LevelInfo
 import game.domain.level.levels.lobby.WorldSelectorLevel
+import game.domain.level.levels.multiplayer.MultiplayerLevelMap1
 import game.domain.level.levels.world1.*
 import game.domain.level.levels.world2.*
 import game.utils.dev.Log
@@ -67,16 +68,15 @@ abstract class Level {
                 arrayOf(2, 2) to World2Level2::class.java,
                 arrayOf(2, 3) to World2Level3::class.java,
                 arrayOf(2, 4) to World2Level4::class.java,
-                arrayOf(2, 5) to World2Level5::class.java
+                arrayOf(2, 5) to World2Level5::class.java,
+                arrayOf(-1, 1) to MultiplayerLevelMap1::class.java
         )
 
-        fun findLevel(worldId: Int, levelId: Int): Optional<Class<out Level>> {
-            return Level.ID_TO_LEVEL.entries
-                    .firstOrNull { (key, _) -> key[0] == worldId && key[1] == levelId }
-                    ?.value
-                    ?.let { Optional.of(it) }
-                    ?: Optional.empty()
-        }
+        fun findLevel(worldId: Int, levelId: Int): Optional<Class<out Level>> = ID_TO_LEVEL.entries
+                .firstOrNull { (key, _) -> key[0] == worldId && key[1] == levelId }
+                ?.value
+                ?.let { Optional.of(it) }
+                ?: Optional.empty()
 
         var currLevel: Level? = null
             private set

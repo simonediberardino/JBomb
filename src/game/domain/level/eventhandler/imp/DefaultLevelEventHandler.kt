@@ -8,6 +8,7 @@ import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.events.game.UpdateCurrentBombsLengthEvent
 import game.domain.events.game.UpdateMaxBombsEvent
 import game.domain.level.eventhandler.model.LevelEventHandler
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
 
 open class DefaultLevelEventHandler : LevelEventHandler {
     override fun onDefeatGameEvent() {
@@ -85,4 +86,6 @@ open class DefaultLevelEventHandler : LevelEventHandler {
     }
 
     override fun onAllEnemiesEliminated() {}
+
+    override fun onKill(attacker: Entity, victim: Entity) {}
 }

@@ -1,6 +1,6 @@
 package game.domain.level.eventhandler.model
 
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
 
 interface LevelEventHandler {
     fun onDefeatGameEvent()
@@ -16,4 +16,5 @@ interface LevelEventHandler {
     fun initBombsVariables()
     fun onUpdateMaxBombsGameEvent(arg: Int, save: Boolean)
     fun resetBombsVariables()
+    fun onKill(attacker: Entity, victim: Entity)
 }

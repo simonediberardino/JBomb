@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <config
-            full_screen="true"
-            logs_base="false"
-            logs_error="false"
+            full_screen="false"
+            logs_base="true"
+            logs_error="true"
             logs_warning="false"
             bots_move="true">
     </config>

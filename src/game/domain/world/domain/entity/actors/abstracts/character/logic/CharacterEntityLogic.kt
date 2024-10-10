@@ -2,12 +2,13 @@ package game.domain.world.domain.entity.actors.abstracts.character.logic
 
 import game.JBomb
 import game.audio.AudioManager
+import game.domain.events.game.EntityKilledByGameEvent
+import game.domain.level.behavior.GameBehavior
 import game.domain.level.behavior.LocationChangedBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.geo.Coordinates
@@ -113,7 +114,7 @@ abstract class CharacterEntityLogic(
      *
      * @param damage The amount of damage to remove from the entity's health points.
      */
-    override fun onAttackReceived(damage: Int) {
+    override fun onAttackReceived(damage: Int, attacker: EntityInteractable) {
         synchronized(lock) {
             if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
                 return
@@ -136,6 +137,16 @@ abstract class CharacterEntityLogic(
 
             // If the health points reach 0 or below, despawn the entity
             if (entity.state.hp <= 0) {
+                val gameBehavior: GameBehavior = object : GameBehavior() {
+                    override fun hostBehavior(): () -> Unit = {
+                        EntityKilledByGameEvent().invoke(entity, attacker)
+                    }
+
+                    override fun clientBehavior(): () -> Unit = {}
+
+                }
+                gameBehavior.invoke()
+                
                 eliminated()
             } else {
                 onHit(damage)

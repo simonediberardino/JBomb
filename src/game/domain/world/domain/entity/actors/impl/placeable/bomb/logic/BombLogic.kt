@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHa
 import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.BombExplodedEventForwarder
+import game.utils.dev.Log
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -56,6 +57,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
 
     override fun explode() {
         if (exploded || JBomb.isGameEnded) {
+            Log.e("Game is ended or exploded, not exploding")
             return
         }
         

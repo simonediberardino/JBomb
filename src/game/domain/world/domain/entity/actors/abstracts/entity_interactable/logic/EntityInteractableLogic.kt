@@ -18,13 +18,11 @@ abstract class EntityInteractableLogic(
 ) : EntityLogic(entity), IEntityInteractableLogic {
     override fun attack(e: Entity?) {
         val gameBehavior: GameBehavior = object : GameBehavior() {
-            override fun hostBehavior(): () -> Unit {
-                return {
-                    if (!(e == null || e.state.isImmune || e.state.state == State.DIED)) {
-                        val attackDamage: Int = entity.state.attackDamage
-                        e.logic.onAttackReceived(attackDamage)
-                        AttackEntityEventForwarder().invoke(e.toEntityNetwork(), attackDamage)
-                    }
+            override fun hostBehavior(): () -> Unit = {
+                if (!(e == null || e.state.isImmune || e.state.state == State.DIED)) {
+                    val attackDamage: Int = entity.state.attackDamage
+                    e.logic.onAttackReceived(damage = attackDamage, attacker = entity)
+                    AttackEntityEventForwarder().invoke(e.toEntityNetwork(), attackDamage)
                 }
             }
 

@@ -25,6 +25,7 @@ class HttpMessageReceiverHandler private constructor() {
             HttpMessageTypes.ENTITY_COLLIDED -> CollideEventProcessor()
             HttpMessageTypes.BOMB_EXPLODED -> BombExplodedEventProcessor()
             HttpMessageTypes.FIRE -> FireEventProcessor()
+            HttpMessageTypes.KILLED_BY -> EntityKilledByEventProcessor()
             else -> null
         }
 

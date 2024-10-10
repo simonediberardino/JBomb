@@ -3,8 +3,11 @@ package game.presentation.ui.pages.play;
 import game.JBomb;
 import game.domain.level.levels.lobby.WorldSelectorLevel;
 import game.domain.level.levels.multiplayer.MultiplayerLevelMap1;
+import game.domain.level.levels.world1.World1Arena;
 import game.domain.level.levels.world1.World1Level5;
 import game.domain.level.levels.world2.World2Level3;
+import game.domain.match.JBombMatch;
+import game.network.gamehandler.ServerGameHandler;
 import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.AbstractMainMenuPanel;
 import game.presentation.ui.pages.arena.ArenaMenuPanel;
@@ -47,10 +50,10 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
 
     private JButton createPlayMp() {
         JButton startLevelButton = new YellowButton(get(PLAY_MP));
-        startLevelButton.addActionListener((v) -> JBomb.startLevel(new MultiplayerLevelMap1(), null));
+        startLevelButton.addActionListener((v) -> JBomb.startLevel(new MultiplayerLevelMap1(), new ServerGameHandler(JBombMatch.Companion.getDefaultPort())));
+
         return startLevelButton;
     }
-
 
     private JButton createStartArenaButton() {
         JButton startLevelButton = new YellowButton(get(START_ARENA));

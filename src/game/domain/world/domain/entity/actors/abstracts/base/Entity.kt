@@ -4,6 +4,7 @@ import game.JBomb
 import game.domain.events.models.RunnablePar
 import game.domain.tasks.GameTickerObserver
 import game.domain.tasks.observer.Observable2
+import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.State
 import game.domain.world.domain.entity.actors.impl.models.UiState
@@ -12,7 +13,6 @@ import game.domain.world.types.EntityTypes
 import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
 import game.utils.dev.Extensions.getOrTrim
-import game.utils.dev.Extensions.toMap
 import game.values.DrawPriority
 import java.awt.image.BufferedImage
 import java.util.*
@@ -20,7 +20,7 @@ import java.util.*
 // Interface defining common behavior for entities
 interface IEntityLogic {
     fun damageAnimation()
-    fun onAttackReceived(damage: Int)
+    fun onAttackReceived(damage: Int, attacker: EntityInteractable)
     fun interact(e: Entity?)
     fun doInteract(e: Entity?)
     fun eliminated()

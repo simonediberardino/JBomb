@@ -173,9 +173,5 @@ object JBomb {
         get() = !match.gameState || !JBomb.isInGame
 
     val isInGame: Boolean
-        get() {
-            val match = match
-            val currentLevel = match.currentLevel
-            return match.gameState && currentLevel.info.worldId >= 0
-        }
+        get() = match.gameState
 }

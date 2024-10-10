@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic
 
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
+import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.logic.MovingEntityLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.models.Explosive
@@ -12,7 +13,7 @@ import game.utils.dev.Log
 class ExplosionLogic(
         override val entity: AbstractExplosion
 ) : MovingEntityLogic(entity), IExplosionLogic {
-    override fun onAttackReceived(damage: Int) {}
+    override fun onAttackReceived(damage: Int, attacker: EntityInteractable) {}
 
     override fun doInteract(e: Entity?) {
         e?.logic?.onExplosion(entity)

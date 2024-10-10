@@ -3,6 +3,7 @@ package game.domain.world.domain.entity.actors.impl.blocks.base_block.logic
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.logic.EntityLogic
+import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 
 open class BlockEntityLogic(entity: Entity) : EntityLogic(entity), IBlockEntityLogic {
     override fun destroy() {
@@ -11,7 +12,7 @@ open class BlockEntityLogic(entity: Entity) : EntityLogic(entity), IBlockEntityL
 
     override fun damageAnimation() {}
 
-    override fun onAttackReceived(damage: Int) {
+    override fun onAttackReceived(damage: Int, attacker: EntityInteractable) {
         destroy()
     }
 
