@@ -2,7 +2,7 @@ package game.network.events.process
 
 import game.JBomb
 import game.domain.events.models.HttpEvent
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 

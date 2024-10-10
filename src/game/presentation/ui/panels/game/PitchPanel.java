@@ -10,7 +10,6 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.domain.world.domain.entity.actors.abstracts.character.Character;
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player;
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
-import game.domain.world.domain.entity.actors.impl.models.State;
 import game.domain.world.domain.entity.geo.Coordinates;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 import game.utils.Utility;

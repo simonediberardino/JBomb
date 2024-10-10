@@ -1,4 +1,4 @@
-package game.domain.world.domain.entity.actors.impl.models
+package game.domain.world.domain.entity.actors.abstracts.models
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 

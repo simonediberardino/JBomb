@@ -1,9 +1,9 @@
-package game.domain.world.domain.entity.actors.impl.placeable.base.state
+package game.domain.world.domain.entity.actors.abstracts.placeable.base.state
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.properties.BlockEntityState
-import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.State
 import game.presentation.ui.panels.game.PitchPanel
 
 abstract class PlaceableEntityState(

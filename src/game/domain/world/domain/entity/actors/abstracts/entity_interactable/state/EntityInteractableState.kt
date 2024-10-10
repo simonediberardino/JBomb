@@ -3,7 +3,7 @@ package game.domain.world.domain.entity.actors.abstracts.entity_interactable.sta
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityState
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
-import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.State
 
 open class EntityInteractableState(
         entity: Entity,

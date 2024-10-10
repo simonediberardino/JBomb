@@ -1,30 +1,26 @@
-    package game.domain.world.domain.entity.actors.impl.placeable.bomb
+    package game.domain.world.domain.entity.actors.abstracts.placeable.bomb
 
     import game.audio.AudioManager
     import game.audio.SoundModel
-    import game.domain.tasks.observer.Observable2
     import game.domain.world.domain.entity.actors.abstracts.base.Entity
     import game.domain.world.domain.entity.actors.abstracts.base.EntityImageModel
     import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
     import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
-    import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
     import game.domain.world.domain.entity.actors.abstracts.base.graphics.PeriodicGraphicsBehavior
     import game.domain.world.domain.entity.actors.abstracts.character.Character
     import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
     import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
     import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
     import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
-    import game.domain.world.domain.entity.actors.impl.models.Explosive
-    import game.domain.world.domain.entity.actors.impl.placeable.base.PlaceableEntity
-    import game.domain.world.domain.entity.actors.impl.placeable.base.state.PlaceableEntityState
-    import game.domain.world.domain.entity.actors.impl.placeable.bomb.logic.BombLogic
-    import game.domain.world.domain.entity.actors.impl.placeable.bomb.state.BombState
+    import game.domain.world.domain.entity.actors.abstracts.models.Explosive
+    import game.domain.world.domain.entity.actors.abstracts.placeable.base.PlaceableEntity
+    import game.domain.world.domain.entity.actors.abstracts.placeable.base.state.PlaceableEntityState
+    import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.logic.BombLogic
+    import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.state.BombState
     import game.domain.world.domain.entity.geo.Coordinates
     import game.domain.world.types.EntityTypes
     import game.presentation.ui.panels.game.PitchPanel
-    import game.utils.Utility
     import game.utils.file_system.Paths
-    import java.awt.image.BufferedImage
 
     /**
      * Represents a bomb entity that can explode and cause damage in the game.

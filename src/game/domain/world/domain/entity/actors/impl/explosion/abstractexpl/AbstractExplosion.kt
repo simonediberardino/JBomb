@@ -9,7 +9,7 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic.
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic.IExplosionLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.state.ExplosionProperties
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.state.ExplosionState
-import game.domain.world.domain.entity.actors.impl.models.Explosive
+import game.domain.world.domain.entity.actors.abstracts.models.Explosive
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.presentation.ui.panels.game.PitchPanel

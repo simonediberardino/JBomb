@@ -5,7 +5,7 @@ import game.JBomb.match
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
-import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.State
 import game.domain.world.domain.entity.geo.Coordinates
 import game.network.events.forward.CollideEventForwarder
 import game.network.events.forward.DespawnEntityEventForwarder

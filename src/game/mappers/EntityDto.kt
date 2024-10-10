@@ -3,7 +3,7 @@ package game.mappers
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.actors.impl.placeable.base.PlaceableEntity
+import game.domain.world.domain.entity.actors.abstracts.placeable.base.PlaceableEntity
 import game.domain.world.types.EntityTypes
 import game.network.entity.BomberEntityNetwork
 import game.network.entity.CharacterNetwork

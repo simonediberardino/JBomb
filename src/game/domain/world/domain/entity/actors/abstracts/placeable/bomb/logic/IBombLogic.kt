@@ -1,4 +1,4 @@
-package game.domain.world.domain.entity.actors.impl.placeable.bomb.logic
+package game.domain.world.domain.entity.actors.abstracts.placeable.bomb.logic
 
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.IBlockEntityLogic
 

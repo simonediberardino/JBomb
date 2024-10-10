@@ -5,8 +5,8 @@ import game.domain.world.domain.entity.actors.abstracts.entity_interactable.Enti
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.properties.MovingEntityState
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
-import game.domain.world.domain.entity.actors.impl.models.Explosive
-import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.Explosive
+import game.domain.world.domain.entity.actors.abstracts.models.State
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
 import game.utils.time.now

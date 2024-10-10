@@ -10,8 +10,8 @@ import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.image.Clow
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.logic.ClownLogic
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.properties.ClownProperties
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.properties.ClownState
-import game.domain.world.domain.entity.actors.impl.models.Explosive
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.models.Explosive
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.types.EntityTypes

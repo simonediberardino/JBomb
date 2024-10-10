@@ -1,4 +1,4 @@
-package game.domain.world.domain.entity.actors.impl.placeable.bomb.logic
+package game.domain.world.domain.entity.actors.abstracts.placeable.bomb.logic
 
 import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -6,7 +6,7 @@ import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.Block
 import game.domain.world.domain.entity.actors.impl.explosion.FireExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Direction
 import game.network.events.forward.BombExplodedEventForwarder
 import game.utils.dev.Log

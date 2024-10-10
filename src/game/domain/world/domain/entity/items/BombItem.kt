@@ -3,7 +3,7 @@ package game.domain.world.domain.entity.items
 import game.JBomb
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.network.events.forward.UpdateInfoEventForwarder
 import game.utils.Utility
 import game.utils.dev.Log
@@ -54,6 +54,8 @@ class BombItem : UsableItem() {
         owner.state.lastPlacedBombTime = now()
         owner.state.placedBombs++
         owner.state.bombsSolid = (false)
+
+        Log.e("Bomb placed at ${owner.info.position}")
 
         if (isLocalPlayer)
             UpdateCurrentAvailableItemsEvent().invoke(owner.state.currentBombs - 1)

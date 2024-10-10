@@ -6,8 +6,8 @@ import game.domain.world.domain.entity.actors.abstracts.character.properties.Cha
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.actors.impl.models.State
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.models.State
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp

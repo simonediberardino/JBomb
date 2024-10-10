@@ -1,14 +1,11 @@
 package game.domain.world.domain.entity.actors.impl.enemies.npcs.tank
 
 import game.domain.world.types.EntityTypes
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
-import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.FiringEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.logic.FiringEnemyLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.state.FiringEnemyState

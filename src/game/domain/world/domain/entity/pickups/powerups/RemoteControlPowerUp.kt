@@ -5,7 +5,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
 import game.domain.world.types.EntityTypes
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp

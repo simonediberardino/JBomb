@@ -3,8 +3,7 @@ package game.domain.world.domain.entity.actors.impl.blocks.base_block.properties
 import game.presentation.ui.panels.game.PitchPanel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityState
-import game.domain.world.domain.entity.actors.impl.models.State
-import java.util.concurrent.atomic.AtomicReference
+import game.domain.world.domain.entity.actors.abstracts.models.State
 
 open class BlockEntityState(
         entity: Entity,

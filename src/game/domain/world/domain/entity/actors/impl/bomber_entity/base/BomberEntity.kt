@@ -5,7 +5,6 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
-import game.domain.world.domain.entity.actors.abstracts.character.properties.CharacterEntityProperties
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
@@ -15,8 +14,8 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
-import game.domain.world.domain.entity.actors.impl.models.Explosive
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.models.Explosive
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.mappers.dtoToEntityNetwork

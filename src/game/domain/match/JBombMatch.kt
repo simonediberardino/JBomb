@@ -4,7 +4,6 @@ import game.JBomb
 import game.audio.AudioManager
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
-import game.domain.events.game.InitBombsVariablesGameEvent
 import game.domain.events.game.ResetBombsVariablesGameEvent
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.levels.Level
@@ -12,7 +11,7 @@ import game.domain.tasks.GameTickerObservable
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.items.UsableItem
 import game.input.ControllerManager

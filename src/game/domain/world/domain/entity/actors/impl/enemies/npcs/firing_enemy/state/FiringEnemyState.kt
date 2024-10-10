@@ -7,8 +7,7 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.properties.EnemyEn
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.FiringEnemy
-import game.domain.world.domain.entity.actors.impl.enemies.npcs.tank.TankEnemy
-import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.State
 import game.domain.world.domain.entity.geo.Direction
 
 

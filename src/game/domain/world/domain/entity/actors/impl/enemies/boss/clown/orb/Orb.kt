@@ -7,7 +7,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.logic.OrbEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.properties.OrbEntityProperties
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.orb.properties.OrbEntityState
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.geo.EnhancedDirection

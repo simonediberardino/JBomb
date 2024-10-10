@@ -7,8 +7,8 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.logic.FiringEnemyLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.state.FiringEnemyState
-import game.domain.world.domain.entity.actors.impl.models.Explosive
-import game.domain.world.domain.entity.actors.impl.placeable.bomb.Bomb
+import game.domain.world.domain.entity.actors.abstracts.models.Explosive
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.geo.Coordinates
 
 abstract class FiringEnemy : AiEnemy, Explosive {

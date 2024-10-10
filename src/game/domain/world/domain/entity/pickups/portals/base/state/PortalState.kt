@@ -2,10 +2,9 @@ package game.domain.world.domain.entity.pickups.portals.base.state
 
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
-import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.State
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.state.PowerUpState
-import java.util.concurrent.atomic.AtomicReference
 
 open class PortalState(
         entity: Entity,

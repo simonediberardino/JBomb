@@ -5,7 +5,6 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.properties.BlockEntityState
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
-import game.domain.world.domain.entity.actors.impl.models.State
 
 abstract class MysteryBoxState(
         entity: Entity,

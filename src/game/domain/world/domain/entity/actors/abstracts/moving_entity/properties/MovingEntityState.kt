@@ -4,9 +4,8 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.state.EntityInteractableState
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
-import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.State
 import game.domain.world.domain.entity.geo.Direction
-import java.util.concurrent.atomic.AtomicReference
 
 open class MovingEntityState(
         entity: Entity,

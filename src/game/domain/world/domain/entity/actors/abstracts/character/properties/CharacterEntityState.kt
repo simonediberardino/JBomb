@@ -1,14 +1,11 @@
 package game.domain.world.domain.entity.actors.abstracts.character.properties
 
-import game.input.Command
-import game.domain.tasks.GameTickerObserver.Companion.DEFAULT_OBSERVER_UPDATE
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.MovingEntity
 import game.domain.world.domain.entity.actors.abstracts.moving_entity.properties.MovingEntityState
-import game.domain.world.domain.entity.actors.impl.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.State
 import game.domain.world.domain.entity.geo.Direction
-import java.util.concurrent.atomic.AtomicReference
 import game.domain.world.domain.entity.actors.abstracts.character.Character as Character
 
 open class CharacterEntityState(

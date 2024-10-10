@@ -6,8 +6,8 @@ import game.domain.tasks.GameTickerObserver
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
-import game.domain.world.domain.entity.actors.impl.models.State
-import game.domain.world.domain.entity.actors.impl.models.UiState
+import game.domain.world.domain.entity.actors.abstracts.models.State
+import game.domain.world.domain.entity.actors.abstracts.models.UiState
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.types.EntityTypes
 import game.mappers.dtoToEntityNetwork
