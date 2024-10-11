@@ -129,6 +129,11 @@ public class Localization {
         put(Locale.ITALY, "MONDO %world_id% LIVELLO %level_id%");
     }};
 
+    public static final HashMap<Locale, String> LEVEL_EDITOR_NAME = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "LEVEL EDITOR");
+        put(Locale.ITALY, "EDITOR LIVELLI");
+    }};
+
     public static final HashMap<Locale, String> ARENA_NAME = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "ARENA WORLD %world_id%");
         put(Locale.ITALY, "ARENA MONDO %world_id%");

@@ -20,6 +20,8 @@ import javax.xml.transform.stream.StreamResult
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.io.File
+import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
+
 data class LevelEditorData(
     val data: Map<String, List<Coordinates>>
 )
@@ -41,5 +43,9 @@ class LevelEditor(private val levelData: LevelEditorData?): Level() {
                 entity.logic.spawn(coordinate)
             }
         }
+    }
+
+    override fun toString(): String {
+        return Localization.get(Localization.LEVEL_EDITOR)
     }
 }
