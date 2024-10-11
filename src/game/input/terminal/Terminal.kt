@@ -1,6 +1,7 @@
 package game.input.terminal
 
 import game.input.terminal.commands.GetPositionCommand
+import game.input.terminal.commands.LevelEditorCommand
 import game.input.terminal.commands.SpawnCommand
 
 object Terminal {
@@ -20,6 +21,7 @@ object Terminal {
         val cmdObject = when (command) {
             "spawn" -> SpawnCommand()
             "getposition" -> GetPositionCommand()
+            "leveleditor" -> LevelEditorCommand()
             else -> return
         }
 

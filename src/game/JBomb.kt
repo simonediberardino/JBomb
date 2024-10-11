@@ -78,7 +78,7 @@ object JBomb {
         showActivity(MainMenuPanel::class.java)
     }
 
-    fun destroyLevel(disconnect: Boolean) {
+    fun destroyLevel(disconnect: Boolean, ended: Boolean = false) {
         JBombFrame.removeKeyListener(match.controllerManager)
         match.destroy(disconnect)
     }

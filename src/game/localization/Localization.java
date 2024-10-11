@@ -394,6 +394,16 @@ public class Localization {
         put(Locale.ITALY, "Nuovo power up: %powerup%");
     }};
 
+    public static final HashMap<Locale, String> SELECT_LEVEL_EDITOR = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "Import a level file");
+        put(Locale.ITALY, "Importa un file di un livello");
+    }};
+
+    public static final HashMap<Locale, String> EXPORT_LEVEL_EDITOR = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "Export a level file");
+        put(Locale.ITALY, "Esporta un file di un livello");
+    }};
+
     public static Locale[] getSupportedLanguages() {
         return new Locale[]{
                 Locale.ENGLISH,

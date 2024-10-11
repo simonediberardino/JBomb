@@ -10,6 +10,7 @@ import game.domain.level.filesystem.LevelFileSystemHandler
 import game.domain.level.gamehandler.imp.DefaultStoryLevelHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.LevelInfo
+import game.domain.level.levels.level_editor.LevelEditor
 import game.domain.level.levels.lobby.WorldSelectorLevel
 import game.domain.level.levels.multiplayer.MultiplayerLevelMap1
 import game.domain.level.levels.world1.*
@@ -55,28 +56,30 @@ abstract class Level {
     }
 
     companion object {
-        val ID_TO_FIRST_LEVEL_MAP: Map<Int, Class<out Level>> = mapOf(1 to World1Level1::class.java, 2 to World2Level1::class.java)
+        val ID_TO_FIRST_LEVEL_MAP: Map<Int, Class<out Level>> =
+            mapOf(1 to World1Level1::class.java, 2 to World2Level1::class.java)
         val ID_TO_LEVEL: Map<Array<Int>, Class<out Level>> = mapOf(
-                arrayOf(1, 0) to World1Arena::class.java,
-                arrayOf(2, 0) to World2Arena::class.java,
-                arrayOf(1, 1) to World1Level1::class.java,
-                arrayOf(1, 2) to World1Level2::class.java,
-                arrayOf(1, 3) to World1Level3::class.java,
-                arrayOf(1, 4) to World1Level4::class.java,
-                arrayOf(1, 5) to World1Level5::class.java,
-                arrayOf(2, 1) to World2Level1::class.java,
-                arrayOf(2, 2) to World2Level2::class.java,
-                arrayOf(2, 3) to World2Level3::class.java,
-                arrayOf(2, 4) to World2Level4::class.java,
-                arrayOf(2, 5) to World2Level5::class.java,
-                arrayOf(-1, 1) to MultiplayerLevelMap1::class.java
+            arrayOf(1, 0) to World1Arena::class.java,
+            arrayOf(2, 0) to World2Arena::class.java,
+            arrayOf(1, 1) to World1Level1::class.java,
+            arrayOf(1, 2) to World1Level2::class.java,
+            arrayOf(1, 3) to World1Level3::class.java,
+            arrayOf(1, 4) to World1Level4::class.java,
+            arrayOf(1, 5) to World1Level5::class.java,
+            arrayOf(2, 1) to World2Level1::class.java,
+            arrayOf(2, 2) to World2Level2::class.java,
+            arrayOf(2, 3) to World2Level3::class.java,
+            arrayOf(2, 4) to World2Level4::class.java,
+            arrayOf(2, 5) to World2Level5::class.java,
+            arrayOf(-1, 0) to LevelEditor::class.java,
+            arrayOf(-1, 1) to MultiplayerLevelMap1::class.java,
         )
 
         fun findLevel(worldId: Int, levelId: Int): Optional<Class<out Level>> = ID_TO_LEVEL.entries
-                .firstOrNull { (key, _) -> key[0] == worldId && key[1] == levelId }
-                ?.value
-                ?.let { Optional.of(it) }
-                ?: Optional.empty()
+            .firstOrNull { (key, _) -> key[0] == worldId && key[1] == levelId }
+            ?.value
+            ?.let { Optional.of(it) }
+            ?: Optional.empty()
 
         var currLevel: Level? = null
             private set
