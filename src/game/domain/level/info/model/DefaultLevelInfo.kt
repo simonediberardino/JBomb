@@ -28,6 +28,5 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
         get() = 0
     override val availableAnimals: Array<Class<out AnimalEntity>>
         get() = arrayOf(FoxAnimal::class.java)
-    override val mapDimension: Dimension?
-        get() = null
+    override var mapDimension: Dimension? = null
 }

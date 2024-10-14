@@ -7,8 +7,7 @@ import java.awt.Dimension
 class MultiplayerLevelMap1 : MultiplayerLevel() {
     override val info: LevelInfo
         get() = object : MultiplayerLevelInfo(1, this@MultiplayerLevelMap1) {
-            override val mapDimension: Dimension
-                get() = Dimension(1500, 800)
+            override var mapDimension: Dimension? = Dimension(1500, 800)
         }
 
     override fun toString(): String {

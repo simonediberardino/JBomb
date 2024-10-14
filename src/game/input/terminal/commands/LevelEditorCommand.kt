@@ -15,6 +15,7 @@ import game.utils.dev.FileUtils
 import game.utils.dev.XMLUtils
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import java.awt.Dimension
 import java.io.File
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
@@ -72,6 +73,21 @@ class LevelEditorCommand: TerminalCommand {
                 startLevel(LevelEditor(levelEditorData), ServerGameHandler(defaultPort))
             }
 
+            "size" -> {
+                val width = args.getOrNull(1)?.toIntOrNull() ?: return
+                val height = args.getOrNull(2)?.toIntOrNull() ?: return
+
+                val level = JBomb.match.currentLevel
+
+                if (level !is LevelEditor)
+                    return
+
+                level.updateMapDimension(Dimension(width, height))
+                JBomb.match.player?.logic?.move(level.info.playerSpawnCoordinates)
+
+                println("Updated map dimension $width x $height")
+            }
+
             "save" -> {
                 exportLevel()
             }
@@ -110,7 +126,7 @@ class LevelEditorCommand: TerminalCommand {
                 }
             }
 
-        val levelEditorData = LevelEditorData(data = saveData)
+        val levelEditorData = LevelEditorData(data = saveData, mapDimension = currentLevel.info.mapDimension)
         serializeLevelEditorData(levelEditorData)
     }
 
@@ -130,23 +146,30 @@ class LevelEditorCommand: TerminalCommand {
         }
 
         val root = document.documentElement
-        val elements = root.getElementsByTagName("element") // assuming <element> tags contain the data
+        val elements = root.getElementsByTagName("entity") // assuming <element> tags contain the data
         val dataMap: MutableMap<String, MutableList<Coordinates>> = HashMap() // Support list of coordinates
+
+        val size = root.getElementsByTagName("size").item(0) as Element?
+        val x = size?.getAttribute("x")?.toIntOrNull()
+        val y = size?.getAttribute("y")?.toIntOrNull()
+
+        val mapDimension = if (x != null && y != null ) Dimension(x, y) else null
 
         for (i in 0 until elements.length) {
             val element = elements.item(i) as Element
             // Assuming the XML structure is like <element key="stringKey" x="1" y="2"/>
             val key = element.getAttribute("key")
-            val x = element.getAttribute("x").toInt()
-            val y = element.getAttribute("y").toInt()
-            val coordinates = Coordinates(x, y)
+            val coordinates = Coordinates(
+                /* x = */ element.getAttribute("x").toInt(),
+                /* y = */ element.getAttribute("y").toInt()
+            )
 
             // If key exists, add to the list; otherwise, create a new list for this key
             dataMap.computeIfAbsent(key) { mutableListOf() }.add(coordinates)
         }
 
         // Return LevelEditorData with the updated map structure
-        return LevelEditorData(dataMap)
+        return LevelEditorData(data = dataMap, mapDimension = mapDimension)
     }
 
     /**
@@ -174,12 +197,19 @@ class LevelEditorCommand: TerminalCommand {
             val rootElement: Element = document.createElement("root")
             document.appendChild(rootElement)
 
+            levelEditorData.mapDimension?.let {
+                val size = document.createElement("size")
+                size.setAttribute("x", it.width.toString())
+                size.setAttribute("y", it.height.toString())
+                rootElement.appendChild(size)
+            }
+
             // Iterate over the map in LevelEditorData
             for ((key, coordinatesList) in levelEditorData.data) {
                 // Iterate through the list of coordinates for each key
                 for (coordinates in coordinatesList) {
                     // Create an <element> node for each coordinate
-                    val elementNode: Element = document.createElement("element")
+                    val elementNode: Element = document.createElement("entity")
 
                     // Set attributes key, x, and y
                     elementNode.setAttribute("key", key)

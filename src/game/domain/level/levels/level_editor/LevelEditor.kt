@@ -19,15 +19,20 @@ import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import java.awt.Dimension
 import java.io.File
 import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 
 data class LevelEditorData(
+    val mapDimension: Dimension?,
     val data: Map<String, List<Coordinates>>
 )
 
 class LevelEditor(private val levelData: LevelEditorData?): Level() {
-    override val info: LevelInfo = LevelEditorLevelInfo(this)
+    override val info: LevelInfo = object: LevelEditorLevelInfo(this) {
+        override var mapDimension: Dimension? = levelData?.mapDimension
+    }
+
     override val gameHandler: GameHandler = LevelEditorGameHandler(this)
 
     override fun endLevel() {
@@ -45,7 +50,11 @@ class LevelEditor(private val levelData: LevelEditorData?): Level() {
         }
     }
 
+    fun updateMapDimension(mapDimension: Dimension) {
+        info.mapDimension = mapDimension
+    }
+
     override fun toString(): String {
-        return Localization.get(Localization.LEVEL_EDITOR)
+        return Localization.get(Localization.LEVEL_EDITOR_NAME)
     }
 }

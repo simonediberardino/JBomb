@@ -6,7 +6,7 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.localization.Localization
 
-class LevelEditorLevelInfo(level: Level): DefaultLevelInfo(level) {
+open class LevelEditorLevelInfo(level: Level): DefaultLevelInfo(level) {
     override val boss: Boss?
         get() = null
     override val startEnemiesCount: Int
