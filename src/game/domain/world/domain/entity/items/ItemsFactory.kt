@@ -5,6 +5,7 @@ class ItemsFactory {
         return when (itemsTypes) {
             ItemsTypes.BombItem -> BombItem()
             ItemsTypes.PistolItem -> PistolItem()
+            ItemsTypes.BlockPlacer -> BlockPlacerItem()
         }
     }
 

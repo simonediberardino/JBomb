@@ -10,7 +10,14 @@ import java.util.*
 
 // Command: spawn <EntityIds> <x> <y> <flags>
 class SpawnCommand : TerminalCommand {
-    override fun execute(args: List<String>) {
+    companion object {
+        var lastSpawnedEntityId = ""
+            private set
+    }
+    override val name: String = "spawn"
+    override val description: String = "Spawn an entity in the game at given coordinates. /entityids to list all the available entities"
+
+    override suspend fun execute(args: List<String>) {
         // Check if the game is active, return early if not.
         if (!isGameActive()) return
 
@@ -35,6 +42,8 @@ class SpawnCommand : TerminalCommand {
         if (entityToSpawn is Character && hasToFreeze) {
             freezeCharacter(entityToSpawn)
         }
+
+        lastSpawnedEntityId = args[0]
 
         // Print information about the spawned entity, including its class and position.
         printSpawnInfo(entityClass, entityToSpawn)

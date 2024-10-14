@@ -231,10 +231,12 @@ abstract class EntityLogic(
         if (isBlockOccupied)
             return
 
-        val isPlayerNear = roundedEntityCoords.distanceTo(roundedPlayerCoords) <= PitchPanel.GRID_SIZE
+        if (!JBomb.match.currentLevel.info.debug) {
+            val isPlayerNear = roundedEntityCoords.distanceTo(roundedPlayerCoords) <= PitchPanel.GRID_SIZE
 
-        if (!isPlayerNear)
-            return
+            if (!isPlayerNear)
+                return
+        }
 
         entity.info.position = Coordinates.roundCoordinates(mouseCoordinates, spawnOffset())
     }

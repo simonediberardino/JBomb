@@ -1,7 +1,5 @@
 package game.utils.dev;
 
-import game.domain.level.levels.level_editor.LevelEditorData;
-import game.domain.world.domain.entity.geo.Coordinates;
 import game.utils.file_system.Paths;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,8 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class XMLUtils {
     public static String readConfig(String key) {

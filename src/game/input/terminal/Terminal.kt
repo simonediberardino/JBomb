@@ -1,11 +1,34 @@
 package game.input.terminal
 
-import game.input.terminal.commands.GetPositionCommand
-import game.input.terminal.commands.LevelEditorCommand
-import game.input.terminal.commands.SpawnCommand
+import game.domain.level.levels.level_editor.LevelEditor
+import game.input.terminal.commands.*
 
 object Terminal {
-    fun start() {
+    private val helpCommand = object: TerminalCommand {
+        override val name: String
+            get() = "help"
+
+        override val description: String
+            get() = "Show all the available commands"
+
+        override suspend fun execute(args: List<String>) {
+            commands.forEach {
+                println("> ${it.name}: ${it.description}")
+            }
+        }
+    }
+
+    private val commands: List<TerminalCommand> = listOf(
+        SpawnCommand(),
+        GetPositionCommand(),
+        LevelEditorCommand(),
+        EntityIdsCommand(),
+        DespawnCommand(),
+        ShowNearEntities(),
+        helpCommand
+    )
+
+    suspend fun start() {
         while (true) {
             try {
                 val input = readlnOrNull() ?: continue
@@ -17,14 +40,8 @@ object Terminal {
         }
     }
 
-    private fun exec(command: String, args: List<String>) {
-        val cmdObject = when (command) {
-            "spawn" -> SpawnCommand()
-            "getposition" -> GetPositionCommand()
-            "leveleditor" -> LevelEditorCommand()
-            else -> return
-        }
-
+    private suspend fun exec(command: String, args: List<String>) {
+        val cmdObject = commands.firstOrNull { it.name == command } ?: return
         cmdObject.execute(args)
     }
 }

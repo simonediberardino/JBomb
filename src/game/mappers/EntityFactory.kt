@@ -10,6 +10,8 @@ import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.hat.Hat
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.animals.FoxAnimal
+import game.domain.world.domain.entity.actors.impl.blocks.lava_block.LavaBlock
+import game.domain.world.domain.entity.actors.impl.blocks.misc_blocks.Block1
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
 import game.network.gamehandler.ClientGameHandler
@@ -47,6 +49,8 @@ class EntityFactory {
             EntityTypes.Zombie -> Zombie(id)
             EntityTypes.DestroyableBlock -> DestroyableBlock(id)
             EntityTypes.InvisibleBlock -> InvisibleBlock(id)
+            EntityTypes.LavaBlock -> LavaBlock(id)
+            EntityTypes.Block1 -> Block1(id)
             EntityTypes.StoneBlock -> StoneBlock(id)
             EntityTypes.MysteryBoxPerk -> MysteryBoxPerk(id)
             EntityTypes.ConfettiExplosion, EntityTypes.FireExplosion, EntityTypes.PistolExplosion -> null

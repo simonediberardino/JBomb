@@ -1,36 +1,28 @@
 package game.domain.level.levels.level_editor
 
 import game.JBomb
+import game.domain.level.behavior.GameBehavior
+import game.domain.level.behavior.GenerateLevelFromXmlBehavior
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.LevelInfo
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.impl.EntityIds
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
-import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.domain.world.domain.entity.actors.impl.blocks.base_block.Block
 import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.domain.entity.items.BlockPlacerItem
+import game.domain.world.domain.entity.pickups.powerups.BlockMoverPowerUp
 import game.localization.Localization
-import game.utils.dev.FileUtils.chooseDestinationFile
 import java.util.*
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.parsers.DocumentBuilder
-import javax.xml.transform.Transformer
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
-import org.w3c.dom.Document
-import org.w3c.dom.Element
 import java.awt.Dimension
-import java.io.File
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 
-data class LevelEditorData(
+data class LevelGenerationData(
     val mapDimension: Dimension?,
     val data: Map<String, List<Coordinates>>
 )
 
-class LevelEditor(private val levelData: LevelEditorData?): Level() {
+class LevelEditor(private val levelData: LevelGenerationData?): Level() {
     override val info: LevelInfo = object: LevelEditorLevelInfo(this) {
-        override var mapDimension: Dimension? = levelData?.mapDimension
+        override val debug: Boolean = false
     }
 
     override val gameHandler: GameHandler = LevelEditorGameHandler(this)
@@ -40,14 +32,17 @@ class LevelEditor(private val levelData: LevelEditorData?): Level() {
     }
 
     override fun onStartLevel() {
-        levelData?.data?.forEach { (entityName, coordinates) ->
-            val entityClass = EntityIds[entityName] ?: return@forEach
+        levelData?.let { GenerateLevelFromXmlBehavior(currLevel, it) }
+        handleBlockMover()
+    }
 
-            coordinates.forEach { coordinate ->
-                val entity = entityClass.getConstructor(Long::class.java).newInstance(UUID.randomUUID().mostSignificantBits)
-                entity.logic.spawn(coordinate)
-            }
-        }
+    private fun handleBlockMover() {
+        val player = JBomb.match.player ?: return
+        JBomb.match.give(player, BlockPlacerItem())
+
+        JBomb.JBombFrame.matchPanel.refreshPowerUps(listOf(BlockMoverPowerUp::class.java))
+        player.logic.addClassInteractWithMouseDrag(Block::class.java)
+        player.logic.addClassInteractWithMouseClick(Block::class.java)
     }
 
     fun updateMapDimension(mapDimension: Dimension) {

@@ -9,11 +9,14 @@ import java.lang.RuntimeException
 import java.util.*
 
 class GetPositionCommand: TerminalCommand {
-    override fun execute(args: List<String>) {
+    override val name: String = "getposition"
+    override val description: String = "Show the current coordinates"
+
+    override suspend fun execute(args: List<String>) {
         if (!JBomb.match.gameState)
             return
 
         val player = JBomb.match.player ?: return
-        println("Curr position is ${player.info.position.x}, ${player.info.position.y}")
+        println("Current position is ${player.info.position.x}, ${player.info.position.y}")
     }
 }

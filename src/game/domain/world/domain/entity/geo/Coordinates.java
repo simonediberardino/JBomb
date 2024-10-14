@@ -84,7 +84,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public static Coordinates roundedRandomCoords(Coordinates offset) {
-        Dimension dimensions = JBomb.JBombFrame.getPitchPanel().getPanelDimensions();
+        Dimension dimensions = getMapDimensions();
 
         return roundCoordinates(new Coordinates(((int) (Math.random() * dimensions.getWidth())), ((int) (Math.random() * dimensions.getHeight()))), offset);
     }

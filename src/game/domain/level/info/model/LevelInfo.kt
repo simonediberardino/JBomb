@@ -42,4 +42,5 @@ abstract class LevelInfo {
     abstract val isLastLevelOfWorld: Boolean
     abstract val availableAnimals: Array<Class<out AnimalEntity>>
     abstract var mapDimension: Dimension?
+    open val debug: Boolean = false
 }

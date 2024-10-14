@@ -36,6 +36,9 @@ object Paths {
     val enemiesFolder: String get() = String.format("%s/enemies", entitiesFolder)
 
     @JvmStatic
+    val blocksFolder: String get() = String.format("%s/blocks", entitiesFolder)
+
+    @JvmStatic
     val animalsFolder: String get() = String.format("%s/animals", entitiesFolder)
 
     @JvmStatic
@@ -103,4 +106,7 @@ object Paths {
 
     @JvmStatic
     val versionXml: String get() = "$xmlPath/version.xml"
+
+    @JvmStatic
+    val mapsXml: String get() = "$xmlPath/levels"
 }

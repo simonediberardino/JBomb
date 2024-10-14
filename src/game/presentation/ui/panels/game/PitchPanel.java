@@ -18,9 +18,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import static game.audio.SoundModel.LIGHT_GLITCH;
 import static game.values.Dimensions.FONT_SIZE_LITTLE;
@@ -90,6 +94,20 @@ public class PitchPanel extends JPanel implements Observer2 {
     public Dimension getPanelDimensions() {
         return DIMENSION;
     }
+
+    private final AtomicBoolean isPainting = new AtomicBoolean(false);
+    private int cameraOffsetX;
+    private int cameraOffsetY;
+
+
+    public int getCameraOffsetX() {
+        return cameraOffsetX;
+    }
+
+    public int getCameraOffsetY() {
+        return cameraOffsetY;
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -103,8 +121,8 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         // Calculate camera offset based on player position
         Player player = JBomb.match.getPlayer();
-        int cameraOffsetX = 0;
-        int cameraOffsetY = 0;
+        cameraOffsetX = 0;
+        cameraOffsetY = 0;
 
         if (player != null) {
             cameraOffsetX = player.getInfo().getPosition().getX() - (pitchPanelSize.width / 2);
@@ -130,17 +148,58 @@ public class PitchPanel extends JPanel implements Observer2 {
             }
         }
 
-        // Draw the entities
+        // Get the list of entities
         List<? extends Entity> setEntities = JBomb.match.getEntities();
         int finalCameraOffsetX = cameraOffsetX;
         int finalCameraOffsetY = cameraOffsetY;
-        setEntities.forEach(e -> {
-            try {
-                drawEntity(g2d, e, finalCameraOffsetX, finalCameraOffsetY); // Pass offsets to drawEntity
-            } catch (ConcurrentModificationException ex) {
-                ex.printStackTrace();
-            }
-        });
+
+        // Define the visible area (screen bounds in world coordinates)
+        int visibleAreaX1 = cameraOffsetX;
+        int visibleAreaY1 = cameraOffsetY;
+        int visibleAreaX2 = cameraOffsetX + pitchPanelSize.width;
+        int visibleAreaY2 = cameraOffsetY + pitchPanelSize.height;
+
+        // Create an executor service for parallel computation
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        // Store the preprocessed data for each entity
+        List<CompletableFuture<EntityDrawData>> futures = new ArrayList<>();
+
+        // Preprocess entity data (e.g., calculate drawing positions) in parallel
+        for (Entity e : setEntities) {
+            CompletableFuture<EntityDrawData> future = CompletableFuture.supplyAsync(() -> {
+                // Compute the drawing data for this entity in parallel (position, transformation, etc.)
+                try {
+                    int entityX = e.getInfo().getPosition().getX();
+                    int entityY = e.getInfo().getPosition().getY();
+                    int entitySize = e.getState().getSize();
+
+                    // Check if entity is within the visible area (partially or fully)
+                    if (entityX + entitySize >= visibleAreaX1 && entityX <= visibleAreaX2 &&
+                            entityY + entitySize >= visibleAreaY1 && entityY <= visibleAreaY2) {
+                        return new EntityDrawData(e, finalCameraOffsetX, finalCameraOffsetY);
+                    }
+                    return null;
+                } catch (ConcurrentModificationException ex) {
+                    return null;
+                }
+            }, executor);
+            futures.add(future);
+        }
+
+        // Wait for all preprocessing to finish
+        List<EntityDrawData> drawDataList = futures.stream()
+                .map(CompletableFuture::join)
+                .filter(Objects::nonNull) // Filter out any entities that are not visible
+                .collect(Collectors.toList());
+
+        // Draw the entities sequentially in the correct order
+        for (EntityDrawData drawData : drawDataList) {
+            drawEntity(g2d, drawData.getEntity(), drawData.getOffsetX(), drawData.getOffsetY());
+        }
+
+        // Shutdown the executor service
+        executor.shutdown();
 
         // Draw labels for other entities
         for (Entity e : setEntities) {
@@ -153,12 +212,9 @@ public class PitchPanel extends JPanel implements Observer2 {
             drawEntityArrowhead(g2d, player, cameraOffsetX, cameraOffsetY); // Pass offsets to drawEntityArrowhead
         }
 
-        // Runs custom callbacks;
+        // Runs custom callbacks
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
     }
-
-
-
 
     private void drawEntityLabel(Graphics2D g2d, Character e, int cameraOffsetX, int cameraOffsetY) {
         String entityName = e.getProperties().getName();
@@ -272,4 +328,29 @@ public class PitchPanel extends JPanel implements Observer2 {
     public void update(@NotNull Observable2.ObserverParam arg) {
         repaint();
     }
+
+    static class EntityDrawData {
+        private final Entity entity;
+        private final int offsetX;
+        private final int offsetY;
+
+        public EntityDrawData(Entity entity, int offsetX, int offsetY) {
+            this.entity = entity;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+        }
+
+        public Entity getEntity() {
+            return entity;
+        }
+
+        public int getOffsetX() {
+            return offsetX;
+        }
+
+        public int getOffsetY() {
+            return offsetY;
+        }
+    }
+
 }

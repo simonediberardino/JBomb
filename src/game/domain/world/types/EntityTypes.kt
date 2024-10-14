@@ -13,6 +13,8 @@ enum class EntityTypes {
     TankEnemy,
     YellowBall,
     DestroyableBlock,
+    LavaBlock,
+    Block1,
     InvisibleBlock,
     StoneBlock,
     Zombie,

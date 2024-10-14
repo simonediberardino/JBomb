@@ -3,6 +3,8 @@ package game.domain.world.domain.entity.actors.impl
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
+import game.domain.world.domain.entity.actors.impl.blocks.lava_block.LavaBlock
+import game.domain.world.domain.entity.actors.impl.blocks.misc_blocks.Block1
 import game.domain.world.domain.entity.actors.impl.blocks.stone_block.StoneBlock
 import game.domain.world.domain.entity.actors.impl.enemies.boss.clown.Clown
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss
@@ -39,4 +41,6 @@ val EntityIds: Map<String, Class<out Entity>> = mapOf(
     // Blocks
     "block_destroyable" to DestroyableBlock::class.java,
     "block_stone" to StoneBlock::class.java,
+    "block_lava" to LavaBlock::class.java,
+    "block_1" to Block1::class.java
 )

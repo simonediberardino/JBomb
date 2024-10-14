@@ -24,7 +24,7 @@ class BlockMoverPowerUp : PowerUp {
     }
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {
-        override val duration: Int = 30
+        override val duration: Int = 0
     }
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
