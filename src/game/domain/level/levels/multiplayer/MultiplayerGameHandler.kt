@@ -1,16 +1,9 @@
 package game.domain.level.levels.multiplayer
 
-import game.domain.level.behavior.DespawnDestroyableBlocksBehavior
-import game.domain.level.behavior.GenerateDestroyableBlocksBehavior
 import game.domain.level.behavior.GenerateLevelFromXmlBehavior
-import game.domain.level.behavior.GeneratePlayerBehavior
 import game.domain.level.gamehandler.imp.DefaultGameHandler
-import game.domain.level.gamehandler.model.GameHandler
-import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
-import game.utils.Utility
-import java.awt.Image
 
 class MultiplayerGameHandler(level: MultiplayerLevel) : DefaultGameHandler(level) {
     override fun generateDestroyableBlock() {}

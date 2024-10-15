@@ -30,5 +30,6 @@ open class MultiplayerLevelInfo(private val mapId: Int, level: Level): DefaultLe
     override val levelId: Int
         get() = mapId
 
-    override val defaultWeapon: UsableItem = PistolItem(Integer.MAX_VALUE)
+    override val defaultWeapon: UsableItem
+        get() = PistolItem(Integer.MAX_VALUE)
 }

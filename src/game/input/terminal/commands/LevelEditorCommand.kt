@@ -175,16 +175,17 @@ class LevelEditorCommand: TerminalCommand {
             document.appendChild(rootElement)
 
             levelGenerationData.mapDimension?.let {
+                val coordinates = Coordinates(it.width, it.height).toAbsolute()
                 val size = document.createElement("size")
-                size.setAttribute("x", it.width.toString())
-                size.setAttribute("y", it.height.toString())
+                size.setAttribute("x", coordinates.x.toString())
+                size.setAttribute("y", coordinates.y.toString())
                 rootElement.appendChild(size)
             }
 
             // Iterate over the map in LevelEditorData
             for ((key, coordinatesList) in levelGenerationData.data) {
                 // Iterate through the list of coordinates for each key
-                for (coordinates in coordinatesList) {
+                for (coordinates in coordinatesList.map { it.toAbsolute() }) {
                     // Create an <element> node for each coordinate
                     val elementNode: Element = document.createElement("entity")
 

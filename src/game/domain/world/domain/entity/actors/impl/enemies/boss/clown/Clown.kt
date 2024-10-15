@@ -60,6 +60,9 @@ class Clown : Boss, Explosive {
             Bomb::class.java
     )
 
+    override val whiteListObstacles: Set<Class<out Entity>>
+        get() = hashSetOf()
+
     /**
      * Returns the maximum distance of an explosion from this entity.
      *

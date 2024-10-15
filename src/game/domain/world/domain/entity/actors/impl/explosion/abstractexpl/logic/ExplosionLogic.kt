@@ -9,7 +9,7 @@ import game.domain.world.domain.entity.actors.abstracts.models.Explosive
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 
-class ExplosionLogic(
+open class ExplosionLogic(
         override val entity: AbstractExplosion
 ) : MovingEntityLogic(entity), IExplosionLogic {
     override fun onAttackReceived(damage: Int, attacker: EntityInteractable) {}
@@ -20,7 +20,6 @@ class ExplosionLogic(
 
     override fun canBeInteractedBy(e: Entity?): Boolean {
         return e == null || entity.state.explosive.explosionInteractionEntities.any { c -> c.isInstance(e) }
-
     }
 
     override fun canInteractWith(e: Entity?): Boolean =

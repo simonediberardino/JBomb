@@ -76,7 +76,8 @@
 
         override val explosionInteractionEntities: Set<Class<out Entity>> = Bomb.DEFAULT.EXPLOSION_INTERACTION_ENTITIES
         override val explosionObstacles: Set<Class<out Entity>> = Bomb.DEFAULT.EXPLOSION_OBSTACLES
-
+        override val whiteListObstacles: Set<Class<out Entity>>
+            get() = hashSetOf()
         /**
          * Companion object containing constant values for the Bomb class.
          */

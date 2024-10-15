@@ -32,6 +32,9 @@ abstract class FiringEnemy : AiEnemy, Explosive {
                 Bomb::class.java
         )
 
+    override val whiteListObstacles: Set<Class<out Entity>>
+        get() = hashSetOf()
+
     internal object DEFAULT {
         const val CAN_SHOOT = true
         const val LAST_FIRE = 0L

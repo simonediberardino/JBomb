@@ -65,6 +65,9 @@ abstract class BomberEntity : Character, Explosive {
             DestroyableBlock::class.java
     )
 
+    override val whiteListObstacles: Set<Class<out Entity>>
+        get() = hashSetOf()
+
     // Defines the set of entities that can interact with explosions.
     override val explosionInteractionEntities: Set<Class<out Entity>> = setOf(
             DestroyableBlock::class.java,

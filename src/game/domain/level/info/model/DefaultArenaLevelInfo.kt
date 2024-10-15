@@ -20,5 +20,6 @@ abstract class DefaultArenaLevelInfo(level: ArenaLevel): DefaultLevelInfo(level)
 
     abstract val specialRoundEnemies: Array<Class<out Enemy>>
 
-    override val defaultWeapon: UsableItem = BombItem()
+    override val defaultWeapon: UsableItem
+        get() = BombItem()
 }

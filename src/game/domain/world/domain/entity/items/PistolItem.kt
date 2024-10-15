@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.models.Explosive
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
+import game.domain.world.domain.entity.actors.impl.blocks.lava_block.LavaBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.pickups.powerups.PistolPowerUp
@@ -41,6 +42,9 @@ class PistolItem(private var bullets: Int = 5) : UsableItem(), Explosive {
 
     override val maxExplosionDistance: Int
         get() = 3
+
+    override val whiteListObstacles: Set<Class<out Entity>>
+        get() = hashSetOf(LavaBlock::class.java)
 
     private fun setBullets(i: Int) {
         bullets = i

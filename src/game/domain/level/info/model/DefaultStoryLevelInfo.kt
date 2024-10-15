@@ -14,7 +14,8 @@ abstract class DefaultStoryLevelInfo(level: Level) : DefaultLevelInfo(level) {
             val lives = DataInputOutput.getInstance().lives
             return Localization.get(Localization.YOU_DIED).replace("%lives%", lives.toString())
         }
-    override val defaultWeapon: UsableItem = BombItem()
+    override val defaultWeapon: UsableItem
+        get() = BombItem()
 
     override val isArenaLevel: Boolean get() = false
 }

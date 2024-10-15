@@ -8,6 +8,8 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.graphics.ExplosionImageModel
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.state.ExplosionProperties
 import game.domain.world.domain.entity.actors.abstracts.models.Explosive
+import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic.ExplosionLogic
+import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic.IExplosionLogic
 import game.utils.file_system.Paths
 import game.values.DrawPriority
 
@@ -36,7 +38,6 @@ class PistolExplosion : AbstractExplosion {
     override val properties: ExplosionProperties = ExplosionProperties(
             types = EntityTypes.PistolExplosion,
             explosionClass = javaClass,
-            drawPriority = DrawPriority.DRAW_PRIORITY_1,
             ignoreCenter = true
     )
 
@@ -44,4 +45,9 @@ class PistolExplosion : AbstractExplosion {
             entity = this,
             entitiesAssetsPath = "${Paths.entitiesFolder}/bomb/flame"
     )
+
+    override val logic: IExplosionLogic = object: ExplosionLogic(entity = this) {
+        override fun canBeInteractedBy(e: Entity?): Boolean = e != entity.state.owner && super.canBeInteractedBy(e)
+        override fun canInteractWith(e: Entity?): Boolean = e != entity.state.owner && super.canInteractWith(e)
+    }
 }

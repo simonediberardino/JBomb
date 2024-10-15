@@ -22,7 +22,7 @@ abstract class MultiplayerLevel : Level() {
     }
 
     override fun onStartLevel() {
-
+        currLevel?.info?.mapDimension = levelGenerationData.mapDimension
     }
 
     override fun endLevel() {

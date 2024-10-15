@@ -33,7 +33,8 @@ class ParseLevelEditorDataUseCase(private val document: Document): UseCase<Level
         val x = size?.getAttribute("x")?.toIntOrNull()
         val y = size?.getAttribute("y")?.toIntOrNull()
 
-        val mapDimension = if (x != null && y != null ) Dimension(x, y) else null
+        val coordinatesMapDimension = x?.let { y?.let { it1 -> Coordinates(it, it1).fromAbsolute() } } // Converts to local dimension from absolute
+        val mapDimension = coordinatesMapDimension?.let { Dimension(it.x, it.y) }
 
         for (i in 0 until elements.length) {
             val element = elements.item(i) as Element
@@ -42,7 +43,7 @@ class ParseLevelEditorDataUseCase(private val document: Document): UseCase<Level
             val coordinates = Coordinates(
                 /* x = */ element.getAttribute("x").toInt(),
                 /* y = */ element.getAttribute("y").toInt()
-            )
+            ).fromAbsolute()
 
             // If key exists, add to the list; otherwise, create a new list for this key
             dataMap.computeIfAbsent(key) { mutableListOf() }.add(coordinates)

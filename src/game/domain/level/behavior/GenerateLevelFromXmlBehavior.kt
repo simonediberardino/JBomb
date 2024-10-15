@@ -18,12 +18,11 @@ class GenerateLevelFromXmlBehavior(private val currLevel: Level?, private val le
                             entity.logic.spawn(coordinate)
                         }
                     }
-
-                    currLevel?.info?.mapDimension = levelData.mapDimension
                 }
 
                 override fun clientBehavior(): () -> Unit {
-                    return {}
+                    return {
+                    }
                 }
             }
 
