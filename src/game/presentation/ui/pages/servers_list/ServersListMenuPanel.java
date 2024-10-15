@@ -104,12 +104,16 @@ public class ServersListMenuPanel extends BoxMenuPanel {
 
         JScrollPane serverBrowser = createScrollableServerBrowser(
                 getBoxPanelWidth() - DEFAULT_X_PADDING,
+                Utility.INSTANCE.px(400),
                 Arrays.asList(
                         new ServerInfo("Multiplayer: Castello di Dracula", 10, 20),
                         new ServerInfo("Arena: Arena mondo 1", 0, 20),
                         new ServerInfo("Arena: Arena mondo 1", 0, 20),
-
-                        new ServerInfo("Arena: Arena mondo 2", 0, 20)
+                        new ServerInfo("Arena: Arena mondo 2", 0, 20),
+                        new ServerInfo("Arena: Arena mondo 2", 0, 20),
+        new ServerInfo("Arena: Arena mondo 2", 0, 20),
+                new ServerInfo("Arena: Arena mondo 2", 0, 20),
+                new ServerInfo("Arena: Arena mondo 2", 0, 20)
                 )
         );
 

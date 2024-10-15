@@ -2,6 +2,8 @@ package game.presentation.ui.pages.server_browser;
 
 import game.audio.AudioManager;
 import game.audio.SoundModel;
+import game.utils.Utility;
+import game.values.Dimensions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +18,7 @@ class ServerButton extends JButton {
     private final Color hoverColor = new Color(100, 100, 100);
     private final int cornerRadius = 15;
     private boolean mouseEntered = false;
-    private int height = 60;
+    private int height = Utility.INSTANCE.px(90);
 
     public ServerButton(int width,ServerInfo server) {
         super(server.getName());
@@ -27,7 +29,7 @@ class ServerButton extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
         setForeground(textColor);
-        setFont(new Font(Font.MONOSPACED, Font.BOLD, 16));
+        setFont(new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(24)));
         setPreferredSize(new Dimension(width, height));
 
         addMouseListener(new MouseAdapter() {
