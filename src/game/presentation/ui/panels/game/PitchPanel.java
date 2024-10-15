@@ -227,7 +227,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         }
 
         int x = e.getInfo().getPosition().getX() - cameraOffsetX; // Apply camera offset
-        int y = e.getInfo().getPosition().getY();
+        int y = e.getInfo().getPosition().getY() - cameraOffsetY;
         int size = (int) (double) e.getState().getSize();
 
         YellowButton playerButton = new YellowButton(entityName, FONT_SIZE_LITTLE);
