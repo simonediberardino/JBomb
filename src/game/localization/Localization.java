@@ -230,6 +230,16 @@ public class Localization {
         put(Locale.ITALY, "INDIRIZZO IP");
     }};
 
+    public static final HashMap<Locale, String> CONNECT_DIRECTLY = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "DIRECT CONNECT");
+        put(Locale.ITALY, "CONNESSIONE DIRETTA");
+    }};
+
+    public static final HashMap<Locale, String> SERVERS_BROWSER = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "SERVER BROWSER");
+        put(Locale.ITALY, "LISTA SERVER");
+    }};
+
     public static final HashMap<Locale, String> INSERT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "INSERT…");
         put(Locale.ITALY, "INSERISCI…");

@@ -2,11 +2,14 @@ package game.presentation.ui.pages.server_browser;
 
 import game.audio.AudioManager;
 import game.audio.SoundModel;
+import game.domain.events.models.RunnablePar;
 import game.utils.Utility;
 import game.values.Dimensions;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -20,7 +23,7 @@ class ServerButton extends JButton {
     private boolean mouseEntered = false;
     private int height = Utility.INSTANCE.px(90);
 
-    public ServerButton(int width,ServerInfo server) {
+    public ServerButton(int width, ServerInfo server, RunnablePar listener) {
         super(server.getName());
         this.server = server;
 
@@ -31,6 +34,7 @@ class ServerButton extends JButton {
         setForeground(textColor);
         setFont(new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(24)));
         setPreferredSize(new Dimension(width, height));
+        addActionListener(e -> listener.execute(server.getFullIp()));
 
         addMouseListener(new MouseAdapter() {
             @Override

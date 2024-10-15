@@ -14,7 +14,7 @@ import game.presentation.ui.pages.pause.PausePanel;
 import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.pages.registration.RegistrationAvatar;
 import game.presentation.ui.pages.registration.RegistrationUsername;
-import game.presentation.ui.pages.servers_list.ServersListMenuPanel;
+import game.presentation.ui.pages.server_browser.ServersListMenuPanel;
 import game.presentation.ui.panels.menu.ProfilePanel;
 import game.presentation.ui.pages.settings.SettingsPanel;
 import game.presentation.ui.panels.game.MatchPanel;
