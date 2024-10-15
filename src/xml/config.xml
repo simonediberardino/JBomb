@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <config
-            full_screen="false"
+            full_screen="true"
             logs_base="false"
             logs_error="false"
             logs_warning="false"

@@ -9,6 +9,7 @@ import game.presentation.ui.pages.game_over.GameOverPanel;
 import game.presentation.ui.pages.init.InitPanel;
 import game.presentation.ui.pages.loading.LoadingPanel;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
+import game.presentation.ui.pages.multiplayer.MultiplayerPanel;
 import game.presentation.ui.pages.pause.PausePanel;
 import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.pages.registration.RegistrationAvatar;
@@ -50,6 +51,7 @@ public class JBombFrame extends JFrame {
     private MatchPanel matchPanel;
     private MainMenuPanel mainMenuPanel;
     private PlayMenuPanel playMenuPanel;
+    private MultiplayerPanel multiplayerPanel;
     private ServersListMenuPanel serversListMenuPanel;
     private LoadingPanel loadingPanel;
     private GameOverPanel gameOverPanel;
@@ -73,6 +75,7 @@ public class JBombFrame extends JFrame {
         initInitPanel();
         initMenuPanel();
         initPlayMenuPanel();
+        initMultiplayerPanel();
         initServersListMenuPanel();
         initLoadingPanel();
         initGameOverPanel();
@@ -123,6 +126,11 @@ public class JBombFrame extends JFrame {
     private void initPlayMenuPanel () {
         playMenuPanel = new PlayMenuPanel(cardLayout, parentPanel, this);
         parentPanel.add(playMenuPanel, PlayMenuPanel.class.getSimpleName());
+    }
+
+    private void initMultiplayerPanel() {
+        multiplayerPanel = new MultiplayerPanel(cardLayout, parentPanel, this);
+        parentPanel.add(multiplayerPanel, MultiplayerPanel.class.getSimpleName());
     }
 
     private void initServersListMenuPanel () {

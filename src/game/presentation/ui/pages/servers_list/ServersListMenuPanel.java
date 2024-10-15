@@ -8,6 +8,8 @@ import game.localization.Localization;
 import game.network.gamehandler.ClientGameHandler;
 import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.play.PlayMenuPanel;
+import game.presentation.ui.pages.server_browser.ServerBrowserPanel;
+import game.presentation.ui.pages.server_browser.ServerInfo;
 import game.presentation.ui.panels.models.BoxMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
@@ -19,12 +21,17 @@ import game.utils.file_system.Paths;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static game.localization.Localization.*;
+import static game.presentation.ui.pages.server_browser.ServerBrowserPanel.createScrollableServerBrowser;
+import static game.values.Dimensions.DEFAULT_X_PADDING;
 
 public class ServersListMenuPanel extends BoxMenuPanel {
-    private JBombTextFieldTagged input = null;
     protected String enteredIpAddress = "";
+    private JBombTextFieldTagged input = null;
 
     public ServersListMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame, Localization.get(Localization.SERVERS_LIST_TITLE), Paths.getMainMenuWallpaper(), false);
@@ -89,11 +96,24 @@ public class ServersListMenuPanel extends BoxMenuPanel {
     @Override
     protected void addCustomElements() {
         padding();
-        addIpTextField();
+        /*addIpTextField();
         padding();
         padding();
         createConnectButton();
-        createBackButton();
+        createBackButton();*/
+
+        JScrollPane serverBrowser = createScrollableServerBrowser(
+                getBoxPanelWidth() - DEFAULT_X_PADDING,
+                Arrays.asList(
+                        new ServerInfo("Multiplayer: Castello di Dracula", 10, 20),
+                        new ServerInfo("Arena: Arena mondo 1", 0, 20),
+                        new ServerInfo("Arena: Arena mondo 1", 0, 20),
+
+                        new ServerInfo("Arena: Arena mondo 2", 0, 20)
+                )
+        );
+
+        boxComponentsPanel.addComponent(serverBrowser);
     }
 
     @Override

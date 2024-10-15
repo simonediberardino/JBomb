@@ -211,6 +211,11 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> PLAY_MP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "PLAY MULTIPLAYER");
+        put(Locale.ITALY, "GIOCA MULTIPLAYER");
+    }};
+
+    public static final HashMap<Locale, String> PLAY_PVP = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "PLAY DEATHMATCH");
         put(Locale.ITALY, "GIOCA DEATHMATCH");
     }};
