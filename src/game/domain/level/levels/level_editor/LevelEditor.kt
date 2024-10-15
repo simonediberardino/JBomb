@@ -10,6 +10,7 @@ import game.domain.world.domain.entity.actors.impl.EntityIds
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.Block
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.items.BlockPlacerItem
+import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.BlockMoverPowerUp
 import game.localization.Localization
 import java.util.*
@@ -38,7 +39,6 @@ class LevelEditor(private val levelData: LevelGenerationData?): Level() {
 
     private fun handleBlockMover() {
         val player = JBomb.match.player ?: return
-        JBomb.match.give(player, BlockPlacerItem())
 
         JBomb.JBombFrame.matchPanel.refreshPowerUps(listOf(BlockMoverPowerUp::class.java))
         player.logic.addClassInteractWithMouseDrag(Block::class.java)

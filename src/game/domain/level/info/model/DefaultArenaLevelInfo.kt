@@ -2,6 +2,8 @@ package game.domain.level.info.model
 
 import game.domain.level.levels.ArenaLevel
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
+import game.domain.world.domain.entity.items.BombItem
+import game.domain.world.domain.entity.items.UsableItem
 import game.localization.Localization
 import kotlin.math.max
 import kotlin.math.min
@@ -17,4 +19,6 @@ abstract class DefaultArenaLevelInfo(level: ArenaLevel): DefaultLevelInfo(level)
         }
 
     abstract val specialRoundEnemies: Array<Class<out Enemy>>
+
+    override val defaultWeapon: UsableItem = BombItem()
 }

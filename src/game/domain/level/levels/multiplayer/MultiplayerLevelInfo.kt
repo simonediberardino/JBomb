@@ -5,6 +5,9 @@ import game.domain.level.info.model.DefaultLevelInfo
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
+import game.domain.world.domain.entity.items.BombItem
+import game.domain.world.domain.entity.items.PistolItem
+import game.domain.world.domain.entity.items.UsableItem
 import game.localization.Localization
 
 open class MultiplayerLevelInfo(private val mapId: Int, level: Level): DefaultLevelInfo(level) {
@@ -26,4 +29,6 @@ open class MultiplayerLevelInfo(private val mapId: Int, level: Level): DefaultLe
         get() = -1
     override val levelId: Int
         get() = mapId
+
+    override val defaultWeapon: UsableItem = PistolItem(Integer.MAX_VALUE)
 }

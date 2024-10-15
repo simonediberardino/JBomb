@@ -201,7 +201,9 @@ class JBombMatch(
         try {
             val playerItem = player!!.state.weapon
             inventoryElementControllerBombs.setImagePath(playerItem.imagePath)
-            inventoryElementControllerBombs.setNumItems(playerItem.count)
+
+            val countString = playerItem.count.takeIf { it != Integer.MAX_VALUE }?.toString() ?: "∞"
+            inventoryElementControllerBombs.setNumItems(countString)
         } catch (_: UninitializedPropertyAccessException) {}
     }
 

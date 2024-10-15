@@ -4,6 +4,8 @@ import game.domain.level.info.model.DefaultLevelInfo
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
+import game.domain.world.domain.entity.items.BlockPlacerItem
+import game.domain.world.domain.entity.items.UsableItem
 import game.localization.Localization
 
 open class LevelEditorLevelInfo(level: Level): DefaultLevelInfo(level) {
@@ -25,4 +27,7 @@ open class LevelEditorLevelInfo(level: Level): DefaultLevelInfo(level) {
         get() = -1
     override val levelId: Int
         get() = 0
+
+    override val defaultWeapon: UsableItem
+        get() = BlockPlacerItem()
 }

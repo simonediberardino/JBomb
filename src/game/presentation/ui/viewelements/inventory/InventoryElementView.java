@@ -34,7 +34,7 @@ public class InventoryElementView extends JPanel {
         icon.setIcon(imageIcon);
     }
 
-    public void setNumItems(int numItems) {
+    public void setNumItems(String numItems) {
         occurrents.setText(String.valueOf(numItems));
     }
 

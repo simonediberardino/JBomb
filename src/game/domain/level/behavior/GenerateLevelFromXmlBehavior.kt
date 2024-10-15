@@ -32,6 +32,6 @@ class GenerateLevelFromXmlBehavior(private val currLevel: Level?, private val le
     }
 
     override fun clientBehavior(): () -> Unit {
-        TODO("Not yet implemented")
+        return {}
     }
 }

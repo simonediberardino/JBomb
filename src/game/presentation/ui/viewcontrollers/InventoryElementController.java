@@ -12,12 +12,20 @@ public class InventoryElementController {
     private final InventoryElementView view;
 
     public InventoryElementController(int numItems, String imagePath) {
+        this(String.valueOf(numItems), imagePath);
+    }
+
+    public InventoryElementController(String numItems, String imagePath) {
         model = new InventoryElementModel(numItems, imagePath);
         view = new InventoryElementView();
         updateView();
     }
 
     public void setNumItems(int numItems) {
+        setNumItems(String.valueOf(numItems));
+    }
+
+    public void setNumItems(String numItems) {
         model.setNumItems(numItems);
         updateView();
     }

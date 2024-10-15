@@ -10,15 +10,14 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.models.Explosive
 import game.domain.events.game.UpdateCurrentAvailableItemsEvent
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.explosion.handler.ExplosionHandler
 import game.domain.world.domain.entity.pickups.powerups.PistolPowerUp
 import game.utils.file_system.Paths.itemsPath
 import game.utils.Utility.timePassed
 import game.utils.time.now
 
-class PistolItem : UsableItem(), Explosive {
-    private var bullets = 5
-
+class PistolItem(private var bullets: Int = 5) : UsableItem(), Explosive {
     override val explosionObstacles: Set<Class<out Entity>>
         get() = setOf(
                 HardBlock::class.java,
@@ -27,6 +26,7 @@ class PistolItem : UsableItem(), Explosive {
 
     override val explosionInteractionEntities: Set<Class<out Entity>>
         get() = setOf(
+                BomberEntity::class.java,
                 Enemy::class.java,
                 Bomb::class.java
         )
@@ -55,7 +55,9 @@ class PistolItem : UsableItem(), Explosive {
         }
 
         owner.state.lastPlacedBombTime = now()
-        addBullets(-1)
+
+        if (bullets < Integer.MAX_VALUE)
+            addBullets(-1)
 
         ExplosionHandler.instance.process {
             val explosion = PistolExplosion(
@@ -82,6 +84,7 @@ class PistolItem : UsableItem(), Explosive {
     }
 
     override fun combineItems(item: UsableItem) {
-        addBullets((item as PistolItem).bullets)
+        if (bullets != -1)
+            addBullets((item as PistolItem).bullets)
     }
 }

@@ -5,6 +5,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
+import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.values.Dimensions
 import java.awt.Dimension
@@ -42,5 +43,6 @@ abstract class LevelInfo {
     abstract val isLastLevelOfWorld: Boolean
     abstract val availableAnimals: Array<Class<out AnimalEntity>>
     abstract var mapDimension: Dimension?
+    abstract val defaultWeapon: UsableItem?
     open val debug: Boolean = false
 }
