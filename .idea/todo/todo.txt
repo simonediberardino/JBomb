@@ -1,2 +1,3 @@
-- toasts
 - game end
+- handle map rotation
+- handle local ip

@@ -8,6 +8,7 @@ import game.domain.tasks.GarbageCollectorTask
 import game.input.terminal.Terminal
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
+import game.network.gamehandler.ServerGameHandler
 import game.presentation.ui.frames.JBombFrame
 import game.presentation.ui.pages.error.NetworkErrorPage
 import game.presentation.ui.pages.init.InitPanel
@@ -17,6 +18,7 @@ import game.presentation.ui.panels.game.CustomSoundMode
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.panels.game.PagePanel
 import game.properties.RuntimeProperties
+import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +45,24 @@ object JBomb {
         retrievePlayerData()
         startGarbageCollectorTask()
         start()
+        handleGameRotation(args)
         initTerminal()
+    }
+
+    private fun handleGameRotation(args: Array<String>) {
+        val gameMode = args.find { it.startsWith("-mode=")}?.replace("-mode=", "")?.trim() ?: return
+        val levelId = args.find { it.startsWith("-level=")}?.replace("-level=", "")?.toIntOrNull() ?: return
+
+        val worldId = when (gameMode.lowercase()) {
+            "arena" -> 0
+            "mp" -> -1
+            else -> return
+        }
+
+        RuntimeProperties.argLevel = levelId
+        RuntimeProperties.argWorld = worldId
+
+        startLevelByArgs()
     }
 
     private fun handleArgs(args: Array<String>) {
@@ -51,7 +70,7 @@ object JBomb {
             RuntimeProperties.dedicatedServer = true
         }
 
-        val port = args.find { it .startsWith("-port=") }?.replace("-port=", "")?.toInt()
+        val port = args.find { it.startsWith("-port=") }?.replace("-port=", "")?.toInt()
         RuntimeProperties.port = port
     }
 
@@ -95,10 +114,33 @@ object JBomb {
         showActivity(MainMenuPanel::class.java)
     }
 
+    private fun startLevelByArgs() {
+        val levelId = RuntimeProperties.argLevel ?: return
+        val worldId = RuntimeProperties.argWorld ?: return
+
+        val levelClassOpt = Level.findLevel(worldId, levelId)
+
+        Log.e("Starting server by args $levelId $worldId")
+
+        startLevel(
+            level = levelClassOpt.get().getConstructor().newInstance(),
+            onlineGameHandler = ServerGameHandler(JBombMatch.port),
+            disconnect = false
+        ) {}
+    }
+
     fun destroyLevel(disconnect: Boolean, ended: Boolean = false) {
-        if (!RuntimeProperties.dedicatedServer)
-            JBombFrame.removeKeyListener(match.controllerManager)
         match.destroy(disconnect)
+
+        when (RuntimeProperties.dedicatedServer) {
+            true -> {
+                startLevelByArgs() // Restart server
+            }
+            false -> {
+                JBombFrame.removeKeyListener(match.controllerManager)
+            }
+        }
+
     }
 
     /**

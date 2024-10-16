@@ -3,6 +3,7 @@ package game.network.usecases
 import game.internet.JBombHttp
 import game.moshi.serversListAdapter
 import game.presentation.ui.pages.server_browser.ServerInfo
+import game.usecases.GetInetAddressUseCase
 import game.usecases.UseCase
 import game.utils.dev.Log
 import game.values.HttpUrls
@@ -12,6 +13,9 @@ import kotlinx.coroutines.coroutineScope
 
 class FetchAllServersFromMasterServerUseCase : UseCase<List<ServerInfo>?> {
     override suspend fun invoke(): List<ServerInfo>? {
+        val myIpv4 = GetInetAddressUseCase().invoke()?.hostName
+
+        println("My $myIpv4")
         val response = JBombHttp.get("${HttpUrls.masterServerUrl}/servers")
         return if (response.statusCode == 200) {
             val servers = serversListAdapter.fromJson(response.data!!)
