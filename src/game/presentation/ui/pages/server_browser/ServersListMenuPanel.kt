@@ -96,6 +96,9 @@ open class ServersListMenuPanel(
             Localization.get(Localization.CONNECT),
             Dimensions.FONT_SIZE_MID
         )
+        connectButton.addActionListener {
+            connectToServer(enteredIpAddress)
+        }
         boxComponentsPanel.addComponent(connectButton)
     }
 

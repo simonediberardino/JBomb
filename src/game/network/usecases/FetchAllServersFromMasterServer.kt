@@ -8,7 +8,6 @@ import game.values.HttpUrls
 
 class FetchAllServersFromMasterServer: UseCase<List<ServerInfo>?> {
     override suspend fun invoke(): List<ServerInfo>? {
-        println("Fetching")
         val response = JBombHttp.get("${HttpUrls.masterServerUrl}/servers")
         return if (response.statusCode == 200) {
             serversListAdapter.fromJson(response.data!!)
