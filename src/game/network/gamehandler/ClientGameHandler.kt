@@ -127,7 +127,7 @@ class ClientGameHandler(
         return connected
     }
 
-    override fun disconnect() {
+    override suspend fun disconnect() {
         client.close()
     }
 }

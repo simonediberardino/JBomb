@@ -22,7 +22,7 @@ class MultiplayerPanel(
     override fun getButtonsPadding(): Int = 3
 
     override fun getButtons(): MutableList<JButton> =
-            mutableListOf(createPlayMp(), createStartArenaButton(), createServersList(), createBackButton())
+            mutableListOf(createServersList(), createPlayMp(), createStartArenaButton(), createBackButton())
 
     private fun createPlayMp(): JButton {
         val startLevelButton: JButton = YellowButton(Localization.get(Localization.PLAY_PVP))

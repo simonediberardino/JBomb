@@ -6,9 +6,8 @@ import game.domain.level.levels.lobby.WaitingRoomLevel
 import game.domain.match.JBombMatch
 import game.localization.Localization
 import game.network.gamehandler.ClientGameHandler
-import game.network.usecases.FetchAllServersFromMasterServer
+import game.network.usecases.FetchAllServersFromMasterServerUseCase
 import game.presentation.ui.frames.JBombFrame
-import game.presentation.ui.helpers.Padding
 import game.presentation.ui.pages.multiplayer.MultiplayerPanel
 import game.presentation.ui.pages.server_browser.ServerBrowserPanel.Companion.createScrollableServerBrowser
 import game.presentation.ui.panels.models.BoxMenuPanel
@@ -108,7 +107,7 @@ open class ServersListMenuPanel(
 
         // Launch coroutine to fetch servers
         JBomb.scope.launch {
-            val servers = FetchAllServersFromMasterServer().invoke() ?: emptyList() // Fetch servers
+            val servers = FetchAllServersFromMasterServerUseCase().invoke() ?: emptyList() // Fetch servers
 
             // Runnable for connecting to the selected server
             val connectRunnable: RunnablePar = object : RunnablePar {

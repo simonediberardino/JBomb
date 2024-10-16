@@ -15,7 +15,7 @@ class TCPServer(private var port: Int) : TCPSocket {
     internal var clients: MutableMap<Long, IndexedClient> = mutableMapOf()
     private val listeners: MutableSet<TCPServerCallback> = mutableSetOf()
     private var progressiveId = 0L
-    private val scope = CoroutineScope(Dispatchers.IO)
+    val scope = CoroutineScope(Dispatchers.IO)
 
     fun open() {
         try {
@@ -23,11 +23,13 @@ class TCPServer(private var port: Int) : TCPSocket {
             onStart()
             start()
         } catch (ioException: IOException) {
-            close()
+            runBlocking {
+                close()
+            }
         }
     }
 
-    private fun onClose() {
+    private suspend fun onClose() {
         for (listener in listeners) {
             listener.onCloseServer()
             unregister(listener)
@@ -134,7 +136,7 @@ class TCPServer(private var port: Int) : TCPSocket {
         listeners.remove(tcpServerCallback)
     }
 
-    fun close() {
+    suspend fun close() {
         clients.values.forEach {
             disconnectClient(it)
         }

@@ -7,5 +7,5 @@ interface OnlineGameHandler {
     fun sendData(data: String, receiverId: Long, ignore: Boolean)
     fun onDataReceived(data: String)
     fun isRunning() : Boolean
-    fun disconnect()
+    suspend fun disconnect()
 }

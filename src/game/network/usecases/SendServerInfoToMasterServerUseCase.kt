@@ -8,10 +8,9 @@ import game.values.HttpUrls.masterServerUrl
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class SendServerInfoToMasterServer(private val serverInfo: ServerInfo): UseCase<Unit> {
+class SendServerInfoToMasterServerUseCase(private val serverInfo: ServerInfo): UseCase<Unit> {
     override suspend fun invoke() {
-        println("Sending")
-        //val payload = Json.encodeToString(serverInfo.toMap())
-        //JBombHttp.post("$masterServerUrl/server", payload)
+        val payload = Json.encodeToString(serverInfo.toMap())
+        JBombHttp.post("$masterServerUrl/server", payload)
     }
 }

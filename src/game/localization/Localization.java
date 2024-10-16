@@ -216,8 +216,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> PLAY_PVP = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "PLAY DEATHMATCH");
-        put(Locale.ITALY, "GIOCA DEATHMATCH");
+        put(Locale.ENGLISH, "CREATE DEATHMATCH");
+        put(Locale.ITALY, "CREA DEATHMATCH");
     }};
 
     public static final HashMap<Locale, String> START_ARENA = new HashMap<Locale, String>() {{
@@ -246,8 +246,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> PLAY_ONLINE = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "JOIN AN ONLINE GAME");
-        put(Locale.ITALY, "PARTECIPA ONLINE");
+        put(Locale.ENGLISH, "SERVER BROWSER");
+        put(Locale.ITALY, "LISTA SERVER");
     }};
     public static final HashMap<Locale, String> PROFILE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "SHOW PROFILE");

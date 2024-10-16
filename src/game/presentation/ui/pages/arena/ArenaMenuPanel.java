@@ -6,6 +6,7 @@ import game.domain.level.levels.world1.World1Arena;
 import game.domain.level.levels.world2.World2Arena;
 import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.AbstractMainMenuPanel;
+import game.presentation.ui.pages.multiplayer.MultiplayerPanel;
 import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
@@ -46,7 +47,7 @@ public class ArenaMenuPanel extends AbstractMainMenuPanel {
 
     private JButton createBackButton() {
         JButton b = new RedButton(get(BACK));
-        b.addActionListener(l -> JBomb.showActivity(PlayMenuPanel.class));
+        b.addActionListener(l -> JBomb.showActivity(MultiplayerPanel.class));
         return b;
     }
 }

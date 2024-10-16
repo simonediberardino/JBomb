@@ -366,7 +366,9 @@ class JBombMatch(
      */
     fun destroy(disconnect: Boolean = false) {
         if (isServer || disconnect) {
-            onlineGameHandler?.disconnect()
+            runBlocking {
+                onlineGameHandler?.disconnect()
+            }
         }
 
         // Pause the game to ensure safe destruction

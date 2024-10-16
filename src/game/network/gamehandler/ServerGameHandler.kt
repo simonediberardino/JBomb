@@ -1,13 +1,20 @@
 package game.network.gamehandler
 
 import game.JBomb
+import game.domain.match.JBombMatch
 import game.network.callbacks.TCPServerCallback
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.events.forward.LevelInfoHttpEventForwarder
 import game.network.serializing.HttpParserSerializer
 import game.network.sockets.TCPServer
+import game.network.usecases.SendServerInfoToMasterServerUseCase
+import game.network.usecases.SendStopServerToMasterServerUseCase
+import game.presentation.ui.pages.server_browser.ServerInfo
+import game.properties.RuntimeProperties
+import game.usecases.GetInetAddressUseCase
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
+import kotlinx.coroutines.launch
 
 /**
  * Handles communication with clients from the server-side using TCP.
@@ -16,9 +23,10 @@ import game.utils.dev.Log
  */
 class ServerGameHandler(private val port: Int) : TCPServerCallback {
     private lateinit var server: TCPServer
+    private var ipv4: String? = null
 
     val clientsConnected: Int
-        get() = server.clients.size
+        get() = if (this::server.isInitialized) server.clients.size else 0
 
     /**
      * Indicates whether the server is currently running and accepting client connections.
@@ -30,15 +38,22 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
      * Creates and opens the TCP server for handling client connections.
      */
     fun create() {
-        server = TCPServer(port).also { it.open() }
-        server.register(this)
+        server = TCPServer(port)
+        server.also {
+            it.register(this)
+            it.open()
+        }
     }
 
     /**
      * Callback method invoked when the server is closed.
      */
-    override fun onCloseServer() {
+    override suspend fun onCloseServer() {
         running = false
+
+        JBomb.scope.launch {
+            ipv4?.let { SendStopServerToMasterServerUseCase(it, port).invoke() }
+        }
     }
 
     /**
@@ -46,6 +61,32 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
      */
     override fun onStartServer() {
         running = true
+        server.scope.launch {
+            ipv4 = GetInetAddressUseCase().invoke()?.hostName
+            updateInfo()
+        }
+    }
+
+    private suspend fun updateInfo() {
+        val playerCount = if (RuntimeProperties.dedicatedServer) clientsConnected else clientsConnected + 1
+
+        val serverInfo = ipv4?.let {
+            ServerInfo(
+                name = JBomb.match.currentLevel.info.networkName,
+                ip = it,
+                port = JBombMatch.port,
+                players = playerCount,
+                ping = 0
+            )
+        }
+
+        Log.e("Sending update info $serverInfo")
+
+        serverInfo?.let {
+            SendServerInfoToMasterServerUseCase(
+                serverInfo = it
+            ).invoke()
+        }
     }
 
     /**
@@ -66,11 +107,19 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
 
         // Sends the info of the level to the client
         LevelInfoHttpEventForwarder().invoke(data)
+
+        server.scope.launch {
+            updateInfo()
+        }
     }
 
     override fun onClientDisconnected(indexedClient: TCPServer.IndexedClient) {
         val client = JBomb.match.getEntityById(indexedClient.id) ?: return
         client.logic.despawn()
+
+        server.scope.launch {
+            updateInfo()
+        }
     }
 
     /**
@@ -138,7 +187,7 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
      */
     override fun isRunning(): Boolean = running
 
-    override fun disconnect() {
+    override suspend fun disconnect() {
         if (this::server.isInitialized)
             server.close()
     }

@@ -6,24 +6,17 @@ import game.domain.level.levels.Level
 import game.domain.match.JBombMatch
 import game.domain.tasks.GarbageCollectorTask
 import game.input.terminal.Terminal
-import game.usecases.CheckUpdateUseCase
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
-import game.network.usecases.FetchAllServersFromMasterServer
-import game.network.usecases.SendServerInfoToMasterServer
 import game.presentation.ui.frames.JBombFrame
 import game.presentation.ui.pages.error.NetworkErrorPage
 import game.presentation.ui.pages.init.InitPanel
 import game.presentation.ui.pages.loading.LoadingPanel
 import game.presentation.ui.pages.main_menu.MainMenuPanel
-import game.presentation.ui.pages.server_browser.ServerInfo
 import game.presentation.ui.panels.game.CustomSoundMode
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.panels.game.PagePanel
-import game.utils.ui.ToastUtils
 import game.properties.RuntimeProperties
-import game.usecases.GetInetAddressUseCase
-import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +24,6 @@ import kotlinx.coroutines.runBlocking
 import java.awt.Component
 import java.util.*
 import javax.swing.SwingUtilities
-import javax.xml.crypto.Data
 
 object JBomb {
     lateinit var match: JBombMatch
