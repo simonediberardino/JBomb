@@ -33,7 +33,7 @@ class LevelEditor(private val levelData: LevelGenerationData?): Level() {
     private fun handleBlockMover() {
         val player = JBomb.match.player ?: return
 
-        JBomb.JBombFrame.matchPanel.refreshPowerUps(listOf(BlockMoverPowerUp::class.java))
+        JBomb.match.refreshPowerUps(listOf(BlockMoverPowerUp::class.java))
         player.logic.addClassInteractWithMouseDrag(Block::class.java)
         player.logic.addClassInteractWithMouseClick(Block::class.java)
     }

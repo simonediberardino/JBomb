@@ -39,10 +39,9 @@ abstract class Level {
     abstract fun endLevel()
     abstract fun onStartLevel()
 
-    open fun start(field: JPanel) {
+    open fun start() {
         Log.e("Starting $this")
         JBomb.match.gameState = true
-        this@Level.field = field
         updateLastLevel()
         PlayLevelSoundTrackBehavior(this@Level).invoke()
         PlayLevelSoundBehavior(this@Level).invoke()

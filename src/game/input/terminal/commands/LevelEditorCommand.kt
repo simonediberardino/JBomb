@@ -4,7 +4,7 @@ import game.JBomb
 import game.JBomb.startLevel
 import game.domain.level.levels.level_editor.LevelEditor
 import game.domain.level.levels.level_editor.LevelGenerationData
-import game.domain.match.JBombMatch.Companion.defaultPort
+import game.domain.match.JBombMatch.Companion.port
 import game.domain.world.domain.entity.actors.impl.EntityIds
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
@@ -77,7 +77,7 @@ class LevelEditorCommand: TerminalCommand {
                     parseLevelEditorData(it)
                 }
 
-                startLevel(LevelEditor(levelEditorData), ServerGameHandler(defaultPort))
+                startLevel(LevelEditor(levelEditorData), ServerGameHandler(port))
             }
 
             "size" -> {

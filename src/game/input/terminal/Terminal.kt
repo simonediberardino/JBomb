@@ -25,18 +25,17 @@ object Terminal {
         EntityIdsCommand(),
         DespawnCommand(),
         ShowNearEntities(),
+        StartLevelCommand(),
         helpCommand
     )
 
     suspend fun start() {
+        println("Starting terminal")
+
         while (true) {
-            try {
-                val input = readlnOrNull() ?: continue
-                val toks = input.lowercase().split(" ")
-                exec(toks[0], toks.subList(1, toks.size))
-            } catch (exception: Exception) {
-                println(exception.message)
-            }
+            val input = readlnOrNull() ?: continue
+            val toks = input.lowercase().split(" ")
+            exec(toks[0], toks.subList(1, toks.size))
         }
     }
 

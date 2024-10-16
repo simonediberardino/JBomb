@@ -13,5 +13,6 @@
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:Latest" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.9.0" level="project" />
     <orderEntry type="library" name="github.kittinunf.fuel" level="project" />
+    <orderEntry type="library" name="jetbrains.kotlinx.serialization.json" level="project" />
   </component>
 </module>

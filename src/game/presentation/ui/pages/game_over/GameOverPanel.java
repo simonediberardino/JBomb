@@ -9,7 +9,7 @@ import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.BaseMenu;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
-import game.presentation.ui.viewelements.misc.ToastHandler;
+import game.utils.ui.ToastUtils;
 import game.utils.file_system.Paths;
 
 import javax.swing.*;
@@ -58,7 +58,7 @@ public class GameOverPanel extends BaseMenu {
         retryButton.addActionListener((v) -> {
             boolean hasLives = DataInputOutput.getInstance().getLives() > 0;
 
-            ToastHandler.getInstance().cancel();
+            ToastUtils.INSTANCE.cancel();
 
             Level level = hasLives ? Level.Companion.getCurrLevel() : new WorldSelectorLevel();
             JBomb.startLevel(level, JBomb.match.getOnlineGameHandler());
@@ -71,7 +71,7 @@ public class GameOverPanel extends BaseMenu {
     private JButton createMainMenuButton() {
         JButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
         mainMenuButton.addActionListener((v) -> {
-            ToastHandler.getInstance().cancel();
+            ToastUtils.INSTANCE.cancel();
             JBomb.showActivity(MainMenuPanel.class);
         });
 
@@ -87,7 +87,7 @@ public class GameOverPanel extends BaseMenu {
     private void showToastMessage() {
         Level lastLevel = Level.Companion.getCurrLevel();
         String diedMessage = lastLevel.getInfo().getDiedMessage();
-        ToastHandler.getInstance().show(diedMessage, true, true);
+        ToastUtils.INSTANCE.show(diedMessage, true, true);
     }
 
     @Override

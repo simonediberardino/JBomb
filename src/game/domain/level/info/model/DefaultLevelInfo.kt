@@ -7,6 +7,7 @@ import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.actors.impl.animals.FoxAnimal
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.presentation.ui.panels.game.PitchPanel
+import game.utils.Utility
 import game.values.Dimensions
 import java.awt.Dimension
 
@@ -28,5 +29,6 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
         get() = 0
     override val availableAnimals: Array<Class<out AnimalEntity>>
         get() = arrayOf(FoxAnimal::class.java)
-    override var mapDimension: Dimension? = null
+    override var mapDimension: Dimension? = Dimension(Utility.px(930), Utility.px(800))
+    override val cameraMoveEnabled: Boolean = true
 }

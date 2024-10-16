@@ -1,27 +1,30 @@
 package game.domain.level.behavior
 
+import game.JBomb
 import game.domain.world.domain.entity.actors.impl.blocks.stone_block.StoneBlock
 import game.domain.world.domain.entity.geo.Coordinates
 import game.presentation.ui.panels.game.PitchPanel
 import javax.swing.JPanel
 
-class GenerateStoneBehavior(private val field: JPanel) : GameBehavior() {
+class GenerateStoneBehavior : GameBehavior() {
     override fun hostBehavior(): () -> Unit {
-        return { generateStone(field) }
+        return { generateStone() }
     }
 
     override fun clientBehavior(): (() -> Unit) {
         return {}
     }
 
-    private fun generateStone(jPanel: JPanel) {
+    private fun generateStone() {
         // Set the current x and y coordinates to the top-left corner of the game board.
         var currX = 0
         var currY = PitchPanel.GRID_SIZE
 
+        val mapDimension = JBomb.match.currentLevel.info.mapDimension ?: return
+
         // Loop through the game board, adding stone blocks at every other grid position.
-        while (currY < jPanel.preferredSize.getHeight() - PitchPanel.GRID_SIZE) {
-            while (currX < jPanel.preferredSize.getWidth() - PitchPanel.GRID_SIZE && currX + PitchPanel.GRID_SIZE * 2 <= jPanel.preferredSize.getWidth()) {
+        while (currY < mapDimension.height - PitchPanel.GRID_SIZE) {
+            while (currX < mapDimension.width - PitchPanel.GRID_SIZE && currX + PitchPanel.GRID_SIZE * 2 <= mapDimension.width) {
                 // Move the current x coordinate to the next grid position.
                 currX += PitchPanel.GRID_SIZE
 

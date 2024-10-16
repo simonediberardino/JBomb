@@ -34,13 +34,13 @@ public class ArenaMenuPanel extends AbstractMainMenuPanel {
 
     private JButton createArenaWorld1Button() {
         JButton b = new YellowButton(get(ARENA_WORLD_1));
-        b.addActionListener(l -> JBomb.startLevel(new World1Arena(), new ServerGameHandler(JBomb.match.Companion.getDefaultPort())));
+        b.addActionListener(l -> JBomb.startLevel(new World1Arena(), new ServerGameHandler(JBomb.match.Companion.getPort())));
         return b;
     }
 
     private JButton createArenaWorld2Button() {
         JButton b = new YellowButton(get(ARENA_WORLD_2));
-        b.addActionListener(l -> JBomb.startLevel(new World2Arena(), new ServerGameHandler(JBomb.match.Companion.getDefaultPort())));
+        b.addActionListener(l -> JBomb.startLevel(new World2Arena(), new ServerGameHandler(JBomb.match.Companion.getPort())));
         return b;
     }
 

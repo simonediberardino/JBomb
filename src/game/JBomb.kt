@@ -17,11 +17,14 @@ import game.presentation.ui.pages.main_menu.MainMenuPanel
 import game.presentation.ui.panels.game.CustomSoundMode
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.panels.game.PagePanel
-import game.presentation.ui.viewelements.misc.ToastHandler
+import game.utils.ui.ToastUtils
+import game.properties.RuntimeProperties
+import game.usecases.GetInetAddressUseCase
 import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.awt.Component
 import java.util.*
 import javax.swing.SwingUtilities
@@ -29,6 +32,7 @@ import javax.xml.crypto.Data
 
 object JBomb {
     lateinit var match: JBombMatch
+
     @JvmStatic
     lateinit var JBombFrame: JBombFrame
     private var currentPage: Class<out PagePanel>? = null
@@ -39,16 +43,32 @@ object JBomb {
      */
     @JvmStatic
     fun main(args: Array<String>) {
-        initTerminal()
+        handleArgs(args)
         initUiSettings()
         retrievePlayerData()
         startGarbageCollectorTask()
         start()
+        initTerminal()
+    }
+
+    private fun handleArgs(args: Array<String>) {
+        if (args.contains("-dedicatedserver")) {
+            RuntimeProperties.dedicatedServer = true
+        }
+
+        val port = args.find { it .startsWith("-port=") }?.replace("-port=", "")?.toInt()
+        RuntimeProperties.port = port
     }
 
     private fun initTerminal() {
-        scope.launch {
-            Terminal.start()
+        if (RuntimeProperties.dedicatedServer) {
+            runBlocking {
+                Terminal.start()
+            }
+        } else {
+            scope.launch {
+                Terminal.start()
+            }
         }
     }
 
@@ -59,9 +79,11 @@ object JBomb {
     }
 
     private fun start() {
-        JBombFrame = JBombFrame()
-        JBombFrame.create()
-        showActivity(InitPanel::class.java)
+        if (!RuntimeProperties.dedicatedServer) {
+            JBombFrame = JBombFrame()
+            JBombFrame.create()
+            showActivity(InitPanel::class.java)
+        }
     }
 
     private fun startGarbageCollectorTask() {
@@ -79,7 +101,8 @@ object JBomb {
     }
 
     fun destroyLevel(disconnect: Boolean, ended: Boolean = false) {
-        JBombFrame.removeKeyListener(match.controllerManager)
+        if (!RuntimeProperties.dedicatedServer)
+            JBombFrame.removeKeyListener(match.controllerManager)
         match.destroy(disconnect)
     }
 
@@ -95,12 +118,17 @@ object JBomb {
         match = JBombMatch(level, onlineGameHandler)
 
         match.scope.launch {
-            JBombFrame.initGamePanel()
-            match.currentLevel.start(JBombFrame.pitchPanel)
-            JBombFrame.addKeyListener(match.controllerManager)
-            JBombFrame.pitchPanel.addMouseListener(match.mouseControllerManager)
-            JBombFrame.pitchPanel.addMouseMotionListener(match.mouseControllerManager)
-            showActivity(MatchPanel::class.java)
+            if (!RuntimeProperties.dedicatedServer)
+                JBombFrame.initGamePanel()
+
+            match.currentLevel.start()
+
+            if (!RuntimeProperties.dedicatedServer) {
+                JBombFrame.addKeyListener(match.controllerManager)
+                JBombFrame.pitchPanel.addMouseListener(match.mouseControllerManager)
+                JBombFrame.pitchPanel.addMouseMotionListener(match.mouseControllerManager)
+                showActivity(MatchPanel::class.java)
+            }
 
             match.connect()
         }
@@ -113,19 +141,23 @@ object JBomb {
 
     @JvmStatic
     fun startLevel(
-            level: Level,
-            onlineGameHandler: OnlineGameHandler?,
-            disconnect: Boolean = true,
-            callback: () -> Unit,
+        level: Level,
+        onlineGameHandler: OnlineGameHandler?,
+        disconnect: Boolean = true,
+        callback: () -> Unit,
     ) {
-        JBombFrame.loadingPanel.initialize()
-        JBombFrame.loadingPanel.updateText(level)
-        JBombFrame.loadingPanel.setCallback {
+        if (RuntimeProperties.dedicatedServer) {
             doStartLevel(level, disconnect, onlineGameHandler)
-            callback()
-        }
+        } else {
+            JBombFrame.loadingPanel.initialize()
+            JBombFrame.loadingPanel.updateText(level)
+            JBombFrame.loadingPanel.setCallback {
+                doStartLevel(level, disconnect, onlineGameHandler)
+                callback()
+            }
 
-        showActivity(LoadingPanel::class.java)
+            showActivity(LoadingPanel::class.java)
+        }
     }
 
     fun networkError(error: String?) {
@@ -151,6 +183,10 @@ object JBomb {
      */
     @JvmStatic
     fun showActivity(page: Class<out PagePanel?>) {
+        if (RuntimeProperties.dedicatedServer) {
+            return
+        }
+
         if (page == currentPage)
             return
 
@@ -159,7 +195,7 @@ object JBomb {
 
         // Gets the component with the passed class and fires its onShowCallback;
         val shownComponentOpt = Arrays.stream(
-                JBombFrame.parentPanel.components
+            JBombFrame.parentPanel.components
         ).filter { c: Component? ->
             c!!.javaClass == page
         }.findFirst()

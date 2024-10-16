@@ -7,7 +7,7 @@ import javax.jws.soap.SOAPBinding.Use
 
 class GetInetAddressUseCase: UseCase<InetAddress?> {
     override suspend fun invoke(): InetAddress? {
-        val result = JBombHttp.get<String>(HttpUrls.getInetAddressUrl)
+        val result = JBombHttp.get(HttpUrls.getInetAddressUrl)
 
         return if (result.statusCode == 200) {
             InetAddress.getByName(result.data?.trim())

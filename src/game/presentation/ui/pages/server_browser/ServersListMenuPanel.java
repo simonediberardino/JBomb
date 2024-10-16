@@ -75,7 +75,7 @@ public class ServersListMenuPanel extends BoxMenuPanel {
         try {
             port = Integer.parseInt(toks[1]);
         } catch (Exception exception) {
-            port = JBombMatch.Companion.getDefaultPort();
+            port = JBombMatch.Companion.getPort();
         }
 
         // Initiates the client-side connection to the server and starts the waiting room level

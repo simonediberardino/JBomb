@@ -10,7 +10,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.game.Command
 import game.localization.Localization
-import game.presentation.ui.viewelements.misc.ToastHandler
+import game.utils.ui.ToastUtils
 import game.utils.time.now
 
 class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = entity) {
@@ -21,18 +21,18 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
 
         super.onSpawn()
 
-        ToastHandler.getInstance().cancel();
+        ToastUtils.cancel();
         InitBombsVariablesGameEvent().invoke()
 
         JBomb.match.gameTickerObservable?.register(entity)
         JBomb.match.controllerManager?.register(entity)
-        JBomb.JBombFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
+        JBomb.match.refreshPowerUps(entity.state.activePowerUps)
     }
 
     override fun onDespawn() {
         super.onDespawn()
 
-        JBomb.JBombFrame.matchPanel.refreshPowerUps(entity.state.activePowerUps)
+        JBomb.match.refreshPowerUps(entity.state.activePowerUps)
     }
 
     override fun onEliminated() {
@@ -107,8 +107,8 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         val baseMessage = Localization.get(Localization.POWERUP_FOUND)
         powerUp.tag?.let {
             val message = baseMessage.replace("%powerup%", it).uppercase()
-            ToastHandler.getInstance().cancel();
-            ToastHandler.getInstance().show(message)
+            ToastUtils.cancel();
+            ToastUtils.show(message)
         }
     }
 }

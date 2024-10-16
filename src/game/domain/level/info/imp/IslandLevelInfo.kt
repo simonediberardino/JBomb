@@ -17,4 +17,6 @@ class IslandLevelInfo(level: Level) : LobbyLevelInfo(level) {
 
     override val startAnimalsCount: Int
         get() = 2
+
+    override val cameraMoveEnabled: Boolean = false
 }

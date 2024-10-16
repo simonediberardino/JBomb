@@ -22,11 +22,11 @@ import game.presentation.ui.panels.game.PitchPanel;
 import game.utils.file_system.Paths;
 import game.utils.Utility;
 import game.utils.dev.XMLUtils;
-import game.presentation.ui.viewelements.misc.ToastHandler;
+import game.utils.ui.ToastUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
-
+import game.presentation.ui.viewelements.misc.ToastHandler;
 
 /**
  * The BombermanFrame class creates the main frame of the game and handles the creation and switching

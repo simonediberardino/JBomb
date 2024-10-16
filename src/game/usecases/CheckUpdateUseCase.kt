@@ -12,7 +12,7 @@ class CheckUpdateUseCase(val timeout: Long = 15_000L) : UseCase<Boolean> {
         return try {
             withTimeout(timeout) {
                 val currVersion = XMLUtils.readXmlKey(versionXml, "version").toInt()
-                val result = JBombHttp.get<String>(HttpUrls.JBombVersionUrl)
+                val result = JBombHttp.get(HttpUrls.JBombVersionUrl)
 
                 val serverVersion = result.data?.trim()?.toInt() ?: 0
                 result.statusCode == 200 && (currVersion < serverVersion)

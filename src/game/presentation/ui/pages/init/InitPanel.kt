@@ -9,7 +9,7 @@ import game.presentation.ui.frames.JBombFrame
 import game.presentation.ui.pages.loading.LoadingPanel
 import game.presentation.ui.pages.main_menu.MainMenuPanel
 import game.presentation.ui.pages.registration.RegistrationUsername
-import game.presentation.ui.viewelements.misc.ToastHandler
+import game.utils.ui.ToastUtils
 import game.properties.RuntimeProperties
 import kotlinx.coroutines.launch
 import java.awt.CardLayout
@@ -61,7 +61,7 @@ class InitPanel(
     }
 
     override fun onShowCallback() {
-        ToastHandler.getInstance().show(Localization.get(Localization.LOADING_INIT), true, true)
+        ToastUtils.show(Localization.get(Localization.LOADING_INIT), true, true)
 
         stepsToLoad.forEach {
             JBomb.scope.launch {
@@ -74,7 +74,7 @@ class InitPanel(
 
     private fun proceedIfFinished() {
         if (stepsExecuted == stepsToLoad.size && loadingFinished) {
-            ToastHandler.getInstance().cancel()
+            ToastUtils.cancel()
 
             if (DataInputOutput.getInstance().username.isNotBlank()) {
                 JBomb.showActivity(MainMenuPanel::class.java)

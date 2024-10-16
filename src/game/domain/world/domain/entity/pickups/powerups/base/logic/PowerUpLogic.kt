@@ -43,7 +43,7 @@ abstract class PowerUpLogic(
         player.state.activePowerUps.add(entity.javaClass)
 
         if (entity.state.isDisplayable)
-            matchPanel.refreshPowerUps(player.state.activePowerUps)
+            JBomb.match.refreshPowerUps(player.state.activePowerUps)
 
         val durationMillis: Long = entity.state.duration * 1000L
 
@@ -60,7 +60,7 @@ abstract class PowerUpLogic(
                 player.state.temporaryActivePowerUps.remove(entity.javaClass)
 
                 if (entity.state.isDisplayable)
-                    matchPanel.refreshPowerUps(player.state.activePowerUps)
+                    JBomb.match.refreshPowerUps(player.state.activePowerUps)
 
                 cancel(player)
             }

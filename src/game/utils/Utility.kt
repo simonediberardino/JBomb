@@ -3,6 +3,7 @@ package game.utils
 import game.JBomb
 import game.data.cache.Cache
 import game.data.cache.Cache.Companion.instance
+import game.properties.RuntimeProperties
 import game.utils.dev.Log
 import game.utils.time.now
 import game.values.Dimensions
@@ -47,6 +48,10 @@ object Utility {
         get() = Toolkit.getDefaultToolkit().screenSize
 
     fun px(dim: Double): Double {
+        if (RuntimeProperties.dedicatedServer) {
+            return dim
+        }
+
         val frame = JBomb.JBombFrame
         val screenSize = if (frame == null ) Toolkit.getDefaultToolkit().screenSize else frame.preferredSize
         return dim * (screenSize.getWidth() / Dimensions.DEFAULT_SCREEN_SIZE.getWidth())

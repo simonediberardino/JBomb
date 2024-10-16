@@ -14,6 +14,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.items.UsableItem
+import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.game.ControllerManager
 import game.input.game.MouseControllerManager
 import game.network.events.forward.UseItemHttpEventForwarder
@@ -23,7 +24,8 @@ import game.network.gamehandler.ServerGameHandler
 import game.presentation.ui.pages.pause.PausePanel
 import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.viewcontrollers.*
-import game.presentation.ui.viewelements.misc.ToastHandler
+import game.utils.ui.ToastUtils
+import game.properties.RuntimeProperties
 import game.utils.Utility.timePassed
 import game.utils.dev.Log
 import game.utils.time.now
@@ -35,7 +37,7 @@ class JBombMatch(
         val onlineGameHandler: OnlineGameHandler?
 ) {
     companion object {
-        var defaultPort: Int = 30960
+        var port: Int = RuntimeProperties.port ?: 30960
     }
 
     val scope = CoroutineScope(Dispatchers.IO)
@@ -104,6 +106,8 @@ class JBombMatch(
      * Sets up various view controllers based on the current game state.
      */
     private fun setupViewControllers() {
+        if (RuntimeProperties.dedicatedServer) return;
+
         // Set up points and bombs controllers
         setupPointsController()
         setupBombsController()
@@ -123,6 +127,8 @@ class JBombMatch(
      * Sets up the points controller with the current score from DataInputOutput.
      */
     private fun setupPointsController() {
+        if (RuntimeProperties.dedicatedServer) return;
+
         inventoryElementControllerPoints = InventoryElementControllerPoints()
         inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
@@ -131,6 +137,8 @@ class JBombMatch(
      * Sets up the bombs controller.
      */
     private fun setupBombsController() {
+        if (RuntimeProperties.dedicatedServer) return;
+
         inventoryElementControllerBombs = InventoryElementControllerBombs()
     }
 
@@ -138,10 +146,14 @@ class JBombMatch(
      * Sets up the rounds controller for arena levels.
      */
     private fun setupRoundsController() {
+        if (RuntimeProperties.dedicatedServer) return;
+
         inventoryElementControllerRounds = InventoryElementControllerRounds()
     }
 
     private fun setupHpController() {
+        if (RuntimeProperties.dedicatedServer) return;
+
         inventoryElementControllerHp = InventoryElementControllerHp()
         inventoryElementControllerHp.setNumItems(BomberEntity.DEFAULT.MAX_HP)
     }
@@ -197,6 +209,8 @@ class JBombMatch(
      * Does nothing if the player is not set.
      */
     fun updateInventoryWeaponController() {
+        if (RuntimeProperties.dedicatedServer) return;
+
         player ?: return
         try {
             val playerItem = player!!.state.weapon
@@ -384,7 +398,7 @@ class JBombMatch(
 
         cleanLevelUi()
 
-        ToastHandler.getInstance().cancel()
+        ToastUtils.cancel()
     }
 
     private fun cleanLevelUi() {
@@ -441,6 +455,13 @@ class JBombMatch(
         gameTickerObservable = null
         controllerManager = null
     }
+
+    fun refreshPowerUps(list: List<Class<out PowerUp>>) {
+        if (RuntimeProperties.dedicatedServer) return
+
+        JBomb.JBombFrame.matchPanel.refreshPowerUps(list)
+    }
+
 
     /**
      * Initiates the garbage collection process to release unused memory.

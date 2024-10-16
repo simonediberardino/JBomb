@@ -9,16 +9,16 @@ import java.awt.*;
 import static game.utils.time.TimeUtilsKt.now;
 
 public class ToastHandler {
-    private static final int TOAST_DURATION = 3500;
-    private static final int TOAST_START_Y = (int) JBomb.JBombFrame.getPreferredSize().getHeight();
-    private static final int TOAST_ANIM_STEP_SIZE = Utility.INSTANCE.px(50);
-    private static final int CORNER_RADIUS = 15;
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0, 0);
-    private static final Color TEXT_COLOR = new Color(255, 255, 255);
-    private static final Color BORDER_COLOR = new Color(255, 87, 51);
-    private static final Color SHADOW_COLOR = new Color(0, 0, 0, 150);
-    private static final Font TOAST_FONT = new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(35));
-    private static final int BORDER_WIDTH = Utility.INSTANCE.px(5);
+    private final int TOAST_DURATION = 3500;
+    private final int TOAST_START_Y = (int) JBomb.JBombFrame.getPreferredSize().getHeight();
+    private final int TOAST_ANIM_STEP_SIZE = Utility.INSTANCE.px(50);
+    private final int CORNER_RADIUS = 15;
+    private final Color BACKGROUND_COLOR = new Color(0, 0, 0, 0);
+    private final Color TEXT_COLOR = new Color(255, 255, 255);
+    private final Color BORDER_COLOR = new Color(255, 87, 51);
+    private final Color SHADOW_COLOR = new Color(0, 0, 0, 150);
+    private final Font TOAST_FONT = new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(35));
+    private final int BORDER_WIDTH = Utility.INSTANCE.px(5);
     private static ToastHandler instance = null;
     private long animStoppedTime = 0;
     private int toastY = TOAST_START_Y;

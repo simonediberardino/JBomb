@@ -12,8 +12,8 @@ import game.domain.level.gamehandler.imp.DefaultStoryLevelHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.DefaultArenaLevelInfo
 import game.localization.Localization
-import game.presentation.ui.viewelements.misc.ToastHandler
 import game.utils.dev.Log
+import game.utils.ui.ToastUtils
 import java.awt.event.ActionEvent
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.JPanel
@@ -91,7 +91,7 @@ abstract class ArenaLevel : Level() {
                 if (currentRound.get() > 1) {
                     super.onRoundPassedGameEvent()
                 }
-                ToastHandler.getInstance().show(Localization.get(Localization.STARTING_ROUND).replace("%round%", currentRound.get().toString()))
+                ToastUtils.show(Localization.get(Localization.STARTING_ROUND).replace("%round%", currentRound.get().toString()))
                 JBomb.match.inventoryElementControllerRounds?.setNumItems(currentRound.get())
             }
 
@@ -128,8 +128,8 @@ abstract class ArenaLevel : Level() {
     protected val isSpecialRound: Boolean
         get() = currentRound.get() % 5 == 0 && currentRound.get() > 1 && !shouldSpawnBoss()
 
-    override fun start(field: JPanel) {
-        super.start(field)
+    override fun start() {
+        super.start()
         if (currentRound.get() == 1) {
             firstStart()
         }

@@ -44,5 +44,6 @@ abstract class LevelInfo {
     abstract val availableAnimals: Array<Class<out AnimalEntity>>
     abstract var mapDimension: Dimension?
     abstract val defaultWeapon: UsableItem?
+    abstract val cameraMoveEnabled: Boolean
     open val debug: Boolean = false
 }

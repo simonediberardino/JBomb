@@ -7,10 +7,11 @@ import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.Block
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
 import game.localization.Localization
 import game.presentation.ui.panels.game.PitchPanel
-import game.presentation.ui.viewelements.misc.ToastHandler
+import game.utils.ui.ToastUtils
 import game.utils.time.now
 import java.awt.event.ActionEvent
 import javax.swing.Timer
+import game.presentation.ui.viewelements.misc.ToastHandler
 
 abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLogic(entity = entity) {
     private var currMessageId: Double = 0.0
@@ -26,7 +27,7 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
         super.onExitCollision(e)
 
         if (e == entity.state.buyer() && e == JBomb.match.player && currMessageId != 0.0 && currMessageId == ToastHandler.getInstance().getToastId())
-            ToastHandler.getInstance().cancel()
+            ToastUtils.cancel()
     }
 
     override fun onTalk(entity: Entity) {
@@ -67,12 +68,12 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
 
     private fun showErrorMessage() {
         val errorMessage = Localization.get(Localization.MYSTERY_BOX_ERROR_MONEY).replace("%price%", entity.state.price.toString())
-        currMessageId = ToastHandler.getInstance().show(errorMessage)
+        currMessageId = ToastUtils.show(errorMessage)
     }
 
     private fun showInteractMessage() {
         val confirmMessage = Localization.get(Localization.MYSTERY_BOX_CONFIRM).replace("%price%", entity.state.price.toString())
-        currMessageId = ToastHandler.getInstance().show(
+        currMessageId = ToastUtils.show(
                 confirmMessage,
                 true,
                 false
@@ -81,7 +82,7 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
 
     private fun showConfirmMessage() {
         val confirmMessage = Localization.get(Localization.MYSTERY_BOX_CONFIRM).replace("%price%", entity.state.price.toString())
-        currMessageId = ToastHandler.getInstance().show(confirmMessage, false)
+        currMessageId = ToastUtils.show(confirmMessage, false)
     }
 
     private val isConfirmDelayExpired: Boolean

@@ -9,7 +9,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.actors.abstracts.models.State
 
 open class DefaultStoryLevelHandler(level: Level) : DefaultGameHandler(level) {
-    override fun generateStone() = GenerateStoneBehavior(level.field).invoke()
+    override fun generateStone() = GenerateStoneBehavior().invoke()
 
     override fun spawnMysteryBox() = SpawnMysteryBoxBehavior(level).invoke()
 

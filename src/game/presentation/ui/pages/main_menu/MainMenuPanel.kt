@@ -11,7 +11,7 @@ import game.presentation.ui.viewelements.bombermanbutton.RedButton
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton
 import game.properties.RuntimeProperties
 import game.usecases.DoUpdateUseCase
-import game.presentation.ui.viewelements.misc.ToastHandler;
+import game.utils.ui.ToastUtils;
 import java.awt.CardLayout
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -90,7 +90,7 @@ class MainMenuPanel
         if (!updateAlertShown) {
             updateAlertShown = true
             if (RuntimeProperties.needsUpdate) {
-                ToastHandler.getInstance().show(Localization.get(Localization.NEEDS_UPDATE))
+                ToastUtils.show(Localization.get(Localization.NEEDS_UPDATE))
             }
         }
     }
