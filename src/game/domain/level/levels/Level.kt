@@ -40,7 +40,6 @@ abstract class Level {
     abstract fun onStartLevel()
 
     open fun start() {
-        Log.e("Starting $this")
         JBomb.match.gameState = true
         updateLastLevel()
         PlayLevelSoundTrackBehavior(this@Level).invoke()

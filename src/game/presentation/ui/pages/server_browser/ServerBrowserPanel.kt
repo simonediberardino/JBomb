@@ -1,58 +1,68 @@
-package game.presentation.ui.pages.server_browser;
+package game.presentation.ui.pages.server_browser
 
-import game.domain.events.models.RunnablePar;
-import org.jetbrains.annotations.NotNull;
+import game.domain.events.models.RunnablePar
+import java.awt.Dimension
+import java.awt.GridLayout
+import javax.swing.BorderFactory
+import javax.swing.JPanel
+import javax.swing.JScrollBar
+import javax.swing.JScrollPane
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
-
-public class ServerBrowserPanel extends JPanel {
-
-    public ServerBrowserPanel(int width, List<ServerInfo> servers, RunnablePar connectRunnable) {
-        setLayout(new GridLayout(0, 1, 10, 10)); // Dynamic row count with vertical spacing
-        setOpaque(false); // Make the panel transparent
-        // Add padding around the panel by setting an empty border (acts as padding)
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+class ServerBrowserPanel(servers: List<ServerInfo>, connectRunnable: RunnablePar) : JPanel() {
+    private val servers: MutableList<ServerInfo>
+    init {
+        this.servers = servers.toMutableList() // Initialize the server list
+        setLayout(GridLayout(0, 1, padding, padding)) // Dynamic row count with vertical spacing
+        setOpaque(false) // Make the panel transparent
+        setBorder(BorderFactory.createEmptyBorder(padding, padding, padding, padding)) // Padding
 
         // Add a ServerButton for each server
-        for (ServerInfo server : servers) {
-            add(new ServerButton(width, server, connectRunnable));
+        for (server in servers) {
+            addServerButton(server, connectRunnable) // Use the new method
         }
     }
 
-    public static JScrollPane createScrollableServerBrowser(int width, int height, List<ServerInfo> servers, RunnablePar connectRunnable) {
-        JScrollPane scrollPane = getjScrollPane(width, servers, connectRunnable);
-
-        // Keep scroll functionality while hiding the scrollbars
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Set scroll speed
-
-        // Remove the background of the scroll pane and viewport for transparency
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false); // Ensure viewport is transparent
-        scrollPane.setBorder(null); // Remove the border for a cleaner look
-        scrollPane.setPreferredSize(new Dimension(width, height));
-
-        return scrollPane;
+    private fun addServerButton(server: ServerInfo, connectRunnable: RunnablePar) {
+        add(ServerButton(width, server, connectRunnable)) // Create and add the button
     }
 
-    @NotNull
-    private static JScrollPane getjScrollPane(int width, List<ServerInfo> servers, RunnablePar connectRunnable) {
-        ServerBrowserPanel serverBrowserPanel = new ServerBrowserPanel(width, servers, connectRunnable);
+    companion object {
+        val padding = 10
 
-        // Wrap the ServerBrowserPanel in a JScrollPane to make it scrollable
-        return new JScrollPane(serverBrowserPanel) {
-            @Override
-            public void setVerticalScrollBar(JScrollBar verticalScrollBar) {
-                verticalScrollBar.setPreferredSize(new Dimension(0, 0)); // Hide vertical scrollbar
-                super.setVerticalScrollBar(verticalScrollBar);
-            }
+        fun createScrollableServerBrowser(
+            width: Int,
+            height: Int,
+            servers: List<ServerInfo>,
+            connectRunnable: RunnablePar
+        ): JScrollPane {
+            val scrollPane = getjScrollPane(width, servers, connectRunnable)
 
-            @Override
-            public void setHorizontalScrollBar(JScrollBar horizontalScrollBar) {
-                horizontalScrollBar.setPreferredSize(new Dimension(0, 0)); // Hide horizontal scrollbar
-                super.setHorizontalScrollBar(horizontalScrollBar);
+            // Keep scroll functionality while hiding the scrollbars
+            scrollPane.verticalScrollBar.setUnitIncrement(16) // Set scroll speed
+
+            // Remove the background of the scroll pane and viewport for transparency
+            scrollPane.setOpaque(false)
+            scrollPane.viewport.setOpaque(false) // Ensure viewport is transparent
+            scrollPane.setBorder(null) // Remove the border for a cleaner look
+            scrollPane.preferredSize = Dimension(width, height)
+            return scrollPane
+        }
+
+        private fun getjScrollPane(width: Int, servers: List<ServerInfo>, connectRunnable: RunnablePar): JScrollPane {
+            val serverBrowserPanel = ServerBrowserPanel(servers, connectRunnable)
+
+            // Wrap the ServerBrowserPanel in a JScrollPane to make it scrollable
+            return object : JScrollPane(serverBrowserPanel) {
+                override fun setVerticalScrollBar(verticalScrollBar: JScrollBar) {
+                    verticalScrollBar.preferredSize = Dimension(0, 0) // Hide vertical scrollbar
+                    super.setVerticalScrollBar(verticalScrollBar)
+                }
+
+                override fun setHorizontalScrollBar(horizontalScrollBar: JScrollBar) {
+                    horizontalScrollBar.preferredSize = Dimension(0, 0) // Hide horizontal scrollbar
+                    super.setHorizontalScrollBar(horizontalScrollBar)
+                }
             }
-        };
+        }
     }
 }

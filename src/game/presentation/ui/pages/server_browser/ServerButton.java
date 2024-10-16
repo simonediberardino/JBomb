@@ -21,7 +21,7 @@ class ServerButton extends JButton {
     private final Color hoverColor = new Color(100, 100, 100);
     private final int cornerRadius = 15;
     private boolean mouseEntered = false;
-    private int height = Utility.INSTANCE.px(90);
+    static final int height = Utility.INSTANCE.px(90);
 
     public ServerButton(int width, ServerInfo server, RunnablePar listener) {
         super(server.getName());

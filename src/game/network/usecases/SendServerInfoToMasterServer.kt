@@ -10,7 +10,8 @@ import kotlinx.serialization.json.Json
 
 class SendServerInfoToMasterServer(private val serverInfo: ServerInfo): UseCase<Unit> {
     override suspend fun invoke() {
-        val payload = Json.encodeToString(serverInfo.toMap())
-        JBombHttp.post("$masterServerUrl/server", payload)
+        println("Sending")
+        //val payload = Json.encodeToString(serverInfo.toMap())
+        //JBombHttp.post("$masterServerUrl/server", payload)
     }
 }

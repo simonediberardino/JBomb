@@ -45,5 +45,6 @@ abstract class LevelInfo {
     abstract var mapDimension: Dimension?
     abstract val defaultWeapon: UsableItem?
     abstract val cameraMoveEnabled: Boolean
+    abstract val networkName: String
     open val debug: Boolean = false
 }

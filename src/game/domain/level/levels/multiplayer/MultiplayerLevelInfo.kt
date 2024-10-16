@@ -32,4 +32,7 @@ open class MultiplayerLevelInfo(private val mapId: Int, level: Level): DefaultLe
 
     override val defaultWeapon: UsableItem
         get() = PistolItem(Integer.MAX_VALUE)
+
+    override val networkName: String = "Multiplayer: ${level.toString()}"
+
 }

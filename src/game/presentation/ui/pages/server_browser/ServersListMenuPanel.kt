@@ -1,237 +1,242 @@
-package game.presentation.ui.pages.server_browser;
+package game.presentation.ui.pages.server_browser
 
-import game.JBomb;
-import game.domain.events.models.RunnablePar;
-import game.domain.level.levels.lobby.WaitingRoomLevel;
-import game.domain.match.JBombMatch;
-import game.localization.Localization;
-import game.network.gamehandler.ClientGameHandler;
-import game.presentation.ui.frames.JBombFrame;
-import game.presentation.ui.pages.multiplayer.MultiplayerPanel;
-import game.presentation.ui.panels.models.BoxMenuPanel;
-import game.presentation.ui.viewelements.bombermanbutton.RedButton;
-import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
-import game.presentation.ui.viewelements.settings.JBombTextFieldTagged;
-import game.properties.RuntimeProperties;
-import game.utils.Utility;
-import game.utils.file_system.Paths;
-import game.values.Dimensions;
-import org.jetbrains.annotations.Nullable;
+import game.JBomb
+import game.domain.events.models.RunnablePar
+import game.domain.level.levels.lobby.WaitingRoomLevel
+import game.domain.match.JBombMatch
+import game.localization.Localization
+import game.network.gamehandler.ClientGameHandler
+import game.network.usecases.FetchAllServersFromMasterServer
+import game.presentation.ui.frames.JBombFrame
+import game.presentation.ui.helpers.Padding
+import game.presentation.ui.pages.multiplayer.MultiplayerPanel
+import game.presentation.ui.pages.server_browser.ServerBrowserPanel.Companion.createScrollableServerBrowser
+import game.presentation.ui.panels.models.BoxMenuPanel
+import game.presentation.ui.viewelements.bombermanbutton.RedButton
+import game.presentation.ui.viewelements.bombermanbutton.YellowButton
+import game.presentation.ui.viewelements.settings.JBombTextFieldTagged
+import game.properties.RuntimeProperties
+import game.utils.Utility
+import game.utils.file_system.Paths
+import game.values.BomberColors
+import game.values.Dimensions
+import kotlinx.coroutines.*
+import java.awt.CardLayout
+import java.awt.Color
+import java.awt.Dimension
+import javax.swing.*
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
+// Panel displaying the list of available game servers
+open class ServersListMenuPanel(
+    cardLayout: CardLayout?,
+    parent: JPanel?,
+    frame: JBombFrame?
+) : BoxMenuPanel(
+    cardLayout, parent, frame,
+    Localization.get(Localization.SERVERS_LIST_TITLE),
+    Paths.mainMenuWallpaper,
+    false
+) {
+    private var enteredIpAddress = ""
+    private var ipAddressInputField: JBombTextFieldTagged? = null
+    private lateinit var serverListContainer: JPanel
+    private lateinit var scrollPane: JScrollPane
+    private lateinit var loadingIndicator: JProgressBar // Component for loading indicator
+    private val serversListHeight = Utility.px(300)
 
-import static game.localization.Localization.*;
-import static game.presentation.ui.pages.server_browser.ServerBrowserPanel.createScrollableServerBrowser;
-import static game.values.Dimensions.DEFAULT_X_PADDING;
-import static game.values.Dimensions.FONT_SIZE_MID;
+    // Initiates connection to the selected server
+    private fun connectToServer(ipAddress: String) {
+        RuntimeProperties.lastConnectedIp = ipAddress
+        val tokens = ipAddress.split(":").dropLastWhile { it.isEmpty() }
+        val ipv4 = tokens[0]
+        val port: Int = tokens.getOrNull(1)?.toInt() ?: JBombMatch.port // Default port if parsing fails
 
-public class ServersListMenuPanel extends BoxMenuPanel {
-    // Stores the entered IP address from the input field
-    private String enteredIpAddress = "";
-
-    // TextField component for entering the IP address
-    private JBombTextFieldTagged input = null;
-
-    /**
-     * Constructor for ServersListMenuPanel.
-     * Initializes the panel with layout, parent container, frame, and basic settings.
-     *
-     * @param cardLayout Layout for switching between different panels
-     * @param parent     Parent JPanel containing this panel
-     * @param frame      Main application frame
-     */
-    public ServersListMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
-        super(cardLayout, parent, frame,
-                Localization.get(Localization.SERVERS_LIST_TITLE),  // Fetches the title from localization
-                Paths.getMainMenuWallpaper(),                      // Loads wallpaper background
-                false);                                            // Indicates that background scrolling is disabled
+        JBomb.startLevel(
+            WaitingRoomLevel(),
+            ClientGameHandler(ipv4, port)
+        )
     }
 
-    /**
-     * Creates the "Back" button that navigates the user to the MultiplayerPanel.
-     * The button is styled with a red color and appropriate font size.
-     */
-    private void createBackButton() {
-        JButton backButton = new RedButton(get(BACK), FONT_SIZE_MID); // Creates a red button for the 'Back' action
-        backButton.addActionListener(event -> JBomb.showActivity(MultiplayerPanel.class)); // Sets action listener to switch panels
-        boxComponentsPanel.addComponent(backButton); // Adds button to the UI panel
-    }
+    // Adds the input field for the IP address of the server
+    private fun addIpAddressInputField() {
+        val lastConnectedIp = RuntimeProperties.lastConnectedIp
+        val defaultIpText = lastConnectedIp.ifEmpty { Localization.get(Localization.INSERT) }
 
-    /**
-     * Connects the client to the server using the entered IP address.
-     * Stores the last connected IP in runtime properties and starts a new game session.
-     */
-    private void connect(String ipAddress) {
-        // Saves the entered IP address as the last connected IP
-        RuntimeProperties.INSTANCE.setLastConnectedIp(ipAddress);
-
-        String[] toks = ipAddress.split(":");
-        String ipv4 = toks[0];
-        int port;
-
-        try {
-            port = Integer.parseInt(toks[1]);
-        } catch (Exception exception) {
-            port = JBombMatch.Companion.getPort();
+        enteredIpAddress = lastConnectedIp
+        val textChangedCallback: RunnablePar = object : RunnablePar {
+            override fun <T> execute(par: T): Any? {
+                if (par.toString().isNotEmpty()) {
+                    enteredIpAddress = par.toString()
+                }
+                return null
+            }
         }
 
-        // Initiates the client-side connection to the server and starts the waiting room level
-        JBomb.startLevel(
-                new WaitingRoomLevel(), // Initiates a waiting room while the server connects
-                new ClientGameHandler(ipv4, port) // Sets up the client game handler
-        );
-    }
-
-    /**
-     * Defines the width of the box panel containing the elements in pixels.
-     * This ensures that the panel's width remains consistent.
-     *
-     * @return Width of the box panel in pixels.
-     */
-    @Override
-    protected int getBoxPanelWidth() {
-        return Utility.INSTANCE.px(1000); // Converts the logical width value into pixel size
-    }
-
-    /**
-     * Adds a text field for entering the IP address. It uses a default IP address if available,
-     * otherwise, shows a placeholder indicating the user should insert an IP.
-     * <p>
-     * It updates `enteredIpAddress` every time the text in the field changes.
-     */
-    private void addIpTextField() {
-        String lastConnectedIp = RuntimeProperties.INSTANCE.getLastConnectedIp();
-        String ipAddressInputText = lastConnectedIp.isEmpty() ? Localization.get(INSERT) : lastConnectedIp;
-
-        enteredIpAddress = lastConnectedIp;
-
-        RunnablePar textChangedCallback = new RunnablePar() {
-            @Override
-            public <T> Object execute(T par) {
-                if (par.toString().isEmpty()) return null;
-                enteredIpAddress = par.toString();
-                return null;
-            }
-        };
-
-        RunnablePar onClickCallback = new RunnablePar() {
-            @Override
-            public <T> Object execute(T par) {
+        val onClickCallback: RunnablePar = object : RunnablePar {
+            override fun <T> execute(par: T): Any? {
                 if (enteredIpAddress.isEmpty()) {
-                    JTextField source = (JTextField) (par);
-                    source.setText("");
+                    (par as JTextField).text = ""
                 }
-                return null;
+
+                return null
             }
-        };
+        }
 
-        input = boxComponentsPanel.addTextFieldElementView(
-                Localization.get(SERVERS_LIST_INPUT),
-                ipAddressInputText,
-                textChangedCallback,
-                onClickCallback
-        );
+        ipAddressInputField = boxComponentsPanel.addTextFieldElementView(
+            Localization.get(Localization.SERVERS_LIST_INPUT),
+            defaultIpText,
+            textChangedCallback,
+            onClickCallback
+        )
     }
 
-    /**
-     * Creates a "Connect" button that triggers the connection process when clicked.
-     * The button is styled in yellow and uses a mid-sized font.
-     */
-    private void createConnectButton() {
-        JButton connectButton = new YellowButton(get(CONNECT), FONT_SIZE_MID); // Creates a yellow 'Connect' button
-        connectButton.addActionListener(event -> connect(enteredIpAddress)); // Sets action listener to initiate the connection
-        boxComponentsPanel.addComponent(connectButton); // Adds the button to the UI panel
+    // Creates the "Connect" button
+    private fun createConnectButton() {
+        val connectButton: JButton = YellowButton(
+            Localization.get(Localization.CONNECT),
+            Dimensions.FONT_SIZE_MID
+        )
+        boxComponentsPanel.addComponent(connectButton)
     }
 
-    /**
-     * Creates a scrollable panel that lists available servers for the player to choose from.
-     * The server browser displays multiple predefined server options.
-     *
-     * @return A scrollable panel with the server list.
-     */
-    private JScrollPane createServerBrowser() {
-        RunnablePar connectRunnable = new RunnablePar() {
-            @Nullable
-            @Override
-            public <T> Object execute(T par) {
-                String ip = (String) par;
-                connect(ip);
-                return null;
+    // Fetches the list of servers from the master server
+    private fun fetchAvailableServers() {
+        showLoadingIndicator() // Show loading indicator
+
+        // Launch coroutine to fetch servers
+        JBomb.scope.launch {
+            val servers = FetchAllServersFromMasterServer().invoke() ?: emptyList() // Fetch servers
+
+            // Runnable for connecting to the selected server
+            val connectRunnable: RunnablePar = object : RunnablePar {
+                override fun <T> execute(par: T): Any? {
+                    val ip = par as String
+                    connectToServer(ip)
+                    return null
+                }
             }
-        };
 
-        // List of available servers with predefined names, IPs, ports, and player limits
-        List<ServerInfo> serverList = Arrays.asList(
-                new ServerInfo("Multiplayer: Castello di Dracula", "localhost", 30960, 10, 20),
-                new ServerInfo("Arena: Arena mondo 1", "localhost", 30960, 0, 20),
-                new ServerInfo("Arena: Arena mondo 2", "localhost", 30960, 0, 20),
-                new ServerInfo("Arena: Arena mondo 3", "localhost", 30960, 0, 20)
-        );
+            // Create the scroll pane with the server list
+            scrollPane = createScrollableServerBrowser(
+                width = boxPanelWidth - Dimensions.DEFAULT_X_PADDING,
+                height = serversListHeight,
+                servers = servers,
+                connectRunnable = connectRunnable
+            )
 
-        // Creates a scrollable view for the server list with a defined width and height
-        return createScrollableServerBrowser(
-                getBoxPanelWidth() - DEFAULT_X_PADDING, // Dynamic width based on the panel width
-                Utility.INSTANCE.px(300),               // Fixed height for the server browser
-                serverList,                             // Pass the list of servers to be displayed
-                connectRunnable
-        );
+            val occupiedHeight = servers.size * ServerButton.height + ServerBrowserPanel.padding * servers.size
+            serverListContainer.preferredSize = Dimension(boxPanelWidth - Dimensions.DEFAULT_X_PADDING, occupiedHeight)
+
+            // Clear existing components if needed
+            serverListContainer.removeAll()
+            serverListContainer.add(scrollPane) // Add scroll pane to the container
+            serverListContainer.revalidate() // Refresh the layout
+            serverListContainer.repaint() // Repaint the container
+
+            removeLoadingIndicator() // Remove loading indicator
+        }
     }
 
-    /**
-     * Adds custom UI elements to the panel including buttons and the server browser.
-     * It also adds spacing and handles layout adjustments.
-     */
-    @Override
-    protected void addCustomElements() {
-        // Adds a button for opening the server browser
+    private fun showLoadingIndicator() {
+        loadingIndicator = JProgressBar().apply {
+            isOpaque = false
+            isIndeterminate = true // Set to indeterminate mode for loading
+            preferredSize = Dimension(Utility.px(50), Utility.px(50)) // Set size for the loading indicator
+            // Customize appearance
+            background = Color(255, 255, 255, 0) // Transparent background
+            foreground = BomberColors.ORANGE
+            isBorderPainted = false
+
+            val paddingX = Dimensions.DEFAULT_X_PADDING + Utility.px(30)
+            val paddingY = Dimensions.DEFAULT_Y_PADDING + Utility.px(30)
+
+            setBorder(BorderFactory.createEmptyBorder(
+                paddingY,
+                paddingX,
+                paddingY,
+                paddingX
+            )) // Padding
+        }
+
+
+        // Center the loading indicator in the server list container
+        serverListContainer.add(loadingIndicator)
+        serverListContainer.revalidate() // Refresh the layout
+        serverListContainer.repaint() // Repaint the container
+    }
+
+    // Removes the loading indicator
+    private fun removeLoadingIndicator() {
+        serverListContainer.remove(loadingIndicator)
+        serverListContainer.revalidate() // Refresh the layout
+        serverListContainer.repaint() // Repaint the container
+    }
+
+    // Creates a scrollable panel to list available servers
+    private fun createServerBrowserPanel(): JPanel {
+        serverListContainer = JPanel().apply {
+            preferredSize = Dimension(boxPanelWidth, serversListHeight)
+            isOpaque = false
+            layout = BoxLayout(this, BoxLayout.Y_AXIS) // Use BoxLayout for vertical stacking
+        }
+        return serverListContainer
+    }
+
+    // Adds custom UI elements to the panel
+    override fun addCustomElements() {
+        addTitle()
+        addServerBrowserPanel()
+        addPadding()
+        addDirectConnectButton()
+        addPadding()
+        addIpAddressInputField() // Add the IP address input field
+        addPadding()
+        createConnectButton() // Add the connect button
+        addPadding()
+        createBackButton() // Add the back button
+    }
+
+    private fun addTitle() {
         boxComponentsPanel.addComponent(
-                new YellowButton(get(Localization.SERVERS_BROWSER), Dimensions.FONT_SIZE_MID)
-        );
+            YellowButton(Localization.get(Localization.SERVERS_BROWSER), Dimensions.FONT_SIZE_MID)
+        )
+    }
 
-        // Adds the scrollable server browser to the panel
-        boxComponentsPanel.addComponent(createServerBrowser());
+    private fun addServerBrowserPanel() {
+        boxComponentsPanel.addComponent(createServerBrowserPanel())
+    }
 
-        // Adds spacing between elements
-        addPadding();
-
-        // Adds a button for directly connecting to a server via IP address
+    private fun addDirectConnectButton() {
         boxComponentsPanel.addComponent(
-                new YellowButton(get(Localization.CONNECT_DIRECTLY), Dimensions.FONT_SIZE_MID)
-        );
-
-        addPadding(); // Adds spacing
-
-        // Adds the IP address input field
-        addIpTextField();
-
-        addPadding(); // Adds spacing
-
-        // Adds the "Connect" button to initiate the connection
-        createConnectButton();
-
-        addPadding(); // Adds spacing
-
-        // Adds the "Back" button to navigate back to the Multiplayer menu
-        createBackButton();
+            YellowButton(Localization.get(Localization.CONNECT_DIRECTLY), Dimensions.FONT_SIZE_MID)
+        )
     }
 
-    /**
-     * Utility method to add padding between components.
-     * This enhances the layout by providing spacing between UI elements.
-     */
-    private void addPadding() {
-        padding(); // Assuming 'padding()' is defined elsewhere to add consistent spacing between components
+    // Returns the width of the box panel
+    override fun getBoxPanelWidth(): Int {
+        return Utility.px(1000)
     }
 
-    /**
-     * Callback method that is executed when the panel is shown.
-     * This method can be used for updating or refreshing the UI when the panel is displayed.
-     */
-    @Override
-    public void onShowCallback() {
-        super.onShowCallback(); // Calls the parent class' callback to ensure the default behavior is retained
+    // Adds padding to the UI
+    private fun addPadding() {
+        padding() // Assuming 'padding()' is defined elsewhere
+    }
+
+    // Creates the back button to return to the previous menu
+    private fun createBackButton() {
+        val backButton: JButton = RedButton(
+            Localization.get(Localization.BACK),
+            Dimensions.FONT_SIZE_MID
+        )
+        backButton.addActionListener {
+            JBomb.showActivity(MultiplayerPanel::class.java)
+        }
+        boxComponentsPanel.addComponent(backButton) // Adds button to the UI panel
+    }
+
+    // Called when the panel is shown to the user
+    override fun onShowCallback() {
+        super.onShowCallback()
+        fetchAvailableServers() // Fetch servers when the panel is shown
     }
 }

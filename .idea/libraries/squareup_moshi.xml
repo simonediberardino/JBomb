@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="squareup.moshi" type="repository">
+    <properties maven-id="com.squareup.moshi:moshi:1.12.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/moshi-1.12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/okio-2.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-common-1.4.20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-1.4.31.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-13.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
