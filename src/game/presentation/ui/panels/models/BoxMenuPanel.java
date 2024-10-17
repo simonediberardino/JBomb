@@ -24,7 +24,7 @@ public abstract class BoxMenuPanel extends PagePanel {
             JBombFrame frame,
             String title
     ) {
-        this(cardLayout, parent, frame, title, Paths.getBackgroundImage(), true, new BombermanPanelYellow());
+        this(cardLayout, parent, frame, title, Paths.getMainMenuWallpaper(), true, new BombermanPanelYellow());
     }
 
 
