@@ -17,4 +17,5 @@ interface LevelEventHandler {
     fun onUpdateMaxBombsGameEvent(arg: Int, save: Boolean)
     fun resetBombsVariables()
     fun onKill(attacker: Entity, victim: Entity)
+    fun onTimeUpdate(time: Long)
 }

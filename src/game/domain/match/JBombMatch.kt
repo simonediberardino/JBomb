@@ -8,6 +8,7 @@ import game.domain.events.game.ResetBombsVariablesGameEvent
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.levels.Level
 import game.domain.tasks.GameTickerObservable
+import game.domain.tasks.TimeTaskObserverAndObservable
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
@@ -28,6 +29,7 @@ import game.utils.ui.ToastUtils
 import game.properties.RuntimeProperties
 import game.utils.Utility.timePassed
 import game.utils.dev.Log
+import game.utils.time.millisToTimeFormatted
 import game.utils.time.now
 import kotlinx.coroutines.*
 import java.util.*
@@ -61,6 +63,8 @@ class JBombMatch(
     var gameTickerObservable: GameTickerObservable? = GameTickerObservable(scope)
         private set
 
+    var timeObserverObservable: TimeTaskObserverAndObservable = TimeTaskObserverAndObservable()
+
     // Controllers for inventory elements (lateinit and nullable)
     lateinit var inventoryElementControllerPoints: InventoryElementController
         private set
@@ -69,6 +73,9 @@ class JBombMatch(
     lateinit var inventoryElementControllerHp: InventoryElementController
         private set
     var inventoryElementControllerRounds: InventoryElementController? = null
+        private set
+
+    var inventoryElementControllerTime: InventoryElementControllerTime? = null
         private set
 
     // Player information (nullable)
@@ -117,6 +124,10 @@ class JBombMatch(
             setupRoundsController()
         }
 
+        if (currentLevel.info.isTimeEnabled) {
+            setupTimeController()
+        }
+
         setupHpController()
 
         // Update the inventory weapon controller with the current player's weapon information
@@ -158,6 +169,13 @@ class JBombMatch(
         inventoryElementControllerHp.setNumItems(BomberEntity.DEFAULT.MAX_HP)
     }
 
+    private fun setupTimeController() {
+        if (RuntimeProperties.dedicatedServer) return;
+
+        inventoryElementControllerTime = InventoryElementControllerTime().also {
+            it.setNumItems(Integer.MAX_VALUE)
+        }
+    }
 
     /**
      * Gives an item to the specified owner (BomberEntity).
@@ -216,7 +234,7 @@ class JBombMatch(
             val playerItem = player!!.state.weapon
             inventoryElementControllerBombs.setImagePath(playerItem.imagePath)
 
-            val countString = playerItem.count.takeIf { it != Integer.MAX_VALUE }?.toString() ?: "∞"
+            val countString = playerItem.count
             inventoryElementControllerBombs.setNumItems(countString)
         } catch (_: UninitializedPropertyAccessException) {}
     }
@@ -468,7 +486,30 @@ class JBombMatch(
     /**
      * Initiates the garbage collection process to release unused memory.
      */
-    fun performGarbageCollection() {
+    private fun performGarbageCollection() {
         System.gc()
     }
+
+
+    /**
+     * Callbacks
+     */
+    fun onTimeUpdate(timePassed: Long) {
+        val timeLimitMs = currentLevel.info.timeLimitMinutes * 60 * 1_000
+        val remainingTime = timeLimitMs - timePassed
+
+        if (remainingTime < 0)
+            return
+
+        inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))
+    }
+
+    fun onStartGame() {
+        if (isServer) setupTimerTask()
+    }
+
+    private fun setupTimerTask() {
+        gameTickerObservable?.register(timeObserverObservable)
+    }
+
 }

@@ -1,5 +1,6 @@
 package game.domain.level.info.model
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
@@ -46,5 +47,7 @@ abstract class LevelInfo {
     abstract val defaultWeapon: UsableItem?
     abstract val cameraMoveEnabled: Boolean
     abstract val networkName: String
+    abstract val isTimeEnabled: Boolean
+    abstract val timeLimitMinutes: Int
     open val debug: Boolean = false
 }

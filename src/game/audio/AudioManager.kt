@@ -4,6 +4,7 @@ import com.sun.org.apache.xerces.internal.xinclude.XIncludeHandler.BUFFER_SIZE
 import game.JBomb
 import game.data.cache.Cache
 import game.data.data.DataInputOutput
+import game.properties.RuntimeProperties
 import game.utils.byte_utils.ByteUtils.readAllBytes
 import game.utils.dev.Log
 import game.utils.file_system.Paths.defaultSoundTrack
@@ -44,6 +45,9 @@ class AudioManager private constructor() {
             loop: Boolean,
             volumePercentage: Int = calculateVolumeFromStorage()
     ) {
+        if (RuntimeProperties.dedicatedServer)
+            return
+
         val cache = Cache.instance
 
         JBomb.scope.launch {

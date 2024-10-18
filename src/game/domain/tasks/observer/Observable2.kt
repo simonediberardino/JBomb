@@ -39,6 +39,6 @@ open class Observable2 {
     enum class ObserverParamIdentifier {
         GAME_TICK,
         INPUT_COMMAND,
-        DELETE_COMMAND
+        DELETE_COMMAND,
     }
 }

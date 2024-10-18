@@ -5,6 +5,7 @@ import game.domain.world.domain.entity.geo.Coordinates;
 import game.domain.world.domain.entity.pickups.powerups.EmptyPowerup;
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp;
 import game.presentation.ui.frames.JBombFrame;
+import game.presentation.ui.viewcontrollers.InventoryElementControllerTime;
 import game.utils.file_system.Paths;
 import game.utils.Utility;
 import game.values.Dimensions;
@@ -182,6 +183,11 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         inventoryPanel.setOpaque(false);
         inventoryPanel.setLayout(new GridLayout(0, 1));
 
+        InventoryElementControllerTime inventoryElementControllerTime = JBomb.match.getInventoryElementControllerTime();
+        if (inventoryElementControllerTime != null) {
+            inventoryPanel.add(inventoryElementControllerTime.getView());
+        }
+
         inventoryPanel.add(JBomb.match.getInventoryElementControllerHp().getView());
         inventoryPanel.add(JBomb.match.getInventoryElementControllerPoints().getView());
         inventoryPanel.add(JBomb.match.getInventoryElementControllerBombs().getView());
@@ -353,6 +359,11 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
 
     public PitchPanel getPitchPanel() {
         return pitchPanel;
+    }
+
+    @Override
+    public boolean shouldMaintainAspectRatio() {
+        return false;
     }
 
     @Override

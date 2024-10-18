@@ -1,5 +1,6 @@
 package game.domain.level.gamehandler.model
 
+import game.JBomb
 import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
@@ -20,6 +21,7 @@ abstract class GameHandler(protected val level: Level) {
         spawnEnemies()
         spawnAnimals()
         level.onStartLevel()
+        JBomb.match.onStartGame()
     }
 
     abstract fun generateStone()

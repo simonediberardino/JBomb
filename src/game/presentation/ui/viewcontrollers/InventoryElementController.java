@@ -6,6 +6,7 @@ import game.presentation.ui.viewmodels.InventoryElementModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class InventoryElementController {
     private final InventoryElementModel model;
@@ -26,7 +27,7 @@ public class InventoryElementController {
     }
 
     public void setNumItems(String numItems) {
-        model.setNumItems(numItems);
+        model.setNumItems(Objects.equals(numItems, String.valueOf(Integer.MAX_VALUE)) ? "∞" : numItems);
         updateView();
     }
 
