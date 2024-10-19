@@ -289,6 +289,11 @@ public class Localization {
         put(Locale.ITALY, "USERNAME");
     }};
 
+    public static final HashMap<Locale, String> GAME_ENDED_MP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "GAME OVER!");
+        put(Locale.ITALY, "PARTITA TERMINATA!");
+    }};
+
     public static final HashMap<Locale, String> CONTINUE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "CONTINUE");
         put(Locale.ITALY, "CONTINUA");
