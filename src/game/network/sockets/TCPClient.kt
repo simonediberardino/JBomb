@@ -5,25 +5,31 @@ import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 
-class TCPClient(private val serverAddress: String,
-                private val serverPort: Int
-) : TCPSocket {
+class TCPClient(private val serverAddress: String, private val serverPort: Int) : TCPSocket {
     private lateinit var socket: Socket
     private lateinit var reader: BufferedReader
     private lateinit var writer: PrintWriter
-    private val listeners: MutableSet<TCPClientCallback> = mutableSetOf()
-    private val scope = CoroutineScope(Dispatchers.IO)
+    val scope = CoroutineScope(Dispatchers.IO)
 
+    // Define SharedFlow for events
+    private val _eventFlow = MutableSharedFlow<TCPClientEvent>(replay = 1)
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    /**
+     * Connects to the server and initializes input/output streams.
+     */
     fun connect() {
         if (serverAddress.isBlank()) {
             close()
-            onError("Unknown Host")
+            emitError("Unknown Host")
             return
         }
 
@@ -34,26 +40,35 @@ class TCPClient(private val serverAddress: String,
             reader = BufferedReader(InputStreamReader(socket.getInputStream()))
             writer = PrintWriter(socket.getOutputStream(), true)
 
-            for (listener in listeners) {
-                listener.onConnect()
-            }
-
+            emitConnect()
             readStream()
         } catch (exception: Exception) {
             close()
-            onError(exception.localizedMessage)
+            emitError(exception.localizedMessage)
         }
     }
 
-    private fun onError(message: String?) {
-        for (listener in listeners) {
-            listener.onError(message)
+    private fun emitError(message: String?) {
+        scope.launch {
+            _eventFlow.emit(TCPClientEvent.ErrorOccurred(message))
         }
     }
 
-    private fun onDataReceived(data: String) {
-        listeners.forEach {
-            it.onDataReceived(data)
+    private fun emitConnect() {
+        scope.launch {
+            _eventFlow.emit(TCPClientEvent.Connected)
+        }
+    }
+
+    private fun emitDisconnect() {
+        scope.launch {
+            _eventFlow.emit(TCPClientEvent.Disconnected)
+        }
+    }
+
+    private fun emitDataReceived(data: String) {
+        scope.launch {
+            _eventFlow.emit(TCPClientEvent.DataReceived(data))
         }
     }
 
@@ -72,13 +87,15 @@ class TCPClient(private val serverAddress: String,
                     if (serverData == null) {
                         // Server disconnected
                         Log.i("Server disconnected")
+                        emitDisconnect()
                         break
                     }
 
-                    onDataReceived(serverData)
+                    emitDataReceived(serverData)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                emitDisconnect()
             } finally {
                 close()
             }
@@ -104,16 +121,14 @@ class TCPClient(private val serverAddress: String,
             }
         }
 
-        for (listener in listeners) {
-            listener.onDisconnect()
-        }
+        emitDisconnect()
     }
+}
 
-    fun register(tcpClientCallback: TCPClientCallback) {
-        listeners.add(tcpClientCallback)
-    }
-
-    fun unregister(tcpClientCallback: TCPClientCallback) {
-        listeners.remove(tcpClientCallback)
-    }
+// Define events for the TCP client
+sealed class TCPClientEvent {
+    object Connected : TCPClientEvent()
+    object Disconnected : TCPClientEvent()
+    data class ErrorOccurred(val message: String?) : TCPClientEvent()
+    data class DataReceived(val data: String) : TCPClientEvent()
 }

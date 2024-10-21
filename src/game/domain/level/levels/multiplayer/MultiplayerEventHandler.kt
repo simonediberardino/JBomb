@@ -55,6 +55,5 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
 
     override fun onEndGame() {
         GameEndedMultiplayerPanel.showSummary()
-        JBomb.match.disconnectOnlineAndStayInGame()
     }
 }

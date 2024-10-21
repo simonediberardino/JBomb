@@ -1,14 +1,19 @@
 package game.presentation.ui.pages.multiplayer;
 
 import game.JBomb;
+import game.domain.level.levels.Level;
+import game.domain.level.levels.lobby.WorldSelectorLevel;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb;
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity;
 import game.localization.Localization;
+import game.presentation.ui.pages.main_menu.MainMenuPanel;
 import game.presentation.ui.panels.models.CenteredPanel;
 import game.presentation.ui.panels.models.JBombermanBoxContainerPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
+import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 import game.presentation.ui.viewelements.bombermanpanel.BombermanPanelYellow;
+import game.usecases.ReconnectToServerUseCase;
 import game.utils.Utility;
 import game.values.Dimensions;
 
@@ -64,7 +69,7 @@ public class GameEndedMultiplayerPanel extends JBombermanBoxContainerPanel {
         }
 
         JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setPreferredSize(new Dimension(getDefaultBoxPanelWidth(), getDefaultBoxPanelWidth()));
+        scrollPane.setPreferredSize(new Dimension(getDefaultBoxPanelWidth(), Utility.INSTANCE.px(300)));
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
         scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
@@ -74,9 +79,23 @@ public class GameEndedMultiplayerPanel extends JBombermanBoxContainerPanel {
         scrollPane.setBorder(null);
         addComponent(scrollPane);
 
-        RedButton exitButton = new RedButton(Localization.get(Localization.CONTINUE));
+        YellowButton playAgainButton = new YellowButton(Localization.get(Localization.PLAY_AGAIN));
+        playAgainButton.addActionListener(e -> {
+            dialog.dispose();  // Close the dialog when the button is clicked
+
+            if (JBomb.match.getWasServer()) {
+                JBomb.startLevel(Level.Companion.getCurrLevel(), JBomb.match.getOnlineGameHandler());
+            } else {
+                new ReconnectToServerUseCase().invokeBlocking();
+            }
+        });
+
+        addComponent(playAgainButton);
+
+        RedButton exitButton = new RedButton(Localization.get(Localization.MAIN_MENU));
         exitButton.addActionListener(e -> {
             dialog.dispose();  // Close the dialog when the button is clicked
+            JBomb.showActivity(MainMenuPanel.class);
         });
 
         addComponent(exitButton);

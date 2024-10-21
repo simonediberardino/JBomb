@@ -1,8 +1,9 @@
 package game.network.sockets
 
-import game.network.callbacks.TCPServerCallback
 import game.utils.dev.Log
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -13,14 +14,17 @@ import java.net.Socket
 class TCPServer(private var port: Int) : TCPSocket {
     private lateinit var socket: ServerSocket
     internal var clients: MutableMap<Long, IndexedClient> = mutableMapOf()
-    private val listeners: MutableSet<TCPServerCallback> = mutableSetOf()
     private var progressiveId = 0L
     val scope = CoroutineScope(Dispatchers.IO)
 
-    fun open() {
+    // SharedFlow to emit server events (client connections, disconnections, and messages)
+    private val _eventFlow = MutableSharedFlow<ServerEvent>()
+    val eventFlow = _eventFlow.asSharedFlow() // Public flow for clients to listen
+
+    suspend fun open() {
         try {
             socket = ServerSocket(port)
-            onStart()
+            emitEvent(ServerEvent.ServerStarted)
             start()
         } catch (ioException: IOException) {
             runBlocking {
@@ -29,40 +33,17 @@ class TCPServer(private var port: Int) : TCPSocket {
         }
     }
 
-    private suspend fun onClose() {
-        for (listener in listeners) {
-            listener.onCloseServer()
-            unregister(listener)
-        }
-    }
-
-    private fun onStart() {
-        for (listener in listeners) {
-            listener.onStartServer()
-        }
-    }
-
     private suspend fun handleClient(clientSocket: IndexedClient) = withContext(Dispatchers.IO) {
         try {
             clientSocket.reader.use { reader ->
-                for (listener in listeners) {
-                    listener.onClientConnected(clientSocket)
-                }
+                emitEvent(ServerEvent.ClientConnected(clientSocket.id))
 
                 while (true) {
-                    // Reads the stream from the client;
-                    val clientData = reader.readLine()
+                    val clientData = reader.readLine() ?: break
+                    Log.i("Received from client ${clientSocket.id}: $clientData")
 
-                    if (clientData == null) {
-                        // Client disconnected
-                        Log.i("Client disconnected")
-                        break
-                    }
-
-                    Log.i("Received from client: $clientData")
-                    for (listener in listeners) {
-                        listener.onDataReceived(clientData)
-                    }
+                    // Emit the received data as an event
+                    emitEvent(ServerEvent.DataReceived(clientSocket.id, clientData))
                 }
             }
         } catch (e: Exception) {
@@ -70,6 +51,10 @@ class TCPServer(private var port: Int) : TCPSocket {
         } finally {
             disconnectClient(clientSocket)
         }
+    }
+
+    private suspend fun emitEvent(event: ServerEvent) {
+        _eventFlow.emit(event) // Emit event to all listeners
     }
 
     fun start() {
@@ -81,10 +66,10 @@ class TCPServer(private var port: Int) : TCPSocket {
 
                     val clientSocket = socket.accept()
                     val indexedClient = IndexedClient(
-                            id = progressiveId,
-                            client = clientSocket,
-                            writer = PrintWriter(clientSocket.getOutputStream(), true),
-                            reader = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
+                        id = progressiveId,
+                        client = clientSocket,
+                        writer = PrintWriter(clientSocket.getOutputStream(), true),
+                        reader = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
                     )
 
                     clients[progressiveId] = indexedClient
@@ -105,10 +90,14 @@ class TCPServer(private var port: Int) : TCPSocket {
 
     override fun sendData(data: String) {
         scope.launch {
-            clients.values.parallelStream().forEach {
-                sendData(it, data)
+            clients.values.forEach { client ->
+                sendData(client, data)
             }
         }
+    }
+
+    private fun sendData(client: IndexedClient, data: String) {
+        client.writer.println(data)
     }
 
     fun sendData(clientId: Long, data: String, ignore: Boolean) {
@@ -124,18 +113,6 @@ class TCPServer(private var port: Int) : TCPSocket {
         Log.i("sendData: $clientId sent $data")
     }
 
-    private fun sendData(client: IndexedClient, data: String) {
-        client.writer.println(data)
-    }
-
-    fun register(tcpServerCallback: TCPServerCallback) {
-        listeners.add(tcpServerCallback)
-    }
-
-    fun unregister(tcpServerCallback: TCPServerCallback) {
-        listeners.remove(tcpServerCallback)
-    }
-
     suspend fun close() {
         clients.values.forEach {
             disconnectClient(it)
@@ -145,22 +122,28 @@ class TCPServer(private var port: Int) : TCPSocket {
             socket.close()
         }
 
-        onClose()
-
+        emitEvent(ServerEvent.ServerClosed)
         scope.cancel()
     }
 
-    private fun disconnectClient(clientSocket: IndexedClient) {
+    private suspend fun disconnectClient(clientSocket: IndexedClient) {
         clientSocket.client.close()
         clientSocket.writer.close()
         clientSocket.reader.close()
 
         clients.remove(clientSocket.id)
 
-        for (listener in listeners) {
-            listener.onClientDisconnected(clientSocket)
-        }
+        emitEvent(ServerEvent.ClientDisconnected(clientSocket.id))
     }
 
     class IndexedClient(val id: Long, val client: Socket, val writer: PrintWriter, val reader: BufferedReader)
+
+    // Define different types of events the server can emit
+    sealed class ServerEvent {
+        object ServerStarted : ServerEvent()
+        object ServerClosed : ServerEvent()
+        data class ClientConnected(val clientId: Long) : ServerEvent()
+        data class ClientDisconnected(val clientId: Long) : ServerEvent()
+        data class DataReceived(val clientId: Long, val data: String) : ServerEvent()
+    }
 }

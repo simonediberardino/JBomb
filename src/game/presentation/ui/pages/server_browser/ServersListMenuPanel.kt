@@ -15,6 +15,7 @@ import game.presentation.ui.viewelements.bombermanbutton.RedButton
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton
 import game.presentation.ui.viewelements.settings.JBombTextFieldTagged
 import game.properties.RuntimeProperties
+import game.usecases.ConnectToServerUseCase
 import game.utils.Utility
 import game.utils.file_system.Paths
 import game.values.BomberColors
@@ -42,19 +43,6 @@ open class ServersListMenuPanel(
     private lateinit var scrollPane: JScrollPane
     private lateinit var loadingIndicator: JProgressBar // Component for loading indicator
     private val serversListHeight = Utility.px(300)
-
-    // Initiates connection to the selected server
-    private fun connectToServer(ipAddress: String) {
-        RuntimeProperties.lastConnectedIp = ipAddress
-        val tokens = ipAddress.split(":").dropLastWhile { it.isEmpty() }
-        val ipv4 = tokens[0]
-        val port: Int = tokens.getOrNull(1)?.toInt() ?: JBombMatch.port // Default port if parsing fails
-
-        JBomb.startLevel(
-            WaitingRoomLevel(),
-            ClientGameHandler(ipv4, port)
-        )
-    }
 
     // Adds the input field for the IP address of the server
     private fun addIpAddressInputField() {
@@ -96,7 +84,7 @@ open class ServersListMenuPanel(
             Dimensions.FONT_SIZE_MID
         )
         connectButton.addActionListener {
-            connectToServer(enteredIpAddress)
+            ConnectToServerUseCase(enteredIpAddress).invokeBlocking()
         }
         boxComponentsPanel.addComponent(connectButton)
     }
@@ -113,7 +101,7 @@ open class ServersListMenuPanel(
             val connectRunnable: RunnablePar = object : RunnablePar {
                 override fun <T> execute(par: T): Any? {
                     val ip = par as String
-                    connectToServer(ip)
+                    ConnectToServerUseCase(ip).invokeBlocking()
                     return null
                 }
             }

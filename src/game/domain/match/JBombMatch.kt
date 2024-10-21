@@ -105,7 +105,7 @@ class JBombMatch(
         setupViewControllers()
     }
 
-    fun connect() {
+    suspend fun connect() {
         if (onlineGameHandler?.isRunning() != true) {
             onlineGameHandler?.onStart()
         }
@@ -257,6 +257,7 @@ class JBombMatch(
     val isServer: Boolean
         get() = onlineGameHandler is ServerGameHandler || !isClient && onlineGameHandler == null
 
+    var wasServer = false
     /**
      * Adds a bomb to the list of bombs in the game.
      *
@@ -534,20 +535,23 @@ class JBombMatch(
         if (remainingTime < 0)
             return
 
+        inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))
+
         if (remainingTime == 0L) {
             if (isServer) {
+                wasServer = true
+                EndGameGameEvent().invoke()
                 EndGameEventForwarder().invoke()
-                Log.e("Server notified end game")
-                //EndGameGameEvent().invoke()
+
+                JBomb.match.disconnectOnlineAndStayInGame()
             } else {
                 pauseGame(showUi = false, freeze = true)
             }
         }
-
-        inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))
     }
 
     fun onStartGame() {
+        wasServer = isServer
         if (isServer) setupTimerTask()
     }
 

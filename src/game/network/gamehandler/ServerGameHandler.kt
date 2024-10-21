@@ -2,7 +2,6 @@ package game.network.gamehandler
 
 import game.JBomb
 import game.domain.match.JBombMatch
-import game.network.callbacks.TCPServerCallback
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.events.forward.LevelInfoHttpEventForwarder
 import game.network.serializing.HttpParserSerializer
@@ -16,12 +15,7 @@ import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 import kotlinx.coroutines.launch
 
-/**
- * Handles communication with clients from the server-side using TCP.
- *
- * @param port The port number on which the server listens for client connections.
- */
-class ServerGameHandler(private val port: Int) : TCPServerCallback {
+class ServerGameHandler(private val port: Int): OnlineGameHandler {
     private lateinit var server: TCPServer
     private var ipv4: String? = null
 
@@ -36,34 +30,52 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
 
     /**
      * Creates and opens the TCP server for handling client connections.
+     * Listens to events emitted by the server through `eventFlow`.
      */
-    fun create() {
+    suspend fun create() {
         server = TCPServer(port)
-        server.also {
-            it.register(this)
-            it.open()
+        server.open()
+
+        // Start listening for events from the server's eventFlow
+        server.scope.launch {
+            server.eventFlow.collect { event ->
+                when (event) {
+                    is TCPServer.ServerEvent.ServerStarted -> onStartServer()
+                    is TCPServer.ServerEvent.ServerClosed -> onCloseServer()
+                    is TCPServer.ServerEvent.ClientConnected -> onClientConnected(event.clientId)
+                    is TCPServer.ServerEvent.ClientDisconnected -> onClientDisconnected(event.clientId)
+                    is TCPServer.ServerEvent.DataReceived -> onDataReceived(event.data)
+                }
+            }
+        }
+    }
+
+    /**
+     * Initiates the creation and opening of the server upon the start of the server game handler.
+     */
+    override suspend fun onStart() {
+        create()
+    }
+
+    /**
+     * Callback method invoked when the server is started.
+     */
+    private fun onStartServer() {
+        running = true
+        server.scope.launch {
+            ipv4 = GetInetAddressUseCase().invoke()?.hostName
+            updateInfo()
         }
     }
 
     /**
      * Callback method invoked when the server is closed.
      */
-    override suspend fun onCloseServer() {
+    private suspend fun onCloseServer() {
         running = false
 
         JBomb.scope.launch {
             ipv4?.let { SendStopServerToMasterServerUseCase(it, port).invoke() }
-        }
-    }
-
-    /**
-     * Callback method invoked when the server is started.
-     */
-    override fun onStartServer() {
-        running = true
-        server.scope.launch {
-            ipv4 = GetInetAddressUseCase().invoke()?.hostName
-            updateInfo()
         }
     }
 
@@ -90,16 +102,15 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
     }
 
     /**
-     * Callback method invoked when a client is connected to the server.
+     * Handles when a client is connected.
      *
-     * @param indexedClient The information about the connected client.
+     * @param clientId The ID of the connected client.
      */
-    override fun onClientConnected(indexedClient: TCPServer.IndexedClient) {
+    private fun onClientConnected(clientId: Long) {
         val data: MutableMap<String, String> = HashMap()
-        data["id"] = indexedClient.id.toString()
+        data["id"] = clientId.toString()
 
         val levelInfo = JBomb.match.currentLevel.info
-
         data["levelId"] = levelInfo.levelId.toString()
         data["worldId"] = levelInfo.worldId.toString()
 
@@ -113,8 +124,13 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
         }
     }
 
-    override fun onClientDisconnected(indexedClient: TCPServer.IndexedClient) {
-        val client = JBomb.match.getEntityById(indexedClient.id) ?: return
+    /**
+     * Handles when a client is disconnected.
+     *
+     * @param clientId The ID of the disconnected client.
+     */
+    private fun onClientDisconnected(clientId: Long) {
+        val client = JBomb.match.getEntityById(clientId) ?: return
         client.logic.despawn()
 
         server.scope.launch {
@@ -123,16 +139,22 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
     }
 
     /**
-     * Initiates the creation and opening of the server upon the start of the server game handler.
+     * Handles when data is received from a client.
+     *
+     * @param clientId The ID of the client sending the data.
+     * @param data The raw data received from the client.
      */
-    override fun onStart() {
-        create()
-    }
+    override fun onDataReceived(data: String) {
+        val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
+        HttpMessageReceiverHandler.instance.handle(formattedData)
 
-    /**
-     * Callback method invoked when the server is closed.
-     */
-    override fun onClose() {}
+        Log.e("onDataReceived $formattedData")
+        // if message is not private, forward it to every other client
+        if (!formattedData["private"].toBoolean()) {
+            val senderId = formattedData.getOrTrim("actorId")?.toLong() ?: return
+            sendData(data, receiverId = senderId, ignore = true)
+        }
+    }
 
     /**
      * Sends data to all connected clients.
@@ -164,31 +186,20 @@ class ServerGameHandler(private val port: Int) : TCPServerCallback {
     }
 
     /**
-     * Callback method invoked when data is received from a client.
-     *
-     * @param data The raw data received from the client.
-     */
-    override fun onDataReceived(data: String) {
-        val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
-        HttpMessageReceiverHandler.instance.handle(formattedData)
-
-        Log.e("onDataReceived $formattedData")
-        // if message is not private, forward it to every other client
-        if (!formattedData["private"].toBoolean()) {
-            val senderId = formattedData.getOrTrim("actorId")?.toLong() ?: return
-            sendData(data, receiverId = senderId, ignore = true)
-        }
-    }
-
-    /**
      * Checks whether the server game handler is currently running and accepting client connections.
      *
      * @return True if the server game handler is running, false otherwise.
      */
     override fun isRunning(): Boolean = running
 
+    /**
+     * Disconnects all clients and closes the server.
+     */
     override suspend fun disconnect() {
-        if (this::server.isInitialized)
+        if (this::server.isInitialized) {
             server.close()
+        }
     }
+
+    override fun onClose() {}
 }

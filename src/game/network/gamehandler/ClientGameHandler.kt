@@ -5,18 +5,14 @@ import game.network.callbacks.TCPClientCallback
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.serializing.HttpParserSerializer
 import game.network.sockets.TCPClient
+import game.network.sockets.TCPClientEvent
 import game.utils.dev.Log
+import kotlinx.coroutines.launch
 
-/**
- * Handles communication with the game server from the client-side using TCP.
- *
- * @param serverAddress The address of the game server.
- * @param serverPort The port number of the game server.
- */
 class ClientGameHandler(
-        private val serverAddress: String,
-        private val serverPort: Int
-) : TCPClientCallback {
+    private val serverAddress: String,
+    private val serverPort: Int
+): OnlineGameHandler {
 
     private lateinit var client: TCPClient
     var id = -1L
@@ -30,18 +26,29 @@ class ClientGameHandler(
     }
 
     /**
-     * Establishes a connection to the game server.
+     * Establishes a connection to the game server and starts listening to the event flow.
      */
     private fun connect() {
         client = TCPClient(serverAddress, serverPort)
-        client.register(this)
         client.connect()
+
+        // Start collecting events from the client's eventFlow
+        client.scope.launch {
+            client.eventFlow.collect { event ->
+                when (event) {
+                    is TCPClientEvent.Connected -> onConnect()
+                    is TCPClientEvent.Disconnected -> onDisconnect()
+                    is TCPClientEvent.ErrorOccurred -> onError(event.message)
+                    is TCPClientEvent.DataReceived -> onDataReceived(event.data)
+                }
+            }
+        }
     }
 
     /**
      * Handles errors that may occur during the client-server communication.
      */
-    override fun onError(message: String?) {
+    private fun onError(message: String?) {
         connected = false
         JBomb.networkError(message)
     }
@@ -49,7 +56,7 @@ class ClientGameHandler(
     /**
      * Handles disconnection events from the game server.
      */
-    override fun onDisconnect() {
+    private fun onDisconnect() {
         connected = false
         Log.i("ClientGameHandler onDisconnect")
     }
@@ -57,24 +64,14 @@ class ClientGameHandler(
     /**
      * Handles successful connection events to the game server.
      */
-    override fun onConnect() {
+    private fun onConnect() {
         connected = true
         Log.i("ClientGameHandler onConnect")
     }
-
-    /**
-     * Receives the unique identifier assigned to the client by the game server.
-     *
-     * @param id The unique identifier assigned to the client.
-     */
-    override fun onIdReceived(id: Long) {
-        this.id = id
-    }
-
     /**
      * Initiates the connection to the game server upon the start of the client game handler.
      */
-    override fun onStart() {
+    override suspend fun onStart() {
         connect()
     }
 
@@ -82,6 +79,7 @@ class ClientGameHandler(
      * Handles the closure of the client game handler.
      */
     override fun onClose() {
+        // Handle clean-up when closing the client game handler
     }
 
     /**
@@ -103,8 +101,9 @@ class ClientGameHandler(
     override fun sendData(data: String) {
         Log.i("${javaClass.simpleName} sendData")
 
-        if (connected && this::client.isInitialized)
+        if (connected && this::client.isInitialized) {
             client.sendData(data)
+        }
     }
 
     /**
@@ -115,7 +114,7 @@ class ClientGameHandler(
      * @param ignore If true, the data will be sent to all clients except the specified receiverId.
      */
     override fun sendData(data: String, receiverId: Long, ignore: Boolean) {
-        sendData(data)
+        sendData(data) // In this client-side implementation, it just forwards the data to the server.
     }
 
     /**
@@ -127,7 +126,12 @@ class ClientGameHandler(
         return connected
     }
 
+    /**
+     * Disconnects from the game server and stops the event flow collection.
+     */
     override suspend fun disconnect() {
-        client.close()
+        if (this::client.isInitialized) {
+            client.close()
+        }
     }
 }

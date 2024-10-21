@@ -1,7 +1,7 @@
 package game.network.gamehandler
 
 interface OnlineGameHandler {
-    fun onStart()
+    suspend fun onStart()
     fun onClose()
     fun sendData(data: String)
     fun sendData(data: String, receiverId: Long, ignore: Boolean)
