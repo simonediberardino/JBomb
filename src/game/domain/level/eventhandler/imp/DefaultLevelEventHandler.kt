@@ -89,4 +89,5 @@ open class DefaultLevelEventHandler : LevelEventHandler {
 
     override fun onKill(attacker: Entity, victim: Entity) {}
     override fun onTimeUpdate(time: Long) {}
+    override fun onEndGame() {}
 }

@@ -10,51 +10,52 @@ import game.network.entity.CharacterNetwork
 import game.network.entity.EntityNetwork
 import game.network.entity.PlaceableEntityNetwork
 
-fun EntityTypes.toEntity(id: Long, extra:  Map<String, String>? = null) : Entity? {
+fun EntityTypes.toEntity(id: Long, extra: Map<String, String>? = null): Entity? {
     return EntityFactory.instance.toEntity(this, id, extra)
 }
 
 fun Entity.dtoToEntityNetwork(): EntityNetwork {
     return EntityNetwork(
-            entityId = info.id,
-            entityLocation = info.position.toAbsolute(),
-            entityType = info.type.ordinal,
-            isImmune = state.isImmune
+        entityId = info.id,
+        entityLocation = info.position.toAbsolute(),
+        entityType = info.type.ordinal,
+        isImmune = state.isImmune
     )
 }
 
 fun BomberEntity.dtoToEntityNetwork(): BomberEntityNetwork {
     return BomberEntityNetwork(
-            entityId = info.id,
-            entityLocation = info.position.toAbsolute(),
-            entityType = info.type.ordinal,
-            direction = state.direction.ordinal,
-            currExplosionLength = state.currExplosionLength,
-            currentBombs = state.currentBombs,
-            skinId = properties.skinId,
-            isImmune = state.isImmune,
-            name = properties.name,
-            hp = state.hp
+        entityId = info.id,
+        entityLocation = info.position.toAbsolute(),
+        entityType = info.type.ordinal,
+        direction = state.direction.ordinal,
+        currExplosionLength = state.currExplosionLength,
+        currentBombs = state.currentBombs,
+        skinId = properties.skinId,
+        isImmune = state.isImmune,
+        name = properties.name,
+        hp = state.hp,
+        score = state.score
     )
 }
 
 fun Character.dtoToEntityNetwork(): CharacterNetwork {
     return CharacterNetwork(
-            entityId = info.id,
-            entityLocation = info.position.toAbsolute(),
-            entityType = info.type.ordinal,
-            isImmune = state.isImmune,
-            direction = state.direction.ordinal,
-            name = properties.name
+        entityId = info.id,
+        entityLocation = info.position.toAbsolute(),
+        entityType = info.type.ordinal,
+        isImmune = state.isImmune,
+        direction = state.direction.ordinal,
+        name = properties.name
     )
 }
 
 fun PlaceableEntity.dtoToEntityNetwork(): PlaceableEntityNetwork {
     return PlaceableEntityNetwork(
-            entityId = info.id,
-            entityLocation = info.position.toAbsolute(),
-            entityType = info.type.ordinal,
-            callerId = state.caller?.info?.id ?: -1,
-            isImmune = state.isImmune
+        entityId = info.id,
+        entityLocation = info.position.toAbsolute(),
+        entityType = info.type.ordinal,
+        callerId = state.caller?.info?.id ?: -1,
+        isImmune = state.isImmune
     )
 }

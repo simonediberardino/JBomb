@@ -140,7 +140,6 @@ object JBomb {
                 JBombFrame.removeKeyListener(match.controllerManager)
             }
         }
-
     }
 
     /**

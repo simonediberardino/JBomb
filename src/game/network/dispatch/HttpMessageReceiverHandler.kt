@@ -1,6 +1,7 @@
 package game.network.dispatch
 
 import game.network.events.process.*
+import game.network.messages.EndGameHttpMessage
 import game.network.models.HttpMessageTypes
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
@@ -27,6 +28,7 @@ class HttpMessageReceiverHandler private constructor() {
             HttpMessageTypes.FIRE -> FireEventProcessor()
             HttpMessageTypes.KILLED_BY -> EntityKilledByEventProcessor()
             HttpMessageTypes.TIME -> TimeHttpEventProcessor()
+            HttpMessageTypes.GAME_ENDED -> EndGameEventProcessor()
             else -> null
         }
 

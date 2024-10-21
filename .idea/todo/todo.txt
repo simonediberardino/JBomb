@@ -1,3 +1,7 @@
 - game end
 - handle map rotation
 - handle local ip
+- handle game end server
+- (maybe) handle game end for dead players
+- check network errors
+- handle on close dialog

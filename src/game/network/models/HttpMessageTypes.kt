@@ -16,5 +16,6 @@ enum class HttpMessageTypes {
     ENTITY_COLLIDED,
     BOMB_EXPLODED,
     KILLED_BY,
-    TIME
+    TIME,
+    GAME_ENDED
 }

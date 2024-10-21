@@ -4,6 +4,7 @@ import game.JBomb
 import game.audio.AudioManager
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
+import game.domain.events.game.EndGameGameEvent
 import game.domain.events.game.ResetBombsVariablesGameEvent
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.levels.Level
@@ -18,6 +19,7 @@ import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.game.ControllerManager
 import game.input.game.MouseControllerManager
+import game.network.events.forward.EndGameEventForwarder
 import game.network.events.forward.UseItemHttpEventForwarder
 import game.network.gamehandler.ClientGameHandler
 import game.network.gamehandler.OnlineGameHandler
@@ -421,6 +423,37 @@ class JBombMatch(
         ToastUtils.cancel()
     }
 
+    fun disconnectOnlineAndStayInGame() {
+        runBlocking {
+            onlineGameHandler?.disconnect()
+        }
+
+        // Pause the game to ensure safe destruction
+        pauseGame(showUi = false, freeze = true)
+
+        // Cancel job
+        cancelCoroutineJob()
+
+        // Clear graphics callback in the Bomberman frame's pitch panel
+        clearGraphicsCallback()
+
+        // Stop the sound associated with the current game level
+        stopLevelSound()
+
+        // Stop the movement task for mouse controllers
+        stopMovementTask()
+
+        // Unregister all observables and controllers
+        unregisterAllObservablesAndControllers()
+
+        // Perform garbage collection to release memory
+        performGarbageCollection()
+
+        cleanLevelUi()
+
+        ToastUtils.cancel()
+    }
+
     private fun cleanLevelUi() {
         JBomb.JBombFrame.cleanGame()
     }
@@ -500,6 +533,16 @@ class JBombMatch(
 
         if (remainingTime < 0)
             return
+
+        if (remainingTime == 0L) {
+            if (isServer) {
+                EndGameEventForwarder().invoke()
+                Log.e("Server notified end game")
+                //EndGameGameEvent().invoke()
+            } else {
+                pauseGame(showUi = false, freeze = true)
+            }
+        }
 
         inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))
     }

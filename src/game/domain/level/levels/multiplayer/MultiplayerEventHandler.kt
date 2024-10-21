@@ -9,6 +9,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
 import game.localization.Localization
+import game.presentation.ui.pages.multiplayer.GameEndedMultiplayerPanel
 import game.utils.dev.Log
 import game.utils.ui.ToastUtils
 import kotlinx.coroutines.delay
@@ -50,5 +51,10 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
                 ).invoke()
             }
         }
+    }
+
+    override fun onEndGame() {
+        GameEndedMultiplayerPanel.showSummary()
+        JBomb.match.disconnectOnlineAndStayInGame()
     }
 }

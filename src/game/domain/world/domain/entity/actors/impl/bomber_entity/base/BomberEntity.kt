@@ -43,14 +43,13 @@ abstract class BomberEntity : Character, Explosive {
         val currentBombs = info.getOrTrim("currentBombs")?.toInt()
         val skinId = info.getOrTrim("skinId")?.toInt()
         val hp = info.getOrTrim("hp")?.toInt()
+        val score = info.getOrTrim("score")?.toInt()
 
         currExplosionLength?.let { state.currExplosionLength = it }
         currentBombs?.let { state.currentBombs = it }
         skinId?.let { properties.skinId = it }
-        hp?.let {
-            Log.e("Updating health ${hp} $hp")
-            state.hp = it
-        }
+        hp?.let { state.hp = it }
+        score?.let { state.score = it }
     }
 
     init {

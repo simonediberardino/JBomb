@@ -18,4 +18,5 @@ interface LevelEventHandler {
     fun resetBombsVariables()
     fun onKill(attacker: Entity, victim: Entity)
     fun onTimeUpdate(time: Long)
+    fun onEndGame()
 }

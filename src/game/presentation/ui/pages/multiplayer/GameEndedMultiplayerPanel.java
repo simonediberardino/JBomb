@@ -1,5 +1,9 @@
 package game.presentation.ui.pages.multiplayer;
 
+import game.JBomb;
+import game.domain.world.domain.entity.actors.abstracts.base.Entity;
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb;
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity;
 import game.localization.Localization;
 import game.presentation.ui.panels.models.CenteredPanel;
 import game.presentation.ui.panels.models.JBombermanBoxContainerPanel;
@@ -10,6 +14,11 @@ import game.values.Dimensions;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static game.localization.Localization.GAME_ENDED_MP;
 
@@ -35,11 +44,22 @@ public class GameEndedMultiplayerPanel extends JBombermanBoxContainerPanel {
 
         int buttonWidth = getDefaultBoxPanelWidth() - Dimensions.DEFAULT_X_PADDING;
 
-        for (int i = 0; i < 15; i++) {
-            PlayerScoreLabel playerScoreLabel = new PlayerScoreLabel(buttonWidth,
-                    "test",
-                    0,
-                    i + 1);
+        List<BomberEntity> players = JBomb.match.getEntities().stream()
+                .filter(BomberEntity.class::isInstance)
+                .map(BomberEntity.class::cast)
+                .sorted(Comparator.comparingInt(o -> ((BomberEntity) o).getState().getScore()).reversed())
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < players.size(); i++) {
+            BomberEntity bomberEntity = players.get(i);
+
+            PlayerScoreLabel playerScoreLabel = new PlayerScoreLabel(
+                    buttonWidth,
+                    bomberEntity.getProperties().getName(),
+                    bomberEntity.getState().getScore(),
+                    i + 1
+            );
+
             panel.add(playerScoreLabel);
         }
 
@@ -67,7 +87,9 @@ public class GameEndedMultiplayerPanel extends JBombermanBoxContainerPanel {
         super.repaint();
     }
 
-    public static void createAndShowDialog(JFrame parentFrame) {
+    public static void showSummary() {
+        JFrame parentFrame = JBomb.JBombFrame;
+
         JDialog dialog = new JDialog(parentFrame);
         dialog.setUndecorated(true);
         dialog.setSize(parentFrame.getSize());
@@ -94,5 +116,4 @@ public class GameEndedMultiplayerPanel extends JBombermanBoxContainerPanel {
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
     }
-
 }

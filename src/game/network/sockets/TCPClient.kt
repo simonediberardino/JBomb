@@ -81,7 +81,6 @@ class TCPClient(private val serverAddress: String,
                 e.printStackTrace()
             } finally {
                 close()
-                onError(null)
             }
         }
     }
