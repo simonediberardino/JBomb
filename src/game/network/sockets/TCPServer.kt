@@ -136,6 +136,8 @@ class TCPServer(private var port: Int) : TCPSocket {
         emitEvent(ServerEvent.ClientDisconnected(clientSocket.id))
     }
 
+    fun isClosed(): Boolean = socket.isClosed
+
     class IndexedClient(val id: Long, val client: Socket, val writer: PrintWriter, val reader: BufferedReader)
 
     // Define different types of events the server can emit

@@ -172,7 +172,7 @@ object JBomb {
 
     @JvmStatic
     fun startLevel(level: Level, onlineGameHandler: OnlineGameHandler?) {
-        startLevel(level, onlineGameHandler, true) {}
+        startLevel(level, onlineGameHandler, false) {} // CHANGED
     }
 
     @JvmStatic

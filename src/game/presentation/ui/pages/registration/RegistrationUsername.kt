@@ -33,6 +33,7 @@ class RegistrationUsername(cardLayout: CardLayout?, parent: JPanel?, frame: JBom
         next.addActionListener { next() }
 
         boxComponentsPanel.addComponent(next)
+        boxComponentsPanel.repaint()
     }
 
     private fun next() {

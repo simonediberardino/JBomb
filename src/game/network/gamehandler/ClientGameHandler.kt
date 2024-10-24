@@ -131,6 +131,8 @@ class ClientGameHandler(
      */
     override suspend fun disconnect() {
         if (this::client.isInitialized) {
+            println("Disconnecting client")
+            connected = false
             client.close()
         }
     }

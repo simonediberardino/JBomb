@@ -16,7 +16,8 @@ import game.utils.dev.Log
 import kotlinx.coroutines.launch
 
 class ServerGameHandler(private val port: Int): OnlineGameHandler {
-    private lateinit var server: TCPServer
+    lateinit var server: TCPServer
+        private set
     private var ipv4: String? = null
 
     val clientsConnected: Int
@@ -196,8 +197,11 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
      * Disconnects all clients and closes the server.
      */
     override suspend fun disconnect() {
+        println("Disconnecting server")
+
         if (this::server.isInitialized) {
-            server.close()
+            if (!server.isClosed())
+                server.close()
         }
     }
 

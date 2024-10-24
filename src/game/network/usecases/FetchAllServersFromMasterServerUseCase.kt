@@ -15,7 +15,6 @@ class FetchAllServersFromMasterServerUseCase : UseCase<List<ServerInfo>?> {
     override suspend fun invoke(): List<ServerInfo>? {
         val myIpv4 = GetInetAddressUseCase().invoke()?.hostName
 
-        println("My $myIpv4")
         val response = JBombHttp.get("${HttpUrls.masterServerUrl}/servers")
         return if (response.statusCode == 200) {
             val servers = serversListAdapter.fromJson(response.data!!)

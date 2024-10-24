@@ -434,6 +434,11 @@ public class Localization {
         put(Locale.ITALY, "Esporta un file di un livello");
     }};
 
+    public static final HashMap<Locale, String> WAIT_FOR_HOST = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "Wait for host");
+        put(Locale.ITALY, "Attendi l'host");
+    }};
+
     public static Locale[] getSupportedLanguages() {
         return new Locale[]{
                 Locale.ENGLISH,

@@ -4,7 +4,6 @@ import game.JBomb
 import game.audio.AudioManager
 import game.data.data.DataInputOutput
 import game.data.data.SortedLinkedList
-import game.domain.events.game.EndGameGameEvent
 import game.domain.events.game.ResetBombsVariablesGameEvent
 import game.domain.level.behavior.PlayLevelSoundTrackBehavior
 import game.domain.level.levels.Level
@@ -19,7 +18,6 @@ import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.game.ControllerManager
 import game.input.game.MouseControllerManager
-import game.network.events.forward.EndGameEventForwarder
 import game.network.events.forward.UseItemHttpEventForwarder
 import game.network.gamehandler.ClientGameHandler
 import game.network.gamehandler.OnlineGameHandler
@@ -29,6 +27,7 @@ import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.viewcontrollers.*
 import game.utils.ui.ToastUtils
 import game.properties.RuntimeProperties
+import game.usecases.EndGameAndWaitClientsToDisconnectUseCase
 import game.utils.Utility.timePassed
 import game.utils.dev.Log
 import game.utils.time.millisToTimeFormatted
@@ -386,14 +385,14 @@ class JBombMatch(
      * Performs cleanup operations and releases resources associated with the game.
      */
     fun destroy(disconnect: Boolean = false) {
+        // Pause the game to ensure safe destruction
+        pauseGame(showUi = false, freeze = true)
+
         if (isServer || disconnect) {
             runBlocking {
                 onlineGameHandler?.disconnect()
             }
         }
-
-        // Pause the game to ensure safe destruction
-        pauseGame(showUi = false, freeze = true)
 
         // Cancel job
         cancelCoroutineJob()
@@ -540,10 +539,9 @@ class JBombMatch(
         if (remainingTime == 0L) {
             if (isServer) {
                 wasServer = true
-                EndGameGameEvent().invoke()
-                EndGameEventForwarder().invoke()
-
-                JBomb.match.disconnectOnlineAndStayInGame()
+                scope.launch {
+                    EndGameAndWaitClientsToDisconnectUseCase().invoke()
+                }
             } else {
                 pauseGame(showUi = false, freeze = true)
             }

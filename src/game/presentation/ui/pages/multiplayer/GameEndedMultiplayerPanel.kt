@@ -1,138 +1,191 @@
-package game.presentation.ui.pages.multiplayer;
+package game.presentation.ui.pages.multiplayer
 
-import game.JBomb;
-import game.domain.level.levels.Level;
-import game.domain.level.levels.lobby.WorldSelectorLevel;
-import game.domain.world.domain.entity.actors.abstracts.base.Entity;
-import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb;
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity;
-import game.localization.Localization;
-import game.presentation.ui.pages.main_menu.MainMenuPanel;
-import game.presentation.ui.panels.models.CenteredPanel;
-import game.presentation.ui.panels.models.JBombermanBoxContainerPanel;
-import game.presentation.ui.viewelements.bombermanbutton.RedButton;
-import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
-import game.presentation.ui.viewelements.bombermanpanel.BombermanPanelYellow;
-import game.usecases.ReconnectToServerUseCase;
-import game.utils.Utility;
-import game.values.Dimensions;
+import game.JBomb
+import game.JBomb.showActivity
+import game.JBomb.startLevel
+import game.domain.level.levels.Level.Companion.currLevel
+import game.domain.match.JBombMatch
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.localization.Localization
+import game.network.usecases.PingServerUseCase
+import game.presentation.ui.pages.main_menu.MainMenuPanel
+import game.presentation.ui.panels.models.CenteredPanel
+import game.presentation.ui.panels.models.JBombermanBoxContainerPanel
+import game.presentation.ui.viewelements.bombermanbutton.BombermanButton
+import game.presentation.ui.viewelements.bombermanbutton.RedButton
+import game.presentation.ui.viewelements.bombermanbutton.YellowButton
+import game.presentation.ui.viewelements.bombermanpanel.BombermanPanelYellow
+import game.properties.RuntimeProperties
+import game.usecases.ReconnectToServerUseCase
+import game.utils.Utility.px
+import game.values.Dimensions
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.awt.*
+import javax.swing.*
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+class GameEndedMultiplayerPanel(
+    private val dialog: JDialog
+) : JBombermanBoxContainerPanel(Localization.get(Localization.GAME_ENDED_MP), false, BombermanPanelYellow()) {
+    lateinit var exitButton: BombermanButton
+    lateinit var playAgainButton: BombermanButton
+    var status: Status = Status.IDLE
 
-import static game.localization.Localization.GAME_ENDED_MP;
-
-public class GameEndedMultiplayerPanel extends JBombermanBoxContainerPanel {
-    private final JDialog dialog;  // Store the dialog reference
-
-    public GameEndedMultiplayerPanel(JDialog dialog) {
-        super(Localization.get(GAME_ENDED_MP), false, new BombermanPanelYellow());
-        this.dialog = dialog;  // Initialize the dialog reference
-        this.initializeLayout();
+    init {
+        initializeLayout()
     }
 
-    @Override
-    protected int getDefaultBoxPanelWidth() {
-        return Utility.INSTANCE.px(Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE);
+    override fun getDefaultBoxPanelWidth(): Int = px(Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE)
+
+    override fun addCustomElements() {
+        val panel = createPlayerScorePanel()
+        addScrollPane(panel)
+        addButtons()
     }
 
-    @Override
-    protected void addCustomElements() {
-        JPanel panel = new CenteredPanel();
-        panel.setOpaque(false);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        int buttonWidth = getDefaultBoxPanelWidth() - Dimensions.DEFAULT_X_PADDING;
-
-        List<BomberEntity> players = JBomb.match.getEntities().stream()
-                .filter(BomberEntity.class::isInstance)
-                .map(BomberEntity.class::cast)
-                .sorted(Comparator.comparingInt(o -> ((BomberEntity) o).getState().getScore()).reversed())
-                .collect(Collectors.toList());
-
-        for (int i = 0; i < players.size(); i++) {
-            BomberEntity bomberEntity = players.get(i);
-
-            PlayerScoreLabel playerScoreLabel = new PlayerScoreLabel(
-                    buttonWidth,
-                    bomberEntity.getProperties().getName(),
-                    bomberEntity.getState().getScore(),
-                    i + 1
-            );
-
-            panel.add(playerScoreLabel);
+    private fun createPlayerScorePanel(): JPanel {
+        val panel = CenteredPanel().apply {
+            isOpaque = false
+            layout = BoxLayout(this, BoxLayout.Y_AXIS)
         }
 
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setPreferredSize(new Dimension(getDefaultBoxPanelWidth(), Utility.INSTANCE.px(300)));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
-        scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
+        val buttonWidth = defaultBoxPanelWidth - Dimensions.DEFAULT_X_PADDING
+        val players = getSortedPlayers()
 
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(null);
-        addComponent(scrollPane);
+        players.forEachIndexed { index, bomberEntity ->
+            panel.add(PlayerScoreLabel(buttonWidth, bomberEntity.properties.name, bomberEntity.state.score, index + 1))
+        }
 
-        YellowButton playAgainButton = new YellowButton(Localization.get(Localization.PLAY_AGAIN));
-        playAgainButton.addActionListener(e -> {
-            dialog.dispose();  // Close the dialog when the button is clicked
+        return panel
+    }
 
-            if (JBomb.match.getWasServer()) {
-                JBomb.startLevel(Level.Companion.getCurrLevel(), JBomb.match.getOnlineGameHandler());
+    private fun getSortedPlayers(): List<BomberEntity> {
+        return JBomb.match.getEntities()
+            .asSequence()
+            .filterIsInstance<BomberEntity>()
+            .sortedByDescending { it.state.score }
+            .toList()
+    }
+
+    private fun addScrollPane(panel: JPanel) {
+        val scrollPane = JScrollPane(panel).apply {
+            preferredSize = Dimension(defaultBoxPanelWidth, px(300))
+            verticalScrollBar.unitIncrement = 16
+            verticalScrollBar.preferredSize = Dimension(0, 0)
+            horizontalScrollBar.preferredSize = Dimension(0, 0)
+            isOpaque = false
+            viewport.isOpaque = false
+            border = null
+        }
+        addComponent(scrollPane)
+    }
+
+    private fun addButtons() {
+        playAgainButton = createYellowButton(Localization.get(Localization.PLAY_AGAIN)) {
+            JBomb.scope.launch {
+                handlePlayAgainAction()
+            }
+        }
+
+        addComponent(playAgainButton)
+
+        exitButton = createRedButton(Localization.get(Localization.MAIN_MENU)) {
+            dialog.dispose()
+            showActivity(MainMenuPanel::class.java)
+        }
+        addComponent(exitButton)
+
+        updateStatus(Status.IDLE)
+    }
+
+    private fun createYellowButton(text: String, action: () -> Unit): YellowButton {
+        return YellowButton(text).apply {
+            addActionListener { action() }
+        }
+    }
+
+    private fun createRedButton(text: String, action: () -> Unit): RedButton {
+        return RedButton(text).apply {
+            addActionListener { action() }
+        }
+    }
+
+    private suspend fun handlePlayAgainAction() {
+        if (status != Status.IDLE)
+            return
+
+        updateStatus(Status.CONNECTING)
+
+        if (JBomb.match.wasServer) {
+            dialog.dispose()
+            currLevel?.let { startLevel(it, JBomb.match.onlineGameHandler) }
+        } else {
+            val lastServer = RuntimeProperties.lastConnectedIp
+            val tokens = lastServer.split(":").dropLastWhile { it.isEmpty() }
+            val ipv4 = tokens[0]
+            val port: Int = tokens.getOrNull(1)?.toInt() ?: JBombMatch.port // Default port if parsing fails
+
+            if (PingServerUseCase(ipv4, port).invoke()) {
+                dialog.dispose()
+                ReconnectToServerUseCase().invokeBlocking()
             } else {
-                new ReconnectToServerUseCase().invokeBlocking();
+                updateStatus(Status.WAIT_FOR_HOST)
+                delay(3000L)
+                updateStatus(Status.IDLE)
             }
-        });
-
-        addComponent(playAgainButton);
-
-        RedButton exitButton = new RedButton(Localization.get(Localization.MAIN_MENU));
-        exitButton.addActionListener(e -> {
-            dialog.dispose();  // Close the dialog when the button is clicked
-            JBomb.showActivity(MainMenuPanel.class);
-        });
-
-        addComponent(exitButton);
+        }
     }
 
-    @Override
-    public void repaint() {
-        super.repaint();
+    private fun updateStatus(status: Status) {
+        this.status = status
+
+        when(status) {
+            Status.CONNECTING -> playAgainButton.text = Localization.get(Localization.CONNECTING)
+            Status.IDLE -> playAgainButton.text = Localization.get(Localization.PLAY_AGAIN)
+            Status.WAIT_FOR_HOST -> playAgainButton.text = Localization.get(Localization.WAIT_FOR_HOST)
+        }
     }
 
-    public static void showSummary() {
-        JFrame parentFrame = JBomb.JBombFrame;
+    enum class Status {
+        CONNECTING,
+        IDLE,
+        WAIT_FOR_HOST
+    }
 
-        JDialog dialog = new JDialog(parentFrame);
-        dialog.setUndecorated(true);
-        dialog.setSize(parentFrame.getSize());
-        dialog.setLocationRelativeTo(null);
+    companion object {
+        fun showSummary() {
+            val dialog = createDialog(JBomb.JBombFrame)
+            val panel = GameEndedMultiplayerPanel(dialog)
+            val blurBackground = createBlurBackground(panel)
 
-        JPanel blurBackground = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(new Color(0, 0, 0, 150));
-                g.fillRect(0, 0, getWidth(), getHeight());
+            dialog.contentPane.add(blurBackground)
+            dialog.isVisible = true
+        }
+
+        private fun createDialog(parentFrame: JFrame): JDialog {
+            return JDialog(parentFrame).apply {
+                isUndecorated = true
+                size = parentFrame.size
+                setLocationRelativeTo(null)
+                background = Color(0, 0, 0, 0)
+                modalityType = Dialog.ModalityType.MODELESS
+                isResizable = false
+                defaultCloseOperation = JDialog.DISPOSE_ON_CLOSE
             }
-        };
-        blurBackground.setOpaque(false);
-        blurBackground.setLayout(new BorderLayout());
+        }
 
-        // Pass the dialog to the GameEndedMultiplayerPanel constructor
-        GameEndedMultiplayerPanel panel = new GameEndedMultiplayerPanel(dialog);
-        blurBackground.add(panel, BorderLayout.CENTER);
-        dialog.getContentPane().add(blurBackground);
-        dialog.setBackground(new Color(0, 0, 0, 0));
-        dialog.setModalityType(Dialog.ModalityType.MODELESS);
-        dialog.setResizable(false);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setVisible(true);
+        private fun createBlurBackground(panel: GameEndedMultiplayerPanel): JPanel {
+            return object : JPanel() {
+                override fun paintComponent(g: Graphics) {
+                    super.paintComponent(g)
+                    g.color = Color(0, 0, 0, 150)
+                    g.fillRect(0, 0, width, height)
+                }
+            }.apply {
+                isOpaque = false
+                layout = BorderLayout()
+                add(panel, BorderLayout.CENTER)
+            }
+        }
     }
 }
