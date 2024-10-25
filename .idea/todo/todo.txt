@@ -1,4 +1,3 @@
 - handle map rotation
 - bots
-- play mp main panel
 - spawn logic mp
