@@ -2,7 +2,7 @@ package game.domain.level.behavior
 
 import game.domain.level.levels.Level
 import game.domain.level.levels.level_editor.LevelGenerationData
-import game.domain.world.domain.entity.actors.impl.EntityIds
+import game.repository.RepositoryEntities
 import java.util.*
 
 class GenerateLevelFromXmlBehavior(private val currLevel: Level?, private val levelData: LevelGenerationData): GameBehavior() {
@@ -11,7 +11,7 @@ class GenerateLevelFromXmlBehavior(private val currLevel: Level?, private val le
             val gameBehavior: GameBehavior = object : GameBehavior() {
                 override fun hostBehavior(): () -> Unit = {
                     levelData.data.forEach { (entityName, coordinates) ->
-                        val entityClass = EntityIds[entityName] ?: return@forEach
+                        val entityClass = RepositoryEntities.entityIds[entityName] ?: return@forEach
 
                         coordinates.forEach { coordinate ->
                             val entity = entityClass.getConstructor(Long::class.java).newInstance(UUID.randomUUID().mostSignificantBits)

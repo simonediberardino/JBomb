@@ -5,12 +5,12 @@ import game.JBomb.startLevel
 import game.domain.level.levels.level_editor.LevelEditor
 import game.domain.level.levels.level_editor.LevelGenerationData
 import game.domain.match.JBombMatch.Companion.port
-import game.domain.world.domain.entity.actors.impl.EntityIds
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.input.terminal.TerminalCommand
 import game.localization.Localization
 import game.network.gamehandler.ServerGameHandler
+import game.repository.RepositoryEntities
 import game.usecases.ParseLevelEditorDataUseCase
 import game.utils.dev.FileUtils
 import game.utils.dev.XMLUtils
@@ -117,8 +117,8 @@ class LevelEditorCommand: TerminalCommand {
         JBomb.match.getEntities()
             .forEach { entity ->
                 if (entity !is BomberEntity) {
-                    val key = EntityIds.filterKeys {
-                        EntityIds[it] == entity::class.java
+                    val key = RepositoryEntities.entityIds.filterKeys {
+                        RepositoryEntities.entityIds[it] == entity::class.java
                     }.keys.firstOrNull()
 
                     if (key != null) {

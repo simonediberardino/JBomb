@@ -3,9 +3,9 @@ package game.input.terminal.commands
 import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
-import game.domain.world.domain.entity.actors.impl.EntityIds
 import game.domain.world.domain.entity.geo.Coordinates
 import game.input.terminal.TerminalCommand
+import game.repository.RepositoryEntities
 import java.util.*
 
 // Command: spawn <EntityIds> <x> <y> <flags>
@@ -66,7 +66,7 @@ class SpawnCommand : TerminalCommand {
     // It looks up the entity in a map (EntityIds) and returns the corresponding class.
     // If the entity does not exist in the map, a RuntimeException is thrown.
     private fun getEntityClass(entity: String): Class<out Entity> =
-        EntityIds[entity] ?: throw RuntimeException("Entity '$entity' does not exist")
+        RepositoryEntities.entityIds[entity] ?: throw RuntimeException("Entity '$entity' does not exist")
 
     // Parses the x and y coordinates from the arguments and returns them as a Coordinates object.
     // If the coordinates are not valid integers, it throws an IllegalArgumentException with a message specifying the issue.

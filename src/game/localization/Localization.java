@@ -1,7 +1,5 @@
 package game.localization;
 
-import game.JBomb;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -144,9 +142,9 @@ public class Localization {
         put(Locale.ITALY, "ISOLA");
     }};
 
-    public static final HashMap<Locale, String> MP_DRACULAS_CASTLE_UI_NAME = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "DRACULA'S CASTLE");
-        put(Locale.ITALY, "CASTELLO DI DRACULA");
+    public static final HashMap<Locale, String> MP_CASTLE_UI_NAME = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "CASTLE");
+        put(Locale.ITALY, "CASTLE");
     }};
 
     public static final HashMap<Locale, String> YOU_DIED_BASE = new HashMap<Locale, String>() {{
@@ -272,6 +270,11 @@ public class Localization {
     public static final HashMap<Locale, String> SERVERS_LIST_TITLE = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "CONNECT TO A GAME");
         put(Locale.ITALY, "PARTECIPA A UNA PARTITA");
+    }};
+
+    public static final HashMap<Locale, String> MP_CHOOSE_MAP = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "CHOOSE A MAP");
+        put(Locale.ITALY, "SCEGLI UNA MAPPA");
     }};
 
     public static final HashMap<Locale, String> RESUME_GAME = new HashMap<Locale, String>() {{

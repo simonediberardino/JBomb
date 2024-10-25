@@ -3,9 +3,9 @@ package game.domain.world.domain.entity.items
 import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
-import game.domain.world.domain.entity.actors.impl.EntityIds
 import game.domain.world.domain.entity.geo.Coordinates
 import game.input.terminal.commands.SpawnCommand
+import game.repository.RepositoryEntities
 import game.utils.Utility
 import game.utils.file_system.Paths
 import game.utils.time.now
@@ -20,7 +20,7 @@ class BlockPlacerItem: UsableItem() {
         if (!isPlacementValid)
             return -1
 
-        val entityClass = EntityIds.getOrDefault(SpawnCommand.lastSpawnedEntityId, null) ?: return -1
+        val entityClass = RepositoryEntities.entityIds.getOrDefault(SpawnCommand.lastSpawnedEntityId, null) ?: return -1
         val entity = createEntity(entityClass)
 
         val coordinates = Coordinates.getCoordinatesOnDirection(

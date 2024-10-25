@@ -10,6 +10,7 @@ import game.presentation.ui.pages.init.InitPanel;
 import game.presentation.ui.pages.loading.LoadingPanel;
 import game.presentation.ui.pages.main_menu.MainMenuPanel;
 import game.presentation.ui.pages.multiplayer.MultiplayerPanel;
+import game.presentation.ui.pages.multiplayer.MultiplayerSelectMapPanel;
 import game.presentation.ui.pages.pause.PausePanel;
 import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.pages.registration.RegistrationAvatar;
@@ -63,7 +64,7 @@ public class JBombFrame extends JFrame {
     private NetworkErrorPage networkErrorPage;
     private RegistrationUsername registrationUsername;
     private RegistrationAvatar registrationAvatar;
-
+    private MultiplayerSelectMapPanel multiplayerSelectMapPanel;
 
     /**
      * Creates the main frame and sets its properties.
@@ -85,6 +86,7 @@ public class JBombFrame extends JFrame {
         initArenaMenuPanel();
         initErrorMenuPanel();
         initRegistrationPanel();
+        initMultiplayerMapsPanel();
         finalizeFrame();
         pack();
         setFrameCursor();
@@ -200,6 +202,11 @@ public class JBombFrame extends JFrame {
 
         registrationAvatar = new RegistrationAvatar(cardLayout, parentPanel, this);
         parentPanel.add(registrationAvatar, RegistrationAvatar.class.getSimpleName());
+    }
+
+    private void initMultiplayerMapsPanel() {
+        multiplayerSelectMapPanel = new MultiplayerSelectMapPanel(cardLayout, parentPanel, this);
+        parentPanel.add(multiplayerSelectMapPanel, MultiplayerSelectMapPanel.class.getSimpleName());
     }
 
     /**
