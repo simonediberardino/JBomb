@@ -1,7 +1,4 @@
 - handle map rotation
-- handle game end server & test
-- (maybe) handle game end for dead players
-- check network errors
 - bots
 - play mp main panel
 - spawn logic mp

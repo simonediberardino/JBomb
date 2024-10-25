@@ -16,6 +16,25 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MultiplayerEventHandler : DefaultLevelEventHandler() {
+    override fun onEliminated(entity: Entity) {
+        if (entity !is BomberEntity) return
+
+        JBomb.match.scope.launch {
+            delay(2_000)
+
+            if (!JBomb.match.gameState)
+                return@launch
+
+            if (!entity.state.isSpawned) {
+                RespawnDeadPlayerBehavior(
+                    id = entity.info.id,
+                    clazz = entity.javaClass,
+                    entity = entity
+                ).invoke()
+            }
+        }
+    }
+
     override fun onKill(attacker: Entity, victim: Entity) {
         val actualAttacker = if (attacker is AbstractExplosion) {
             attacker.state.owner
@@ -36,22 +55,8 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
         MultiplayerScoreEvent(actualAttacker, 100).invoke()
 
         Log.i("$actualAttacker killed $victim")
-
-        JBomb.match.scope.launch {
-            delay(2_000)
-
-            if (!JBomb.match.gameState)
-                return@launch
-
-            if (!victim.state.isSpawned) {
-                RespawnDeadPlayerBehavior(
-                        id = victim.info.id,
-                        clazz = victim.javaClass,
-                        entity = victim
-                ).invoke()
-            }
-        }
     }
+
 
     override fun onEndGame() {
         GameEndedMultiplayerPanel.showSummary()

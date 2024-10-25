@@ -122,21 +122,23 @@ public class PitchPanel extends JPanel implements Observer2 {
 
         // Calculate camera offset based on player position
         Player player = JBomb.match.getPlayer();
-        cameraOffsetX = 0;
-        cameraOffsetY = 0;
-
         Level level = JBomb.match.getCurrentLevel();
         boolean cameraMoveEnabled = level.getInfo().getCameraMoveEnabled();
 
-        if (cameraMoveEnabled) {
-            if (player != null) {
-                cameraOffsetX = player.getInfo().getPosition().getX() - (pitchPanelSize.width / 2);
-                cameraOffsetY = player.getInfo().getPosition().getY() - (pitchPanelSize.height / 2);
+        if (player == null) {
+            cameraMoveEnabled = false; // do not move the camera, remember last position
+        } else {
+            cameraOffsetX = 0;
+            cameraOffsetY = 0;
+        }
 
-                // Clamp the camera offsets to ensure they don't exceed the game world boundaries
-                cameraOffsetX = Math.max(0, Math.min(cameraOffsetX, mapDimensions.width - pitchPanelSize.width));
-                cameraOffsetY = Math.max(0, Math.min(cameraOffsetY, mapDimensions.height - pitchPanelSize.height));
-            }
+        if (cameraMoveEnabled) {
+            cameraOffsetX = player.getInfo().getPosition().getX() - (pitchPanelSize.width / 2);
+            cameraOffsetY = player.getInfo().getPosition().getY() - (pitchPanelSize.height / 2);
+
+            // Clamp the camera offsets to ensure they don't exceed the game world boundaries
+            cameraOffsetX = Math.max(0, Math.min(cameraOffsetX, mapDimensions.width - pitchPanelSize.width));
+            cameraOffsetY = Math.max(0, Math.min(cameraOffsetY, mapDimensions.height - pitchPanelSize.height));
         }
 
         // Calculate the dimensions of the background image

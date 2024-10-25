@@ -62,6 +62,10 @@ open class DefaultLevelEventHandler : LevelEventHandler {
         DataInputOutput.getInstance().decreaseScore(1000)
     }
 
+    override fun onEliminated(entity: Entity) {
+
+    }
+
     // for a default level, reads the bomb data from the storage and applies it
     override fun initBombsVariables() {
         val explosionLength = DataInputOutput.getInstance().explosionLength

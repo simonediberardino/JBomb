@@ -60,7 +60,14 @@ class GameEndedMultiplayerPanel(
     }
 
     private fun getSortedPlayers(): List<BomberEntity> {
-        return JBomb.match.getEntities()
+        val deadEntities = JBomb.match.getDeadEntities().map {
+            it.value.second
+        }
+
+        val aliveEntities = JBomb.match.getEntities()
+        val allEntities = (deadEntities + aliveEntities).distinctBy { it.info.id }.toSet()
+
+        return allEntities
             .asSequence()
             .filterIsInstance<BomberEntity>()
             .sortedByDescending { it.state.score }
@@ -166,7 +173,7 @@ class GameEndedMultiplayerPanel(
             return JDialog(parentFrame).apply {
                 isUndecorated = true
                 size = parentFrame.size
-                setLocationRelativeTo(null)
+                location = parentFrame.location  // Align location with the parent frame
                 background = Color(0, 0, 0, 0)
                 modalityType = Dialog.ModalityType.MODELESS
                 isResizable = false

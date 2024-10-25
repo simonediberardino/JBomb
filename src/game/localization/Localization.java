@@ -435,8 +435,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> WAIT_FOR_HOST = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "Wait for host");
-        put(Locale.ITALY, "Attendi l'host");
+        put(Locale.ENGLISH, "WAIT FOR HOST");
+        put(Locale.ITALY, "ATTENDI L'HOST");
     }};
 
     public static Locale[] getSupportedLanguages() {

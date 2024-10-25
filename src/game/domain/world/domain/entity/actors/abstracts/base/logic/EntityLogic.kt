@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.actors.abstracts.base.logic
 
 import game.JBomb
 import game.JBomb.match
+import game.domain.events.game.EliminatedEntityGameEvent
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityLogic
 import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.AbstractExplosion
@@ -29,6 +30,7 @@ abstract class EntityLogic(
             entity.state.isSpawned = false
             onDespawn()
             match.removeEntity(entity)
+            EliminatedEntityGameEvent().invoke(entity)
         }
     }
 
