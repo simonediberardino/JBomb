@@ -95,8 +95,43 @@ class LevelEditorCommand: TerminalCommand {
                 println("Updated map dimension $width x $height")
             }
 
+            "add_spawnpoint" -> {
+                spawnpoint(operation = true)
+            }
+
+            "delete_spawnpoint" -> {
+                spawnpoint(operation = false)
+            }
+
+            "show_spawnpoints" -> {
+                println("Listing spawnpoints: ")
+                JBomb.match.currentLevel.info.customSpawnpoints.forEach {
+                    println("> $it")
+                }
+            }
+
             "save" -> {
                 exportLevel()
+            }
+        }
+    }
+
+    private fun spawnpoint(operation: Boolean) {
+        val player = JBomb.match.player ?: return
+        val coordinates = player.info.position
+        val centeredPosition = Coordinates.roundCoordinates(coordinates, player.logic.spawnOffset())
+        val level = JBomb.match.currentLevel
+
+        if (level !is LevelEditor)
+            return
+
+        when (operation) {
+            true -> {
+                println("Adding spawnpoint at $centeredPosition")
+                level.addSpawnpoint(centeredPosition)
+            }
+            false -> {
+                println("Removing spawnpoint at $centeredPosition, removed=${level.removeSpawnpoint(centeredPosition)}")
             }
         }
     }
@@ -133,7 +168,12 @@ class LevelEditorCommand: TerminalCommand {
                 }
             }
 
-        val levelGenerationData = LevelGenerationData(data = saveData, mapDimension = currentLevel.info.mapDimension)
+        val levelGenerationData = LevelGenerationData(
+            data = saveData,
+            mapDimension = currentLevel.info.mapDimension,
+            spawnPoints = currentLevel.info.customSpawnpoints
+        )
+
         serializeLevelEditorData(levelGenerationData)
     }
 
@@ -180,6 +220,16 @@ class LevelEditorCommand: TerminalCommand {
                 size.setAttribute("x", coordinates.x.toString())
                 size.setAttribute("y", coordinates.y.toString())
                 rootElement.appendChild(size)
+            }
+
+            levelGenerationData.spawnPoints.map {
+                it.toAbsolute()
+            }.forEach {
+                val elementNode: Element = document.createElement("spawnpoint")
+                elementNode.setAttribute("x", it.x.toString())
+                elementNode.setAttribute("y", it.y.toString())
+
+                rootElement.appendChild(elementNode)
             }
 
             // Iterate over the map in LevelEditorData

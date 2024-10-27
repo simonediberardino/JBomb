@@ -1,6 +1,5 @@
 package game.domain.level.info.model
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
@@ -8,7 +7,6 @@ import game.domain.level.levels.Level
 import game.domain.world.domain.entity.actors.abstracts.animal.AnimalEntity
 import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
-import game.values.Dimensions
 import java.awt.Dimension
 
 /**
@@ -49,5 +47,6 @@ abstract class LevelInfo {
     abstract val networkName: String
     abstract val isTimeEnabled: Boolean
     abstract val timeLimitMinutes: Int
+    var customSpawnpoints: MutableList<Coordinates> = mutableListOf()
     open val debug: Boolean = false
 }

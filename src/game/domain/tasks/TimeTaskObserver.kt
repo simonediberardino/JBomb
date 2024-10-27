@@ -12,6 +12,9 @@ class TimeTaskObserverAndObservable : Observer2 {
     private var lastNotifiedTime: Long = 0
 
     override fun update(arg: Observable2.ObserverParam) {
+        if (JBomb.match.currentLevel.info.timeLimitMinutes <= 0 || !JBomb.match.currentLevel.info.isTimeEnabled)
+            return
+
         if (Utility.timePassed(lastTimeUpdate) > 1_000) {
             lastTimeUpdate = now()
             lastNotifiedTime += 1000

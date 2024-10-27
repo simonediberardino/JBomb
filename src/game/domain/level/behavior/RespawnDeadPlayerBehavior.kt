@@ -12,9 +12,10 @@ class RespawnDeadPlayerBehavior(
     override fun hostBehavior(): () -> Unit = {
         val info = entity.toEntityNetwork().toMap()
         val newEntity = clazz.getConstructor(Long::class.java).newInstance(id)
-        newEntity.info.position = JBomb.match.currentLevel.info.playerSpawnCoordinates
+
+        val level = JBomb.match.currentLevel
         newEntity.updateInfo(info)
-        newEntity.logic.spawn(forceSpawn = false, forceCentering = false)
+        level.gameHandler.dynamicSpawn(entity)
     }
 
     override fun clientBehavior(): () -> Unit = {}

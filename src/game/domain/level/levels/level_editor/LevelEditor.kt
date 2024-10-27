@@ -12,6 +12,7 @@ import java.awt.Dimension
 
 data class LevelGenerationData(
     val mapDimension: Dimension?,
+    val spawnPoints: List<Coordinates>,
     val data: Map<String, List<Coordinates>>
 )
 
@@ -28,6 +29,7 @@ class LevelEditor(private val levelData: LevelGenerationData?): Level() {
 
     override fun onStartLevel() {
         handleBlockMover()
+        levelData?.mapDimension?.let { updateMapDimension(it) }
     }
 
     private fun handleBlockMover() {
@@ -40,6 +42,16 @@ class LevelEditor(private val levelData: LevelGenerationData?): Level() {
 
     fun updateMapDimension(mapDimension: Dimension) {
         info.mapDimension = mapDimension
+    }
+
+    fun addSpawnpoint(coordinates: Coordinates) {
+        info.customSpawnpoints.add(coordinates)
+    }
+
+    fun removeSpawnpoint(coordinates: Coordinates): Boolean {
+        return info.customSpawnpoints.removeIf {
+            it == coordinates
+        }
     }
 
     override fun toString(): String {

@@ -1,6 +1,5 @@
 package game.domain.level.levels.multiplayer
 
-import game.domain.level.behavior.GenerateLevelFromXmlBehavior
 import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.levels.Level

@@ -3,6 +3,7 @@ package game.network.events.process
 import game.JBomb
 import game.domain.events.models.HttpEvent
 import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
+import game.domain.world.domain.entity.geo.Coordinates
 import game.network.events.forward.SpawnEntityEventForwarder
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
@@ -16,7 +17,6 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         Log.i("PlayerConnectedHttpEventProcessor: $clientId")
 
         val match = JBomb.match
-        val coordinates = match.currentLevel.info.playerSpawnCoordinates
 
         JBomb.match.resumeIfPaused()
 
@@ -26,8 +26,10 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         }
 
         val skinId = info.getOrTrim("skinId")
-        val player = RemotePlayer(coordinates, clientId, skinId?.toInt() ?: 0)
+        val player = RemotePlayer(null, clientId, skinId?.toInt() ?: 0)
+        player.info.position = JBomb.match.currentLevel.gameHandler.chooseSpawnpointLogic(player)
         player.updateInfo(info)
-        player.logic.spawn()
+
+        player.logic.spawn(forceSpawn = true, forceCentering = true)
     }
 }

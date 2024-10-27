@@ -26,7 +26,8 @@ class ParseLevelEditorDataUseCase(private val document: Document): UseCase<Level
         }
 
         val root = document.documentElement
-        val elements = root.getElementsByTagName("entity") // assuming <element> tags contain the data
+
+        val entities = root.getElementsByTagName("entity")
         val dataMap: MutableMap<String, MutableList<Coordinates>> = HashMap() // Support list of coordinates
 
         val size = root.getElementsByTagName("size").item(0) as Element?
@@ -36,8 +37,8 @@ class ParseLevelEditorDataUseCase(private val document: Document): UseCase<Level
         val coordinatesMapDimension = x?.let { y?.let { it1 -> Coordinates(it, it1).fromAbsolute() } } // Converts to local dimension from absolute
         val mapDimension = coordinatesMapDimension?.let { Dimension(it.x, it.y) }
 
-        for (i in 0 until elements.length) {
-            val element = elements.item(i) as Element
+        for (i in 0 until entities.length) {
+            val element = entities.item(i) as Element
             // Assuming the XML structure is like <element key="stringKey" x="1" y="2"/>
             val key = element.getAttribute("key")
             val coordinates = Coordinates(
@@ -49,7 +50,22 @@ class ParseLevelEditorDataUseCase(private val document: Document): UseCase<Level
             dataMap.computeIfAbsent(key) { mutableListOf() }.add(coordinates)
         }
 
+        val spawnpoints = root.getElementsByTagName("spawnpoint")
+
+        val spawnpointsList = mutableListOf<Coordinates>().also {
+            for (i in 0 until spawnpoints.length) {
+                val spawnpoint = spawnpoints.item(i) as Element
+
+                val coordinates = Coordinates(
+                    /* x = */ spawnpoint.getAttribute("x").toInt(),
+                    /* y = */ spawnpoint.getAttribute("y").toInt()
+                ).fromAbsolute()
+
+                it.add(coordinates)
+            }
+        }
+
         // Return LevelEditorData with the updated map structure
-        return LevelGenerationData(data = dataMap, mapDimension = mapDimension)
+        return LevelGenerationData(data = dataMap, mapDimension = mapDimension, spawnPoints = spawnpointsList)
     }
 }
