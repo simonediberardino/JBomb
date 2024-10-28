@@ -95,7 +95,7 @@ abstract class MysteryBoxLogic(override val entity: MysteryBox) : BlockEntityLog
         }
 
         onPurchaseConfirm()
-        JBomb.match.currentLevel.eventHandler.onPurchaseItem(entity.state.price)
+        JBomb.match.currentLevel.eventHandler.onPurchaseItemLocal(entity.state.price)
         openBox()
     }
 

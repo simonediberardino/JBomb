@@ -35,7 +35,7 @@ fun BomberEntity.dtoToEntityNetwork(): BomberEntityNetwork {
         isImmune = state.isImmune,
         name = properties.name,
         hp = state.hp,
-        score = state.score
+        kills = state.kills
     )
 }
 

@@ -7,6 +7,6 @@ class EnemyDespawnedGameEvent : GameEvent {
     override fun invoke(vararg arg: Any?) {
         if (!JBomb.match.gameState)
             return
-        JBomb.match.currentLevel!!.eventHandler.onEnemyDespawned()
+        JBomb.match.currentLevel!!.eventHandler.onEnemyDespawnedLocal()
     }
 }

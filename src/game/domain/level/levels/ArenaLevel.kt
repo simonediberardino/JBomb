@@ -16,7 +16,6 @@ import game.utils.dev.Log
 import game.utils.ui.ToastUtils
 import java.awt.event.ActionEvent
 import java.util.concurrent.atomic.AtomicReference
-import javax.swing.JPanel
 import javax.swing.Timer
 
 abstract class ArenaLevel : Level() {
@@ -71,31 +70,31 @@ abstract class ArenaLevel : Level() {
                 resetBombsVariables()
             }
 
-            override fun onUpdateBombsLengthEvent(arg: Int, save: Boolean) {
+            override fun onUpdateBombsLengthEventLocal(arg: Int, save: Boolean) {
                 JBomb.match.player?.state?.currExplosionLength = arg
             }
 
-            override fun onUpdateMaxBombsGameEvent(arg: Int, save: Boolean) {
+            override fun onUpdateMaxBombsGameEventLocal(arg: Int, save: Boolean) {
                 JBomb.match.player?.state?.maxBombs = arg
                 JBomb.match.player?.state?.maxBombsSaved = arg
 
                 UpdateCurrentAvailableItemsEvent().invoke(arg, false)
             }
 
-            override fun onDefeatGameEvent() {
-                super.onDefeatGameEvent()
+            override fun onDefeatGameEventLocal() {
+                super.onDefeatGameEventLocal()
                 currentRound.set(0)
             }
 
-            override fun onRoundPassedGameEvent() {
+            override fun onRoundPassedGameEventLocal() {
                 if (currentRound.get() > 1) {
-                    super.onRoundPassedGameEvent()
+                    super.onRoundPassedGameEventLocal()
                 }
                 ToastUtils.show(Localization.get(Localization.STARTING_ROUND).replace("%round%", currentRound.get().toString()))
                 JBomb.match.inventoryElementControllerRounds?.setNumItems(currentRound.get())
             }
 
-            override fun onDeathGameEvent() {
+            override fun onDeathGameEventLocal() {
                 DataInputOutput.getInstance().increaseDeaths()
                 DataInputOutput.getInstance().decreaseScore(1000)
             }

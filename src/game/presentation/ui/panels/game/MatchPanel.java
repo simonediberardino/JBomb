@@ -189,7 +189,15 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         }
 
         inventoryPanel.add(JBomb.match.getInventoryElementControllerHp().getView());
-        inventoryPanel.add(JBomb.match.getInventoryElementControllerPoints().getView());
+
+        if (JBomb.match.getCurrentLevel().getInfo().getScoreEnabled()) {
+            inventoryPanel.add(JBomb.match.getInventoryElementControllerPoints().getView());
+        }
+
+        if (JBomb.match.getCurrentLevel().getInfo().getKillCountEnabled()) {
+            inventoryPanel.add(JBomb.match.getInventoryElementControllerKills().getView());
+        }
+
         inventoryPanel.add(JBomb.match.getInventoryElementControllerBombs().getView());
 
         if (JBomb.match.getCurrentLevel().getInfo().isArenaLevel()) {

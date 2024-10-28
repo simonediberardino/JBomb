@@ -22,7 +22,6 @@ import game.mappers.dtoToEntityNetwork
 import game.network.entity.EntityNetwork
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.dev.Extensions.getOrTrim
-import game.utils.dev.Log
 
 abstract class BomberEntity : Character, Explosive {
     constructor() : super()
@@ -43,13 +42,13 @@ abstract class BomberEntity : Character, Explosive {
         val currentBombs = info.getOrTrim("currentBombs")?.toInt()
         val skinId = info.getOrTrim("skinId")?.toInt()
         val hp = info.getOrTrim("hp")?.toInt()
-        val score = info.getOrTrim("score")?.toInt()
+        val score = info.getOrTrim("kills")?.toInt()
 
         currExplosionLength?.let { state.currExplosionLength = it }
         currentBombs?.let { state.currentBombs = it }
         skinId?.let { properties.skinId = it }
         hp?.let { state.hp = it }
-        score?.let { state.score = it }
+        score?.let { state.kills = it }
     }
 
     init {

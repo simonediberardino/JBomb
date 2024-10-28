@@ -47,6 +47,8 @@ abstract class LevelInfo {
     abstract val networkName: String
     abstract val isTimeEnabled: Boolean
     abstract val timeLimitMinutes: Int
+    abstract val killCountEnabled: Boolean
+    abstract val scoreEnabled: Boolean
     var customSpawnpoints: MutableList<Coordinates> = mutableListOf()
     open val debug: Boolean = false
 }

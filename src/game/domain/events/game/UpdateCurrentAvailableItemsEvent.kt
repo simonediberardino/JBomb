@@ -14,7 +14,7 @@ class UpdateCurrentAvailableItemsEvent : GameEvent {
             return
         }
 
-        JBomb.match.currentLevel.eventHandler.onUpdateCurrentAvailableBombsEvent(value)
+        JBomb.match.currentLevel.eventHandler.onUpdateCurrentAvailableBombsEventLocal(value)
         UpdateInfoEventForwarder().invoke(player.toEntityNetwork())
     }
 }

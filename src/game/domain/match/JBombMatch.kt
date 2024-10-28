@@ -79,6 +79,9 @@ class JBombMatch(
     var inventoryElementControllerTime: InventoryElementControllerTime? = null
         private set
 
+    var inventoryElementControllerKills: InventoryElementControllerKills? = null
+        private set
+
     // Player information (nullable)
     var player: Player? = null
 
@@ -129,6 +132,10 @@ class JBombMatch(
             setupTimeController()
         }
 
+        if (currentLevel.info.killCountEnabled) {
+            setupKillsController()
+        }
+
         setupHpController()
 
         // Update the inventory weapon controller with the current player's weapon information
@@ -177,6 +184,15 @@ class JBombMatch(
             it.setNumItems(Integer.MAX_VALUE)
         }
     }
+
+    private fun setupKillsController() {
+        if (RuntimeProperties.dedicatedServer) return;
+
+        inventoryElementControllerKills = InventoryElementControllerKills().also {
+            it.setNumItems(0)
+        }
+    }
+
 
     /**
      * Gives an item to the specified owner (BomberEntity).
@@ -449,8 +465,6 @@ class JBombMatch(
         // Perform garbage collection to release memory
         performGarbageCollection()
 
-        cleanLevelUi()
-
         ToastUtils.cancel()
     }
 
@@ -537,13 +551,13 @@ class JBombMatch(
         inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))
 
         if (remainingTime == 0L) {
+            pauseGame(showUi = false, freeze = true)
+
             if (isServer) {
                 wasServer = true
                 scope.launch {
                     EndGameAndWaitClientsToDisconnectUseCase().invoke()
                 }
-            } else {
-                pauseGame(showUi = false, freeze = true)
             }
         }
     }

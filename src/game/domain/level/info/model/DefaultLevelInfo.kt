@@ -34,4 +34,6 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
     override val networkName: String = "World $worldId Level $levelId"
     override val isTimeEnabled: Boolean = true
     override val timeLimitMinutes: Int = 0
+    override val killCountEnabled: Boolean = false
+    override val scoreEnabled: Boolean = true
 }

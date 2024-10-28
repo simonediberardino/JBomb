@@ -11,7 +11,7 @@ class ExplosionLengthPowerUpEvent : GameEvent {
         JBomb.match
                 .currentLevel
                 .eventHandler
-                .onUpdateBombsLengthEvent(
+                .onUpdateBombsLengthEventLocal(
                         bomberEntity.state.currExplosionLength + 1,
                         true
                 )

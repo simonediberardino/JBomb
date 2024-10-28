@@ -11,37 +11,43 @@ import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 
 open class DefaultLevelEventHandler : LevelEventHandler {
-    override fun onDefeatGameEvent() {
+    override fun onDefeatGameEventLocal() {
         DataInputOutput.getInstance().increaseLost()
     }
 
-    override fun onEnemyDespawned() {}
+    override fun onEnemyDespawnedLocal() {}
 
-    override fun onKilledEnemy() {
+    override fun onKilledEnemyLocal() {
         DataInputOutput.getInstance().increaseKills()
     }
 
-    override fun onRoundPassedGameEvent() {
+    override fun onRoundPassedGameEventLocal() {
         DataInputOutput.getInstance().increaseRounds()
     }
 
-    override fun onScoreGameEvent(arg: Int) {
+    override fun onScoreGameEventLocal(arg: Int) {
         DataInputOutput.getInstance().increaseScore(arg)
         JBomb.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
 
-    override fun onPurchaseItem(price: Int) {
+    override fun onKillsGameEventLocal(arg: Int) {
+        if (JBomb.match.currentLevel.info.killCountEnabled) {
+            JBomb.match.inventoryElementControllerKills?.setNumItems(arg)
+        }
+    }
+
+    override fun onPurchaseItemLocal(price: Int) {
         AudioManager.instance.play(SoundModel.BONUS_ALERT)
         DataInputOutput.getInstance().decreaseScore(price)
         JBomb.match.inventoryElementControllerPoints.setNumItems(DataInputOutput.getInstance().score.toInt())
     }
 
-    override fun onUpdateCurrentAvailableBombsEvent(arg: Int) {
+    override fun onUpdateCurrentAvailableBombsEventLocal(arg: Int) {
         JBomb.match.player?.state?.currentBombs = arg
         JBomb.match.updateInventoryWeaponController()
     }
 
-    override fun onUpdateMaxBombsGameEvent(arg: Int, save: Boolean) {
+    override fun onUpdateMaxBombsGameEventLocal(arg: Int, save: Boolean) {
         if (save) {
             DataInputOutput.getInstance().obtainedBombs = arg
         }
@@ -51,15 +57,19 @@ open class DefaultLevelEventHandler : LevelEventHandler {
         UpdateCurrentAvailableItemsEvent().invoke(arg, save)
     }
 
-    override fun onUpdateBombsLengthEvent(arg: Int, save: Boolean) {
+    override fun onUpdateBombsLengthEventLocal(arg: Int, save: Boolean) {
         JBomb.match.player?.state?.currExplosionLength = arg
         DataInputOutput.getInstance().explosionLength = arg
     }
 
-    override fun onDeathGameEvent() {
+    override fun onDeathGameEventLocal() {
         DataInputOutput.getInstance().increaseDeaths()
         DataInputOutput.getInstance().decreaseLives()
-        DataInputOutput.getInstance().decreaseScore(1000)
+
+        JBomb.match.currentLevel.let {
+            if (it.info.scoreEnabled)
+                DataInputOutput.getInstance().decreaseScore(1000)
+        }
     }
 
     override fun onEliminated(entity: Entity) {

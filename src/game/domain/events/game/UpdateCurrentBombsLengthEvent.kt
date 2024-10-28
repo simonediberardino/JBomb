@@ -9,7 +9,7 @@ class UpdateCurrentBombsLengthEvent : GameEvent {
         val count = arg[0] as Int
         val save = arg[1] as Boolean
 
-        JBomb.match.currentLevel.eventHandler.onUpdateBombsLengthEvent(count, save)
+        JBomb.match.currentLevel.eventHandler.onUpdateBombsLengthEventLocal(count, save)
         UpdateInfoEventForwarder().invoke(JBomb.match.player!!.toEntityNetwork())
     }
 }

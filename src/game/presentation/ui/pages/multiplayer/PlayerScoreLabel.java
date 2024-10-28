@@ -2,6 +2,7 @@ package game.presentation.ui.pages.multiplayer;
 
 import game.audio.AudioManager;
 import game.audio.SoundModel;
+import game.localization.Localization;
 import game.utils.Utility;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.awt.event.MouseEvent;
 
 class PlayerScoreLabel extends JButton {
     private final String playerName;
-    private final int score;
+    private final int kills;
     private final int position;
     private final Color backgroundColor = new Color(0, 0, 0, 60);
     private final Color textColor = new Color(255, 255, 255);
@@ -20,10 +21,10 @@ class PlayerScoreLabel extends JButton {
     private boolean mouseEntered = false;
     static final int height = Utility.INSTANCE.px(90);
 
-    public PlayerScoreLabel(int width, String playerName, int score, int position) {
+    public PlayerScoreLabel(int width, String playerName, int kills, int position) {
         super(playerName);
         this.playerName = playerName;
-        this.score = score;
+        this.kills = kills;
         this.position = position;
 
         setFocusPainted(false);
@@ -80,7 +81,7 @@ class PlayerScoreLabel extends JButton {
         drawAlignedString(g2d, playerName, new Rectangle(width / 4, 0, 3 * width / 4 - 20, height / 2), SwingConstants.RIGHT);
 
         // Score (below the name, on the right side)
-        String scoreText = "Score: " + score;
+        String scoreText = Localization.get(Localization.KILLS) + ": " + kills;
         drawAlignedString(g2d, scoreText, new Rectangle(width / 4, height / 2, 3 * width / 4 - 20, height / 2), SwingConstants.RIGHT);
 
         g2d.dispose();

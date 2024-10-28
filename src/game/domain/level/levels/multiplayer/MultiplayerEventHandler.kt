@@ -1,8 +1,7 @@
 package game.domain.level.levels.multiplayer
 
 import game.JBomb
-import game.domain.events.game.MultiplayerScoreEvent
-import game.domain.events.game.ScoreGameEvent
+import game.domain.events.game.MultiplayerKillsEvent
 import game.domain.level.behavior.RespawnDeadPlayerBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -52,7 +51,7 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
             }
         }
 
-        MultiplayerScoreEvent(actualAttacker, 100).invoke()
+        MultiplayerKillsEvent(actualAttacker).invoke()
 
         Log.i("$actualAttacker killed $victim")
     }

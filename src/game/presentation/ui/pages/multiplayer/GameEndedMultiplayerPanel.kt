@@ -53,7 +53,7 @@ class GameEndedMultiplayerPanel(
         val players = getSortedPlayers()
 
         players.forEachIndexed { index, bomberEntity ->
-            panel.add(PlayerScoreLabel(buttonWidth, bomberEntity.properties.name, bomberEntity.state.score, index + 1))
+            panel.add(PlayerScoreLabel(buttonWidth, bomberEntity.properties.name, bomberEntity.state.kills, index + 1))
         }
 
         return panel
@@ -70,7 +70,7 @@ class GameEndedMultiplayerPanel(
         return allEntities
             .asSequence()
             .filterIsInstance<BomberEntity>()
-            .sortedByDescending { it.state.score }
+            .sortedByDescending { it.state.kills }
             .toList()
     }
 
