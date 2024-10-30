@@ -1,3 +1,5 @@
 - handle map rotation
 - bots
-- points
+- lava expanding in radius
+- lava expanding only when block is destroyed
+- change weapons
