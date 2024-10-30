@@ -17,6 +17,9 @@ class MultiplayerGameHandler(level: MultiplayerLevel) : DefaultGameHandler(level
         val spawnpoints = level.info.customSpawnpoints
         val players = JBomb.match.players
 
+        if (players.isEmpty())
+            return spawnpoints.random()
+
         // Calculate the minimum distance of each spawn point to any player
         val spawnpointsWithDistance = spawnpoints.map { spawnPointCoordinate ->
             val minDistanceToPlayers = players.minOfOrNull { player ->
