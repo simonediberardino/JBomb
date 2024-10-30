@@ -159,7 +159,7 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
         coordsOfUnderneathEntityBlocks.addAll(coordsOfEntitysImageDirectionBlocks)
 
         //merge the 2 lists into one another
-        coordsOfUnderneathEntityBlocks.forEach(Consumer { c: Coordinates? -> Coordinates.getEntitiesOnBlock(c).forEach(this::interact) })
+        coordsOfUnderneathEntityBlocks.forEach(Consumer { c: Coordinates? -> Coordinates.getEntitiesOnBlock(c).forEach(this::interactWith) })
         attackAnimationAndSoundFX()
     }
 

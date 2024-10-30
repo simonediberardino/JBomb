@@ -13,6 +13,7 @@ import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.Block
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.logic.IBlockEntityLogic
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.properties.BlockEntityProperties
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
+import game.domain.world.domain.entity.actors.impl.blocks.lava_block.logic.LavaBlockLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.types.EntityTypes
 import game.utils.file_system.Paths.blocksFolder
@@ -24,15 +25,7 @@ class LavaBlock : HardBlock {
 
     override val properties: EntityProperties = BlockEntityProperties(type = EntityTypes.LavaBlock)
 
-    override val logic: IBlockEntityLogic = object : BlockEntityLogic(this) {
-
-        override fun onCollision(e: Entity) {
-            super.onCollision(e)
-            if (e is Character) {
-                e.logic.onAttackReceived(100, e)
-            }
-        }
-    }
+    override val logic: LavaBlockLogic = LavaBlockLogic(this)
 
     override val image: EntityImageModel = EntityImageModel(
         entity = this,
@@ -45,4 +38,6 @@ class LavaBlock : HardBlock {
         override val allowUiState: Boolean
             get() = false
     }
+    var expansionRadius = 3
+    val canExpand = true
 }

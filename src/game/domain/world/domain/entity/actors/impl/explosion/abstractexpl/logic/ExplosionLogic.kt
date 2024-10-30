@@ -14,7 +14,7 @@ open class ExplosionLogic(
 ) : MovingEntityLogic(entity), IExplosionLogic {
     override fun onAttackReceived(damage: Int, attacker: EntityInteractable) {}
 
-    override fun doInteract(e: Entity?) {
+    override fun doInteractWith(e: Entity?) {
         e?.logic?.onExplosion(entity)
     }
 
@@ -51,7 +51,7 @@ open class ExplosionLogic(
 
         collidedEntities.forEach {
             if (entity.logic.canInteractWith(it)) {
-                entity.logic.interact(it)
+                entity.logic.interactWith(it)
             }
         }
 

@@ -31,7 +31,7 @@ open class MultiplayerLevelInfo(private val mapId: Int, level: Level): DefaultLe
         get() = mapId
 
     override val defaultWeapon: UsableItem
-        get() = PistolItem(Integer.MAX_VALUE)
+        get() = BombItem()
 
     override val networkName: String = "Multiplayer: ${level.toString()}"
     override val isTimeEnabled: Boolean = true

@@ -7,17 +7,12 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
-import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
-import game.network.events.forward.CustomUpdateInfoEventForwarder
-import game.network.events.forward.UpdateInfoEventForwarder
-import game.network.models.HttpMessageTypes
 import game.presentation.ui.panels.game.PitchPanel
-import game.utils.dev.Log
 
 open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity), IBomberEntityLogic {
-    override fun doInteract(e: Entity?) {
-        e?.logic?.interact(entity)
+    override fun doInteractWith(e: Entity?) {
+        e?.logic?.interactWith(entity)
     }
 
     override fun onSpawn() {

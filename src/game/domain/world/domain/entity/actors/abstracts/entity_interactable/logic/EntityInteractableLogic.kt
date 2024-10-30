@@ -40,9 +40,9 @@ abstract class EntityInteractableLogic(
         onMove(coordinates)
     }
 
-    final override fun interact(e: Entity?) {
+    final override fun interactWith(e: Entity?) {
         if (e == null) {
-            interactAndUpdateLastInteract(null)
+            interactWithAndUpdateDelay(null)
             return
         }
 
@@ -55,10 +55,10 @@ abstract class EntityInteractableLogic(
         // SUPER TODO CHECK THIS!
         if (!canInteractWith(e) || !e.logic.canBeInteractedBy(entity)) return
 
-        entity.logic.interactAndUpdateLastInteract(e)
+        entity.logic.interactWithAndUpdateDelay(e)
 
         if (e is EntityInteractable) {
-            e.logic.interactAndUpdateLastInteract(entity)
+            e.logic.interactWithAndUpdateDelay(entity)
         }
     }
 
@@ -69,7 +69,7 @@ abstract class EntityInteractableLogic(
      * @param e The entity to interact with.
      */
     @Synchronized
-    override fun interactAndUpdateLastInteract(e: Entity?) {
+    override fun interactWithAndUpdateDelay(e: Entity?) {
         // Check if enough time has passed since the last interaction
         if (timePassed(entity.state.lastInteractionTime) < EntityInteractable.INTERACTION_DELAY_MS) {
             return // If not enough time has passed, exit the function
@@ -79,7 +79,7 @@ abstract class EntityInteractableLogic(
         entity.state.lastInteractionTime = now()
 
         // Interact with the entity
-        doInteract(e)
+        doInteractWith(e)
 
         // If the entity is an instance of EntityInteractable, update the last interaction for this entity
         if (e is EntityInteractable) {
@@ -116,7 +116,7 @@ abstract class EntityInteractableLogic(
         )
 
         if (!nextTopLeftCoords.validate(entity) && !ignoreMapBorders) {
-            interact(null)
+            interactWith(null)
             return false
         } else {
             /*val coordinatesInArea = Coordinates.getAllBlocksInAreaFromDirection(
@@ -188,7 +188,7 @@ abstract class EntityInteractableLogic(
 
                     // if can interact, interacft
                     if (canInteract) {
-                        interact(it)
+                        interactWith(it)
                     }
                 }
 

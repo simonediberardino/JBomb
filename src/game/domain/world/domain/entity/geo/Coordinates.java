@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.geo;
 
 import game.JBomb;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
+import game.domain.world.domain.entity.actors.impl.blocks.base_block.Block;
 import game.presentation.ui.panels.game.PitchPanel;
 
 import java.awt.*;
@@ -485,7 +486,7 @@ public class Coordinates implements Comparable<Coordinates> {
         switch (d) {
             case LEFT:
             case RIGHT:
-                return new Coordinates(coordinates.getX() + distance * sign, coordinates.getY()); // calculate new x-coordinate based on direction and distance
+                return new Coordinates(coordinates.getX() + distance * sign, coordinates.getY());
 
             case DOWN:
             case UP:
@@ -559,10 +560,6 @@ public class Coordinates implements Comparable<Coordinates> {
     public int compareTo(Coordinates o) {
         return Comparator.comparing(Coordinates::getY).thenComparing(Coordinates::getX).compare(this, o);
 
-    }
-
-    public static Coordinates roundCoordinatesToBottom(Coordinates coords, int entitySize) {
-        return new Coordinates(coords.getX(), roundIntToGridSize(coords.getY()) - entitySize + GRID_SIZE);
     }
 
 }

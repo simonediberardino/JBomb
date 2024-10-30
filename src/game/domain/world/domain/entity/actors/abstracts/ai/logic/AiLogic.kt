@@ -7,7 +7,6 @@ import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.IAiLogic
-import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
 import game.utils.dev.XMLUtils
@@ -64,7 +63,7 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
         }
     }
 
-    override fun doInteract(e: Entity?) {}
+    override fun doInteractWith(e: Entity?) {}
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {
         when (arg.identifier) {

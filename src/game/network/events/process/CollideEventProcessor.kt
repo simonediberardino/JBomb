@@ -13,6 +13,6 @@ class CollideEventProcessor: HttpEvent {
         val victim = JBomb.match.getEntityById(victimId)
         val self = JBomb.match.getEntityById(selfId)
 
-        victim?.logic?.interact(self)
+        victim?.logic?.interactWith(self)
     }
 }

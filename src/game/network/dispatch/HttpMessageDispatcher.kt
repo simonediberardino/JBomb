@@ -52,7 +52,7 @@ class HttpMessageDispatcher private constructor() {
     ) {
         val data: String = HttpParserSerializer.instance.serialize(httpMessage, private, actorId)
 
-        Log.i("HttpMessageDispatcher: $httpMessage, $receiverId, $ignore")
+        //Log.i("HttpMessageDispatcher: $httpMessage, $receiverId, $ignore")
 
         for (sender in httpMessage.senders) {
             if (dispatch(data, sender, receiverId, ignore))
@@ -70,7 +70,7 @@ class HttpMessageDispatcher private constructor() {
      * @return True if the message was successfully dispatched, false otherwise.
      */
     private fun dispatch(data: String, httpActor: HttpActor, receiverId: Long, ignore: Boolean): Boolean {
-        Log.i("""
+        /*Log.i("""
             {
               "message": "dispatch",
               "data": "$data",
@@ -81,7 +81,7 @@ class HttpMessageDispatcher private constructor() {
               "client": ${JBomb.match.isClient}
             }
         """)
-
+*/
         if (httpActor == HttpActor.SERVER && JBomb.match.isServer) {
             JBomb.match.onlineGameHandler?.sendData(
                     data,

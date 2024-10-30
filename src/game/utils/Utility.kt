@@ -84,7 +84,7 @@ object Utility {
 
         // Use ClassLoader to load the image from the JAR file
         fileName = fileName.replace("/src", "")
-        Log.i("Loading $fileName")
+       // Log.i("Loading $fileName")
 
         val image = Utility::class.java.getResourceAsStream("/$fileName")?.use { inputStream ->
             ImageIO.read(inputStream) ?: throw RuntimeException()

@@ -12,7 +12,7 @@ import game.utils.Utility
 import game.utils.dev.Log
 
 open class AiEnemyLogic(override val entity: Enemy) : AiLogic(entity = entity) {
-    override fun doInteract(e: Entity?) {
+    override fun doInteractWith(e: Entity?) {
         (e as? BomberEntity)?.let {
             attack(it)
         }

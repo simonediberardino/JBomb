@@ -6,7 +6,6 @@ import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.geo.EnhancedDirection
 import game.audio.SoundModel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
-import game.domain.world.domain.entity.actors.abstracts.base.EntityInfo
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
@@ -33,8 +32,8 @@ class ClownNose : Orb {
     }
 
     override val logic: OrbEntityLogic = object: OrbEntityLogic(entity = this) {
-        override fun doInteract(e: Entity?) {
-            super.doInteract(e)
+        override fun doInteractWith(e: Entity?) {
+            super.doInteractWith(e)
 
             if (isObstacle(e)) {
                 attack(entity)

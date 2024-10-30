@@ -10,7 +10,7 @@ open class OrbEntityLogic(override val entity: Orb) : AiLogic(entity = entity), 
         moveOrb()
     }
 
-    override fun doInteract(e: Entity?) {
+    override fun doInteractWith(e: Entity?) {
         (e as? BomberEntity)?.let {
             attack(it)
         }

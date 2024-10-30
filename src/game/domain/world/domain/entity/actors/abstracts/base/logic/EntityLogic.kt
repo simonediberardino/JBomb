@@ -60,7 +60,7 @@ abstract class EntityLogic(
         }
 
         Coordinates.getEntitiesOnBlock(entity.info.position).forEach {
-            entity.logic.interact(it)
+            entity.logic.interactWith(it)
         }
     }
 

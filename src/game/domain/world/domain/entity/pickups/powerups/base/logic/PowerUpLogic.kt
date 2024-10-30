@@ -16,7 +16,7 @@ import java.util.*
 abstract class PowerUpLogic(
         override val entity: PowerUp
 ) : EntityInteractableLogic(entity = entity), IPowerUpLogic {
-    override fun doInteract(e: Entity?) {
+    override fun doInteractWith(e: Entity?) {
         apply(e as BomberEntity)
     }
 
