@@ -5,6 +5,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior
+import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
 import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
@@ -28,7 +29,7 @@ abstract class BomberEntity : Character, Explosive {
     constructor(id: Long) : super(id)
     constructor(coordinates: Coordinates?) : super(coordinates)
 
-    override val logic: IBomberEntityLogic = BomberEntityLogic(entity = this)
+    override val logic: CharacterEntityLogic = BomberEntityLogic(entity = this)
     override val state: BomberEntityState = BomberEntityState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     abstract override val properties: BomberEntityProperties

@@ -61,6 +61,7 @@ abstract class Character : MovingEntity {
         val MAX_HP = 100
         val SPEED = 1f
         val STEP_SOUND = null
+        val IS_BOT = false
         val IMAGE_DIRECTIONS: List<Direction>
             get() = Direction.values().asList()
         val DEATH_SOUND: SoundModel

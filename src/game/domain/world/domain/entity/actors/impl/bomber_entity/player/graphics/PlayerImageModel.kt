@@ -15,7 +15,7 @@ class PlayerImageModel(
         entity as Player
 
         return Array(4) { index ->
-            "$entitiesAssetsPath/player_${entity.state.imageDirection.toString().lowercase()}_${index}.png"
+            "$entitiesAssetsPath/player_${entity.state.imageDirection.toString().toLowerCase()}_${index}.png"
         }
     }
 }

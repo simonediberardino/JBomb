@@ -12,17 +12,18 @@ import game.domain.world.domain.entity.geo.Direction
 import game.values.DrawPriority
 
 open class CharacterEntityProperties(
-        drawPriority: DrawPriority = Character.DEFAULT.DRAW_PRIORITY,
-        types: EntityTypes,
-        supportedDirections: List<Direction> = MovingEntity.DEFAULT.SUPPORTED_DIRECTIONS,
-        stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
-        val imageDirections: List<Direction> = Character.DEFAULT.IMAGE_DIRECTIONS,
-        val deathSound: SoundModel = Character.DEFAULT.DEATH_SOUND
+    drawPriority: DrawPriority = Character.DEFAULT.DRAW_PRIORITY,
+    types: EntityTypes,
+    supportedDirections: List<Direction> = MovingEntity.DEFAULT.SUPPORTED_DIRECTIONS,
+    stepSound: SoundModel? = Character.DEFAULT.STEP_SOUND,
+    val imageDirections: List<Direction> = Character.DEFAULT.IMAGE_DIRECTIONS,
+    val deathSound: SoundModel = Character.DEFAULT.DEATH_SOUND
 ) : MovingEntityProperties(
-        drawPriority,
-        types,
-        supportedDirections,
-        stepSound
+    drawPriority,
+    types,
+    supportedDirections,
+    stepSound
 ) {
     open var name: String? = null
+    open val isBot: Boolean = true
 }
