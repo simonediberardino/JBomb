@@ -25,5 +25,4 @@ class FastEnemyProperties(
         stepSound = stepSound,
         imageDirections = imageDirections,
         deathSound = deathSound
-) {
-}
+)

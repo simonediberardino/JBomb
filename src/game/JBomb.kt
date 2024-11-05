@@ -53,7 +53,7 @@ object JBomb {
         val gameMode = args.find { it.startsWith("-mode=")}?.replace("-mode=", "")?.trim() ?: return
         val levelId = args.find { it.startsWith("-level=")}?.replace("-level=", "")?.toIntOrNull() ?: return
 
-        val worldId = when (gameMode.lowercase()) {
+        val worldId = when (gameMode.toLowerCase()) {
             "arena" -> 0
             "mp" -> -1
             else -> return

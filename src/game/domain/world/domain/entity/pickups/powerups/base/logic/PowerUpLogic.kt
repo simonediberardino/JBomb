@@ -8,6 +8,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.logic.EntityInteractableLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.utils.dev.Log
@@ -35,7 +36,9 @@ abstract class PowerUpLogic(
         val matchPanel = JBomb.JBombFrame.matchPanel
         AudioManager.instance.play(SoundModel.POWERUP)
 
-        player.logic.onPowerupApply(entity)
+        if (player.logic is BomberEntityLogic) {
+            (player.logic as BomberEntityLogic).onPowerupApply(entity)
+        }
 
         if (!entity.state.isPermanent)
             player.state.temporaryActivePowerUps.add(entity.javaClass)

@@ -7,6 +7,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEnt
 import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.actors.impl.blocks.movable_block.MovableBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
@@ -29,11 +30,15 @@ class BlockMoverPowerUp : PowerUp {
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            player.logic.addClassInteractWithMouseDrag(MovableBlock::class.java)
+            if (player.logic is BomberEntityLogic) {
+                (player.logic as BomberEntityLogic).addClassInteractWithMouseDrag(MovableBlock::class.java)
+            }
         }
 
         override fun cancel(player: BomberEntity) {
-            player.logic.removeClassInteractWithDrag(MovableBlock::class.java)
+            if (player.logic is BomberEntityLogic) {
+                (player.logic as BomberEntityLogic).removeClassInteractWithDrag(MovableBlock::class.java)
+            }
         }
 
     }

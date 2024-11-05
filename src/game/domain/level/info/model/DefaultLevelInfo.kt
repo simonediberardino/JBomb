@@ -36,4 +36,5 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
     override val timeLimitMinutes: Int = 0
     override val killCountEnabled: Boolean = false
     override val scoreEnabled: Boolean = true
+    override val startBotCount: Int = 0
 }

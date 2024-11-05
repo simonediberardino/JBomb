@@ -15,6 +15,8 @@ import game.domain.level.levels.lobby.WorldSelectorLevel
 import game.domain.level.levels.multiplayer.MultiplayerLevelMap1
 import game.domain.level.levels.world1.*
 import game.domain.level.levels.world2.*
+import game.domain.level.player_count_handler.DefaultPlayerCountHandler
+import game.domain.level.player_count_handler.IPlayerCountHandler
 import game.utils.dev.Log
 import java.util.*
 import javax.swing.JPanel
@@ -28,6 +30,7 @@ abstract class Level {
     open val gameHandler: GameHandler
     open val fileSystemHandler: LevelFileSystemHandler = LevelFileSystemHandler()
     open val eventHandler: LevelEventHandler = DefaultLevelEventHandler()
+    open val playerCountHandler: IPlayerCountHandler = DefaultPlayerCountHandler()
 
     init {
         gameHandler = DefaultStoryLevelHandler(this)
@@ -46,6 +49,7 @@ abstract class Level {
         PlayLevelSoundBehavior(this@Level).invoke()
         DataInputOutput.getInstance().resetLivesIfNecessary()
         gameHandler.generate()
+        playerCountHandler.onStart()
     }
 
     private fun updateLastLevel() {

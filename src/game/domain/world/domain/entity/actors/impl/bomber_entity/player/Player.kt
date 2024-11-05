@@ -26,7 +26,7 @@ class Player : BomberEntity {
     constructor(id: Long) : super(id)
     constructor(coordinates: Coordinates?) : super(coordinates)
 
-    override val logic: IBomberEntityLogic = PlayerLogic(entity = this)
+    override val logic: PlayerLogic = PlayerLogic(entity = this)
     override val state: PlayerState = PlayerState(entity = this)
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val image: PlayerImageModel = PlayerImageModel(entity = this)
@@ -35,6 +35,7 @@ class Player : BomberEntity {
             skinId = SkinUtilities.getSkinId(DataInputOutput.getInstance().skin),
     ) {
         override var name: String? = DataInputOutput.getInstance().username
+        override val isBot: Boolean = false
     }
 
     internal object DEFAULT {

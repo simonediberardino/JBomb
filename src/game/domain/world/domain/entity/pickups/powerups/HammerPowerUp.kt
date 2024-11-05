@@ -5,7 +5,9 @@ import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
+import game.domain.world.domain.entity.actors.impl.blocks.movable_block.MovableBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
@@ -21,11 +23,15 @@ class HammerPowerUp : PowerUp {
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            player.logic.addClassInteractWithMouseClick(DestroyableBlock::class.java)
+            if (player.logic is BomberEntityLogic) {
+                (player.logic as BomberEntityLogic).addClassInteractWithMouseClick(DestroyableBlock::class.java)
+            }
         }
 
         override fun cancel(player: BomberEntity) {
-            player.logic.removeClassInteractWithMouseClick(DestroyableBlock::class.java)
+            if (player.logic is BomberEntityLogic) {
+                (player.logic as BomberEntityLogic).removeClassInteractWithMouseClick(DestroyableBlock::class.java)
+            }
         }
     }
 

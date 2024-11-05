@@ -7,6 +7,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEnt
 import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.domain.world.domain.entity.pickups.powerups.base.logic.PowerUpLogic
@@ -30,11 +31,15 @@ class RemoteControlPowerUp
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
-            player.logic.addClassInteractWithMouseClick(Bomb::class.java)
+            if (player.logic is BomberEntityLogic) {
+                (player.logic as BomberEntityLogic).addClassInteractWithMouseClick(Bomb::class.java)
+            }
         }
 
         override fun cancel(player: BomberEntity) {
-            player.logic.removeClassInteractWithMouseClick(Bomb::class.java)
+            if (player.logic is BomberEntityLogic) {
+                (player.logic as BomberEntityLogic).removeClassInteractWithMouseClick(Bomb::class.java)
+            }
         }
 
         
