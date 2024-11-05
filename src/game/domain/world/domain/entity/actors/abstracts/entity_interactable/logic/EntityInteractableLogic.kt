@@ -18,7 +18,7 @@ abstract class EntityInteractableLogic(
 ) : EntityLogic(entity), IEntityInteractableLogic {
     override fun attack(e: Entity?) {
         val gameBehavior: GameBehavior = object : GameBehavior() {
-            override fun hostBehavior(): () -> Unit = {
+            override fun hostBehavior()  {
                 if (!(e == null || e.state.isImmune || e.state.state == State.DIED)) {
                     val attackDamage: Int = entity.state.attackDamage
                     e.logic.onAttackReceived(damage = attackDamage, attacker = entity)
@@ -26,9 +26,7 @@ abstract class EntityInteractableLogic(
                 }
             }
 
-            override fun clientBehavior(): () -> Unit {
-                return {}
-            }
+            override fun clientBehavior(){}
 
         }
         gameBehavior.invoke()

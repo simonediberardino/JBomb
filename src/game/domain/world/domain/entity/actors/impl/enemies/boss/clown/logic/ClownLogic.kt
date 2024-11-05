@@ -50,7 +50,7 @@ class ClownLogic(
 
     override fun onSpawn() {
         val gameBehavior: GameBehavior = object : GameBehavior() {
-            override fun hostBehavior(): () -> Unit = {
+            override fun hostBehavior() {
                 val panelSize = JBomb
                         .JBombFrame
                         .pitchPanel
@@ -62,12 +62,10 @@ class ClownLogic(
                 entity.logic.move(Coordinates(x, y))
             }
 
-            override fun clientBehavior(): () -> Unit = {}
+            override fun clientBehavior() {}
 
         }
         gameBehavior.invoke()
-
-        JBomb.match.gameTickerObservable?.register(entity)
     }
 
     /**

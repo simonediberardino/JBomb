@@ -8,10 +8,15 @@ import game.utils.time.timeunit
 abstract class GameTickerObserver : Observer2 {
     var lastUpdate = 0L
         private set
-
+    var frame = 0
     override fun update(arg: Observable2.ObserverParam) {
         lastUpdate = now()
+        countFrame()
     }
+    open fun countFrame(){
+        frame++
+    }
+
 
     companion object {
         val DEFAULT_OBSERVER_UPDATE = timeunit() * 8

@@ -5,15 +5,11 @@ import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.Dest
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 
 class DespawnDestroyableBlocksBehavior : GameBehavior() {
-    override fun hostBehavior(): () -> Unit {
-        return {
-            despawnDestroyableBlocks()
-        }
+    override fun hostBehavior() {
+        despawnDestroyableBlocks()
     }
 
-    override fun clientBehavior(): () -> Unit {
-        return {}
-    }
+    override fun clientBehavior() {}
 
     private fun despawnDestroyableBlocks() {
         JBomb.match

@@ -101,15 +101,13 @@ abstract class ArenaLevel : Level() {
 
             override fun onAllEnemiesEliminated() {
                 val gameBehavior: GameBehavior = object : GameBehavior() {
-                    override fun hostBehavior(): () -> Unit = {
+                    override fun hostBehavior() {
                         if (!gameHandler.canGameBeEnded()) {
                             RespawnDeadPlayersBehavior().invoke()
                         }
                     }
 
-                    override fun clientBehavior(): () -> Unit {
-                        return {}
-                    }
+                    override fun clientBehavior() {}
                 }
 
                 gameBehavior.invoke()

@@ -36,8 +36,8 @@ import kotlinx.coroutines.*
 import java.util.*
 
 class JBombMatch(
-        var currentLevel: Level,
-        val onlineGameHandler: OnlineGameHandler?
+    var currentLevel: Level,
+    val onlineGameHandler: OnlineGameHandler?
 ) {
     companion object {
         var port: Int = RuntimeProperties.port ?: 30960
@@ -50,6 +50,8 @@ class JBombMatch(
 
     // List of entities sorted by a linked list
     private val _entitiesList: SortedLinkedList<Entity> = SortedLinkedList()
+    private val _waitingEntitiesList: LinkedList<Entity> = LinkedList()
+
     private val _entitiesMap: HashMap<Long, Entity> = HashMap()
     private val _despawnedEntitiesMap: HashMap<Long, Pair<Class<out Entity>, Entity>> = HashMap()
 
@@ -253,7 +255,8 @@ class JBombMatch(
 
             val countString = playerItem.count
             inventoryElementControllerBombs.setNumItems(countString)
-        } catch (_: UninitializedPropertyAccessException) {}
+        } catch (_: UninitializedPropertyAccessException) {
+        }
     }
 
     /**
@@ -273,6 +276,7 @@ class JBombMatch(
         get() = onlineGameHandler is ServerGameHandler || !isClient && onlineGameHandler == null
 
     var wasServer = false
+
     /**
      * Adds a bomb to the list of bombs in the game.
      *
@@ -295,18 +299,37 @@ class JBombMatch(
      * Returns a copy of the list of _entities to prevent external modifications.
      */
     fun getEntities(): List<Entity> = synchronized(_entitiesList) { LinkedList(_entitiesList) }
+    fun getWaitingEntities(): List<Entity> = synchronized(_waitingEntitiesList) { LinkedList(_waitingEntitiesList) }
+    fun getWaitingAndSpawnedEntities(): List<Entity> =
+        getWaitingEntities() + getEntities()
 
-    fun getDeadEntities(): HashMap<Long, Pair<Class<out Entity>, Entity>> = synchronized(_despawnedEntitiesMap) { _despawnedEntitiesMap }
+
+    fun getDeadEntities(): HashMap<Long, Pair<Class<out Entity>, Entity>> =
+        synchronized(_despawnedEntitiesMap) { _despawnedEntitiesMap }
 
     fun getEntityById(entityId: Long): Entity? = _entitiesMap[entityId]
 
     fun addEntity(entity: Entity) {
+        synchronized(_waitingEntitiesList) {
+            _waitingEntitiesList.remove(entity)
+        }
+
         synchronized(_entitiesList) {
             _entitiesList.add(entity)
         }
 
         synchronized(_entitiesMap) {
             _entitiesMap.put(entity.info.id, entity)
+        }
+
+        synchronized(_despawnedEntitiesMap) {
+            _despawnedEntitiesMap.remove(entity.info.id)
+        }
+    }
+
+    fun addWaitingEntity(entity: Entity) {
+        synchronized(_waitingEntitiesList) {
+            _waitingEntitiesList.add(entity)
         }
 
         synchronized(_despawnedEntitiesMap) {

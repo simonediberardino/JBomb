@@ -4,16 +4,13 @@ import game.domain.level.levels.Level
 import game.audio.AudioManager
 
 class PlayLevelSoundTrackBehavior(private val level: Level) : GameBehavior() {
-    override fun hostBehavior(): () -> Unit {
-        return {
-            playSoundTrack()
-        }
+    override fun hostBehavior() {
+        playSoundTrack()
+
     }
 
-    override fun clientBehavior(): () -> Unit {
-        return {
-            playSoundTrack()
-        }
+    override fun clientBehavior() {
+        playSoundTrack()
     }
 
     private fun playSoundTrack() {

@@ -7,13 +7,11 @@ import game.presentation.ui.panels.game.PitchPanel
 import javax.swing.JPanel
 
 class GenerateStoneBehavior : GameBehavior() {
-    override fun hostBehavior(): () -> Unit {
-        return { generateStone() }
+    override fun hostBehavior() {
+        generateStone()
     }
 
-    override fun clientBehavior(): (() -> Unit) {
-        return {}
-    }
+    override fun clientBehavior() {}
 
     private fun generateStone() {
         // Set the current x and y coordinates to the top-left corner of the game board.

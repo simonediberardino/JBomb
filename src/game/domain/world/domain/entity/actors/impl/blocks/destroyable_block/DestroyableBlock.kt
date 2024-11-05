@@ -13,18 +13,19 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 
 class DestroyableBlock : MovableBlock {
-    constructor(coordinates: Coordinates?, powerUpClass: Class<out PowerUp>? = null) : super(coordinates) {
+    constructor(
+        coordinates: Coordinates?,
+        powerUpClass: Class<out PowerUp>? = null
+    ) : super(coordinates) {
         this.state.powerUpClass = powerUpClass
     }
 
     constructor(coordinates: Coordinates?) : this(coordinates, null)
-
     constructor(id: Long) : super(id)
 
     override val logic: IBlockEntityLogic = DestroyableBlockLogic(this)
     override val properties: DestroyableBlockProperties = DestroyableBlockProperties()
     override val image: EntityImageModel = EntityImageModel(entity = this)
     override val state: DestroyableBlockState = DestroyableBlockState(entity = this)
-    
     override val graphicsBehavior: IEntityGraphicsBehavior = DestroyableBlockGraphics()
 }

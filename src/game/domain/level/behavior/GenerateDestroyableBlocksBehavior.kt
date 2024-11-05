@@ -7,16 +7,12 @@ import game.domain.level.levels.Level
 import game.domain.world.domain.entity.pickups.portals.EndLevelPortal
 import game.presentation.ui.panels.game.PitchPanel
 
-class GenerateDestroyableBlocksBehavior(val level: Level): GameBehavior() {
-    override fun hostBehavior(): () -> Unit {
-        return {
-            generateDestroyableBlocks()
-        }
+class GenerateDestroyableBlocksBehavior(val level: Level) : GameBehavior() {
+    override fun hostBehavior() {
+        generateDestroyableBlocks()
     }
 
-    override fun clientBehavior(): () -> Unit {
-        return {}
-    }
+    override fun clientBehavior() {}
 
     private fun generateDestroyableBlocks() {
         var block = DestroyableBlock(Coordinates(0, 0))
@@ -31,7 +27,12 @@ class GenerateDestroyableBlocksBehavior(val level: Level): GameBehavior() {
         while (i < levelInfo.maxDestroyableBlocks) {
             // If the current destroyable block has not been spawned, generate new coordinates for it and spawn it on the game board.
             if (!block.state.isSpawned) {
-                block.logic.spawn(Coordinates.generateCoordinatesAwayFrom(player.info.position, PitchPanel.GRID_SIZE * 2))
+                block.logic.spawn(
+                    Coordinates.generateCoordinatesAwayFrom(
+                        player.info.position,
+                        PitchPanel.GRID_SIZE * 2
+                    )
+                )
 
                 // Force the first spawned block to have the End level portal
                 if (i == 0 && !level.info.isLastLevelOfWorld && !levelInfo.isArenaLevel) {

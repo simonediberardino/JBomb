@@ -25,7 +25,7 @@ import java.util.*
 import kotlin.math.max
 
 abstract class CharacterEntityLogic(
-        override val entity: Character
+    override val entity: Character
 ) : MovingEntityLogic(entity), ICharacterEntityLogic {
 
     override fun onSpawn() {
@@ -138,15 +138,15 @@ abstract class CharacterEntityLogic(
             // If the health points reach 0 or below, despawn the entity
             if (entity.state.hp <= 0) {
                 val gameBehavior: GameBehavior = object : GameBehavior() {
-                    override fun hostBehavior(): () -> Unit = {
+                    override fun hostBehavior() {
                         EntityKilledByGameEvent().invoke(entity, attacker)
                     }
 
-                    override fun clientBehavior(): () -> Unit = {}
+                    override fun clientBehavior() {}
 
                 }
                 gameBehavior.invoke()
-                
+
                 eliminated()
             } else {
                 onHit(damage)
@@ -176,33 +176,37 @@ abstract class CharacterEntityLogic(
 
         // Create a Timer object to schedule the animation iterations
         val timer = Timer()
-        timer.schedule(object : TimerTask() {
-            // Counter to keep track of the number of iterations
-            var count = 0
-            override fun run() {
-                // If the number of iterations has been reached, cancel the timer and return
-                if ((count >= iterations) || (entity.state.state != State.SPAWNED)) {
-                    timer.cancel()
+        timer.schedule(
+            object : TimerTask() {
+                // Counter to keep track of the number of iterations
+                var count = 0
+                override fun run() {
+                    // If the number of iterations has been reached, cancel the timer and return
+                    if ((count >= iterations) || (entity.state.state != State.SPAWNED)) {
+                        timer.cancel()
+                        entity.state.takingDamage = false
+                        return
+                    }
+
                     entity.state.takingDamage = false
-                    return
+
+                    try {
+                        // Make the entity invisible and wait for the specified duration
+                        entity.state.isInvisible = (true)
+                        Thread.sleep(durationMs.toLong())
+                        // Make the entity visible again and wait for the specified duration
+                        entity.state.isInvisible = (false)
+                        Thread.sleep(durationMs.toLong())
+                    } catch (ignored: InterruptedException) {
+                    }
+
+                    // Increment the counter to keep track of the number of iterations
+                    count++
                 }
-
-                entity.state.takingDamage = false
-
-                try {
-                    // Make the entity invisible and wait for the specified duration
-                    entity.state.isInvisible = (true)
-                    Thread.sleep(durationMs.toLong())
-                    // Make the entity visible again and wait for the specified duration
-                    entity.state.isInvisible = (false)
-                    Thread.sleep(durationMs.toLong())
-                } catch (ignored: InterruptedException) {
-                }
-
-                // Increment the counter to keep track of the number of iterations
-                count++
-            }
-        }, 0, (durationMs * 2).toLong()) // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
+            },
+            0,
+            (durationMs * 2).toLong()
+        ) // Schedule the timer to repeat with a fixed delay of durationMs * 2 between iterations
     }
 
     override fun onEliminated() {
@@ -240,6 +244,7 @@ abstract class CharacterEntityLogic(
 
                 Command.MOVE_LEFT, Command.MOVE_RIGHT ->
                     handleMoveCommand(command, Direction.UP, Direction.DOWN)
+
                 else -> {}
             }
         }
@@ -256,7 +261,8 @@ abstract class CharacterEntityLogic(
                 try {
                     talk(it)
                     it.logic.talk(entity)
-                } catch (_: Exception) {}
+                } catch (_: Exception) {
+                }
             }
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -271,18 +277,23 @@ abstract class CharacterEntityLogic(
             return
         }
         val oppositeBlocksCoordinates = Coordinates.getNewCoordinatesListOnDirection(
-                /* position = */ entity.info.position,
-                /* d = */ command.commandToDirection(),
-                /* steps = */ PitchPanel.PIXEL_UNIT,
-                /* offset = */ Character.DEFAULT.SIZE,
-                /* size = */ Character.DEFAULT.SIZE
+            /* position = */ entity.info.position,
+            /* d = */ command.commandToDirection(),
+            /* steps = */ PitchPanel.PIXEL_UNIT,
+            /* offset = */ Character.DEFAULT.SIZE,
+            /* size = */ Character.DEFAULT.SIZE
         )
         val entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[0])
         val entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[1])
         overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirection1, oppositeDirection2)
     }
 
-    override fun overpassBlock(entitiesOpposite1: List<Entity>, entitiesOpposite2: List<Entity>, direction1: Direction, direction2: Direction) {
+    override fun overpassBlock(
+        entitiesOpposite1: List<Entity>,
+        entitiesOpposite2: List<Entity>,
+        direction1: Direction,
+        direction2: Direction
+    ) {
         val oppositeCommand1 = direction2.toCommand()
         val oppositeCommand2 = direction1.toCommand()
         val controllerManager = JBomb.match.controllerManager ?: return
@@ -295,10 +306,13 @@ abstract class CharacterEntityLogic(
 
         // If the first direction has no obstacles and the second does, and the second direction is not double-clicked, move in the second direction.
         if (entitiesOpposite1.isNotEmpty()
-                && (entitiesOpposite2.isEmpty()
-                        || entitiesOpposite2.stream().allMatch(this::canInteractWith))) {
+            && (entitiesOpposite2.isEmpty()
+                    || entitiesOpposite2.stream().allMatch(this::canInteractWith))
+        ) {
             move(direction2)
-        } else if (entitiesOpposite2.isNotEmpty() && (entitiesOpposite1.isEmpty() || entitiesOpposite1.stream().allMatch(this::canInteractWith))) {
+        } else if (entitiesOpposite2.isNotEmpty() && (entitiesOpposite1.isEmpty() || entitiesOpposite1.stream()
+                .allMatch(this::canInteractWith))
+        ) {
             move(direction1)
         }
     }

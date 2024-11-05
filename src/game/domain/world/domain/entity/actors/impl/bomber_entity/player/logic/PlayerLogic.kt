@@ -24,7 +24,6 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         ToastUtils.cancel();
         InitBombsVariablesGameEvent().invoke()
 
-        JBomb.match.gameTickerObservable?.register(entity)
         JBomb.match.controllerManager?.register(entity)
         JBomb.match.refreshPowerUps(entity.state.activePowerUps)
     }
@@ -106,7 +105,7 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun onPowerupApply(powerUp: PowerUp) {
         val baseMessage = Localization.get(Localization.POWERUP_FOUND)
         powerUp.tag?.let {
-            val message = baseMessage.replace("%powerup%", it).uppercase()
+            val message = baseMessage.replace("%powerup%", it).toUpperCase()
             ToastUtils.cancel();
             ToastUtils.show(message)
         }

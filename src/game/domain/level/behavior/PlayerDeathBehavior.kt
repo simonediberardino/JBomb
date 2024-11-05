@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent
 import javax.swing.Timer
 
 class PlayerDeathBehavior : GameBehavior() {
-    override fun hostBehavior(): () -> Unit = {
+    override fun hostBehavior() {
         if (JBomb.match.currentLevel.gameHandler.canGameBeEnded() && !JBomb.isGameEnded) {
             val t = Timer(EntityInteractable.SHOW_DEATH_PAGE_DELAY_MS.toInt()) { _: ActionEvent? ->
                 if (!JBomb.isGameEnded) {
@@ -22,5 +22,5 @@ class PlayerDeathBehavior : GameBehavior() {
         }
     }
 
-    override fun clientBehavior(): () -> Unit = {}
+    override fun clientBehavior() {}
 }

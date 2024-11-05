@@ -9,7 +9,7 @@ class RespawnDeadPlayerBehavior(
         private val clazz: Class<out Entity>,
         private val entity: Entity
 ) : GameBehavior() {
-    override fun hostBehavior(): () -> Unit = {
+    override fun hostBehavior() {
         val info = entity.toEntityNetwork().toMap()
         val newEntity = clazz.getConstructor(Long::class.java).newInstance(id)
 
@@ -18,6 +18,6 @@ class RespawnDeadPlayerBehavior(
         level.gameHandler.dynamicSpawn(entity)
     }
 
-    override fun clientBehavior(): () -> Unit = {}
+    override fun clientBehavior() {}
 
 }

@@ -14,13 +14,16 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.coroutineContext
 
-open class BlockEntityLogic(entity: Entity) : EntityLogic(entity), IBlockEntityLogic {
+open class BlockEntityLogic(
+    entity: Entity
+) : EntityLogic(entity), IBlockEntityLogic {
     override fun destroy() {
         entity.logic.eliminated()
     }
 
     override fun onRemoved() {
         super.onRemoved()
+
         JBomb.match.scope.launch {
             trigger()
         }
@@ -34,8 +37,6 @@ open class BlockEntityLogic(entity: Entity) : EntityLogic(entity), IBlockEntityL
         visitedBlocks.add(entity as Block)
 
         while (queue.isNotEmpty() && coroutineContext.isActive) {
-            delay(500L)
-
             val currBlock = queue.remove() // Get the current block and its radius level
 
             // Trigger the current block and add it to updated blocks
@@ -68,7 +69,8 @@ open class BlockEntityLogic(entity: Entity) : EntityLogic(entity), IBlockEntityL
     }
 
     fun Coordinates.getBlockOnExactCoords(): Block? {
-        val entities = JBomb.match.getEntities()
+        val entities = JBomb.match.getEntities() + JBomb.match.getWaitingEntities()
+
         return entities.firstOrNull { e: Entity ->
             e is Block
                     && Coordinates.doesCollideWith(

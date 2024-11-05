@@ -14,17 +14,6 @@ import game.utils.dev.XMLUtils
 open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity = entity), IAiLogic {
     private val CHANGE_DIRECTION_RATE = 10 // percentage
 
-    override fun onSpawn() {
-        super.onSpawn()
-        JBomb.match.gameTickerObservable?.register(entity)
-    }
-
-    override fun onDespawn() {
-        super.onDespawn()
-        val match = JBomb.match
-        (match.gameTickerObservable ?: return).unregister(entity)
-    }
-
     /**
      * Chooses a new direction for the agent to move in, and sends the corresponding command to the game engine.
      *

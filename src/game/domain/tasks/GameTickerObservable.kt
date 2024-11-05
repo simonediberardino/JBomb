@@ -26,7 +26,9 @@ class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
                 for (observer in observers.toTypedArray()) {
                     notify(observer, ObserverParam(ObserverParamIdentifier.GAME_TICK, null))
                 }
-            } catch (_: Exception) {}
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
         }
     }
 

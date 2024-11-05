@@ -156,24 +156,15 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
     abstract val image: EntityImageModel
     abstract val graphicsBehavior: IEntityGraphicsBehavior
 
+    init {
+        JBomb.match.addWaitingEntity(this)
+        JBomb.match.gameTickerObservable?.register(this)
+    }
+
     constructor(coordinates: Coordinates? = Coordinates(-1, -1)) {
         if (coordinates != null) {
             info.position = coordinates
         }
-        // MEGA WORKAROUND! Remove.
-        /*while (true) {
-            try {
-                info.id = UUID.randomUUID().mostSignificantBits
-
-                if (coordinates != null)
-                    info.position = coordinates
-
-                break
-
-            } catch (exception: Exception) {
-                Log.e(exception.message.toString())
-            }
-        }*/
     }
 
     constructor(id: Long) {

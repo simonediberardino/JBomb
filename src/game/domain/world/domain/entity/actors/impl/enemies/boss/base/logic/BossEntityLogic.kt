@@ -15,16 +15,12 @@ open class BossEntityLogic(override val entity: Boss) : AiEnemyLogic(entity = en
         super.onDespawn()
 
         val gameBehavior: GameBehavior = object : GameBehavior() {
-            override fun hostBehavior(): () -> Unit {
-                return {
-                    val endLevelPortal: PowerUp = EndLevelPortal(Coordinates.generateCoordinatesAwayFromPlayers())
-                    endLevelPortal.logic.spawn(true)
-                }
+            override fun hostBehavior() {
+                val endLevelPortal: PowerUp = EndLevelPortal(Coordinates.generateCoordinatesAwayFromPlayers())
+                endLevelPortal.logic.spawn(true)
             }
 
-            override fun clientBehavior(): () -> Unit {
-                return {}
-            }
+            override fun clientBehavior() {}
         }
 
         gameBehavior.invoke()
@@ -33,15 +29,11 @@ open class BossEntityLogic(override val entity: Boss) : AiEnemyLogic(entity = en
     override fun onSpawn() {
         super.onSpawn()
         val gameBehavior: GameBehavior = object : GameBehavior() {
-            override fun hostBehavior(): () -> Unit {
-                return {
-                    move((Coordinates.randomCoordinatesFromPlayer(entity.state.size, entity.state.size * 2)))
-                }
+            override fun hostBehavior() {
+                move((Coordinates.randomCoordinatesFromPlayer(entity.state.size, entity.state.size * 2)))
             }
 
-            override fun clientBehavior(): () -> Unit {
-                return {}
-            }
+            override fun clientBehavior() {}
 
         }
         gameBehavior.invoke()
@@ -65,8 +57,8 @@ open class BossEntityLogic(override val entity: Boss) : AiEnemyLogic(entity = en
         entity.state.currRageStatus = status
         // Load and set the image.
         entity.graphicsBehavior.loadAndSetImage(
-                entity = entity,
-                imagePath = entity.graphicsBehavior.getImageFromRageStatus()
+            entity = entity,
+            imagePath = entity.graphicsBehavior.getImageFromRageStatus()
         )
     }
 }

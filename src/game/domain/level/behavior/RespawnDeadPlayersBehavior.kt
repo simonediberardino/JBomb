@@ -7,7 +7,7 @@ import java.awt.SystemColor.info
 import java.util.HashMap
 
 class RespawnDeadPlayersBehavior : GameBehavior() {
-    override fun hostBehavior(): () -> Unit = {
+    override fun hostBehavior() {
         val deadPlayers: HashMap<Long, Pair<Class<out Entity>, Entity>> = JBomb.match.getDeadEntities()
 
         deadPlayers.forEach { (id, pair) ->
@@ -19,5 +19,5 @@ class RespawnDeadPlayersBehavior : GameBehavior() {
         }
     }
 
-    override fun clientBehavior(): () -> Unit = {}
+    override fun clientBehavior() {}
 }

@@ -14,10 +14,11 @@ import game.network.events.forward.SpawnEntityEventForwarder
 import game.network.events.forward.UpdateInfoEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
+import game.utils.dev.Log
 import game.utils.time.now
 
 abstract class EntityLogic(
-        open val entity: Entity
+    open val entity: Entity
 ) : IEntityLogic {
     override fun eliminated() {
         despawn()
@@ -65,6 +66,7 @@ abstract class EntityLogic(
     }
 
     override fun onAdded() {}
+
     override fun onRemoved() {
         match.gameTickerObservable?.unregister(entity)
     }
@@ -99,7 +101,7 @@ abstract class EntityLogic(
     }
 
     override fun spawnOffset(): Coordinates =
-            Coordinates((PitchPanel.GRID_SIZE - entity.state.size) / 2, (PitchPanel.GRID_SIZE - entity.state.size) / 2)
+        Coordinates((PitchPanel.GRID_SIZE - entity.state.size) / 2, (PitchPanel.GRID_SIZE - entity.state.size) / 2)
 
 
     final override fun mouseClickedInteraction() {

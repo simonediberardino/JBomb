@@ -114,15 +114,12 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
 
     override fun attack(e: Entity?) {
         val gameBehavior: GameBehavior = object : GameBehavior() {
-            override fun hostBehavior(): () -> Unit {
-                return {
-                    attackAnimationAndSoundFX()
-                }
+            override fun hostBehavior() {
+                attackAnimationAndSoundFX()
+
             }
 
-            override fun clientBehavior(): () -> Unit {
-                return {}
-            }
+            override fun clientBehavior() {}
         }
 
         gameBehavior.invoke()
@@ -150,16 +147,19 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
     }
 
     private fun attack() {
-        val coordsOfUnderneathEntityBlocks = Coordinates.getAllBlocksInAreaFromDirection(entity, Direction.DOWN, BOSS_ATTACK_VERTICAL_RANGE)
+        val coordsOfUnderneathEntityBlocks =
+            Coordinates.getAllBlocksInAreaFromDirection(entity, Direction.DOWN, BOSS_ATTACK_VERTICAL_RANGE)
         val coordsOfEntitysImageDirectionBlocks = Coordinates.getAllBlocksInAreaFromDirection(
-                entity,
-                entity.state.imageDirection,
-                BOSS_ATTACK_HORIZONTAL_RANGE
+            entity,
+            entity.state.imageDirection,
+            BOSS_ATTACK_HORIZONTAL_RANGE
         )
         coordsOfUnderneathEntityBlocks.addAll(coordsOfEntitysImageDirectionBlocks)
 
         //merge the 2 lists into one another
-        coordsOfUnderneathEntityBlocks.forEach(Consumer { c: Coordinates? -> Coordinates.getEntitiesOnBlock(c).forEach(this::interactWith) })
+        coordsOfUnderneathEntityBlocks.forEach(Consumer { c: Coordinates? ->
+            Coordinates.getEntitiesOnBlock(c).forEach(this::interactWith)
+        })
         attackAnimationAndSoundFX()
     }
 

@@ -6,4 +6,9 @@ import game.domain.world.domain.entity.actors.impl.blocks.base_block.Block
 abstract class HardBlock : Block {
     constructor(id: Long) : super(id)
     constructor(coordinates: Coordinates?) : super(coordinates)
+    constructor(coordinates: Coordinates?, id: Long?) : super(coordinates) {
+        id?.let {
+            this.info.id = id
+        }
+    }
 }

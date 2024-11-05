@@ -26,17 +26,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
         explode()
     }
 
-    override fun onSpawn() {
-        super.onSpawn()
-        JBomb.match.gameTickerObservable?.register(entity)
-    }
-
     override fun notifySpawn() {}
-
-    override fun onDespawn() {
-        super.onDespawn()
-        JBomb.match.gameTickerObservable?.unregister(entity)
-    }
 
     override fun notifyDespawn() {}
 

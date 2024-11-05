@@ -9,7 +9,7 @@ class SpawnAnimalsBehavior(
         private val startAnimalsCount: Int,
         private val availableAnimals: Array<Class<out AnimalEntity>>
 ) : GameBehavior() {
-    override fun hostBehavior(): () -> Unit = {
+    override fun hostBehavior() {
         for (i in 0 until startAnimalsCount) {
             // Select a random enemy class from the availableEnemies array.
             val animalClass = availableAnimals[Random().nextInt(availableAnimals.size)]
@@ -26,5 +26,5 @@ class SpawnAnimalsBehavior(
         }
     }
 
-    override fun clientBehavior(): () -> Unit = {}
+    override fun clientBehavior() {}
 }

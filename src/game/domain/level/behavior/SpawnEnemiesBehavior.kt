@@ -8,15 +8,11 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Array<Class<out Enemy>>): GameBehavior() {
-    override fun hostBehavior(): () -> Unit {
-        return {
-            spawnEnemies()
-        }
+    override fun hostBehavior() {
+        spawnEnemies()
     }
 
-    override fun clientBehavior(): () -> Unit {
-        return {}
-    }
+    override fun clientBehavior() {}
 
     private fun spawnEnemies() {
         // Spawn a number of enemies at the start of the game.
@@ -26,7 +22,8 @@ class SpawnEnemiesBehavior(val startEnemiesCount: Int, val availableEnemies: Arr
 
             // Create an instance of the enemy class using a constructor that takes a Coordinates object as an argument.
             val enemy: Enemy
-            var maxAttempts = 5
+            val maxAttempts = 5
+
             try {
                 enemy = enemyClass.getConstructor().newInstance()
                 val coordinate = Coordinates.generateCoordinatesAwayFromPlayers( maxAttempts)

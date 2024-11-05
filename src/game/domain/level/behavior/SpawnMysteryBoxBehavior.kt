@@ -8,15 +8,11 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.presentation.ui.panels.game.PitchPanel
 
 class SpawnMysteryBoxBehavior(val level: Level) : GameBehavior() {
-    override fun hostBehavior(): () -> Unit {
-        return {
-            spawnMysteryBox()
-        }
+    override fun hostBehavior() {
+        spawnMysteryBox()
     }
 
-    override fun clientBehavior(): () -> Unit {
-        return {}
-    }
+    override fun clientBehavior() {}
 
     private fun spawnMysteryBox() {
         val player = JBomb.match.player ?: return
