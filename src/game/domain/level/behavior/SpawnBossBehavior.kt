@@ -7,6 +7,5 @@ class SpawnBossBehavior(val boss: Boss) : GameBehavior() {
         boss.logic.spawn(forceSpawn = true, forceCentering = false)
     }
 
-    override fun clientBehavior() {
-    }
+    override fun clientBehavior() {}
 }

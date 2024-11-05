@@ -54,6 +54,7 @@ abstract class EntityLogic(
 
         if (forceSpawn || !Coordinates.isBlockOccupied(entity.info.position)) {
             match.addEntity(entity)
+            match.gameTickerObservable?.register(entity)
             entity.logic.onAdded()
             entity.state.spawnTime = now()
             entity.state.isSpawned = true

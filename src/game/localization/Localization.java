@@ -157,6 +157,11 @@ public class Localization {
         put(Locale.ITALY, "HAI UCCISO %name%!");
     }};
 
+    public static final HashMap<Locale, String> KILLED_BY = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "%name% KILLED YOU!");
+        put(Locale.ITALY, "%name% TI HA UCCISO!");
+    }};
+
     public static final HashMap<Locale, String> YOU_DIED = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "YOU DIED! YOU HAVE %lives% LIVES LEFT.");
         put(Locale.ITALY, "SEI MORTO! HAI %lives% VITE RIMANENTI.");

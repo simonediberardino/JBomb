@@ -13,7 +13,9 @@ class LocationChangedBehavior(private val entityNetwork: EntityNetwork) : GameBe
     }
 
     override fun clientBehavior() {
-        if (entityNetwork.entityId != (JBomb.match.onlineGameHandler as ClientGameHandler).id) return
+        if (entityNetwork.entityId != (JBomb.match.onlineGameHandler as ClientGameHandler).id)
+            return
+
         // If player is not stored yet
         val player = JBomb.match.player
         if (player == null || !player.state.isSpawned) {

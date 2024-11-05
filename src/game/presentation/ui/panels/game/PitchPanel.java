@@ -34,7 +34,6 @@ import static game.values.Dimensions.FONT_SIZE_LITTLE;
  * The GamePanel class represents the main game panel that displays the game world and entities
  */
 public class PitchPanel extends JPanel implements Observer2 {
-
     public static final int DEFAULT_PIXEL_UNIT = 6;
     public static final int PIXEL_UNIT = Utility.INSTANCE.px(DEFAULT_PIXEL_UNIT);
     //to simplify calculations
@@ -44,8 +43,6 @@ public class PitchPanel extends JPanel implements Observer2 {
     public static final Dimension DIMENSION = new Dimension(GRID_SIZE * 13, 11 * GRID_SIZE);
     private final HashMap<String, RunnablePar> graphicsCallbacks = new HashMap<>();
     public volatile Graphics2D g2d;
-    private static final int CAMERA_LAG_DISTANCE = 50; // Pixels before camera starts moving
-    private static final float CAMERA_SMOOTHING_FACTOR = 0.1f; // Smoothing factor (0 < x < 1)
 
     /**
      * Constructs a new GamePanel with the default dimensions and sets it as the observer for the game ticker observable
@@ -96,18 +93,8 @@ public class PitchPanel extends JPanel implements Observer2 {
         return DIMENSION;
     }
 
-    private final AtomicBoolean isPainting = new AtomicBoolean(false);
     private int cameraOffsetX;
     private int cameraOffsetY;
-
-
-    public int getCameraOffsetX() {
-        return cameraOffsetX;
-    }
-
-    public int getCameraOffsetY() {
-        return cameraOffsetY;
-    }
 
     @Override
     public void paint(Graphics g) {
@@ -216,8 +203,13 @@ public class PitchPanel extends JPanel implements Observer2 {
             }
         }
 
-        if (!JBomb.match.isOnlyPlayer() && player != null && player.getLogic().isAlive()) {
-            drawEntityArrowhead(g2d, player, cameraOffsetX, cameraOffsetY); // Pass offsets to drawEntityArrowhead
+        if (JBomb.match.getPlayers().size() > 1 && player != null && player.getLogic().isAlive()) {
+            drawEntityArrowhead(
+                    g2d,
+                    player,
+                    cameraOffsetX,
+                    cameraOffsetY
+            ); // Pass offsets to drawEntityArrowhead
         }
 
         // Runs custom callbacks

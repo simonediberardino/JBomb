@@ -21,7 +21,9 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
 
         super.onSpawn()
 
-        ToastUtils.cancel();
+        entity.state.commandQueue.clear()
+
+        ToastUtils.cancel()
         InitBombsVariablesGameEvent().invoke()
 
         JBomb.match.controllerManager?.register(entity)

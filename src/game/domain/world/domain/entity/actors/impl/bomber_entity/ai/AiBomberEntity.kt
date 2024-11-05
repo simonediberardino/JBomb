@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.ai
 
+import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.graphics.BomberEntityImageModel
@@ -31,6 +32,15 @@ class AiBomberEntity(coordinates: Coordinates?, skinId: Int = RepositoryBomberEn
         override var name: String? = RepositoryBotNames.choose()
     }
 
-    override val logic: AiLogic
-        get() = AiLogic(entity = this)
+    override val logic: AiLogic = object:  AiLogic(entity = this) {
+        override fun onAdded() {
+            super.onAdded()
+            JBomb.match.players.add(this@AiBomberEntity)
+        }
+
+        override fun onRemoved() {
+            super.onRemoved()
+            JBomb.match.players.removeIf { e -> e.info.id == entity.info.id}
+        }
+    }
 }

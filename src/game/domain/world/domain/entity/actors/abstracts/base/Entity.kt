@@ -169,32 +169,9 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
 
     constructor(id: Long) {
         info.id = id
-        // MEGA WORKAROUND! Remove.
-        /*while (true) {
-            try {
-                info.id = id
-                break
-
-            } catch (exception: Exception) {
-                Log.e(exception.message.toString())
-            }
-        }*/
     }
 
     constructor() : this(null)
-
-    /*init {
-        // MEGA WORKAROUND! Remove.
-        while (true) {
-            try {
-                info.type = properties.type
-                break
-
-            } catch (exception: Exception) {
-                Log.e(exception.message.toString())
-            }
-        }
-    }*/
 
     override fun compareTo(other: Entity): Int {
         return Comparator.comparing { obj: Entity ->
@@ -243,7 +220,7 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
         state?.let {
             try {
                 this.state.state = State.valueOf(it)
-            } catch (IllegalArgumentException: Exception) {
+            } catch (ex: Exception) {
                 return@let
             }
         }
@@ -251,26 +228,26 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
 
     internal object DEFAULT {
         val ALPHA = 1f
-        val LAST_IMAGE_UPDATE = 0L
-        val LAST_TALK_TIME = 0L
-        val IS_INVISIBLE = false
+        const val LAST_IMAGE_UPDATE = 0L
+        const val LAST_TALK_TIME = 0L
+        const val IS_INVISIBLE = false
         val STATE = null
-        val SPAWNED: Boolean = false
-        val IMMUNE: Boolean = false
+        const val SPAWNED: Boolean = false
+        const val IMMUNE: Boolean = false
         val INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
             get() {
                 return mutableSetOf()
             }
-        val ENTITIES_ASSETS_PATH = ""
-        val HITBOX_WIDTH_RATIO = 1f
-        val HITBOX_HEIGHT_RATIO = 1f
-        val PADDING_TOP = 0
-        val PADDING_WIDTH = 0
-        val IMAGE_REFRESH_RATE = 200
-        val LAST_IMAGE_INDEX = 0
-        val IMAGE_PATH = ""
+        const val ENTITIES_ASSETS_PATH = ""
+        const val HITBOX_WIDTH_RATIO = 1f
+        const val HITBOX_HEIGHT_RATIO = 1f
+        const val PADDING_TOP = 0
+        const val PADDING_WIDTH = 0
+        const val IMAGE_REFRESH_RATE = 200
+        const val LAST_IMAGE_INDEX = 0
+        const val IMAGE_PATH = ""
         val IMAGE = null
-        val CAN_RESPAWN = false
+        const val CAN_RESPAWN = false
         val UI_STATE: UiState
             get() = UiState.IDLE
         var imagePath: String = Entity.DEFAULT.IMAGE_PATH
