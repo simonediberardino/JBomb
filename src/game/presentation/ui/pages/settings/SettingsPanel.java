@@ -84,6 +84,12 @@ public class SettingsPanel extends BoxMenuPanel {
                 createKeyRunnable(integer -> DataInputOutput.getInstance().setBombKey(integer))
         );
 
+        SettingsElementView changeWeapon = createTextFieldElementView(
+                Localization.get(KEY_CHANGE_ITEM),
+                DataInputOutput.getInstance().getChangeItemKeyChar(),
+                createKeyRunnable(integer -> DataInputOutput.getInstance().setChangeItemKey(integer))
+        );
+
         SettingsElementView interactKey = createTextFieldElementView(
                 Localization.get(KEY_INTERACT),
                 DataInputOutput.getInstance().getInteractKeyChar(),

@@ -1,5 +1,3 @@
-- handle map rotation
-- bots
-- lava expanding in radius
+- bots shoot and BFS
 - lava expanding only when block is destroyed
-- change weapons
+- test combining items

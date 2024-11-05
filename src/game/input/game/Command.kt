@@ -3,7 +3,7 @@ package game.input.game
 import game.domain.world.domain.entity.geo.Direction
 
 enum class Command {
-    MOVE_UP, MOVE_DOWN, MOVE_RIGHT, MOVE_LEFT, ATTACK, PAUSE, INTERACT;
+    MOVE_UP, MOVE_DOWN, MOVE_RIGHT, MOVE_LEFT, ATTACK, PAUSE, INTERACT, CHANGE_ITEM;
 
     fun commandToDirection(): Direction? {
         return when (this) {

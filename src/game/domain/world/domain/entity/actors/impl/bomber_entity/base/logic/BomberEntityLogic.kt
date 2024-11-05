@@ -18,7 +18,9 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
     override fun onSpawn() {
         super.onSpawn()
         // Give the current entity a BombItem when it is spawned in the match.
-        JBomb.match.currentLevel.info.defaultWeapon?.let { JBomb.match.give(entity, it) }
+        JBomb.match.currentLevel.info.defaultWeapons?.forEach {
+            JBomb.match.give(entity, it)
+        }
     }
 
     override fun onDespawn() {

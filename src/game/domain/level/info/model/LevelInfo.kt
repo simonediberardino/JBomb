@@ -42,7 +42,7 @@ abstract class LevelInfo {
     abstract val isLastLevelOfWorld: Boolean
     abstract val availableAnimals: Array<Class<out AnimalEntity>>
     abstract var mapDimension: Dimension?
-    abstract val defaultWeapon: UsableItem?
+    abstract val defaultWeapons: List<UsableItem>?
     abstract val cameraMoveEnabled: Boolean
     abstract val networkName: String
     abstract val isTimeEnabled: Boolean

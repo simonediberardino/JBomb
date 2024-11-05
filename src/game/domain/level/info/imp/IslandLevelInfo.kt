@@ -9,7 +9,7 @@ import java.awt.Dimension
 class IslandLevelInfo(level: Level) : LobbyLevelInfo(level) {
     override val worldId: Int get() = 0
     override val levelId: Int get() = 0
-    override val defaultWeapon: UsableItem?
+    override val defaultWeapons: List<UsableItem>?
         get() = null
 
     override val playerSpawnCoordinates: Coordinates

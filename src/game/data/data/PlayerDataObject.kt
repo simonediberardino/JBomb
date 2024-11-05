@@ -6,47 +6,49 @@ import java.awt.event.KeyEvent
 import java.io.Serializable
 
 data class PlayerDataObject(
-        @JvmField var name: String,
-        @JvmField var lostGames: Int,
-        @JvmField var kills: Int,
-        @JvmField var deaths: Int,
-        @JvmField var rounds: Int,
-        @JvmField var points: Long,
-        @JvmField var lastLevelId: Int,
-        @JvmField var lastWorldId: Int,
-        @JvmField var explosionLength: Int,
-        @JvmField var obtainedBombs: Int,
-        @JvmField var lives: Int,
-        @JvmField var forwardKey: Int,
-        @JvmField var backKey: Int,
-        @JvmField var leftKey: Int,
-        @JvmField var rightKey: Int,
-        @JvmField var bombKey: Int,
-        @JvmField var interactKey: Int,
-        @JvmField var volume: Int,
-        @JvmField var skin: String
+    @JvmField var name: String,
+    @JvmField var lostGames: Int,
+    @JvmField var kills: Int,
+    @JvmField var deaths: Int,
+    @JvmField var rounds: Int,
+    @JvmField var points: Long,
+    @JvmField var lastLevelId: Int,
+    @JvmField var lastWorldId: Int,
+    @JvmField var explosionLength: Int,
+    @JvmField var obtainedBombs: Int,
+    @JvmField var lives: Int,
+    @JvmField var forwardKey: Int,
+    @JvmField var backKey: Int,
+    @JvmField var leftKey: Int,
+    @JvmField var rightKey: Int,
+    @JvmField var bombKey: Int,
+    @JvmField var interactKey: Int,
+    @JvmField var changeItemKey: Int,
+    @JvmField var volume: Int,
+    @JvmField var skin: String
 ) : Serializable {
 
     constructor() : this(
-            "",
-            0,
-            0,
-            0,
-            0,
-            0,
-            DataInputOutput.START_LIVES,
-            0,
-            1,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            ""
+        "",
+        0,
+        0,
+        0,
+        0,
+        0,
+        DataInputOutput.START_LIVES,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        ""
     ) {
         resetKeys()
     }
@@ -57,6 +59,7 @@ data class PlayerDataObject(
         leftKey = KeyEvent.VK_A
         rightKey = KeyEvent.VK_D
         bombKey = KeyEvent.VK_SPACE
+        changeItemKey = KeyEvent.VK_1
         interactKey = KeyEvent.VK_F
     }
 
@@ -64,8 +67,6 @@ data class PlayerDataObject(
         lastLevelId = lastLevel.info.levelId
         lastWorldId = lastLevel.info.worldId
     }
-
-
 
     fun checkData(): Boolean {
         var changed = false

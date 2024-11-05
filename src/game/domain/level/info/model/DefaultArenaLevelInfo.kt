@@ -20,8 +20,8 @@ abstract class DefaultArenaLevelInfo(level: ArenaLevel): DefaultLevelInfo(level)
 
     abstract val specialRoundEnemies: Array<Class<out Enemy>>
 
-    override val defaultWeapon: UsableItem
-        get() = BombItem()
+    override val defaultWeapons: List<UsableItem>
+        get() = listOf(BombItem())
 
     override val networkName: String = "Arena: World $worldId Arena"
 }

@@ -256,6 +256,10 @@ public class DataInputOutput {
         return KeyEvent.getKeyText(playerDataObject.interactKey);
     }
 
+    public String getChangeItemKeyChar() {
+        return KeyEvent.getKeyText(playerDataObject.changeItemKey);
+    }
+
     public int getLeftKey() {
         return playerDataObject.leftKey;
     }
@@ -276,6 +280,10 @@ public class DataInputOutput {
         return playerDataObject.bombKey;
     }
 
+    public int getChangeItemKey() {
+        return playerDataObject.changeItemKey;
+
+    }
     public int getInteractKey() {
         return playerDataObject.interactKey;
     }
@@ -306,6 +314,11 @@ public class DataInputOutput {
 
     public void setBombKey(int bombKey) {
         playerDataObject.bombKey = bombKey;
+        updateStoredPlayerData();
+    }
+
+    public void setChangeItemKey(int itemKey) {
+        playerDataObject.changeItemKey = itemKey;
         updateStoredPlayerData();
     }
 

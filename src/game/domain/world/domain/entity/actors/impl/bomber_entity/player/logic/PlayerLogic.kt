@@ -10,10 +10,13 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.game.Command
 import game.localization.Localization
+import game.utils.Utility
 import game.utils.ui.ToastUtils
 import game.utils.time.now
 
 class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = entity) {
+    private var lastChangeWeaponTime = 0L
+
     override fun onSpawn() {
         if (JBomb.match.player == null) {
             JBomb.match.player = entity
@@ -71,6 +74,7 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
             }
 
             Command.INTERACT -> interactionCommand()
+            Command.CHANGE_ITEM -> changeItemCommand()
             else -> {}
         }
 
@@ -102,6 +106,13 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     override fun onUpdateHealth(health: Int) {
         super.onUpdateHealth(health)
         HealthUpdatedEvent().invoke(null)
+    }
+
+    private fun changeItemCommand() {
+        if (Utility.timePassed(lastChangeWeaponTime) > 200) {
+            lastChangeWeaponTime = now()
+            JBomb.match.switchWeapon(entity)
+        }
     }
 
     override fun onPowerupApply(powerUp: PowerUp) {

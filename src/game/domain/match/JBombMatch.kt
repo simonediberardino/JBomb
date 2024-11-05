@@ -14,6 +14,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.items.BombItem
+import game.domain.world.domain.entity.items.PistolItem
 import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.game.ControllerManager
@@ -200,19 +201,30 @@ class JBombMatch(
      * Gives an item to the specified owner (BomberEntity).
      *
      * @param owner The BomberEntity receiving the item.
-     * @param item The UsableItem to be given.
+     * @param itemToAdd The UsableItem to be given.
      * @param combineSameItem Flag indicating whether to combine items of the same type.
      */
-    fun give(owner: BomberEntity, item: UsableItem, combineSameItem: Boolean = false) {
-        if (combineSameItem && owner.state.weapon.javaClass == item.javaClass) {
+    fun give(owner: BomberEntity, itemToAdd: UsableItem, combineSameItem: Boolean = false) {
+        val currentWeapon = owner.state.weapons.find {
+            it.javaClass == javaClass
+        }
+
+        if (combineSameItem && currentWeapon != null) {
             // Combine items if requested and owner already has the same type of item
-            owner.state.weapon.combineItems(item)
+            currentWeapon.combineItems(itemToAdd)
+            updateInventoryWeaponController()
         } else {
-            // Set the new item as the owner's weapon and update related components
-            owner.state.weapon = item
-            owner.state.weapon.owner = owner
+            owner.state.addWeapon(itemToAdd)
+            owner.state.switchWeapon(itemToAdd)
+            itemToAdd.owner = owner
+
             updateInventoryWeaponController()
         }
+    }
+
+    fun switchWeapon(owner: BomberEntity) {
+        owner.state.switchWeapon()
+        updateInventoryWeaponController()
     }
 
     fun useItem(owner: BomberEntity) {
@@ -232,9 +244,8 @@ class JBombMatch(
      *
      * @param owner The BomberEntity from which to remove the item.
      */
-    fun removeItem(owner: BomberEntity) {
-        // Replace the current item with a BombItem and update related components
-        owner.state.weapon = BombItem()
+    fun removeItem(owner: BomberEntity, item: UsableItem) {
+        owner.state.removeWeapon(item)
         owner.state.weapon.owner = owner
 
         ResetBombsVariablesGameEvent().invoke(null)
@@ -593,5 +604,4 @@ class JBombMatch(
     private fun setupTimerTask() {
         gameTickerObservable?.register(timeObserverObservable)
     }
-
 }

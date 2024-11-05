@@ -24,15 +24,15 @@ class PistolPowerUp : PowerUp {
     }
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
+        val item = PistolItem()
+
         override fun doApply(player: BomberEntity) {
-            JBomb.match.give(player, PistolItem(), true)
+            JBomb.match.give(player, item, true)
         }
 
         override fun cancel(player: BomberEntity) {
-            JBomb.match.removeItem(player)
+            JBomb.match.removeItem(player, item)
         }
-
-        
     }
 
     override val tag: String

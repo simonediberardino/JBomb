@@ -36,6 +36,10 @@ public class Localization {
         put(Locale.ITALY, "BOMBA");
     }};
 
+    public static final HashMap<Locale, String> KEY_CHANGE_ITEM = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "CHANGE WEAPON");
+        put(Locale.ITALY, "CAMBIA ARMA");
+    }};
     public static final HashMap<Locale, String> KEY_INTERACT = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "INTERACT");
         put(Locale.ITALY, "INTERAGISCI");

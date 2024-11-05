@@ -16,6 +16,10 @@ abstract class UsableItem {
     }
 
     open fun remove() {
-        JBomb.match.removeItem(owner)
+        JBomb.match.removeItem(owner, this)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other?.javaClass == this.javaClass
     }
 }

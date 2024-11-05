@@ -17,6 +17,7 @@ class ControllerManager : Observable2(), KeyListener {
 
     // Stores the time of the last key event for each command
     private val commandEventsTime: MutableMap<Command?, Long> = mutableMapOf()
+
     // Key-Command mapping
     private var keyAssignment: Map<Int, Command>? = null
 
@@ -38,13 +39,14 @@ class ControllerManager : Observable2(), KeyListener {
         val dataInputOutput = DataInputOutput.getInstance()
 
         keyAssignment = mapOf(
-                dataInputOutput.forwardKey to Command.MOVE_UP,
-                dataInputOutput.leftKey to Command.MOVE_LEFT,
-                dataInputOutput.backKey to Command.MOVE_DOWN,
-                dataInputOutput.rightKey to Command.MOVE_RIGHT,
-                dataInputOutput.bombKey to Command.ATTACK,
-                dataInputOutput.interactKey to Command.INTERACT,
-                KEY_ESC to Command.PAUSE
+            dataInputOutput.forwardKey to Command.MOVE_UP,
+            dataInputOutput.leftKey to Command.MOVE_LEFT,
+            dataInputOutput.backKey to Command.MOVE_DOWN,
+            dataInputOutput.rightKey to Command.MOVE_RIGHT,
+            dataInputOutput.bombKey to Command.ATTACK,
+            dataInputOutput.interactKey to Command.INTERACT,
+            dataInputOutput.changeItemKey to Command.CHANGE_ITEM,
+            KEY_ESC to Command.PAUSE
         )
     }
 

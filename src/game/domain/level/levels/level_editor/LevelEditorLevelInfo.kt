@@ -28,6 +28,6 @@ open class LevelEditorLevelInfo(level: Level): DefaultLevelInfo(level) {
     override val levelId: Int
         get() = 0
 
-    override val defaultWeapon: UsableItem
-        get() = BlockPlacerItem()
+    override val defaultWeapons: List<UsableItem>
+        get() = listOf(BlockPlacerItem())
 }
