@@ -32,7 +32,7 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
     override var mapDimension: Dimension? = Dimension(Utility.px(930), Utility.px(800))
     override val cameraMoveEnabled: Boolean = true
     override val networkName: String = "World $worldId Level $levelId"
-    override val isTimeEnabled: Boolean = true
+    override val isTimeEnabled: Boolean = false
     override val timeLimitMinutes: Int = 0
     override val killCountEnabled: Boolean = false
     override val scoreEnabled: Boolean = true

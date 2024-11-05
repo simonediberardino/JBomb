@@ -183,8 +183,8 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
         inventoryPanel.setOpaque(false);
         inventoryPanel.setLayout(new GridLayout(0, 1));
 
-        InventoryElementControllerTime inventoryElementControllerTime = JBomb.match.getInventoryElementControllerTime();
-        if (inventoryElementControllerTime != null) {
+        if (JBomb.match.getCurrentLevel().getInfo().isTimeEnabled()) {
+            InventoryElementControllerTime inventoryElementControllerTime = JBomb.match.getInventoryElementControllerTime();
             inventoryPanel.add(inventoryElementControllerTime.getView());
         }
 

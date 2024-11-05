@@ -21,6 +21,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
+import static game.localization.Localization.BACK;
 import static game.localization.Localization.MAIN_MENU;
 import static game.values.Dimensions.DEFAULT_Y_PADDING;
 import static javafx.scene.input.KeyCode.T;
@@ -118,7 +119,7 @@ public abstract class JBombermanBoxContainerPanel extends JPanel {
         this.addCustomElements();
 
         if (isBackEnabled) {
-            JButton mainMenuButton = new RedButton(Localization.get(MAIN_MENU));
+            JButton mainMenuButton = new RedButton(Localization.get(BACK));
             mainMenuButton.addActionListener((l) -> back());
 
             addComponent(new Padding(getWidth(), DEFAULT_Y_PADDING));
