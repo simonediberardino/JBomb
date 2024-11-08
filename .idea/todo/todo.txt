@@ -1,3 +1,2 @@
 - bots shoot and BFS
-- lava expanding only when block is destroyed
 - test combining items

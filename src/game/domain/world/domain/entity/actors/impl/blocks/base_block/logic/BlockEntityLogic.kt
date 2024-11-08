@@ -1,6 +1,7 @@
 package game.domain.world.domain.entity.actors.impl.blocks.base_block.logic
 
 import game.JBomb
+import game.domain.level.behavior.GameBehavior
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.logic.EntityLogic
@@ -24,9 +25,18 @@ open class BlockEntityLogic(
     override fun onRemoved() {
         super.onRemoved()
 
-        JBomb.match.scope.launch {
-            trigger()
+        // at the moment, only host handles trigger. Subject to change
+        val gameBehavior = object: GameBehavior() {
+            override fun hostBehavior() {
+                JBomb.match.scope.launch {
+                    trigger()
+                }
+            }
+
+            override fun clientBehavior() {}
         }
+
+        gameBehavior.hostBehavior()
     }
 
     override suspend fun trigger(updatedBlocks: MutableList<Block>) {
@@ -72,11 +82,15 @@ open class BlockEntityLogic(
         val entities = JBomb.match.getEntities() + JBomb.match.getWaitingEntities()
 
         return entities.firstOrNull { e: Entity ->
-            e is Block
-                    && Coordinates.doesCollideWith(
-                this,
-                e
-            )
+            try {
+                e is Block
+                        && Coordinates.doesCollideWith(
+                    this,
+                    e
+                )
+            } catch (exception: Exception) {
+                false
+            }
         } as Block?
     }
 

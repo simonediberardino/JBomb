@@ -24,6 +24,13 @@ abstract class GameHandler(protected val level: Level) {
         spawnAnimals()
         level.onStartLevel()
         JBomb.match.onStartGame()
+        notifyEntities()
+    }
+
+    private fun notifyEntities() {
+        JBomb.match.getEntities().forEach {
+            it.logic.onGameStarted()
+        }
     }
 
     abstract fun generateStone()

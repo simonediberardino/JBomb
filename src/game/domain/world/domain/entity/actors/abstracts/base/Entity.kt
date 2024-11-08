@@ -53,6 +53,7 @@ interface IEntityLogic {
     fun mouseDraggedInteraction()
     fun onAdded()
     fun onRemoved()
+    fun onGameStarted() {}
 }
 
 // Class representing the state of an entity

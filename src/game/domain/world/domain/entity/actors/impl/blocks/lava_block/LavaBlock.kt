@@ -2,20 +2,20 @@ package game.domain.world.domain.entity.actors.impl.blocks.lava_block
 
 import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.EntityImageModel
-import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.PeriodicGraphicsBehavior
-import game.domain.world.domain.entity.actors.impl.blocks.base_block.properties.BlockEntityProperties
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.blocks.lava_block.logic.LavaBlockLogic
 import game.domain.world.domain.entity.actors.impl.blocks.lava_block.properties.LavaEntityProperties
+import game.domain.world.domain.entity.actors.impl.blocks.lava_block.state.LavaBlockState
 import game.domain.world.domain.entity.geo.Coordinates
-import game.domain.world.types.EntityTypes
 import game.utils.file_system.Paths.blocksFolder
+
 open class LavaBlock(
     hasSpawnDelay: Boolean,
     coordinates: Coordinates? = null,
-    id: Long? = null
+    id: Long? = null,
+    canExpand: Boolean = false
 ) : HardBlock(coordinates, id) {
     private val maxExpansionRadius = 4
     var expansionRadius = maxExpansionRadius
@@ -49,13 +49,15 @@ open class LavaBlock(
         override val allowUiState: Boolean = false
     }
 
+    override val state: LavaBlockState = LavaBlockState(entity = this, canExpand = canExpand)
+
     override fun countFrame() {
         super.countFrame()
         val spawnDelay = (maxExpansionRadius - expansionRadius) * minSpawnDelay
 
         if (frame >= spawnDelay) {
             if (!state.isSpawned) {
-                logic.spawn()
+                logic.spawn(forceSpawn = true)
             }
             JBomb.match.gameTickerObservable?.unregister(this)
         }
