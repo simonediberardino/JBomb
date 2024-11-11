@@ -1,6 +1,7 @@
 package game.domain.world.domain.entity.actors.impl.blocks.lava_block.logic
 
 import game.domain.level.behavior.GameBehavior
+import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.Block
@@ -20,7 +21,7 @@ class LavaBlockLogic(override val entity: LavaBlock) : BlockEntityLogic(
     override fun onCollision(e: Entity) {
         super.onCollision(e)
 
-        if (e is Character) {
+        if (e is Character && e.logic !is AiLogic) {
             e.logic.onAttackReceived(100, e)
         }
     }

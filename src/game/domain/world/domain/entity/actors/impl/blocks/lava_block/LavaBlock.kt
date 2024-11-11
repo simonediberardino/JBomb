@@ -33,7 +33,7 @@ open class LavaBlock(
     )
 
     // Use hasSpawnDelay in the properties
-    override val properties: LavaEntityProperties = LavaEntityProperties(hasSpawnDelay = hasSpawnDelay)
+    override val properties: LavaEntityProperties = LavaEntityProperties()
 
     override val logic = LavaBlockLogic(
         entity = this

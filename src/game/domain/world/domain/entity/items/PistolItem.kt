@@ -19,6 +19,10 @@ import game.utils.Utility.timePassed
 import game.utils.time.now
 
 class PistolItem(private var bullets: Int = 5) : UsableItem(), Explosive {
+    companion object {
+        val explosionSize = 3
+    }
+
     override val explosionObstacles: Set<Class<out Entity>>
         get() = setOf(
                 HardBlock::class.java,
@@ -40,8 +44,7 @@ class PistolItem(private var bullets: Int = 5) : UsableItem(), Explosive {
 
     override val type: ItemsTypes = ItemsTypes.PistolItem
 
-    override val maxExplosionDistance: Int
-        get() = 3
+    override val maxExplosionDistance: Int = explosionSize
 
     override val whiteListObstacles: Set<Class<out Entity>>
         get() = hashSetOf(LavaBlock::class.java)
