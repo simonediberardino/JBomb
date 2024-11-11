@@ -2,6 +2,7 @@ package game.domain.world.domain.entity.actors.impl.bomber_entity.ai.logic
 
 import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb.Companion.PLACE_INTERVAL
 import game.domain.world.domain.entity.actors.impl.bomber_entity.ai.AiBomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
@@ -53,7 +54,8 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
     private fun isReadyToShoot(): Boolean {
         if (!entity.state.isSpawned) return false
         if (entity.state.weapons.isEmpty()) return false
-        return Utility.timePassed(lastScanShootTime) >= 560
+        if (Utility.timePassed(lastFireTime) < PLACE_INTERVAL) return false
+        return Utility.timePassed(lastScanShootTime) >= 400
     }
 
     // Checks if the target is in line and within shooting range, then moves and fires in the correct direction
