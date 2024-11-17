@@ -7,12 +7,15 @@ import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.IAiLogic
+import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
 import game.utils.dev.XMLUtils
+import kotlin.math.abs
 
 open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity = entity), IAiLogic {
     private val CHANGE_DIRECTION_RATE = 10 // percentage
+    protected var destination: Coordinates? = null
 
     /**
      * Chooses a new direction for the agent to move in, and sends the corresponding command to the game engine.
@@ -29,10 +32,10 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
 
         // Get a list of all the available directions the agent can move in
         val availableDirections = entity.logic.availableDirections()
-                .filter { e: Direction? -> entity.properties.supportedDirections.contains(e) }
-                .ifEmpty {
-                    return entity.state.direction
-                }
+            .filter { e: Direction? -> entity.properties.supportedDirections.contains(e) }
+            .ifEmpty {
+                return entity.state.direction
+            }
 
         // Choose a new direction randomly, or keep the current direction with a certain probability
         return if (Math.random() * 100 > CHANGE_DIRECTION_RATE && availableDirections.size != 1) {
@@ -47,9 +50,67 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
     }
 
     override fun process() {
-        if ("true" == XMLUtils.readConfig("bots_move")) {
-            move(chooseDirection(false))
+        if (!isBotsMoveEnabled()) return
+
+        val destination = this.destination
+
+        if (destination != null) {
+            processMovementTowardsDestination(destination)
+        } else {
+            moveInRandomDirection()
         }
+    }
+
+    private fun isBotsMoveEnabled(): Boolean {
+        return XMLUtils.readConfig("bots_move") == "true"
+    }
+
+    private fun processMovementTowardsDestination(destination: Coordinates) {
+        val position = entity.info.position
+        val stepSize = Character.DEFAULT.STEP_SIZE
+
+        var moved = false
+        var direction: Direction? = null
+
+        if (abs(position.x - destination.x) > stepSize) {
+            direction = if (position.x < destination.x) {
+                println("Moving to the right towards destination ${entity.info.id}")
+                Direction.RIGHT
+            } else {
+                println("Moving to the left towards destination ${entity.info.id}")
+                Direction.LEFT
+            }
+            moved = true
+        }
+
+        if (abs(position.y - destination.y) > stepSize) {
+            direction = if (position.y < destination.y) {
+                println("Moving down towards destination ${entity.info.id}")
+                Direction.DOWN
+            } else {
+                println("Moving up towards destination ${entity.info.id}")
+                Direction.UP
+            }
+            moved = true
+        }
+
+        if (!moved) {
+            this.destination = null
+            println("Arrived at destination ${entity.info.id}")
+        } else {
+            direction?.let {
+                if (!moveOrInteract(it)) {
+                    this.destination = null
+                }
+
+                updateMovementDirection(it)
+            }
+        }
+    }
+
+    private fun moveInRandomDirection() {
+        val randomDirection = chooseDirection(false)
+        move(randomDirection)
     }
 
     override fun doInteractWith(e: Entity?) {}

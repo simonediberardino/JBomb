@@ -49,12 +49,12 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
             when (JBomb.match.player) {
                 actualAttacker -> victim.properties.name?.let { Localization.get(Localization.YOU_KILLED).replace("%name%", it) }
                     ?.let {
-                        ToastUtils.show(it, false)
+                        //ToastUtils.show(it, false)
                     }
                 victim -> {
                     actualAttacker.properties.name?.let { Localization.get(Localization.KILLED_BY).replace("%name%", it) }
                         ?.let {
-                            ToastUtils.show(it, false)
+                            //ToastUtils.show(it, false)
                         }
                 }
             }

@@ -4,6 +4,7 @@ import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb.Companion.PLACE_INTERVAL
 import game.domain.world.domain.entity.actors.impl.bomber_entity.ai.AiBomberEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.items.PistolItem
@@ -15,6 +16,7 @@ import game.utils.time.now
 class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity = entity) {
     private var lastScanShootTime = 0L
     private var lastFireTime = 0L
+    private var lastScanEnemyTime = 0L
 
     override fun onSpawn() {
         super.onSpawn()
@@ -32,6 +34,27 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
     override fun onRemoved() {
         super.onRemoved()
         JBomb.match.players.removeIf { e -> e.info.id == entity.info.id }
+    }
+
+    private fun getClosestEnemyInRange(): BomberEntity? {
+        val players = JBomb.match.players - entity
+
+        val playersInRange = players.groupBy {
+            it.info.position.distanceTo(entity.info.position)
+        }.filter { it.key < GRID_SIZE * 5 }
+
+        val closestPlayer = playersInRange.minByOrNull { it.key }
+        return closestPlayer?.value?.first()
+    }
+
+    // TODO
+    // Replace it with dijkstra
+    private fun targetClosestEnemy() {
+        if (Utility.timePassed(lastScanEnemyTime) > 500L) {
+            lastScanEnemyTime = now()
+            val closestPlayerInRange = getClosestEnemyInRange()
+            destination = closestPlayerInRange?.info?.position
+        }
     }
 
     private fun processShoot(): Boolean {
@@ -54,8 +77,8 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
     private fun isReadyToShoot(): Boolean {
         if (!entity.state.isSpawned) return false
         if (entity.state.weapons.isEmpty()) return false
-        if (Utility.timePassed(lastFireTime) < PLACE_INTERVAL) return false
-        return Utility.timePassed(lastScanShootTime) >= 400
+        if (Utility.timePassed(lastFireTime) < PLACE_INTERVAL * 2) return false
+        return Utility.timePassed(lastScanShootTime) >= 500
     }
 
     // Checks if the target is in line and within shooting range, then moves and fires in the correct direction
@@ -117,6 +140,7 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
     }
 
     override fun process() {
+        targetClosestEnemy()
         val hasShot = processShoot()
         if (!hasShot) super.process()
     }
