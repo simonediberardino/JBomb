@@ -74,10 +74,8 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
 
         if (abs(position.x - destination.x) > stepSize) {
             direction = if (position.x < destination.x) {
-                println("Moving to the right towards destination ${entity.info.id}")
                 Direction.RIGHT
             } else {
-                println("Moving to the left towards destination ${entity.info.id}")
                 Direction.LEFT
             }
             moved = true
@@ -85,10 +83,8 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
 
         if (abs(position.y - destination.y) > stepSize) {
             direction = if (position.y < destination.y) {
-                println("Moving down towards destination ${entity.info.id}")
                 Direction.DOWN
             } else {
-                println("Moving up towards destination ${entity.info.id}")
                 Direction.UP
             }
             moved = true
@@ -96,7 +92,6 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
 
         if (!moved) {
             this.destination = null
-            println("Arrived at destination ${entity.info.id}")
         } else {
             direction?.let {
                 if (!moveOrInteract(it)) {
