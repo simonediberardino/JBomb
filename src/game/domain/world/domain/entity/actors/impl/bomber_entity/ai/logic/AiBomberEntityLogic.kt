@@ -12,6 +12,7 @@ import game.presentation.ui.panels.game.PitchPanel
 import game.presentation.ui.panels.game.PitchPanel.GRID_SIZE
 import game.utils.Utility
 import game.utils.time.now
+import kotlinx.coroutines.launch
 
 class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity = entity) {
     private var lastScanShootTime = 0L
@@ -140,9 +141,11 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
     }
 
     override fun process() {
-        targetClosestEnemy()
-        val hasShot = processShoot()
-        if (!hasShot) super.process()
+        JBomb.match.scope.launch {
+            targetClosestEnemy()
+            val hasShot = processShoot()
+            if (!hasShot) super.process()
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import game.domain.tasks.GameTickerObserver.Companion.DEFAULT_OBSERVER_UPDATE
 import game.domain.tasks.observer.Observable2
 import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * The GameTickerObservable class is an observable that notifies its observers periodically with a fixed delay
