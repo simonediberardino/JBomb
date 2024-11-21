@@ -143,7 +143,8 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
         JBomb.match.scope.launch {
             targetClosestEnemy()
             val hasShot = processShoot()
-            if (!hasShot) super.process()
+            if (!hasShot)
+                super.process()
         }
     }
 

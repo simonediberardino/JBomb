@@ -1,6 +1,7 @@
 package game.properties
 
 object RuntimeProperties {
+    val processors = Runtime.getRuntime().availableProcessors()
     var dedicatedServer: Boolean = false
     var lastConnectedIp: String = ""
     var needsUpdate: Boolean = false

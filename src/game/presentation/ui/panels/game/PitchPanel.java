@@ -13,6 +13,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player;
 import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
 import game.domain.world.domain.entity.geo.Coordinates;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
+import game.properties.RuntimeProperties;
 import game.utils.Utility;
 import game.utils.dev.Log;
 import org.jetbrains.annotations.NotNull;
@@ -155,7 +156,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         int visibleAreaY2 = cameraOffsetY + pitchPanelSize.height;
 
         // Create an executor service for parallel computation
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        ExecutorService executor = Executors.newFixedThreadPool(RuntimeProperties.INSTANCE.getProcessors());
 
         // Store the preprocessed data for each entity
         List<CompletableFuture<EntityDrawData>> futures = new ArrayList<>();
@@ -183,7 +184,7 @@ public class PitchPanel extends JPanel implements Observer2 {
         }
 
         // Wait for all preprocessing to finish
-        List<EntityDrawData> drawDataList = futures.stream()
+        List<EntityDrawData> drawDataList = futures.parallelStream()
                 .map(CompletableFuture::join)
                 .filter(Objects::nonNull) // Filter out any entities that are not visible
                 .collect(Collectors.toList());
@@ -203,7 +204,7 @@ public class PitchPanel extends JPanel implements Observer2 {
             }
         }
 
-        if (JBomb.match.getPlayers().size() > 1 && player != null && player.getLogic().isAlive()) {
+        if (player != null && player.getLogic().isAlive()) {
             drawEntityArrowhead(
                     g2d,
                     player,
