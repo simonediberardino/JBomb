@@ -8,7 +8,7 @@ import game.localization.Localization.*
 import game.presentation.ui.frames.JBombFrame
 import game.presentation.ui.pages.loading.LoadingPanel
 import game.presentation.ui.pages.main_menu.MainMenuPanel
-import game.presentation.ui.pages.registration.RegistrationUsername
+import game.presentation.ui.pages.registration.Registration
 import game.utils.ui.ToastUtils
 import game.properties.RuntimeProperties
 import kotlinx.coroutines.launch
@@ -16,9 +16,9 @@ import java.awt.CardLayout
 import javax.swing.JPanel
 
 class InitPanel(
-        cardLayout: CardLayout,
-        parent: JPanel,
-        frame: JBombFrame
+    cardLayout: CardLayout,
+    parent: JPanel,
+    frame: JBombFrame
 ) : LoadingPanel(cardLayout, parent, frame, getInitMessage()) {
     private var loadingFinished = false
     private var stepsExecuted = 0
@@ -28,9 +28,9 @@ class InitPanel(
             val currUsername = DataInputOutput.getInstance().username
 
             val message = if (currUsername.isEmpty()) {
-                Localization.get(WELCOME_TEXT_ANONYMOUS)
+                get(WELCOME_TEXT_ANONYMOUS)
             } else {
-                Localization.get(WELCOME_TEXT).replace("%user%", currUsername)
+                get(WELCOME_TEXT).replace("%user%", currUsername)
             }
 
             return message
@@ -46,22 +46,22 @@ class InitPanel(
 
     private val stepsToLoad: Array<suspend () -> Unit>
         get() = arrayOf(
-                checkUpdate,
-                preloadSounds
+            checkUpdate,
+            preloadSounds
         )
 
-    private val checkUpdate : suspend () -> Unit = {
+    private val checkUpdate: suspend () -> Unit = {
         val needsUpdate = CheckUpdateUseCase().invoke()
         RuntimeProperties.needsUpdate = needsUpdate
         proceedIfFinished()
     }
 
     private val preloadSounds: suspend () -> Unit = {
-       // AudioManager.instance.preloadSounds(SoundModel.values().map { it.toString() })
+        // AudioManager.instance.preloadSounds(SoundModel.values().map { it.toString() })
     }
 
     override fun onShowCallback() {
-        ToastUtils.show(Localization.get(Localization.LOADING_INIT), true, true)
+        ToastUtils.show(get(Localization.LOADING_INIT), true, true)
 
         stepsToLoad.forEach {
             JBomb.scope.launch {
@@ -76,10 +76,10 @@ class InitPanel(
         if (stepsExecuted == stepsToLoad.size && loadingFinished) {
             ToastUtils.cancel()
 
-            if (DataInputOutput.getInstance().username.isNotBlank()) {
-                JBomb.showActivity(MainMenuPanel::class.java)
+            if (DataInputOutput.getInstance().username.isBlank()) {
+                JBomb.showActivity(Registration::class.java)
             } else {
-                JBomb.showActivity(RegistrationUsername::class.java)
+                JBomb.showActivity(MainMenuPanel::class.java)
             }
         }
     }

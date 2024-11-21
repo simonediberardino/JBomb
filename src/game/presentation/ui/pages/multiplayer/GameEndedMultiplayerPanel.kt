@@ -8,6 +8,8 @@ import game.domain.match.JBombMatch
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.localization.Localization
 import game.network.usecases.PingServerUseCase
+import game.presentation.ui.elements.createBlurBackground
+import game.presentation.ui.elements.createDialog
 import game.presentation.ui.pages.main_menu.MainMenuPanel
 import game.presentation.ui.panels.models.CenteredPanel
 import game.presentation.ui.panels.models.JBombermanBoxContainerPanel
@@ -167,32 +169,6 @@ class GameEndedMultiplayerPanel(
 
             dialog.contentPane.add(blurBackground)
             dialog.isVisible = true
-        }
-
-        private fun createDialog(parentFrame: JFrame): JDialog {
-            return JDialog(parentFrame).apply {
-                isUndecorated = true
-                size = parentFrame.size
-                location = parentFrame.location  // Align location with the parent frame
-                background = Color(0, 0, 0, 0)
-                modalityType = Dialog.ModalityType.MODELESS
-                isResizable = false
-                defaultCloseOperation = JDialog.DISPOSE_ON_CLOSE
-            }
-        }
-
-        private fun createBlurBackground(panel: GameEndedMultiplayerPanel): JPanel {
-            return object : JPanel() {
-                override fun paintComponent(g: Graphics) {
-                    super.paintComponent(g)
-                    g.color = Color(0, 0, 0, 150)
-                    g.fillRect(0, 0, width, height)
-                }
-            }.apply {
-                isOpaque = false
-                layout = BorderLayout()
-                add(panel, BorderLayout.CENTER)
-            }
         }
     }
 }

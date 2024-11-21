@@ -13,21 +13,20 @@ import game.presentation.ui.pages.multiplayer.MultiplayerPanel;
 import game.presentation.ui.pages.multiplayer.MultiplayerSelectMapPanel;
 import game.presentation.ui.pages.pause.PausePanel;
 import game.presentation.ui.pages.play.PlayMenuPanel;
-import game.presentation.ui.pages.registration.RegistrationAvatar;
-import game.presentation.ui.pages.registration.RegistrationUsername;
+import game.presentation.ui.pages.registration.Registration;
 import game.presentation.ui.pages.server_browser.ServersListMenuPanel;
-import game.presentation.ui.panels.menu.ProfilePanel;
 import game.presentation.ui.pages.settings.SettingsPanel;
 import game.presentation.ui.panels.game.MatchPanel;
 import game.presentation.ui.panels.game.PitchPanel;
-import game.utils.file_system.Paths;
+import game.presentation.ui.panels.menu.ProfilePanel;
+import game.presentation.ui.viewelements.misc.ToastHandler;
 import game.utils.Utility;
 import game.utils.dev.XMLUtils;
-import game.utils.ui.ToastUtils;
+import game.utils.file_system.Paths;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
-import game.presentation.ui.viewelements.misc.ToastHandler;
 
 /**
  * The BombermanFrame class creates the main frame of the game and handles the creation and switching
@@ -62,8 +61,7 @@ public class JBombFrame extends JFrame {
     private ArenaMenuPanel arenaMenuPanel;
     private InitPanel initPanel;
     private NetworkErrorPage networkErrorPage;
-    private RegistrationUsername registrationUsername;
-    private RegistrationAvatar registrationAvatar;
+    private Registration registration;
     private MultiplayerSelectMapPanel multiplayerSelectMapPanel;
 
     /**
@@ -84,8 +82,8 @@ public class JBombFrame extends JFrame {
         initProfilePanel();
         initSettingsPanel();
         initArenaMenuPanel();
+        initRegistration();
         initErrorMenuPanel();
-        initRegistrationPanel();
         initMultiplayerMapsPanel();
         finalizeFrame();
         pack();
@@ -191,22 +189,23 @@ public class JBombFrame extends JFrame {
         parentPanel.add(arenaMenuPanel, ArenaMenuPanel.class.getSimpleName());
     }
 
+    private void initRegistration() {
+        registration = new Registration(cardLayout, parentPanel, this);
+        parentPanel.add(registration, Registration.class.getSimpleName());
+    }
+
     private void initErrorMenuPanel()  {
         networkErrorPage = new NetworkErrorPage(cardLayout, parentPanel, this);
         parentPanel.add(networkErrorPage, NetworkErrorPage.class.getSimpleName());
     }
 
-    private void initRegistrationPanel() {
-        registrationUsername = new RegistrationUsername(cardLayout, parentPanel, this);
-        parentPanel.add(registrationUsername, RegistrationUsername.class.getSimpleName());
-
-        registrationAvatar = new RegistrationAvatar(cardLayout, parentPanel, this);
-        parentPanel.add(registrationAvatar, RegistrationAvatar.class.getSimpleName());
-    }
-
     private void initMultiplayerMapsPanel() {
         multiplayerSelectMapPanel = new MultiplayerSelectMapPanel(cardLayout, parentPanel, this);
         parentPanel.add(multiplayerSelectMapPanel, MultiplayerSelectMapPanel.class.getSimpleName());
+    }
+
+    public PlayMenuPanel getPlayMenuPanel() {
+        return playMenuPanel;
     }
 
     /**

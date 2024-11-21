@@ -18,7 +18,7 @@ public abstract class AbstractMainMenuPanel extends BaseMenu {
     }
 
     @Override
-    protected JPanel getLeftPanel() {
+    public JPanel getLeftPanel() {
         return new UsernameMenuPanelFactory().build();
     }
 }

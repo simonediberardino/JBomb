@@ -60,7 +60,7 @@ public class UsernameProfilePanel extends JBombermanBoxContainerPanel {
         updateText();
     }
 
-    private void updateText() {
+    public void updateText() {
         if (inputTextField == null) {
            return;
         }
