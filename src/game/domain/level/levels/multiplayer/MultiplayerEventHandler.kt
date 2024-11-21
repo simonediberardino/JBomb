@@ -1,6 +1,7 @@
 package game.domain.level.levels.multiplayer
 
 import game.JBomb
+import game.data.data.DataInputOutput
 import game.domain.events.game.MultiplayerKillsEvent
 import game.domain.level.behavior.RespawnDeadPlayerBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
@@ -49,6 +50,8 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
             when (JBomb.match.player) {
                 actualAttacker -> victim.properties.name?.let { Localization.get(Localization.YOU_KILLED).replace("%name%", it) }
                     ?.let {
+                        DataInputOutput.getInstance().increaseKills()
+
                         //ToastUtils.show(it, false)
                     }
                 victim -> {
