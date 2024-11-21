@@ -38,14 +38,13 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
     }
 
     private fun getClosestEnemyInRange(): BomberEntity? {
-        val players = JBomb.match.players - entity
-
-        val playersInRange = players.groupBy {
-            it.info.position.distanceTo(entity.info.position)
-        }.filter { it.key < GRID_SIZE * 5 }
-
-        val closestPlayer = playersInRange.minByOrNull { it.key }
-        return closestPlayer?.value?.first()
+        val closestPlayer = JBomb.match.players
+            .asSequence() // Use a sequence for lazy evaluation
+            .filter { it != entity }
+            .map { it to it.info.position.distanceTo(entity.info.position) } // Pair player with distance
+            .filter { (_, distance) -> distance < GRID_SIZE * 5 } // Filter by range
+            .minByOrNull { (_, distance) -> distance } // Find the closest
+        return closestPlayer?.first // Extract the player
     }
 
     // TODO
