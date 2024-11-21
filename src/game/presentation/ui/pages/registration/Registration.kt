@@ -63,7 +63,6 @@ class Registration(cardLayout: CardLayout?, parent: JPanel?, frame: JBombFrame?)
             insets = Insets(5, 0, 5, 0)  // Set vertical spacing between components
         }
 
-        // Add the "Welcome" red button to the panel first
         gbc.gridx = 0  // First column
         gbc.gridy = 0  // First row
         gbc.fill = GridBagConstraints.NONE  // Don't stretch the button horizontally
