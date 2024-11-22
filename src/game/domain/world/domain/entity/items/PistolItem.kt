@@ -20,7 +20,7 @@ import game.utils.time.now
 
 class PistolItem(private var bullets: Int = 5) : UsableItem(), Explosive {
     companion object {
-        val explosionSize = 3
+        val explosionSize = 2
     }
 
     override val explosionObstacles: Set<Class<out Entity>>
