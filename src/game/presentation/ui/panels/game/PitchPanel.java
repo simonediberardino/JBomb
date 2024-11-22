@@ -97,6 +97,9 @@ public class PitchPanel extends JPanel implements Observer2 {
     private int cameraOffsetX;
     private int cameraOffsetY;
 
+    // Create an executor service for parallel computation
+    private final ExecutorService executor = Executors.newFixedThreadPool(RuntimeProperties.INSTANCE.getProcessors());
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -155,9 +158,6 @@ public class PitchPanel extends JPanel implements Observer2 {
         int visibleAreaX2 = cameraOffsetX + pitchPanelSize.width;
         int visibleAreaY2 = cameraOffsetY + pitchPanelSize.height;
 
-        // Create an executor service for parallel computation
-        ExecutorService executor = Executors.newFixedThreadPool(RuntimeProperties.INSTANCE.getProcessors());
-
         // Store the preprocessed data for each entity
         List<CompletableFuture<EntityDrawData>> futures = new ArrayList<>();
 
@@ -183,19 +183,17 @@ public class PitchPanel extends JPanel implements Observer2 {
             futures.add(future);
         }
 
-        // Wait for all preprocessing to finish
-        List<EntityDrawData> drawDataList = futures.parallelStream()
-                .map(CompletableFuture::join)
-                .filter(Objects::nonNull) // Filter out any entities that are not visible
-                .collect(Collectors.toList());
-
         // Draw the entities sequentially in the correct order
-        for (EntityDrawData drawData : drawDataList) {
+        for (CompletableFuture<EntityDrawData> future : futures) {
+            if (future == null) continue;
+
+            EntityDrawData drawData = future.join();
+
+            if (drawData == null || drawData.getEntity() == null)
+                continue;
+
             drawEntity(g2d, drawData.getEntity(), drawData.getOffsetX(), drawData.getOffsetY());
         }
-
-        // Shutdown the executor service
-        executor.shutdown();
 
         // Draw labels for other entities
         for (Entity e : setEntities) {

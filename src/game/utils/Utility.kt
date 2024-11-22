@@ -74,12 +74,12 @@ object Utility {
      * @return The loaded image, or null if the file could not be found or read.
      */
 
-    fun loadImage(fileName: String): BufferedImage? {
+    fun loadImage(fileName: String): BufferedImage {
         var fileName = fileName
         val cache = Cache.instance
 
-        if (cache.hasInCache(fileName)) {
-            return cache.queryCache<BufferedImage>(fileName) ?: throw RuntimeException()
+        cache.queryCache<BufferedImage>(fileName)?.let {
+            return it ?: throw RuntimeException()
         }
 
         // Use ClassLoader to load the image from the JAR file

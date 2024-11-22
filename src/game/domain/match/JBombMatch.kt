@@ -310,6 +310,7 @@ class JBombMatch(
      * Returns a copy of the list of _entities to prevent external modifications.
      */
     fun getEntities(): List<Entity> = synchronized(_entitiesList) { LinkedList(_entitiesList) }
+
     fun getWaitingEntities(): List<Entity> = synchronized(_waitingEntitiesList) { LinkedList(_waitingEntitiesList) }
     fun getWaitingAndSpawnedEntities(): List<Entity> =
         getWaitingEntities() + getEntities()
