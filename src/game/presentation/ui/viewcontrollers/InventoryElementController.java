@@ -28,7 +28,7 @@ public class InventoryElementController {
 
     public void setNumItems(String numItems) {
         model.setNumItems(Objects.equals(numItems, String.valueOf(Integer.MAX_VALUE)) ? "∞" : numItems);
-        updateView();
+        view.setNumItems(model.getNumItems());
     }
 
     public void setImagePath(String imagePath) {

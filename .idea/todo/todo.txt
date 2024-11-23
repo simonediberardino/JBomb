@@ -1,3 +1,4 @@
 - bots shoot and BFS
 - test combining items
 - kills not count mp
+- todo cache every image (maybe)

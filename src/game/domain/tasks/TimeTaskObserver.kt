@@ -6,6 +6,7 @@ import game.domain.tasks.observer.Observable2
 import game.domain.tasks.observer.Observer2
 import game.utils.Utility
 import game.utils.time.now
+import kotlinx.coroutines.launch
 
 class TimeTaskObserverAndObservable : Observer2 {
     private var lastTimeUpdate: Long = 0
@@ -19,7 +20,9 @@ class TimeTaskObserverAndObservable : Observer2 {
             lastTimeUpdate = now()
             lastNotifiedTime += 1000
 
-            TimeHandlerBehavior(lastNotifiedTime).invoke()
+            JBomb.match.scope.launch {
+                TimeHandlerBehavior(lastNotifiedTime).invoke()
+            }
         }
     }
 }
