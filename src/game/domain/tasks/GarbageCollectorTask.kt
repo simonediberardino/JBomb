@@ -20,6 +20,6 @@ class GarbageCollectorTask {
     }
 
     companion object {
-        private const val DELAY_MS = 5 * 1000
+        private const val DELAY_MS = 50 * 1000
     }
 }

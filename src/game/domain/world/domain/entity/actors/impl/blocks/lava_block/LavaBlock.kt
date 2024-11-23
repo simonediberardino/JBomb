@@ -1,8 +1,10 @@
 package game.domain.world.domain.entity.actors.impl.blocks.lava_block
 
 import game.JBomb
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityImageModel
 import game.domain.world.domain.entity.actors.abstracts.base.IEntityGraphicsBehavior
+import game.domain.world.domain.entity.actors.abstracts.base.graphics.DefaultEntityGraphicsBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.graphics.PeriodicGraphicsBehavior
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.blocks.lava_block.logic.LavaBlockLogic
@@ -10,6 +12,7 @@ import game.domain.world.domain.entity.actors.impl.blocks.lava_block.properties.
 import game.domain.world.domain.entity.actors.impl.blocks.lava_block.state.LavaBlockState
 import game.domain.world.domain.entity.geo.Coordinates
 import game.utils.file_system.Paths.blocksFolder
+import java.awt.image.BufferedImage
 
 open class LavaBlock(
     hasSpawnDelay: Boolean,
@@ -44,9 +47,20 @@ open class LavaBlock(
         entitiesAssetsPath = "$blocksFolder/lava/lavablock%format%.png"
     )
 
-    override val graphicsBehavior: IEntityGraphicsBehavior = object : PeriodicGraphicsBehavior() {
-        override val imagesCount: Int = 3
-        override val allowUiState: Boolean = false
+    /*override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
+        override fun getImage(entity: Entity): BufferedImage? {
+            TODO("Not yet implemented")
+        }
+
+    }*/
+
+    override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
+        override fun getImage(entity: Entity): BufferedImage? {
+            return loadAndSetImage(
+                entity = entity,
+                imagePath = "$blocksFolder/lava/lavablock_0.png"
+            )
+        }
     }
 
     override val state: LavaBlockState = LavaBlockState(entity = this, canExpand = canExpand)

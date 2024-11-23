@@ -2,9 +2,9 @@
 <resources>
     <config
             full_screen="true"
-            logs_base="true"
-            logs_error="true"
-            logs_warning="true"
+            logs_base="false"
+            logs_error="false"
+            logs_warning="false"
             bots_move="true">
     </config>
 </resources>
