@@ -2,7 +2,9 @@ package game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.logic
 
 import game.JBomb
 import game.audio.AudioManager
+import game.audio.AudioManager.Companion.instance
 import game.audio.SoundModel
+import game.domain.events.models.RunnablePar
 import game.domain.level.behavior.GameBehavior
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.enemies.boss.base.logic.BossEntityLogic
@@ -15,6 +17,7 @@ import game.utils.Utility
 import game.utils.dev.Log
 import game.utils.time.now
 import game.utils.ui.GradientCallbackHandler
+import java.awt.Color
 import java.awt.event.ActionEvent
 import java.util.function.Consumer
 import javax.swing.SwingUtilities
@@ -171,12 +174,12 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
                 timer.addActionListener { e: ActionEvent? ->
                     val rand = (Math.random() * 10000).toInt()
                     when (count) {
-                        0, 2, 4 -> PitchPanel.turnOffLights()
-                        1, 3 -> PitchPanel.turnOnLights()
+                        0, 2, 4 -> turnOffLights()
+                        1, 3 -> turnOnLights()
                     }
-                    timer.setDelay(rand)
+                    timer.delay = rand
                     if (count >= 5 || JBomb.isGameEnded) {
-                        PitchPanel.turnOnLights()
+                        turnOnLights()
                         timer.stop()
                     }
                     count++
@@ -185,6 +188,31 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
                 timer.start()
             }
         }
+    }
+
+    private fun turnOffLights() {
+        val match = JBomb.match
+        if (!match.gameState) return
+        val pitchPanel = JBomb.JBombFrame.pitchPanel
+        instance.play(SoundModel.LIGHT_GLITCH)
+        pitchPanel.addGraphicsCallback(
+            GhostBoss::class.java.simpleName, object : RunnablePar {
+                override fun <T> execute(par: T): Any? {
+                    val g2d = JBomb.JBombFrame.pitchPanel.g2d
+                    g2d.color = Color(0f, 0f, 0f, 0.9f)
+                    g2d.fillRect(0, 0, JBomb.JBombFrame.height, JBomb.JBombFrame.width)
+                    return null
+                }
+            }
+        )
+    }
+
+    private fun turnOnLights() {
+        val match = JBomb.match
+        if (!match.gameState) return
+        instance.play(SoundModel.LIGHT_GLITCH)
+        val pitchPanel = JBomb.JBombFrame.pitchPanel
+        pitchPanel.removeGraphicsCallback(GhostBoss::class.java.simpleName)
     }
 
     companion object {

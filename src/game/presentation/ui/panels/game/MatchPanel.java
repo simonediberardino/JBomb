@@ -89,8 +89,7 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
                 widthSides,
                 (int) pitchPanel.getMaximumSize().getHeight(),
                 borderImages[0],
-                borderSize,
-                identifier
+                borderSize
         );
 
         // create top panel and set the dimensions, the image, and the width of the left panel
@@ -167,16 +166,19 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
      * @param height     the height of the panel
      * @param image      the image to be displayed
      * @param borderSize the size of the border for the image
-     * @param identifier
      * @return the JPanel for the left side of the game window
      */
-    private JPanel createLeftPanel(int width, int height, Image image, int borderSize, String identifier) {
+    private JPanel createLeftPanel(
+            int width,
+            int height,
+            Image image,
+            int borderSize
+    ) {
         // Create a new JPanel for the left side of the game window
         JPanel leftPanel = new JPanel() {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
-                System.out.println("Repainting left");
                 // Draw the image scaled to the specified border size on the left side of the panel
                 g.drawImage(image.getScaledInstance(borderSize, (int) frame.getPreferredSize().getHeight(), 1), pitchPanel.getX() - borderSize, 0, null);
             }

@@ -1,16 +1,13 @@
 package game.presentation.ui.panels.game;
 
 import game.JBomb;
-import game.audio.AudioManager;
 import game.domain.events.models.RunnablePar;
 import game.domain.level.levels.Level;
-import game.domain.match.JBombMatch;
 import game.domain.tasks.observer.Observable2;
 import game.domain.tasks.observer.Observer2;
 import game.domain.world.domain.entity.actors.abstracts.base.Entity;
 import game.domain.world.domain.entity.actors.abstracts.character.Character;
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player;
-import game.domain.world.domain.entity.actors.impl.enemies.boss.ghost.GhostBoss;
 import game.domain.world.domain.entity.geo.Coordinates;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 import game.properties.RuntimeProperties;
@@ -25,10 +22,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
-import static game.audio.SoundModel.LIGHT_GLITCH;
 import static game.values.Dimensions.FONT_SIZE_LITTLE;
 
 /**
@@ -59,35 +53,6 @@ public class PitchPanel extends JPanel implements Observer2 {
         JBomb.match.getGameTickerObservable().register(this);
 
         repaint();
-    }
-
-    public static void turnOffLights() {
-        JBombMatch match = JBomb.match;
-        if (match == null || !match.getGameState()) return;
-
-        PitchPanel pitchPanel = JBomb.JBombFrame.getPitchPanel();
-        AudioManager.getInstance().play(LIGHT_GLITCH);
-
-        pitchPanel.addGraphicsCallback(
-                GhostBoss.class.getSimpleName(), new RunnablePar() {
-                    @Override
-                    public <T> Object execute(T par) {
-                        Graphics2D g2d = JBomb.JBombFrame.getPitchPanel().g2d;
-                        g2d.setColor(new Color(0, 0, 0, 0.9f));
-                        g2d.fillRect(0, 0, JBomb.JBombFrame.getHeight(), JBomb.JBombFrame.getWidth());
-                        return null;
-                    }
-                }
-        );
-    }
-
-    public static void turnOnLights() {
-        JBombMatch match = JBomb.match;
-        if (match == null || !match.getGameState()) return;
-
-        AudioManager.getInstance().play(LIGHT_GLITCH);
-        PitchPanel pitchPanel = JBomb.JBombFrame.getPitchPanel();
-        pitchPanel.removeGraphicsCallback(GhostBoss.class.getSimpleName());
     }
 
     public Dimension getPanelDimensions() {
@@ -170,10 +135,12 @@ public class PitchPanel extends JPanel implements Observer2 {
                     int entityY = e.getInfo().getPosition().getY();
                     int entitySize = e.getState().getSize();
 
+                    Image image = e.getGraphicsBehavior().getImage(e);
+
                     // Check if entity is within the visible area (partially or fully)
                     if (entityX + entitySize >= visibleAreaX1 && entityX <= visibleAreaX2 &&
                             entityY + entitySize >= visibleAreaY1 && entityY <= visibleAreaY2) {
-                        return new EntityDrawData(e, finalCameraOffsetX, finalCameraOffsetY);
+                        return new EntityDrawData(g2d, e, finalCameraOffsetX, finalCameraOffsetY, image);
                     }
                     return null;
                 } catch (ConcurrentModificationException ex) {
@@ -192,7 +159,7 @@ public class PitchPanel extends JPanel implements Observer2 {
             if (drawData == null || drawData.getEntity() == null)
                 continue;
 
-            drawEntity(g2d, drawData.getEntity(), drawData.getOffsetX(), drawData.getOffsetY());
+            drawEntity(drawData);
         }
 
         // Draw labels for other entities
@@ -244,34 +211,35 @@ public class PitchPanel extends JPanel implements Observer2 {
         SwingUtilities.paintComponent(g2d, playerButton, this, buttonX, buttonY, buttonSize.width, buttonSize.height);
     }
 
-
-    private void drawEntity(Graphics2D g2d, Entity e, int cameraOffsetX, int cameraOffsetY) {
-        if (e.getState().isInvisible()) {
+    private void drawEntity(
+            EntityDrawData entityDrawData
+    ) {
+        if (entityDrawData.getEntity().getState().isInvisible()) {
             return;
         }
-        String path = e.getImage().getImagePath();
-        float widthRatio = e.getGraphicsBehavior().getHitboxSizeToWidthRatio(e, path);
-        float heightRatio = e.getGraphicsBehavior().getHitboxSizeToHeightRatio(e, path);
-        int paddingWidth = e.getGraphicsBehavior().calculateAndGetPaddingWidth(e, widthRatio);
-        int paddingHeight = e.getGraphicsBehavior().calculateAndGetPaddingTop(e, heightRatio);
+        String path = entityDrawData.getEntity().getImage().getImagePath();
+        float widthRatio = entityDrawData.getEntity().getGraphicsBehavior().getHitboxSizeToWidthRatio(entityDrawData.getEntity(), path);
+        float heightRatio = entityDrawData.getEntity().getGraphicsBehavior().getHitboxSizeToHeightRatio(entityDrawData.getEntity(), path);
+        int paddingWidth = entityDrawData.getEntity().getGraphicsBehavior().calculateAndGetPaddingWidth(entityDrawData.getEntity(), widthRatio);
+        int paddingHeight = entityDrawData.getEntity().getGraphicsBehavior().calculateAndGetPaddingTop(entityDrawData.getEntity(), heightRatio);
 
         try {
-            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, e.getState().getAlpha());
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, entityDrawData.getEntity().getState().getAlpha());
             g2d.setComposite(ac);
         } catch (Exception exception) {
-            Log.INSTANCE.e("Alpha value error " + e.getState().getAlpha());
+            Log.INSTANCE.e("Alpha value error " + entityDrawData.getEntity().getState().getAlpha());
             exception.printStackTrace();
         }
 
-        int x = e.getInfo().getPosition().getX() - cameraOffsetX; // Apply camera offset
-        int y = e.getInfo().getPosition().getY() - paddingHeight - cameraOffsetY; // Apply camera offset
+        int x = entityDrawData.getEntity().getInfo().getPosition().getX() - cameraOffsetX; // Apply camera offset
+        int y = entityDrawData.getEntity().getInfo().getPosition().getY() - paddingHeight - cameraOffsetY; // Apply camera offset
 
         g2d.drawImage(
-                e.getGraphicsBehavior().getImage(e),
+                entityDrawData.getEntityImage(),
                 x - paddingWidth,
                 y,
-                (int) Math.ceil(e.getState().getSize() / widthRatio),
-                (int) Math.ceil(e.getState().getSize() / heightRatio),
+                (int) Math.ceil(entityDrawData.getEntity().getState().getSize() / widthRatio),
+                (int) Math.ceil(entityDrawData.getEntity().getState().getSize() / heightRatio),
                 this
         );
 
@@ -329,27 +297,46 @@ public class PitchPanel extends JPanel implements Observer2 {
     }
 
     static class EntityDrawData {
-        private final Entity entity;
-        private final int offsetX;
-        private final int offsetY;
+        private final Graphics2D g2d;
+        private final Entity e;
+        private final int cameraOffsetX;
+        private final int cameraOffsetY;
+        private final Image entityImage;
 
-        public EntityDrawData(Entity entity, int offsetX, int offsetY) {
-            this.entity = entity;
-            this.offsetX = offsetX;
-            this.offsetY = offsetY;
+        public EntityDrawData(
+                Graphics2D g2d,
+                Entity e,
+                int cameraOffsetX,
+                int cameraOffsetY,
+                Image entityImage
+        ) {
+            this.g2d = g2d;
+            this.e = e;
+            this.cameraOffsetX = cameraOffsetX;
+            this.cameraOffsetY = cameraOffsetY;
+            this.entityImage = entityImage;
+        }
+
+        public Graphics2D getG2d() {
+            return g2d;
         }
 
         public Entity getEntity() {
-            return entity;
+            return e;
         }
 
-        public int getOffsetX() {
-            return offsetX;
+        public int getCameraOffsetX() {
+            return cameraOffsetX;
         }
 
-        public int getOffsetY() {
-            return offsetY;
+        public int getCameraOffsetY() {
+            return cameraOffsetY;
+        }
+
+        public Image getEntityImage() {
+            return entityImage;
         }
     }
+
 
 }

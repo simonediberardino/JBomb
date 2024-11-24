@@ -51,13 +51,10 @@ class ClownLogic(
     override fun onSpawn() {
         val gameBehavior: GameBehavior = object : GameBehavior() {
             override fun hostBehavior() {
-                val panelSize = JBomb
-                        .JBombFrame
-                        .pitchPanel
-                        .preferredSize
+                val mapDimension = JBomb.match.currentLevel.info.mapDimension
 
-                val y = panelSize.getHeight().toInt() - entity.state.size
-                val x = (panelSize.getWidth() / 2 - entity.state.size / 2).toInt()
+                val y = mapDimension.getHeight().toInt() - entity.state.size
+                val x = (mapDimension.getWidth() / 2 - entity.state.size / 2).toInt()
 
                 entity.logic.move(Coordinates(x, y))
             }

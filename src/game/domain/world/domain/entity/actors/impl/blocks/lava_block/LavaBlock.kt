@@ -47,20 +47,9 @@ open class LavaBlock(
         entitiesAssetsPath = "$blocksFolder/lava/lavablock%format%.png"
     )
 
-    /*override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage? {
-            TODO("Not yet implemented")
-        }
-
-    }*/
-
-    override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {
-        override fun getImage(entity: Entity): BufferedImage? {
-            return loadAndSetImage(
-                entity = entity,
-                imagePath = "$blocksFolder/lava/lavablock_0.png"
-            )
-        }
+    override val graphicsBehavior: IEntityGraphicsBehavior = object : PeriodicGraphicsBehavior() {
+        override val imagesCount: Int = 3
+        override val allowUiState: Boolean = false
     }
 
     override val state: LavaBlockState = LavaBlockState(entity = this, canExpand = canExpand)

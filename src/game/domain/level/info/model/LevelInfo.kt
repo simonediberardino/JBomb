@@ -41,7 +41,7 @@ abstract class LevelInfo {
     abstract val playerSpawnCoordinates: Coordinates
     abstract val isLastLevelOfWorld: Boolean
     abstract val availableAnimals: Array<Class<out AnimalEntity>>
-    abstract var mapDimension: Dimension?
+    abstract var mapDimension: Dimension
     abstract val defaultWeapons: List<UsableItem>?
     abstract val cameraMoveEnabled: Boolean
     abstract val networkName: String

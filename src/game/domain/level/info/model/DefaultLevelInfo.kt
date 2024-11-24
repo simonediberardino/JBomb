@@ -29,7 +29,7 @@ abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
         get() = 0
     override val availableAnimals: Array<Class<out AnimalEntity>>
         get() = arrayOf(FoxAnimal::class.java)
-    override var mapDimension: Dimension? = Dimension(Utility.px(930), Utility.px(800))
+    override var mapDimension: Dimension = Dimension(Utility.px(930), Utility.px(800))
     override val cameraMoveEnabled: Boolean = true
     override val networkName: String = "World $worldId Level $levelId"
     override val isTimeEnabled: Boolean = false

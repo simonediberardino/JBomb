@@ -1,4 +1,5 @@
-- bots shoot and BFS
-- test combining items
-- kills not count mp
-- todo cache every image (maybe)
+- power up
+- bot path power up
+- scaled images cache
+- clown fixed position (test)
+- direzioni cappello
