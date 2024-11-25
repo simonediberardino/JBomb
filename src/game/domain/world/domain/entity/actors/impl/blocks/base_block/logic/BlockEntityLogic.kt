@@ -9,7 +9,6 @@ import game.domain.world.domain.entity.actors.abstracts.entity_interactable.Enti
 import game.domain.world.domain.entity.actors.impl.blocks.base_block.Block
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.*
@@ -103,9 +102,9 @@ open class BlockEntityLogic(
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {}
 
-    override fun interactWith(e: Entity?) {}
+    override fun interactWith(e: Entity?, spawnInteract: Boolean) {}
 
-    override fun doInteractWith(e: Entity?) {}
+    override fun doInteractWith(e: Entity?, spawnInteract: Boolean) {}
 
 
 }

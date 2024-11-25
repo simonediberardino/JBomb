@@ -14,7 +14,7 @@ open class ExplosionLogic(
 ) : MovingEntityLogic(entity), IExplosionLogic {
     override fun onAttackReceived(damage: Int, attacker: EntityInteractable) {}
 
-    override fun doInteractWith(e: Entity?) {
+    override fun doInteractWith(e: Entity?, spawnInteract: Boolean) {
         e?.logic?.onExplosion(entity)
     }
 

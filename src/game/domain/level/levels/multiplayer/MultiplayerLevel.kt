@@ -1,5 +1,6 @@
 package game.domain.level.levels.multiplayer
 
+import game.JBomb
 import game.domain.level.eventhandler.model.LevelEventHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.levels.Level
@@ -12,6 +13,8 @@ import kotlinx.coroutines.runBlocking
 abstract class MultiplayerLevel : Level() {
     override val gameHandler: GameHandler = MultiplayerGameHandler(this)
     override val eventHandler: LevelEventHandler = MultiplayerEventHandler()
+    open val powerupHandler = MultiplayerPowerupHandler()
+
     abstract val mapIdXml: String
 
     val levelGenerationData: LevelGenerationData by lazy {
@@ -21,6 +24,7 @@ abstract class MultiplayerLevel : Level() {
     }
 
     override fun onStartLevel() {
+        powerupHandler.spawnLoop()
         currLevel?.info?.mapDimension = levelGenerationData.mapDimension ?: return
     }
 

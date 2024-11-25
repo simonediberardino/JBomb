@@ -14,7 +14,6 @@ import game.network.events.forward.SpawnEntityEventForwarder
 import game.network.events.forward.UpdateInfoEventForwarder
 import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
-import game.utils.dev.Log
 import game.utils.time.now
 
 abstract class EntityLogic(
@@ -62,7 +61,7 @@ abstract class EntityLogic(
         }
 
         Coordinates.getEntitiesOnBlock(entity.info.position).forEach {
-            entity.logic.interactWith(it)
+            entity.logic.interactWith(it, true)
         }
     }
 

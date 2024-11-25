@@ -38,7 +38,7 @@ abstract class EntityInteractableLogic(
         onMove(coordinates)
     }
 
-    final override fun interactWith(e: Entity?) {
+    final override fun interactWith(e: Entity?, spawnInteract: Boolean) {
         if (e == null) {
             interactWithAndUpdateDelay(null)
             return
@@ -53,10 +53,10 @@ abstract class EntityInteractableLogic(
         // SUPER TODO CHECK THIS!
         if (!canInteractWith(e) || !e.logic.canBeInteractedBy(entity)) return
 
-        entity.logic.interactWithAndUpdateDelay(e)
+        entity.logic.interactWithAndUpdateDelay(e, spawnInteract)
 
         if (e is EntityInteractable) {
-            e.logic.interactWithAndUpdateDelay(entity)
+            e.logic.interactWithAndUpdateDelay(entity, spawnInteract)
         }
     }
 
@@ -67,7 +67,7 @@ abstract class EntityInteractableLogic(
      * @param e The entity to interact with.
      */
     @Synchronized
-    override fun interactWithAndUpdateDelay(e: Entity?) {
+    override fun interactWithAndUpdateDelay(e: Entity?, spawnInteract: Boolean) {
         // Check if enough time has passed since the last interaction
         if (timePassed(entity.state.lastInteractionTime) < EntityInteractable.INTERACTION_DELAY_MS) {
             return // If not enough time has passed, exit the function
@@ -77,7 +77,7 @@ abstract class EntityInteractableLogic(
         entity.state.lastInteractionTime = now()
 
         // Interact with the entity
-        doInteractWith(e)
+        doInteractWith(e, spawnInteract)
 
         // If the entity is an instance of EntityInteractable, update the last interaction for this entity
         if (e is EntityInteractable) {
@@ -184,7 +184,7 @@ abstract class EntityInteractableLogic(
                     if (canInteract || isObstacle(it))
                         collide(it)
 
-                    // if can interact, interacft
+                    // if can interact, interact
                     if (canInteract) {
                         interactWith(it)
                     }

@@ -82,6 +82,7 @@ open class BomberEntityState(
 
     var forceBombsSolid: Boolean = false
     var activePowerUps: MutableList<Class<out PowerUp>> = mutableListOf()
+    var activePowerUpsInstances: MutableList<PowerUp> = mutableListOf()
     var temporaryActivePowerUps: MutableSet<Class<out PowerUp>> = mutableSetOf()
 
     private val _weapons = mutableListOf<UsableItem>()

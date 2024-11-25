@@ -1,5 +1,4 @@
-- power up
-- bot path power up
+
 - scaled images cache
-- clown fixed position (test)
-- direzioni cappello
+- handle auto server restart
+- fix client controller handler

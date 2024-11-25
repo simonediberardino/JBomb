@@ -9,10 +9,9 @@ import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.utils.Utility
-import game.utils.dev.Log
 
 open class AiEnemyLogic(override val entity: Enemy) : AiLogic(entity = entity) {
-    override fun doInteractWith(e: Entity?) {
+    override fun doInteractWith(e: Entity?, spawnInteract: Boolean) {
         (e as? BomberEntity)?.let {
             attack(it)
         }

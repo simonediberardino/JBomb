@@ -5,6 +5,7 @@ import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.abstracts.character.logic.CharacterEntityLogic
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.AiEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.ai_enemy.logic.IAiLogic
 import game.domain.world.domain.entity.geo.Coordinates
@@ -17,6 +18,9 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
     private val CHANGE_DIRECTION_RATE = 10 // percentage
     protected var destination: Coordinates? = null
 
+    override fun onCollision(e: Entity) {
+        super.onCollision(e)
+    }
     /**
      * Chooses a new direction for the agent to move in, and sends the corresponding command to the game engine.
      *
@@ -72,7 +76,7 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
         var moved = false
         var direction: Direction? = null
 
-        if (abs(position.x - destination.x) > stepSize) {
+        if (abs(position.x - destination.x) > stepSize / 2) {
             direction = if (position.x < destination.x) {
                 Direction.RIGHT
             } else {
@@ -81,7 +85,7 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
             moved = true
         }
 
-        if (abs(position.y - destination.y) > stepSize) {
+        if (abs(position.y - destination.y) > stepSize / 2) {
             direction = if (position.y < destination.y) {
                 Direction.DOWN
             } else {
@@ -108,7 +112,12 @@ open class AiLogic(override val entity: Character) : CharacterEntityLogic(entity
         move(randomDirection)
     }
 
-    override fun doInteractWith(e: Entity?) {}
+    override fun doInteractWith(e: Entity?, spawnInteract: Boolean) {
+        if (e is BomberEntity)
+            return
+
+        e?.logic?.interactWith(entity)
+    }
 
     override fun observerUpdate(arg: Observable2.ObserverParam) {
         when (arg.identifier) {

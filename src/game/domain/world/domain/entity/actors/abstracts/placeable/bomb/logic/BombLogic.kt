@@ -22,7 +22,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
      *
      * @param e The entity to interact with.
      */
-    override fun doInteractWith(e: Entity?) {
+    override fun doInteractWith(e: Entity?, spawnInteract: Boolean) {
         explode()
     }
 

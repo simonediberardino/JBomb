@@ -14,5 +14,5 @@ interface IEntityInteractableLogic : IEntityLogic {
     fun attack(e: Entity?)
     fun isObstacle(e: Entity?): Boolean
     fun canInteractWith(e: Entity?): Boolean
-    fun interactWithAndUpdateDelay(e: Entity?)
+    fun interactWithAndUpdateDelay(e: Entity?, spawnInteract: Boolean = false)
 }

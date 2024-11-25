@@ -29,8 +29,6 @@ class SpeedPowerUp : PowerUp {
         override fun cancel(player: BomberEntity) {
             player.state.speed = 1f
         }
-
-        
     }
 
     override val tag: String

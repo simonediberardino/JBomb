@@ -8,9 +8,11 @@ import game.domain.world.domain.entity.actors.impl.enemies.boss.base.Boss
 import game.domain.world.domain.entity.items.BombItem
 import game.domain.world.domain.entity.items.PistolItem
 import game.domain.world.domain.entity.items.UsableItem
+import game.domain.world.domain.entity.pickups.powerups.*
+import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.localization.Localization
 
-open class MultiplayerLevelInfo(private val mapId: Int, level: Level): DefaultLevelInfo(level) {
+open class MultiplayerLevelInfo(private val mapId: Int, level: Level) : DefaultLevelInfo(level) {
     override val boss: Boss?
         get() = null
     override val startEnemiesCount: Int
@@ -33,9 +35,17 @@ open class MultiplayerLevelInfo(private val mapId: Int, level: Level): DefaultLe
     override val defaultWeapons: List<UsableItem>
         get() = listOf(BombItem(), PistolItem(Integer.MAX_VALUE))
 
+    override val allowedPerks: Array<Class<out PowerUp>> = arrayOf(
+        SpeedPowerUp::class.java,
+        LivesPowerUp::class.java,
+        RemoteControlPowerUp::class.java,
+        BlockMoverPowerUp::class.java,
+        HammerPowerUp::class.java,
+    )
+
     override val networkName: String = "Multiplayer: ${level.toString()}"
     override val isTimeEnabled: Boolean = true
-    override val timeLimitMinutes: Int = 1
+    override val timeLimitMinutes: Int = 4
     override val killCountEnabled: Boolean = true
     override val scoreEnabled: Boolean = false
     override val startBotCount: Int = 3

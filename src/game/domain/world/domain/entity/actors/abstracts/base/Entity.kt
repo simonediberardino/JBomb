@@ -21,8 +21,8 @@ import java.util.*
 interface IEntityLogic {
     fun damageAnimation()
     fun onAttackReceived(damage: Int, attacker: EntityInteractable)
-    fun interactWith(e: Entity?)
-    fun doInteractWith(e: Entity?)
+    fun interactWith(e: Entity?, spawnInteract: Boolean = false)
+    fun doInteractWith(e: Entity?, spawnInteract: Boolean)
     fun eliminated()
     fun despawn()
     fun spawn()

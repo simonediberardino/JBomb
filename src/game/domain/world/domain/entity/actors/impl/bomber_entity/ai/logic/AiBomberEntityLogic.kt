@@ -2,13 +2,14 @@ package game.domain.world.domain.entity.actors.impl.bomber_entity.ai.logic
 
 import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.ai.logic.AiLogic
+import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb.Companion.PLACE_INTERVAL
 import game.domain.world.domain.entity.actors.impl.bomber_entity.ai.AiBomberEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.items.PistolItem
-import game.presentation.ui.panels.game.PitchPanel
+import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.presentation.ui.panels.game.PitchPanel.GRID_SIZE
 import game.utils.Utility
 import game.utils.time.now
@@ -25,6 +26,10 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
         JBomb.match.currentLevel.info.defaultWeapons?.forEach {
             JBomb.match.give(entity, it)
         }
+
+        entity.state.activePowerUpsInstances.forEach {
+            it.logic.cancel(entity)
+        }
     }
 
     override fun onAdded() {
@@ -37,22 +42,39 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
         JBomb.match.players.removeIf { e -> e.info.id == entity.info.id }
     }
 
-    private fun getClosestEnemyInRange(): BomberEntity? {
-        val closestPlayer = JBomb.match.players
-            .asSequence() // Use a sequence for lazy evaluation
-            .filter { it != entity }
+    private fun getClosestEnemyOrObjectiveInRange(): EntityInteractable? {
+        val players = ArrayList(JBomb.match.players)
+
+        // Find the closest player within range
+        val closestPlayer = players
+            .asSequence()
+            .filter { it != entity } // Exclude the current entity
             .map { it to it.info.position.distanceTo(entity.info.position) } // Pair player with distance
             .filter { (_, distance) -> distance < GRID_SIZE * 5 } // Filter by range
-            .minByOrNull { (_, distance) -> distance } // Find the closest
-        return closestPlayer?.first // Extract the player
+            .minByOrNull { (_, distance) -> distance } // Find the closest player
+
+        if (closestPlayer != null) {
+            return closestPlayer.first // Return the player if found
+        }
+
+        val entities = ArrayList(JBomb.match.getEntities())
+
+        // If no players are found, look for the closest power-up
+        val closestPowerUp = entities
+            .filterIsInstance<PowerUp>() // Only consider PowerUp entities
+            .map { it to it.info.position.distanceTo(entity.info.position) } // Pair PowerUp with distance
+            .filter { (_, distance) -> distance < GRID_SIZE * 5 } // Filter by range
+            .minByOrNull { (_, distance) -> distance } // Find the closest power-up
+
+        return closestPowerUp?.first // Return the power-up if found
     }
 
     // TODO
     // Replace it with dijkstra
     private fun targetClosestEnemy() {
-        if (Utility.timePassed(lastScanEnemyTime) > 500L) {
+        if (Utility.timePassed(lastScanEnemyTime) > 1200) {
             lastScanEnemyTime = now()
-            val closestPlayerInRange = getClosestEnemyInRange()
+            val closestPlayerInRange = getClosestEnemyOrObjectiveInRange()
             destination = closestPlayerInRange?.info?.position
         }
     }
@@ -62,7 +84,7 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
         lastScanShootTime = now()
 
         val currentPos = Coordinates.roundCoordinates(entity.info.position)
-        val players = JBomb.match.players
+        val players = ArrayList(JBomb.match.players)
 
         val foundTarget = players.any { player ->
             if (player == entity) return@any false

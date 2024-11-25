@@ -32,8 +32,8 @@ class ClownNose : Orb {
     }
 
     override val logic: OrbEntityLogic = object: OrbEntityLogic(entity = this) {
-        override fun doInteractWith(e: Entity?) {
-            super.doInteractWith(e)
+        override fun doInteractWith(e: Entity?, spawnInteract: Boolean) {
+            super.doInteractWith(e, spawnInteract)
 
             if (isObstacle(e)) {
                 attack(entity)

@@ -11,7 +11,7 @@ import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.presentation.ui.panels.game.PitchPanel
 
 open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity), IBomberEntityLogic {
-    override fun doInteractWith(e: Entity?) {
+    override fun doInteractWith(e: Entity?, spawnInteract: Boolean) {
         e?.logic?.interactWith(entity)
     }
 
@@ -20,6 +20,10 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
         // Give the current entity a BombItem when it is spawned in the match.
         JBomb.match.currentLevel.info.defaultWeapons?.forEach {
             JBomb.match.give(entity, it)
+        }
+
+        entity.state.activePowerUpsInstances.forEach {
+            it.logic.cancel(entity)
         }
     }
 
