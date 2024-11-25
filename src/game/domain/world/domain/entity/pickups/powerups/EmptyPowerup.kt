@@ -25,7 +25,9 @@ class EmptyPowerup
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {}
-        override fun cancel(player: BomberEntity) {}
+        override fun cancel(player: BomberEntity) {
+            super.cancel(player)
+        }
     }
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {

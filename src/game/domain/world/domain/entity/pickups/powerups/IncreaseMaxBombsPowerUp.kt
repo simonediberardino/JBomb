@@ -32,7 +32,9 @@ class IncreaseMaxBombsPowerUp
             UpdateMaxBombsEvent().invoke(player.state.maxBombs + 1, true)
         }
 
-        override fun cancel(player: BomberEntity) {}
+        override fun cancel(player: BomberEntity) {
+            super.cancel(player)
+        }
 
         override fun canPickUp(bomberEntity: BomberEntity): Boolean =
                 DataInputOutput.getInstance().obtainedBombs < JBomb.match.currentLevel.info.maxBombs && super.canPickUp(bomberEntity)

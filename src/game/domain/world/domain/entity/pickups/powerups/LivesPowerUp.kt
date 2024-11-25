@@ -29,9 +29,9 @@ class LivesPowerUp : PowerUp {
             DataInputOutput.getInstance().increaseLives()
         }
 
-        override fun cancel(player: BomberEntity) {}
-
-        
+        override fun cancel(player: BomberEntity) {
+            super.cancel(player)
+        }
     }
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {

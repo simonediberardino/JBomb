@@ -29,7 +29,9 @@ class FirePowerUp : PowerUp {
             ExplosionLengthPowerUpEvent().invoke(player)
         }
 
-        override fun cancel(player: BomberEntity) {}
+        override fun cancel(player: BomberEntity) {
+            super.cancel(player)
+        }
 
         override fun canPickUp(bomberEntity: BomberEntity): Boolean = bomberEntity.state.currExplosionLength <= MAX_EXPLOSION_LENGTH && super.canPickUp(bomberEntity)
     }

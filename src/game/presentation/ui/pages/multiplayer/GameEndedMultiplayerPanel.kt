@@ -163,6 +163,8 @@ class GameEndedMultiplayerPanel(
 
     companion object {
         fun showSummary() {
+            if (RuntimeProperties.dedicatedServer) return
+
             val dialog = createDialog(JBomb.JBombFrame)
             val panel = GameEndedMultiplayerPanel(dialog)
             val blurBackground = createBlurBackground(panel)

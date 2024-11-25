@@ -27,9 +27,11 @@ class AiBomberEntityLogic(override val entity: AiBomberEntity) : AiLogic(entity 
             JBomb.match.give(entity, it)
         }
 
-        entity.state.activePowerUpsInstances.forEach {
-            it.logic.cancel(entity)
-        }
+        try {
+            entity.state.activePowerUpsInstances.forEach {
+                it.logic.cancel(entity)
+            }
+        } catch (_: Exception) { }
     }
 
     override fun onAdded() {

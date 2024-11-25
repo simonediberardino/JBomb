@@ -1,4 +1,6 @@
-
-- scaled images cache
+- some times does not respawn
+- weird deaths bot in mp client
 - handle auto server restart
-- fix client controller handler
+- handle pause game client multiplayer (not registering game ticker multiple times)
+- handle server full
+- handle game ended

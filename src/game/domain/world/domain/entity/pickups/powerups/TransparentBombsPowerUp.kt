@@ -28,6 +28,7 @@ class TransparentBombsPowerUp : PowerUp {
         }
 
         override fun cancel(player: BomberEntity) {
+            super.cancel(player)
             player.state.forceBombsSolid = (false)
             player.state.bombsSolid = (true)
         }

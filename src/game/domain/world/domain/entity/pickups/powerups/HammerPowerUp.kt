@@ -29,6 +29,7 @@ class HammerPowerUp : PowerUp {
         }
 
         override fun cancel(player: BomberEntity) {
+            super.cancel(player)
             if (player.logic is BomberEntityLogic) {
                 (player.logic as BomberEntityLogic).removeClassInteractWithMouseClick(DestroyableBlock::class.java)
             }

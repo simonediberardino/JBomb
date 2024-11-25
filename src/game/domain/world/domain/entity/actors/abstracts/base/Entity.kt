@@ -157,9 +157,12 @@ abstract class Entity : GameTickerObserver, Comparable<Entity> {
     abstract val image: EntityImageModel
     abstract val graphicsBehavior: IEntityGraphicsBehavior
 
+    open val observesTicks = false
+
     init {
         JBomb.match.addWaitingEntity(this)
-        JBomb.match.gameTickerObservable?.register(this)
+        if (observesTicks)
+            JBomb.match.gameTickerObservable?.register(this)
     }
 
     constructor(coordinates: Coordinates? = Coordinates(-1, -1)) {

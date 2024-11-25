@@ -12,6 +12,7 @@ import game.domain.world.domain.entity.geo.Coordinates
 abstract class EntityInteractable : Entity {
     abstract override val logic: IEntityInteractableLogic
     abstract override val state: EntityInteractableState
+    override val observesTicks: Boolean = true
 
     /**
      * Constructs an interactive entity with the given coordinates.

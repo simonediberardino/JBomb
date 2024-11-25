@@ -3,6 +3,7 @@ package game.domain.level.levels.multiplayer
 import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.events.game.MultiplayerKillsEvent
+import game.domain.level.behavior.GameBehavior
 import game.domain.level.behavior.RespawnDeadPlayerBehavior
 import game.domain.level.eventhandler.imp.DefaultLevelEventHandler
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
@@ -19,20 +20,29 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
     override fun onEliminated(entity: Entity) {
         if (entity !is BomberEntity) return
 
-        JBomb.match.scope.launch {
-            delay(2_000)
+        val gameBehavior: GameBehavior = object : GameBehavior() {
+            override fun hostBehavior() {
 
-            if (!JBomb.match.gameState)
-                return@launch
+                JBomb.match.scope.launch {
+                    delay(2_000)
 
-            if (!entity.state.isSpawned) {
-                RespawnDeadPlayerBehavior(
-                    id = entity.info.id,
-                    clazz = entity.javaClass,
-                    entity = entity
-                ).invoke()
+                    if (!JBomb.match.gameState)
+                        return@launch
+
+                    if (!entity.state.isSpawned) {
+                        RespawnDeadPlayerBehavior(
+                            id = entity.info.id,
+                            clazz = entity.javaClass,
+                            entity = entity
+                        ).invoke()
+                    }
+                }
             }
+
+            override fun clientBehavior() {}
         }
+
+        gameBehavior.invoke()
     }
 
     override fun onKill(attacker: Entity, victim: Entity) {

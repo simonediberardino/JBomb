@@ -27,6 +27,8 @@ class LevelInfoHttpEventProcessor : HttpEvent {
 
         Thread.sleep(1500) // TODO
 
+        JBomb.match.destroy(false)
+
         if (levelClassOpt.isPresent) {
             JBomb.startLevel(
                     level = levelClassOpt.get().getConstructor().newInstance(),

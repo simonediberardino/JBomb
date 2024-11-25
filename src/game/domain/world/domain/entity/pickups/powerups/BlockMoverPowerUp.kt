@@ -36,6 +36,7 @@ class BlockMoverPowerUp : PowerUp {
         }
 
         override fun cancel(player: BomberEntity) {
+            super.cancel(player)
             if (player.logic is BomberEntityLogic) {
                 (player.logic as BomberEntityLogic).removeClassInteractWithDrag(MovableBlock::class.java)
             }

@@ -23,6 +23,7 @@ open class LavaBlock(
     private val maxExpansionRadius = 4
     var expansionRadius = maxExpansionRadius
     private val minSpawnDelay = 60
+    override val observesTicks: Boolean = true
 
     constructor(id: Long) : this(
         id = id,

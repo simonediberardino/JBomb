@@ -29,10 +29,9 @@ class TransparentDestroyableBlocksPowerUp : PowerUp {
         }
 
         override fun cancel(player: BomberEntity) {
+            super.cancel(player)
             player.state.whitelistObstacles.remove(DestroyableBlock::class.java)
         }
-
-        
     }
 
     override val tag: String

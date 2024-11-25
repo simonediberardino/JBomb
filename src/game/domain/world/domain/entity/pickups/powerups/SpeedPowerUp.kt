@@ -27,6 +27,7 @@ class SpeedPowerUp : PowerUp {
         }
 
         override fun cancel(player: BomberEntity) {
+            super.cancel(player)
             player.state.speed = 1f
         }
     }

@@ -35,17 +35,13 @@ abstract class PowerUpLogic(
 
         AudioManager.instance.play(SoundModel.POWERUP)
 
-        if (player.logic is BomberEntityLogic) {
-            //(player.logic as BomberEntityLogic).onPowerupApply(entity)
-        }
-
         if (!entity.state.isPermanent)
             player.state.temporaryActivePowerUps.add(entity.javaClass)
 
         player.state.activePowerUps.add(entity.javaClass)
         player.state.activePowerUpsInstances.add(entity)
 
-        if (entity.state.isDisplayable && JBomb.match.player == player)
+        if (entity.state.isDisplayable && JBomb.match.player?.info?.id == player.info.id)
             JBomb.match.refreshPowerUps(player.state.activePowerUps)
 
         val durationMillis: Long = entity.state.duration * 1000L
@@ -56,10 +52,6 @@ abstract class PowerUpLogic(
 
         val task = object : TimerTask() {
             override fun run() {
-                val match = JBomb.match
-                if (!match.gameState) return
-                if (entity.isCancelled) return
-
                 cancel(player)
             }
         }
@@ -68,6 +60,11 @@ abstract class PowerUpLogic(
     }
 
     override fun cancel(player: BomberEntity) {
+        val match = JBomb.match
+        if (!match.gameState) return
+
+        if (entity.isCancelled) return
+
         if (entity.state.isPermanent)
             return
 
@@ -75,7 +72,7 @@ abstract class PowerUpLogic(
         player.state.activePowerUps.remove(entity.javaClass)
         player.state.temporaryActivePowerUps.remove(entity.javaClass)
 
-        if (entity.state.isDisplayable && JBomb.match.player == player)
+        if (entity.state.isDisplayable && JBomb.match.player?.info?.id == player.info.id)
             JBomb.match.refreshPowerUps(player.state.activePowerUps)
 
         entity.isCancelled = true

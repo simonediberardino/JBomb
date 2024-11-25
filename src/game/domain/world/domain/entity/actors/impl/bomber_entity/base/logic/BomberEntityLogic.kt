@@ -10,7 +10,8 @@ import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.presentation.ui.panels.game.PitchPanel
 
-open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity), IBomberEntityLogic {
+open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntityLogic(entity = entity),
+    IBomberEntityLogic {
     override fun doInteractWith(e: Entity?, spawnInteract: Boolean) {
         e?.logic?.interactWith(entity)
     }
@@ -22,8 +23,11 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
             JBomb.match.give(entity, it)
         }
 
-        entity.state.activePowerUpsInstances.forEach {
-            it.logic.cancel(entity)
+        try {
+            entity.state.activePowerUpsInstances.forEach {
+                it.logic.cancel(entity)
+            }
+        } catch (_: Exception) {
         }
     }
 
@@ -42,7 +46,7 @@ open class BomberEntityLogic(override val entity: BomberEntity) : CharacterEntit
 
     override fun onRemoved() {
         super.onRemoved()
-        JBomb.match.players.removeIf { e -> e.info.id == entity.info.id}
+        JBomb.match.players.removeIf { e -> e.info.id == entity.info.id }
     }
 
     override fun onMove(coordinates: Coordinates) {

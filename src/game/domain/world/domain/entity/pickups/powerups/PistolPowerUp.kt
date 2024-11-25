@@ -31,6 +31,7 @@ class PistolPowerUp : PowerUp {
         }
 
         override fun cancel(player: BomberEntity) {
+            super.cancel(player)
             JBomb.match.removeItem(player, item)
         }
     }
