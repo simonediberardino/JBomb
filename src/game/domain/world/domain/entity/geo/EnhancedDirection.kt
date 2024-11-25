@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.geo
 
+import game.JBomb
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.presentation.ui.panels.game.PitchPanel
 
@@ -44,10 +45,20 @@ enum class EnhancedDirection {
 
         fun randomDirectionTowardsCenter(entity: Entity): EnhancedDirection? {
             val coords = entity.info.position
+            val mapDimension = JBomb.match.currentLevel.info.mapDimension
 
-            val centerEntityCoords = Coordinates(coords.x + entity.state.size / 2, coords.y + entity.state.size / 2)
-            val newHorizontalDirection: Direction = if (centerEntityCoords.x > PitchPanel.DIMENSION.getWidth() / 2) Direction.LEFT else Direction.RIGHT
-            val newVerticalDirection: Direction = if (centerEntityCoords.y < PitchPanel.DIMENSION.getHeight() / 2) Direction.DOWN else Direction.UP
+            val centerEntityCoords = Coordinates(/* x = */ coords.x + entity.state.size / 2, /* y = */ coords.y + entity.state.size / 2)
+
+            val newHorizontalDirection = when {
+                centerEntityCoords.x > mapDimension.getWidth() / 2 -> Direction.LEFT
+                else -> Direction.RIGHT
+            }
+
+            val newVerticalDirection = when {
+                centerEntityCoords.y < mapDimension.getHeight() / 2 -> Direction.DOWN
+                else -> Direction.UP
+            }
+
             return toEnhancedDirection(arrayOf(newHorizontalDirection, newVerticalDirection))
         }
     }

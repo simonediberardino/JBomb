@@ -147,15 +147,15 @@ class ClownLogic(
      * Throws a hat in a random enhanced direction.
      */
     override fun throwHat() {
-        Log.e("throwing hat")
         val direction = EnhancedDirection.randomDirectionTowardsCenter(entity)
         val coordinates = Coordinates.fromDirectionToCoordinateOnEntity(entity, direction, 0)
 
-        val hat: Entity = Hat(coordinates, direction)
-        Log.e("Spawning hat ")
+        val hat: Hat = Hat(coordinates, direction)
 
         entity.state.hatThrowTime = now()
         entity.state.hasHat = false
+        hat.state.enhancedDirection = direction
+
         hat.logic.spawn(forceSpawn = true, forceCentering = false)
     }
 
