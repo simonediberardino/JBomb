@@ -2,6 +2,7 @@ package game.network.gamehandler
 
 import game.JBomb
 import game.domain.match.JBombMatch
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.events.forward.LevelInfoHttpEventForwarder
 import game.network.serializing.HttpParserSerializer
@@ -19,6 +20,15 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
     lateinit var server: TCPServer
         private set
     private var ipv4: String? = null
+    private val maxClients = run {
+        val maxPlayers = 5
+
+        if (!RuntimeProperties.dedicatedServer) {
+            return@run maxPlayers + 1
+        } else {
+            return@run maxPlayers
+        }
+    }
 
     val clientsConnected: Int
         get() = if (this::server.isInitialized) server.clients.size else 0
@@ -34,7 +44,7 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
      * Listens to events emitted by the server through `eventFlow`.
      */
     suspend fun create() {
-        server = TCPServer(port)
+        server = TCPServer(port, maxClients)
         server.open()
 
         // Start listening for events from the server's eventFlow
@@ -131,12 +141,15 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
      * @param clientId The ID of the disconnected client.
      */
     private fun onClientDisconnected(clientId: Long) {
-        val client = JBomb.match.getEntityById(clientId) ?: return
+        val client = JBomb.match.getEntityById(clientId) as BomberEntity? ?: return
+        client.state.disconnected = true
         client.logic.despawn()
 
         server.scope.launch {
             updateInfo()
         }
+
+        JBomb.match.currentLevel.playerCountHandler.onPlayerCountChanged()
     }
 
     /**
@@ -202,6 +215,13 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
         if (this::server.isInitialized) {
             if (!server.isClosed())
                 server.close()
+        }
+    }
+
+    suspend fun kickClient(id: Long) {
+        if (this::server.isInitialized) {
+            if (!server.isClosed())
+                server.disconnectClient(id)
         }
     }
 

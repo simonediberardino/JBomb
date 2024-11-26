@@ -1,11 +1,12 @@
 package game.network.gamehandler
 
 import game.JBomb
-import game.network.callbacks.TCPClientCallback
+import game.localization.Localization
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.serializing.HttpParserSerializer
 import game.network.sockets.TCPClient
 import game.network.sockets.TCPClientEvent
+import game.network.sockets.TCPServer
 import game.utils.dev.Log
 import kotlinx.coroutines.launch
 
@@ -88,9 +89,25 @@ class ClientGameHandler(
      * @param data The raw data received from the game server.
      */
     override fun onDataReceived(data: String) {
-        Log.i("${javaClass.simpleName} onDataReceived $data")
-        val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
-        HttpMessageReceiverHandler.instance.handle(formattedData)
+        Log.i("${javaClass.simpleName} received: $data")
+
+        // Check if the data is JSON-like (starts with '{' or '[')
+        if (data.firstOrNull() in setOf('{', '[')) {
+            val formattedData = HttpParserSerializer.instance.parse(data)
+            HttpMessageReceiverHandler.instance.handle(formattedData)
+            return
+        }
+
+        // Handle non-JSON data
+        handlePlainMessages(data)
+    }
+
+    private fun handlePlainMessages(data: String) {
+        when (data) {
+            TCPServer.ServerCodes.ServerFull.name -> {
+                JBomb.networkError(Localization.get(Localization.SERVER_IS_FULL))
+            }
+        }
     }
 
     /**

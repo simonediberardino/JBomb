@@ -18,6 +18,7 @@ import game.domain.level.levels.world2.*
 import game.domain.level.player_count_handler.DefaultPlayerCountHandler
 import game.domain.level.player_count_handler.IPlayerCountHandler
 import game.utils.dev.Log
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.swing.JPanel
 
@@ -49,6 +50,7 @@ abstract class Level {
         PlayLevelSoundBehavior(this@Level).invoke()
         DataInputOutput.getInstance().resetLivesIfNecessary()
         gameHandler.generate()
+
         playerCountHandler.onStart()
     }
 

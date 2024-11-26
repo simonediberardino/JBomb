@@ -5,6 +5,8 @@ import game.data.data.DataInputOutput
 import game.domain.level.levels.Level
 import game.domain.match.JBombMatch
 import game.domain.tasks.GarbageCollectorTask
+import game.domain.world.domain.entity.actors.impl.bomber_entity.ai.AiBomberEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.input.terminal.Terminal
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
@@ -245,7 +247,6 @@ object JBomb {
             AudioManager.instance.playBackgroundSong()
         }
     }
-
     val isGameEnded: Boolean
         get() = !match.gameState || !JBomb.isInGame
 

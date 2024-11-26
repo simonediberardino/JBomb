@@ -12,7 +12,6 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.localization.Localization
 import game.presentation.ui.pages.multiplayer.GameEndedMultiplayerPanel
 import game.utils.dev.Log
-import game.utils.ui.ToastUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -29,7 +28,7 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
                     if (!JBomb.match.gameState)
                         return@launch
 
-                    if (!entity.state.isSpawned) {
+                    if (!entity.state.isSpawned && !entity.state.disconnected) {
                         RespawnDeadPlayerBehavior(
                             id = entity.info.id,
                             clazz = entity.javaClass,

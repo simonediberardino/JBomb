@@ -11,7 +11,7 @@ import java.io.PrintWriter
 import java.net.ServerSocket
 import java.net.Socket
 
-class TCPServer(private var port: Int) : TCPSocket {
+class TCPServer(private var port: Int, private val maxClients: Int) : TCPSocket {
     private lateinit var socket: ServerSocket
     internal var clients: MutableMap<Long, IndexedClient> = mutableMapOf()
     private var progressiveId = 0L
@@ -34,6 +34,11 @@ class TCPServer(private var port: Int) : TCPSocket {
     }
 
     private suspend fun handleClient(clientSocket: IndexedClient) = withContext(Dispatchers.IO) {
+        if (clients.size > maxClients) {
+            sendData(clientSocket, ServerCodes.ServerFull.name)
+            return@withContext
+        }
+
         try {
             clientSocket.reader.use { reader ->
                 emitEvent(ServerEvent.ClientConnected(clientSocket.id))
@@ -65,6 +70,7 @@ class TCPServer(private var port: Int) : TCPSocket {
                         break
 
                     val clientSocket = socket.accept()
+
                     val indexedClient = IndexedClient(
                         id = progressiveId,
                         client = clientSocket,
@@ -126,7 +132,13 @@ class TCPServer(private var port: Int) : TCPSocket {
         scope.cancel()
     }
 
-    private suspend fun disconnectClient(clientSocket: IndexedClient) {
+    suspend fun disconnectClient(id: Long) {
+        disconnectClient(clients[id] ?: return)
+    }
+
+    suspend fun disconnectClient(clientSocket: IndexedClient) {
+        Log.i("Disconnecting client $clientSocket")
+
         clientSocket.client.close()
         clientSocket.writer.close()
         clientSocket.reader.close()
@@ -147,5 +159,9 @@ class TCPServer(private var port: Int) : TCPSocket {
         data class ClientConnected(val clientId: Long) : ServerEvent()
         data class ClientDisconnected(val clientId: Long) : ServerEvent()
         data class DataReceived(val clientId: Long, val data: String) : ServerEvent()
+    }
+
+    sealed class ServerCodes(val name: String) {
+        object ServerFull: ServerCodes("ServerFull")
     }
 }

@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.logic
 
+import game.JBomb
 import game.domain.tasks.observer.Observable2
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
@@ -8,6 +9,8 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.domain.world.domain.entity.actors.abstracts.models.Explosive
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 open class ExplosionLogic(
         override val entity: AbstractExplosion
@@ -68,6 +71,11 @@ open class ExplosionLogic(
 
         if (canExpand()) {
             expandBomb(entity.state.direction, entity.state.size)
+        }
+
+        JBomb.match.scope.launch {
+            delay(1000L)
+            eliminated()
         }
     }
 

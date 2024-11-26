@@ -13,8 +13,6 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
-import game.domain.world.domain.entity.items.BombItem
-import game.domain.world.domain.entity.items.PistolItem
 import game.domain.world.domain.entity.items.UsableItem
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.game.ControllerManager
@@ -350,7 +348,7 @@ class JBombMatch(
     }
 
     fun removeEntity(entity: Entity) {
-        if (entity.state.canRespawn) {
+        if (entity.state.canRespawn && !entity.state.disconnected) {
             _despawnedEntitiesMap[entity.info.id] = Pair(entity.javaClass, entity)
         }
 
@@ -604,5 +602,20 @@ class JBombMatch(
 
     private fun setupTimerTask() {
         gameTickerObservable?.register(timeObserverObservable)
+    }
+
+
+    /**
+     * Online utilities
+     */
+    suspend fun kickPlayer(bomberEntity: BomberEntity) {
+        bomberEntity.state.disconnected = true
+        bomberEntity.logic.eliminated()
+
+        if (isServer) {
+            scope.launch {
+                (onlineGameHandler as ServerGameHandler).kickClient(bomberEntity.info.id)
+            }
+        }
     }
 }

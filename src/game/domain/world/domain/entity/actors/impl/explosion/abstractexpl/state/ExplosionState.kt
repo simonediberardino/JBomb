@@ -59,7 +59,6 @@ class ExplosionState(
     val _state: Int
         get() {
             if (explosionState == 0 && !appearing) {
-                entity.logic.eliminated()
                 appearing = true
                 return 0
             }

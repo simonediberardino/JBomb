@@ -31,5 +31,7 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         player.updateInfo(info)
 
         player.logic.spawn(forceSpawn = true, forceCentering = true)
+
+        JBomb.match.currentLevel.playerCountHandler.onPlayerCountChanged()
     }
 }

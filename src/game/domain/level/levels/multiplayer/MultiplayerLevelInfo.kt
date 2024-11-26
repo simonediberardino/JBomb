@@ -48,5 +48,5 @@ open class MultiplayerLevelInfo(private val mapId: Int, level: Level) : DefaultL
     override val timeLimitMinutes: Int = 4
     override val killCountEnabled: Boolean = true
     override val scoreEnabled: Boolean = false
-    override val startBotCount: Int = 3
+    override val botsFillCount: Int = 4
 }

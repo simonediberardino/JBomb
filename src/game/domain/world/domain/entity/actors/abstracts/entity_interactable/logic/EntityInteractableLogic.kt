@@ -5,6 +5,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.logic.EntityLogic
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.domain.world.domain.entity.actors.abstracts.models.State
+import game.domain.world.domain.entity.actors.impl.bomber_entity.ai.AiBomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Coordinates.getNewCoordinatesListOnDirection
 import game.domain.world.domain.entity.geo.Direction

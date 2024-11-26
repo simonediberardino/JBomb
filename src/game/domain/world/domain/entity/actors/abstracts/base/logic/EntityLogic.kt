@@ -84,6 +84,7 @@ abstract class EntityLogic(
 
     override fun onSpawn() {
         entity.state.state = (State.SPAWNED)
+        entity.state.disconnected = false
         notifySpawn()
     }
 

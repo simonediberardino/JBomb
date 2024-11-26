@@ -1,15 +1,18 @@
 package game.domain.level.player_count_handler
 
 import game.JBomb
+import game.domain.world.domain.entity.actors.abstracts.placeable.bomb.Bomb
 import game.domain.world.domain.entity.actors.impl.bomber_entity.ai.AiBomberEntity
+import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.domain.world.domain.entity.geo.Coordinates
-import game.properties.RuntimeProperties
 import game.utils.dev.Log
-import kotlin.math.max
+import kotlinx.coroutines.launch
+import kotlin.math.abs
+import kotlin.math.min
 
 interface IPlayerCountHandler {
     fun onStart()
-    fun onPlayerCountChanged(players: Int)
+    fun onPlayerCountChanged()
 }
 
 // Multiplayer will have a custom player count handler
@@ -17,17 +20,13 @@ class DefaultPlayerCountHandler : IPlayerCountHandler {
     override fun onStart() {
         if (!JBomb.match.isServer)
             return
+        onPlayerCountChanged()
+    }
 
-        Log.i("DefaultPlayerCountHandler: onStart")
-
-        val levelBotCount = JBomb.match.currentLevel.info.startBotCount
-
-        Log.i("DefaultPlayerCountHandler: bots to spawn $levelBotCount")
-
-        if (levelBotCount > 0)
-            repeat(levelBotCount) {
-                spawnBot()
-            }
+    private fun spawnBots(n: Int) {
+        repeat(n) {
+            spawnBot()
+        }
     }
 
     private fun spawnBot() {
@@ -38,5 +37,37 @@ class DefaultPlayerCountHandler : IPlayerCountHandler {
         }
     }
 
-    override fun onPlayerCountChanged(players: Int) {}
+    override fun onPlayerCountChanged() {
+        val playerGoal = JBomb.match.currentLevel.info.botsFillCount
+
+        val deadPlayers = JBomb.match.getDeadEntities().values
+            .asSequence()
+            .map { it.second }
+            .filterIsInstance<BomberEntity>()
+            .filter { !it.state.disconnected }
+
+        val alivePlayers = JBomb.match.players.filter { !it.state.disconnected }
+        val totalPlayers = deadPlayers.toSet() + alivePlayers.toSet()
+
+        val botsToSpawn = playerGoal - totalPlayers.size
+
+        if (botsToSpawn < 0) {
+            val bots = totalPlayers.filter { it.properties.isBot }
+            val botsToKick = abs(botsToSpawn)
+            disconnectBots(n = botsToKick, bots = bots)
+        } else if (botsToSpawn > 0) {
+            spawnBots(botsToSpawn)
+        }
+    }
+
+    private fun disconnectBots(n: Int, bots: Collection<BomberEntity>) {
+        val botsSorted = bots.sortedBy { it.state.kills }
+        val botsToKick = botsSorted.take(n)
+        botsToKick.forEach {
+            JBomb.match.scope.launch {
+                Log.i("kicking player")
+                JBomb.match.kickPlayer(it)
+            }
+        }
+    }
 }

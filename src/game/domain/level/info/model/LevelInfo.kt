@@ -49,7 +49,7 @@ abstract class LevelInfo {
     abstract val timeLimitMinutes: Int
     abstract val killCountEnabled: Boolean
     abstract val scoreEnabled: Boolean
-    abstract val startBotCount: Int
+    abstract val botsFillCount: Int
     var customSpawnpoints: MutableList<Coordinates> = mutableListOf()
     open val debug: Boolean = false
 }
