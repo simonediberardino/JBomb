@@ -182,6 +182,14 @@ public class PitchPanel extends JPanel implements Observer2 {
         graphicsCallbacks.forEach((key, value) -> value.execute(g2d));
     }
 
+    public int getCameraOffsetX() {
+        return cameraOffsetX;
+    }
+
+    public int getCameraOffsetY() {
+        return cameraOffsetY;
+    }
+
     private void drawEntityLabel(Graphics2D g2d, Character e, int cameraOffsetX, int cameraOffsetY) {
         String entityName = e.getProperties().getName();
 

@@ -1,1 +1,1 @@
-- fix mouse
+- maybe check fix clicks outside pitch panel

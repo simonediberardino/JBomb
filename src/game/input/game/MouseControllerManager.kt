@@ -7,6 +7,7 @@ import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.geo.Direction
+import game.presentation.ui.panels.game.PitchPanel
 import kotlinx.coroutines.CoroutineScope
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -17,7 +18,7 @@ import java.util.*
  * The MouseControllerManager class handles mouse interactions and controls player movement based on mouse input.
  */
 class MouseControllerManager(
-        scope: CoroutineScope
+    scope: CoroutineScope
 ) : MouseAdapter(), MouseMotionListener {
     private val DELAY = 300L
 
@@ -64,7 +65,7 @@ class MouseControllerManager(
 
         // Calculate directions based on mouse coordinates
         latestDirectionsFromPlayer = mouseCoords?.fromCoordinatesToDirection(
-                player.info.position
+            player.info.position
         ) ?: emptyList()
 
         // Press keys corresponding to calculated directions
@@ -110,7 +111,11 @@ class MouseControllerManager(
         if (isMouseClicked)
             return
 
-        mouseCoords = Coordinates(event.x, event.y)
+        mouseCoords = Coordinates(
+            JBomb.JBombFrame.pitchPanel.cameraOffsetX + event.x,
+            JBomb.JBombFrame.pitchPanel.cameraOffsetY + event.y
+        )
+
         entity = Coordinates.getEntityOnCoordinates(mouseCoords)
     }
 
@@ -130,9 +135,13 @@ class MouseControllerManager(
 
         isMouseClicked = true
 
-        mouseCoords = Coordinates(e.x, e.y)
+        mouseCoords = Coordinates(
+            JBomb.JBombFrame.pitchPanel.cameraOffsetX + e.x,
+            JBomb.JBombFrame.pitchPanel.cameraOffsetY + e.y
+        )
+
         firstDirectionsFromPlayer = mouseCoords!!.fromCoordinatesToDirection(
-                player.info.position
+            player.info.position
         )
 
         entity = Coordinates.getEntityOnCoordinates(mouseCoords)

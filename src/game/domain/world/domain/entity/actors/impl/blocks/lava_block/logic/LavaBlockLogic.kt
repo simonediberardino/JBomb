@@ -128,7 +128,6 @@ class LavaBlockLogic(override val entity: LavaBlock) : BlockEntityLogic(
                     val newRadius = entity.expansionRadius - 1
                     if (newRadius > 0) {
                         LavaBlock(
-                            hasSpawnDelay = true,
                             coordinates = coords,
                             canExpand = true
                         ).also {
