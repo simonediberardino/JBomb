@@ -31,6 +31,12 @@ open class LavaBlock(
         id = id
     )
 
+    constructor(coordinates: Coordinates) : this(
+        coordinates = coordinates,
+        id = null,
+        canExpand = false
+    )
+
     // Use hasSpawnDelay in the properties
     override val properties: LavaEntityProperties = LavaEntityProperties()
 
