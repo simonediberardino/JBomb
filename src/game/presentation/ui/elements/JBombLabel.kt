@@ -1,10 +1,10 @@
 package game.presentation.ui.elements
 
+import game.presentation.ui.fonts.CustomFonts
 import game.values.Dimensions
 import java.awt.Color
 import java.awt.Font
 import javax.swing.JLabel
-import javax.swing.SwingConstants
 
 class JBombLabel(
         text: String,
@@ -18,8 +18,8 @@ class JBombLabel(
 
     init {
         isOpaque = false
-        setForeground(Color.WHITE)
-        setFont(Font(Font.MONOSPACED, Font.BOLD, fontSize))
-        setBorder(javax.swing.BorderFactory.createEmptyBorder())
+        foreground = Color.WHITE
+        font = CustomFonts.getFont(CustomFonts.FONT_PIXELATED, fontSize.toFloat())
+        border = javax.swing.BorderFactory.createEmptyBorder()
     }
 }

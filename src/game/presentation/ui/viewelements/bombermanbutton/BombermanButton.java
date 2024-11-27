@@ -2,6 +2,7 @@ package game.presentation.ui.viewelements.bombermanbutton;
 
 import game.audio.AudioManager;
 import game.audio.SoundModel;
+import game.presentation.ui.fonts.CustomFonts;
 import game.utils.Utility;
 import game.values.Dimensions;
 
@@ -23,7 +24,7 @@ public abstract class BombermanButton extends JButton {
     public BombermanButton(String text, int fontSize) {
         this(text);
         this.fontSize = fontSize;
-        setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+        setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, fontSize));
     }
 
     public BombermanButton(String text) {
@@ -33,7 +34,7 @@ public abstract class BombermanButton extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
         setForeground(textColor);
-        setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+        setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, fontSize));
 
         addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {

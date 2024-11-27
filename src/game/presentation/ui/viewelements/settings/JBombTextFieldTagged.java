@@ -3,6 +3,7 @@ package game.presentation.ui.viewelements.settings;
 import game.domain.events.models.RunnablePar;
 import game.presentation.ui.elements.JBombLabel;
 import game.presentation.ui.elements.JBombLabelMultiLine;
+import game.presentation.ui.fonts.CustomFonts;
 import game.presentation.ui.helpers.BombermanTextFieldFilter;
 import game.values.BomberColors;
 import org.jetbrains.annotations.Nullable;
@@ -76,7 +77,7 @@ public class JBombTextFieldTagged extends SettingsElementView {
         });
 
         value.setForeground(Color.WHITE);
-        value.setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
+        value.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, FONT_SIZE));
 
         add(name); // Add the "name" label to the SettingsElementView object.
         add(value); // Add the "value" text field to the SettingsElementView object.

@@ -4,6 +4,7 @@ import game.audio.AudioManager;
 import game.audio.SoundModel;
 import game.domain.world.domain.entity.geo.Direction;
 import game.localization.Localization;
+import game.presentation.ui.fonts.CustomFonts;
 import game.utils.Utility;
 import game.utils.file_system.Paths;
 import game.utils.skin.SkinUtilities;
@@ -38,7 +39,7 @@ class PlayerScoreLabel extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
         setForeground(textColor);
-        setFont(new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(24)));
+        setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, Utility.INSTANCE.px(24)));
         setPreferredSize(new Dimension(width, height));
 
         addMouseListener(new MouseAdapter() {
@@ -78,12 +79,12 @@ class PlayerScoreLabel extends JButton {
         g2d.setColor(textColor);
 
         // Final Position (Emphasized, larger font on the left)
-        g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(36)));
+        g2d.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, Utility.INSTANCE.px(36)));
         String positionText = "#" + position;
         drawAlignedString(g2d, positionText, new Rectangle(10, 0, width / 4, height), SwingConstants.LEFT);
 
         // Player Name (on the right side, taking available space without overlapping image)
-        g2d.setFont(new Font(Font.MONOSPACED, Font.PLAIN, Utility.INSTANCE.px(24)));
+        g2d.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, Utility.INSTANCE.px(24)));
 
         // Define space for the name and score, excluding space for the image on the right
         int imageWidth = playerImageDimension.width + 10;  // Image width plus padding

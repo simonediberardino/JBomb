@@ -1,5 +1,6 @@
 package game.presentation.ui.viewelements.settings;
 
+import game.presentation.ui.fonts.CustomFonts;
 import game.presentation.ui.helpers.BombermanTextFieldFilter;
 import game.values.BomberColors;
 import game.values.Dimensions;
@@ -91,7 +92,8 @@ public class JBombInputField extends JTextField {
         });
 
         setForeground(Color.WHITE);
-        setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+        setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, fontSize));
+
     }
 
     public int getFontSize() {

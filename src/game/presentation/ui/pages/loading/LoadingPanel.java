@@ -4,6 +4,7 @@ import game.JBomb;
 import game.domain.level.levels.Level;
 import game.localization.Localization;
 import game.audio.SoundModel;
+import game.presentation.ui.fonts.CustomFonts;
 import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.panels.game.PagePanel;
 import game.utils.file_system.Paths;
@@ -37,7 +38,7 @@ public class LoadingPanel extends PagePanel {
     public LoadingPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame, String text) {
         super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
         this.initialize();
-        setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
+        setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, FONT_SIZE));
         this.text = text;
     }
 

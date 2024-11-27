@@ -85,6 +85,9 @@ object Paths {
     val soundsPath: String get() = "$assetsFolder/sounds"
 
     @JvmStatic
+    val fontsPath: String get() = "$assetsFolder/fonts"
+
+    @JvmStatic
     val itemsPath: String get() = "$assetsFolder/items"
 
     @JvmStatic

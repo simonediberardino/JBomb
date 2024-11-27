@@ -3,6 +3,7 @@ package game.presentation.ui.pages.server_browser;
 import game.audio.AudioManager;
 import game.audio.SoundModel;
 import game.domain.events.models.RunnablePar;
+import game.presentation.ui.fonts.CustomFonts;
 import game.utils.Utility;
 import game.values.Dimensions;
 
@@ -32,7 +33,7 @@ class ServerButton extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
         setForeground(textColor);
-        setFont(new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(24)));
+        setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, Utility.INSTANCE.px(24)));
         setPreferredSize(new Dimension(width, height));
         addActionListener(e -> listener.execute(server.getFullIp()));
 

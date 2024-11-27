@@ -1,5 +1,6 @@
 package game.presentation.ui.viewelements.inventory;
 
+import game.presentation.ui.fonts.CustomFonts;
 import game.values.Dimensions;
 
 import javax.swing.*;
@@ -21,7 +22,8 @@ public class InventoryElementView extends JPanel {
     public InventoryElementView() {
         icon = new JLabel();
         occurrents = new JLabel("", SwingConstants.CENTER);
-        occurrents.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+        occurrents.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, fontSize));
+
         occurrents.setBorder(border);
         setBorder(border);
         setLayout(new GridLayout(1, 2));

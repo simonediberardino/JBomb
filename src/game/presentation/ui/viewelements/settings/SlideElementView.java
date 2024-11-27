@@ -1,6 +1,8 @@
 package game.presentation.ui.viewelements.settings;
 
 import game.domain.events.models.RunnablePar;
+import game.presentation.ui.fonts.CustomFonts;
+import game.utils.Utility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,9 +30,9 @@ public class SlideElementView extends SettingsElementView {
         // Adding mouse listeners to the textfield;
 
         name.setForeground(Color.WHITE);
-        name.setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
+        name.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, FONT_SIZE));
         slider.setForeground(Color.ORANGE);
-        slider.setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
+        slider.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, FONT_SIZE));
 
         add(name); // Add the "name" label to the SettingsElementView object.
         add(slider); // Add the "value" text field to the SettingsElementView object.

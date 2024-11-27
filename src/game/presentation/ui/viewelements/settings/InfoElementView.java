@@ -1,5 +1,8 @@
 package game.presentation.ui.viewelements.settings;
 
+import game.presentation.ui.fonts.CustomFonts;
+import game.utils.Utility;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,8 +21,8 @@ public class InfoElementView extends SettingsElementView {
         value.setForeground(Color.WHITE);
 
         // Setting font for the labels
-        name.setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
-        value.setFont(new Font(Font.MONOSPACED, Font.BOLD, FONT_SIZE));
+        name.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, FONT_SIZE));
+        value.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, FONT_SIZE));
 
         // Adding name and value labels to the SettingsElementView object
         add(name);

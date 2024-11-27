@@ -2,6 +2,7 @@ package game.presentation.ui.viewelements.misc;
 
 import game.JBomb;
 import game.domain.events.game.NewToastGameEvent;
+import game.presentation.ui.fonts.CustomFonts;
 import game.utils.Utility;
 
 import java.awt.*;
@@ -17,7 +18,7 @@ public class ToastHandler {
     private final Color TEXT_COLOR = new Color(255, 255, 255);
     private final Color BORDER_COLOR = new Color(255, 87, 51);
     private final Color SHADOW_COLOR = new Color(0, 0, 0, 150);
-    private final Font TOAST_FONT = new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(35));
+    private final Font TOAST_FONT = CustomFonts.getFont(CustomFonts.FONT_PIXELATED, Utility.INSTANCE.px(35));
     private final int BORDER_WIDTH = Utility.INSTANCE.px(5);
     private static ToastHandler instance = null;
     private long animStoppedTime = 0;
@@ -34,7 +35,7 @@ public class ToastHandler {
         Graphics2D g2d = (Graphics2D) g.create();
 
         // Calculate the dimensions based on text length
-        Font toastFont = new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(35));
+        Font toastFont = CustomFonts.getFont(CustomFonts.FONT_PIXELATED, Utility.INSTANCE.px(35));
         FontMetrics metrics = g2d.getFontMetrics(toastFont);
         int toastWidth = calculateToastWidth(metrics);
         int toastHeight = calculateToastHeight(metrics);

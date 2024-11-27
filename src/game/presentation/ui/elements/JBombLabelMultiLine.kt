@@ -1,9 +1,8 @@
 package game.presentation.ui.elements
 
-import game.utils.dev.Log
+import game.presentation.ui.fonts.CustomFonts
 import game.utils.ui.Utils2D
 import game.values.Dimensions
-import java.awt.Font
 import java.awt.GridLayout
 import javax.swing.JPanel
 
@@ -16,7 +15,7 @@ class JBombLabelMultiLine(
     constructor(title: String, maxWidth: Int) : this(title, Dimensions.FONT_SIZE_MID, maxWidth)
 
     init {
-        val font = Font(Font.MONOSPACED, Font.BOLD, fontSize)
+        val font = CustomFonts.getFont(CustomFonts.FONT_PIXELATED, fontSize.toFloat())
 
         isOpaque = false
         layout = GridLayout(0, 1)
