@@ -5,6 +5,7 @@ import game.domain.events.game.EndGameGameEvent
 import game.network.events.forward.EndGameEventForwarder
 import game.network.gamehandler.ServerGameHandler
 import game.network.sockets.TCPServer
+import game.properties.RuntimeProperties
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,8 +26,14 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
                 // If a client disconnects, check if there are no more clients connected.
                 if (event is TCPServer.ServerEvent.ClientDisconnected) {
                     if (server.clientsConnected == 0) {
-                        // Disconnect the server when there are no clients.
-                        JBomb.match.disconnectOnlineAndStayInGame()
+                        JBomb.match.scope.launch {
+                            // Disconnect the server when there are no clients.
+                            JBomb.match.disconnectOnlineAndStayInGame()
+
+                            if (RuntimeProperties.dedicatedServer) {
+                                JBomb.startLevelByArgs()
+                            }
+                        }
                     }
                 }
             }

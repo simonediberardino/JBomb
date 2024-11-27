@@ -502,6 +502,7 @@ class JBombMatch(
     }
 
     private fun cleanLevelUi() {
+        if (RuntimeProperties.dedicatedServer) return
         JBomb.JBombFrame.cleanGame()
     }
 
@@ -520,6 +521,8 @@ class JBombMatch(
      * Clears the graphics callback in the Bomberman frame's pitch panel.
      */
     private fun clearGraphicsCallback() {
+        if (RuntimeProperties.dedicatedServer) return
+
         JBomb.JBombFrame.pitchPanel.clearGraphicsCallback()
     }
 

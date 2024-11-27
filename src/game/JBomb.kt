@@ -116,7 +116,7 @@ object JBomb {
         showActivity(MainMenuPanel::class.java)
     }
 
-    private fun startLevelByArgs() {
+    fun startLevelByArgs() {
         val levelId = RuntimeProperties.argLevel ?: return
         val worldId = RuntimeProperties.argWorld ?: return
 
@@ -135,9 +135,7 @@ object JBomb {
         match.destroy(disconnect)
 
         when (RuntimeProperties.dedicatedServer) {
-            true -> {
-                startLevelByArgs() // Restart server
-            }
+            true -> {}
             false -> {
                 JBombFrame.removeKeyListener(match.controllerManager)
             }
