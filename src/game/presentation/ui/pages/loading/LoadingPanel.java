@@ -18,7 +18,7 @@ import static game.localization.Localization.LOADING;
 public class LoadingPanel extends PagePanel {
     public final static int LOADING_TIMER = 3500;
     private final static int REPAINT_DELAY_MS = 15;
-    private final static int TEXT_ANIM_STEP_SIZE = Utility.INSTANCE.px(50);
+    private final static int TEXT_ANIM_STEP_SIZE = Utility.INSTANCE.px(75);
     private final static int FONT_SIZE = Utility.INSTANCE.px(75);
     private final static Color FONT_COLOR = new Color(255, 145, 0);
     private final static Color CONTAINER_BACKGROUND = new Color(0, 0, 0, 160);
@@ -48,7 +48,7 @@ public class LoadingPanel extends PagePanel {
 
     public void initialize() {
         this.text = "";
-        this.textCurrX = (int) JBomb.JBombFrame.getPreferredSize().getWidth();
+        this.textCurrX = (int) JBomb.JBombFrame.getPreferredSize().getWidth() / 2;
         this.finished = false;
         this.onLoadingCallback = null;
     }

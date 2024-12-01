@@ -23,5 +23,6 @@ abstract class DefaultArenaLevelInfo(level: ArenaLevel): DefaultLevelInfo(level)
     override val defaultWeapons: List<UsableItem>
         get() = listOf(BombItem())
 
+    override val livesEnabled: Boolean = false
     override val networkName: String = "Arena: World $worldId Arena"
 }

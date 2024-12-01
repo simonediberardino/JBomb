@@ -7,7 +7,7 @@ import java.awt.*;
 
 public abstract class BombermanPanel extends JPanel {
     private final int borderWidth = Utility.INSTANCE.px(10);
-    private final int cornerRadius = 15;
+    private final int cornerRadius = 5;
     private final Color backgroundColor = new Color(0, 0, 0, 0);
     private final Color borderColor = getBorderColor();
     private final Color shadowColor = new Color(0, 0, 0, 150);

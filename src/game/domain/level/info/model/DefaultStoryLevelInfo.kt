@@ -17,5 +17,6 @@ abstract class DefaultStoryLevelInfo(level: Level) : DefaultLevelInfo(level) {
     override val defaultWeapons: List<UsableItem>
         get() = listOf(BombItem())
 
+    override val livesEnabled: Boolean = true
     override val isArenaLevel: Boolean get() = false
 }

@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.pickups.powerups
 
+import game.JBomb
 import game.data.data.DataInputOutput
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.base.EntityProperties
@@ -26,7 +27,8 @@ class LivesPowerUp : PowerUp {
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
             player.logic.restoreHealth()
-            DataInputOutput.getInstance().increaseLives()
+            if (JBomb.match.currentLevel.info.livesEnabled)
+                DataInputOutput.getInstance().increaseLives()
         }
 
         override fun cancel(player: BomberEntity) {

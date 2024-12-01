@@ -10,7 +10,7 @@ import java.io.ByteArrayInputStream
 import java.io.IOException
 
 object CustomFonts {
-    const val FONT_PIXELATED = "PixeloidMono-d94EV.ttf"
+    const val FONT_PIXELATED = "PixelDigivolve-mOm9.ttf"
     private val path = fontsPath
 
     @JvmStatic

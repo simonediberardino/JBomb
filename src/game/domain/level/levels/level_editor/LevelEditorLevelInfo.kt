@@ -30,4 +30,6 @@ open class LevelEditorLevelInfo(level: Level): DefaultLevelInfo(level) {
 
     override val defaultWeapons: List<UsableItem>
         get() = listOf(BlockPlacerItem())
+
+    override val livesEnabled: Boolean = false
 }

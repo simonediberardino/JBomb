@@ -14,4 +14,5 @@ abstract class LobbyLevelInfo(level: Level) : DefaultLevelInfo(level) {
     override val nextLevel: Class<out Level?>? get() = null
     override val availableEnemies: Array<Class<out Enemy>> get() = arrayOf()
     override val boss: Boss? get() = null
+    override val livesEnabled: Boolean = false
 }

@@ -37,6 +37,12 @@ public class InventoryElementView extends JPanel {
     }
 
     public void setNumItems(String numItems) {
+        if (numItems.equals("∞")) {
+            occurrents.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+        } else {
+            occurrents.setFont(CustomFonts.getFont(CustomFonts.FONT_PIXELATED, fontSize));
+        }
+
         occurrents.setText(String.valueOf(numItems));
     }
 
