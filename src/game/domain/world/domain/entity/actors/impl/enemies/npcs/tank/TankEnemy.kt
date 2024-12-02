@@ -1,5 +1,8 @@
 package game.domain.world.domain.entity.actors.impl.enemies.npcs.tank
 
+import game.JBomb
+import game.audio.SoundModel
+import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.types.EntityTypes
 import game.domain.world.domain.entity.geo.Coordinates
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterGraphicsBehavior
@@ -9,7 +12,10 @@ import game.domain.world.domain.entity.actors.abstracts.character.properties.Cha
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.FiringEnemy
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.logic.FiringEnemyLogic
 import game.domain.world.domain.entity.actors.impl.enemies.npcs.firing_enemy.state.FiringEnemyState
+import game.presentation.ui.panels.game.PitchPanel
 import game.utils.file_system.Paths.enemiesFolder
+import game.values.DrawPriority
+import java.util.*
 
 class TankEnemy : FiringEnemy {
     constructor() : super()
@@ -17,7 +23,10 @@ class TankEnemy : FiringEnemy {
     constructor(coordinates: Coordinates?) : super(coordinates)
 
     override val logic: FiringEnemyLogic = FiringEnemyLogic(entity = this)
-    override val state: FiringEnemyState = object : FiringEnemyState(entity = this) {
+    override val state: FiringEnemyState = object : FiringEnemyState(
+        entity = this,
+        speed = TankEnemy.DEFAULT.SPEED
+    ) {
         override val shootingChance: Int
             get() = 1
     }
@@ -27,6 +36,10 @@ class TankEnemy : FiringEnemy {
     override val graphicsBehavior: ICharacterGraphicsBehavior = CharacterGraphicsBehavior(entity = this)
     override val image: CharacterImageModel = object : CharacterImageModel(entity = this) {
         override fun characterOrientedImages(): Array<String> =
-                arrayOf("$enemiesFolder/tank/tank_${state.imageDirection.toString().lowercase()}.png")
+            arrayOf("$enemiesFolder/tank/tank_${state.imageDirection.toString().lowercase()}.png")
+    }
+
+    internal object DEFAULT {
+        val SPEED = 0.5f
     }
 }

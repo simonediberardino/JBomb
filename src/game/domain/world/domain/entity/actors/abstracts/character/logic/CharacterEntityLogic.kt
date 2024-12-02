@@ -91,6 +91,26 @@ abstract class CharacterEntityLogic(
             return true
         }
 
+        val oppositeDirections = when (direction) {
+            Direction.UP, Direction.DOWN -> {
+                arrayOf(Direction.LEFT, Direction.RIGHT)
+            }
+            Direction.LEFT, Direction.RIGHT -> {
+                arrayOf(Direction.UP, Direction.DOWN)
+            }
+        }
+
+        val oppositeBlocksCoordinates = Coordinates.getNewCoordinatesListOnDirection(
+            /* position = */ entity.info.position,
+            /* d = */ direction,
+            /* steps = */ PitchPanel.PIXEL_UNIT,
+            /* offset = */ Character.DEFAULT.SIZE,
+            /* size = */ Character.DEFAULT.SIZE
+        )
+        val entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[0])
+        val entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[1])
+        overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirections[0], oppositeDirections[1])
+
         // Otherwise, return false.
         return false
     }
@@ -277,16 +297,6 @@ abstract class CharacterEntityLogic(
         if (moveSuccessful) {
             return
         }
-        val oppositeBlocksCoordinates = Coordinates.getNewCoordinatesListOnDirection(
-            /* position = */ entity.info.position,
-            /* d = */ command.commandToDirection(),
-            /* steps = */ PitchPanel.PIXEL_UNIT,
-            /* offset = */ Character.DEFAULT.SIZE,
-            /* size = */ Character.DEFAULT.SIZE
-        )
-        val entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[0])
-        val entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[1])
-        overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirection1, oppositeDirection2)
     }
 
     override fun overpassBlock(
