@@ -23,11 +23,6 @@ public class PausePanel extends BaseMenu {
     }
 
     @Override
-    protected int getButtonsPadding() {
-        return 1;
-    }
-
-    @Override
     protected List<JButton> getButtons() {
         return Arrays.asList(createResumeButton(), createQuitButton());
     }

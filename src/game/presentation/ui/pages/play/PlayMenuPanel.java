@@ -22,11 +22,6 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
     }
 
     @Override
-    protected int getButtonsPadding() {
-        return 1;
-    }
-
-    @Override
     protected List<JButton> getButtons() {
         return Arrays.asList(createCampaignButton(), createMultiplayerButton(), createBackButton());
     }

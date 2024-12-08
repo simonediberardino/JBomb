@@ -33,10 +33,6 @@ class MainMenuPanel
 (cardLayout: CardLayout?, parent: JPanel?, frame: JBombFrame?) : AbstractMainMenuPanel(cardLayout, parent, frame) {
     private var updateAlertShown = false
 
-    override fun getButtonsPadding(): Int {
-        return 2
-    }
-
 
     override fun getButtons(): MutableList<JButton> {
         return Arrays.asList(createPlayButton(), createProfileButton(), createSettingsButton(), createQuitButton(), createUpdateButton())

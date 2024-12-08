@@ -7,7 +7,6 @@ import game.presentation.ui.pages.AbstractMainMenuPanel
 import game.presentation.ui.pages.arena.ArenaMenuPanel
 import game.presentation.ui.pages.main_menu.MainMenuPanel
 import game.presentation.ui.pages.server_browser.ServersListMenuPanel
-import game.presentation.ui.pages.multiplayer.MultiplayerSelectMapPanel
 import game.presentation.ui.panels.game.PagePanel
 import game.presentation.ui.viewelements.bombermanbutton.RedButton
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton
@@ -20,8 +19,6 @@ class MultiplayerPanel(
     parent: JPanel,
     frame: JBombFrame
 ) : AbstractMainMenuPanel(cardLayout, parent, frame) {
-
-    override fun getButtonsPadding(): Int = 2
 
     override fun getButtons(): MutableList<JButton> = mutableListOf(
         createButton(Localization.get(Localization.PLAY_ONLINE), ::YellowButton, ServersListMenuPanel::class.java),

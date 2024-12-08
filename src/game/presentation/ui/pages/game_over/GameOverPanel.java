@@ -54,8 +54,8 @@ public class GameOverPanel extends BaseMenu {
     }
 
     @Override
-    protected int getButtonsPadding() {
-        return 1;
+    public boolean showAppLogo() {
+        return false;
     }
 
     private JButton createStartLevelButton() {

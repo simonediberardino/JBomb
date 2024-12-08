@@ -7,7 +7,6 @@ import game.domain.level.levels.world2.World2Arena;
 import game.presentation.ui.frames.JBombFrame;
 import game.presentation.ui.pages.AbstractMainMenuPanel;
 import game.presentation.ui.pages.multiplayer.MultiplayerPanel;
-import game.presentation.ui.pages.play.PlayMenuPanel;
 import game.presentation.ui.viewelements.bombermanbutton.RedButton;
 import game.presentation.ui.viewelements.bombermanbutton.YellowButton;
 
@@ -21,11 +20,6 @@ import static game.localization.Localization.*;
 public class ArenaMenuPanel extends AbstractMainMenuPanel {
     public ArenaMenuPanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame);
-    }
-
-    @Override
-    protected int getButtonsPadding() {
-        return 1;
     }
 
     @Override
