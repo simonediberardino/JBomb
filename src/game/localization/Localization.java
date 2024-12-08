@@ -177,8 +177,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> RESET_WORLD = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "RESET WORLD");
-        put(Locale.ITALY, "RESETTA MONDO");
+        put(Locale.ENGLISH, "RESET");
+        put(Locale.ITALY, "RESETTA");
     }};
 
     public static final HashMap<Locale, String> LOADING = new HashMap<Locale, String>() {{

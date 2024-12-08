@@ -27,6 +27,10 @@ class Registration(cardLayout: CardLayout?, parent: JPanel?, frame: JBombFrame?)
         frame,
         mainMenuWallpaper,
 ) {
+    override fun blurBackground(): Boolean {
+        return true
+    }
+
     override fun onShowCallback() {
         showRegistrationDialog()
     }

@@ -65,7 +65,7 @@ object Paths {
     val backgroundImage: String get() = "$menuImagesPath/background.jpg"
 
     @JvmStatic
-    val mainMenuWallpaper: String get() = "$menuImagesPath/welcome.jpg"
+    val mainMenuWallpaper: String get() = "$menuImagesPath/jbombsteambackground.png"
 
     @JvmStatic
     val deathWallpaper: String get() = "$menuImagesPath/death.jpg"

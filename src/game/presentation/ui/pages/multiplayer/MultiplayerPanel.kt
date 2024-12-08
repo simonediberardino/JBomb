@@ -21,7 +21,7 @@ class MultiplayerPanel(
     frame: JBombFrame
 ) : AbstractMainMenuPanel(cardLayout, parent, frame) {
 
-    override fun getButtonsPadding(): Int = 3
+    override fun getButtonsPadding(): Int = 2
 
     override fun getButtons(): MutableList<JButton> = mutableListOf(
         createButton(Localization.get(Localization.PLAY_ONLINE), ::YellowButton, ServersListMenuPanel::class.java),
@@ -29,6 +29,10 @@ class MultiplayerPanel(
         createButton(Localization.get(Localization.START_ARENA), ::YellowButton, ArenaMenuPanel::class.java),
         createButton(Localization.get(Localization.BACK), ::RedButton, MainMenuPanel::class.java)
     )
+
+    override fun blurBackground(): Boolean {
+        return true
+    }
 
     private fun createButton(
         text: String,

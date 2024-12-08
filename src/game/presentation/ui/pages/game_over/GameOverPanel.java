@@ -22,6 +22,11 @@ import static game.localization.Localization.*;
 public class GameOverPanel extends BaseMenu {
     private JButton retryButton;
 
+    @Override
+    public boolean blurBackground() {
+        return false;
+    }
+
     /**
      * Constructs a MenuPanel with the specified CardLayout, parent JPanel, and BombermanFrame.
      *
@@ -80,7 +85,7 @@ public class GameOverPanel extends BaseMenu {
 
     private void updatePlayAgainButtonText() {
         boolean hasLives = DataInputOutput.getInstance().getLives() > 0;
-        String text = hasLives ? Localization.get(PLAY_AGAIN) : Localization.get(RESET_WORLD);
+        String text = hasLives ? Localization.get(PLAY_AGAIN) : " " + Localization.get(RESET_WORLD) + " ";
         retryButton.setText(text);
     }
 

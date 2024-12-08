@@ -34,7 +34,7 @@ class MainMenuPanel
     private var updateAlertShown = false
 
     override fun getButtonsPadding(): Int {
-        return 3
+        return 2
     }
 
 

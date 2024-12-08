@@ -414,6 +414,11 @@ public class MatchPanel extends PagePanel implements CustomSoundMode {
     }
 
     @Override
+    public boolean blurBackground() {
+        return false;
+    }
+
+    @Override
     public boolean shouldMaintainAspectRatio() {
         return false;
     }

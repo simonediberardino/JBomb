@@ -18,6 +18,11 @@ public abstract class AbstractMainMenuPanel extends BaseMenu {
     }
 
     @Override
+    public boolean blurBackground() {
+        return true;
+    }
+
+    @Override
     public JPanel getLeftPanel() {
         return new UsernameMenuPanelFactory().build();
     }

@@ -25,7 +25,7 @@ public class ArenaMenuPanel extends AbstractMainMenuPanel {
 
     @Override
     protected int getButtonsPadding() {
-        return 2;
+        return 1;
     }
 
     @Override

@@ -38,6 +38,10 @@ class MultiplayerSelectMapPanel(
     Paths.mainMenuWallpaper,
     false
 ) {
+    override fun blurBackground(): Boolean {
+        return true
+    }
+
     override fun getBoxPanelWidth(): Int = Utility.px(800)
 
     override fun addCustomElements() {

@@ -99,4 +99,9 @@ public abstract class BoxMenuPanel extends PagePanel {
     public void onShowCallback() {
         boxComponentsPanel.refresh();
     }
+
+    @Override
+    public boolean blurBackground() {
+        return true;
+    }
 }

@@ -67,7 +67,15 @@ public abstract class PagePanel extends JPanel {
                 g.drawImage(backgroundImage.getScaledInstance(panelWidth, panelHeight, Image.SCALE_SMOOTH), 0, 0, null);
             }
         }
+
+        if (blurBackground()) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(new Color(0, 0, 0, 128)); // Black with 50% transparency
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+        }
     }
+
+    public abstract boolean blurBackground();
 
     // method to be implemented by subclasses to choose whether to maintain the aspect ratio or stretch the image
     public boolean shouldMaintainAspectRatio() {

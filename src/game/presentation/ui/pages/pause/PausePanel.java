@@ -13,6 +13,11 @@ import java.util.List;
 import static game.localization.Localization.*;
 
 public class PausePanel extends BaseMenu {
+    @Override
+    public boolean blurBackground() {
+        return true;
+    }
+
     public PausePanel(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame);
     }

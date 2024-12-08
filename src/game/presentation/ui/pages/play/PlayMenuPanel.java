@@ -23,7 +23,7 @@ public class PlayMenuPanel extends AbstractMainMenuPanel {
 
     @Override
     protected int getButtonsPadding() {
-        return 3;
+        return 1;
     }
 
     @Override

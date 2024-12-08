@@ -21,7 +21,7 @@ public class LoadingPanel extends PagePanel {
     private final static int TEXT_ANIM_STEP_SIZE = Utility.INSTANCE.px(75);
     private final static int FONT_SIZE = Utility.INSTANCE.px(75);
     private final static Color FONT_COLOR = new Color(255, 145, 0);
-    private final static Color CONTAINER_BACKGROUND = new Color(0, 0, 0, 160);
+    private final static Color CONTAINER_BACKGROUND = new Color(0, 0, 0, 175);
     private javax.swing.Timer animationTimer;
     private int textCurrX;
     private String text;
@@ -117,6 +117,11 @@ public class LoadingPanel extends PagePanel {
             int textX = textCurrX;
             g.drawString(text, textX, textY);
         }
+    }
+
+    @Override
+    public boolean blurBackground() {
+        return false;
     }
 
     @Override

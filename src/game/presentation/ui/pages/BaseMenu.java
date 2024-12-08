@@ -22,6 +22,18 @@ public abstract class BaseMenu extends PagePanel {
         setupLayout();
     }
 
+    public abstract boolean blurBackground();
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (blurBackground()) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(new Color(0, 0, 0, 128)); // Black with 50% transparency
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+        }
+    }
+
     public BaseMenu(CardLayout cardLayout, JPanel parent, JBombFrame frame) {
         super(cardLayout, parent, frame, Paths.getMainMenuWallpaper());
         setupLayout();
@@ -119,7 +131,6 @@ public abstract class BaseMenu extends PagePanel {
                     .anyMatch(e -> e.getText().trim().equalsIgnoreCase(toAddButton.getText().trim()));
 
             if (!isButtonAlreadyPresent) {
-                Log.INSTANCE.e("adding " + toAddButton);
                 listButtonsPanel.add(toAddButton);
             }
         }
