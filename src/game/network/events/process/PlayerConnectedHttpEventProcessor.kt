@@ -5,6 +5,7 @@ import game.domain.events.models.HttpEvent
 import game.domain.world.domain.entity.actors.impl.bomber_entity.remote_player.RemotePlayer
 import game.domain.world.domain.entity.geo.Coordinates
 import game.network.events.forward.SpawnEntityEventForwarder
+import game.network.gamehandler.ServerGameHandler
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
 
@@ -39,5 +40,7 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         player.logic.spawn(forceSpawn = true, forceCentering = true)
 
         level.playerCountHandler.onPlayerCountChanged()
+
+        (JBomb.match.onlineGameHandler as? ServerGameHandler?)?.onClientJoinedSuccessfully(clientId)
     }
 }

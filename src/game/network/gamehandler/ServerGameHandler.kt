@@ -31,8 +31,7 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
         }
     }
 
-    val clientsConnected: Int
-        get() = if (this::server.isInitialized) server.clients.size else 0
+    var clientsConnected: Int = 0
 
     /**
      * Indicates whether the server is currently running and accepting client connections.
@@ -45,6 +44,8 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
      * Listens to events emitted by the server through `eventFlow`.
      */
     suspend fun create() {
+        clientsConnected = 0
+
         server = TCPServer(port, maxClients)
         server.open()
 
@@ -79,7 +80,7 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
         server.scope.launch {
             ipv4 = GetInetAddressUseCase().invoke()
             try {
-                startUpdateInfoLoop()
+                //startUpdateInfoLoop()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -144,11 +145,16 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
 
         // Sends the info of the level to the client
         LevelInfoHttpEventForwarder().invoke(data)
+    }
+
+    fun onClientJoinedSuccessfully(clientId: Long) {
+        clientsConnected++
 
         server.scope.launch {
             updateInfo()
         }
     }
+
 
     /**
      * Handles when a client is disconnected.
@@ -157,8 +163,11 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
      */
     private fun onClientDisconnected(clientId: Long) {
         val client = JBomb.match.getEntityById(clientId) as BomberEntity? ?: return
+
         client.state.disconnected = true
         client.logic.despawn()
+
+        clientsConnected--
 
         server.scope.launch {
             updateInfo()
