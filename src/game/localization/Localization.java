@@ -197,8 +197,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> MAIN_MENU = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "RETURN TO MAIN MENU");
-        put(Locale.ITALY, "RITORNA AL MENU PRINCIPALE");
+        put(Locale.ENGLISH, "MAIN MENU");
+        put(Locale.ITALY, "MENU PRINCIPALE");
     }};
 
     public static final HashMap<Locale, String> BACK = new HashMap<Locale, String>() {{
