@@ -14,6 +14,7 @@ import game.properties.RuntimeProperties
 import game.usecases.GetInetAddressUseCase
 import game.utils.dev.Extensions.getOrTrim
 import game.utils.dev.Log
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ServerGameHandler(private val port: Int): OnlineGameHandler {
@@ -77,7 +78,16 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
         running = true
         server.scope.launch {
             ipv4 = GetInetAddressUseCase().invoke()
+            try {
+                startUpdateInfoLoop()
+            } catch (_: Exception) {}
+        }
+    }
+
+    private suspend fun startUpdateInfoLoop() {
+        while (!server.isClosed()) {
             updateInfo()
+            delay(20_000L)
         }
     }
 
