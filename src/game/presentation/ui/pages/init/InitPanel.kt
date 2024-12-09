@@ -61,8 +61,6 @@ class InitPanel(
     }
 
     override fun onShowCallback() {
-        ToastUtils.show(get(Localization.LOADING_INIT), true, true)
-
         stepsToLoad.forEach {
             JBomb.scope.launch {
                 it.invoke()
