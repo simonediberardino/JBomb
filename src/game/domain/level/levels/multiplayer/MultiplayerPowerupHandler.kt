@@ -26,6 +26,9 @@ class MultiplayerPowerupHandler() {
     }
 
     fun spawnLoop() {
+        if (!JBomb.match.isServer)
+            return
+
         JBomb.match.scope.launch {
             while (true) {
                 repeat(spawnCount) {
