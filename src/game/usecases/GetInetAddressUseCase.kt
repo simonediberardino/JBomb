@@ -6,14 +6,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.InetAddress
 
-class GetInetAddressUseCase: UseCase<InetAddress?> {
-    override suspend fun invoke(): InetAddress? {
+class GetInetAddressUseCase: UseCase<String?> {
+    override suspend fun invoke(): String? {
         val result = JBombHttp.get(HttpUrls.getInetAddressUrl)
 
         return if (result.statusCode == 200) {
-            withContext(Dispatchers.IO) {
-                InetAddress.getByName(result.data?.trim())
-            }
+            result.data.toString().trim()
         } else {
             return null
         }

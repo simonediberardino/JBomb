@@ -13,8 +13,6 @@ import kotlinx.coroutines.coroutineScope
 
 class FetchAllServersFromMasterServerUseCase : UseCase<List<ServerInfo>?> {
     override suspend fun invoke(): List<ServerInfo>? {
-        val myIpv4 = GetInetAddressUseCase().invoke()?.hostName
-
         val response = JBombHttp.get("${HttpUrls.masterServerUrl}/servers")
         return if (response.statusCode == 200) {
             val servers = serversListAdapter.fromJson(response.data!!)

@@ -3,8 +3,6 @@ package game.internet
 import game.presentation.ui.pages.server_browser.ServerInfo
 import game.utils.dev.Extensions.toMap
 import game.utils.dev.Log
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader

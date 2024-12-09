@@ -76,7 +76,7 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
     private fun onStartServer() {
         running = true
         server.scope.launch {
-            ipv4 = GetInetAddressUseCase().invoke()?.hostName
+            ipv4 = GetInetAddressUseCase().invoke()
             updateInfo()
         }
     }
