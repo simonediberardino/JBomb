@@ -16,7 +16,7 @@ class ReconnectToServerUseCase: UseCase<Boolean> {
 
         val pingResult = PingServerUseCase(ipv4, port, 5_000).invoke()
 
-        if (!pingResult)
+        if (pingResult == -1)
             return false
 
         ConnectToServerUseCase(RuntimeProperties.lastConnectedIp).invoke()

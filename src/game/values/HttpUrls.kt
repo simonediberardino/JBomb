@@ -1,7 +1,7 @@
 package game.values
 
 object HttpUrls {
-    val masterServerUrl: String = "http://jbombthegame.com"
+    val masterServerUrl: String = "http://www.jbombthegame.com"
     val JBombUtilityGit: String = "https://raw.githubusercontent.com/simonediberardino/jbomb_setups/main"
     val JBombVersionUrl: String = "$JBombUtilityGit/version"
     val getInetAddressUrl: String = "http://checkip.amazonaws.com"

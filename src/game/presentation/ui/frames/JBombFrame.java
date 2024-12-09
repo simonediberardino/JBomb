@@ -5,6 +5,7 @@ import game.domain.level.levels.world1.World1Level1;
 import game.localization.Localization;
 import game.presentation.ui.pages.arena.ArenaMenuPanel;
 import game.presentation.ui.pages.error.NetworkErrorPage;
+import game.presentation.ui.pages.game_over.ArenaGameOverPanel;
 import game.presentation.ui.pages.game_over.GameOverPanel;
 import game.presentation.ui.pages.init.InitPanel;
 import game.presentation.ui.pages.loading.LoadingPanel;
@@ -55,6 +56,7 @@ public class JBombFrame extends JFrame {
     private ServersListMenuPanel serversListMenuPanel;
     private LoadingPanel loadingPanel;
     private GameOverPanel gameOverPanel;
+    private ArenaGameOverPanel arenaGameOverPanel;
     private PausePanel pausePanel;
     private ProfilePanel profilePanel;
     private SettingsPanel settingsPanel;
@@ -166,6 +168,9 @@ public class JBombFrame extends JFrame {
     private void initGameOverPanel() {
         gameOverPanel = new GameOverPanel(cardLayout, parentPanel, this);
         parentPanel.add(gameOverPanel, GameOverPanel.class.getSimpleName());
+
+        arenaGameOverPanel = new ArenaGameOverPanel(cardLayout, parentPanel, this);
+        parentPanel.add(arenaGameOverPanel, ArenaGameOverPanel.class.getSimpleName());
     }
 
     private void initProfilePanel() {

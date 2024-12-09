@@ -172,8 +172,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> ARENA_DIED = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "YOU DIED! YOU SURVIVED %rounds% ROUNDS.");
-        put(Locale.ITALY, "SEI MORTO! SEI SOPRAVVISSUTO %rounds% ROUND.");
+        put(Locale.ENGLISH, "YOU DIED!");
+        put(Locale.ITALY, "SEI MORTO!");
     }};
 
     public static final HashMap<Locale, String> RESET_WORLD = new HashMap<Locale, String>() {{
@@ -197,8 +197,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> MAIN_MENU = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "MAIN MENU");
-        put(Locale.ITALY, "MENU PRINCIPALE");
+        put(Locale.ENGLISH, "RETURN TO MAIN MENU");
+        put(Locale.ITALY, "RITORNA AL MENU PRINCIPALE");
     }};
 
     public static final HashMap<Locale, String> BACK = new HashMap<Locale, String>() {{

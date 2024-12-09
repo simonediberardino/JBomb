@@ -83,7 +83,7 @@ class ServerButton extends JButton {
         drawCenteredString(g2d, players, new Rectangle(10, height / 3, width - 20, height / 3), g2d.getFont());
 
         // Ping
-        String ping = "Ping: " + server.getPing() + "ms";
+        String ping = "Ping: " + server.getPing() + " ms";
         drawCenteredString(g2d, ping, new Rectangle(10, 2 * height / 3, width - 20, height / 3), g2d.getFont());
 
         g2d.dispose();

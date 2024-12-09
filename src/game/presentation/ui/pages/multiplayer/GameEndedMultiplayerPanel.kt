@@ -134,7 +134,7 @@ class GameEndedMultiplayerPanel(
             val ipv4 = tokens[0]
             val port: Int = tokens.getOrNull(1)?.toInt() ?: JBombMatch.port // Default port if parsing fails
 
-            if (PingServerUseCase(ipv4, port).invoke()) {
+            if (PingServerUseCase(ipv4, port).invoke() != -1) {
                 dialog.dispose()
                 ReconnectToServerUseCase().invokeBlocking()
             } else {

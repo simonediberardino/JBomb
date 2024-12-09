@@ -12,6 +12,10 @@ import game.domain.level.gamehandler.imp.DefaultStoryLevelHandler
 import game.domain.level.gamehandler.model.GameHandler
 import game.domain.level.info.model.DefaultArenaLevelInfo
 import game.localization.Localization
+import game.presentation.ui.pages.game_over.ArenaGameOverPanel
+import game.presentation.ui.pages.game_over.GameOverPanel
+import game.presentation.ui.pages.main_menu.MainMenuPanel
+import game.properties.RuntimeProperties
 import game.utils.dev.Log
 import game.utils.ui.ToastUtils
 import java.awt.event.ActionEvent
@@ -61,6 +65,13 @@ abstract class ArenaLevel : Level() {
 
     override val eventHandler: LevelEventHandler
         get() = object : DefaultLevelEventHandler() {
+            override fun onEndGame() {
+                super.onEndGame()
+                if (!RuntimeProperties.dedicatedServer) {
+                    JBomb.showActivity(ArenaGameOverPanel::class.java)
+                }
+            }
+
             override fun initBombsVariables() {
                 // force initial bomb states to 1, saves do not count on arena
                 val player = JBomb.match.player ?: return

@@ -4,6 +4,8 @@ import game.JBomb
 import game.domain.events.game.DefeatGameEvent
 import game.domain.world.domain.entity.actors.abstracts.entity_interactable.EntityInteractable
 import game.presentation.ui.pages.game_over.GameOverPanel
+import game.usecases.EndGameAndWaitClientsToDisconnectUseCase
+import kotlinx.coroutines.launch
 import java.awt.event.ActionEvent
 import javax.swing.Timer
 
@@ -13,8 +15,10 @@ class PlayerDeathBehavior : GameBehavior() {
             val t = Timer(EntityInteractable.SHOW_DEATH_PAGE_DELAY_MS.toInt()) { _: ActionEvent? ->
                 if (!JBomb.isGameEnded) {
                     DefeatGameEvent().invoke(null)
-                    JBomb.destroyLevel(true)
-                    JBomb.showActivity(GameOverPanel::class.java)
+
+                    JBomb.scope.launch {
+                        EndGameAndWaitClientsToDisconnectUseCase().invoke()
+                    }
                 }
             }
             t.isRepeats = false

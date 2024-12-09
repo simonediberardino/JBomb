@@ -24,11 +24,11 @@ class FetchAllServersFromMasterServerUseCase : UseCase<List<ServerInfo>?> {
                 servers?.map { server ->
                     async {
                         // Execute the ping and pair the result with the server
-                        val isReachable = PingServerUseCase(server.ip, server.port).invoke()
-                        Pair(server, isReachable)
+                        val ping = PingServerUseCase(server.ip, server.port).invoke()
+                        Pair(server.copy(ping = ping), ping)
                     }
                 }?.awaitAll() // Wait for all ping tasks to complete
-                    ?.filter { it.second } // Filter by reachable servers (those with true in the pair)
+                    ?.filter { it.second != -1 } // Filter by reachable servers (those with true in the pair)
                     ?.map { it.first } // Return only the server objects
             }
 
