@@ -22,17 +22,14 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
 
         // Launch a coroutine to monitor server events for client disconnections.
         server.server.scope.launch {
-            server.server.eventFlow.collect { event ->
-                // If a client disconnects, check if there are no more clients connected.
-                if (event is TCPServer.ServerEvent.ClientDisconnected) {
-                    if (server.clientsConnected == 0) {
-                        JBomb.match.scope.launch {
-                            // Disconnect the server when there are no clients.
-                            JBomb.match.disconnectOnlineAndStayInGame()
-
-                            if (RuntimeProperties.dedicatedServer) {
-                                JBomb.startLevelByArgs()
-                            }
+            if (server.server.clients.isEmpty()) {
+                doDisconnect()
+            } else {
+                server.server.eventFlow.collect { event ->
+                    // If a client disconnects, check if there are no more clients connected.
+                    if (event is TCPServer.ServerEvent.ClientDisconnected) {
+                        if (server.clientsConnected == 0) {
+                            doDisconnect()
                         }
                     }
                 }
@@ -42,5 +39,16 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
         // Invoke the in-game end event and forward the end game event to all clients.
         EndGameGameEvent().invoke()
         EndGameEventForwarder().invoke()
+    }
+
+    private fun doDisconnect() {
+        JBomb.match.scope.launch {
+            // Disconnect the server when there are no clients.
+            JBomb.match.disconnectOnlineAndStayInGame()
+
+            if (RuntimeProperties.dedicatedServer) {
+                JBomb.startLevelByArgs()
+            }
+        }
     }
 }

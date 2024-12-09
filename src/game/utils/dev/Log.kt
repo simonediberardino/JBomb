@@ -1,5 +1,7 @@
 package game.utils.dev
 
+import game.properties.RuntimeProperties
+
 object Log {
     private val baseLogsEnabled = XMLUtils.readConfig("logs_base").toBoolean()
     private val logsErrorEnabled = XMLUtils.readConfig("logs_error").toBoolean()
@@ -14,21 +16,21 @@ object Log {
     }
 
     fun i(message: Any) {
-        if (!baseLogsEnabled)
+        if (!baseLogsEnabled && !RuntimeProperties.dedicatedServer)
             return
 
         println(message)
     }
 
     fun e(message: Any) {
-        if (!logsErrorEnabled)
+        if (!logsErrorEnabled && !RuntimeProperties.dedicatedServer)
             return
 
         print(red, message)
     }
 
     fun w(message: Any) {
-        if (!logsWarningEnabled)
+        if (!logsWarningEnabled && !RuntimeProperties.dedicatedServer)
             return
 
         print(yellow, message)
