@@ -80,7 +80,9 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
             ipv4 = GetInetAddressUseCase().invoke()
             try {
                 startUpdateInfoLoop()
-            } catch (_: Exception) {}
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
