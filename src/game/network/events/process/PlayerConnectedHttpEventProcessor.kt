@@ -41,6 +41,7 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
 
         level.playerCountHandler.onPlayerCountChanged()
 
+        // TODO Find a better solution
         (JBomb.match.onlineGameHandler as? ServerGameHandler?)?.onClientJoinedSuccessfully(clientId)
     }
 }
