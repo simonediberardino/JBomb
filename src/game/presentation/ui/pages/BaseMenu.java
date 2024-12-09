@@ -19,7 +19,7 @@ public abstract class BaseMenu extends PagePanel {
     private JPanel leftPanel = null;
     private JPanel rightPanel = null;
     private JPanel topPanel = null;
-    protected int maximumButtonCount = 5;
+    protected int maximumButtonCount = 4;
 
     public BaseMenu(CardLayout cardLayout, JPanel parent, JBombFrame frame, String imagePath) {
         super(cardLayout, parent, frame, imagePath);
@@ -176,6 +176,8 @@ public abstract class BaseMenu extends PagePanel {
         List<JButton> buttons = getButtons();
         int lastIndex = Math.min(maximumButtonCount, buttons.size());
         buttons = buttons.subList(0, lastIndex);
+
+        listButtonsPanel.add(new Space());
 
         int addedButtons = 0;
         for (JButton b : buttons)

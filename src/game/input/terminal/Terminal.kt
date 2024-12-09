@@ -2,6 +2,8 @@ package game.input.terminal
 
 import game.domain.level.levels.level_editor.LevelEditor
 import game.input.terminal.commands.*
+import game.properties.RuntimeProperties
+import game.utils.dev.XMLUtils
 
 object Terminal {
     private val helpCommand = object: TerminalCommand {
@@ -30,6 +32,9 @@ object Terminal {
     )
 
     suspend fun start() {
+        if (!RuntimeProperties.dedicatedServer && XMLUtils.readConfig("terminal") != "true")
+            return
+
         println("Starting terminal")
 
         while (true) {

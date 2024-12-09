@@ -52,16 +52,21 @@ object JBomb {
     }
 
     private fun handleGameRotation(args: Array<String>) {
-        val gameMode = args.find { it.startsWith("-mode=")}?.replace("-mode=", "")?.trim() ?: return
-        val levelId = args.find { it.startsWith("-level=")}?.replace("-level=", "")?.toIntOrNull() ?: return
+        val gameModeParam = args.find { it.startsWith("-mode=")}?.replace("-mode=", "")?.trim() ?: return
+        val levelIdParam = args.find { it.startsWith("-level=")}?.replace("-level=", "")?.toIntOrNull() ?: return
 
-        val worldId = when (gameMode.toLowerCase()) {
-            "arena" -> 0
+        val worldId = when (gameModeParam.toLowerCase()) {
+            "arena" -> levelIdParam
             "mp" -> -1
             else -> return
         }
 
-        RuntimeProperties.argLevel = levelId
+        val actualLevelId = when (gameModeParam.toLowerCase()) {
+            "arena" -> 0
+            else -> levelIdParam
+        }
+
+        RuntimeProperties.argLevel = actualLevelId
         RuntimeProperties.argWorld = worldId
 
         startLevelByArgs()

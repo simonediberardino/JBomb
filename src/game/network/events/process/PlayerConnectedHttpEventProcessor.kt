@@ -17,8 +17,9 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         Log.i("PlayerConnectedHttpEventProcessor: $clientId")
 
         val match = JBomb.match
+        val level = match.currentLevel
 
-        JBomb.match.resumeIfPaused()
+        match.resumeIfPaused()
 
         match.getEntities().forEach { e ->
             Log.i("Sending entity $e to $clientId")
@@ -27,11 +28,16 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
 
         val skinId = info.getOrTrim("skinId")
         val player = RemotePlayer(null, clientId, skinId?.toInt() ?: 0)
-        player.info.position = JBomb.match.currentLevel.gameHandler.chooseSpawnpointLogic(player)
-        player.updateInfo(info)
 
+        if (level.info.customSpawnpoints.isNotEmpty()) {
+            player.info.position = level.gameHandler.chooseSpawnpointLogic(player)
+        } else {
+            level.info.playerSpawnCoordinates
+        }
+
+        player.updateInfo(info)
         player.logic.spawn(forceSpawn = true, forceCentering = true)
 
-        JBomb.match.currentLevel.playerCountHandler.onPlayerCountChanged()
+        level.playerCountHandler.onPlayerCountChanged()
     }
 }
