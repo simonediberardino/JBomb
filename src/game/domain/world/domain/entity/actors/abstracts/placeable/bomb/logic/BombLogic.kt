@@ -47,7 +47,7 @@ class BombLogic(override val entity: Bomb) : BlockEntityLogic(entity = entity), 
 
     override fun explode() {
         if (exploded || JBomb.isGameEnded) {
-            Log.e("Game is ended or exploded, not exploding")
+            Log.i("Game is ended or exploded, not exploding")
             return
         }
         

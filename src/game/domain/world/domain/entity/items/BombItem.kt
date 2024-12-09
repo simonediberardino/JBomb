@@ -22,32 +22,32 @@ class BombItem : UsableItem() {
         ) >= Bomb.PLACE_INTERVAL
 
         if (!isBombPlacementIntervalValid) {
-            Log.e("Cannot place bomb, too early")
+            Log.i("Cannot place bomb, too early")
             return -1
         }
 
         if (isLocalPlayer && owner.state.placedBombs >= owner.state.maxBombs) {
-            Log.e("owner.state.placedBombs: ${owner.state.placedBombs}")
-            Log.e("owner.state.maxBombs: ${owner.state.maxBombs}")
-            Log.e("Cannot place bomb, placedBombs >= maxBombs")
+            Log.i("owner.state.placedBombs: ${owner.state.placedBombs}")
+            Log.i("owner.state.maxBombs: ${owner.state.maxBombs}")
+            Log.i("Cannot place bomb, placedBombs >= maxBombs")
             return -1
         }
 
         if (isLocalPlayer && owner.state.currentBombs <= 0) {
-            Log.e("owner.state.currentBombs: ${owner.state.currentBombs}")
-            Log.e("Cannot place bomb, currentBombs <= 0")
+            Log.i("owner.state.currentBombs: ${owner.state.currentBombs}")
+            Log.i("Cannot place bomb, currentBombs <= 0")
             return -1
         }
 
         if (isLocalPlayer && owner.state.currExplosionLength <= 0) {
-            Log.e("owner.state.currExplosionLength: ${owner.state.currExplosionLength}")
-            Log.e("Cannot place bomb, currExplosionLength <= 0")
+            Log.i("owner.state.currExplosionLength: ${owner.state.currExplosionLength}")
+            Log.i("Cannot place bomb, currExplosionLength <= 0")
             return -1
         }
 
         if (isLocalPlayer && owner.state.currentBombs >= match.currentLevel.info.maxBombs) {
-            Log.e("owner.state.currentBombs: ${owner.state.currentBombs}")
-            Log.e("Cannot place bomb, currentBombs >= maxBombs")
+            Log.i("owner.state.currentBombs: ${owner.state.currentBombs}")
+            Log.i("Cannot place bomb, currentBombs >= maxBombs")
             return -1
         }
 
@@ -55,7 +55,7 @@ class BombItem : UsableItem() {
         owner.state.placedBombs++
         owner.state.bombsSolid = (false)
 
-        Log.e("Bomb placed at ${owner.info.position}")
+        Log.i("Bomb placed at ${owner.info.position}")
 
         if (isLocalPlayer)
             UpdateCurrentAvailableItemsEvent().invoke(owner.state.currentBombs - 1)
@@ -64,7 +64,7 @@ class BombItem : UsableItem() {
             Bomb(this, owner)
         } ?: Bomb(owner)
 
-        Log.e("Spawning bomb with id ${bombEntity.info.id}")
+        Log.i("Spawning bomb with id ${bombEntity.info.id}")
 
         UpdateInfoEventForwarder().invoke((bombEntity as Entity).toEntityNetwork())
 

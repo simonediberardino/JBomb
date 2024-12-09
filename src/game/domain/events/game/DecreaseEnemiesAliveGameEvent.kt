@@ -16,7 +16,7 @@ class DecreaseEnemiesAliveGameEvent : GameEvent {
                 UpdateLocalEnemiesCountGameEvent().invoke(enemiesAlive - 1) // updates locally
                 UpdateEnemiesCountEventForwarder().invoke(enemiesAlive - 1) // notifies clients
 
-                Log.e("Host is notifying new decreased count ${enemiesAlive - 1}")
+                Log.i("Host is notifying new decreased count ${enemiesAlive - 1}")
             }
 
             override fun clientBehavior() {}

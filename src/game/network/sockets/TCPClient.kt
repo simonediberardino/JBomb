@@ -33,7 +33,7 @@ class TCPClient(private val serverAddress: String, private val serverPort: Int) 
             return
         }
 
-        Log.e("Connecting to $serverAddress")
+        Log.i("Connecting to $serverAddress")
 
         try {
             socket = Socket(serverAddress, serverPort)
@@ -80,7 +80,7 @@ class TCPClient(private val serverAddress: String, private val serverPort: Int) 
         scope.launch {
             try {
                 while (true) {
-                    Log.e("Reading")
+                    Log.i("Reading")
                     // Reads the stream from the server;
                     val serverData = reader.readLine()
 

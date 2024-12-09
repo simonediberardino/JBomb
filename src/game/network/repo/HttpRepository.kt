@@ -18,10 +18,10 @@ class HttpRepository private constructor() {
             } ?: continue
 
             sent = true
-            Log.e("Sending $message to $sender")
+            Log.i("Sending $message to $sender")
             sender.sendData(string)
             break
         }
-        Log.e("Message $message sent: $sent") */
+        Log.i("Message $message sent: $sent") */
     }
 }

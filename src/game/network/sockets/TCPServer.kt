@@ -24,6 +24,7 @@ class TCPServer(private var port: Int, private val maxClients: Int) : TCPSocket 
     suspend fun open() {
         try {
             socket = ServerSocket(port)
+            println("Server started")
             emitEvent(ServerEvent.ServerStarted)
             start()
         } catch (ioException: IOException) {

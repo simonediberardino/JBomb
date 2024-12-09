@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
 
 class SendStopServerToMasterServerUseCase(private val ip: String, private val port: Int): UseCase<Unit> {
     override suspend fun invoke() {
-        Log.e("Sending delete")
+        Log.i("Sending delete")
         val map = mapOf(
             "ip" to ip,
             "port" to port.toString()
@@ -17,6 +17,6 @@ class SendStopServerToMasterServerUseCase(private val ip: String, private val po
 
         val response = JBombHttp.delete("${HttpUrls.masterServerUrl}/server", Json.encodeToString(map))
 
-        Log.e("Data ${response.data}")
+        Log.i("Data ${response.data}")
     }
 }

@@ -42,7 +42,7 @@ object JBombHttp {
                     }
                 }
 
-                Log.e("Response for $url: $content with $responseCode")
+                Log.i("Response for $url: $content with $responseCode")
                 connection.disconnect()
 
                 // Resume coroutine with the response

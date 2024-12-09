@@ -6,8 +6,11 @@ data class ServerInfo(
     val ip: String,
     val port: Int,
     val players: Int,
-    val ping: Int
+    val ping: Int,
+    val dedicatedServer: String
 ) {
+    val isDedicatedServer = dedicatedServer == "true"
+
     val fullIp: String
         get() = "$ip:$port"
 }

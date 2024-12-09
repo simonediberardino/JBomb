@@ -44,7 +44,7 @@ class GhostBossLogic(override val entity: GhostBoss) : BossEntityLogic(entity = 
      */
     override fun disappearAndReappear() {
         synchronized((lock2 as Any)) {
-            Log.e("Running disappear = ${!entity.state.isInvisibleTaskRunning}")
+            Log.i("Running disappear = ${!entity.state.isInvisibleTaskRunning}")
             if (entity.state.isInvisibleTaskRunning) {
                 // If an invisible task is already running, exit the method.
                 return

@@ -22,7 +22,7 @@ abstract class ArenaLevel : Level() {
     override val gameHandler: GameHandler
         get() = object : DefaultStoryLevelHandler(this) {
             override fun spawnMysteryBox() {
-                Log.e("Destroyable blocks current round ${currentRound.get()}")
+                Log.i("Destroyable blocks current round ${currentRound.get()}")
 
                 if (currentRound.get() != 0) {
                     return
@@ -32,7 +32,7 @@ abstract class ArenaLevel : Level() {
             }
 
             override fun generateDestroyableBlock() {
-                Log.e("Destroyable blocks current round ${currentRound.get()}")
+                Log.i("Destroyable blocks current round ${currentRound.get()}")
                 if (currentRound.get() != 0) {
                     return
                 }

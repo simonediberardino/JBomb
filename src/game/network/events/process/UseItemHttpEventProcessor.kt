@@ -12,7 +12,7 @@ class UseItemHttpEventProcessor : HttpEvent {
     override fun invoke(vararg extras: Any) {
         val info = extras[0] as Map<String, String>
 
-        Log.e("UseItemHttpEventProcessor info $info")
+        Log.i("UseItemHttpEventProcessor info $info")
         val entityId = info.getOrTrim("entityId")?.toLong() ?: return
         val itemType = info.getOrTrim("itemType")?.toInt() ?: return
         val itemId = info.getOrTrim("itemId")?.toLong()

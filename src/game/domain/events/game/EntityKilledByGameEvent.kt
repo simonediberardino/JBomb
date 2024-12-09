@@ -25,12 +25,12 @@ class EntityKilledByGameEvent: GameEvent {
             attacker
         } as Character
 
-        Log.e("EntityKilledByGameEvent: processing $realAttacker $victim")
+        Log.i("EntityKilledByGameEvent: processing $realAttacker $victim")
         JBomb.match.currentLevel.eventHandler.onKill(realAttacker, victim)
 
         val gameBehavior: GameBehavior = object : GameBehavior() {
             override fun hostBehavior() {
-                Log.e("EntityKilledByGameEvent: sending")
+                Log.i("EntityKilledByGameEvent: sending")
 
                 EntityKilledByEventForwarder().invoke(victim, realAttacker)
             }

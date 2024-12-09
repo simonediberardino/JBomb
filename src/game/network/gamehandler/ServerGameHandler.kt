@@ -47,15 +47,17 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
         server = TCPServer(port, maxClients)
         server.open()
 
+        onStartServer()
+
         // Start listening for events from the server's eventFlow
         server.scope.launch {
             server.eventFlow.collect { event ->
                 when (event) {
-                    is TCPServer.ServerEvent.ServerStarted -> onStartServer()
                     is TCPServer.ServerEvent.ServerClosed -> onCloseServer()
                     is TCPServer.ServerEvent.ClientConnected -> onClientConnected(event.clientId)
                     is TCPServer.ServerEvent.ClientDisconnected -> onClientDisconnected(event.clientId)
                     is TCPServer.ServerEvent.DataReceived -> onDataReceived(event.data)
+                    else -> {}
                 }
             }
         }
@@ -99,11 +101,12 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
                 ip = it,
                 port = JBombMatch.port,
                 players = playerCount,
-                ping = 0
+                ping = 0,
+                dedicatedServer = RuntimeProperties.dedicatedServer.toString()
             )
         }
 
-        Log.e("Sending update info $serverInfo")
+        Log.i("Sending update info $serverInfo")
 
         serverInfo?.let {
             SendServerInfoToMasterServerUseCase(
@@ -162,7 +165,7 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
         val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
         HttpMessageReceiverHandler.instance.handle(formattedData)
 
-        Log.e("onDataReceived $formattedData")
+        Log.i("onDataReceived $formattedData")
         // if message is not private, forward it to every other client
         if (!formattedData["private"].toBoolean()) {
             val senderId = formattedData.getOrTrim("actorId")?.toLong() ?: return

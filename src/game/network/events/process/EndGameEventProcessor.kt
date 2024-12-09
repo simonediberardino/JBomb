@@ -7,7 +7,7 @@ import game.utils.dev.Log
 
 class EndGameEventProcessor: HttpEvent {
     override fun invoke(vararg extras: Any) {
-        Log.e("Client received EndGameEventProcessor")
+        Log.i("Client received EndGameEventProcessor")
         EndGameGameEvent().invoke()
         JBomb.match.disconnectOnlineAndStayInGame()
     }

@@ -231,7 +231,7 @@ class JBombMatch(
         val id = currItem.use()
 
         if (id != -1L) {
-            Log.e("Used item with id $id")
+            Log.i("Used item with id $id")
             UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), currItem.type, id)
         }
     }

@@ -11,7 +11,7 @@ class UpdateEnemiesCountEventProcessor : HttpEvent {
 
         val count = info.getOrTrim("enemiesCount")?.toInt() ?: return
 
-        Log.e("Client received $count enemies left")
+        Log.i("Client received $count enemies left")
 
         UpdateLocalEnemiesCountGameEvent().invoke(count)
     }

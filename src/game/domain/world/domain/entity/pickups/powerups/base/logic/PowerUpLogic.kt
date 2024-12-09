@@ -79,10 +79,10 @@ abstract class PowerUpLogic(
     }
 
     override fun canPickUp(bomberEntity: BomberEntity): Boolean {
-        Log.e("active power ups: ${bomberEntity.state.activePowerUps}")
+        Log.i("active power ups: ${bomberEntity.state.activePowerUps}")
 
         return bomberEntity.state.activePowerUps.all {
-            Log.e("it class is ${it::class.java}, entity class is ${this.entity.javaClass}")
+            Log.i("it class is ${it::class.java}, entity class is ${this.entity.javaClass}")
 
             if (it == this.entity.javaClass && !entity.state.isPermanent) {
                 return@all false

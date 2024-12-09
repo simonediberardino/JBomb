@@ -12,9 +12,9 @@ class BombExplodedEventProcessor: HttpEvent {
         val callerId = info.getOrTrim("entityId")?.toLong() ?: return
         val bombId = info.getOrTrim("bombId")?.toLong() ?: return
 
-        Log.e("BombExplodedEventProcessor received $info")
+        Log.i("BombExplodedEventProcessor received $info")
 
-        Log.e("BombExplodedEventProcessor alive entities ${JBomb.match.bombs}")
+        Log.i("BombExplodedEventProcessor alive entities ${JBomb.match.bombs}")
 
         val entity = JBomb.match.getEntityById(bombId) as Bomb?
         entity?.logic?.explode()

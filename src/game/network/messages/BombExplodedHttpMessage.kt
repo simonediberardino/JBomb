@@ -16,7 +16,7 @@ class BombExplodedHttpMessage(
         data["entityId"] = caller.entityId.toString()
         data["bombId"] = bomb.entityId.toString()
 
-        Log.e("BombExplodedHttpMessage Sending $data")
+        Log.i("BombExplodedHttpMessage Sending $data")
         return data
     }
 

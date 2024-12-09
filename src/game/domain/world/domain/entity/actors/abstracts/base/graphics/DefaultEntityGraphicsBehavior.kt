@@ -33,7 +33,7 @@ abstract class DefaultEntityGraphicsBehavior : IEntityGraphicsBehavior {
                 return entity.image._image
             }
         } catch (exception: Exception) {
-            Log.e("Could not load image $imagePath")
+            Log.i("Could not load image $imagePath")
             throw exception
         }
     }

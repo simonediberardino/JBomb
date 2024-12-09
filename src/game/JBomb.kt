@@ -127,7 +127,7 @@ object JBomb {
 
         val levelClassOpt = Level.findLevel(worldId, levelId)
 
-        Log.e("Starting server by args $levelId $worldId")
+        Log.i("Starting server by args $levelId $worldId")
 
         startLevel(
             level = levelClassOpt.get().getConstructor().newInstance(),
