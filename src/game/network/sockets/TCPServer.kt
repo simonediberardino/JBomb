@@ -137,17 +137,31 @@ class TCPServer(private var port: Int, private val maxClients: Int) : TCPSocket 
         disconnectClient(clients[id] ?: return)
     }
 
-    suspend fun disconnectClient(clientSocket: IndexedClient) {
-        Log.i("Disconnecting client $clientSocket")
+    private suspend fun disconnectClient(clientSocket: IndexedClient) {
+        Log.i("Attempting to disconnect client $clientSocket")
 
-        clientSocket.client.close()
-        clientSocket.writer.close()
-        clientSocket.reader.close()
+        val timeoutMillis = 5000L
 
-        clients.remove(clientSocket.id)
+        val result = withTimeoutOrNull(timeoutMillis) {
+            try {
+                clientSocket.client.close()
+                clientSocket.writer.close()
+                clientSocket.reader.close()
 
-        emitEvent(ServerEvent.ClientDisconnected(clientSocket.id))
+                clients.remove(clientSocket.id)
+
+                Log.i("Client disconnected $clientSocket")
+                emitEvent(ServerEvent.ClientDisconnected(clientSocket.id))
+            } catch (e: IOException) {
+                Log.e("Error while disconnecting client $clientSocket: ${e.message}")
+            }
+        }
+
+        if (result == null) {
+            Log.w("Timeout while attempting to disconnect client $clientSocket")
+        }
     }
+
 
     fun isClosed(): Boolean = socket.isClosed
 

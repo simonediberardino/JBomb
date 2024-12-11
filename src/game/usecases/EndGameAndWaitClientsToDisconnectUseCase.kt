@@ -6,6 +6,7 @@ import game.network.events.forward.EndGameEventForwarder
 import game.network.gamehandler.ServerGameHandler
 import game.network.sockets.TCPServer
 import game.properties.RuntimeProperties
+import game.utils.dev.Log
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,20 +17,26 @@ import kotlinx.coroutines.launch
  */
 class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
     override suspend fun invoke() {
+        Log.i("[Endgame] Ending game")
+
         if (!JBomb.match.isServer) return
 
         val server = JBomb.match.onlineGameHandler as? ServerGameHandler ?: return
+        val areClientsConnected = server.server.clients.isNotEmpty()
 
-        // Launch a coroutine to monitor server events for client disconnections.
-        server.server.scope.launch {
-            if (server.server.clients.isEmpty()) {
-                doDisconnect()
-            } else {
+        Log.i("[Endgame] Ending game with ${server.server.clients.size} connected")
+
+        if (areClientsConnected) {
+            server.server.scope.launch {
+                Log.i("[Endgame] Waiting for clients to disconnect...")
+
                 server.server.eventFlow.collect { event ->
                     // If a client disconnects, check if there are no more clients connected.
                     if (event is TCPServer.ServerEvent.ClientDisconnected) {
                         if (server.clientsConnected == 0) {
-                            doDisconnect()
+                            JBomb.match.scope.launch {
+                                doDisconnect()
+                            }
                         }
                     }
                 }
@@ -38,17 +45,26 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
 
         // Invoke the in-game end event and forward the end game event to all clients.
         EndGameGameEvent().invoke()
-        EndGameEventForwarder().invoke()
+
+        when {
+            !areClientsConnected -> {
+                doDisconnect()
+            }
+            else -> {
+                Log.i("[Endgame] Sending end game event to clients")
+                EndGameEventForwarder().invoke()
+            }
+        }
     }
 
     private fun doDisconnect() {
-        JBomb.match.scope.launch {
-            // Disconnect the server when there are no clients.
-            JBomb.match.disconnectOnlineAndStayInGame()
+        Log.i("[Endgame] Disconnecting server...")
 
-            if (RuntimeProperties.dedicatedServer) {
-                JBomb.startLevelByArgs()
-            }
+        // Disconnect the server when there are no clients.
+        JBomb.match.disconnectOnlineAndStayInGame()
+
+        if (RuntimeProperties.dedicatedServer) {
+            JBomb.startLevelByArgs()
         }
     }
 }
