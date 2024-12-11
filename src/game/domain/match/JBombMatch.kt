@@ -47,13 +47,7 @@ class JBombMatch(
     // Timestamp of the last game pause state
     private var lastGamePauseStateTime = now()
 
-    // List of entities sorted by a linked list
-    private val _entitiesList: SortedLinkedList<Entity> = SortedLinkedList()
-    private val _waitingEntitiesList: LinkedList<Entity> = LinkedList()
-
-    private val _entitiesMap: HashMap<Long, Entity> = HashMap()
-    private val _despawnedEntitiesMap: HashMap<Long, Pair<Class<out Entity>, Entity>> = HashMap()
-
+    /** Managers */
     // Manager for mouse controllers
     val mouseControllerManager: MouseControllerManager = MouseControllerManager(scope)
 
@@ -61,19 +55,18 @@ class JBombMatch(
     var controllerManager: ControllerManager? = ControllerManager()
         private set
 
+    /** Observables */
     // Observable for game tick events (nullable)
     var gameTickerObservable: GameTickerObservable? = GameTickerObservable(scope)
         private set
 
-    var timeObserverObservable: TimeTaskObserverAndObservable = TimeTaskObserverAndObservable()
+    private var timeObserverObservable: TimeTaskObserverAndObservable? = TimeTaskObserverAndObservable()
 
+    /** UI controllers */
     // Controllers for inventory elements (lateinit and nullable)
-    lateinit var inventoryElementControllerPoints: InventoryElementController
-        private set
-    lateinit var inventoryElementControllerBombs: InventoryElementController
-        private set
-    lateinit var inventoryElementControllerHp: InventoryElementController
-        private set
+    lateinit var inventoryElementControllerPoints: InventoryElementController private set
+    lateinit var inventoryElementControllerBombs: InventoryElementController private set
+    lateinit var inventoryElementControllerHp: InventoryElementController private set
     var inventoryElementControllerRounds: InventoryElementController? = null
         private set
 
@@ -82,6 +75,14 @@ class JBombMatch(
 
     var inventoryElementControllerKills: InventoryElementControllerKills? = null
         private set
+
+    /** Entities */
+
+    // List of entities sorted by a linked list
+    private val _entitiesList: SortedLinkedList<Entity> = SortedLinkedList()
+    private val _waitingEntitiesList: LinkedList<Entity> = LinkedList()
+    private val _entitiesMap: HashMap<Long, Entity> = HashMap()
+    private val _despawnedEntitiesMap: HashMap<Long, Pair<Class<out Entity>, Entity>> = HashMap()
 
     // Player information (nullable)
     var player: Player? = null
@@ -92,17 +93,21 @@ class JBombMatch(
     // List of bombs in the game
     val bombs = ArrayList<Bomb>()
 
-    // Current game state (default: false)
-    var gameState = false
-
-    var pausePanelVisible = false
-
     // Number of enemies currently alive (read-only)
     var enemiesAlive = 0
         private set
 
-    val isOnlyPlayer: Boolean
-        get() = onlineGameHandler == null || (!isClient && onlineGameHandler is ServerGameHandler && onlineGameHandler.clientsConnected == 0)
+    /** Flags */
+    private val isOnlyPlayer: Boolean
+        get() = onlineGameHandler == null
+                || (!isClient && onlineGameHandler is ServerGameHandler && onlineGameHandler.clientsConnected == 0)
+
+    // Current game state (default: false), true if game is not paused and not ended.
+    var gameState = false
+    var gameEnded = false
+        private set
+
+    private var pausePanelVisible = false
 
     init {
         setupViewControllers()
@@ -282,7 +287,7 @@ class JBombMatch(
      * @return True if the server game handler is not null and running, false otherwise.
      */
     val isServer: Boolean
-        get() = onlineGameHandler is ServerGameHandler || !isClient && onlineGameHandler == null
+        get() = (RuntimeProperties.dedicatedServer || onlineGameHandler is ServerGameHandler || (!isClient && onlineGameHandler == null))
 
     var wasServer = false
 
@@ -386,6 +391,9 @@ class JBombMatch(
      * and displaying the pause panel.
      */
     private fun pauseGame(showUi: Boolean = true, freeze: Boolean) {
+        if (RuntimeProperties.dedicatedServer)
+            return
+
         if (freeze) {
             // Stop the game ticker to pause game events
             gameTickerObservable?.stop()
@@ -508,6 +516,7 @@ class JBombMatch(
 
     private fun cancelCoroutineJob() {
         scope.cancel()
+        gameEnded = true
     }
 
     /**
@@ -557,6 +566,8 @@ class JBombMatch(
         controllerManager?.unregisterAll()
         gameTickerObservable = null
         controllerManager = null
+        timeObserverObservable?.reset()
+        timeObserverObservable = null
     }
 
     fun refreshPowerUps(list: List<Class<out PowerUp>>) {
@@ -581,17 +592,19 @@ class JBombMatch(
         val timeLimitMs = currentLevel.info.timeLimitMinutes * 60 * 1_000
         val remainingTime = timeLimitMs - timePassed
 
+        Log.i("onTimeUpdate timeLimitMs=$timeLimitMs, timePassed=$timePassed, remainingTime=$remainingTime")
+
         if (remainingTime < 0)
             return
 
         inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))
 
-        if (remainingTime == 0L) {
+        if (remainingTime <= 0L) {
             pauseGame(showUi = false, freeze = true)
 
             if (isServer) {
                 wasServer = true
-                scope.launch {
+                JBomb.scope.launch {
                     EndGameAndWaitClientsToDisconnectUseCase().invoke()
                 }
             }
@@ -599,12 +612,13 @@ class JBombMatch(
     }
 
     fun onStartGame() {
+        gameEnded = false
         wasServer = isServer
         if (isServer) setupTimerTask()
     }
 
     private fun setupTimerTask() {
-        gameTickerObservable?.register(timeObserverObservable)
+        timeObserverObservable?.let { gameTickerObservable?.register(it) }
     }
 
 

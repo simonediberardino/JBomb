@@ -151,8 +151,13 @@ object JBomb {
      * Starts a new level and destroys the previous one;
      *
      */
-    private fun doStartLevel(level: Level, disconnect: Boolean, onlineGameHandler: OnlineGameHandler?) {
-        if (this::match.isInitialized) {
+    private fun doStartLevel(
+        level: Level,
+        disconnect: Boolean,
+        onlineGameHandler: OnlineGameHandler?,
+        destroyLevel: Boolean
+    ) {
+        if (this::match.isInitialized && destroyLevel) {
             destroyLevel(disconnect)
         }
 
@@ -188,12 +193,22 @@ object JBomb {
         callback: () -> Unit,
     ) {
         if (RuntimeProperties.dedicatedServer) {
-            doStartLevel(level, disconnect, onlineGameHandler)
+            doStartLevel(
+                level = level,
+                disconnect = disconnect,
+                onlineGameHandler = onlineGameHandler,
+                destroyLevel = false
+            )
         } else {
             JBombFrame.loadingPanel.initialize()
             JBombFrame.loadingPanel.updateText(level)
             JBombFrame.loadingPanel.setCallback {
-                doStartLevel(level, disconnect, onlineGameHandler)
+                doStartLevel(
+                    level = level,
+                    disconnect = disconnect,
+                    onlineGameHandler = onlineGameHandler,
+                    destroyLevel = true
+                )
                 callback()
             }
 

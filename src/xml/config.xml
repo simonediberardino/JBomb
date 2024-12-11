@@ -2,10 +2,10 @@
 <resources>
     <config
             terminal="false"
-            full_screen="true"
-            logs_base="false"
-            logs_error="false"
-            logs_warning="false"
+            full_screen="false"
+            logs_base="true"
+            logs_error="true"
+            logs_warning="true"
             bots_move="true">
     </config>
 </resources>

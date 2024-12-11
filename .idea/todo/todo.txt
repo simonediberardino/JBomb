@@ -1,1 +1,2 @@
-- maybe check fix clicks outside pitch panel
+Fix ping not working
+Check player count not working

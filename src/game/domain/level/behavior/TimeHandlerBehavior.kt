@@ -5,7 +5,9 @@ import game.network.events.forward.TimeHttpEventForwarder
 
 class TimeHandlerBehavior(val time: Long): GameBehavior() {
     override fun hostBehavior() {
-        if (JBomb.match.gameState) {
+        val gameState = JBomb.match.gameState
+
+        if (gameState) {
             baseBehavior()
             notifyClient()
         }

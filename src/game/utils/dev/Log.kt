@@ -19,21 +19,21 @@ object Log {
         if (!baseLogsEnabled && !RuntimeProperties.dedicatedServer)
             return
 
-        println("${System.currentTimeMillis()} -> $message")
+        println("${System.currentTimeMillis()} | $message")
     }
 
     fun e(message: Any) {
         if (!logsErrorEnabled && !RuntimeProperties.dedicatedServer)
             return
 
-        print(red, "${System.currentTimeMillis()} -> $message")
+        print(red, "${System.currentTimeMillis()} | $message")
     }
 
     fun w(message: Any) {
         if (!logsWarningEnabled && !RuntimeProperties.dedicatedServer)
             return
 
-        print(yellow, "${System.currentTimeMillis()} -> $message")
+        print(yellow, "${System.currentTimeMillis()} | $message")
     }
 
     private fun print(color: String, message: Any) {

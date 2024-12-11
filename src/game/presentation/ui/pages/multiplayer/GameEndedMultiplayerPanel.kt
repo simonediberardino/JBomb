@@ -129,14 +129,10 @@ class GameEndedMultiplayerPanel(
             dialog.dispose()
             currLevel?.let { startLevel(it, JBomb.match.onlineGameHandler) }
         } else {
-            val lastServer = RuntimeProperties.lastConnectedIp
-            val tokens = lastServer.split(":").dropLastWhile { it.isEmpty() }
-            val ipv4 = tokens[0]
-            val port: Int = tokens.getOrNull(1)?.toInt() ?: JBombMatch.port // Default port if parsing fails
+            val reconnectStatus = ReconnectToServerUseCase().invokeBlocking()
 
-            if (PingServerUseCase(ipv4, port).invoke() != -1) {
+            if (reconnectStatus) {
                 dialog.dispose()
-                ReconnectToServerUseCase().invokeBlocking()
             } else {
                 updateStatus(Status.WAIT_FOR_HOST)
                 delay(3000L)

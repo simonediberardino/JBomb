@@ -11,7 +11,11 @@ import java.io.PrintWriter
 import java.net.ServerSocket
 import java.net.Socket
 
-class TCPServer(private var port: Int, private val maxClients: Int) : TCPSocket {
+class TCPServer(
+    private var port: Int,
+    private val maxClients: Int,
+    private val accept: () -> Boolean
+) : TCPSocket {
     private lateinit var socket: ServerSocket
     internal var clients: MutableMap<Long, IndexedClient> = mutableMapOf()
     private var progressiveId = 0L
@@ -71,6 +75,17 @@ class TCPServer(private var port: Int, private val maxClients: Int) : TCPSocket 
                         break
 
                     val clientSocket = socket.accept()
+
+                    Log.i("Server received request connection $clientSocket")
+
+                    if (!accept()) {
+                        Log.i("Server refused request connection $clientSocket")
+
+                        clientSocket.close()
+                        continue
+                    }
+
+                    Log.i("Server accepted request connection $clientSocket")
 
                     val indexedClient = IndexedClient(
                         id = progressiveId,

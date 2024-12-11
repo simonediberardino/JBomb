@@ -17,9 +17,16 @@ import game.utils.dev.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ServerGameHandler(private val port: Int): OnlineGameHandler {
+class ServerGameHandler(
+    private val port: Int
+): OnlineGameHandler {
     lateinit var server: TCPServer
         private set
+
+    private val accept: () -> Boolean = {
+        !JBomb.match.gameEnded
+    }
+
     private var ipv4: String? = null
     private val maxClients = run {
         val maxPlayers = 5
@@ -46,7 +53,7 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
     suspend fun create() {
         clientsConnected = 0
 
-        server = TCPServer(port, maxClients)
+        server = TCPServer(port, maxClients, accept)
         server.open()
 
         onStartServer()
@@ -79,7 +86,7 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
         running = true
         server.scope.launch {
             ipv4 = GetInetAddressUseCase().invoke()
-            updateInfo()
+            startUpdateInfoLoop()
         }
     }
 
@@ -160,6 +167,7 @@ class ServerGameHandler(private val port: Int): OnlineGameHandler {
     private fun onClientDisconnected(clientId: Long) {
         val client = JBomb.match.getEntityById(clientId) as BomberEntity? ?: return
 
+        Log.i("Handling client disconnect callback $clientId")
         client.state.disconnected = true
         client.logic.despawn()
 

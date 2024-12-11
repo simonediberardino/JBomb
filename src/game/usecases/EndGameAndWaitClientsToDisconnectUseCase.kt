@@ -34,7 +34,7 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
                     // If a client disconnects, check if there are no more clients connected.
                     if (event is TCPServer.ServerEvent.ClientDisconnected) {
                         if (server.clientsConnected == 0) {
-                            JBomb.match.scope.launch {
+                            JBomb.scope.launch {
                                 doDisconnect()
                             }
                         }
@@ -48,8 +48,11 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
 
         when {
             !areClientsConnected -> {
-                doDisconnect()
+                JBomb.scope.launch {
+                    doDisconnect()
+                }
             }
+
             else -> {
                 Log.i("[Endgame] Sending end game event to clients")
                 EndGameEventForwarder().invoke()
