@@ -60,7 +60,7 @@ class JBombMatch(
     var gameTickerObservable: GameTickerObservable? = GameTickerObservable(scope)
         private set
 
-    private var timeObserverObservable: TimeTaskObserverAndObservable? = TimeTaskObserverAndObservable()
+    private var timeObserverObservable: TimeTaskObserverAndObservable? = null
 
     /** UI controllers */
     // Controllers for inventory elements (lateinit and nullable)
@@ -594,12 +594,12 @@ class JBombMatch(
 
         Log.i("onTimeUpdate timeLimitMs=$timeLimitMs, timePassed=$timePassed, remainingTime=$remainingTime")
 
-        if (remainingTime < 0)
-            return
+        if (remainingTime >= 0)
+            inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))
 
-        inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))
-
-        if (remainingTime <= 0L) {
+        // onTimeUpdate is only called once if time is expired, so we can check if
+        // timePassed >= timeLimitMs and not exactly equals, just to be sure.
+        if (timePassed >= timeLimitMs) {
             pauseGame(showUi = false, freeze = true)
 
             if (isServer) {
@@ -618,7 +618,12 @@ class JBombMatch(
     }
 
     private fun setupTimerTask() {
-        timeObserverObservable?.let { gameTickerObservable?.register(it) }
+        timeObserverObservable?.reset()
+
+        timeObserverObservable = TimeTaskObserverAndObservable().also {
+            it.reset()
+            gameTickerObservable?.register(it)
+        }
     }
 
 

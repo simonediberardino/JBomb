@@ -26,9 +26,7 @@ class TimeTaskObserverAndObservable : Observer2 {
             lastTimeUpdate = now()
             lastNotifiedTime += 1000
 
-            JBomb.match.scope.launch {
-                TimeHandlerBehavior(lastNotifiedTime).invoke()
-            }
+            TimeHandlerBehavior(lastNotifiedTime).invoke()
         }
     }
 }

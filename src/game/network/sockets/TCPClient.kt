@@ -1,19 +1,22 @@
 package game.network.sockets
 
-import game.network.callbacks.TCPClientCallback
 import game.utils.dev.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.withTimeoutOrNull
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 import java.io.PrintWriter
+import java.net.InetSocketAddress
 import java.net.Socket
 
-class TCPClient(private val serverAddress: String, private val serverPort: Int) : TCPSocket {
+class TCPClient(
+    private val serverAddress: String,
+    private val serverPort: Int,
+    private val timeout: Int = 15_000
+) : TCPSocket {
     private lateinit var socket: Socket
     private lateinit var reader: BufferedReader
     private lateinit var writer: PrintWriter
@@ -26,50 +29,52 @@ class TCPClient(private val serverAddress: String, private val serverPort: Int) 
     /**
      * Connects to the server and initializes input/output streams.
      */
-    fun connect() {
+    suspend fun connect() {
         if (serverAddress.isBlank()) {
             close()
             emitError("Unknown Host")
             return
         }
 
-        Log.i("Connecting to $serverAddress")
+        Log.i("[TCPClient] Connecting to $serverAddress")
 
         try {
-            socket = Socket(serverAddress, serverPort)
-            reader = BufferedReader(InputStreamReader(socket.getInputStream()))
-            writer = PrintWriter(socket.getOutputStream(), true)
+            withTimeoutOrNull(timeout.toLong()) {
+                socket = Socket()
+                socket.connect(InetSocketAddress(serverAddress, serverPort))
+
+                reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+                writer = PrintWriter(socket.getOutputStream(), true)
+            } ?: run { 
+                throw IOException("Could not connect to $serverAddress")
+            }
+           
+            Log.i("[TCPClient] Connected to $serverAddress, connection status = ${socket.isConnected}")
 
             emitConnect()
             readStream()
         } catch (exception: Exception) {
-            close()
+            exception.printStackTrace()
             emitError(exception.localizedMessage)
+            close()
         }
     }
 
-    private fun emitError(message: String?) {
-        scope.launch {
-            _eventFlow.emit(TCPClientEvent.ErrorOccurred(message))
-        }
+    private suspend fun emitError(message: String?) {
+        _eventFlow.emit(TCPClientEvent.ErrorOccurred(message))
     }
 
-    private fun emitConnect() {
-        scope.launch {
-            _eventFlow.emit(TCPClientEvent.Connected)
-        }
+    private suspend fun emitConnect() {
+        _eventFlow.emit(TCPClientEvent.Connected)
     }
 
-    private fun emitDisconnect() {
-        scope.launch {
-            _eventFlow.emit(TCPClientEvent.Disconnected)
-        }
+    private suspend fun emitDisconnect() {
+        _eventFlow.emit(TCPClientEvent.Disconnected)
     }
 
-    private fun emitDataReceived(data: String) {
-        scope.launch {
-            _eventFlow.emit(TCPClientEvent.DataReceived(data))
-        }
+    private suspend fun emitDataReceived(data: String) {
+        // consider putting launch here
+        _eventFlow.emit(TCPClientEvent.DataReceived(data))
     }
 
     override fun sendData(data: String) {
@@ -80,13 +85,13 @@ class TCPClient(private val serverAddress: String, private val serverPort: Int) 
         scope.launch {
             try {
                 while (true) {
-                    Log.i("Reading")
+                    Log.i("[TCPClient] Reading")
                     // Reads the stream from the server;
                     val serverData = reader.readLine()
 
                     if (serverData == null) {
                         // Server disconnected
-                        Log.i("Server disconnected")
+                        Log.i("[TCPClient] Server disconnected")
                         emitDisconnect()
                         break
                     }
@@ -102,10 +107,10 @@ class TCPClient(private val serverAddress: String, private val serverPort: Int) 
         }
     }
 
-    fun close() {
-        scope.cancel()
-
+    suspend fun close() {
         if (this::writer.isInitialized) {
+            Log.i("[TCPClient] Closing writer stream")
+            
             try {
                 writer.close()
             } catch (exception: Exception) {
@@ -113,7 +118,19 @@ class TCPClient(private val serverAddress: String, private val serverPort: Int) 
             }
         }
 
+        if (this::reader.isInitialized) {
+            Log.i("[TCPClient] Closing reader stream")
+
+            try {
+                reader.close()
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
+        }
+
         if (this::socket.isInitialized) {
+            Log.i("[TCPClient] Closing socket")
+
             try {
                 socket.close()
             } catch (exception: Exception) {
@@ -122,6 +139,8 @@ class TCPClient(private val serverAddress: String, private val serverPort: Int) 
         }
 
         emitDisconnect()
+
+        scope.cancel()
     }
 }
 

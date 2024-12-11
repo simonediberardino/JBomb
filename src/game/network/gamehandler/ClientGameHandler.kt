@@ -29,13 +29,13 @@ class ClientGameHandler(
     /**
      * Establishes a connection to the game server and starts listening to the event flow.
      */
-    private fun connect() {
+    private suspend fun connect() {
         client = TCPClient(serverAddress, serverPort)
-        client.connect()
 
         // Start collecting events from the client's eventFlow
         client.scope.launch {
             client.eventFlow.collect { event ->
+                Log.i("[ClientGameHandler] collect: $event")
                 when (event) {
                     is TCPClientEvent.Connected -> onConnect()
                     is TCPClientEvent.Disconnected -> onDisconnect()
@@ -44,14 +44,20 @@ class ClientGameHandler(
                 }
             }
         }
+
+        client.connect()
     }
 
     /**
      * Handles errors that may occur during the client-server communication.
      */
     private fun onError(message: String?) {
+        Log.i("[ClientGameHandler] onError $message")
         connected = false
-        JBomb.networkError(message)
+
+        JBomb.scope.launch {
+            JBomb.networkError(message)
+        }
     }
 
     /**
@@ -59,7 +65,7 @@ class ClientGameHandler(
      */
     private fun onDisconnect() {
         connected = false
-        Log.i("ClientGameHandler onDisconnect")
+        Log.i("[ClientGameHandler] onDisconnect")
     }
 
     /**
@@ -67,7 +73,7 @@ class ClientGameHandler(
      */
     private fun onConnect() {
         connected = true
-        Log.i("ClientGameHandler onConnect")
+        Log.i("[ClientGameHandler] onConnect")
     }
     /**
      * Initiates the connection to the game server upon the start of the client game handler.
@@ -116,9 +122,9 @@ class ClientGameHandler(
      * @param data The data to be sent to the game server.
      */
     override fun sendData(data: String) {
-        Log.i("${javaClass.simpleName} sendData")
-
         if (connected && this::client.isInitialized) {
+            Log.i("[ClientGameHandler] sendData")
+
             client.sendData(data)
         }
     }
@@ -148,7 +154,6 @@ class ClientGameHandler(
      */
     override suspend fun disconnect() {
         if (this::client.isInitialized) {
-            println("Disconnecting client")
             connected = false
             client.close()
         }

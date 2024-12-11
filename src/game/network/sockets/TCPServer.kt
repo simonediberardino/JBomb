@@ -32,9 +32,7 @@ class TCPServer(
             emitEvent(ServerEvent.ServerStarted)
             start()
         } catch (ioException: IOException) {
-            runBlocking {
-                close()
-            }
+            close()
         }
     }
 
@@ -50,7 +48,7 @@ class TCPServer(
 
                 while (true) {
                     val clientData = reader.readLine() ?: break
-                    Log.i("Received from client ${clientSocket.id}: $clientData")
+                    Log.i("[TCPServer] Received from client ${clientSocket.id}: $clientData")
 
                     // Emit the received data as an event
                     emitEvent(ServerEvent.DataReceived(clientSocket.id, clientData))
@@ -76,16 +74,16 @@ class TCPServer(
 
                     val clientSocket = socket.accept()
 
-                    Log.i("Server received request connection $clientSocket")
+                    Log.i("[TCPServer] Server received request connection $clientSocket")
 
                     if (!accept()) {
-                        Log.i("Server refused request connection $clientSocket")
+                        Log.i("[TCPServer] Server refused request connection $clientSocket")
 
                         clientSocket.close()
                         continue
                     }
 
-                    Log.i("Server accepted request connection $clientSocket")
+                    Log.i("[TCPServer] Server accepted request connection $clientSocket")
 
                     val indexedClient = IndexedClient(
                         id = progressiveId,
@@ -97,7 +95,7 @@ class TCPServer(
                     clients[progressiveId] = indexedClient
                     progressiveId++
 
-                    Log.i("Client connected: ${clientSocket.inetAddress.hostAddress}")
+                    Log.i("[TCPServer] Client connected: ${clientSocket.inetAddress.hostAddress}")
 
                     // Launch coroutine to handle the client
                     launch {
@@ -132,17 +130,23 @@ class TCPServer(
         }
 
         sendData(clients[clientId] ?: return, data)
-        Log.i("sendData: $clientId sent $data")
+        Log.i("[TCPServer] sendData: $clientId sent $data")
     }
 
     suspend fun close() {
+        Log.i("[TCPServer] close")
+
         clients.values.forEach {
             disconnectClient(it)
         }
 
         if (this::socket.isInitialized) {
+            Log.i("[TCPServer] closing server...")
+
             socket.close()
         }
+
+        Log.i("[TCPServer] emit close event")
 
         emitEvent(ServerEvent.ServerClosed)
         scope.cancel()
@@ -153,7 +157,7 @@ class TCPServer(
     }
 
     private suspend fun disconnectClient(clientSocket: IndexedClient) {
-        Log.i("Attempting to disconnect client $clientSocket")
+        Log.i("[TCPServer] Attempting to disconnect client $clientSocket")
 
         val timeoutMillis = 5000L
 
@@ -165,7 +169,7 @@ class TCPServer(
 
                 clients.remove(clientSocket.id)
 
-                Log.i("Client disconnected $clientSocket")
+                Log.i("[TCPServer] Client disconnected $clientSocket")
                 emitEvent(ServerEvent.ClientDisconnected(clientSocket.id))
             } catch (e: IOException) {
                 Log.e("Error while disconnecting client $clientSocket: ${e.message}")
@@ -192,6 +196,6 @@ class TCPServer(
     }
 
     sealed class ServerCodes(val name: String) {
-        object ServerFull: ServerCodes("ServerFull")
+        object ServerFull : ServerCodes("ServerFull")
     }
 }

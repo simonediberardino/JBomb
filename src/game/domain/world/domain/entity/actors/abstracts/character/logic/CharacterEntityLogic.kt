@@ -147,6 +147,7 @@ abstract class CharacterEntityLogic(
                 return
 
             Log.i("$entity attack received $damage, curr health: ${entity.state.hp}")
+
             val currHealth = entity.state.hp - damage
             entity.state.lastDamageTime = now()
 
@@ -154,7 +155,6 @@ abstract class CharacterEntityLogic(
             updateHealth(max(currHealth, 0))
             damageAnimation()
 
-            Log.i("$entity new health: ${entity.state.hp}")
 
             // If the health points reach 0 or below, despawn the entity
             if (entity.state.hp <= 0) {

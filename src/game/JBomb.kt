@@ -217,6 +217,7 @@ object JBomb {
     }
 
     fun networkError(error: String?) {
+        Log.i("networkError $error, isInGame = $isInGame")
         if (!isInGame) return
 
         destroyLevel(true)

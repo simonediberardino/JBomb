@@ -9,8 +9,8 @@ class PingServerUseCase(
     private val host: String,
     private val port: Int,
     private val timeout: Int = 2000
-) : UseCase<Long> {
-    override suspend fun invoke(): Long {
+) : UseCase<Int> {
+    override suspend fun invoke(): Int {
         val socket = Socket()
 
         return try {
@@ -27,7 +27,7 @@ class PingServerUseCase(
             }
 
             Log.i("Ping to $host:$port is ${ping}ms")
-            ping // Connection successful, the server is reachable
+            ping.toInt() // Connection successful, the server is reachable
         } catch (e: Exception) {
             Log.i("$host:$port is not reachable, ${e.message}")
             -1 // Timeout reached, server is not reachable
