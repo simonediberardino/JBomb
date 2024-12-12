@@ -28,7 +28,6 @@ class TCPServer(
     suspend fun open() {
         try {
             socket = ServerSocket(port)
-            println("Server started")
             emitEvent(ServerEvent.ServerStarted)
             start()
         } catch (ioException: IOException) {
@@ -62,6 +61,7 @@ class TCPServer(
     }
 
     private suspend fun emitEvent(event: ServerEvent) {
+        Log.i("[TCPServer] Emitting event $event")
         _eventFlow.emit(event) // Emit event to all listeners
     }
 

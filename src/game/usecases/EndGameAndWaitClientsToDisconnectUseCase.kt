@@ -21,12 +21,13 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
 
         if (!JBomb.match.isServer) return
 
-        val server = JBomb.match.onlineGameHandler as? ServerGameHandler ?: return
-        val areClientsConnected = server.server.clients.isNotEmpty()
+        val server = JBomb.match.onlineGameHandler as? ServerGameHandler
+        val clientsConnected = server?.server?.clients
+        val areClientsConnected = server != null && (clientsConnected?.size ?: 0) > 0
 
-        Log.i("[Endgame] Ending game with ${server.server.clients.size} connected")
+        if (server != null && areClientsConnected) {
+            Log.i("[Endgame] Ending game with ${clientsConnected?.size} connected")
 
-        if (areClientsConnected) {
             server.server.scope.launch {
                 Log.i("[Endgame] Waiting for clients to disconnect...")
 

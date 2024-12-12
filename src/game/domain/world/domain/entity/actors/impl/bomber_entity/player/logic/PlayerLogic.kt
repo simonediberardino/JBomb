@@ -5,11 +5,15 @@ import game.domain.events.game.DeathGameEvent
 import game.domain.events.game.HealthUpdatedEvent
 import game.domain.events.game.InitBombsVariablesGameEvent
 import game.domain.tasks.observer.Observable2
+import game.domain.world.domain.entity.actors.abstracts.character.Character
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
+import game.domain.world.domain.entity.geo.Coordinates
+import game.domain.world.domain.entity.geo.Direction
 import game.domain.world.domain.entity.pickups.powerups.base.PowerUp
 import game.input.game.Command
 import game.localization.Localization
+import game.presentation.ui.panels.game.PitchPanel
 import game.utils.Utility
 import game.utils.ui.ToastUtils
 import game.utils.time.now
@@ -64,6 +68,27 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
         }
 
         entity.state.previousObserverUpdate = now()
+    }
+
+    override fun handleMoveCommand(command: Command, oppositeDirection1: Direction, oppositeDirection2: Direction): Boolean {
+        val moveSuccessful = super.handleMoveCommand(command, oppositeDirection1, oppositeDirection2)
+
+        if (moveSuccessful) {
+            return true
+        }
+
+        val oppositeBlocksCoordinates = Coordinates.getNewCoordinatesListOnDirection(
+            /* position = */ entity.info.position,
+            /* d = */ command.commandToDirection(),
+            /* steps = */ PitchPanel.PIXEL_UNIT,
+            /* offset = */ Character.DEFAULT.SIZE,
+            /* size = */ Character.DEFAULT.SIZE
+        )
+        val entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[0])
+        val entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[1])
+        overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirection1, oppositeDirection2)
+
+        return true
     }
 
     override fun handleCommand(command: Command) {

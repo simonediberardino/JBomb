@@ -6,6 +6,7 @@ import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEnti
 import game.network.dispatch.HttpMessageReceiverHandler
 import game.network.events.forward.LevelInfoHttpEventForwarder
 import game.network.serializing.HttpParserSerializer
+import game.network.sockets.TCPClientEvent
 import game.network.sockets.TCPServer
 import game.network.usecases.SendServerInfoToMasterServerUseCase
 import game.network.usecases.SendStopServerToMasterServerUseCase
@@ -54,22 +55,26 @@ class ServerGameHandler(
         clientsConnected = 0
 
         server = TCPServer(port, maxClients, accept)
-        server.open()
-
-        onStartServer()
-
         // Start listening for events from the server's eventFlow
         server.scope.launch {
             server.eventFlow.collect { event ->
-                when (event) {
-                    is TCPServer.ServerEvent.ServerClosed -> onCloseServer()
-                    is TCPServer.ServerEvent.ClientConnected -> onClientConnected(event.clientId)
-                    is TCPServer.ServerEvent.ClientDisconnected -> onClientDisconnected(event.clientId)
-                    is TCPServer.ServerEvent.DataReceived -> onDataReceived(event.data)
-                    else -> {}
+
+                try {
+                    when (event) {
+                        is TCPServer.ServerEvent.ServerClosed -> onCloseServer()
+                        is TCPServer.ServerEvent.ClientConnected -> onClientConnected(event.clientId)
+                        is TCPServer.ServerEvent.ClientDisconnected -> onClientDisconnected(event.clientId)
+                        is TCPServer.ServerEvent.DataReceived -> onDataReceived(event.data)
+                        else -> {}
+                    }
+                } catch (exception: Exception) {
+                    exception.printStackTrace()
                 }
             }
         }
+        server.open()
+
+        onStartServer()
     }
 
     /**
@@ -187,7 +192,14 @@ class ServerGameHandler(
      * @param data The raw data received from the client.
      */
     override fun onDataReceived(data: String) {
-        val formattedData: Map<String, String> = HttpParserSerializer.instance.parse(data)
+        val formattedData: Map<String, String> = try {
+            HttpParserSerializer.instance.parse(data)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            Log.i("Ignoring message $data")
+            return
+        }
+
         HttpMessageReceiverHandler.instance.handle(formattedData)
 
         Log.i("onDataReceived $formattedData")

@@ -36,11 +36,15 @@ class ClientGameHandler(
         client.scope.launch {
             client.eventFlow.collect { event ->
                 Log.i("[ClientGameHandler] collect: $event")
-                when (event) {
-                    is TCPClientEvent.Connected -> onConnect()
-                    is TCPClientEvent.Disconnected -> onDisconnect()
-                    is TCPClientEvent.ErrorOccurred -> onError(event.message)
-                    is TCPClientEvent.DataReceived -> onDataReceived(event.data)
+                try {
+                    when (event) {
+                        is TCPClientEvent.Connected -> onConnect()
+                        is TCPClientEvent.Disconnected -> onDisconnect()
+                        is TCPClientEvent.ErrorOccurred -> onError(event.message)
+                        is TCPClientEvent.DataReceived -> onDataReceived(event.data)
+                    }
+                } catch (exception: Exception) {
+                    exception.printStackTrace()
                 }
             }
         }

@@ -180,7 +180,7 @@ class JBombMatch(
         if (RuntimeProperties.dedicatedServer) return;
 
         inventoryElementControllerHp = InventoryElementControllerHp()
-        inventoryElementControllerHp.setNumItems(BomberEntity.DEFAULT.MAX_HP)
+        inventoryElementControllerHp.setNumItems(0)
     }
 
     private fun setupTimeController() {
@@ -476,8 +476,6 @@ class JBombMatch(
         performGarbageCollection()
 
         cleanLevelUi()
-
-        ToastUtils.cancel()
     }
 
     fun disconnectOnlineAndStayInGame() {
@@ -505,8 +503,6 @@ class JBombMatch(
 
         // Perform garbage collection to release memory
         performGarbageCollection()
-
-        ToastUtils.cancel()
     }
 
     private fun cleanLevelUi() {

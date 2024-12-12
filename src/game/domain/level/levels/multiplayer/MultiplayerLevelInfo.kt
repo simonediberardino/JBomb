@@ -49,4 +49,5 @@ open class MultiplayerLevelInfo(private val mapId: Int, level: Level) : DefaultL
     override val killCountEnabled: Boolean = true
     override val scoreEnabled: Boolean = false
     override val botsFillCount: Int = 4
+    override val defaultBomberEntityMaxHp: Int = 300 // TODO Make it 200
 }

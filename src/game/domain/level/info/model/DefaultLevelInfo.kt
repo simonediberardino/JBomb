@@ -13,6 +13,7 @@ import java.awt.Dimension
 
 abstract class DefaultLevelInfo(val level: Level) : LevelInfo() {
     override val bossMaxHealth: Int = 1000
+    override val defaultBomberEntityMaxHp: Int = 300
     override val maxBombs: Int get() = BomberEntity.MAX_BOMB_CAN_HOLD
     override val levelSoundtrack: String get() = level.fileSystemHandler.getSoundForCurrentLevel("soundtrack.wav")
     override val levelBackgroundSound: String get() = level.fileSystemHandler.getSoundForCurrentLevel("background_sound.wav")

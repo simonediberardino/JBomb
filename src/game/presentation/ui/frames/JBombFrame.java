@@ -22,6 +22,7 @@ import game.presentation.ui.panels.game.PitchPanel;
 import game.presentation.ui.panels.menu.ProfilePanel;
 import game.presentation.ui.viewelements.misc.ToastHandler;
 import game.utils.Utility;
+import game.utils.dev.Log;
 import game.utils.dev.XMLUtils;
 import game.utils.file_system.Paths;
 

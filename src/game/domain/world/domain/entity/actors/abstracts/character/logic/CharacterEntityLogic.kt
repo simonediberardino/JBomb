@@ -91,26 +91,6 @@ abstract class CharacterEntityLogic(
             return true
         }
 
-        val oppositeDirections = when (direction) {
-            Direction.UP, Direction.DOWN -> {
-                arrayOf(Direction.LEFT, Direction.RIGHT)
-            }
-            Direction.LEFT, Direction.RIGHT -> {
-                arrayOf(Direction.UP, Direction.DOWN)
-            }
-        }
-
-        val oppositeBlocksCoordinates = Coordinates.getNewCoordinatesListOnDirection(
-            /* position = */ entity.info.position,
-            /* d = */ direction,
-            /* steps = */ PitchPanel.PIXEL_UNIT,
-            /* offset = */ Character.DEFAULT.SIZE,
-            /* size = */ Character.DEFAULT.SIZE
-        )
-        val entitiesOpposite1 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[0])
-        val entitiesOpposite2 = Coordinates.getEntitiesOnBlock(oppositeBlocksCoordinates[1])
-        overpassBlock(entitiesOpposite1, entitiesOpposite2, oppositeDirections[0], oppositeDirections[1])
-
         // Otherwise, return false.
         return false
     }
@@ -137,9 +117,6 @@ abstract class CharacterEntityLogic(
      */
     override fun onAttackReceived(damage: Int, attacker: EntityInteractable) {
         synchronized(lock) {
-            if (Utility.timePassed(entity.state.lastDamageTime) < EntityInteractable.INTERACTION_DELAY_MS)
-                return
-
             if (entity.state.isImmune)
                 return
 
@@ -147,6 +124,7 @@ abstract class CharacterEntityLogic(
                 return
 
             Log.i("$entity attack received $damage, curr health: ${entity.state.hp}")
+            entity.state.takingDamage = true
 
             val currHealth = entity.state.hp - damage
             entity.state.lastDamageTime = now()
@@ -208,8 +186,6 @@ abstract class CharacterEntityLogic(
                         entity.state.takingDamage = false
                         return
                     }
-
-                    entity.state.takingDamage = false
 
                     try {
                         // Make the entity invisible and wait for the specified duration
@@ -292,11 +268,14 @@ abstract class CharacterEntityLogic(
 
     override fun doAttack() {}
 
-    override fun handleMoveCommand(command: Command, oppositeDirection1: Direction, oppositeDirection2: Direction) {
-        val moveSuccessful = command.commandToDirection()?.let { move(it) } ?: false
-        if (moveSuccessful) {
-            return
-        }
+    override fun handleMoveCommand(
+        command: Command,
+        oppositeDirection1: Direction,
+        oppositeDirection2: Direction
+    ): Boolean {
+        return command.commandToDirection()?.let {
+            move(it)
+        } == true
     }
 
     override fun overpassBlock(
@@ -346,7 +325,9 @@ abstract class CharacterEntityLogic(
     }
 
     override fun executeCommandQueue() {}
+
     override fun addCommand(command: Command) {}
+
     override fun removeCommand(command: Command) {}
 
     override fun onUpdateHealth(health: Int) {

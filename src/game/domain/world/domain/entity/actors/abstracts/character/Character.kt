@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.abstracts.character
 
+import game.JBomb
 import game.audio.SoundModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.CharacterImageModel
 import game.domain.world.domain.entity.actors.abstracts.character.graphics.ICharacterGraphicsBehavior

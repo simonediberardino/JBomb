@@ -10,7 +10,7 @@ object ToastUtils {
     }
 
     fun show(text: String): Double {
-        return show(text, false, true)
+        return show(text, permanent = false, playSound = true)
     }
 
     fun show(text: String, permanent: Boolean, playSound: Boolean): Double {

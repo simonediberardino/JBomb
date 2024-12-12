@@ -1,5 +1,6 @@
 package game.domain.world.domain.entity.actors.impl.bomber_entity.base
 
+import game.JBomb
 import game.audio.SoundModel
 import game.domain.world.domain.entity.actors.abstracts.base.Entity
 import game.domain.world.domain.entity.actors.abstracts.character.Character
@@ -10,7 +11,6 @@ import game.domain.world.domain.entity.actors.abstracts.enemy.Enemy
 import game.domain.world.domain.entity.actors.impl.blocks.destroyable_block.DestroyableBlock
 import game.domain.world.domain.entity.actors.impl.blocks.hard_block.HardBlock
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.BomberEntityLogic
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.logic.IBomberEntityLogic
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityProperties
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.properties.BomberEntityState
 import game.domain.world.domain.entity.actors.impl.bonus.mystery_box.base.MysteryBox
@@ -93,7 +93,8 @@ abstract class BomberEntity : Character, Explosive {
                     PowerUp::class.java
             )
 
-        const val MAX_HP = 300
+        val MAX_HP: Int
+            get() = JBomb.match.currentLevel.info.defaultBomberEntityMaxHp
         val MOUSE_CLICK_INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
             get() = mutableSetOf(MysteryBox::class.java)
         val MOUSE_DRAG_INTERACTION_ENTITIES: MutableSet<Class<out Entity>>

@@ -35,7 +35,7 @@ public class ToastHandler {
         Graphics2D g2d = (Graphics2D) g.create();
 
         // Calculate the dimensions based on text length
-        Font toastFont = CustomFonts.getFont(CustomFonts.FONT_PIXELATED, Utility.INSTANCE.px(35));
+        Font toastFont = new Font(Font.MONOSPACED, Font.BOLD, Utility.INSTANCE.px(35));
         FontMetrics metrics = g2d.getFontMetrics(toastFont);
         int toastWidth = calculateToastWidth(metrics);
         int toastHeight = calculateToastHeight(metrics);

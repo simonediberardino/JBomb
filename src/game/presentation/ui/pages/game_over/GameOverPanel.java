@@ -92,7 +92,7 @@ public class GameOverPanel extends BaseMenu {
     private void showToastMessage() {
         Level lastLevel = Level.Companion.getCurrLevel();
         String diedMessage = lastLevel.getInfo().getDiedMessage();
-        ToastUtils.INSTANCE.show(diedMessage, true, true);
+        ToastUtils.INSTANCE.show(diedMessage, false, true);
     }
 
     @Override

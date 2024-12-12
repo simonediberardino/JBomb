@@ -167,8 +167,8 @@ public class Localization {
     }};
 
     public static final HashMap<Locale, String> YOU_DIED = new HashMap<Locale, String>() {{
-        put(Locale.ENGLISH, "YOU DIED! YOU HAVE %lives% LIVES LEFT.");
-        put(Locale.ITALY, "SEI MORTO! HAI %lives% VITE RIMANENTI.");
+        put(Locale.ENGLISH, "YOU DIED! YOU HAVE %lives% LIVES LEFT");
+        put(Locale.ITALY, "SEI MORTO! HAI %lives% VITE RIMANENTI");
     }};
 
     public static final HashMap<Locale, String> ARENA_DIED = new HashMap<Locale, String>() {{
