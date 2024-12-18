@@ -114,7 +114,10 @@ class JBombMatch(
     }
 
     suspend fun connect() {
+        Log.i("Trying to start server...")
         if (onlineGameHandler?.isRunning() != true) {
+            Log.i("Trying to start server...")
+
             onlineGameHandler?.onStart()
         }
     }

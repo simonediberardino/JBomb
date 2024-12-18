@@ -54,11 +54,12 @@ class ServerGameHandler(
     suspend fun create() {
         clientsConnected = 0
 
+        Log.i("[ServerGameHandler] create")
+
         server = TCPServer(port, maxClients, accept)
         // Start listening for events from the server's eventFlow
         server.scope.launch {
             server.eventFlow.collect { event ->
-
                 try {
                     when (event) {
                         is TCPServer.ServerEvent.ServerClosed -> onCloseServer()

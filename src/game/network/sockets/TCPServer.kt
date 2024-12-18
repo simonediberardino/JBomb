@@ -31,15 +31,19 @@ class TCPServer(
             emitEvent(ServerEvent.ServerStarted)
             start()
         } catch (ioException: IOException) {
+            ioException.printStackTrace()
             close()
         }
     }
 
     private suspend fun handleClient(clientSocket: IndexedClient) = withContext(Dispatchers.IO) {
         if (clients.size > maxClients) {
+            Log.i("[TCPServer] Server is full")
             sendData(clientSocket, ServerCodes.ServerFull.name)
             return@withContext
         }
+
+        Log.i("[TCPServer] Handling client ${clientSocket.id}")
 
         try {
             clientSocket.reader.use { reader ->
