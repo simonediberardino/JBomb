@@ -233,7 +233,7 @@ class JBombMatch(
         updateInventoryWeaponController()
     }
 
-    fun useItem(owner: BomberEntity) {
+    fun useItem(owner: BomberEntity): Long {
         val currItem = owner.state.weapon
 
         val id = currItem.use()
@@ -242,6 +242,8 @@ class JBombMatch(
             Log.i("Used item with id $id")
             UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), currItem.type, id)
         }
+
+        return id
     }
 
 
@@ -613,6 +615,7 @@ class JBombMatch(
     fun onStartGame() {
         gameEnded = false
         wasServer = isServer
+        gameTickerObservable?.start()
         if (isServer) setupTimerTask()
     }
 

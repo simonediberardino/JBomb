@@ -49,8 +49,9 @@ class PlayerLogic(override val entity: Player) : BomberEntityLogic(entity = enti
     }
 
     override fun doAttack() {
-        JBomb.match.useItem(entity)
-        JBomb.match.updateInventoryWeaponController()
+        val useId = JBomb.match.useItem(entity)
+        if (useId != -1L)
+            JBomb.match.updateInventoryWeaponController()
     }
 
     override fun onRemoved() {

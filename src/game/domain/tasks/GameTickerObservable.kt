@@ -2,17 +2,15 @@ package game.domain.tasks
 
 import game.domain.tasks.GameTickerObserver.Companion.DEFAULT_OBSERVER_UPDATE
 import game.domain.tasks.observer.Observable2
-import game.domain.world.domain.entity.actors.impl.bomber_entity.player.Player
 import game.utils.dev.Log
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 /**
  * The GameTickerObservable class is an observable that notifies its observers periodically with a fixed delay
  * of DELAY_MS milliseconds, ignoring updates if a specific delay is not passed. It extends the Observable class.
  */
 class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
-    private val periodicTask: PeriodicTask
+    private lateinit var periodicTask: PeriodicTask
     companion object {
         val DELAY_MS: Long = DEFAULT_OBSERVER_UPDATE
     }
@@ -34,12 +32,21 @@ class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
         }
     }
 
-    init {
+    fun start() {
+        Log.i("Starting GameTickerObservable")
+
         periodicTask = PeriodicTask(task, DELAY_MS, scope)
         periodicTask.start()
     }
 
-    fun resume() = periodicTask.resume()
+    fun resume() {
+        Log.i("Resuming GameTickerObservable")
+        periodicTask.resume()
+    }
 
-    fun stop() = periodicTask.stop()
+    fun stop() {
+        Log.i("Stopping GameTickerObservable")
+
+        periodicTask.stop()
+    }
 }

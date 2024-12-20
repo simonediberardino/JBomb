@@ -51,7 +51,11 @@ abstract class Level {
         DataInputOutput.getInstance().resetLivesIfNecessary()
         gameHandler.generate()
         playerCountHandler.onStart()
+        JBomb.match.onStartGame()
+        this.onStart()
     }
+
+    open fun onStart() {}
 
     private fun updateLastLevel() {
         if (this !is WorldSelectorLevel)

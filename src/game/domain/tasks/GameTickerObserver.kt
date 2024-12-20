@@ -6,8 +6,7 @@ import game.utils.time.now
 import game.utils.time.timeunit
 
 abstract class GameTickerObserver : Observer2 {
-    var lastUpdate = 0L
-        private set
+    private var lastUpdate = 0L
     var frame = 0
 
     override fun update(arg: Observable2.ObserverParam) {

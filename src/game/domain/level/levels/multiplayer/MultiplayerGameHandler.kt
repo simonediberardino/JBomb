@@ -14,28 +14,33 @@ class MultiplayerGameHandler(level: MultiplayerLevel) : DefaultGameHandler(level
     }
 
     override fun chooseSpawnpointLogic(entity: Entity): Coordinates {
-        val spawnpoints = level.info.customSpawnpoints
+        val spawnpoints = level.info.customSpawnpoints.toList()
         val players = JBomb.match.players
 
         if (players.isEmpty())
             return spawnpoints.random()
 
-        // Calculate the minimum distance of each spawn point to any player
-        val spawnpointsWithDistance = spawnpoints.map { spawnPointCoordinate ->
-            val minDistanceToPlayers = players.minOfOrNull { player ->
-                player.info.position.distanceTo(spawnPointCoordinate)
-            } ?: Double.MAX_VALUE
-            spawnPointCoordinate to minDistanceToPlayers
+        try {
+            // Calculate the minimum distance of each spawn point to any player
+            val spawnpointsWithDistance = spawnpoints.map { spawnPointCoordinate ->
+                val minDistanceToPlayers = players.minOfOrNull { player ->
+                    player.info.position.distanceTo(spawnPointCoordinate)
+                } ?: Double.MAX_VALUE
+                spawnPointCoordinate to minDistanceToPlayers
+            }
+
+            // Calculate the average of these minimum distances
+            val averageMinDistance = spawnpointsWithDistance.map { it.second }.average()
+
+            // Filter spawn points that have a minimum distance above the average
+            val candidates = spawnpointsWithDistance.filter { it.second > averageMinDistance }.map { it.first }
+
+            // Randomly select one of the candidates, or fallback to any spawnpoint if none above average
+            return if (candidates.isNotEmpty()) candidates.random() else spawnpoints.random()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            return spawnpoints.random()
         }
-
-        // Calculate the average of these minimum distances
-        val averageMinDistance = spawnpointsWithDistance.map { it.second }.average()
-
-        // Filter spawn points that have a minimum distance above the average
-        val candidates = spawnpointsWithDistance.filter { it.second > averageMinDistance }.map { it.first }
-
-        // Randomly select one of the candidates, or fallback to any spawnpoint if none above average
-        return if (candidates.isNotEmpty()) candidates.random() else spawnpoints.random()
     }
 
     override fun generateDestroyableBlock() {}

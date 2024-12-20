@@ -136,8 +136,7 @@ abstract class ArenaLevel : Level() {
     protected val isSpecialRound: Boolean
         get() = currentRound.get() % 5 == 0 && currentRound.get() > 1 && !shouldSpawnBoss()
 
-    override fun start() {
-        super.start()
+    override fun onStart() {
         if (currentRound.get() == 1) {
             firstStart()
         }

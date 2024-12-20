@@ -23,7 +23,6 @@ abstract class GameHandler(protected val level: Level) {
         spawnEnemies()
         spawnAnimals()
         level.onStartLevel()
-        JBomb.match.onStartGame()
         notifyEntities()
     }
 
