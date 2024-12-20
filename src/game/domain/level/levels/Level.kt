@@ -50,7 +50,6 @@ abstract class Level {
         PlayLevelSoundBehavior(this@Level).invoke()
         DataInputOutput.getInstance().resetLivesIfNecessary()
         gameHandler.generate()
-
         playerCountHandler.onStart()
     }
 

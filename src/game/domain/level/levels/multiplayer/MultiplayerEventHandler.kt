@@ -25,8 +25,10 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
                 JBomb.match.scope.launch {
                     delay(2_000)
 
-                    if (!JBomb.match.gameState)
+                    if (!JBomb.match.gameState) {
+                        Log.i("Respawning dead player failure: match ended")
                         return@launch
+                    }
 
                     if (!entity.state.isSpawned && !entity.state.disconnected) {
                         RespawnDeadPlayerBehavior(

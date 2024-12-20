@@ -102,8 +102,8 @@ class JBombMatch(
         get() = onlineGameHandler == null
                 || (!isClient && onlineGameHandler is ServerGameHandler && onlineGameHandler.clientsConnected == 0)
 
-    // Current game state (default: false), true if game is not paused and not ended.
-    var gameState = false
+    // Current game state (default: true), true if game is not paused and not ended.
+    var gameState = true
     var gameEnded = false
         private set
 
@@ -394,15 +394,12 @@ class JBombMatch(
      * and displaying the pause panel.
      */
     private fun pauseGame(showUi: Boolean = true, freeze: Boolean) {
-        if (RuntimeProperties.dedicatedServer)
-            return
-
         if (freeze) {
-            // Stop the game ticker to pause game events
-            gameTickerObservable?.stop()
-
             // Update the game state to indicate it is paused
             gameState = false
+
+            // Stop the game ticker to pause game events
+            gameTickerObservable?.stop()
         }
 
         if (showUi) {
@@ -448,6 +445,8 @@ class JBombMatch(
         // Pause the game to ensure safe destruction
         pauseGame(showUi = false, freeze = true)
 
+        gameEnded = true
+
         if (isServer || disconnect) {
             runBlocking {
                 onlineGameHandler?.disconnect()
@@ -482,15 +481,14 @@ class JBombMatch(
     }
 
     fun disconnectOnlineAndStayInGame() {
-        runBlocking {
-            onlineGameHandler?.disconnect()
-        }
-
         // Pause the game to ensure safe destruction
         pauseGame(showUi = false, freeze = true)
 
-        // Cancel job
-        cancelCoroutineJob()
+        gameEnded = true
+
+        runBlocking {
+            onlineGameHandler?.disconnect()
+        }
 
         // Clear graphics callback in the Bomberman frame's pitch panel
         clearGraphicsCallback()
@@ -506,6 +504,9 @@ class JBombMatch(
 
         // Perform garbage collection to release memory
         performGarbageCollection()
+
+        // Cancel job
+        cancelCoroutineJob()
     }
 
     private fun cleanLevelUi() {
@@ -515,7 +516,6 @@ class JBombMatch(
 
     private fun cancelCoroutineJob() {
         scope.cancel()
-        gameEnded = true
     }
 
     /**

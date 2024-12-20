@@ -2,6 +2,7 @@ package game.domain.level.behavior
 
 import game.JBomb
 import game.network.events.forward.TimeHttpEventForwarder
+import game.utils.dev.Log
 
 class TimeHandlerBehavior(val time: Long): GameBehavior() {
     override fun hostBehavior() {
@@ -10,6 +11,8 @@ class TimeHandlerBehavior(val time: Long): GameBehavior() {
         if (gameState) {
             baseBehavior()
             notifyClient()
+        } else {
+            Log.i("Timer not processed: game ended")
         }
     }
 
