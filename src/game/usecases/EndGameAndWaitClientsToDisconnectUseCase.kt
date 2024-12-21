@@ -61,11 +61,13 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
         }
     }
 
-    private fun doDisconnect() {
+    private suspend fun doDisconnect() {
         Log.i("[Endgame] Disconnecting server...")
 
         // Disconnect the server when there are no clients.
         JBomb.match.disconnectOnlineAndStayInGame()
+
+        delay(JBomb.Properties.delayStartMatch)
 
         if (RuntimeProperties.dedicatedServer) {
             JBomb.startLevelByArgs()

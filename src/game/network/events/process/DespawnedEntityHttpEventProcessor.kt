@@ -11,8 +11,6 @@ class DespawnedEntityHttpEventProcessor : HttpEvent {
         val info = extras[0] as Map<String, String>
         val entityId = info.getOrTrim("entityId")?.toLong() ?: return
 
-        Log.i("DespawnedEntityHttpEventProcessor received $entityId")
-
         val entity: Entity = JBomb.match.getEntityById(entityId) ?: return
         entity.logic.despawn()
     }

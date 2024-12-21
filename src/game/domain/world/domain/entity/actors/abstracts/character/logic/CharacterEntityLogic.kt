@@ -123,7 +123,6 @@ abstract class CharacterEntityLogic(
             if (entity.state.takingDamage)
                 return
 
-            Log.i("$entity attack received $damage, curr health: ${entity.state.hp}")
             entity.state.takingDamage = true
 
             val currHealth = entity.state.hp - damage

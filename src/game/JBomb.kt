@@ -5,8 +5,6 @@ import game.data.data.DataInputOutput
 import game.domain.level.levels.Level
 import game.domain.match.JBombMatch
 import game.domain.tasks.GarbageCollectorTask
-import game.domain.world.domain.entity.actors.impl.bomber_entity.ai.AiBomberEntity
-import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.input.terminal.Terminal
 import game.localization.Localization
 import game.network.gamehandler.OnlineGameHandler
@@ -35,7 +33,18 @@ object JBomb {
     @JvmStatic
     lateinit var JBombFrame: JBombFrame
     private var currentPage: Class<out PagePanel>? = null
+
     val scope = CoroutineScope(Dispatchers.IO)
+
+    val isGameEnded: Boolean
+        get() = !match.gameState || !JBomb.isInGame
+
+    val isInGame: Boolean
+        get() = match.gameState
+
+    object Properties {
+        const val delayStartMatch = 2_000L
+    }
 
     /**
      * Starts the Java Application;
@@ -136,7 +145,7 @@ object JBomb {
         ) {}
     }
 
-    fun destroyLevel(disconnect: Boolean, ended: Boolean = false) {
+    fun destroyLevel(disconnect: Boolean) {
         match.destroy(disconnect)
 
         when (RuntimeProperties.dedicatedServer) {
@@ -164,8 +173,12 @@ object JBomb {
         match = JBombMatch(level, onlineGameHandler)
 
         match.scope.launch {
-            if (!RuntimeProperties.dedicatedServer)
+            match.init()
+
+            if (!RuntimeProperties.dedicatedServer) {
                 JBombFrame.initGamePanel()
+                match.gameTickerObservable?.register(JBombFrame.pitchPanel)
+            }
 
             match.currentLevel.start()
 
@@ -266,9 +279,4 @@ object JBomb {
             AudioManager.instance.playBackgroundSong()
         }
     }
-    val isGameEnded: Boolean
-        get() = !match.gameState || !JBomb.isInGame
-
-    val isInGame: Boolean
-        get() = match.gameState
 }

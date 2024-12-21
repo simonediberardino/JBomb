@@ -23,7 +23,6 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
         match.resumeIfPaused()
 
         match.getEntities().forEach { e ->
-            Log.i("Sending entity $e to $clientId")
             SpawnEntityEventForwarder(clientId).invoke(e.toEntityNetwork())
         }
 
@@ -38,6 +37,10 @@ class PlayerConnectedHttpEventProcessor : HttpEvent {
 
         player.updateInfo(info)
         player.logic.spawn(forceSpawn = true, forceCentering = true)
+
+        Log.i("[PlayerConnectedHttpEventProcessor] Game state = ${JBomb.match.gameState}")
+        Log.i("[PlayerConnectedHttpEventProcessor] Game ticker = ${JBomb.match.gameTickerObservable}")
+        Log.i("[PlayerConnectedHttpEventProcessor] Game ticker state = ${JBomb.match.gameTickerObservable?.isRunning}")
 
         level.playerCountHandler.onPlayerCountChanged()
 

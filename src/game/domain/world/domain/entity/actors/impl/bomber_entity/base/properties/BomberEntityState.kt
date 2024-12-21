@@ -104,7 +104,6 @@ open class BomberEntityState(
 
     fun addWeapon(weapon: UsableItem) {
         if (_weapons.contains(weapon)) {
-            Log.i("Cannot add weapon $weapon")
             return
         }
 

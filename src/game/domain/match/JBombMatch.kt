@@ -57,8 +57,7 @@ class JBombMatch(
 
     /** Observables */
     // Observable for game tick events (nullable)
-    var gameTickerObservable: GameTickerObservable? = GameTickerObservable(scope)
-        private set
+    var gameTickerObservable: GameTickerObservable? = null
 
     private var timeObserverObservable: TimeTaskObserverAndObservable? = null
 
@@ -239,7 +238,6 @@ class JBombMatch(
         val id = currItem.use()
 
         if (id != -1L) {
-            Log.i("Used item with id $id")
             UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), currItem.type, id)
         }
 
@@ -390,6 +388,16 @@ class JBombMatch(
         }
     }
 
+    fun init() {
+        gameEnded = false
+        wasServer = isServer
+
+        gameTickerObservable = GameTickerObservable(scope).also {
+            it.start()
+        }
+
+        if (isServer) setupTimerTask()
+    }
 
     /**
      * Pauses the game by stopping the game ticker, setting the game state to false,
@@ -610,13 +618,6 @@ class JBombMatch(
                 }
             }
         }
-    }
-
-    fun onStartGame() {
-        gameEnded = false
-        wasServer = isServer
-        gameTickerObservable?.start()
-        if (isServer) setupTimerTask()
     }
 
     private fun setupTimerTask() {

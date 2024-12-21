@@ -451,6 +451,11 @@ public class Localization {
         put(Locale.ITALY, "ATTENDI L'HOST");
     }};
 
+    public static final HashMap<Locale, String> WAIT = new HashMap<Locale, String>() {{
+        put(Locale.ENGLISH, "WAIT...");
+        put(Locale.ITALY, "ATTENDI...");
+    }};
+
     public static final HashMap<Locale, String> SERVER_IS_FULL = new HashMap<Locale, String>() {{
         put(Locale.ENGLISH, "SERVER IS FULL");
         put(Locale.ITALY, "SERVER PIENO");

@@ -43,7 +43,7 @@ abstract class Level {
     abstract fun endLevel()
     abstract fun onStartLevel()
 
-    open fun start() {
+    fun start() {
         JBomb.match.gameState = true
         updateLastLevel()
         PlayLevelSoundTrackBehavior(this@Level).invoke()
@@ -51,7 +51,6 @@ abstract class Level {
         DataInputOutput.getInstance().resetLivesIfNecessary()
         gameHandler.generate()
         playerCountHandler.onStart()
-        JBomb.match.onStartGame()
         this.onStart()
     }
 

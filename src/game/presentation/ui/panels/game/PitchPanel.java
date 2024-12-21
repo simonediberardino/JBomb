@@ -48,10 +48,6 @@ public class PitchPanel extends JPanel implements Observer2 {
         setMaximumSize(DIMENSION);
         setMinimumSize(DIMENSION);
 
-        // Set this GamePanel as observer for the game ticker observable
-        JBomb.match.getGameTickerObservable().unregisterAll();
-        JBomb.match.getGameTickerObservable().register(this);
-
         repaint();
     }
 

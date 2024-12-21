@@ -30,7 +30,7 @@ class DefaultPlayerCountHandler : IPlayerCountHandler {
     }
 
     private fun spawnBot() {
-        Log.i("Spawning bot")
+        Log.i("[PlayerCountHandler] Spawning bot")
 
         AiBomberEntity(coordinates = Coordinates()).also {
             JBomb.match.currentLevel.gameHandler.dynamicSpawn(it)
@@ -38,6 +38,8 @@ class DefaultPlayerCountHandler : IPlayerCountHandler {
     }
 
     override fun onPlayerCountChanged() {
+        Log.i("[PlayerCountHandler] onPlayerCountChanged start")
+
         val playerGoal = JBomb.match.currentLevel.info.botsFillCount
 
         val deadPlayers = JBomb.match.getDeadEntities().values
@@ -58,14 +60,18 @@ class DefaultPlayerCountHandler : IPlayerCountHandler {
         } else if (botsToSpawn > 0) {
             spawnBots(botsToSpawn)
         }
+
+        Log.i("[PlayerCountHandler] onPlayerCountChanged finish")
     }
 
     private fun disconnectBots(n: Int, bots: Collection<BomberEntity>) {
+        Log.i("[PlayerCountHandler] disconnectBots")
+
         val botsSorted = bots.sortedBy { it.state.kills }
         val botsToKick = botsSorted.take(n)
         botsToKick.forEach {
             JBomb.match.scope.launch {
-                Log.i("kicking player")
+                Log.i("[PlayerCountHandler] Kicking player")
                 JBomb.match.kickPlayer(it)
             }
         }

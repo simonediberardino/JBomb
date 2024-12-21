@@ -11,6 +11,9 @@ import kotlinx.coroutines.CoroutineScope
  */
 class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
     private lateinit var periodicTask: PeriodicTask
+    var isRunning = false
+        private set
+
     companion object {
         val DELAY_MS: Long = DEFAULT_OBSERVER_UPDATE
     }
@@ -37,16 +40,19 @@ class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
 
         periodicTask = PeriodicTask(task, DELAY_MS, scope)
         periodicTask.start()
+        isRunning = true
     }
 
     fun resume() {
         Log.i("Resuming GameTickerObservable")
         periodicTask.resume()
+        isRunning = true
     }
 
     fun stop() {
         Log.i("Stopping GameTickerObservable")
 
         periodicTask.stop()
+        isRunning = false
     }
 }

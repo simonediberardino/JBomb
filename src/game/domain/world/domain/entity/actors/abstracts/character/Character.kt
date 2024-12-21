@@ -43,8 +43,6 @@ abstract class Character : MovingEntity {
     override fun updateInfo(info: Map<String, String>) {
         super.updateInfo(info)
 
-        Log.i("Updating info ${this} $info")
-
         val name = info.getOrTrim("name")
         name?.let {
             properties.name = it

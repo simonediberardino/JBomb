@@ -23,6 +23,8 @@ class TimeTaskObserverAndObservable : Observer2 {
             return
 
         if (Utility.timePassed(lastTimeUpdate) > 1_000) {
+            Log.i("[TimeTaskObserverAndObservable] update")
+
             lastTimeUpdate = now()
             lastNotifiedTime += 1000
 

@@ -6,7 +6,6 @@ import game.audio.AudioManager
 class PlayLevelSoundTrackBehavior(private val level: Level) : GameBehavior() {
     override fun hostBehavior() {
         playSoundTrack()
-
     }
 
     override fun clientBehavior() {

@@ -11,8 +11,6 @@ class HttpMessageReceiverHandler private constructor() {
     fun handle(map: Map<String, String>) {
         val messageTypeInt = map.getOrTrim("messageType")?.toInt() ?: -1
 
-        Log.i("handling $map")
-
         val httpEvent = when (HttpMessageTypes.values()[messageTypeInt]) {
             HttpMessageTypes.PLAYER_JOIN_REQUEST -> PlayerConnectedHttpEventProcessor()
             HttpMessageTypes.LEVEL_INFO -> LevelInfoHttpEventProcessor()

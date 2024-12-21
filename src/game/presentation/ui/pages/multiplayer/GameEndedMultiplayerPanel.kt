@@ -29,9 +29,9 @@ import javax.swing.*
 class GameEndedMultiplayerPanel(
     private val dialog: JDialog
 ) : JBombermanBoxContainerPanel(Localization.get(Localization.GAME_ENDED_MP), false, BombermanPanelYellow()) {
-    lateinit var exitButton: BombermanButton
-    lateinit var playAgainButton: BombermanButton
-    var status: Status = Status.IDLE
+    private lateinit var exitButton: BombermanButton
+    private lateinit var playAgainButton: BombermanButton
+    private var status: Status = Status.IDLE
 
     init {
         initializeLayout()
@@ -55,7 +55,15 @@ class GameEndedMultiplayerPanel(
         val players = getSortedPlayers()
 
         players.forEachIndexed { index, bomberEntity ->
-            panel.add(PlayerScoreLabel(buttonWidth, bomberEntity.properties.name, bomberEntity.properties.skinId, bomberEntity.state.kills, index + 1))
+            panel.add(
+                PlayerScoreLabel(
+                    buttonWidth,
+                    bomberEntity.properties.name,
+                    bomberEntity.properties.skinId,
+                    bomberEntity.state.kills,
+                    index + 1
+                )
+            )
         }
 
         return panel
@@ -104,7 +112,11 @@ class GameEndedMultiplayerPanel(
         }
         addComponent(exitButton)
 
-        updateStatus(Status.IDLE)
+        JBomb.scope.launch {
+            updateStatus(Status.WAIT)
+            delay(JBomb.Properties.delayStartMatch)
+            updateStatus(Status.IDLE)
+        }
     }
 
     private fun createYellowButton(text: String, action: () -> Unit): YellowButton {
@@ -135,7 +147,7 @@ class GameEndedMultiplayerPanel(
                 dialog.dispose()
             } else {
                 updateStatus(Status.WAIT_FOR_HOST)
-                delay(3000L)
+                delay(JBomb.Properties.delayStartMatch)
                 updateStatus(Status.IDLE)
             }
         }
@@ -144,7 +156,8 @@ class GameEndedMultiplayerPanel(
     private fun updateStatus(status: Status) {
         this.status = status
 
-        when(status) {
+        when (status) {
+            Status.WAIT -> playAgainButton.text = Localization.get(Localization.WAIT)
             Status.CONNECTING -> playAgainButton.text = Localization.get(Localization.CONNECTING)
             Status.IDLE -> playAgainButton.text = Localization.get(Localization.PLAY_AGAIN)
             Status.WAIT_FOR_HOST -> playAgainButton.text = Localization.get(Localization.WAIT_FOR_HOST)
@@ -152,6 +165,7 @@ class GameEndedMultiplayerPanel(
     }
 
     enum class Status {
+        WAIT,
         CONNECTING,
         IDLE,
         WAIT_FOR_HOST
