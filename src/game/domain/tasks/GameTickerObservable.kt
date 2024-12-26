@@ -24,6 +24,8 @@ class GameTickerObservable(private val scope: CoroutineScope) : Observable2() {
      * update method of the observer with the current GameState object.
      */
     private val task = {
+        Log.i("[GameTickerObservable] task")
+
         synchronized(observers) {
             try {
                 for (observer in observers.toTypedArray()) {

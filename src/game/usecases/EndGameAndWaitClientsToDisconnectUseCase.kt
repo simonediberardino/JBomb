@@ -7,9 +7,15 @@ import game.network.gamehandler.ServerGameHandler
 import game.network.sockets.TCPServer
 import game.properties.RuntimeProperties
 import game.utils.dev.Log
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import game.utils.dev.suspendCoroutineWithTimeout
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.onSubscription
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.flow.timeout
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
 
 /**
  * UseCase to handle the end of the game when the server is hosting the game.
@@ -25,40 +31,39 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
         val clientsConnected = server?.server?.clients
         val areClientsConnected = server != null && (clientsConnected?.size ?: 0) > 0
 
+        // Executes the end game callback
+        EndGameGameEvent().invoke()
+
         if (server != null && areClientsConnected) {
             Log.i("[Endgame] Ending game with ${clientsConnected?.size} connected")
 
-            server.server.scope.launch {
-                Log.i("[Endgame] Waiting for clients to disconnect...")
+            Log.i("[Endgame] Waiting for clients to disconnect...")
 
-                server.server.eventFlow.collect { event ->
-                    // If a client disconnects, check if there are no more clients connected.
-                    if (event is TCPServer.ServerEvent.ClientDisconnected) {
-                        if (server.clientsConnected == 0) {
-                            JBomb.scope.launch {
-                                doDisconnect()
+            try {
+                withTimeout(10_000L) { // Stop collecting after 10 seconds
+                    server.server.eventFlow
+                        .onSubscription {
+                            Log.i("onSubscription")
+
+                            // Notifies all clients when it starts listening
+                            // for clients disconnections
+                            EndGameEventForwarder().invoke()
+                        }
+                        .takeWhile { server.server.clients.isNotEmpty() } // Stop collecting when no clients are connected
+                        .collect { event ->
+                            if (event is TCPServer.ServerEvent.ClientDisconnected) {
+                                Log.i("[Endgame] Client disconnected")
                             }
                         }
-                    }
                 }
+            } catch (e: TimeoutCancellationException) {
+                Log.i("[Endgame] Timeout reached while waiting for disconnection events")
             }
+
+            Log.i("[Endgame] All clients disconnected")
         }
 
-        // Invoke the in-game end event and forward the end game event to all clients.
-        EndGameGameEvent().invoke()
-
-        when {
-            !areClientsConnected -> {
-                JBomb.scope.launch {
-                    doDisconnect()
-                }
-            }
-
-            else -> {
-                Log.i("[Endgame] Sending end game event to clients")
-                EndGameEventForwarder().invoke()
-            }
-        }
+        doDisconnect()
     }
 
     private suspend fun doDisconnect() {

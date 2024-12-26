@@ -1,42 +1,53 @@
 package game.domain.tasks
 
+import game.utils.dev.Log
 import game.utils.time.now
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class PeriodicTask(
-        private val callback: () -> Unit,
-        private val delay: Long,
-        private val scope: CoroutineScope
+    private val callback: () -> Unit,
+    private val delay: Long,
+    private val scope: CoroutineScope
 ) {
     private var job: Job? = null
-
     private var lastUpdate: Long = 0L
     private var currDelay: Long = delay
 
     fun start() {
         job = scope.launch {
-            while (true) {
+            while (isActive) {
                 val lastDelay = now() - lastUpdate
 
-                callback()
-
-                if (lastUpdate == 0L) {
-                    currDelay = delay
-                } else {
-                    // effective delay may not be the same depending on cpu usage,
-                    // dynamically reduce it to be effective $delay
-                    val adjustment = lastDelay - delay
-                    currDelay -= adjustment
+                try {
+                    callback()
+                } catch (exception: Exception) {
+                    exception.printStackTrace()
+                    // Skip delay adjustment and retry
+                    continue
                 }
 
+                if (lastUpdate != 0L) {
+                    val adjustment = lastDelay - delay
+                    currDelay = (currDelay - adjustment)
+                        .coerceIn(delay / 10L, delay * 10L)
+                }
+
+                Log.i("[PeriodicTask] run with delay=$currDelay")
+
                 lastUpdate = now()
-                delay(currDelay)
+
+                // Ensure delay is valid
+                try {
+                    delay(currDelay)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
+
+            Log.i("[PeriodicTask] cancelled")
         }
     }
+
 
     fun resume() {
         lastUpdate = 0L
