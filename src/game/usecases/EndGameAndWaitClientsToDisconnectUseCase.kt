@@ -69,8 +69,13 @@ class EndGameAndWaitClientsToDisconnectUseCase : UseCase<Unit> {
     private suspend fun doDisconnect() {
         Log.i("[Endgame] Disconnecting server...")
 
-        // Disconnect the server when there are no clients.
-        JBomb.match.disconnectOnlineAndStayInGame()
+        try {
+            withTimeout(10_000L) {
+                JBomb.match.disconnectOnlineAndStayInGame()
+            }
+        } catch (e: TimeoutCancellationException) {
+            Log.i("[Endgame] Timeout reached while waiting for disconnecting")
+        }
 
         delay(JBomb.Properties.delayStartMatch)
 

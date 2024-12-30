@@ -128,8 +128,6 @@ class ServerGameHandler(
             )
         }
 
-        Log.i("Sending update info $serverInfo")
-
         serverInfo?.let {
             SendServerInfoToMasterServerUseCase(
                 serverInfo = it

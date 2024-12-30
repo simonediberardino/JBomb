@@ -19,10 +19,7 @@ import game.presentation.ui.panels.game.MatchPanel
 import game.presentation.ui.panels.game.PagePanel
 import game.properties.RuntimeProperties
 import game.utils.dev.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.awt.Component
 import java.util.*
 import javax.swing.SwingUtilities
@@ -34,7 +31,7 @@ object JBomb {
     lateinit var JBombFrame: JBombFrame
     private var currentPage: Class<out PagePanel>? = null
 
-    val scope = CoroutineScope(Dispatchers.IO)
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     val isGameEnded: Boolean
         get() = !match.gameState || !JBomb.isInGame

@@ -32,8 +32,6 @@ class PeriodicTask(
                         .coerceIn(delay / 10L, delay * 10L)
                 }
 
-                Log.i("[PeriodicTask] run with delay=$currDelay")
-
                 lastUpdate = now()
 
                 // Ensure delay is valid
@@ -43,8 +41,6 @@ class PeriodicTask(
                     e.printStackTrace()
                 }
             }
-
-            Log.i("[PeriodicTask] cancelled")
         }
     }
 

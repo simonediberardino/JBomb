@@ -42,7 +42,7 @@ class JBombMatch(
         var port: Int = RuntimeProperties.port ?: 30960
     }
 
-    val scope = CoroutineScope(Dispatchers.IO)
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     // Timestamp of the last game pause state
     private var lastGamePauseStateTime = now()
@@ -452,71 +452,77 @@ class JBombMatch(
      * Performs cleanup operations and releases resources associated with the game.
      */
     fun destroy(disconnect: Boolean = false) {
-        // Pause the game to ensure safe destruction
-        pauseGame(showUi = false, freeze = true)
+        try {
+            // Pause the game to ensure safe destruction
+            pauseGame(showUi = false, freeze = true)
 
-        gameEnded = true
+            gameEnded = true
 
-        if (isServer || disconnect) {
-            runBlocking {
-                onlineGameHandler?.disconnect()
+            if (isServer || disconnect) {
+                runBlocking {
+                    onlineGameHandler?.disconnect()
+                }
             }
+
+            // Destroy all _entities in the game
+            destroyEntities()
+
+            // Clear graphics callback in the Bomberman frame's pitch panel
+            clearGraphicsCallback()
+
+            // Stop the sound associated with the current game level
+            stopLevelSound()
+
+            // Reset the game state variables
+            resetState()
+
+            // Stop the movement task for mouse controllers
+            stopMovementTask()
+
+            // Unregister all observables and controllers
+            unregisterAllObservablesAndControllers()
+
+            // Perform garbage collection to release memory
+            performGarbageCollection()
+
+            cleanLevelUi()
+
+            // Cancel job
+            cancelCoroutineJob()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         }
-
-        // Cancel job
-        cancelCoroutineJob()
-
-        // Destroy all _entities in the game
-        destroyEntities()
-
-        // Clear graphics callback in the Bomberman frame's pitch panel
-        clearGraphicsCallback()
-
-        // Stop the sound associated with the current game level
-        stopLevelSound()
-
-        // Reset the game state variables
-        resetState()
-
-        // Stop the movement task for mouse controllers
-        stopMovementTask()
-
-        // Unregister all observables and controllers
-        unregisterAllObservablesAndControllers()
-
-        // Perform garbage collection to release memory
-        performGarbageCollection()
-
-        cleanLevelUi()
     }
 
-    fun disconnectOnlineAndStayInGame() {
-        // Pause the game to ensure safe destruction
-        pauseGame(showUi = false, freeze = true)
+    suspend fun disconnectOnlineAndStayInGame() {
+        try {
+            // Pause the game to ensure safe destruction
+            pauseGame(showUi = false, freeze = true)
 
-        gameEnded = true
+            gameEnded = true
 
-        runBlocking {
             onlineGameHandler?.disconnect()
+
+            // Clear graphics callback in the Bomberman frame's pitch panel
+            clearGraphicsCallback()
+
+            // Stop the sound associated with the current game level
+            stopLevelSound()
+
+            // Stop the movement task for mouse controllers
+            stopMovementTask()
+
+            // Unregister all observables and controllers
+            unregisterAllObservablesAndControllers()
+
+            // Perform garbage collection to release memory
+            performGarbageCollection()
+
+            // Cancel job
+            cancelCoroutineJob()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         }
-
-        // Clear graphics callback in the Bomberman frame's pitch panel
-        clearGraphicsCallback()
-
-        // Stop the sound associated with the current game level
-        stopLevelSound()
-
-        // Stop the movement task for mouse controllers
-        stopMovementTask()
-
-        // Unregister all observables and controllers
-        unregisterAllObservablesAndControllers()
-
-        // Perform garbage collection to release memory
-        performGarbageCollection()
-
-        // Cancel job
-        cancelCoroutineJob()
     }
 
     private fun cleanLevelUi() {
@@ -600,8 +606,6 @@ class JBombMatch(
     fun onTimeUpdate(timePassed: Long) {
         val timeLimitMs = currentLevel.info.timeLimitMinutes * 60 * 1_000
         val remainingTime = timeLimitMs - timePassed
-
-        Log.i("onTimeUpdate timeLimitMs=$timeLimitMs, timePassed=$timePassed, remainingTime=$remainingTime")
 
         if (remainingTime >= 0)
             inventoryElementControllerTime?.setNumItems(millisToTimeFormatted(remainingTime))

@@ -140,20 +140,27 @@ class TCPServer(
     suspend fun close() {
         Log.i("[TCPServer] close")
 
-        clients.values.forEach {
-            disconnectClient(it)
+        try {
+            // Disconnect all clients
+            clients.values.toList().forEach {
+                disconnectClient(it)
+            }
+
+            // Close the server socket if initialized
+            if (::socket.isInitialized) {
+                Log.i("[TCPServer] closing server...")
+                withContext(Dispatchers.IO) {
+                    socket.close()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("[TCPServer] Error during server closure: ${e.message}")
+        } finally {
+            // Emit close event regardless of any exceptions
+            Log.i("[TCPServer] emit close event")
+            emitEvent(ServerEvent.ServerClosed)
+            scope.cancel()
         }
-
-        if (this::socket.isInitialized) {
-            Log.i("[TCPServer] closing server...")
-
-            socket.close()
-        }
-
-        Log.i("[TCPServer] emit close event")
-
-        emitEvent(ServerEvent.ServerClosed)
-        scope.cancel()
     }
 
     suspend fun disconnectClient(id: Long) {
