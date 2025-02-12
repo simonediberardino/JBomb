@@ -17,8 +17,7 @@ There are two single-player/co-op modes and a PvP option:
 The game is free to download on [Steam](https://store.steampowered.com/app/3368640/JBomb/)
 
 ## JBomb Trailer
-
-[![JBomb Gameplay]([https://img.youtube.com/vi/PmlfRap1ni8/0.jpg)](https://www.youtube.com/watch?v=PmlfRap1ni8](https://www.youtube.com/watch?v=R7Om_JaWQOM))
+[![JBomb Gameplay](https://img.youtube.com/vi/PmlfRap1ni8/0.jpg)](https://www.youtube.com/watch?v=R7Om_JaWQOM)
 
 ## About the project
 
