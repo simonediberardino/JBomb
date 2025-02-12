@@ -1,28 +1,22 @@
 # JBomb
 
-JBomb is a 2D videogame where the objective is to strategically place bombs to eliminate opponents and obstacles. JBomb offers dynamic gameplay, challenging puzzles and different game modes, including multiplayer.
+JBomb is an action-strategy game that combines elements of adventure, puzzles and online co-op. It offers players a varied and engaging experience, with two single-player/co-op modes and a PvP option for direct confrontation.
 
 ## Gameplay
 
-The core gameplay of JBomb revolves around strategically placing bombs to clear obstacles and defeat enemies within a maze-like environment. As you progress through the game, you'll have the opportunity to collect power-ups that enhance your abilities, such as increasing bomb range or speed. Your objective is to clear each level by taking down adversaries while ensuring your own self-preservation. Get ready for an adrenaline-pumping adventure filled with intense moments and strategic decision-making.
+The core gameplay of JBomb revolves around strategically placing bombs to clear obstacles and defeat enemies within a maze-like environment. As you progress through the game, you'll have the opportunity to collect power-ups that enhance your abilities, such as increasing bomb range or speed. 
 
-Website: http://jbombthegame.com
+- Campaign Mode: Explore different worlds, each with five challenging levels and a spectacular boss battle. Use bombs strategically to overcome intricate mazes, eliminate enemies and overcome obstacles along the way.
+
+- Arena Mode: Work together with friends in a dynamic co-op mode. Face endless waves of opponents in an action-packed online arena, collect power-ups to improve your skills and survive increasingly challenging enemies.
+
+- PvP Mode: Exciting clashes between players thanks to the PvP mode. Whether you are playing alone, co-op with friends or challenging other players, JBomb guarantees strategic and exciting gameplay!
+
+The game is free to download on [Steam](https://store.steampowered.com/app/3368640/JBomb/)
 
 ## JBomb Trailer
 
-[![JBomb Gameplay](https://img.youtube.com/vi/PmlfRap1ni8/0.jpg)](https://www.youtube.com/watch?v=PmlfRap1ni8)
-
-## Innovative Features
-
-JBomb presents two game modes for players to explore.
-In Campaign mode, embark on an adventure across diverse worlds, each featuring five levels and a formidable boss showdown. Strategically deploy bombs to navigate intricate mazes and conquer a variety of enemies and obstacles along the way.
-
-Arena mode offers a cooperative experience. Join the arena with friends as you confront endless waves of adversaries in a dynamic online battleground. Work together to collect power-ups scattered throughout the arena, enhancing your abilities and ensuring your survival against increasingly challenging foes. Whether you're conquering levels solo or teaming up with friends, JBomb delivers thrilling strategic gameplay at every turn!
-
-
-## How to play
-
-Visit [our website](http://jbombthegame.com), then simply click on the download link. After downloading the installer, run it and follow the setup instructions. Once completed, you'll be all set to launch JBomb.
+[![JBomb Gameplay]([https://img.youtube.com/vi/PmlfRap1ni8/0.jpg)](https://www.youtube.com/watch?v=PmlfRap1ni8](https://www.youtube.com/watch?v=R7Om_JaWQOM))
 
 ## About the project
 
