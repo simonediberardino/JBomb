@@ -6,6 +6,8 @@ JBomb is an action-strategy game that combines elements of adventure, puzzles an
 
 The core gameplay of JBomb revolves around strategically placing bombs to clear obstacles and defeat enemies within a maze-like environment. As you progress through the game, you'll have the opportunity to collect power-ups that enhance your abilities, such as increasing bomb range or speed. 
 
+There are two single-player/co-op modes and a PvP option:
+
 - Campaign Mode: Explore different worlds, each with five challenging levels and a spectacular boss battle. Use bombs strategically to overcome intricate mazes, eliminate enemies and overcome obstacles along the way.
 
 - Arena Mode: Work together with friends in a dynamic co-op mode. Face endless waves of opponents in an action-packed online arena, collect power-ups to improve your skills and survive increasingly challenging enemies.
