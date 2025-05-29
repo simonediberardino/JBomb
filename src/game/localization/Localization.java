@@ -470,6 +470,6 @@ public class Localization {
 
     public static String get(HashMap<Locale, String> localizationMap) {
         Optional<Locale> locale = Arrays.stream(getSupportedLanguages()).filter(l -> l.getLanguage().equals(Locale.getDefault().getLanguage())).findFirst();
-        return localizationMap.get(Locale.ENGLISH);
+        return localizationMap.get(locale.orElse(Locale.ENGLISH));
     }
 }

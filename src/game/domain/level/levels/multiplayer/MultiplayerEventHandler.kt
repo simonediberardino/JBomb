@@ -12,6 +12,7 @@ import game.domain.world.domain.entity.actors.impl.explosion.abstractexpl.Abstra
 import game.localization.Localization
 import game.presentation.ui.pages.multiplayer.GameEndedMultiplayerPanel
 import game.utils.dev.Log
+import game.utils.ui.ToastUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -63,12 +64,12 @@ class MultiplayerEventHandler : DefaultLevelEventHandler() {
                     ?.let {
                         DataInputOutput.getInstance().increaseKills()
 
-                        //ToastUtils.show(it, false)
+                        ToastUtils.show(it, false)
                     }
                 victim -> {
                     actualAttacker.properties.name?.let { Localization.get(Localization.KILLED_BY).replace("%name%", it) }
                         ?.let {
-                            //ToastUtils.show(it, false)
+                            ToastUtils.show(it, false)
                         }
                 }
             }

@@ -53,7 +53,7 @@ object Utility {
         }
 
         val frame = JBomb.JBombFrame
-        val screenSize = if (frame == null ) Toolkit.getDefaultToolkit().screenSize else frame.preferredSize
+        val screenSize = frame.preferredSize
         return dim * (screenSize.getWidth() / Dimensions.DEFAULT_SCREEN_SIZE.getWidth())
     }
 

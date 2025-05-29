@@ -31,7 +31,7 @@ public class UsernameProfilePanel extends JBombermanBoxContainerPanel {
 
     @Override
     protected int getDefaultBoxPanelWidth() {
-        return Utility.INSTANCE.px(Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE);
+        return Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE;
     }
 
     @Override

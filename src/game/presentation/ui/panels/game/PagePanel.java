@@ -10,26 +10,59 @@ public abstract class PagePanel extends JPanel {
     protected final JPanel parent;
     protected final CardLayout cardLayout;
     protected final JBombFrame frame;
-    private final String imagePath;
+    private Image backgroundImage = null;
 
     public PagePanel(CardLayout cardLayout, JPanel parent, JBombFrame frame, String imagePath) {
         this.parent = parent;
         this.cardLayout = cardLayout;
         this.frame = frame;
-        this.imagePath = imagePath;
         setOpaque(false);
+
+        int panelWidth = (int) frame.getPreferredSize().getWidth();
+        int panelHeight = (int) frame.getPreferredSize().getHeight();
+
+        Image backgroundImage = Utility.INSTANCE.loadImage(imagePath);
+
+        if (panelWidth <= 0 || panelHeight <= 0) {
+            return;
+        }
+
+        if (shouldMaintainAspectRatio()) {
+            // Get the image dimensions
+            int imgWidth = backgroundImage.getWidth(null);
+            int imgHeight = backgroundImage.getHeight(null);
+
+            // Calculate the aspect ratio of the image and the panel
+            double imgAspect = (double) imgWidth / imgHeight;
+            double panelAspect = (double) panelWidth / panelHeight;
+
+            int newWidth, newHeight;
+
+            // Determine the new dimensions while maintaining the aspect ratio
+            if (panelAspect > imgAspect) {
+                // Panel is wider than image, scale by height
+                newHeight = panelHeight;
+                newWidth = (int) (panelHeight * imgAspect);
+            } else {
+                // Panel is taller than image, scale by width
+                newWidth = panelWidth;
+                newHeight = (int) (panelWidth / imgAspect);
+            }
+
+            this.backgroundImage = backgroundImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        } else {
+            this.backgroundImage = backgroundImage.getScaledInstance(panelWidth, panelHeight, Image.SCALE_SMOOTH);
+        }
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Image backgroundImage = Utility.INSTANCE.loadImage(imagePath);
-
         int panelWidth = (int) frame.getPreferredSize().getWidth();
         int panelHeight = (int) frame.getPreferredSize().getHeight();
 
-        if (backgroundImage != null && panelWidth > 0 && panelHeight > 0) {
+        if (panelWidth > 0 && panelHeight > 0) {
             if (shouldMaintainAspectRatio()) {
                 // Get the image dimensions
                 int imgWidth = backgroundImage.getWidth(null);
@@ -61,10 +94,10 @@ public abstract class PagePanel extends JPanel {
                 g.fillRect(0, 0, panelWidth, panelHeight);
 
                 // Draw the scaled image
-                g.drawImage(backgroundImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH), x, y, null);
+                g.drawImage(backgroundImage, x, y, null);
             } else {
                 // Stretch the image to fill the panel
-                g.drawImage(backgroundImage.getScaledInstance(panelWidth, panelHeight, Image.SCALE_SMOOTH), 0, 0, null);
+                g.drawImage(backgroundImage, 0, 0, null);
             }
         }
 

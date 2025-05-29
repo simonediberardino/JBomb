@@ -1,6 +1,7 @@
 package game.presentation.ui.viewelements.inventory;
 
 import game.presentation.ui.fonts.CustomFonts;
+import game.values.BomberColors;
 import game.values.Dimensions;
 
 import javax.swing.*;

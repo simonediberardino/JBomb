@@ -2,7 +2,7 @@ package game.data.cache
 
 class Cache  // Private constructor to prevent direct instantiation
 private constructor() {
-    private val cache = HashMap<String, Any?>()
+    val cache = HashMap<String, Any?>()
     fun <T> queryCache(key: String): T? {
         val element = cache.getOrDefault(key, null)
         return element as T?

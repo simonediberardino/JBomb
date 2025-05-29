@@ -4,10 +4,8 @@ import game.JBomb
 import game.JBomb.showActivity
 import game.JBomb.startLevel
 import game.domain.level.levels.Level.Companion.currLevel
-import game.domain.match.JBombMatch
 import game.domain.world.domain.entity.actors.impl.bomber_entity.base.BomberEntity
 import game.localization.Localization
-import game.network.usecases.PingServerUseCase
 import game.presentation.ui.elements.createBlurBackground
 import game.presentation.ui.elements.createDialog
 import game.presentation.ui.pages.main_menu.MainMenuPanel
@@ -23,8 +21,11 @@ import game.utils.Utility.px
 import game.values.Dimensions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.awt.*
-import javax.swing.*
+import java.awt.Dimension
+import javax.swing.BoxLayout
+import javax.swing.JDialog
+import javax.swing.JPanel
+import javax.swing.JScrollPane
 
 class GameEndedMultiplayerPanel(
     private val dialog: JDialog
@@ -37,7 +38,7 @@ class GameEndedMultiplayerPanel(
         initializeLayout()
     }
 
-    override fun getDefaultBoxPanelWidth(): Int = px(Dimensions.DEFAULT_MAIN_MENU_BOX_SIZE)
+    override fun getDefaultBoxPanelWidth(): Int = px(600)
 
     override fun addCustomElements() {
         val panel = createPlayerScorePanel()

@@ -14,6 +14,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static game.values.Dimensions.DEFAULT_X_PADDING;
+
 public abstract class BaseMenu extends PagePanel {
     protected JPanel listButtonsPanel;
     private JPanel leftPanel = null;
@@ -54,6 +56,7 @@ public abstract class BaseMenu extends PagePanel {
         // not the whole screen
         JPanel mainMenuComponentsWrapper = new JPanel(new BorderLayout());
         mainMenuComponentsWrapper.setOpaque(false);
+        mainMenuComponentsWrapper.setBorder(BorderFactory.createEmptyBorder(0, DEFAULT_X_PADDING, 0, DEFAULT_X_PADDING));
 
         // Add the top panel to the north
         createTopPanel();
