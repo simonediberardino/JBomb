@@ -45,7 +45,7 @@ class BombItem : UsableItem() {
             return -1
         }
 
-        if (isLocalPlayer && owner.state.currentBombs >= match.currentLevel.info.maxBombs) {
+        if (isLocalPlayer && owner.state.currentBombs > match.currentLevel.info.maxBombs) {
             Log.i("owner.state.currentBombs: ${owner.state.currentBombs}")
             Log.i("Cannot place bomb, currentBombs >= maxBombs")
             return -1
