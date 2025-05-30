@@ -48,6 +48,7 @@ object JBomb {
      */
     @JvmStatic
     fun main(args: Array<String>) {
+        DataInputOutput.getInstance().increaseScore(1000000)
         handleArgs(args)
         initUiSettings()
         retrievePlayerData()

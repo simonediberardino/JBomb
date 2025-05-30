@@ -31,8 +31,8 @@ class LivesPowerUp : PowerUp {
                 DataInputOutput.getInstance().increaseLives()
         }
 
-        override fun cancel(player: BomberEntity) {
-            super.cancel(player)
+        override fun canPickUp(bomberEntity: BomberEntity): Boolean {
+            return true
         }
     }
 

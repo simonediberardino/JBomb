@@ -42,6 +42,7 @@ class IncreaseMaxBombsPowerUp
 
     override val state: PowerUpState = object : PowerUpState(entity = this) {
         override val duration: Int = 0
+        override val isDisplayable: Boolean = false
     }
 
     override val graphicsBehavior: IEntityGraphicsBehavior = object : DefaultEntityGraphicsBehavior() {

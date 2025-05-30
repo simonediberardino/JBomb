@@ -29,7 +29,7 @@ abstract class PowerUp : EntityInteractable {
     companion object {
         // A static array of power-up classes
         val POWER_UPS: Array<Class<out PowerUp>> = arrayOf(
-            //LivesPowerUp::class.java,
+            LivesPowerUp::class.java,
             PistolPowerUp::class.java,
             ArmorPowerUp::class.java,
             FirePowerUp::class.java,
@@ -50,8 +50,11 @@ abstract class PowerUp : EntityInteractable {
         const val DURATION_SEC: Int = 15
         val SIZE = PitchPanel.COMMON_DIVISOR * 2
         const val IS_DISPLAYABLE = true
-        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>> = hashSetOf(BomberEntity::class.java, AiBomberEntity::class.java)
-        val OBSTACLES: MutableSet<Class<out Entity>> = hashSetOf(BomberEntity::class.java)
-        val INCOMPATIBLE_POWER_UPS = mutableListOf<Class<out PowerUp>>()
+        val INTERACTION_ENTITIES: MutableSet<Class<out Entity>>
+            get() = hashSetOf(BomberEntity::class.java, AiBomberEntity::class.java)
+        val OBSTACLES: MutableSet<Class<out Entity>>
+            get() = hashSetOf(BomberEntity::class.java)
+        val INCOMPATIBLE_POWER_UPS: MutableList<Class<out PowerUp>>
+            get() = mutableListOf<Class<out PowerUp>>()
     }
 }

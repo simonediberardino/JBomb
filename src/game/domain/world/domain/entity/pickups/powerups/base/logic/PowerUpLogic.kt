@@ -32,6 +32,7 @@ abstract class PowerUpLogic(
         entity.state.bomberEntity = player
 
         doApply(player)
+        (player.logic as? BomberEntityLogic)?.onPowerupApply(this.entity)
 
         AudioManager.instance.play(SoundModel.POWERUP)
 
@@ -79,8 +80,6 @@ abstract class PowerUpLogic(
     }
 
     override fun canPickUp(bomberEntity: BomberEntity): Boolean {
-        Log.i("active power ups: ${bomberEntity.state.activePowerUps}")
-
         return bomberEntity.state.activePowerUps.all {
             Log.i("it class is ${it::class.java}, entity class is ${this.entity.javaClass}")
 

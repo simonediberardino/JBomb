@@ -233,15 +233,18 @@ class JBombMatch(
     }
 
     fun useItem(owner: BomberEntity): Long {
-        val currItem = owner.state.weapon
+        try {
+            val currItem = owner.state.weapon
 
-        val id = currItem.use()
+            val id = currItem.use()
 
-        if (id != -1L) {
-            UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), currItem.type, id)
+            if (id != -1L) {
+                UseItemHttpEventForwarder().invoke(owner.toEntityNetwork(), currItem.type, id)
+            }
+            return id
+        } catch (exception: Exception) {
+            return -1
         }
-
-        return id
     }
 
 

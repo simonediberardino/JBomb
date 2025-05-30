@@ -24,9 +24,7 @@ class BlockMoverPowerUp : PowerUp {
         override fun getImage(entity: Entity): BufferedImage? = loadAndSetImage(entity, "$powerUpsFolder/hand.png")
     }
 
-    override val state: PowerUpState = object : PowerUpState(entity = this) {
-        override val duration: Int = 0
-    }
+    override val state: PowerUpState = PowerUpState(entity = this)
 
     override val logic: PowerUpLogic = object : PowerUpLogic(entity = this) {
         override fun doApply(player: BomberEntity) {
